@@ -1,7 +1,7 @@
 /**
  * Mock data for Admin Panel
  * Provides realistic test data: 48 teachers, 450 students (K-5), 120 parents,
- * 25 classes, engagement metrics, audit logs, and billing info.
+ * 25 classes, engagement metrics, and audit logs.
  */
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -284,8 +284,7 @@ const auditActions = [
   { action: 'announcement.created', resourceType: 'announcement', details: 'Created new announcement' },
   { action: 'role.changed', resourceType: 'user', details: 'Changed user role' },
   { action: 'security.2fa_enabled', resourceType: 'security', details: 'Enabled two-factor authentication' },
-  { action: 'billing.invoice_paid', resourceType: 'billing', details: 'Invoice payment processed' },
-  { action: 'system.backup', resourceType: 'system', details: 'System backup completed' },
+{ action: 'system.backup', resourceType: 'system', details: 'System backup completed' },
   { action: 'system.maintenance', resourceType: 'system', details: 'Scheduled maintenance performed' },
 ];
 
@@ -312,30 +311,6 @@ export const enrollmentByGrade = gradeLabels.map((grade) => ({
   value: mockStudents.filter((s) => s.grade === grade).length,
   grade,
 }));
-
-// ─── Subscription / Billing ─────────────────────────────────────────────────
-
-export const mockSubscription = {
-  plan: 'Professional' as const,
-  price: 299,
-  billingCycle: 'monthly' as const,
-  currentPeriodStart: '2026-02-01',
-  currentPeriodEnd: '2026-02-28',
-  renewalDate: '2026-03-01',
-  storageUsedGb: 18.4,
-  storageMaxGb: 50,
-  activeUsers: allMockUsers.filter((u) => u.status === 'active').length,
-  maxUsers: 500,
-  features: [
-    'Up to 500 students',
-    'Unlimited classes',
-    'Advanced analytics',
-    'Priority support',
-    '50GB storage',
-    'Gamification features',
-    'Custom branding',
-  ],
-};
 
 // ─── Dashboard Stats ────────────────────────────────────────────────────────
 

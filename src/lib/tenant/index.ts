@@ -15,7 +15,6 @@ export interface CreateTenantData {
   principal?: string;
   phone?: string;
   logo_url?: string;
-  subscription_tier?: 'free' | 'basic' | 'pro' | 'enterprise';
   max_users?: number;
 }
 
@@ -31,7 +30,6 @@ export interface UpdateTenantData {
   principal?: string;
   phone?: string;
   logo_url?: string;
-  subscription_tier?: 'free' | 'basic' | 'pro' | 'enterprise';
   max_users?: number;
 }
 
@@ -116,7 +114,6 @@ export async function createTenant(data: CreateTenantData): Promise<Tenant> {
       principal: data.principal,
       phone: data.phone,
       logo_url: data.logo_url,
-      subscription_tier: data.subscription_tier || 'free',
       max_users: data.max_users || 100,
       is_active: true,
     })
@@ -165,7 +162,6 @@ export async function updateTenant(id: string, updateData: UpdateTenantData): Pr
       ...(updateData.principal && { principal: updateData.principal }),
       ...(updateData.phone && { phone: updateData.phone }),
       ...(updateData.logo_url && { logo_url: updateData.logo_url }),
-      ...(updateData.subscription_tier && { subscription_tier: updateData.subscription_tier }),
       ...(updateData.max_users && { max_users: updateData.max_users }),
       updated_at: new Date().toISOString(),
     })

@@ -34,7 +34,6 @@ const resourceTypeIcons: Record<string, React.ReactNode> = {
   consent: <Shield className="w-4 h-4" />,
   announcement: <FileText className="w-4 h-4" />,
   security: <Lock className="w-4 h-4" />,
-  billing: <FileText className="w-4 h-4" />,
   system: <Activity className="w-4 h-4" />,
 };
 
@@ -47,7 +46,6 @@ const resourceTypeColors: Record<string, string> = {
   consent: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300',
   announcement: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300',
   security: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300',
-  billing: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
   system: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300',
 };
 
@@ -69,8 +67,7 @@ const actionSeverity: Record<string, 'info' | 'warning' | 'error'> = {
   'announcement.created': 'info',
   'role.changed': 'warning',
   'security.2fa_enabled': 'info',
-  'billing.invoice_paid': 'info',
-  'system.backup': 'info',
+'system.backup': 'info',
   'system.maintenance': 'warning',
 };
 

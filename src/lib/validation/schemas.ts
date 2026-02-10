@@ -190,9 +190,3 @@ export const attendanceFilterSchema = paginationSchema.extend({
   status: z.enum(['present', 'absent', 'late', 'excused']).optional(),
 });
 
-// Billing Schema
-export const checkoutSessionSchema = z.object({
-  priceId: z.string().min(1, 'Price ID is required'),
-  successUrl: z.string().url('Invalid success URL'),
-  cancelUrl: z.string().url('Invalid cancel URL'),
-});

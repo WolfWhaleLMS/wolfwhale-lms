@@ -127,7 +127,6 @@ export interface AdminDashboardStats {
   activeUsers: number;
   totalCourses: number;
   totalStudents: number;
-  subscriptionRevenue: number;
   systemHealth: {
     uptime: number;
     apiLatency: number;

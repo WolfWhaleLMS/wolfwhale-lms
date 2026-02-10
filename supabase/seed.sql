@@ -973,6 +973,193 @@ SELECT t.id, 149.00, 149.00, 'paid', '2026-02-01'::date, '2026-01-30 10:00:00'::
 FROM tenants t
 WHERE t.slug = 'wolf-whale-demo';
 
+-- ============================================================================
+-- 15. GAMIFICATION: STUDENT XP
+-- ============================================================================
+
+INSERT INTO student_xp (tenant_id, student_id, total_xp, current_level, current_tier, streak_days, last_login_date, coins, total_coins_earned, total_coins_spent)
+SELECT t.id, x.sid, x.xp, x.lvl, x.tier, x.streak, CURRENT_DATE, x.coins, x.earned, x.spent
+FROM tenants t, (VALUES
+  -- K-2 students (lower XP)
+  ('a0000000-0000-0000-0000-000000000010'::uuid, 320,  3, 'Wave Runner',    5,  45, 60, 15),
+  ('a0000000-0000-0000-0000-000000000011'::uuid, 210,  2, 'Novice',         3,  30, 40, 10),
+  ('a0000000-0000-0000-0000-000000000012'::uuid, 480,  4, 'Wave Runner',    8,  65, 80, 15),
+  ('a0000000-0000-0000-0000-000000000013'::uuid, 150,  2, 'Novice',         2,  20, 25,  5),
+  ('a0000000-0000-0000-0000-000000000014'::uuid, 390,  3, 'Wave Runner',    6,  50, 65, 15),
+  -- Grade 3 students
+  ('a0000000-0000-0000-0000-000000000015'::uuid, 1200, 6, 'Knowledge Keeper', 12, 150, 200, 50),
+  ('a0000000-0000-0000-0000-000000000016'::uuid, 1450, 7, 'Knowledge Keeper', 14, 180, 230, 50),
+  ('a0000000-0000-0000-0000-000000000017'::uuid, 750,  5, 'Wave Runner',    4,  90, 110, 20),
+  -- Grade 4 students
+  ('a0000000-0000-0000-0000-000000000018'::uuid, 1100, 6, 'Knowledge Keeper', 10, 140, 180, 40),
+  ('a0000000-0000-0000-0000-000000000019'::uuid, 980,  5, 'Wave Runner',    7, 120, 150, 30),
+  -- Grade 5 students (highest XP)
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 2500, 9, 'Luminary',       20, 340, 450, 110),
+  ('a0000000-0000-0000-0000-000000000021'::uuid, 2200, 8, 'Knowledge Keeper', 15, 280, 380, 100),
+  ('a0000000-0000-0000-0000-000000000022'::uuid, 1900, 7, 'Knowledge Keeper', 11, 230, 300, 70),
+  ('a0000000-0000-0000-0000-000000000023'::uuid, 1650, 7, 'Knowledge Keeper', 9,  200, 260, 60),
+  ('a0000000-0000-0000-0000-000000000024'::uuid, 2100, 8, 'Knowledge Keeper', 18, 260, 350, 90)
+) AS x(sid, xp, lvl, tier, streak, coins, earned, spent)
+WHERE t.slug = 'wolf-whale-demo';
+
+-- ============================================================================
+-- 16. GAMIFICATION: XP TRANSACTIONS (recent activity for demo students)
+-- ============================================================================
+
+INSERT INTO xp_transactions (tenant_id, student_id, amount, source_type, source_id, description, created_at)
+SELECT t.id, x.sid, x.amt, x.stype, x.srcid, x.descr, x.cat
+FROM tenants t, (VALUES
+  -- Emma Wilson (top student)
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 20, 'assignment', 'e0000000-0000-0000-0003-000000000001'::uuid, 'Submitted Fractions Worksheet', (NOW() - INTERVAL '1 hour')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 30, 'lesson', 'd0000000-0000-0000-0003-000000000003'::uuid, 'Completed Decimals and Percentages', (NOW() - INTERVAL '3 hours')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 25, 'grade', 'f0000000-0000-0000-0003-000000000001'::uuid, 'Got A- on Fractions Worksheet', (NOW() - INTERVAL '1 day')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 5, 'daily', NULL, 'Daily Login Bonus', (NOW() - INTERVAL '1 day')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 50, 'achievement', NULL, 'Achievement Unlocked: 7 Day Streak', (NOW() - INTERVAL '2 days')::timestamptz),
+  -- Noah Kim
+  ('a0000000-0000-0000-0000-000000000015'::uuid, 15, 'assignment', 'e0000000-0000-0000-0001-000000000001'::uuid, 'Submitted Multiplication Quiz', (NOW() - INTERVAL '2 hours')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000015'::uuid, 20, 'grade', 'f0000000-0000-0000-0001-000000000001'::uuid, 'Got A- on Multiplication Quiz', (NOW() - INTERVAL '3 days')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000015'::uuid, 5, 'daily', NULL, 'Daily Login Bonus', (NOW() - INTERVAL '4 hours')::timestamptz),
+  -- Sophia Patel
+  ('a0000000-0000-0000-0000-000000000016'::uuid, 20, 'assignment', 'e0000000-0000-0000-0001-000000000001'::uuid, 'Submitted Multiplication Quiz', (NOW() - INTERVAL '5 hours')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000016'::uuid, 25, 'grade', 'f0000000-0000-0000-0001-000000000002'::uuid, 'Got A on Multiplication Quiz', (NOW() - INTERVAL '2 days')::timestamptz),
+  -- Isabella Clark
+  ('a0000000-0000-0000-0000-000000000024'::uuid, 30, 'lesson', 'd0000000-0000-0000-0003-000000000005'::uuid, 'Completed Coordinate Graphing', (NOW() - INTERVAL '6 hours')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000024'::uuid, 25, 'grade', 'f0000000-0000-0000-0003-000000000005'::uuid, 'Got A on Fractions Worksheet', (NOW() - INTERVAL '1 day')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000024'::uuid, 5, 'daily', NULL, 'Daily Login Bonus', NOW()::timestamptz),
+  -- Lily Parker (K student)
+  ('a0000000-0000-0000-0000-000000000010'::uuid, 10, 'assignment', 'e0000000-0000-0000-0006-000000000001'::uuid, 'Submitted Favorite Animal Drawing', (NOW() - INTERVAL '4 days')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000010'::uuid, 5, 'daily', NULL, 'Daily Login Bonus', (NOW() - INTERVAL '1 day')::timestamptz)
+) AS x(sid, amt, stype, srcid, descr, cat)
+WHERE t.slug = 'wolf-whale-demo';
+
+-- ============================================================================
+-- 17. GAMIFICATION: COIN TRANSACTIONS
+-- ============================================================================
+
+INSERT INTO coin_transactions (tenant_id, student_id, amount, transaction_type, source_type, source_id, description, created_at)
+SELECT t.id, c.sid, c.amt, c.ttype, c.stype, c.srcid, c.descr, c.cat
+FROM tenants t, (VALUES
+  -- Emma Wilson
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 50, 'earn', 'xp', NULL, 'XP Conversion (500 XP)', (NOW() - INTERVAL '1 hour')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 25, 'spend', 'cosmetic', 'crown', 'Purchased Golden Crown', (NOW() - INTERVAL '2 hours')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 100, 'earn', 'achievement', NULL, 'Achievement: Consistency Champion', (NOW() - INTERVAL '5 hours')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 5, 'spend', 'pet_interaction', NULL, 'Fed pet (5 coins)', (NOW() - INTERVAL '8 hours')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 75, 'earn', 'daily_bonus', NULL, 'Daily Login Bonus', (NOW() - INTERVAL '1 day')::timestamptz),
+  -- Noah Kim
+  ('a0000000-0000-0000-0000-000000000015'::uuid, 30, 'earn', 'xp', NULL, 'XP Conversion (300 XP)', (NOW() - INTERVAL '3 hours')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000015'::uuid, 20, 'earn', 'achievement', NULL, 'Achievement: First A Grade', (NOW() - INTERVAL '3 days')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000015'::uuid, 10, 'spend', 'cosmetic', 'scarf', 'Purchased Scarf', (NOW() - INTERVAL '4 days')::timestamptz),
+  -- Sophia Patel
+  ('a0000000-0000-0000-0000-000000000016'::uuid, 40, 'earn', 'xp', NULL, 'XP Conversion (400 XP)', (NOW() - INTERVAL '2 hours')::timestamptz),
+  ('a0000000-0000-0000-0000-000000000016'::uuid, 50, 'earn', 'level_up', NULL, 'Level Up Bonus (Level 7)', (NOW() - INTERVAL '1 day')::timestamptz)
+) AS c(sid, amt, ttype, stype, srcid, descr, cat)
+WHERE t.slug = 'wolf-whale-demo';
+
+-- ============================================================================
+-- 18. GAMIFICATION: STUDENT ACHIEVEMENTS
+-- ============================================================================
+
+INSERT INTO student_achievements (tenant_id, student_id, achievement_id, unlocked_at, displayed)
+SELECT t.id, a.sid, a.aid, a.uat, a.disp
+FROM tenants t, (VALUES
+  -- Emma Wilson (most achievements)
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 'first_login', (NOW() - INTERVAL '90 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 'first_assignment_submitted', (NOW() - INTERVAL '88 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 'first_a_grade', (NOW() - INTERVAL '80 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 'streak_7', (NOW() - INTERVAL '70 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 'level_5', (NOW() - INTERVAL '60 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 'lessons_10', (NOW() - INTERVAL '45 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 'streak_30', (NOW() - INTERVAL '30 days')::timestamptz, false),
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 'level_10', (NOW() - INTERVAL '10 days')::timestamptz, false),
+  -- James Brown
+  ('a0000000-0000-0000-0000-000000000021'::uuid, 'first_login', (NOW() - INTERVAL '85 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000021'::uuid, 'first_assignment_submitted', (NOW() - INTERVAL '82 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000021'::uuid, 'first_a_grade', (NOW() - INTERVAL '75 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000021'::uuid, 'streak_7', (NOW() - INTERVAL '65 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000021'::uuid, 'level_5', (NOW() - INTERVAL '50 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000021'::uuid, 'lessons_10', (NOW() - INTERVAL '40 days')::timestamptz, true),
+  -- Noah Kim
+  ('a0000000-0000-0000-0000-000000000015'::uuid, 'first_login', (NOW() - INTERVAL '80 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000015'::uuid, 'first_assignment_submitted', (NOW() - INTERVAL '75 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000015'::uuid, 'first_a_grade', (NOW() - INTERVAL '60 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000015'::uuid, 'streak_7', (NOW() - INTERVAL '50 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000015'::uuid, 'level_5', (NOW() - INTERVAL '30 days')::timestamptz, true),
+  -- Sophia Patel
+  ('a0000000-0000-0000-0000-000000000016'::uuid, 'first_login', (NOW() - INTERVAL '78 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000016'::uuid, 'first_assignment_submitted', (NOW() - INTERVAL '74 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000016'::uuid, 'first_a_grade', (NOW() - INTERVAL '55 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000016'::uuid, 'streak_7', (NOW() - INTERVAL '45 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000016'::uuid, 'level_5', (NOW() - INTERVAL '25 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000016'::uuid, 'lessons_10', (NOW() - INTERVAL '15 days')::timestamptz, false),
+  -- Isabella Clark
+  ('a0000000-0000-0000-0000-000000000024'::uuid, 'first_login', (NOW() - INTERVAL '88 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000024'::uuid, 'first_assignment_submitted', (NOW() - INTERVAL '85 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000024'::uuid, 'first_a_grade', (NOW() - INTERVAL '70 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000024'::uuid, 'streak_7', (NOW() - INTERVAL '60 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000024'::uuid, 'level_5', (NOW() - INTERVAL '40 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000024'::uuid, 'lessons_10', (NOW() - INTERVAL '20 days')::timestamptz, true),
+  -- Lily Parker (K student, fewer achievements)
+  ('a0000000-0000-0000-0000-000000000010'::uuid, 'first_login', (NOW() - INTERVAL '60 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000010'::uuid, 'first_assignment_submitted', (NOW() - INTERVAL '50 days')::timestamptz, true),
+  -- Olivia Turner
+  ('a0000000-0000-0000-0000-000000000018'::uuid, 'first_login', (NOW() - INTERVAL '82 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000018'::uuid, 'first_assignment_submitted', (NOW() - INTERVAL '78 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000018'::uuid, 'first_a_grade', (NOW() - INTERVAL '65 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000018'::uuid, 'streak_7', (NOW() - INTERVAL '55 days')::timestamptz, true),
+  ('a0000000-0000-0000-0000-000000000018'::uuid, 'level_5', (NOW() - INTERVAL '35 days')::timestamptz, true)
+) AS a(sid, aid, uat, disp)
+WHERE t.slug = 'wolf-whale-demo';
+
+-- ============================================================================
+-- 19. GAMIFICATION: STUDENT PETS
+-- ============================================================================
+
+INSERT INTO student_pets (tenant_id, student_id, name, species, stage, happiness, energy, knowledge, health, total_xp, equipped_items, unlocked_cosmetics, last_fed_at, last_played_at, last_studied_at, last_rested_at)
+SELECT t.id, p.sid, p.pname, p.pspecies, p.pstage, p.phappy, p.penergy, p.pknow, p.phealth, p.pxp, p.pequip::jsonb, p.punlock::jsonb, p.pfed, p.pplay, p.pstudy, p.prest
+FROM tenants t, (VALUES
+  -- Emma Wilson - most advanced pet
+  ('a0000000-0000-0000-0000-000000000020'::uuid, 'Luna', 'wolf', 'adolescent', 85, 70, 65, 90, 500,
+   '["crown","scarf"]', '["crown","scarf","cape"]',
+   (NOW() - INTERVAL '2 hours')::timestamptz, (NOW() - INTERVAL '4 hours')::timestamptz,
+   (NOW() - INTERVAL '1 hour')::timestamptz, (NOW() - INTERVAL '1 day')::timestamptz),
+  -- James Brown
+  ('a0000000-0000-0000-0000-000000000021'::uuid, 'Splash', 'whale', 'juvenile', 70, 65, 50, 80, 350,
+   '["scarf"]', '["scarf","goggles"]',
+   (NOW() - INTERVAL '3 hours')::timestamptz, (NOW() - INTERVAL '6 hours')::timestamptz,
+   (NOW() - INTERVAL '2 hours')::timestamptz, (NOW() - INTERVAL '2 days')::timestamptz),
+  -- Noah Kim
+  ('a0000000-0000-0000-0000-000000000015'::uuid, 'Fang', 'wolf', 'juvenile', 75, 60, 50, 85, 250,
+   '[]', '["scarf"]',
+   (NOW() - INTERVAL '5 hours')::timestamptz, (NOW() - INTERVAL '8 hours')::timestamptz,
+   (NOW() - INTERVAL '3 hours')::timestamptz, (NOW() - INTERVAL '1 day')::timestamptz),
+  -- Sophia Patel
+  ('a0000000-0000-0000-0000-000000000016'::uuid, 'Pearl', 'whale', 'juvenile', 80, 55, 60, 88, 300,
+   '["crown"]', '["crown"]',
+   (NOW() - INTERVAL '4 hours')::timestamptz, (NOW() - INTERVAL '7 hours')::timestamptz,
+   (NOW() - INTERVAL '2 hours')::timestamptz, (NOW() - INTERVAL '12 hours')::timestamptz),
+  -- Isabella Clark
+  ('a0000000-0000-0000-0000-000000000024'::uuid, 'Storm', 'hybrid', 'adolescent', 78, 72, 58, 82, 420,
+   '["cape"]', '["cape","crown"]',
+   (NOW() - INTERVAL '1 hour')::timestamptz, (NOW() - INTERVAL '3 hours')::timestamptz,
+   (NOW() - INTERVAL '30 minutes')::timestamptz, (NOW() - INTERVAL '18 hours')::timestamptz),
+  -- Lily Parker (K student - hatchling)
+  ('a0000000-0000-0000-0000-000000000010'::uuid, 'Buddy', 'wolf', 'hatchling', 60, 50, 20, 75, 50,
+   '[]', '[]',
+   (NOW() - INTERVAL '6 hours')::timestamptz, (NOW() - INTERVAL '1 day')::timestamptz,
+   (NOW() - INTERVAL '8 hours')::timestamptz, (NOW() - INTERVAL '2 days')::timestamptz),
+  -- Olivia Turner
+  ('a0000000-0000-0000-0000-000000000018'::uuid, 'Misty', 'whale', 'juvenile', 72, 58, 45, 80, 200,
+   '[]', '["goggles"]',
+   (NOW() - INTERVAL '4 hours')::timestamptz, (NOW() - INTERVAL '10 hours')::timestamptz,
+   (NOW() - INTERVAL '5 hours')::timestamptz, (NOW() - INTERVAL '1 day')::timestamptz),
+  -- Lucas Garcia
+  ('a0000000-0000-0000-0000-000000000019'::uuid, 'Shadow', 'wolf', 'hatchling', 55, 45, 30, 70, 120,
+   '[]', '[]',
+   (NOW() - INTERVAL '8 hours')::timestamptz, (NOW() - INTERVAL '1 day')::timestamptz,
+   (NOW() - INTERVAL '6 hours')::timestamptz, (NOW() - INTERVAL '2 days')::timestamptz)
+) AS p(sid, pname, pspecies, pstage, phappy, penergy, pknow, phealth, pxp, pequip, punlock, pfed, pplay, pstudy, prest)
+WHERE t.slug = 'wolf-whale-demo';
+
 COMMIT;
 
 -- ============================================================================
@@ -981,4 +1168,5 @@ COMMIT;
 -- 1 Admin, 3 Teachers, 15 Students, 5 Parents
 -- 6 Courses, 27 Lessons, 17 Assignments
 -- Submissions, Grades, Attendance, Announcements, Notifications
+-- Gamification: XP, Coins, Achievements, Pets
 -- ============================================================================

@@ -46,15 +46,7 @@
     - Copy "anon public" key — this is your `NEXT_PUBLIC_SUPABASE_ANON_KEY`
     - Copy "service_role secret" key — this is your `SUPABASE_SERVICE_ROLE_KEY`
 
-### 3C: Stripe (payments)
-1. Go to https://stripe.com
-2. Click "Start now"
-3. Create your account (you can skip business verification for now — use "Test mode")
-4. **Get your keys:** Go to Developers → API Keys
-    - Copy "Publishable key" — this is your `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
-    - Copy "Secret key" — this is your `STRIPE_SECRET_KEY`
-
-### 3D: Vercel (hosting)
+### 3C: Vercel (hosting)
 1. Go to https://vercel.com
 2. Click "Sign Up"
 3. Sign up with your GitHub account
@@ -80,9 +72,6 @@
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR-PROJECT-ID.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGci...YOUR-ANON-KEY-HERE
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGci...YOUR-SERVICE-ROLE-KEY-HERE
-
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...YOUR-KEY-HERE
-STRIPE_SECRET_KEY=sk_test_...YOUR-KEY-HERE
 
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```

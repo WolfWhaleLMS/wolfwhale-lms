@@ -14,7 +14,6 @@ A modern, gamified Learning Management System (LMS) for K-12 schools built with 
 - **Attendance Management** - Record and track student attendance
 - **Grade Management** - Track grades and generate comprehensive reports
 - **File Management** - Secure file uploads and storage
-- **Subscription Billing** - Stripe integration for school subscriptions
 - **Analytics & Reports** - Enrollment, grades, attendance, and engagement reports
 - **Mobile Responsive** - Works great on desktop, tablet, and mobile devices
 
@@ -30,7 +29,6 @@ A modern, gamified Learning Management System (LMS) for K-12 schools built with 
 - **State Management** - [Zustand](https://github.com/pmndrs/zustand) + [TanStack Query](https://tanstack.com/query/)
 - **Forms** - [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
 - **Animations** - [Framer Motion](https://www.framer.com/motion/)
-- **Payments** - [Stripe](https://stripe.com/)
 - **Rate Limiting** - [Upstash](https://upstash.com/)
 - **Date Handling** - [date-fns](https://date-fns.org/)
 - **Icons** - [Lucide React](https://lucide.dev/)
@@ -47,7 +45,6 @@ Before you begin, ensure you have the following installed:
 You'll also need accounts for:
 
 - **Supabase** - Database and Authentication ([Sign up](https://supabase.com/))
-- **Stripe** - Payment processing ([Sign up](https://stripe.com/))
 - **Vercel** - Deployment platform (optional, [Sign up](https://vercel.com/))
 
 ## Getting Started
@@ -80,14 +77,6 @@ Edit `.env.local` with your configuration:
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-
-# Stripe
-STRIPE_PUBLIC_KEY=your_stripe_public_key
-STRIPE_SECRET_KEY=your_stripe_secret_key
-STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
-STRIPE_BASIC_PRICE_ID=price_xxxxx
-STRIPE_PRO_PRICE_ID=price_xxxxx
-STRIPE_ENTERPRISE_PRICE_ID=price_xxxxx
 
 # Upstash (Optional, for rate limiting)
 UPSTASH_REDIS_REST_URL=your_upstash_url
@@ -132,7 +121,6 @@ wolf-whale-lms/
 │   │   │   ├── notifications/
 │   │   │   ├── admin/
 │   │   │   ├── upload/
-│   │   │   ├── billing/
 │   │   │   └── gamification/
 │   │   ├── layout.tsx                # Root layout
 │   │   ├── page.tsx                  # Home page
@@ -148,7 +136,6 @@ wolf-whale-lms/
 │   │   ├── auth/                     # Auth utilities
 │   │   ├── supabase/                 # Supabase clients
 │   │   ├── tenant/                   # Tenant utilities
-│   │   ├── stripe/                   # Stripe utilities
 │   │   ├── storage/                  # Storage utilities
 │   │   ├── validation/               # Zod schemas
 │   │   └── utils.ts                  # General utilities
@@ -249,11 +236,6 @@ npm run start
 ### File Upload
 - `POST /api/upload` - Upload file to storage
 
-### Billing
-- `POST /api/billing/checkout` - Create checkout session
-- `POST /api/billing/portal` - Create customer portal
-- `POST /api/billing/webhooks` - Handle Stripe webhooks
-
 ## Environment Variables
 
 ### Supabase
@@ -262,17 +244,6 @@ npm run start
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-```
-
-### Stripe
-
-```env
-STRIPE_PUBLIC_KEY=pk_live_xxxxx
-STRIPE_SECRET_KEY=sk_live_xxxxx
-STRIPE_WEBHOOK_SECRET=whsec_xxxxx
-STRIPE_BASIC_PRICE_ID=price_xxxxx
-STRIPE_PRO_PRICE_ID=price_xxxxx
-STRIPE_ENTERPRISE_PRICE_ID=price_xxxxx
 ```
 
 ### Upstash (Optional)

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import type { GradeLevel } from '@/types/database.types';
-import { mockStudentProfile } from '@/lib/mock-data';
+import { createBrowserClient } from '@supabase/ssr';
 
 export type DashboardVariant = 'k5' | '612';
 
@@ -22,30 +22,82 @@ interface UseGradeLevelReturn {
   isSecondary: boolean;
   /** Human-readable grade label (e.g., "4th Grade") */
   gradeLabel: string;
+  /** The student's first name from their profile */
+  firstName: string;
 }
 
 /**
- * Determines the student's grade level and returns the appropriate
- * dashboard variant ('k5' or '612').
+ * Determines the student's grade level from their course enrollments
+ * and returns the appropriate dashboard variant ('k5' or '612').
  *
- * Currently uses mock data. Will be replaced with a Supabase query
- * that reads from the user_profiles table or tenant_membership.
- *
- * Falls back to '612' if grade level is unknown.
+ * Fetches the student's enrolled courses and uses the grade_level from
+ * the first enrolled course. Falls back to '612' if no grade level found.
  */
 export function useGradeLevel(): UseGradeLevelReturn {
   const [loading, setLoading] = useState(true);
   const [gradeLevel, setGradeLevel] = useState<GradeLevel | null>(null);
+  const [firstName, setFirstName] = useState('');
 
   useEffect(() => {
-    // Simulate fetching grade level from profile/tenant_membership
-    // In production this would use useUser() hook or a Supabase query
-    const timer = setTimeout(() => {
-      setGradeLevel(mockStudentProfile.gradeLevel);
-      setLoading(false);
-    }, 100);
+    async function fetchGradeLevel() {
+      try {
+        const supabase = createBrowserClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        );
 
-    return () => clearTimeout(timer);
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          setLoading(false);
+          return;
+        }
+
+        // Get profile first name
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('first_name')
+          .eq('id', user.id)
+          .single();
+
+        if (profile?.first_name) {
+          setFirstName(profile.first_name);
+        }
+
+        // Get grade level from the student's enrolled courses
+        const { data: enrollments } = await supabase
+          .from('course_enrollments')
+          .select(`
+            courses (
+              grade_level
+            )
+          `)
+          .eq('student_id', user.id)
+          .eq('status', 'active')
+          .limit(1);
+
+        if (enrollments && enrollments.length > 0) {
+          const course = (enrollments[0] as any).courses;
+          const level = course?.grade_level as string;
+          if (level) {
+            // The grade_level in the DB can be 'K-2', '3', '4', '5', etc.
+            // Extract the first number or 'K'
+            const match = level.match(/^(K|\d+)/i);
+            if (match) {
+              const gl = match[1].toUpperCase() === 'K' ? 'K' : match[1];
+              if ([...K5_GRADES, ...GRADES_6_12].includes(gl as GradeLevel)) {
+                setGradeLevel(gl as GradeLevel);
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching grade level:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchGradeLevel();
   }, []);
 
   const variant: DashboardVariant = useMemo(() => {
@@ -71,5 +123,6 @@ export function useGradeLevel(): UseGradeLevelReturn {
     isElementary,
     isSecondary,
     gradeLabel,
+    firstName,
   };
 }

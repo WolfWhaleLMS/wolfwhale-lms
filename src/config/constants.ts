@@ -1,4 +1,4 @@
-import { UserRole, GradeLevel, PetSpecies, SubscriptionTier } from '@/types';
+import { UserRole, GradeLevel, PetSpecies } from '@/types';
 import { Users, Book, Settings, GraduationCap, PieChart, Shield, Zap, Crown, Medal, Trophy } from 'lucide-react';
 
 /* Application Metadata */
@@ -211,79 +211,6 @@ export const TIER_NAMES: string[] = [
   'Mythic Guardian',
 ];
 
-/* Subscription Tiers - matches tenants.subscription_plan constraint */
-export const SUBSCRIPTION_TIERS: Record<SubscriptionTier, {
-  label: string;
-  price: number;
-  billing_period: 'monthly' | 'annual';
-  features: string[];
-  max_users: number;
-  max_storage_gb: number;
-}> = {
-  free: {
-    label: 'Free',
-    price: 0,
-    billing_period: 'monthly',
-    features: [
-      'Up to 10 students',
-      '2 classes',
-      'Basic features',
-      'Community support',
-      '1GB storage',
-    ],
-    max_users: 10,
-    max_storage_gb: 1,
-  },
-  starter: {
-    label: 'Starter',
-    price: 99,
-    billing_period: 'monthly',
-    features: [
-      'Up to 100 students',
-      '10 classes',
-      'Basic analytics',
-      'Email support',
-      '5GB storage',
-    ],
-    max_users: 100,
-    max_storage_gb: 5,
-  },
-  growth: {
-    label: 'Growth',
-    price: 299,
-    billing_period: 'monthly',
-    features: [
-      'Up to 500 students',
-      'Unlimited classes',
-      'Advanced analytics',
-      'Priority support',
-      '50GB storage',
-      'Gamification features',
-      'Custom branding',
-    ],
-    max_users: 500,
-    max_storage_gb: 50,
-  },
-  enterprise: {
-    label: 'Enterprise',
-    price: 999,
-    billing_period: 'monthly',
-    features: [
-      'Unlimited students',
-      'Unlimited classes',
-      'Custom analytics',
-      '24/7 support',
-      'Unlimited storage',
-      'All features included',
-      'Dedicated account manager',
-      'Custom integrations',
-      'White-label options',
-    ],
-    max_users: Infinity,
-    max_storage_gb: Infinity,
-  },
-};
-
 /* Date Formats */
 export const DATE_FORMATS = {
   display_date: 'MMM d, yyyy',
@@ -371,8 +298,7 @@ export const NAV_ITEMS: Record<UserRole, Array<{ label: string; href: string; ic
     { label: 'Dashboard', href: '/admin/dashboard', icon: PieChart },
     { label: 'Tenants', href: '/admin/tenants', icon: Building },
     { label: 'Users', href: '/admin/users', icon: Users },
-    { label: 'Billing', href: '/admin/billing', icon: CreditCard },
-    { label: 'Settings', href: '/admin/settings', icon: Settings },
+{ label: 'Settings', href: '/admin/settings', icon: Settings },
   ],
 };
 
@@ -433,4 +359,4 @@ export const NOTIFICATION_TYPES = {
 } as const;
 
 // Icon imports for nav (moved to separate line to avoid import issues)
-import { Building, CreditCard } from 'lucide-react';
+import { Building } from 'lucide-react';

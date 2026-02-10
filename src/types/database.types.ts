@@ -37,7 +37,6 @@ export interface Tenant {
   country: string | null;
   phone: string | null;
   subscription_plan: SubscriptionPlan;
-  stripe_customer_id: string | null;
   status: TenantStatus;
   created_at: string;
   updated_at: string;
@@ -307,32 +306,6 @@ export interface AuditLog {
   created_at: string;
 }
 
-export interface Invoice {
-  id: string;
-  tenant_id: string;
-  stripe_invoice_id: string | null;
-  stripe_payment_intent_id: string | null;
-  amount: number;
-  amount_paid: number;
-  status: string | null;
-  due_date: string | null;
-  paid_at: string | null;
-  created_at: string;
-}
-
-export interface SubscriptionUsage {
-  id: string;
-  tenant_id: string;
-  billing_period_start: string;
-  billing_period_end: string;
-  active_students: number | null;
-  active_teachers: number | null;
-  total_users: number | null;
-  storage_used_gb: number | null;
-  api_calls: number | null;
-  recorded_at: string;
-}
-
 /* Database Type Definition for Supabase Client */
 
 export interface Database {
@@ -437,16 +410,6 @@ export interface Database {
         Row: AuditLog;
         Insert: Omit<AuditLog, 'id' | 'created_at'>;
         Update: Partial<AuditLog>;
-      };
-      invoices: {
-        Row: Invoice;
-        Insert: Omit<Invoice, 'id' | 'created_at'>;
-        Update: Partial<Invoice>;
-      };
-      subscription_usage: {
-        Row: SubscriptionUsage;
-        Insert: Omit<SubscriptionUsage, 'id'>;
-        Update: Partial<SubscriptionUsage>;
       };
     };
     Views: {

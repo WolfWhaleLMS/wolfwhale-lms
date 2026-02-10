@@ -465,7 +465,6 @@ export default function AdminTenantsPage() {
                         <DropdownMenuItem>View Dashboard</DropdownMenuItem>
                         <DropdownMenuItem>Edit Settings</DropdownMenuItem>
                         <DropdownMenuItem>Manage Users</DropdownMenuItem>
-                        <DropdownMenuItem>View Billing</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         {tenant.status === 'active' ? (
                           <DropdownMenuItem className="text-red-600 dark:text-red-400">
