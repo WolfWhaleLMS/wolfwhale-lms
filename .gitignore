@@ -60,3 +60,6 @@ pids
 tmp/
 temp/
 .vercel
+
+# TypeScript
+next-env.d.ts

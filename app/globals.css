@@ -1,0 +1,823 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================
+   WOLF WHALE LMS — Design System
+   Ocean Daylight (light) / Arctic Moonlight (dark)
+   ============================================ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  /* Wolf Whale Brand Colors */
+  --color-midnight-blue: var(--ww-midnight-blue);
+  --color-silver: var(--ww-silver);
+  --color-arctic-white: var(--ww-arctic-white);
+  --color-deep-ocean: var(--ww-deep-ocean);
+  --color-teal: var(--ww-teal);
+  --color-ocean-foam: var(--ww-ocean-foam);
+  --color-success: var(--ww-success);
+  --color-warning: var(--ww-warning);
+  --color-error: var(--ww-error);
+  --color-gold: var(--ww-gold);
+  --color-purple: var(--ww-purple);
+}
+
+/* ============================================
+   ROOT — Ocean Daylight (Light Mode)
+   ============================================ */
+
+:root {
+  --radius: 0.625rem;
+
+  /* Wolf Whale Brand Palette */
+  --ww-midnight-blue: oklch(0.27 0.07 255);   /* #1a2a4e */
+  --ww-silver: oklch(0.79 0.00 0);             /* #c0c0c0 */
+  --ww-arctic-white: oklch(0.98 0.005 250);    /* #f8fafc */
+  --ww-deep-ocean: oklch(0.35 0.08 220);       /* #0a4d68 */
+  --ww-teal: oklch(0.70 0.12 180);             /* #14b8a6 */
+  --ww-ocean-foam: oklch(0.96 0.02 195);       /* #e0f7fa */
+  --ww-success: oklch(0.68 0.17 160);          /* #10b981 */
+  --ww-warning: oklch(0.75 0.16 75);           /* #f59e0b */
+  --ww-error: oklch(0.63 0.24 25);             /* #ef4444 */
+  --ww-gold: oklch(0.80 0.15 85);              /* #fbbf24 */
+  --ww-purple: oklch(0.55 0.22 285);           /* #8b5cf6 */
+
+  /* Base Theme — Ocean Daylight */
+  --background: oklch(0.98 0.005 250);         /* Arctic White */
+  --foreground: oklch(0.27 0.07 255);          /* Midnight Blue */
+  --card: oklch(1 0 0);                        /* Pure white */
+  --card-foreground: oklch(0.27 0.07 255);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.27 0.07 255);
+  --primary: oklch(0.35 0.08 220);             /* Deep Ocean Blue */
+  --primary-foreground: oklch(0.98 0.005 250);
+  --secondary: oklch(0.70 0.12 180);           /* Teal */
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.96 0.01 240);               /* Light blue-gray */
+  --muted-foreground: oklch(0.50 0.03 255);
+  --accent: oklch(0.96 0.02 195);              /* Ocean Foam */
+  --accent-foreground: oklch(0.27 0.07 255);
+  --destructive: oklch(0.63 0.24 25);          /* Error Red */
+  --border: oklch(0.91 0.01 240);
+  --input: oklch(0.93 0.01 240);
+  --ring: oklch(0.35 0.08 220);                /* Deep Ocean Blue */
+  --chart-1: oklch(0.35 0.08 220);             /* Deep Ocean */
+  --chart-2: oklch(0.70 0.12 180);             /* Teal */
+  --chart-3: oklch(0.68 0.17 160);             /* Success Green */
+  --chart-4: oklch(0.55 0.22 285);             /* Purple */
+  --chart-5: oklch(0.80 0.15 85);              /* Gold */
+  --sidebar: oklch(0.97 0.005 250);
+  --sidebar-foreground: oklch(0.27 0.07 255);
+  --sidebar-primary: oklch(0.35 0.08 220);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.96 0.02 195);
+  --sidebar-accent-foreground: oklch(0.27 0.07 255);
+  --sidebar-border: oklch(0.91 0.01 240);
+  --sidebar-ring: oklch(0.35 0.08 220);
+
+  /* Age Variant Defaults (age-68 balanced) */
+  --font-size-base: 15px;
+  --font-size-sm: 13px;
+  --font-size-lg: 18px;
+  --button-height: 40px;
+  --spacing-unit: 1rem;
+}
+
+/* ============================================
+   DARK MODE — Arctic Moonlight
+   ============================================ */
+
+.dark {
+  /* Palette adjustments for dark */
+  --ww-midnight-blue: oklch(0.27 0.07 255);
+  --ww-silver: oklch(0.79 0.00 0);
+  --ww-arctic-white: oklch(0.98 0.005 250);
+  --ww-deep-ocean: oklch(0.40 0.09 220);
+  --ww-teal: oklch(0.74 0.13 180);
+  --ww-ocean-foam: oklch(0.30 0.04 220);
+
+  /* Base Theme — Arctic Moonlight */
+  --background: oklch(0.16 0.04 260);          /* Deep midnight */
+  --foreground: oklch(0.95 0.005 250);         /* Near white */
+  --card: oklch(0.22 0.04 258);                /* Raised dark surface */
+  --card-foreground: oklch(0.95 0.005 250);
+  --popover: oklch(0.20 0.04 258);
+  --popover-foreground: oklch(0.95 0.005 250);
+  --primary: oklch(0.74 0.13 180);             /* Bright Teal */
+  --primary-foreground: oklch(0.16 0.04 260);
+  --secondary: oklch(0.40 0.09 220);           /* Deep Ocean Blue */
+  --secondary-foreground: oklch(0.95 0.005 250);
+  --muted: oklch(0.24 0.03 258);
+  --muted-foreground: oklch(0.68 0.02 255);
+  --accent: oklch(0.30 0.04 220);
+  --accent-foreground: oklch(0.95 0.005 250);
+  --destructive: oklch(0.65 0.22 25);
+  --border: oklch(0.30 0.04 258);
+  --input: oklch(0.24 0.03 258);
+  --ring: oklch(0.74 0.13 180);                /* Teal ring */
+  --chart-1: oklch(0.74 0.13 180);             /* Teal */
+  --chart-2: oklch(0.40 0.09 220);             /* Deep Ocean */
+  --chart-3: oklch(0.72 0.17 160);             /* Success Green */
+  --chart-4: oklch(0.60 0.22 285);             /* Purple */
+  --chart-5: oklch(0.82 0.15 85);              /* Gold */
+  --sidebar: oklch(0.14 0.04 262);
+  --sidebar-foreground: oklch(0.95 0.005 250);
+  --sidebar-primary: oklch(0.74 0.13 180);
+  --sidebar-primary-foreground: oklch(0.14 0.04 262);
+  --sidebar-accent: oklch(0.22 0.04 258);
+  --sidebar-accent-foreground: oklch(0.95 0.005 250);
+  --sidebar-border: oklch(0.28 0.04 258);
+  --sidebar-ring: oklch(0.74 0.13 180);
+}
+
+/* ============================================
+   AGE VARIANT: K-5 (Playful)
+   Rounded, large touch targets, colorful
+   ============================================ */
+
+.age-k5 {
+  --radius: 1.25rem;
+  --font-size-base: 17px;
+  --font-size-sm: 15px;
+  --font-size-lg: 22px;
+  --button-height: 48px;
+  --spacing-unit: 1.25rem;
+}
+
+.age-k5 body,
+.age-k5 {
+  font-size: var(--font-size-base);
+  line-height: 1.7;
+}
+
+.age-k5 button,
+.age-k5 [role="button"],
+.age-k5 a.btn,
+.age-k5 .btn {
+  min-height: var(--button-height);
+  min-width: var(--button-height);
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+}
+
+.age-k5 input,
+.age-k5 select,
+.age-k5 textarea {
+  min-height: var(--button-height);
+  font-size: var(--font-size-base);
+  border-radius: var(--radius);
+  padding: 0.625rem 1rem;
+}
+
+/* K-5: Override accent and secondary to be more colorful */
+.age-k5 {
+  --accent: oklch(0.96 0.03 195);
+  --secondary: oklch(0.74 0.14 180);
+}
+
+.age-k5.dark,
+.age-k5 .dark {
+  --accent: oklch(0.32 0.06 220);
+  --secondary: oklch(0.74 0.14 180);
+}
+
+/* ============================================
+   AGE VARIANT: 6-8 (Moderate / Balanced)
+   Standard proportions, medium rounding
+   ============================================ */
+
+.age-68 {
+  --radius: 0.625rem;
+  --font-size-base: 15px;
+  --font-size-sm: 13px;
+  --font-size-lg: 18px;
+  --button-height: 40px;
+  --spacing-unit: 1rem;
+}
+
+.age-68 body,
+.age-68 {
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+}
+
+.age-68 button,
+.age-68 [role="button"],
+.age-68 a.btn,
+.age-68 .btn {
+  min-height: var(--button-height);
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius);
+  font-size: var(--font-size-base);
+}
+
+.age-68 input,
+.age-68 select,
+.age-68 textarea {
+  min-height: 38px;
+  font-size: var(--font-size-base);
+  border-radius: var(--radius);
+  padding: 0.5rem 0.875rem;
+}
+
+/* ============================================
+   AGE VARIANT: 9-12 (Sleek / Professional)
+   Compact, sharp, minimal decoration
+   ============================================ */
+
+.age-912 {
+  --radius: 0.375rem;
+  --font-size-base: 14px;
+  --font-size-sm: 12px;
+  --font-size-lg: 16px;
+  --button-height: 36px;
+  --spacing-unit: 0.75rem;
+}
+
+.age-912 body,
+.age-912 {
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+}
+
+.age-912 button,
+.age-912 [role="button"],
+.age-912 a.btn,
+.age-912 .btn {
+  min-height: var(--button-height);
+  padding: 0.375rem 1rem;
+  border-radius: var(--radius);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.age-912 input,
+.age-912 select,
+.age-912 textarea {
+  min-height: 34px;
+  font-size: var(--font-size-base);
+  border-radius: var(--radius);
+  padding: 0.375rem 0.75rem;
+}
+
+/* 9-12: Tighter spacing, more muted accents */
+.age-912 {
+  --accent: oklch(0.95 0.01 240);
+}
+
+.age-912.dark,
+.age-912 .dark {
+  --accent: oklch(0.26 0.03 258);
+}
+
+/* ============================================
+   BASE LAYER
+   ============================================ */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Accessibility — focus states */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ============================================
+   TYPOGRAPHY UTILITIES
+   ============================================ */
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
+
+/* ============================================
+   WOLF / WHALE BRAND GRADIENTS & CARDS
+   ============================================ */
+
+@layer utilities {
+  /* Wolf Gradient — Midnight Blue to Deep Ocean */
+  .wolf-gradient {
+    background: linear-gradient(
+      135deg,
+      oklch(0.27 0.07 255) 0%,
+      oklch(0.35 0.08 220) 100%
+    );
+  }
+
+  /* Whale Gradient — Deep Ocean to Teal */
+  .whale-gradient {
+    background: linear-gradient(
+      135deg,
+      oklch(0.35 0.08 220) 0%,
+      oklch(0.70 0.12 180) 100%
+    );
+  }
+
+  /* Ocean Card — subtle ocean-tinted card */
+  .ocean-card {
+    background: linear-gradient(
+      180deg,
+      oklch(1 0 0 / 0.95) 0%,
+      oklch(0.97 0.01 210 / 0.90) 100%
+    );
+    border: 1px solid oklch(0.88 0.02 210);
+    box-shadow:
+      0 4px 16px oklch(0.35 0.08 220 / 0.08),
+      0 1px 3px oklch(0 0 0 / 0.04);
+    transition: all 0.3s ease;
+  }
+
+  .ocean-card:hover {
+    box-shadow:
+      0 8px 30px oklch(0.35 0.08 220 / 0.12),
+      0 2px 6px oklch(0 0 0 / 0.06);
+    transform: translateY(-2px);
+  }
+
+  /* Dark mode ocean card */
+  .dark .ocean-card {
+    background: linear-gradient(
+      180deg,
+      oklch(0.24 0.04 258 / 0.95) 0%,
+      oklch(0.22 0.05 240 / 0.90) 100%
+    );
+    border-color: oklch(0.32 0.04 255);
+    box-shadow:
+      0 4px 16px oklch(0 0 0 / 0.30),
+      0 1px 3px oklch(0 0 0 / 0.20);
+  }
+
+  .dark .ocean-card:hover {
+    box-shadow:
+      0 8px 30px oklch(0.74 0.13 180 / 0.10),
+      0 2px 6px oklch(0 0 0 / 0.25);
+  }
+}
+
+/* ============================================
+   GLASS / FROSTED GLASS EFFECTS
+   (Rebranded from aurora to ocean theme)
+   ============================================ */
+
+@layer utilities {
+  /* Frosted Glass Panel — Dark */
+  .glass-panel {
+    background: oklch(0.22 0.04 258 / 0.85);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid oklch(1 0 0 / 0.12);
+    box-shadow:
+      0 8px 32px oklch(0 0 0 / 0.25),
+      inset 0 1px 0 oklch(1 0 0 / 0.08);
+  }
+
+  .glass-panel-strong {
+    background: oklch(0.20 0.04 258 / 0.92);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid oklch(1 0 0 / 0.15);
+    box-shadow:
+      0 8px 32px oklch(0 0 0 / 0.35),
+      inset 0 1px 0 oklch(1 0 0 / 0.12);
+  }
+
+  .glass-panel-ocean {
+    background: linear-gradient(
+      135deg,
+      oklch(0.35 0.08 220 / 0.10),
+      oklch(0.70 0.12 180 / 0.08)
+    );
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid oklch(0.70 0.12 180 / 0.25);
+    box-shadow:
+      0 8px 32px oklch(0 0 0 / 0.25),
+      0 0 16px oklch(0.70 0.12 180 / 0.06),
+      inset 0 1px 0 oklch(1 0 0 / 0.08);
+  }
+
+  .glass-panel-light {
+    background: oklch(1 0 0 / 0.75);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid oklch(1 0 0 / 0.80);
+    box-shadow:
+      0 8px 32px oklch(0 0 0 / 0.06),
+      inset 0 1px 0 oklch(1 0 0 / 0.90);
+  }
+
+  /* Frosted Glass Card — Dark */
+  .glass-card {
+    background: oklch(1 0 0 / 0.04);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid oklch(1 0 0 / 0.15);
+    border-radius: var(--radius);
+    box-shadow:
+      0 16px 48px oklch(0 0 0 / 0.30),
+      inset 0 1px 0 oklch(1 0 0 / 0.06);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(
+      180deg,
+      oklch(1 0 0 / 0.10) 0%,
+      oklch(1 0 0 / 0.03) 50%,
+      transparent 100%
+    );
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .glass-card:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 24px 64px oklch(0 0 0 / 0.35),
+      inset 0 1px 0 oklch(1 0 0 / 0.10);
+    border-color: oklch(1 0 0 / 0.22);
+  }
+
+  /* Frosted Glass Card — Light */
+  .glass-card-light {
+    background: oklch(1 0 0 / 0.75);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid oklch(1 0 0 / 0.85);
+    border-radius: var(--radius);
+    box-shadow:
+      0 16px 48px oklch(0 0 0 / 0.06),
+      0 4px 12px oklch(0 0 0 / 0.03),
+      inset 0 1px 0 oklch(1 0 0 / 0.95);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .glass-card-light::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(
+      180deg,
+      oklch(1 0 0 / 0.90) 0%,
+      oklch(1 0 0 / 0.40) 50%,
+      transparent 100%
+    );
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .glass-card-light:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 24px 64px oklch(0.35 0.08 220 / 0.08),
+      0 8px 20px oklch(0 0 0 / 0.05),
+      inset 0 1px 0 oklch(1 0 0 / 0.98);
+    border-color: oklch(0.70 0.12 180 / 0.15);
+  }
+}
+
+/* ============================================
+   BORDER GLOW — Subtle Brand Accents
+   ============================================ */
+
+@layer utilities {
+  .glow-border-ocean {
+    box-shadow:
+      0 0 4px oklch(0.35 0.08 220 / 0.30),
+      0 0 8px oklch(0.35 0.08 220 / 0.15);
+    border-color: oklch(0.35 0.08 220 / 0.50);
+  }
+
+  .glow-border-teal {
+    box-shadow:
+      0 0 4px oklch(0.70 0.12 180 / 0.30),
+      0 0 8px oklch(0.70 0.12 180 / 0.15);
+    border-color: oklch(0.70 0.12 180 / 0.50);
+  }
+
+  .glow-border-subtle {
+    box-shadow:
+      0 0 3px oklch(0.35 0.08 220 / 0.20),
+      0 0 6px oklch(0.70 0.12 180 / 0.10);
+  }
+}
+
+/* ============================================
+   ANIMATIONS — Kept Minimal & School-Friendly
+   ============================================ */
+
+@keyframes gentle-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes ocean-wave {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: gentle-float 3s ease-in-out infinite;
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.4s ease-out;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 3s linear infinite;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+
+  .animate-ocean-wave {
+    animation: ocean-wave 12s ease infinite;
+  }
+}
+
+/* ============================================
+   BACKGROUND BLOBS — Soft, Ambient
+   ============================================ */
+
+@layer utilities {
+  .blob-ocean {
+    background: radial-gradient(
+      circle at center,
+      oklch(0.35 0.08 220 / 0.20) 0%,
+      oklch(0.35 0.08 220 / 0.08) 40%,
+      transparent 70%
+    );
+    filter: blur(50px);
+  }
+
+  .blob-teal {
+    background: radial-gradient(
+      circle at center,
+      oklch(0.70 0.12 180 / 0.18) 0%,
+      oklch(0.70 0.12 180 / 0.06) 40%,
+      transparent 70%
+    );
+    filter: blur(50px);
+  }
+
+  .blob-midnight {
+    background: radial-gradient(
+      circle at center,
+      oklch(0.27 0.07 255 / 0.25) 0%,
+      oklch(0.27 0.07 255 / 0.10) 40%,
+      transparent 70%
+    );
+    filter: blur(50px);
+  }
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+
+@layer utilities {
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Ocean themed scrollbar */
+  .scrollbar-ocean {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(0.70 0.12 180) oklch(0.96 0.01 240);
+  }
+  .scrollbar-ocean::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-ocean::-webkit-scrollbar-track {
+    background: oklch(0.96 0.01 240);
+    border-radius: 4px;
+  }
+  .scrollbar-ocean::-webkit-scrollbar-thumb {
+    background: oklch(0.70 0.12 180);
+    border-radius: 4px;
+  }
+  .scrollbar-ocean::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.65 0.13 180);
+  }
+
+  /* Dark mode scrollbar */
+  .dark .scrollbar-ocean {
+    scrollbar-color: oklch(0.70 0.12 180) oklch(0.20 0.03 258);
+  }
+  .dark .scrollbar-ocean::-webkit-scrollbar-track {
+    background: oklch(0.20 0.03 258);
+  }
+}
+
+/* ============================================
+   RESPONSIVE & ACCESSIBILITY UTILITIES
+   ============================================ */
+
+@layer utilities {
+  /* Touch-friendly tap targets */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Safe area padding for notched devices */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* ============================================
+   FLASHCARD 3D FLIP
+   ============================================ */
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* ============================================
+   PRINT STYLES — Certificates
+   ============================================ */
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  nav,
+  aside,
+  footer,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  #certificate {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    margin: 0;
+    padding: 2rem;
+    page-break-after: avoid;
+  }
+}
+
+/* ============================================
+   REDUCED MOTION — Accessibility
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
