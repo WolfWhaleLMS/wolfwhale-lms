@@ -1,0 +1,32 @@
+export const siteConfig = {
+  name: 'Wolf Whale LMS',
+  description: 'A K-12 Learning Management System with gamification and fun learning experiences',
+  url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+  ogImage: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/og-image.png`,
+  links: {
+    twitter: 'https://twitter.com/wolfwhalelms',
+    github: 'https://github.com/wolfwhalelms',
+    documentation: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/docs`,
+    support: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/support`,
+  },
+  features: [
+    'Interactive Learning Dashboard',
+    'Pet Companion Gamification',
+    'XP & Level System',
+    'Achievement Badges',
+    'Real-time Collaboration',
+    'Parent Monitoring',
+    'Teacher Analytics',
+    'Multi-role Support',
+  ],
+  keywords: [
+    'LMS',
+    'K-12',
+    'Education',
+    'Gamification',
+    'Learning',
+    'Student',
+    'Teacher',
+    'School',
+  ],
+};
