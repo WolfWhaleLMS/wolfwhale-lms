@@ -144,7 +144,7 @@ export function AuditFilters({ onExport }: AuditFiltersProps) {
           <Button
             onClick={resetFilters}
             variant="outline"
-            size="icon-sm"
+            size="icon"
             title="Reset filters"
           >
             <RotateCcw className="size-4" />

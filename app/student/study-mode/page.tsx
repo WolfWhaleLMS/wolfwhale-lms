@@ -273,7 +273,7 @@ export default function StudyModePage() {
             <div className="flex justify-center pt-4">
               <Button
                 onClick={handleStartSession}
-                size="xl"
+                size="lg"
                 className="whale-gradient rounded-full px-12 text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40"
               >
                 Start {duration} Minute Session

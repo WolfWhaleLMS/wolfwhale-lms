@@ -301,7 +301,7 @@ export default function CalendarPage() {
                 </div>
                 <Button
                   variant="ghost"
-                  size="icon-xs"
+                  size="icon"
                   onClick={() => setSelectedDate(null)}
                 >
                   <X className="size-4" />

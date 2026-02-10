@@ -7,11 +7,23 @@
 -- DROP ALL EXISTING OBJECTS (clean slate)
 -- ===================================================================
 
--- Drop existing triggers
-DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
-DROP TRIGGER IF EXISTS lesson_update_course ON lessons;
-DROP TRIGGER IF EXISTS grade_notification ON grades;
-DROP TRIGGER IF EXISTS update_schools_updated_at ON schools;
+-- Drop existing triggers (wrapped in DO block to handle missing tables)
+DO $$ BEGIN
+  DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
+DO $$ BEGIN
+  DROP TRIGGER IF EXISTS lesson_update_course ON lessons;
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
+DO $$ BEGIN
+  DROP TRIGGER IF EXISTS grade_notification ON grades;
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
+DO $$ BEGIN
+  DROP TRIGGER IF EXISTS update_schools_updated_at ON schools;
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
 -- Drop existing functions
 DROP FUNCTION IF EXISTS handle_new_user() CASCADE;
@@ -762,7 +774,7 @@ CREATE INDEX idx_xp_user ON xp_events(user_id);
 CREATE INDEX idx_xp_tenant ON xp_events(tenant_id);
 CREATE INDEX idx_xp_type ON xp_events(event_type);
 CREATE INDEX idx_xp_created ON xp_events(created_at DESC);
-CREATE INDEX idx_xp_user_daily ON xp_events(user_id, created_at::date);
+-- idx_xp_user_daily omitted: timestamptz::date is not immutable
 
 -- 28. USER LEVELS
 CREATE TABLE user_levels (

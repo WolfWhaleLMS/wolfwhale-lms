@@ -156,7 +156,7 @@ export default function FocusTimer({ duration, onComplete, onTick }: FocusTimerP
         {hasStarted && (
           <Button
             variant="ghost"
-            size="icon-lg"
+            size="lg"
             onClick={handleStop}
             className="rounded-full text-white/60 hover:bg-white/10 hover:text-white"
             aria-label="Reset timer"
@@ -169,7 +169,7 @@ export default function FocusTimer({ duration, onComplete, onTick }: FocusTimerP
         {remaining > 0 && (
           <Button
             onClick={handlePlayPause}
-            size="xl"
+            size="lg"
             className="whale-gradient rounded-full px-10 text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40"
             aria-label={isRunning ? 'Pause timer' : 'Start timer'}
           >
@@ -191,7 +191,7 @@ export default function FocusTimer({ duration, onComplete, onTick }: FocusTimerP
         {hasStarted && remaining > 0 && (
           <Button
             variant="ghost"
-            size="icon-lg"
+            size="lg"
             onClick={() => {
               setIsRunning(false)
               setRemaining(0)
