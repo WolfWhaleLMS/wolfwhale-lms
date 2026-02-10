@@ -220,9 +220,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
 
     parent: [
       { label: 'My Children',   href: '/parent/children',        icon: 'Users' },
-      { label: 'Grades',        href: '/parent/grades',          icon: 'GraduationCap' },
-      { label: 'Attendance',    href: '/parent/attendance',       icon: 'CalendarCheck' },
-      { label: 'Courses',       href: '/parent/courses',         icon: 'BookOpen' },
+      { label: 'Progress',      href: '/parent/progress',        icon: 'BarChart3' },
     ],
 
     admin: [

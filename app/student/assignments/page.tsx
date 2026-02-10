@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { getStudentAssignments } from '@/app/actions/assignments'
 import { ASSIGNMENT_TYPES } from '@/lib/config/constants'
-import { Clock, CheckCircle, AlertCircle, ListTodo } from 'lucide-react'
+import { Clock, CheckCircle, AlertCircle, ListTodo, RotateCcw, ChevronRight } from 'lucide-react'
 
 interface StudentAssignment {
   id: string
@@ -48,6 +48,10 @@ function StatusBadge({ status }: { status: string }) {
     late: {
       label: 'Late',
       className: 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300',
+    },
+    returned: {
+      label: 'Returned',
+      className: 'bg-orange-100 text-orange-700 dark:bg-orange-950/40 dark:text-orange-300',
     },
   }
 
@@ -146,6 +150,7 @@ export default function StudentAssignmentsPage() {
     submitted: assignments.filter((a) => a.submissionStatus === 'submitted').length,
     graded: assignments.filter((a) => a.submissionStatus === 'graded').length,
     overdue: assignments.filter((a) => a.submissionStatus === 'overdue').length,
+    returned: assignments.filter((a) => a.submissionStatus === 'returned').length,
   }
 
   if (loading) {
@@ -229,7 +234,7 @@ export default function StudentAssignmentsPage() {
       <div className="flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium text-muted-foreground">Filter:</span>
-          {(['all', 'pending', 'submitted', 'graded', 'overdue'] as const).map((status) => (
+          {(['all', 'pending', 'submitted', 'graded', 'returned', 'overdue'] as const).map((status) => (
             <button
               key={status}
               onClick={() => setFilterStatus(status)}
@@ -281,9 +286,12 @@ export default function StudentAssignmentsPage() {
             const isDueToday = assignment.due_date && new Date(assignment.due_date).toDateString() === new Date().toDateString()
             const isUpcoming = !isOverdue && !isDueToday
 
+            const isReturnedAssignment = assignment.submissionStatus === 'returned'
+
             const cardClasses = `ocean-card w-full rounded-2xl p-5 text-left transition-all hover:scale-[1.01] hover:shadow-xl relative overflow-hidden ${
               isOverdue ? 'ring-2 ring-red-500/50' :
               isDueToday ? 'ring-2 ring-amber-500/50' :
+              isReturnedAssignment ? 'ring-2 ring-orange-500/50' :
               'ring-1 ring-transparent hover:ring-primary/20'
             }`
 
@@ -298,6 +306,7 @@ export default function StudentAssignmentsPage() {
                   isOverdue ? 'bg-gradient-to-b from-red-500 to-red-600' :
                   isDueToday ? 'bg-gradient-to-b from-amber-500 to-orange-500' :
                   assignment.submissionStatus === 'graded' ? 'bg-gradient-to-b from-green-500 to-emerald-500' :
+                  assignment.submissionStatus === 'returned' ? 'bg-gradient-to-b from-orange-500 to-orange-600' :
                   'bg-gradient-to-b from-blue-500 to-teal-500'
                 }`} />
 
@@ -307,6 +316,7 @@ export default function StudentAssignmentsPage() {
                       {isOverdue && <AlertCircle className="h-5 w-5 text-red-500 animate-pulse" />}
                       {isDueToday && <Clock className="h-5 w-5 text-amber-500" />}
                       {assignment.submissionStatus === 'graded' && <CheckCircle className="h-5 w-5 text-green-500" />}
+                      {assignment.submissionStatus === 'returned' && <RotateCcw className="h-5 w-5 text-orange-500" />}
                       <h3 className="font-semibold text-foreground">{assignment.title}</h3>
                       <TypeBadge type={assignment.type} />
                       <StatusBadge status={assignment.submissionStatus} />
@@ -341,9 +351,7 @@ export default function StudentAssignmentsPage() {
                         </p>
                       </div>
                     ) : (
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-muted-foreground" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                      </svg>
+                      <ChevronRight className="h-6 w-6 text-muted-foreground" />
                     )}
                   </div>
                 </div>

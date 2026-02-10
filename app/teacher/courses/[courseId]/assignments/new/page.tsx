@@ -29,8 +29,17 @@ import {
   HelpCircle,
   FileText,
   ArrowLeft,
+  Paperclip,
+  Upload,
+  Link2,
+  Loader2,
+  File,
+  FileImage,
+  FileSpreadsheet,
+  FileArchive,
 } from 'lucide-react'
 import { toast } from 'sonner'
+import { createBrowserClient } from '@supabase/ssr'
 
 type QuestionType = 'multiple_choice' | 'multiple_select' | 'true_false' | 'short_answer' | 'essay'
 
@@ -60,6 +69,53 @@ type Question = {
   order: number
 }
 
+type AttachmentFile = {
+  url: string
+  fileName: string
+  fileSize: number
+  fileType: string
+}
+
+type LinkItem = {
+  id: string
+  url: string
+  title: string
+}
+
+const ACCEPTED_FILE_TYPES = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-powerpoint',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'image/png',
+  'image/jpeg',
+  'image/gif',
+  'image/webp',
+  'application/zip',
+  'application/x-zip-compressed',
+]
+
+const ACCEPTED_EXTENSIONS = '.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg,.gif,.webp,.zip'
+
+const MAX_FILE_SIZE = 100 * 1024 * 1024 // 100MB
+
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
+function getFileIcon(fileType: string) {
+  if (fileType.includes('pdf')) return FileText
+  if (fileType.includes('image')) return FileImage
+  if (fileType.includes('sheet') || fileType.includes('excel')) return FileSpreadsheet
+  if (fileType.includes('zip')) return FileArchive
+  return File
+}
+
 const QUESTION_TYPES: { value: QuestionType; label: string; icon: typeof FileText }[] = [
   { value: 'multiple_choice', label: 'Multiple Choice', icon: FileText },
   { value: 'multiple_select', label: 'Multiple Select', icon: FileText },
@@ -84,6 +140,11 @@ export default function CreateAssignmentPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // Attachments state
+  const [attachments, setAttachments] = useState<AttachmentFile[]>([])
+  const [links, setLinks] = useState<LinkItem[]>([])
+  const [uploading, setUploading] = useState(false)
+
   // Question builder state
   const [questions, setQuestions] = useState<Question[]>([])
   const [showQuestionBuilder, setShowQuestionBuilder] = useState(false)
@@ -93,6 +154,81 @@ export default function CreateAssignmentPage() {
   const handleTypeChange = (newType: string) => {
     setType(newType)
     setShowQuestionBuilder(newType === 'quiz' || newType === 'exam')
+  }
+
+  // Attachment management functions
+  const handleFileUpload = async (files: FileList | null) => {
+    if (!files || files.length === 0) return
+
+    const supabase = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+
+    setUploading(true)
+
+    for (const file of Array.from(files)) {
+      if (file.size > MAX_FILE_SIZE) {
+        toast.error(`${file.name} exceeds the 100MB limit`)
+        continue
+      }
+
+      if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
+        toast.error(`${file.name} is not an accepted file type`)
+        continue
+      }
+
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
+      const path = `assignments/${courseId}/${Date.now()}_${safeName}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('course-materials')
+        .upload(path, file)
+
+      if (uploadError) {
+        toast.error(`Failed to upload ${file.name}: ${uploadError.message}`)
+        continue
+      }
+
+      const { data: urlData } = supabase.storage
+        .from('course-materials')
+        .getPublicUrl(path)
+
+      setAttachments((prev) => [
+        ...prev,
+        {
+          url: urlData.publicUrl,
+          fileName: file.name,
+          fileSize: file.size,
+          fileType: file.type,
+        },
+      ])
+
+      toast.success(`${file.name} uploaded`)
+    }
+
+    setUploading(false)
+  }
+
+  const removeAttachment = (index: number) => {
+    setAttachments((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  const addLink = () => {
+    setLinks((prev) => [
+      ...prev,
+      { id: crypto.randomUUID(), url: '', title: '' },
+    ])
+  }
+
+  const updateLink = (id: string, field: 'url' | 'title', value: string) => {
+    setLinks((prev) =>
+      prev.map((l) => (l.id === id ? { ...l, [field]: value } : l))
+    )
+  }
+
+  const removeLink = (id: string) => {
+    setLinks((prev) => prev.filter((l) => l.id !== id))
   }
 
   // Question management functions
@@ -364,6 +500,11 @@ export default function CreateAssignmentPage() {
 
     setSubmitting(true)
 
+    // Filter out links with empty URLs
+    const validLinks = links
+      .filter((l) => l.url.trim())
+      .map((l) => ({ url: l.url.trim(), title: l.title.trim() || l.url.trim() }))
+
     const result = await createAssignment({
       courseId,
       title: title.trim(),
@@ -374,6 +515,8 @@ export default function CreateAssignmentPage() {
       submissionType,
       latePolicy,
       questions: showQuestionBuilder ? questions : undefined,
+      attachments: attachments.length > 0 ? attachments : undefined,
+      links: validLinks.length > 0 ? validLinks : undefined,
     })
 
     if (result.error) {
@@ -528,6 +671,150 @@ export default function CreateAssignmentPage() {
             <Label className="cursor-pointer" onClick={() => setLatePolicy(!latePolicy)}>
               Accept late submissions
             </Label>
+          </div>
+        </div>
+
+        {/* Attachments & Resources */}
+        <div className="ocean-card space-y-6 rounded-2xl p-6">
+          <div className="border-b border-border pb-3">
+            <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <Paperclip className="h-5 w-5" />
+              Attachments & Resources
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Attach files or reference links for students
+            </p>
+          </div>
+
+          {/* File Upload Section */}
+          <div>
+            <div className="mb-3 flex items-center justify-between">
+              <label className="text-sm font-medium text-foreground">Files</label>
+              <label className="cursor-pointer">
+                <input
+                  type="file"
+                  multiple
+                  accept={ACCEPTED_EXTENSIONS}
+                  onChange={(e) => handleFileUpload(e.target.files)}
+                  className="hidden"
+                  disabled={uploading}
+                />
+                <span className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted">
+                  {uploading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Uploading...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="h-4 w-4" />
+                      Add Attachment
+                    </>
+                  )}
+                </span>
+              </label>
+            </div>
+
+            {attachments.length === 0 ? (
+              <div className="rounded-xl border-2 border-dashed border-border bg-muted/20 p-6 text-center">
+                <Upload className="mx-auto h-8 w-8 text-muted-foreground/50" />
+                <p className="mt-2 text-sm text-muted-foreground">
+                  PDF, DOCX, PPTX, XLSX, images, ZIP (max 100MB each)
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {attachments.map((att, index) => {
+                  const IconComponent = getFileIcon(att.fileType)
+                  return (
+                    <div
+                      key={`${att.fileName}-${index}`}
+                      className="flex items-center gap-3 rounded-xl border border-border bg-background p-3"
+                    >
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                        <IconComponent className="h-5 w-5 text-primary" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="truncate text-sm font-medium text-foreground">
+                          {att.fileName}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {formatFileSize(att.fileSize)}
+                        </p>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeAttachment(index)}
+                        className="text-red-600 hover:text-red-700 shrink-0"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Links Section */}
+          <div>
+            <div className="mb-3 flex items-center justify-between">
+              <label className="text-sm font-medium text-foreground">Reference Links</label>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addLink}
+                className="gap-1.5"
+              >
+                <Link2 className="h-4 w-4" />
+                Add Link
+              </Button>
+            </div>
+
+            {links.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                No links added. Click &quot;Add Link&quot; to attach reference URLs.
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {links.map((link) => (
+                  <div
+                    key={link.id}
+                    className="flex items-start gap-2 rounded-xl border border-border bg-background p-3"
+                  >
+                    <Link2 className="mt-2 h-4 w-4 shrink-0 text-muted-foreground" />
+                    <div className="flex-1 space-y-2">
+                      <Input
+                        type="url"
+                        value={link.url}
+                        onChange={(e) => updateLink(link.id, 'url', e.target.value)}
+                        placeholder="https://example.com/resource"
+                        className="text-sm"
+                      />
+                      <Input
+                        type="text"
+                        value={link.title}
+                        onChange={(e) => updateLink(link.id, 'title', e.target.value)}
+                        placeholder="Link title (optional)"
+                        className="text-sm"
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeLink(link.id)}
+                      className="text-red-600 hover:text-red-700 shrink-0 mt-1"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

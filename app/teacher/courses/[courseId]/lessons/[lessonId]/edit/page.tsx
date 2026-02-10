@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'sonner'
@@ -25,12 +25,20 @@ import {
   Eye,
   EyeOff,
   BookOpen,
+  Link as LinkIcon,
+  FileUp,
+  Download,
+  ExternalLink,
+  File,
+  Loader2,
+  Paperclip,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
+import { Progress } from '@/components/ui/progress'
 import {
   Select,
   SelectContent,
@@ -44,7 +52,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { getLesson, updateLesson } from '@/app/actions/lessons'
+import { getLesson, updateLesson, addLessonAttachment, deleteLessonAttachment, getLessonAttachments } from '@/app/actions/lessons'
+import { createClient } from '@/lib/supabase/client'
 
 // ---------------------------------------------------------------------------
 // Type Definitions
@@ -52,7 +61,7 @@ import { getLesson, updateLesson } from '@/app/actions/lessons'
 
 type ContentBlock = {
   id: string
-  type: 'heading' | 'text' | 'image' | 'video' | 'file' | 'divider' | 'callout' | 'quiz'
+  type: 'heading' | 'text' | 'image' | 'video' | 'file' | 'divider' | 'callout' | 'quiz' | 'link' | 'pdf' | 'document'
   data: Record<string, any>
 }
 
@@ -67,6 +76,150 @@ type Lesson = {
   course_id: string
 }
 
+type Attachment = {
+  id: string
+  file_name: string
+  file_path: string
+  file_type: string | null
+  file_size: number | null
+  display_name: string | null
+  order_index: number
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
+function getFileIcon(fileType: string): string {
+  if (fileType.includes('pdf')) return '📄'
+  if (fileType.includes('word') || fileType.includes('docx')) return '📝'
+  if (fileType.includes('presentation') || fileType.includes('pptx')) return '📊'
+  if (fileType.includes('spreadsheet') || fileType.includes('xlsx')) return '📈'
+  if (fileType.includes('image')) return '🖼️'
+  return '📎'
+}
+
+// ---------------------------------------------------------------------------
+// Supabase Upload Hook
+// ---------------------------------------------------------------------------
+
+function useSupabaseUpload(lessonId: string) {
+  const [uploading, setUploading] = useState(false)
+  const [progress, setProgress] = useState(0)
+
+  const uploadFile = useCallback(async (file: File, subfolder: string = ''): Promise<string | null> => {
+    setUploading(true)
+    setProgress(0)
+
+    try {
+      const supabase = createClient()
+      const sanitizedName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
+      const timestamp = Date.now()
+      const path = subfolder
+        ? `lessons/${lessonId}/${subfolder}/${timestamp}_${sanitizedName}`
+        : `lessons/${lessonId}/${timestamp}_${sanitizedName}`
+
+      // Simulate progress since Supabase JS client doesn't expose upload progress
+      const progressInterval = setInterval(() => {
+        setProgress((prev) => Math.min(prev + 15, 90))
+      }, 200)
+
+      const { data, error } = await supabase.storage
+        .from('course-materials')
+        .upload(path, file)
+
+      clearInterval(progressInterval)
+
+      if (error) {
+        console.error('Upload error:', error)
+        toast.error(`Upload failed: ${error.message}`)
+        return null
+      }
+
+      setProgress(100)
+
+      const { data: urlData } = supabase.storage
+        .from('course-materials')
+        .getPublicUrl(path)
+
+      return urlData.publicUrl
+    } catch (err) {
+      console.error('Upload error:', err)
+      toast.error('Upload failed')
+      return null
+    } finally {
+      setTimeout(() => {
+        setUploading(false)
+        setProgress(0)
+      }, 500)
+    }
+  }, [lessonId])
+
+  return { uploadFile, uploading, progress }
+}
+
+// ---------------------------------------------------------------------------
+// Upload Button Component (reusable)
+// ---------------------------------------------------------------------------
+
+function UploadButton({
+  onUpload,
+  accept,
+  uploading,
+  progress,
+  label = 'Upload File',
+}: {
+  onUpload: (file: File) => void
+  accept?: string
+  uploading: boolean
+  progress: number
+  label?: string
+}) {
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  return (
+    <div className="space-y-2">
+      <input
+        ref={inputRef}
+        type="file"
+        accept={accept}
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0]
+          if (file) {
+            onUpload(file)
+            e.target.value = ''
+          }
+        }}
+      />
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={() => inputRef.current?.click()}
+        disabled={uploading}
+        className="gap-2"
+      >
+        {uploading ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <Upload className="h-4 w-4" />
+        )}
+        {uploading ? 'Uploading...' : label}
+      </Button>
+      {uploading && (
+        <Progress value={progress} className="h-2" />
+      )}
+    </div>
+  )
+}
+
 // ---------------------------------------------------------------------------
 // Block Type Icons and Labels
 // ---------------------------------------------------------------------------
@@ -77,6 +230,9 @@ const blockTypes = [
   { type: 'image', icon: ImageIcon, label: 'Image' },
   { type: 'video', icon: Video, label: 'Video' },
   { type: 'file', icon: FileText, label: 'File' },
+  { type: 'link', icon: LinkIcon, label: 'Link' },
+  { type: 'pdf', icon: FileText, label: 'PDF Embed' },
+  { type: 'document', icon: FileUp, label: 'Document' },
   { type: 'divider', icon: Minus, label: 'Divider' },
   { type: 'callout', icon: AlertCircle, label: 'Callout' },
   { type: 'quiz', icon: HelpCircle, label: 'Quiz' },
@@ -134,17 +290,44 @@ function TextBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (
   )
 }
 
-function ImageBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: any) => void }) {
+function ImageBlockEditor({
+  block,
+  onChange,
+  lessonId,
+}: {
+  block: ContentBlock
+  onChange: (data: any) => void
+  lessonId: string
+}) {
+  const { uploadFile, uploading, progress } = useSupabaseUpload(lessonId)
+
+  const handleUpload = async (file: File) => {
+    const url = await uploadFile(file)
+    if (url) {
+      onChange({ ...block.data, url })
+      toast.success('Image uploaded successfully')
+    }
+  }
+
   return (
     <div className="space-y-3">
       <div>
         <Label>Image URL</Label>
-        <Input
-          value={block.data.url || ''}
-          onChange={(e) => onChange({ ...block.data, url: e.target.value })}
-          placeholder="https://example.com/image.jpg"
-          className="mt-1"
-        />
+        <div className="flex gap-2 mt-1">
+          <Input
+            value={block.data.url || ''}
+            onChange={(e) => onChange({ ...block.data, url: e.target.value })}
+            placeholder="https://example.com/image.jpg"
+            className="flex-1"
+          />
+          <UploadButton
+            onUpload={handleUpload}
+            accept="image/*"
+            uploading={uploading}
+            progress={progress}
+            label="Upload"
+          />
+        </div>
       </div>
       <div>
         <Label>Alt Text</Label>
@@ -199,17 +382,48 @@ function VideoBlockEditor({ block, onChange }: { block: ContentBlock; onChange: 
   )
 }
 
-function FileBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: any) => void }) {
+function FileBlockEditor({
+  block,
+  onChange,
+  lessonId,
+}: {
+  block: ContentBlock
+  onChange: (data: any) => void
+  lessonId: string
+}) {
+  const { uploadFile, uploading, progress } = useSupabaseUpload(lessonId)
+
+  const handleUpload = async (file: File) => {
+    const url = await uploadFile(file)
+    if (url) {
+      onChange({
+        ...block.data,
+        url,
+        filename: file.name,
+        size: formatFileSize(file.size),
+      })
+      toast.success('File uploaded successfully')
+    }
+  }
+
   return (
     <div className="space-y-3">
       <div>
         <Label>File URL</Label>
-        <Input
-          value={block.data.url || ''}
-          onChange={(e) => onChange({ ...block.data, url: e.target.value })}
-          placeholder="https://example.com/document.pdf"
-          className="mt-1"
-        />
+        <div className="flex gap-2 mt-1">
+          <Input
+            value={block.data.url || ''}
+            onChange={(e) => onChange({ ...block.data, url: e.target.value })}
+            placeholder="https://example.com/document.pdf"
+            className="flex-1"
+          />
+          <UploadButton
+            onUpload={handleUpload}
+            uploading={uploading}
+            progress={progress}
+            label="Upload"
+          />
+        </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
@@ -389,6 +603,277 @@ function QuizBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (
 }
 
 // ---------------------------------------------------------------------------
+// NEW Block Editors: Link, PDF, Document
+// ---------------------------------------------------------------------------
+
+function LinkBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: any) => void }) {
+  const [urlError, setUrlError] = useState('')
+
+  const validateUrl = (url: string) => {
+    if (!url) {
+      setUrlError('')
+      return
+    }
+    try {
+      new URL(url)
+      setUrlError('')
+    } catch {
+      setUrlError('Please enter a valid URL (e.g., https://example.com)')
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      <div>
+        <Label>URL</Label>
+        <Input
+          value={block.data.url || ''}
+          onChange={(e) => {
+            onChange({ ...block.data, url: e.target.value })
+            validateUrl(e.target.value)
+          }}
+          placeholder="https://example.com/resource"
+          className="mt-1"
+        />
+        {urlError && (
+          <p className="mt-1 text-xs text-destructive">{urlError}</p>
+        )}
+      </div>
+      <div>
+        <Label>Title</Label>
+        <Input
+          value={block.data.title || ''}
+          onChange={(e) => onChange({ ...block.data, title: e.target.value })}
+          placeholder="Link title..."
+          className="mt-1"
+        />
+      </div>
+      <div>
+        <Label>Description (optional)</Label>
+        <Input
+          value={block.data.description || ''}
+          onChange={(e) => onChange({ ...block.data, description: e.target.value })}
+          placeholder="Brief description of the linked resource..."
+          className="mt-1"
+        />
+      </div>
+      {/* Preview */}
+      {block.data.url && block.data.title && (
+        <div className="mt-3 rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors">
+          <div className="flex items-start gap-3">
+            <div className="shrink-0 rounded-lg bg-primary/10 p-2">
+              <ExternalLink className="h-5 w-5 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-sm text-foreground truncate">{block.data.title}</p>
+              {block.data.description && (
+                <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{block.data.description}</p>
+              )}
+              <p className="text-xs text-primary/70 mt-1 truncate">{block.data.url}</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function PdfBlockEditor({
+  block,
+  onChange,
+  lessonId,
+}: {
+  block: ContentBlock
+  onChange: (data: any) => void
+  lessonId: string
+}) {
+  const { uploadFile, uploading, progress } = useSupabaseUpload(lessonId)
+
+  const handleUpload = async (file: File) => {
+    if (file.type !== 'application/pdf') {
+      toast.error('Please select a PDF file')
+      return
+    }
+    const url = await uploadFile(file)
+    if (url) {
+      onChange({
+        ...block.data,
+        url,
+        title: block.data.title || file.name.replace(/\.pdf$/i, ''),
+      })
+      toast.success('PDF uploaded successfully')
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      <div>
+        <Label>PDF URL</Label>
+        <div className="flex gap-2 mt-1">
+          <Input
+            value={block.data.url || ''}
+            onChange={(e) => onChange({ ...block.data, url: e.target.value })}
+            placeholder="https://example.com/document.pdf"
+            className="flex-1"
+          />
+          <UploadButton
+            onUpload={handleUpload}
+            accept="application/pdf"
+            uploading={uploading}
+            progress={progress}
+            label="Upload PDF"
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <Label>Title</Label>
+          <Input
+            value={block.data.title || ''}
+            onChange={(e) => onChange({ ...block.data, title: e.target.value })}
+            placeholder="Document title..."
+            className="mt-1"
+          />
+        </div>
+        <div>
+          <Label>Page Count (optional)</Label>
+          <Input
+            type="number"
+            value={block.data.pageCount || ''}
+            onChange={(e) => onChange({ ...block.data, pageCount: e.target.value ? Number(e.target.value) : undefined })}
+            placeholder="e.g., 12"
+            className="mt-1"
+          />
+        </div>
+      </div>
+      {/* Preview */}
+      {block.data.url && (
+        <div className="mt-3 rounded-lg border border-border overflow-hidden">
+          <div className="bg-muted/50 px-4 py-2 flex items-center justify-between border-b border-border">
+            <div className="flex items-center gap-2">
+              <FileText className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium">{block.data.title || 'PDF Document'}</span>
+              {block.data.pageCount && (
+                <span className="text-xs text-muted-foreground">({block.data.pageCount} pages)</span>
+              )}
+            </div>
+            <a
+              href={block.data.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-primary hover:underline"
+            >
+              Open in new tab
+            </a>
+          </div>
+          <iframe
+            src={block.data.url}
+            className="w-full h-64 bg-white"
+            title={block.data.title || 'PDF Preview'}
+          />
+        </div>
+      )}
+    </div>
+  )
+}
+
+function DocumentBlockEditor({
+  block,
+  onChange,
+  lessonId,
+}: {
+  block: ContentBlock
+  onChange: (data: any) => void
+  lessonId: string
+}) {
+  const { uploadFile, uploading, progress } = useSupabaseUpload(lessonId)
+
+  const handleUpload = async (file: File) => {
+    const url = await uploadFile(file)
+    if (url) {
+      onChange({
+        ...block.data,
+        url,
+        fileName: file.name,
+        fileSize: file.size,
+        fileType: file.type,
+      })
+      toast.success('Document uploaded successfully')
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      <div>
+        <Label>Document File</Label>
+        <div className="flex gap-2 mt-1">
+          <Input
+            value={block.data.url || ''}
+            onChange={(e) => onChange({ ...block.data, url: e.target.value })}
+            placeholder="https://example.com/document.docx"
+            className="flex-1"
+          />
+          <UploadButton
+            onUpload={handleUpload}
+            accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.rtf,.odt,.odp,.ods"
+            uploading={uploading}
+            progress={progress}
+            label="Upload"
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <Label>File Name</Label>
+          <Input
+            value={block.data.fileName || ''}
+            onChange={(e) => onChange({ ...block.data, fileName: e.target.value })}
+            placeholder="document.docx"
+            className="mt-1"
+          />
+        </div>
+        <div>
+          <Label>File Type</Label>
+          <Input
+            value={block.data.fileType || ''}
+            onChange={(e) => onChange({ ...block.data, fileType: e.target.value })}
+            placeholder="application/pdf"
+            className="mt-1"
+          />
+        </div>
+      </div>
+      {block.data.fileSize && (
+        <p className="text-xs text-muted-foreground">
+          Size: {formatFileSize(block.data.fileSize)}
+        </p>
+      )}
+      {/* Preview Card */}
+      {block.data.url && block.data.fileName && (
+        <div className="mt-3 rounded-lg border border-border p-4">
+          <div className="flex items-center gap-3">
+            <div className="shrink-0 rounded-lg bg-primary/10 p-3">
+              <File className="h-6 w-6 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-sm text-foreground truncate">{block.data.fileName}</p>
+              <div className="flex items-center gap-2 mt-1">
+                {block.data.fileType && (
+                  <span className="text-xs text-muted-foreground">{block.data.fileType.split('/').pop()?.toUpperCase()}</span>
+                )}
+                {block.data.fileSize && (
+                  <span className="text-xs text-muted-foreground">{formatFileSize(block.data.fileSize)}</span>
+                )}
+              </div>
+            </div>
+            <Download className="h-4 w-4 text-muted-foreground" />
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Block Renderer Component
 // ---------------------------------------------------------------------------
 
@@ -400,6 +885,7 @@ function BlockEditor({
   onMoveDown,
   canMoveUp,
   canMoveDown,
+  lessonId,
 }: {
   block: ContentBlock
   onUpdate: (data: any) => void
@@ -408,6 +894,7 @@ function BlockEditor({
   onMoveDown: () => void
   canMoveUp: boolean
   canMoveDown: boolean
+  lessonId: string
 }) {
   const blockType = blockTypes.find((t) => t.type === block.type)
   const Icon = blockType?.icon || Type
@@ -432,12 +919,15 @@ function BlockEditor({
           {/* Block-specific editor */}
           {block.type === 'heading' && <HeadingBlockEditor block={block} onChange={onUpdate} />}
           {block.type === 'text' && <TextBlockEditor block={block} onChange={onUpdate} />}
-          {block.type === 'image' && <ImageBlockEditor block={block} onChange={onUpdate} />}
+          {block.type === 'image' && <ImageBlockEditor block={block} onChange={onUpdate} lessonId={lessonId} />}
           {block.type === 'video' && <VideoBlockEditor block={block} onChange={onUpdate} />}
-          {block.type === 'file' && <FileBlockEditor block={block} onChange={onUpdate} />}
+          {block.type === 'file' && <FileBlockEditor block={block} onChange={onUpdate} lessonId={lessonId} />}
           {block.type === 'divider' && <DividerBlockEditor />}
           {block.type === 'callout' && <CalloutBlockEditor block={block} onChange={onUpdate} />}
           {block.type === 'quiz' && <QuizBlockEditor block={block} onChange={onUpdate} />}
+          {block.type === 'link' && <LinkBlockEditor block={block} onChange={onUpdate} />}
+          {block.type === 'pdf' && <PdfBlockEditor block={block} onChange={onUpdate} lessonId={lessonId} />}
+          {block.type === 'document' && <DocumentBlockEditor block={block} onChange={onUpdate} lessonId={lessonId} />}
         </div>
 
         {/* Actions */}
@@ -470,6 +960,178 @@ function BlockEditor({
           </Button>
         </div>
       </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Attachment Manager Component
+// ---------------------------------------------------------------------------
+
+function AttachmentManager({ lessonId }: { lessonId: string }) {
+  const [attachments, setAttachments] = useState<Attachment[]>([])
+  const [loadingAttachments, setLoadingAttachments] = useState(true)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+  const { uploadFile, uploading, progress } = useSupabaseUpload(lessonId)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Load attachments
+  useEffect(() => {
+    async function load() {
+      try {
+        const data = await getLessonAttachments(lessonId)
+        setAttachments(data as Attachment[])
+      } catch (err) {
+        console.error('Error loading attachments:', err)
+      } finally {
+        setLoadingAttachments(false)
+      }
+    }
+    load()
+  }, [lessonId])
+
+  const handleUploadAttachment = async (file: File) => {
+    const url = await uploadFile(file, 'attachments')
+    if (url) {
+      const result = await addLessonAttachment(lessonId, {
+        fileName: file.name,
+        filePath: url,
+        fileType: file.type,
+        fileSize: file.size,
+        displayName: file.name,
+      })
+
+      if (result.error) {
+        toast.error(result.error)
+      } else {
+        toast.success('Attachment uploaded successfully')
+        // Reload attachments
+        const data = await getLessonAttachments(lessonId)
+        setAttachments(data as Attachment[])
+      }
+    }
+  }
+
+  const handleDeleteAttachment = async (attachmentId: string) => {
+    setDeletingId(attachmentId)
+    try {
+      const result = await deleteLessonAttachment(attachmentId)
+      if (result.error) {
+        toast.error(result.error)
+      } else {
+        toast.success('Attachment deleted')
+        setAttachments((prev) => prev.filter((a) => a.id !== attachmentId))
+      }
+    } catch (err) {
+      console.error('Error deleting attachment:', err)
+      toast.error('Failed to delete attachment')
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
+  return (
+    <div className="ocean-card rounded-xl p-6 space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Paperclip className="h-5 w-5 text-primary" />
+          <h2 className="text-lg font-semibold">Lesson Attachments</h2>
+          {attachments.length > 0 && (
+            <Badge variant="secondary">{attachments.length}</Badge>
+          )}
+        </div>
+        <div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0]
+              if (file) {
+                handleUploadAttachment(file)
+                e.target.value = ''
+              }
+            }}
+          />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="gap-2"
+          >
+            {uploading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Upload className="h-4 w-4" />
+            )}
+            {uploading ? 'Uploading...' : 'Upload Attachment'}
+          </Button>
+        </div>
+      </div>
+
+      {uploading && (
+        <Progress value={progress} className="h-2" />
+      )}
+
+      {loadingAttachments ? (
+        <div className="py-4 text-center text-muted-foreground text-sm">
+          Loading attachments...
+        </div>
+      ) : attachments.length === 0 ? (
+        <div className="py-6 text-center">
+          <Paperclip className="h-8 w-8 mx-auto mb-2 text-muted-foreground/40" />
+          <p className="text-sm text-muted-foreground">
+            No attachments yet. Upload files for students to download alongside this lesson.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {attachments.map((attachment) => (
+            <div
+              key={attachment.id}
+              className="flex items-center gap-3 rounded-lg border border-border p-3 transition-colors hover:bg-muted/50"
+            >
+              <div className="shrink-0 rounded-lg bg-primary/10 p-2">
+                <FileText className="h-4 w-4 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-foreground truncate">
+                  {attachment.display_name || attachment.file_name}
+                </p>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  {attachment.file_type && <span>{attachment.file_type.split('/').pop()?.toUpperCase()}</span>}
+                  {attachment.file_size && <span>{formatFileSize(attachment.file_size)}</span>}
+                </div>
+              </div>
+              <div className="shrink-0 flex items-center gap-1">
+                <a
+                  href={attachment.file_path}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                    <Download className="h-4 w-4" />
+                  </Button>
+                </a>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleDeleteAttachment(attachment.id)}
+                  disabled={deletingId === attachment.id}
+                  className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                >
+                  {deletingId === attachment.id ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -776,6 +1438,7 @@ export default function LessonEditorPage() {
                   onMoveDown={() => moveBlockDown(index)}
                   canMoveUp={index > 0}
                   canMoveDown={index < blocks.length - 1}
+                  lessonId={lessonId}
                 />
               ))}
             </div>
@@ -799,6 +1462,9 @@ export default function LessonEditorPage() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
+
+        {/* Attachment Manager */}
+        <AttachmentManager lessonId={lessonId} />
       </div>
     </div>
   )

@@ -18,7 +18,11 @@ import { CopyCodeButton } from './copy-code-button'
 import { LessonActions } from './lesson-actions'
 import { ModuleActions } from './module-actions'
 import { ModuleList } from './module-list'
+import { AssignmentActions } from './assignment-actions'
+import { AssignmentList } from './assignment-list'
+import { CourseSettings } from './course-settings'
 import { getModulesWithLessons } from '@/app/actions/modules'
+import { getAssignments } from '@/app/actions/assignments'
 
 export default async function TeacherCourseDetailPage({
   params,
@@ -49,7 +53,7 @@ export default async function TeacherCourseDetailPage({
 
   if (error || !course) return notFound()
 
-  // Fetch modules, lessons, enrollments, class code, and assignment count in parallel
+  // Fetch modules, lessons, enrollments, class code, and assignments in parallel
   const [
     modulesWithLessons,
     enrollmentResult,
@@ -69,17 +73,15 @@ export default async function TeacherCourseDetailPage({
       .eq('is_active', true)
       .order('created_at', { ascending: false })
       .limit(1),
-    supabase
-      .from('assignments')
-      .select('id')
-      .eq('course_id', courseId),
+    getAssignments(courseId),
   ])
 
   const modules = modulesWithLessons.modules
   const lessons = modulesWithLessons.lessons
   const enrollments = enrollmentResult.data || []
   const classCode = codeResult.data?.[0] || null
-  const assignmentCount = assignmentResult.data?.length || 0
+  const assignments = assignmentResult.data || []
+  const assignmentCount = assignments.length
 
   // Get student profiles
   const studentIds = enrollments.map((e) => e.student_id)
@@ -232,6 +234,9 @@ export default async function TeacherCourseDetailPage({
           <TabsTrigger value="lessons">
             Lessons ({lessons.length})
           </TabsTrigger>
+          <TabsTrigger value="assignments">
+            Assignments ({assignmentCount})
+          </TabsTrigger>
           <TabsTrigger value="students">
             Students ({enrollments.length})
           </TabsTrigger>
@@ -251,7 +256,21 @@ export default async function TeacherCourseDetailPage({
               </div>
             </div>
 
-            <ModuleList modules={modules} lessons={lessons} />
+            <ModuleList modules={modules} lessons={lessons} courseId={courseId} />
+          </div>
+        </TabsContent>
+
+        {/* --- Assignments Tab --- */}
+        <TabsContent value="assignments">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <h2 className="text-lg font-semibold text-foreground">
+                Course Assignments
+              </h2>
+              <AssignmentActions courseId={courseId} />
+            </div>
+
+            <AssignmentList courseId={courseId} assignments={assignments} />
           </div>
         </TabsContent>
 
@@ -338,69 +357,7 @@ export default async function TeacherCourseDetailPage({
 
         {/* --- Settings Tab --- */}
         <TabsContent value="settings">
-          <div className="ocean-card rounded-2xl p-6 space-y-6">
-            <h2 className="text-lg font-semibold text-foreground">
-              Course Settings
-            </h2>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Course Name
-                </p>
-                <p className="mt-1 text-foreground">{course.name}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Status
-                </p>
-                <p className="mt-1 text-foreground capitalize">
-                  {course.status}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Subject
-                </p>
-                <p className="mt-1 text-foreground">
-                  {course.subject || 'Not set'}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Grade Level
-                </p>
-                <p className="mt-1 text-foreground">
-                  {course.grade_level
-                    ? `Grade ${course.grade_level}`
-                    : 'Not set'}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Semester
-                </p>
-                <p className="mt-1 text-foreground">
-                  {course.semester || 'Not set'}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Created
-                </p>
-                <p className="mt-1 text-foreground">
-                  {new Date(course.created_at).toLocaleDateString()}
-                </p>
-              </div>
-            </div>
-            {course.max_students && (
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Max Students
-                </p>
-                <p className="mt-1 text-foreground">{course.max_students}</p>
-              </div>
-            )}
-          </div>
+          <CourseSettings course={course} classCode={classCode} />
         </TabsContent>
       </Tabs>
     </div>

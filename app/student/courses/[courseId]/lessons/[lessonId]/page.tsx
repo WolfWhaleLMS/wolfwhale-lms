@@ -14,6 +14,8 @@ import {
   CheckCircle2,
   Clock,
   Download,
+  ExternalLink,
+  File,
   FileText,
   Loader2,
   Target,
@@ -148,6 +150,11 @@ export default function StudentLessonViewerPage({
     }
   }, [lessonId])
 
+  // Helper to resolve block data - supports both flat (block.xxx) and nested (block.data.xxx) formats
+  function d(block: any, field: string): any {
+    return block.data?.[field] ?? block[field]
+  }
+
   // Render content blocks from JSONB content
   function renderContent(content: any) {
     if (!content) return null
@@ -187,15 +194,20 @@ export default function StudentLessonViewerPage({
             }
 
             switch (block.type) {
-              case 'heading':
+              case 'heading': {
+                const text = d(block, 'text') || d(block, 'content')
+                const level = d(block, 'level') || 2
+                const Tag = level === 3 ? 'h3' : level === 4 ? 'h4' : 'h2'
+                const sizeClass = level === 3 ? 'text-lg' : level === 4 ? 'text-base' : 'text-xl'
                 return (
-                  <h2
+                  <Tag
                     key={index}
-                    className="text-xl font-bold text-foreground"
+                    className={`${sizeClass} font-bold text-foreground`}
                   >
-                    {block.text || block.content}
-                  </h2>
+                    {text}
+                  </Tag>
                 )
+              }
               case 'paragraph':
               case 'text':
                 return (
@@ -203,25 +215,29 @@ export default function StudentLessonViewerPage({
                     key={index}
                     className="prose prose-slate dark:prose-invert max-w-none"
                     dangerouslySetInnerHTML={{
-                      __html: block.text || block.content || '',
+                      __html: d(block, 'text') || d(block, 'content') || '',
                     }}
                   />
                 )
-              case 'image':
+              case 'image': {
+                const url = d(block, 'url') || d(block, 'src')
+                const alt = d(block, 'alt') || d(block, 'caption') || 'Lesson image'
+                const caption = d(block, 'caption')
                 return (
                   <figure key={index} className="my-4">
                     <img
-                      src={block.url || block.src}
-                      alt={block.alt || block.caption || 'Lesson image'}
+                      src={url}
+                      alt={alt}
                       className="max-w-full rounded-lg"
                     />
-                    {block.caption && (
+                    {caption && (
                       <figcaption className="mt-2 text-center text-sm text-muted-foreground">
-                        {block.caption}
+                        {caption}
                       </figcaption>
                     )}
                   </figure>
                 )
+              }
               case 'video':
                 return (
                   <div
@@ -229,12 +245,46 @@ export default function StudentLessonViewerPage({
                     className="my-4 aspect-video overflow-hidden rounded-lg"
                   >
                     <iframe
-                      src={block.url || block.src}
+                      src={d(block, 'url') || d(block, 'src')}
                       className="h-full w-full"
                       allowFullScreen
-                      title={block.title || 'Lesson video'}
+                      title={d(block, 'title') || 'Lesson video'}
                     />
                   </div>
+                )
+              case 'file': {
+                const fileUrl = d(block, 'url')
+                const filename = d(block, 'filename') || 'Download file'
+                const size = d(block, 'size')
+                return (
+                  <a
+                    key={index}
+                    href={fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 rounded-lg border border-border p-4 transition-colors hover:bg-muted/50"
+                  >
+                    <div className="shrink-0 rounded-lg bg-primary/10 p-3">
+                      <FileText className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground truncate">
+                        {filename}
+                      </p>
+                      {size && (
+                        <p className="text-xs text-muted-foreground">{size}</p>
+                      )}
+                    </div>
+                    <Download className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  </a>
+                )
+              }
+              case 'divider':
+                return (
+                  <hr
+                    key={index}
+                    className="my-6 border-t-2 border-border"
+                  />
                 )
               case 'list':
                 return (
@@ -250,28 +300,182 @@ export default function StudentLessonViewerPage({
                   </ul>
                 )
               case 'callout':
-              case 'note':
+              case 'note': {
+                const variant = d(block, 'variant') || 'info'
+                const calloutText = d(block, 'text') || d(block, 'content') || ''
+                const variantStyles =
+                  variant === 'warning'
+                    ? 'border-amber-400 bg-amber-50 dark:bg-amber-950/30'
+                    : variant === 'tip'
+                    ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/30'
+                    : variant === 'success'
+                    ? 'border-green-400 bg-green-50 dark:bg-green-950/30'
+                    : 'border-primary bg-primary/5'
                 return (
                   <div
                     key={index}
-                    className="rounded-lg border-l-4 border-primary bg-primary/5 p-4"
+                    className={`rounded-lg border-l-4 p-4 ${variantStyles}`}
                   >
                     <div
                       className="prose prose-slate dark:prose-invert max-w-none"
-                      dangerouslySetInnerHTML={{
-                        __html: block.text || block.content || '',
-                      }}
+                      dangerouslySetInnerHTML={{ __html: calloutText }}
                     />
                   </div>
                 )
+              }
+              case 'quiz': {
+                const question = d(block, 'question')
+                const options = d(block, 'options') || []
+                return (
+                  <div
+                    key={index}
+                    className="rounded-lg border border-border p-4 space-y-3"
+                  >
+                    <p className="font-medium text-foreground">{question}</p>
+                    <div className="space-y-2">
+                      {options.map((option: string, i: number) => (
+                        <div
+                          key={i}
+                          className="flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm"
+                        >
+                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium">
+                            {String.fromCharCode(65 + i)}
+                          </span>
+                          <span>{option}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )
+              }
+              case 'link': {
+                const linkUrl = d(block, 'url')
+                const linkTitle = d(block, 'title')
+                const linkDesc = d(block, 'description')
+                return (
+                  <a
+                    key={index}
+                    href={linkUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-start gap-3 rounded-lg border border-border p-4 transition-colors hover:bg-muted/50"
+                  >
+                    <div className="shrink-0 rounded-lg bg-primary/10 p-2.5">
+                      <ExternalLink className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm text-foreground">
+                        {linkTitle || linkUrl}
+                      </p>
+                      {linkDesc && (
+                        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                          {linkDesc}
+                        </p>
+                      )}
+                      <p className="text-xs text-primary/70 mt-1 truncate">
+                        {linkUrl}
+                      </p>
+                    </div>
+                    <ExternalLink className="h-4 w-4 shrink-0 text-muted-foreground mt-1" />
+                  </a>
+                )
+              }
+              case 'pdf': {
+                const pdfUrl = d(block, 'url')
+                const pdfTitle = d(block, 'title') || 'PDF Document'
+                const pageCount = d(block, 'pageCount')
+                return (
+                  <div
+                    key={index}
+                    className="rounded-lg border border-border overflow-hidden"
+                  >
+                    <div className="bg-muted/50 px-4 py-3 flex items-center justify-between border-b border-border">
+                      <div className="flex items-center gap-2">
+                        <FileText className="h-4 w-4 text-primary" />
+                        <span className="text-sm font-medium text-foreground">
+                          {pdfTitle}
+                        </span>
+                        {pageCount && (
+                          <span className="text-xs text-muted-foreground">
+                            ({pageCount} pages)
+                          </span>
+                        )}
+                      </div>
+                      <a
+                        href={pdfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
+                      >
+                        <Download className="h-3.5 w-3.5" />
+                        Download
+                      </a>
+                    </div>
+                    <iframe
+                      src={pdfUrl}
+                      className="w-full bg-white"
+                      style={{ height: '600px' }}
+                      title={pdfTitle}
+                    />
+                    {/* Fallback for browsers that cannot embed PDFs */}
+                    <noscript>
+                      <div className="p-4 text-center">
+                        <a
+                          href={pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline"
+                        >
+                          Download PDF
+                        </a>
+                      </div>
+                    </noscript>
+                  </div>
+                )
+              }
+              case 'document': {
+                const docUrl = d(block, 'url')
+                const docName = d(block, 'fileName') || 'Document'
+                const docSize = d(block, 'fileSize')
+                const docType = d(block, 'fileType')
+                return (
+                  <a
+                    key={index}
+                    href={docUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 rounded-lg border border-border p-4 transition-colors hover:bg-muted/50"
+                  >
+                    <div className="shrink-0 rounded-lg bg-primary/10 p-3">
+                      <File className="h-6 w-6 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground truncate">
+                        {docName}
+                      </p>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+                        {docType && (
+                          <span>
+                            {docType.split('/').pop()?.toUpperCase()}
+                          </span>
+                        )}
+                        {docSize && (
+                          <span>{formatFileSize(docSize)}</span>
+                        )}
+                      </div>
+                    </div>
+                    <Download className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  </a>
+                )
+              }
               default:
-                if (block.text || block.content) {
+                if (d(block, 'text') || d(block, 'content')) {
                   return (
                     <div
                       key={index}
                       className="prose prose-slate dark:prose-invert max-w-none"
                       dangerouslySetInnerHTML={{
-                        __html: block.text || block.content || '',
+                        __html: d(block, 'text') || d(block, 'content') || '',
                       }}
                     />
                   )

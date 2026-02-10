@@ -1,10 +1,83 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { getAssignment } from '@/app/actions/assignments'
 import { getMySubmission, submitWork } from '@/app/actions/submissions'
 import { ASSIGNMENT_TYPES, SUBMISSION_TYPES } from '@/lib/config/constants'
+import {
+  FileText,
+  Download,
+  ExternalLink,
+  Link2,
+  Upload,
+  X,
+  Loader2,
+  File,
+  FileImage,
+  FileSpreadsheet,
+  FileArchive,
+  Paperclip,
+  ArrowLeft,
+  CheckCircle2,
+  AlertTriangle,
+  RotateCcw,
+  Clock,
+  Award,
+  Send,
+} from 'lucide-react'
+import Link from 'next/link'
+import { createBrowserClient } from '@supabase/ssr'
+import { toast } from 'sonner'
+
+type TeacherAttachment = {
+  url: string
+  type: 'file' | 'link'
+  fileName?: string
+  fileSize?: number
+  fileType?: string
+  title?: string
+}
+
+type UploadedFile = {
+  url: string
+  fileName: string
+  fileSize: number
+  fileType: string
+}
+
+const STUDENT_ACCEPTED_TYPES = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-powerpoint',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'image/png',
+  'image/jpeg',
+  'image/gif',
+  'image/webp',
+  'application/zip',
+  'application/x-zip-compressed',
+  'text/plain',
+]
+
+const STUDENT_ACCEPTED_EXTENSIONS = '.pdf,.doc,.docx,.ppt,.pptx,.png,.jpg,.jpeg,.gif,.webp,.zip,.txt'
+
+const MAX_SUBMISSION_SIZE = 50 * 1024 * 1024 // 50MB
+
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
+function getFileIcon(fileType: string) {
+  if (fileType?.includes('pdf')) return FileText
+  if (fileType?.includes('image')) return FileImage
+  if (fileType?.includes('sheet') || fileType?.includes('excel')) return FileSpreadsheet
+  if (fileType?.includes('zip')) return FileArchive
+  return File
+}
 
 interface AssignmentData {
   id: string
@@ -16,6 +89,7 @@ interface AssignmentData {
   submission_type: string
   late_policy: string
   status: string
+  attachments?: string | TeacherAttachment[] | null
   courses: {
     id: string
     title: string
@@ -29,6 +103,7 @@ interface SubmissionData {
   submitted_at: string
   status: string
   is_late: boolean
+  return_feedback?: string | null
 }
 
 interface GradeData {
@@ -90,6 +165,12 @@ export default function StudentAssignmentDetailPage() {
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [submitSuccess, setSubmitSuccess] = useState(false)
 
+  // File upload state
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
+  const [fileUploading, setFileUploading] = useState(false)
+  const [dragOver, setDragOver] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
   useEffect(() => {
     loadData()
   }, [assignmentId])
@@ -120,13 +201,114 @@ export default function StudentAssignmentDetailPage() {
     setLoading(false)
   }
 
+  // Parse teacher attachments
+  const parseAttachments = useCallback((): TeacherAttachment[] => {
+    if (!assignment?.attachments) return []
+    try {
+      if (typeof assignment.attachments === 'string') {
+        return JSON.parse(assignment.attachments)
+      }
+      if (Array.isArray(assignment.attachments)) {
+        return assignment.attachments
+      }
+    } catch {
+      // Ignore parse errors
+    }
+    return []
+  }, [assignment])
+
+  const teacherAttachments = parseAttachments()
+  const teacherFiles = teacherAttachments.filter((a) => a.type === 'file')
+  const teacherLinks = teacherAttachments.filter((a) => a.type === 'link')
+
+  // Student file upload handler
+  async function handleStudentFileUpload(files: FileList | null) {
+    if (!files || files.length === 0) return
+
+    const supabase = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+
+    // We need a user ID for the path - get it from the session
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      toast.error('Not authenticated')
+      return
+    }
+
+    setFileUploading(true)
+
+    for (const file of Array.from(files)) {
+      if (file.size > MAX_SUBMISSION_SIZE) {
+        toast.error(`${file.name} exceeds the 50MB limit`)
+        continue
+      }
+
+      if (!STUDENT_ACCEPTED_TYPES.includes(file.type)) {
+        toast.error(`${file.name} is not an accepted file type`)
+        continue
+      }
+
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
+      const path = `${assignmentId}/${user.id}/${Date.now()}_${safeName}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('submissions')
+        .upload(path, file)
+
+      if (uploadError) {
+        toast.error(`Failed to upload ${file.name}: ${uploadError.message}`)
+        continue
+      }
+
+      const { data: urlData } = supabase.storage
+        .from('submissions')
+        .getPublicUrl(path)
+
+      setUploadedFiles((prev) => [
+        ...prev,
+        {
+          url: urlData.publicUrl,
+          fileName: file.name,
+          fileSize: file.size,
+          fileType: file.type,
+        },
+      ])
+
+      toast.success(`${file.name} uploaded`)
+    }
+
+    setFileUploading(false)
+  }
+
+  function removeUploadedFile(index: number) {
+    setUploadedFiles((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault()
+    setDragOver(true)
+  }
+
+  function handleDragLeave(e: React.DragEvent) {
+    e.preventDefault()
+    setDragOver(false)
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault()
+    setDragOver(false)
+    handleStudentFileUpload(e.dataTransfer.files)
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setSubmitError(null)
     setSubmitSuccess(false)
 
-    if (!content.trim() && !linkUrl.trim()) {
-      setSubmitError('Please enter your submission content')
+    if (!content.trim() && !linkUrl.trim() && uploadedFiles.length === 0) {
+      setSubmitError('Please enter your submission content or upload a file')
       return
     }
 
@@ -137,8 +319,11 @@ export default function StudentAssignmentDetailPage() {
       ? linkUrl.trim()
       : content.trim()
 
+    const fileUrls = uploadedFiles.map((f) => f.url)
+
     const result = await submitWork(assignmentId, {
-      content: submissionContent,
+      content: submissionContent || undefined,
+      fileUrls: fileUrls.length > 0 ? fileUrls : undefined,
     })
 
     if (result.error) {
@@ -170,19 +355,15 @@ export default function StudentAssignmentDetailPage() {
   if (error || !assignment) {
     return (
       <div className="mx-auto max-w-3xl space-y-8">
-        <div>
-          <button
-            onClick={() => router.push('/student/assignments')}
-            className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
-            </svg>
-            Back to Assignments
-          </button>
-          <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-300">
-            {error || 'Assignment not found'}
-          </div>
+        <Link
+          href="/student/assignments"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Assignments
+        </Link>
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-300">
+          {error || 'Assignment not found'}
         </div>
       </div>
     )
@@ -191,21 +372,21 @@ export default function StudentAssignmentDetailPage() {
   const typeLabel = ASSIGNMENT_TYPES.find((t) => t.value === assignment.type)?.label || assignment.type
   const submissionTypeLabel = SUBMISSION_TYPES.find((t) => t.value === assignment.submission_type)?.label || assignment.submission_type
   const pastDue = isPastDue(assignment.due_date)
-  const canSubmit = !pastDue || assignment.late_policy === 'accept_late'
+  const isReturned = submission?.status === 'returned'
+  const isGraded = submission?.status === 'graded' && !!grade
+  const canSubmit = ((!pastDue || assignment.late_policy === 'accept_late') && (!isGraded || isReturned))
   const timeLeft = timeUntilDue(assignment.due_date)
 
   return (
     <div className="mx-auto max-w-3xl space-y-8">
       {/* Back Button */}
-      <button
-        onClick={() => router.push('/student/assignments')}
-        className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+      <Link
+        href="/student/assignments"
+        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
-        </svg>
+        <ArrowLeft className="h-4 w-4" />
         Back to Assignments
-      </button>
+      </Link>
 
       {/* Assignment Details */}
       <div className="ocean-card rounded-2xl p-6">
@@ -216,7 +397,8 @@ export default function StudentAssignmentDetailPage() {
               {(assignment.courses as unknown as { title: string })?.title}
             </p>
           </div>
-          <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+            <Award className="h-3.5 w-3.5" />
             {assignment.points_possible} pts
           </span>
         </div>
@@ -265,12 +447,107 @@ export default function StudentAssignmentDetailPage() {
             </div>
           </div>
         )}
+
+        {/* Teacher Attachments */}
+        {teacherAttachments.length > 0 && (
+          <div className="mt-6">
+            <h3 className="flex items-center gap-2 text-sm font-medium text-foreground">
+              <Paperclip className="h-4 w-4" />
+              Attachments & Resources
+            </h3>
+            <div className="mt-3 space-y-2">
+              {/* Files */}
+              {teacherFiles.map((att, index) => {
+                const IconComponent = getFileIcon(att.fileType || '')
+                return (
+                  <div
+                    key={`file-${index}`}
+                    className="flex items-center gap-3 rounded-xl border border-border bg-background p-3"
+                  >
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                      <IconComponent className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="truncate text-sm font-medium text-foreground">
+                        {att.fileName || 'File'}
+                      </p>
+                      {att.fileSize && (
+                        <p className="text-xs text-muted-foreground">
+                          {formatFileSize(att.fileSize)}
+                        </p>
+                      )}
+                    </div>
+                    <a
+                      href={att.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted shrink-0"
+                    >
+                      <Download className="h-4 w-4" />
+                      Download
+                    </a>
+                  </div>
+                )
+              })}
+
+              {/* Links */}
+              {teacherLinks.map((att, index) => (
+                <a
+                  key={`link-${index}`}
+                  href={att.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 rounded-xl border border-border bg-background p-3 transition-colors hover:bg-muted/50"
+                >
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-500/10">
+                    <Link2 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="truncate text-sm font-medium text-foreground">
+                      {att.title || att.url}
+                    </p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {att.url}
+                    </p>
+                  </div>
+                  <ExternalLink className="h-4 w-4 shrink-0 text-muted-foreground" />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Returned for Revision Notice */}
+      {isReturned && submission?.return_feedback && (
+        <div className="rounded-2xl border-2 border-orange-200 bg-orange-50/50 p-6 dark:border-orange-800 dark:bg-orange-950/20">
+          <div className="flex items-start gap-3">
+            <RotateCcw className="mt-0.5 h-5 w-5 flex-shrink-0 text-orange-600 dark:text-orange-400" />
+            <div>
+              <h2 className="text-lg font-semibold text-orange-700 dark:text-orange-300">
+                Returned for Revision
+              </h2>
+              <p className="mt-1 text-sm text-orange-600 dark:text-orange-400">
+                Your teacher has returned this submission and is asking you to revise it.
+              </p>
+              <div className="mt-3 rounded-xl border border-orange-200 bg-white p-4 dark:border-orange-800 dark:bg-background">
+                <p className="text-sm font-medium text-foreground">Teacher Feedback:</p>
+                <p className="mt-1 whitespace-pre-wrap text-sm text-foreground">
+                  {submission.return_feedback}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Grade Display (if graded) */}
       {grade && (
         <div className="ocean-card rounded-2xl border-2 border-green-200 p-6 dark:border-green-800">
-          <h2 className="text-lg font-semibold text-foreground">Grade</h2>
+          <h2 className="flex items-center gap-2 text-lg font-semibold text-foreground">
+            <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
+            Grade
+          </h2>
           <div className="mt-4 flex items-center gap-6">
             <div className="text-center">
               <p className="text-4xl font-bold text-primary">
@@ -304,12 +581,28 @@ export default function StudentAssignmentDetailPage() {
 
       {/* Submission Area */}
       <div className="ocean-card rounded-2xl p-6">
-        <h2 className="text-lg font-semibold text-foreground">
-          {submission ? 'Your Submission' : 'Submit Your Work'}
+        <h2 className="flex items-center gap-2 text-lg font-semibold text-foreground">
+          {submission && !isReturned ? (
+            <>
+              <CheckCircle2 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              Your Submission
+            </>
+          ) : isReturned ? (
+            <>
+              <RotateCcw className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+              Revise Your Submission
+            </>
+          ) : (
+            <>
+              <Send className="h-5 w-5 text-primary" />
+              Submit Your Work
+            </>
+          )}
         </h2>
 
-        {submission && (
+        {submission && !isReturned && (
           <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+            <Clock className="h-3.5 w-3.5" />
             <span>
               Submitted on{' '}
               {new Date(submission.submitted_at).toLocaleDateString('en-US', {
@@ -320,7 +613,8 @@ export default function StudentAssignmentDetailPage() {
               })}
             </span>
             {submission.is_late && (
-              <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
+              <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
+                <AlertTriangle className="h-3 w-3" />
                 Late
               </span>
             )}
@@ -374,23 +668,85 @@ export default function StudentAssignmentDetailPage() {
             </div>
           )}
 
-          {/* File Upload Placeholder */}
+          {/* File Upload */}
           {(assignment.submission_type === 'file' || assignment.submission_type === 'multi') && (
             <div>
               <label className="block text-sm font-medium text-foreground">File Upload</label>
-              <div className="mt-1.5 flex items-center justify-center rounded-xl border-2 border-dashed border-border p-8">
+
+              {/* Drag & Drop Zone */}
+              <div
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onClick={() => fileInputRef.current?.click()}
+                className={`mt-1.5 flex cursor-pointer items-center justify-center rounded-xl border-2 border-dashed p-8 transition-colors ${
+                  dragOver
+                    ? 'border-primary bg-primary/5'
+                    : 'border-border hover:border-primary/50 hover:bg-muted/30'
+                }`}
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  accept={STUDENT_ACCEPTED_EXTENSIONS}
+                  onChange={(e) => handleStudentFileUpload(e.target.files)}
+                  className="hidden"
+                  disabled={fileUploading}
+                />
                 <div className="text-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-10 w-10 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                  </svg>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Drag and drop files here, or click to browse
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Max file size: 50MB
-                  </p>
+                  {fileUploading ? (
+                    <>
+                      <Loader2 className="mx-auto h-10 w-10 animate-spin text-primary" />
+                      <p className="mt-2 text-sm font-medium text-foreground">Uploading...</p>
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="mx-auto h-10 w-10 text-muted-foreground" />
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        Drag and drop files here, or click to browse
+                      </p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        PDF, DOCX, PPTX, images, ZIP, TXT (max 50MB)
+                      </p>
+                    </>
+                  )}
                 </div>
               </div>
+
+              {/* Uploaded Files List */}
+              {uploadedFiles.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  {uploadedFiles.map((file, index) => {
+                    const IconComponent = getFileIcon(file.fileType)
+                    return (
+                      <div
+                        key={`${file.fileName}-${index}`}
+                        className="flex items-center gap-3 rounded-xl border border-border bg-background p-3"
+                      >
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                          <IconComponent className="h-4 w-4 text-primary" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="truncate text-sm font-medium text-foreground">
+                            {file.fileName}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {formatFileSize(file.fileSize)}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeUploadedFile(index)}
+                          className="shrink-0 rounded p-1 text-red-500 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/30"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
             </div>
           )}
 
@@ -441,10 +797,17 @@ export default function StudentAssignmentDetailPage() {
             </div>
           )}
 
-          {!canSubmit && pastDue && (
-            <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-300">
+          {!canSubmit && pastDue && !isGraded && (
+            <div className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-300">
+              <AlertTriangle className="h-4 w-4 flex-shrink-0" />
               This assignment is past due and does not accept late submissions.
             </div>
+          )}
+
+          {isGraded && !isReturned && (
+            <p className="mt-4 text-sm text-muted-foreground">
+              This submission has been graded. No further changes are allowed unless your teacher returns it for revision.
+            </p>
           )}
         </form>
       </div>

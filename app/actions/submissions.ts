@@ -349,6 +349,58 @@ export async function gradeSubmission(
 
   revalidatePath(`/teacher/courses/${assignmentData.course_id}/assignments/${submission.assignment_id}/submissions`)
   revalidatePath('/teacher/gradebook')
+  revalidatePath('/student/assignments')
 
   return { success: true, data: result }
+}
+
+// ============================================
+// TEACHER: Return submission for revision
+// ============================================
+export async function returnSubmission(submissionId: string, feedback: string) {
+  const supabase = await createClient()
+  const headersList = await headers()
+  const tenantId = headersList.get('x-tenant-id')
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Not authenticated' }
+
+  // Get submission details and verify teacher ownership
+  const { data: submission } = await supabase
+    .from('submissions')
+    .select('id, assignment_id, student_id, assignments:assignment_id(course_id, courses:courses(teacher_id))')
+    .eq('id', submissionId)
+    .single()
+
+  if (!submission) return { error: 'Submission not found' }
+
+  const assignmentData = submission.assignments as unknown as {
+    course_id: string
+    courses: { teacher_id: string }
+  }
+
+  if (assignmentData?.courses?.teacher_id !== user.id) {
+    return { error: 'Not authorized to return this submission' }
+  }
+
+  // Update submission status to returned with feedback
+  const { error } = await supabase
+    .from('submissions')
+    .update({
+      status: 'returned',
+      return_feedback: feedback,
+      returned_at: new Date().toISOString(),
+    })
+    .eq('id', submissionId)
+
+  if (error) {
+    console.error('Error returning submission:', error)
+    return { error: 'Failed to return submission' }
+  }
+
+  revalidatePath(`/teacher/courses/${assignmentData.course_id}/assignments/${submission.assignment_id}/submissions`)
+  revalidatePath('/student/assignments')
+  revalidatePath(`/student/assignments/${submission.assignment_id}`)
+
+  return { success: true }
 }

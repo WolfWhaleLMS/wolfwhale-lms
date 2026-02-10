@@ -356,6 +356,125 @@ export async function reorderLessons(courseId: string, lessonIds: string[]) {
 }
 
 // ---------------------------------------------------------------------------
+// Attachment management
+// ---------------------------------------------------------------------------
+
+export async function addLessonAttachment(
+  lessonId: string,
+  attachment: {
+    fileName: string
+    filePath: string
+    fileType: string
+    fileSize: number
+    displayName?: string
+  }
+) {
+  const { supabase, user, tenantId } = await requireTeacher()
+
+  // Verify lesson ownership
+  const { data: lesson } = await supabase
+    .from('lessons')
+    .select('course_id, created_by')
+    .eq('id', lessonId)
+    .eq('tenant_id', tenantId)
+    .single()
+
+  if (!lesson || lesson.created_by !== user.id) {
+    return { error: 'Not authorized to modify attachments for this lesson' }
+  }
+
+  // Get next order_index for attachments
+  const { data: existing } = await supabase
+    .from('lesson_attachments')
+    .select('order_index')
+    .eq('lesson_id', lessonId)
+    .order('order_index', { ascending: false })
+    .limit(1)
+
+  const nextOrderIndex =
+    existing && existing.length > 0 ? existing[0].order_index + 1 : 0
+
+  const { data: record, error } = await supabase
+    .from('lesson_attachments')
+    .insert({
+      tenant_id: tenantId,
+      lesson_id: lessonId,
+      file_name: attachment.fileName,
+      file_path: attachment.filePath,
+      file_type: attachment.fileType,
+      file_size: attachment.fileSize,
+      display_name: attachment.displayName || attachment.fileName,
+      order_index: nextOrderIndex,
+    })
+    .select('id')
+    .single()
+
+  if (error) {
+    console.error('Error adding attachment:', error)
+    return { error: 'Failed to add attachment' }
+  }
+
+  revalidatePath(`/teacher/courses`)
+  return { success: true, attachmentId: record.id }
+}
+
+export async function deleteLessonAttachment(attachmentId: string) {
+  const { supabase, user, tenantId } = await requireTeacher()
+
+  // Verify ownership via the attachment -> lesson -> teacher chain
+  const { data: attachment } = await supabase
+    .from('lesson_attachments')
+    .select('id, lesson_id, file_path')
+    .eq('id', attachmentId)
+    .single()
+
+  if (!attachment) {
+    return { error: 'Attachment not found' }
+  }
+
+  const { data: lesson } = await supabase
+    .from('lessons')
+    .select('created_by')
+    .eq('id', attachment.lesson_id)
+    .eq('tenant_id', tenantId)
+    .single()
+
+  if (!lesson || lesson.created_by !== user.id) {
+    return { error: 'Not authorized to delete this attachment' }
+  }
+
+  const { error } = await supabase
+    .from('lesson_attachments')
+    .delete()
+    .eq('id', attachmentId)
+
+  if (error) {
+    console.error('Error deleting attachment:', error)
+    return { error: 'Failed to delete attachment' }
+  }
+
+  revalidatePath(`/teacher/courses`)
+  return { success: true }
+}
+
+export async function getLessonAttachments(lessonId: string) {
+  const { supabase } = await getAuthUser()
+
+  const { data: attachments, error } = await supabase
+    .from('lesson_attachments')
+    .select('*')
+    .eq('lesson_id', lessonId)
+    .order('order_index', { ascending: true })
+
+  if (error) {
+    console.error('Error fetching attachments:', error)
+    return []
+  }
+
+  return attachments || []
+}
+
+// ---------------------------------------------------------------------------
 // trackProgress - student marks lesson progress
 // ---------------------------------------------------------------------------
 

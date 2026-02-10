@@ -118,6 +118,8 @@ export async function createAssignment(formData: {
   submissionType: string
   latePolicy?: boolean
   questions?: unknown[]
+  attachments?: { url: string; fileName: string; fileSize: number; fileType: string }[]
+  links?: { url: string; title: string }[]
 }) {
   const supabase = await createClient()
   const headersList = await headers()
@@ -150,6 +152,15 @@ export async function createAssignment(formData: {
     questions: formData.questions || [],
   }
 
+  // Build combined attachments array (files + links)
+  const combinedAttachments = [
+    ...(formData.attachments || []).map((a) => ({ ...a, type: 'file' as const })),
+    ...(formData.links || []).map((l) => ({ ...l, type: 'link' as const })),
+  ]
+  if (combinedAttachments.length > 0) {
+    insertData.attachments = JSON.stringify(combinedAttachments)
+  }
+
   if (tenantId) {
     insertData.tenant_id = tenantId
   }
@@ -166,6 +177,7 @@ export async function createAssignment(formData: {
   }
 
   revalidatePath(`/teacher/courses/${formData.courseId}/assignments`)
+  revalidatePath(`/teacher/courses/${formData.courseId}`)
   return { success: true, data }
 }
 
@@ -183,6 +195,7 @@ export async function updateAssignment(
     submissionType?: string
     latePolicy?: boolean
     status?: string
+    attachments?: { url: string; fileName: string; fileSize: number; fileType: string }[]
   }
 ) {
   const supabase = await createClient()
@@ -213,6 +226,7 @@ export async function updateAssignment(
   if (formData.submissionType !== undefined) updateData.submission_type = formData.submissionType
   if (formData.latePolicy !== undefined) updateData.late_policy = formData.latePolicy ? 'accept_late' : 'no_late'
   if (formData.status !== undefined) updateData.status = formData.status
+  if (formData.attachments !== undefined) updateData.attachments = JSON.stringify(formData.attachments)
   updateData.updated_at = new Date().toISOString()
 
   const { error } = await supabase
@@ -226,6 +240,7 @@ export async function updateAssignment(
   }
 
   revalidatePath(`/teacher/courses/${assignment.course_id}/assignments`)
+  revalidatePath(`/teacher/courses/${assignment.course_id}`)
   return { success: true }
 }
 
@@ -263,6 +278,7 @@ export async function deleteAssignment(assignmentId: string) {
   }
 
   revalidatePath(`/teacher/courses/${assignment.course_id}/assignments`)
+  revalidatePath(`/teacher/courses/${assignment.course_id}`)
   return { success: true }
 }
 
@@ -358,7 +374,9 @@ export async function getStudentAssignments() {
     const grade = gradeMap[a.id]
     let displayStatus = 'pending'
 
-    if (grade) {
+    if (submission?.status === 'returned') {
+      displayStatus = 'returned'
+    } else if (grade) {
       displayStatus = 'graded'
     } else if (submission) {
       displayStatus = submission.status === 'submitted' ? 'submitted' : submission.status
