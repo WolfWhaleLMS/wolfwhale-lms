@@ -1,5 +1,6 @@
 'use server'
 
+import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
@@ -198,6 +199,9 @@ export async function getCourses() {
 // ---------------------------------------------------------------------------
 
 export async function getCourse(courseId: string) {
+  const parsed = z.object({ courseId: z.string().uuid() }).safeParse({ courseId })
+  if (!parsed.success) return null
+
   const { supabase, user } = await getAuthUser()
   const tenantId = await getTenantId()
 
@@ -291,6 +295,16 @@ interface CreateCourseInput {
 }
 
 export async function createCourse(input: CreateCourseInput) {
+  const createCourseSchema = z.object({
+    name: z.string().min(1).max(255),
+    description: z.string().max(5000).optional(),
+    subject: z.string().max(100).optional(),
+    grade_level: z.string().max(50).optional(),
+    semester: z.string().max(50).optional(),
+  })
+  const parsed = createCourseSchema.safeParse(input)
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   const { data: course, error } = await supabase
@@ -298,11 +312,11 @@ export async function createCourse(input: CreateCourseInput) {
     .insert({
       tenant_id: tenantId,
       created_by: user.id,
-      name: input.name,
-      description: input.description || null,
-      subject: input.subject || null,
-      grade_level: input.grade_level || null,
-      semester: input.semester || null,
+      name: parsed.data.name,
+      description: parsed.data.description || null,
+      subject: parsed.data.subject || null,
+      grade_level: parsed.data.grade_level || null,
+      semester: parsed.data.semester || null,
       status: 'active',
     })
     .select('id')
@@ -335,6 +349,18 @@ export async function updateCourse(
   courseId: string,
   input: Partial<CreateCourseInput> & { status?: string }
 ) {
+  const updateCourseSchema = z.object({
+    courseId: z.string().uuid(),
+    name: z.string().min(1).max(255).optional(),
+    description: z.string().max(5000).optional(),
+    subject: z.string().max(100).optional(),
+    grade_level: z.string().max(50).optional(),
+    semester: z.string().max(50).optional(),
+    status: z.string().max(50).optional(),
+  })
+  const parsed = updateCourseSchema.safeParse({ courseId, ...input })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify ownership
@@ -377,6 +403,9 @@ export async function updateCourse(
 // ---------------------------------------------------------------------------
 
 export async function deleteCourse(courseId: string) {
+  const parsed = z.object({ courseId: z.string().uuid() }).safeParse({ courseId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   const { data: existing } = await supabase
@@ -409,6 +438,9 @@ export async function deleteCourse(courseId: string) {
 // ---------------------------------------------------------------------------
 
 export async function enrollWithCode(code: string) {
+  const parsed = z.object({ code: z.string().min(1).max(20) }).safeParse({ code })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const { supabase, user } = await getAuthUser()
   const tenantId = await getTenantId()
 
@@ -483,6 +515,9 @@ export async function enrollWithCode(code: string) {
 // ---------------------------------------------------------------------------
 
 export async function generateClassCode(courseId: string) {
+  const parsed = z.object({ courseId: z.string().uuid() }).safeParse({ courseId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify course ownership

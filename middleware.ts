@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { rateLimit } from '@/lib/rate-limit'
 
 // ---------------------------------------------------------------------------
 // Route definitions
@@ -38,6 +39,7 @@ const PROTECTED_PREFIXES = [
 ]
 
 const AUTH_PATHS = new Set(['/login', '/signup'])
+const AUTH_RATE_LIMIT_PATHS = new Set(['/login', '/signup', '/forgot-password'])
 
 // Role -> default dashboard path mapping
 const ROLE_DASHBOARDS: Record<string, string> = {
@@ -152,6 +154,33 @@ export async function middleware(request: NextRequest) {
     url.hostname = ROOT_DOMAIN
     url.port = ''
     return NextResponse.redirect(url, 301)
+  }
+
+  // ------------------------------------------------------------------
+  // 1b. Rate limiting for auth routes (login, signup, forgot-password)
+  // ------------------------------------------------------------------
+  if (AUTH_RATE_LIMIT_PATHS.has(pathname)) {
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      request.headers.get('x-real-ip') ||
+      'unknown'
+
+    const rateLimitResult = await rateLimit(`${ip}:auth`, 'auth')
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(Math.ceil((rateLimitResult.reset - Date.now()) / 1000)),
+            'X-RateLimit-Limit': String(rateLimitResult.limit),
+            'X-RateLimit-Remaining': String(rateLimitResult.remaining),
+            'X-RateLimit-Reset': String(rateLimitResult.reset),
+          },
+        }
+      )
+    }
   }
 
   // ------------------------------------------------------------------

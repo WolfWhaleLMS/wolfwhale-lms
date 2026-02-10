@@ -1,5 +1,6 @@
 'use server'
 
+import { z } from 'zod'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
@@ -15,6 +16,9 @@ async function getContext() {
 }
 
 export async function getAnnouncements(courseId?: string) {
+  const parsed = z.object({ courseId: z.string().uuid().optional() }).safeParse({ courseId })
+  if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
+
   const { supabase, tenantId } = await getContext()
 
   let query = supabase
@@ -39,6 +43,15 @@ export async function createAnnouncement(formData: {
   courseId?: string
   pinned?: boolean
 }) {
+  const createAnnouncementSchema = z.object({
+    title: z.string().min(1).max(255),
+    content: z.string().min(1).max(10000),
+    courseId: z.string().uuid().optional(),
+    pinned: z.boolean().optional(),
+  })
+  const parsed = createAnnouncementSchema.safeParse(formData)
+  if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
+
   const { supabase, user, tenantId } = await getContext()
 
   const { data, error } = await supabase
@@ -46,10 +59,10 @@ export async function createAnnouncement(formData: {
     .insert({
       tenant_id: tenantId,
       author_id: user.id,
-      course_id: formData.courseId || null,
-      title: formData.title,
-      content: formData.content,
-      pinned: formData.pinned || false,
+      course_id: parsed.data.courseId || null,
+      title: parsed.data.title,
+      content: parsed.data.content,
+      pinned: parsed.data.pinned || false,
     })
     .select('id')
     .single()
@@ -60,6 +73,9 @@ export async function createAnnouncement(formData: {
 }
 
 export async function deleteAnnouncement(announcementId: string) {
+  const parsed = z.object({ announcementId: z.string().uuid() }).safeParse({ announcementId })
+  if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
+
   const { supabase, user } = await getContext()
 
   const { error } = await supabase
@@ -73,6 +89,12 @@ export async function deleteAnnouncement(announcementId: string) {
 }
 
 export async function togglePinAnnouncement(announcementId: string, pinned: boolean) {
+  const parsed = z.object({
+    announcementId: z.string().uuid(),
+    pinned: z.boolean(),
+  }).safeParse({ announcementId, pinned })
+  if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
+
   const { supabase } = await getContext()
 
   const { error } = await supabase

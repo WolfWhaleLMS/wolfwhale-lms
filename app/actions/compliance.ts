@@ -6,6 +6,7 @@ import { revalidatePath } from 'next/cache'
 import { exportUserData } from '@/lib/compliance/data-export'
 import { logAuditEvent } from '@/lib/compliance/audit-logger'
 import { runCanadianComplianceCheck, CanadianComplianceCheckItem } from '@/lib/compliance/pipeda'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -51,6 +52,9 @@ export async function requestDataExport(): Promise<{
   error: string | null
 }> {
   try {
+    const rl = await rateLimitAction('requestDataExport')
+    if (!rl.success) return { data: null, error: rl.error! }
+
     const { user, tenantId } = await getCurrentUser()
 
     const exportData = await exportUserData(user.id, tenantId ?? undefined)
@@ -380,6 +384,9 @@ export async function submitDataRequest(
   reason?: string
 ): Promise<{ success: boolean; error: string | null }> {
   try {
+    const rl = await rateLimitAction('submitDataRequest')
+    if (!rl.success) return { success: false, error: rl.error! }
+
     const { user, tenantId } = await getCurrentUser()
     const supabase = await createClient()
 

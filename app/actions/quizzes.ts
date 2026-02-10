@@ -1,5 +1,6 @@
 'use server'
 
+import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
@@ -19,6 +20,21 @@ export async function createQuiz(formData: {
   passingScore?: number
   status?: string
 }) {
+  const createQuizSchema = z.object({
+    courseId: z.string().uuid(),
+    title: z.string().min(1).max(255),
+    description: z.string().max(5000).optional(),
+    timeLimitMinutes: z.number().min(1).max(600).nullable().optional(),
+    shuffleQuestions: z.boolean().optional(),
+    shuffleAnswers: z.boolean().optional(),
+    showResults: z.boolean().optional(),
+    maxAttempts: z.number().min(1).max(100).optional(),
+    passingScore: z.number().min(0).max(100).optional(),
+    status: z.string().max(50).optional(),
+  })
+  const parsed = createQuizSchema.safeParse(formData)
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -30,7 +46,7 @@ export async function createQuiz(formData: {
   const { data: course } = await supabase
     .from('courses')
     .select('created_by')
-    .eq('id', formData.courseId)
+    .eq('id', parsed.data.courseId)
     .single()
 
   if (!course || course.created_by !== user.id) {
@@ -38,16 +54,16 @@ export async function createQuiz(formData: {
   }
 
   const insertData: Record<string, unknown> = {
-    course_id: formData.courseId,
-    title: formData.title,
-    description: formData.description || null,
-    time_limit_minutes: formData.timeLimitMinutes || null,
-    shuffle_questions: formData.shuffleQuestions ?? false,
-    shuffle_answers: formData.shuffleAnswers ?? false,
-    show_results: formData.showResults ?? true,
-    max_attempts: formData.maxAttempts ?? 1,
-    passing_score: formData.passingScore ?? 70,
-    status: formData.status || 'draft',
+    course_id: parsed.data.courseId,
+    title: parsed.data.title,
+    description: parsed.data.description || null,
+    time_limit_minutes: parsed.data.timeLimitMinutes || null,
+    shuffle_questions: parsed.data.shuffleQuestions ?? false,
+    shuffle_answers: parsed.data.shuffleAnswers ?? false,
+    show_results: parsed.data.showResults ?? true,
+    max_attempts: parsed.data.maxAttempts ?? 1,
+    passing_score: parsed.data.passingScore ?? 70,
+    status: parsed.data.status || 'draft',
     created_by: user.id,
   }
 
@@ -66,7 +82,7 @@ export async function createQuiz(formData: {
     return { error: 'Failed to create quiz' }
   }
 
-  revalidatePath(`/teacher/courses/${formData.courseId}/quizzes`)
+  revalidatePath(`/teacher/courses/${parsed.data.courseId}/quizzes`)
   return { success: true, data }
 }
 
@@ -74,6 +90,9 @@ export async function createQuiz(formData: {
 // Get a quiz with questions and options
 // ============================================
 export async function getQuiz(quizId: string) {
+  const parsed = z.object({ quizId: z.string().uuid() }).safeParse({ quizId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -118,6 +137,9 @@ export async function getQuiz(quizId: string) {
 // List quizzes for a course
 // ============================================
 export async function getQuizzes(courseId: string) {
+  const parsed = z.object({ courseId: z.string().uuid() }).safeParse({ courseId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -169,6 +191,21 @@ export async function updateQuiz(quizId: string, formData: {
   passingScore?: number
   status?: string
 }) {
+  const updateQuizSchema = z.object({
+    quizId: z.string().uuid(),
+    title: z.string().min(1).max(255).optional(),
+    description: z.string().max(5000).optional(),
+    timeLimitMinutes: z.number().min(1).max(600).nullable().optional(),
+    shuffleQuestions: z.boolean().optional(),
+    shuffleAnswers: z.boolean().optional(),
+    showResults: z.boolean().optional(),
+    maxAttempts: z.number().min(1).max(100).optional(),
+    passingScore: z.number().min(0).max(100).optional(),
+    status: z.string().max(50).optional(),
+  })
+  const parsed = updateQuizSchema.safeParse({ quizId, ...formData })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -218,6 +255,9 @@ export async function updateQuiz(quizId: string, formData: {
 // TEACHER: Delete a quiz
 // ============================================
 export async function deleteQuiz(quizId: string) {
+  const parsed = z.object({ quizId: z.string().uuid() }).safeParse({ quizId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -262,6 +302,22 @@ export async function addQuestion(quizId: string, questionData: {
   explanation?: string
   options?: { optionText: string; isCorrect: boolean; orderIndex: number }[]
 }) {
+  const addQuestionSchema = z.object({
+    quizId: z.string().uuid(),
+    type: z.string().min(1).max(50),
+    questionText: z.string().min(1).max(5000),
+    points: z.number().min(0).max(1000).optional(),
+    orderIndex: z.number().min(0).max(1000).optional(),
+    explanation: z.string().max(5000).optional(),
+    options: z.array(z.object({
+      optionText: z.string().min(1).max(1000),
+      isCorrect: z.boolean(),
+      orderIndex: z.number().min(0).max(100),
+    })).max(20).optional(),
+  })
+  const parsed = addQuestionSchema.safeParse({ quizId, ...questionData })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -346,6 +402,22 @@ export async function updateQuestion(questionId: string, questionData: {
   explanation?: string
   options?: { id?: string; optionText: string; isCorrect: boolean; orderIndex: number }[]
 }) {
+  const updateQuestionSchema = z.object({
+    questionId: z.string().uuid(),
+    questionText: z.string().min(1).max(5000).optional(),
+    points: z.number().min(0).max(1000).optional(),
+    orderIndex: z.number().min(0).max(1000).optional(),
+    explanation: z.string().max(5000).optional(),
+    options: z.array(z.object({
+      id: z.string().uuid().optional(),
+      optionText: z.string().min(1).max(1000),
+      isCorrect: z.boolean(),
+      orderIndex: z.number().min(0).max(100),
+    })).max(20).optional(),
+  })
+  const parsed = updateQuestionSchema.safeParse({ questionId, ...questionData })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -419,6 +491,9 @@ export async function updateQuestion(questionId: string, questionData: {
 // TEACHER: Delete a question
 // ============================================
 export async function deleteQuestion(questionId: string) {
+  const parsed = z.object({ questionId: z.string().uuid() }).safeParse({ questionId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -456,6 +531,9 @@ export async function deleteQuestion(questionId: string) {
 // STUDENT: Start a quiz attempt
 // ============================================
 export async function startAttempt(quizId: string) {
+  const parsed = z.object({ quizId: z.string().uuid() }).safeParse({ quizId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -534,6 +612,17 @@ export async function submitAttempt(attemptId: string, answers: {
   selectedOptionId?: string
   answerText?: string
 }[]) {
+  const submitAttemptSchema = z.object({
+    attemptId: z.string().uuid(),
+    answers: z.array(z.object({
+      questionId: z.string().uuid(),
+      selectedOptionId: z.string().uuid().optional(),
+      answerText: z.string().max(10000).optional(),
+    })).max(200),
+  })
+  const parsed = submitAttemptSchema.safeParse({ attemptId, answers })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -676,6 +765,9 @@ export async function submitAttempt(attemptId: string, answers: {
 // TEACHER: Get all attempts for a quiz
 // ============================================
 export async function getAttempts(quizId: string) {
+  const parsed = z.object({ quizId: z.string().uuid() }).safeParse({ quizId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -702,6 +794,9 @@ export async function getAttempts(quizId: string) {
 // STUDENT: Get their attempt result
 // ============================================
 export async function getStudentAttempt(attemptId: string) {
+  const parsed = z.object({ attemptId: z.string().uuid() }).safeParse({ attemptId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -746,6 +841,9 @@ export async function getStudentAttempt(attemptId: string) {
 // STUDENT: Get quizzes for a course (published only)
 // ============================================
 export async function getStudentQuizzes(courseId: string) {
+  const parsed = z.object({ courseId: z.string().uuid() }).safeParse({ courseId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')

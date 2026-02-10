@@ -1,5 +1,6 @@
 'use server'
 
+import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
@@ -9,6 +10,9 @@ import { getLetterGrade } from '@/lib/config/constants'
 // TEACHER: Get all submissions for an assignment
 // ============================================
 export async function getSubmissions(assignmentId: string) {
+  const parsed = z.object({ assignmentId: z.string().uuid() }).safeParse({ assignmentId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -100,6 +104,9 @@ export async function getSubmissions(assignmentId: string) {
 // STUDENT: Get own submission for an assignment
 // ============================================
 export async function getMySubmission(assignmentId: string) {
+  const parsed = z.object({ assignmentId: z.string().uuid() }).safeParse({ assignmentId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -144,6 +151,14 @@ export async function submitWork(
     fileUrls?: string[]
   }
 ) {
+  const submitWorkSchema = z.object({
+    assignmentId: z.string().uuid(),
+    content: z.string().max(50000).optional(),
+    fileUrls: z.array(z.string().max(2000)).max(20).optional(),
+  })
+  const parsed = submitWorkSchema.safeParse({ assignmentId, ...formData })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -251,6 +266,15 @@ export async function gradeSubmission(
   feedback?: string,
   rubricScores?: Record<string, number>
 ) {
+  const gradeSubmissionSchema = z.object({
+    submissionId: z.string().uuid(),
+    score: z.number().min(0).max(1000),
+    feedback: z.string().max(5000).optional(),
+    rubricScores: z.record(z.string(), z.number().min(0).max(1000)).optional(),
+  })
+  const parsed = gradeSubmissionSchema.safeParse({ submissionId, score, feedback, rubricScores })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -358,6 +382,12 @@ export async function gradeSubmission(
 // TEACHER: Return submission for revision
 // ============================================
 export async function returnSubmission(submissionId: string, feedback: string) {
+  const parsed = z.object({
+    submissionId: z.string().uuid(),
+    feedback: z.string().min(1).max(5000),
+  }).safeParse({ submissionId, feedback })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')

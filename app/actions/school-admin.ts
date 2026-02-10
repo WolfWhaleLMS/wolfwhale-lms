@@ -4,6 +4,7 @@ import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 async function getAdminContext() {
   const supabase = await createClient()
@@ -161,6 +162,9 @@ export async function createUser(formData: {
   role: string
   grade_level?: string
 }) {
+  const rl = await rateLimitAction('createUser')
+  if (!rl.success) return { success: false, error: rl.error }
+
   const { tenantId } = await getAdminContext()
   const adminSupabase = createAdminClient()
 

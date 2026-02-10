@@ -1,5 +1,6 @@
 'use server'
 
+import { z } from 'zod'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { getLetterGrade } from '@/lib/config/constants'
@@ -8,6 +9,12 @@ import { getLetterGrade } from '@/lib/config/constants'
 // Get grades for a course (optionally for a specific student)
 // ============================================
 export async function getGrades(courseId: string, studentId?: string) {
+  const parsed = z.object({
+    courseId: z.string().uuid(),
+    studentId: z.string().uuid().optional(),
+  }).safeParse({ courseId, studentId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -169,6 +176,9 @@ export async function getStudentGrades() {
 // TEACHER: Get full gradebook grid
 // ============================================
 export async function getGradebook(courseId: string) {
+  const parsed = z.object({ courseId: z.string().uuid() }).safeParse({ courseId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')

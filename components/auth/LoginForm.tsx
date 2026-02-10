@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -17,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { TurnstileWidget } from '@/components/auth/TurnstileWidget'
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -30,6 +31,17 @@ export function LoginForm() {
   const searchParams = useSearchParams()
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+
+  const turnstileEnabled = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+
+  const handleTurnstileVerify = useCallback((token: string) => {
+    setTurnstileToken(token)
+  }, [])
+
+  const handleTurnstileExpire = useCallback(() => {
+    setTurnstileToken(null)
+  }, [])
 
   const redirectTo = searchParams.get('redirectTo') || '/dashboard'
 
@@ -44,6 +56,12 @@ export function LoginForm() {
   async function onSubmit(data: LoginFormValues) {
     setIsLoading(true)
     setError(null)
+
+    if (turnstileEnabled && !turnstileToken) {
+      setError('Please complete the CAPTCHA verification.')
+      setIsLoading(false)
+      return
+    }
 
     const supabase = createClient()
     const { error } = await supabase.auth.signInWithPassword({
@@ -128,6 +146,11 @@ export function LoginForm() {
               <span>{error}</span>
             </div>
           )}
+
+          <TurnstileWidget
+            onVerify={handleTurnstileVerify}
+            onExpire={handleTurnstileExpire}
+          />
 
           <Button
             type="submit"

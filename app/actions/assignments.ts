@@ -1,5 +1,6 @@
 'use server'
 
+import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
@@ -8,6 +9,9 @@ import { createClient } from '@/lib/supabase/server'
 // TEACHER: Get assignments for a course
 // ============================================
 export async function getAssignments(courseId: string) {
+  const parsed = z.object({ courseId: z.string().uuid() }).safeParse({ courseId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -75,6 +79,9 @@ export async function getAssignments(courseId: string) {
 // Get single assignment
 // ============================================
 export async function getAssignment(assignmentId: string) {
+  const parsed = z.object({ assignmentId: z.string().uuid() }).safeParse({ assignmentId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -120,6 +127,30 @@ export async function createAssignment(formData: {
   attachments?: { url: string; fileName: string; fileSize: number; fileType: string }[]
   links?: { url: string; title: string }[]
 }) {
+  const createAssignmentSchema = z.object({
+    courseId: z.string().uuid(),
+    title: z.string().min(1).max(255),
+    description: z.string().max(5000).optional(),
+    type: z.string().min(1).max(50),
+    dueDate: z.string().max(100).optional(),
+    pointsPossible: z.number().min(0).max(1000),
+    submissionType: z.string().min(1).max(50),
+    latePolicy: z.boolean().optional(),
+    questions: z.array(z.unknown()).optional(),
+    attachments: z.array(z.object({
+      url: z.string().max(2000),
+      fileName: z.string().max(500),
+      fileSize: z.number().min(0),
+      fileType: z.string().max(100),
+    })).optional(),
+    links: z.array(z.object({
+      url: z.string().max(2000),
+      title: z.string().max(500),
+    })).optional(),
+  })
+  const parsed = createAssignmentSchema.safeParse(formData)
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -131,7 +162,7 @@ export async function createAssignment(formData: {
   const { data: course } = await supabase
     .from('courses')
     .select('created_by')
-    .eq('id', formData.courseId)
+    .eq('id', parsed.data.courseId)
     .single()
 
   if (!course || course.created_by !== user.id) {
@@ -139,22 +170,22 @@ export async function createAssignment(formData: {
   }
 
   const insertData: Record<string, unknown> = {
-    course_id: formData.courseId,
-    title: formData.title,
-    description: formData.description || null,
-    type: formData.type,
-    due_date: formData.dueDate || null,
-    max_points: formData.pointsPossible,
-    submission_type: formData.submissionType,
-    allow_late_submission: formData.latePolicy ?? false,
+    course_id: parsed.data.courseId,
+    title: parsed.data.title,
+    description: parsed.data.description || null,
+    type: parsed.data.type,
+    due_date: parsed.data.dueDate || null,
+    max_points: parsed.data.pointsPossible,
+    submission_type: parsed.data.submissionType,
+    allow_late_submission: parsed.data.latePolicy ?? false,
     status: 'assigned',
-    questions: formData.questions || [],
+    questions: parsed.data.questions || [],
   }
 
   // Build combined attachments array (files + links)
   const combinedAttachments = [
-    ...(formData.attachments || []).map((a) => ({ ...a, type: 'file' as const })),
-    ...(formData.links || []).map((l) => ({ ...l, type: 'link' as const })),
+    ...(parsed.data.attachments || []).map((a) => ({ ...a, type: 'file' as const })),
+    ...(parsed.data.links || []).map((l) => ({ ...l, type: 'link' as const })),
   ]
   if (combinedAttachments.length > 0) {
     insertData.attachments = JSON.stringify(combinedAttachments)
@@ -175,8 +206,8 @@ export async function createAssignment(formData: {
     return { error: 'Failed to create assignment' }
   }
 
-  revalidatePath(`/teacher/courses/${formData.courseId}/assignments`)
-  revalidatePath(`/teacher/courses/${formData.courseId}`)
+  revalidatePath(`/teacher/courses/${parsed.data.courseId}/assignments`)
+  revalidatePath(`/teacher/courses/${parsed.data.courseId}`)
   return { success: true, data }
 }
 
@@ -197,6 +228,26 @@ export async function updateAssignment(
     attachments?: { url: string; fileName: string; fileSize: number; fileType: string }[]
   }
 ) {
+  const updateAssignmentSchema = z.object({
+    assignmentId: z.string().uuid(),
+    title: z.string().min(1).max(255).optional(),
+    description: z.string().max(5000).optional(),
+    type: z.string().min(1).max(50).optional(),
+    dueDate: z.string().max(100).optional(),
+    pointsPossible: z.number().min(0).max(1000).optional(),
+    submissionType: z.string().min(1).max(50).optional(),
+    latePolicy: z.boolean().optional(),
+    status: z.string().min(1).max(50).optional(),
+    attachments: z.array(z.object({
+      url: z.string().max(2000),
+      fileName: z.string().max(500),
+      fileSize: z.number().min(0),
+      fileType: z.string().max(100),
+    })).optional(),
+  })
+  const parsed = updateAssignmentSchema.safeParse({ assignmentId, ...formData })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -247,6 +298,9 @@ export async function updateAssignment(
 // TEACHER: Delete assignment
 // ============================================
 export async function deleteAssignment(assignmentId: string) {
+  const parsed = z.object({ assignmentId: z.string().uuid() }).safeParse({ assignmentId })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
