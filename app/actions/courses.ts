@@ -4,6 +4,8 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
+import { sanitizeText } from '@/lib/sanitize'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -52,8 +54,16 @@ export async function getCourses() {
   const { supabase, user } = await getAuthUser()
   const tenantId = await getTenantId()
 
-  const headersList = await headers()
-  const userRole = headersList.get('x-user-role')
+  // Verify role from DB, not from headers
+  const { data: membership } = await supabase
+    .from('tenant_memberships')
+    .select('role')
+    .eq('user_id', user.id)
+    .eq('tenant_id', tenantId)
+    .eq('status', 'active')
+    .single()
+
+  const userRole = membership?.role
 
   if (userRole === 'teacher' || userRole === 'admin' || userRole === 'super_admin') {
     // Teacher: get courses they created
@@ -305,6 +315,10 @@ export async function createCourse(input: CreateCourseInput) {
   const parsed = createCourseSchema.safeParse(input)
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
+  // Sanitize user-generated text content
+  const sanitizedName = sanitizeText(parsed.data.name)
+  const sanitizedDescription = parsed.data.description ? sanitizeText(parsed.data.description) : null
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   const { data: course, error } = await supabase
@@ -312,8 +326,8 @@ export async function createCourse(input: CreateCourseInput) {
     .insert({
       tenant_id: tenantId,
       created_by: user.id,
-      name: parsed.data.name,
-      description: parsed.data.description || null,
+      name: sanitizedName,
+      description: sanitizedDescription,
       subject: parsed.data.subject || null,
       grade_level: parsed.data.grade_level || null,
       semester: parsed.data.semester || null,
@@ -376,8 +390,8 @@ export async function updateCourse(
   }
 
   const updateData: Record<string, unknown> = {}
-  if (input.name !== undefined) updateData.name = input.name
-  if (input.description !== undefined) updateData.description = input.description
+  if (input.name !== undefined) updateData.name = sanitizeText(input.name)
+  if (input.description !== undefined) updateData.description = sanitizeText(input.description)
   if (input.subject !== undefined) updateData.subject = input.subject
   if (input.grade_level !== undefined) updateData.grade_level = input.grade_level
   if (input.semester !== undefined) updateData.semester = input.semester
@@ -438,17 +452,21 @@ export async function deleteCourse(courseId: string) {
 // ---------------------------------------------------------------------------
 
 export async function enrollWithCode(code: string) {
+  const rl = await rateLimitAction('enrollWithCode')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   const parsed = z.object({ code: z.string().min(1).max(20) }).safeParse({ code })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
   const { supabase, user } = await getAuthUser()
   const tenantId = await getTenantId()
 
-  // Look up the class code
+  // Look up the class code — must belong to the user's tenant
   const { data: classCode, error: codeError } = await supabase
     .from('class_codes')
     .select('id, course_id, tenant_id, is_active, expires_at, max_uses, use_count')
     .eq('code', code.toUpperCase().trim())
+    .eq('tenant_id', tenantId)
     .single()
 
   if (codeError || !classCode) {
@@ -465,6 +483,25 @@ export async function enrollWithCode(code: string) {
 
   if (classCode.max_uses && classCode.use_count >= classCode.max_uses) {
     return { error: 'This class code has reached its maximum number of uses.' }
+  }
+
+  // Check tenant max_users capacity
+  const { data: tenant } = await supabase
+    .from('tenants')
+    .select('max_users')
+    .eq('id', tenantId)
+    .single()
+
+  if (tenant?.max_users) {
+    const { count: currentMembers } = await supabase
+      .from('tenant_memberships')
+      .select('id', { count: 'exact', head: true })
+      .eq('tenant_id', tenantId)
+      .eq('status', 'active')
+
+    if (currentMembers !== null && currentMembers >= tenant.max_users) {
+      return { error: 'This school has reached its maximum number of users.' }
+    }
   }
 
   // Check if already enrolled
@@ -486,6 +523,18 @@ export async function enrollWithCode(code: string) {
     .eq('id', classCode.course_id)
     .single()
 
+  // Atomically increment class code usage (optimistic concurrency control)
+  const { data: updateResult, error: useCountError } = await supabase
+    .from('class_codes')
+    .update({ use_count: (classCode.use_count || 0) + 1 })
+    .eq('id', classCode.id)
+    .eq('use_count', classCode.use_count ?? 0)
+    .select('id')
+
+  if (useCountError || !updateResult || updateResult.length === 0) {
+    return { error: 'This code was just used by someone else. Please try again.' }
+  }
+
   // Create enrollment
   const { error: enrollError } = await supabase.from('course_enrollments').insert({
     tenant_id: classCode.tenant_id,
@@ -497,14 +546,13 @@ export async function enrollWithCode(code: string) {
 
   if (enrollError) {
     console.error('Enrollment error:', enrollError)
+    // Roll back the use_count increment on enrollment failure
+    await supabase
+      .from('class_codes')
+      .update({ use_count: classCode.use_count || 0 })
+      .eq('id', classCode.id)
     return { error: 'Failed to enroll. Please try again.' }
   }
-
-  // Increment class code usage
-  await supabase
-    .from('class_codes')
-    .update({ use_count: (classCode.use_count || 0) + 1 })
-    .eq('id', classCode.id)
 
   revalidatePath('/student/courses')
   return { success: true, courseId: classCode.course_id }

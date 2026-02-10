@@ -3,6 +3,7 @@
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 async function getContext() {
   const supabase = await createClient()
@@ -39,7 +40,19 @@ export async function getConversations() {
 }
 
 export async function getConversation(conversationId: string) {
-  const { supabase, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getContext()
+
+  // Verify the user is a member of this conversation
+  const { data: membership } = await supabase
+    .from('conversation_members')
+    .select('id')
+    .eq('conversation_id', conversationId)
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (!membership) {
+    throw new Error('Not authorized - you are not a member of this conversation')
+  }
 
   const { data, error } = await supabase
     .from('conversations')
@@ -60,6 +73,9 @@ export async function getConversation(conversationId: string) {
 }
 
 export async function createDirectMessage(recipientId: string) {
+  const rl = await rateLimitAction('createDirectMessage')
+  if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
+
   const { supabase, user, tenantId } = await getContext()
 
   // Check for existing DM
@@ -137,7 +153,22 @@ export async function createGroupConversation(title: string, memberIds: string[]
 // ---------------------------------------------------------------------------
 
 export async function sendMessage(conversationId: string, content: string) {
+  const rl = await rateLimitAction('sendMessage')
+  if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
+
   const { supabase, user, tenantId } = await getContext()
+
+  // Verify the user is a member of the conversation
+  const { data: membership } = await supabase
+    .from('conversation_members')
+    .select('id')
+    .eq('conversation_id', conversationId)
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (!membership) {
+    throw new Error('Not authorized - you are not a member of this conversation')
+  }
 
   const { data, error } = await supabase
     .from('messages')

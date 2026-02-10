@@ -61,5 +61,8 @@ tmp/
 temp/
 .vercel
 
+# Database backups
+backups/
+
 # TypeScript
 next-env.d.ts

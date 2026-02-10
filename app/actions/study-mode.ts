@@ -7,6 +7,7 @@ import {
   processXPAward,
   type XPEventType,
 } from '@/lib/gamification/xp-engine'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 async function getContext() {
   const supabase = await createClient()
@@ -24,6 +25,9 @@ async function getContext() {
  * We store sessions as xp_events with source_type = 'study_session'.
  */
 export async function recordStudySession(durationMinutes: number, musicType: string) {
+  const rl = await rateLimitAction('recordStudySession')
+  if (!rl.success) return { xpAwarded: 0, error: rl.error }
+
   const { supabase, user, tenantId } = await getContext()
 
   // Get current user level for XP calculation

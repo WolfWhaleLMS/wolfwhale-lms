@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
+import { sanitizeText, sanitizeRichText } from '@/lib/sanitize'
 
 // ============================================
 // TEACHER: Get assignments for a course
@@ -15,6 +16,7 @@ export async function getAssignments(courseId: string) {
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) return { error: 'No tenant context' }
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
@@ -28,9 +30,7 @@ export async function getAssignments(courseId: string) {
     .eq('course_id', courseId)
     .order('due_date', { ascending: true })
 
-  if (tenantId) {
-    query = query.eq('tenant_id', tenantId)
-  }
+  query = query.eq('tenant_id', tenantId)
 
   const { data, error } = await query
 
@@ -85,6 +85,7 @@ export async function getAssignment(assignmentId: string) {
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) return { error: 'No tenant context' }
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
@@ -97,9 +98,7 @@ export async function getAssignment(assignmentId: string) {
     `)
     .eq('id', assignmentId)
 
-  if (tenantId) {
-    query = query.eq('tenant_id', tenantId)
-  }
+  query = query.eq('tenant_id', tenantId)
 
   const { data, error } = await query.single()
 
@@ -151,9 +150,14 @@ export async function createAssignment(formData: {
   const parsed = createAssignmentSchema.safeParse(formData)
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
+  // Sanitize user-generated text content
+  const sanitizedTitle = sanitizeText(parsed.data.title)
+  const sanitizedDescription = parsed.data.description ? sanitizeRichText(parsed.data.description) : null
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) return { error: 'No tenant context' }
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
@@ -171,8 +175,8 @@ export async function createAssignment(formData: {
 
   const insertData: Record<string, unknown> = {
     course_id: parsed.data.courseId,
-    title: parsed.data.title,
-    description: parsed.data.description || null,
+    title: sanitizedTitle,
+    description: sanitizedDescription,
     type: parsed.data.type,
     due_date: parsed.data.dueDate || null,
     max_points: parsed.data.pointsPossible,
@@ -191,9 +195,7 @@ export async function createAssignment(formData: {
     insertData.attachments = JSON.stringify(combinedAttachments)
   }
 
-  if (tenantId) {
-    insertData.tenant_id = tenantId
-  }
+  insertData.tenant_id = tenantId
 
   const { data, error } = await supabase
     .from('assignments')
@@ -268,8 +270,8 @@ export async function updateAssignment(
   }
 
   const updateData: Record<string, unknown> = {}
-  if (formData.title !== undefined) updateData.title = formData.title
-  if (formData.description !== undefined) updateData.description = formData.description
+  if (formData.title !== undefined) updateData.title = sanitizeText(formData.title)
+  if (formData.description !== undefined) updateData.description = sanitizeRichText(formData.description)
   if (formData.type !== undefined) updateData.type = formData.type
   if (formData.dueDate !== undefined) updateData.due_date = formData.dueDate
   if (formData.pointsPossible !== undefined) updateData.max_points = formData.pointsPossible
@@ -342,6 +344,7 @@ export async function getStudentAssignments() {
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) return { error: 'Not authenticated' }
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
@@ -373,9 +376,7 @@ export async function getStudentAssignments() {
     .eq('status', 'assigned')
     .order('due_date', { ascending: true })
 
-  if (tenantId) {
-    query = query.eq('tenant_id', tenantId)
-  }
+  query = query.eq('tenant_id', tenantId)
 
   const { data: assignments, error } = await query
 

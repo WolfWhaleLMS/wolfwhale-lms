@@ -1,5 +1,6 @@
 'use server'
 
+import { z } from 'zod'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
@@ -10,14 +11,24 @@ async function getAdminContext() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
+
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
-  const role = headersList.get('x-user-role')
   if (!tenantId) throw new Error('No tenant context')
-  if (role !== 'admin' && role !== 'super_admin') {
+
+  const { data: membership } = await supabase
+    .from('tenant_memberships')
+    .select('role')
+    .eq('user_id', user.id)
+    .eq('tenant_id', tenantId)
+    .eq('status', 'active')
+    .single()
+
+  if (!membership || !['admin', 'super_admin'].includes(membership.role)) {
     throw new Error('Admin access required')
   }
-  return { supabase, user, tenantId, role }
+
+  return { supabase, user, tenantId, role: membership.role }
 }
 
 // ---------------------------------------------------------------------------
@@ -95,14 +106,35 @@ export async function getUserDetail(userId: string) {
   }
 }
 
+const updateUserRoleSchema = z.object({
+  userId: z.string().uuid(),
+  newRole: z.enum(['student', 'teacher', 'parent', 'admin']),
+})
+
 export async function updateUserRole(userId: string, newRole: string) {
-  const { supabase, tenantId } = await getAdminContext()
+  // Validate inputs with Zod
+  const parsed = updateUserRoleSchema.safeParse({ userId, newRole })
+  if (!parsed.success) {
+    throw new Error('Invalid input: ' + parsed.error.issues[0].message)
+  }
+
+  const { supabase, user, tenantId, role: callerRole } = await getAdminContext()
+
+  // Prevent self-role-change
+  if (userId === user.id) {
+    throw new Error('You cannot change your own role.')
+  }
+
+  // Only super_admin can promote someone to admin
+  if (parsed.data.newRole === 'admin' && callerRole !== 'super_admin') {
+    throw new Error('Only super admins can assign the admin role.')
+  }
 
   const { error } = await supabase
     .from('tenant_memberships')
-    .update({ role: newRole })
+    .update({ role: parsed.data.newRole })
     .eq('tenant_id', tenantId)
-    .eq('user_id', userId)
+    .eq('user_id', parsed.data.userId)
 
   if (error) throw error
   revalidatePath('/admin/users')

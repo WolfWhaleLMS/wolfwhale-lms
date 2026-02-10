@@ -18,9 +18,37 @@ export async function getGrades(courseId: string, studentId?: string) {
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) return { error: 'No tenant context' }
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
+
+  // Authorization check: caller must be the course teacher, the student themselves, or an admin
+  const { data: course } = await supabase
+    .from('courses')
+    .select('created_by')
+    .eq('id', courseId)
+    .single()
+
+  if (!course) return { error: 'Course not found' }
+
+  const isCourseTeacher = course.created_by === user.id
+  const isSelf = studentId === user.id
+
+  if (!isCourseTeacher && !isSelf) {
+    // Check if user is admin/super_admin
+    const { data: membership } = await supabase
+      .from('tenant_memberships')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('tenant_id', tenantId)
+      .eq('status', 'active')
+      .single()
+
+    if (!membership || !['admin', 'super_admin'].includes(membership.role)) {
+      return { error: 'Not authorized to view these grades' }
+    }
+  }
 
   let query = supabase
     .from('grades')
@@ -31,9 +59,7 @@ export async function getGrades(courseId: string, studentId?: string) {
     `)
     .order('graded_at', { ascending: false })
 
-  if (tenantId) {
-    query = query.eq('tenant_id', tenantId)
-  }
+  query = query.eq('tenant_id', tenantId)
 
   if (studentId) {
     query = query.eq('student_id', studentId)
@@ -69,6 +95,7 @@ export async function getStudentGrades() {
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) return { error: 'No tenant context' }
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
@@ -83,9 +110,7 @@ export async function getStudentGrades() {
     .eq('student_id', user.id)
     .order('graded_at', { ascending: false })
 
-  if (tenantId) {
-    query = query.eq('tenant_id', tenantId)
-  }
+  query = query.eq('tenant_id', tenantId)
 
   const { data: grades, error } = await query
 
@@ -182,6 +207,7 @@ export async function getGradebook(courseId: string) {
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) return { error: 'No tenant context' }
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
@@ -205,9 +231,7 @@ export async function getGradebook(courseId: string) {
     .eq('status', 'assigned')
     .order('due_date', { ascending: true })
 
-  if (tenantId) {
-    assignmentQuery = assignmentQuery.eq('tenant_id', tenantId)
-  }
+  assignmentQuery = assignmentQuery.eq('tenant_id', tenantId)
 
   const { data: assignments } = await assignmentQuery
 
@@ -237,9 +261,7 @@ export async function getGradebook(courseId: string) {
     .select('assignment_id, student_id, points_earned, percentage, letter_grade')
     .in('assignment_id', assignmentIds)
 
-  if (tenantId) {
-    gradesQuery = gradesQuery.eq('tenant_id', tenantId)
-  }
+  gradesQuery = gradesQuery.eq('tenant_id', tenantId)
 
   const { data: allGrades } = await gradesQuery
 

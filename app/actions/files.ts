@@ -38,13 +38,19 @@ export async function uploadFileAction(
     return { error: 'Not authenticated' }
   }
 
+  // Allowed storage buckets
+  const ALLOWED_BUCKETS = ['course-materials', 'submissions', 'avatars']
+
   // Extract form data
   const file = formData.get('file') as File | null
   const bucket = formData.get('bucket') as string | null
-  const customPath = formData.get('path') as string | null
 
   if (!file || !bucket) {
     return { error: 'File and bucket are required' }
+  }
+
+  if (!ALLOWED_BUCKETS.includes(bucket)) {
+    return { error: 'Invalid storage bucket' }
   }
 
   // Validate file size
@@ -66,10 +72,10 @@ export async function uploadFileAction(
     return { error: `File type "${file.type || ext}" is not allowed. Supported types: ${ALLOWED_EXTENSIONS.join(', ')}` }
   }
 
-  // Generate scoped path
+  // Generate scoped path — always server-generated, never user-supplied
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
-  const filePath = customPath || generateFilePath(user.id, file.name, tenantId)
+  const filePath = generateFilePath(user.id, file.name, tenantId)
 
   // Upload to Supabase Storage
   const { data, error } = await supabase.storage
@@ -126,6 +132,13 @@ export async function deleteFileAction(
   bucket: string,
   path: string
 ): Promise<{ success?: boolean; error?: string }> {
+  // Allowed storage buckets
+  const ALLOWED_BUCKETS = ['course-materials', 'submissions', 'avatars']
+
+  if (!ALLOWED_BUCKETS.includes(bucket)) {
+    return { error: 'Invalid storage bucket' }
+  }
+
   const supabase = await createClient()
 
   // Authenticate user
@@ -134,15 +147,32 @@ export async function deleteFileAction(
     return { error: 'Not authenticated' }
   }
 
+  const headersList = await headers()
+  const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) {
+    return { error: 'No tenant context' }
+  }
+
   // Verify the user owns the file (path contains their user ID)
   // Path format: {tenantId}/{userId}/{timestamp}-{random}-{filename}
   const pathParts = path.split('/')
-  if (pathParts.length >= 2) {
-    const pathUserId = pathParts[1]
-    if (pathUserId !== user.id) {
-      // Check if user is admin/teacher with appropriate permissions
-      // For now, allow deletion if user is the owner
-      // RLS policies will enforce additional checks
+  if (pathParts.length < 2) {
+    return { error: 'Invalid file path' }
+  }
+
+  const pathUserId = pathParts[1]
+  if (pathUserId !== user.id) {
+    // Only admins/super_admins can delete other users' files
+    const { data: membership } = await supabase
+      .from('tenant_memberships')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('tenant_id', tenantId)
+      .eq('status', 'active')
+      .single()
+
+    if (!membership || !['admin', 'super_admin'].includes(membership.role)) {
+      return { error: 'Not authorized to delete this file' }
     }
   }
 

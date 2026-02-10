@@ -9,6 +9,7 @@ import {
   getTierForLevel,
   type XPEventType,
 } from '@/lib/gamification/xp-engine'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 async function getContext() {
   const supabase = await createClient()
@@ -25,6 +26,9 @@ async function getContext() {
 // ---------------------------------------------------------------------------
 
 export async function awardXP(eventType: XPEventType, sourceType?: string, sourceId?: string) {
+  const rl = await rateLimitAction('awardXP')
+  if (!rl.success) return { xpAwarded: 0, error: rl.error }
+
   const { supabase, user, tenantId } = await getContext()
 
   // Get current user level

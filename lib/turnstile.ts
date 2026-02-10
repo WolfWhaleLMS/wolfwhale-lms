@@ -1,3 +1,5 @@
+import 'server-only'
+
 const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY
 
 export async function verifyTurnstileToken(token: string): Promise<boolean> {

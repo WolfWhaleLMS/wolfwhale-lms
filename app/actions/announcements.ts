@@ -4,6 +4,8 @@ import { z } from 'zod'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { sanitizeText, sanitizeRichText } from '@/lib/sanitize'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 async function getContext() {
   const supabase = await createClient()
@@ -43,6 +45,9 @@ export async function createAnnouncement(formData: {
   courseId?: string
   pinned?: boolean
 }) {
+  const rl = await rateLimitAction('createAnnouncement')
+  if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
+
   const createAnnouncementSchema = z.object({
     title: z.string().min(1).max(255),
     content: z.string().min(1).max(10000),
@@ -52,7 +57,24 @@ export async function createAnnouncement(formData: {
   const parsed = createAnnouncementSchema.safeParse(formData)
   if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
 
+  // Sanitize user-generated text content
+  const sanitizedTitle = sanitizeText(parsed.data.title)
+  const sanitizedContent = sanitizeRichText(parsed.data.content)
+
   const { supabase, user, tenantId } = await getContext()
+
+  // Only teachers, admins, and super_admins can create announcements
+  const { data: membership } = await supabase
+    .from('tenant_memberships')
+    .select('role')
+    .eq('user_id', user.id)
+    .eq('tenant_id', tenantId)
+    .eq('status', 'active')
+    .single()
+
+  if (!membership || !['teacher', 'admin', 'super_admin'].includes(membership.role)) {
+    throw new Error('Not authorized - only teachers and admins can create announcements')
+  }
 
   const { data, error } = await supabase
     .from('announcements')
@@ -60,8 +82,8 @@ export async function createAnnouncement(formData: {
       tenant_id: tenantId,
       author_id: user.id,
       course_id: parsed.data.courseId || null,
-      title: parsed.data.title,
-      content: parsed.data.content,
+      title: sanitizedTitle,
+      content: sanitizedContent,
       pinned: parsed.data.pinned || false,
     })
     .select('id')
@@ -95,12 +117,40 @@ export async function togglePinAnnouncement(announcementId: string, pinned: bool
   }).safeParse({ announcementId, pinned })
   if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
 
-  const { supabase } = await getContext()
+  const { supabase, user, tenantId } = await getContext()
+
+  // Fetch the announcement to check ownership and tenant
+  const { data: announcement } = await supabase
+    .from('announcements')
+    .select('author_id, tenant_id')
+    .eq('id', announcementId)
+    .eq('tenant_id', tenantId)
+    .single()
+
+  if (!announcement) {
+    throw new Error('Announcement not found')
+  }
+
+  // Allow if user is the author, or an admin/super_admin
+  if (announcement.author_id !== user.id) {
+    const { data: membership } = await supabase
+      .from('tenant_memberships')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('tenant_id', tenantId)
+      .eq('status', 'active')
+      .single()
+
+    if (!membership || !['admin', 'super_admin'].includes(membership.role)) {
+      throw new Error('Not authorized - only the author or admins can pin/unpin announcements')
+    }
+  }
 
   const { error } = await supabase
     .from('announcements')
     .update({ pinned })
     .eq('id', announcementId)
+    .eq('tenant_id', tenantId)
 
   if (error) throw error
   revalidatePath('/announcements')

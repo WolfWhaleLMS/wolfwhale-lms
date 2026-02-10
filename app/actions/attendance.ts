@@ -14,6 +14,17 @@ async function getContext() {
   return { supabase, user, tenantId }
 }
 
+async function getUserRole(supabase: ReturnType<typeof createClient> extends Promise<infer T> ? T : never, userId: string, tenantId: string) {
+  const { data: membership } = await supabase
+    .from('tenant_memberships')
+    .select('role')
+    .eq('user_id', userId)
+    .eq('tenant_id', tenantId)
+    .eq('status', 'active')
+    .single()
+  return membership?.role ?? null
+}
+
 type AttendanceStatus = 'present' | 'absent' | 'tardy' | 'excused' | 'online'
 
 // ---------------------------------------------------------------------------
@@ -26,6 +37,26 @@ export async function recordAttendance(
   records: { studentId: string; status: AttendanceStatus; notes?: string }[]
 ) {
   const { supabase, user, tenantId } = await getContext()
+
+  // Verify caller is the course teacher or an admin/super_admin
+  const role = await getUserRole(supabase, user.id, tenantId)
+  if (!role) throw new Error('Not authorized')
+
+  if (role === 'admin' || role === 'super_admin') {
+    // Admins can record attendance for any course in the tenant
+  } else {
+    // Teachers can only record attendance for their own courses
+    const { data: course } = await supabase
+      .from('courses')
+      .select('created_by')
+      .eq('id', courseId)
+      .eq('tenant_id', tenantId)
+      .single()
+
+    if (!course || course.created_by !== user.id) {
+      throw new Error('Not authorized - you can only record attendance for your own courses')
+    }
+  }
 
   const entries = records.map((r) => ({
     tenant_id: tenantId,
@@ -51,7 +82,24 @@ export async function recordAttendance(
 // ---------------------------------------------------------------------------
 
 export async function getAttendanceForCourse(courseId: string, date?: string) {
-  const { supabase, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getContext()
+
+  // Verify caller is the course teacher or an admin/super_admin
+  const role = await getUserRole(supabase, user.id, tenantId)
+  if (!role) throw new Error('Not authorized')
+
+  if (role !== 'admin' && role !== 'super_admin') {
+    const { data: course } = await supabase
+      .from('courses')
+      .select('created_by')
+      .eq('id', courseId)
+      .eq('tenant_id', tenantId)
+      .single()
+
+    if (!course || course.created_by !== user.id) {
+      throw new Error('Not authorized to view attendance for this course')
+    }
+  }
 
   let query = supabase
     .from('attendance_records')
@@ -70,7 +118,24 @@ export async function getAttendanceForCourse(courseId: string, date?: string) {
 }
 
 export async function getAttendanceHistory(courseId: string, startDate: string, endDate: string) {
-  const { supabase, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getContext()
+
+  // Verify caller is the course teacher or an admin/super_admin
+  const role = await getUserRole(supabase, user.id, tenantId)
+  if (!role) throw new Error('Not authorized')
+
+  if (role !== 'admin' && role !== 'super_admin') {
+    const { data: course } = await supabase
+      .from('courses')
+      .select('created_by')
+      .eq('id', courseId)
+      .eq('tenant_id', tenantId)
+      .single()
+
+    if (!course || course.created_by !== user.id) {
+      throw new Error('Not authorized to view attendance history for this course')
+    }
+  }
 
   const { data, error } = await supabase
     .from('attendance_records')
@@ -94,6 +159,29 @@ export async function getStudentAttendance(studentId?: string) {
 
   const targetId = studentId || user.id
 
+  // If viewing another student's attendance, verify authorization
+  if (targetId !== user.id) {
+    const role = await getUserRole(supabase, user.id, tenantId)
+    if (!role) throw new Error('Not authorized')
+
+    if (role === 'parent') {
+      // Parents can only view their linked children's attendance
+      const { data: parentLink } = await supabase
+        .from('student_parents')
+        .select('id')
+        .eq('parent_id', user.id)
+        .eq('student_id', targetId)
+        .eq('status', 'active')
+        .maybeSingle()
+
+      if (!parentLink) {
+        throw new Error('Not authorized to view this student\'s attendance')
+      }
+    } else if (!['teacher', 'admin', 'super_admin'].includes(role)) {
+      throw new Error('Not authorized to view this student\'s attendance')
+    }
+  }
+
   const { data, error } = await supabase
     .from('attendance_records')
     .select('*, courses(name)')
@@ -110,6 +198,29 @@ export async function getAttendanceSummary(studentId?: string) {
   const { supabase, user, tenantId } = await getContext()
 
   const targetId = studentId || user.id
+
+  // If viewing another student's summary, verify authorization
+  if (targetId !== user.id) {
+    const role = await getUserRole(supabase, user.id, tenantId)
+    if (!role) throw new Error('Not authorized')
+
+    if (role === 'parent') {
+      // Parents can only view their linked children's attendance
+      const { data: parentLink } = await supabase
+        .from('student_parents')
+        .select('id')
+        .eq('parent_id', user.id)
+        .eq('student_id', targetId)
+        .eq('status', 'active')
+        .maybeSingle()
+
+      if (!parentLink) {
+        throw new Error('Not authorized to view this student\'s attendance summary')
+      }
+    } else if (!['teacher', 'admin', 'super_admin'].includes(role)) {
+      throw new Error('Not authorized to view this student\'s attendance summary')
+    }
+  }
 
   const { data, error } = await supabase
     .from('attendance_records')

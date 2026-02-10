@@ -21,13 +21,22 @@ async function requireAdmin() {
   if (!user) throw new Error('Not authenticated')
 
   const headersList = await headers()
-  const role = headersList.get('x-user-role')
-  if (role !== 'admin' && role !== 'super_admin') {
+  const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) throw new Error('No tenant context')
+
+  const { data: membership } = await supabase
+    .from('tenant_memberships')
+    .select('role')
+    .eq('user_id', user.id)
+    .eq('tenant_id', tenantId)
+    .eq('status', 'active')
+    .single()
+
+  if (!membership || !['admin', 'super_admin'].includes(membership.role)) {
     throw new Error('Access denied. Admin role required.')
   }
 
-  const tenantId = headersList.get('x-tenant-id')
-  return { user, tenantId }
+  return { supabase, user, tenantId, role: membership.role }
 }
 
 async function getCurrentUser() {
@@ -40,7 +49,19 @@ async function getCurrentUser() {
 
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
-  return { user, tenantId }
+  if (!tenantId) throw new Error('No tenant context')
+
+  const { data: membership } = await supabase
+    .from('tenant_memberships')
+    .select('role, tenant_id')
+    .eq('user_id', user.id)
+    .eq('tenant_id', tenantId)
+    .eq('status', 'active')
+    .single()
+
+  if (!membership) throw new Error('No active membership found')
+
+  return { supabase, user, tenantId: membership.tenant_id }
 }
 
 // ---------------------------------------------------------------------------
@@ -57,7 +78,7 @@ export async function requestDataExport(): Promise<{
 
     const { user, tenantId } = await getCurrentUser()
 
-    const exportData = await exportUserData(user.id, tenantId ?? undefined)
+    const exportData = await exportUserData(user.id, tenantId)
 
     await logAuditEvent({
       action: 'data.export',
@@ -93,16 +114,9 @@ export interface ComplianceStatus {
   lastAuditDate: string | null
 }
 
-export async function getComplianceStatus(
-  tenantId?: string
-): Promise<{ data: ComplianceStatus | null; error: string | null }> {
+export async function getComplianceStatus(): Promise<{ data: ComplianceStatus | null; error: string | null }> {
   try {
-    await requireAdmin()
-    const supabase = await createClient()
-
-    // Resolve tenant
-    const headersList = await headers()
-    const resolvedTenantId = tenantId ?? headersList.get('x-tenant-id')
+    const { supabase, tenantId: resolvedTenantId } = await requireAdmin()
 
     // Check for audit logs existence (basic FERPA data-access-logging requirement)
     const { count: auditCount } = await supabase
@@ -259,15 +273,9 @@ export interface ConsentRecord {
   updated_at: string | null
 }
 
-export async function getConsentRecords(
-  tenantId?: string
-): Promise<{ data: ConsentRecord[] | null; error: string | null }> {
+export async function getConsentRecords(): Promise<{ data: ConsentRecord[] | null; error: string | null }> {
   try {
-    await requireAdmin()
-    const supabase = await createClient()
-
-    const headersList = await headers()
-    const resolvedTenantId = tenantId ?? headersList.get('x-tenant-id')
+    const { supabase, tenantId: resolvedTenantId } = await requireAdmin()
 
     const { data, error } = await supabase
       .from('consent_records')
@@ -319,8 +327,7 @@ export async function updateConsentStatus(
   consentGiven: boolean
 ): Promise<{ success: boolean; error: string | null }> {
   try {
-    const { user, tenantId } = await requireAdmin()
-    const supabase = await createClient()
+    const { supabase, user, tenantId } = await requireAdmin()
 
     const { error } = await supabase
       .from('consent_records')
@@ -387,8 +394,7 @@ export async function submitDataRequest(
     const rl = await rateLimitAction('submitDataRequest')
     if (!rl.success) return { success: false, error: rl.error! }
 
-    const { user, tenantId } = await getCurrentUser()
-    const supabase = await createClient()
+    const { supabase, user, tenantId } = await getCurrentUser()
 
     const { error } = await supabase.from('data_deletion_requests').insert({
       tenant_id: tenantId,
@@ -424,10 +430,7 @@ export async function getDataRequests(): Promise<{
   error: string | null
 }> {
   try {
-    await requireAdmin()
-    const supabase = await createClient()
-    const headersList = await headers()
-    const tenantId = headersList.get('x-tenant-id')
+    const { supabase, tenantId } = await requireAdmin()
 
     const { data, error } = await supabase
       .from('data_deletion_requests')
@@ -461,8 +464,7 @@ export async function processDataRequest(
   adminNotes?: string
 ): Promise<{ success: boolean; error: string | null }> {
   try {
-    const { user } = await requireAdmin()
-    const supabase = await createClient()
+    const { supabase, user, tenantId } = await requireAdmin()
 
     const { error } = await supabase
       .from('data_deletion_requests')
@@ -476,6 +478,7 @@ export async function processDataRequest(
         updated_at: new Date().toISOString(),
       })
       .eq('id', requestId)
+      .eq('tenant_id', tenantId)
 
     if (error) return { success: false, error: error.message }
 

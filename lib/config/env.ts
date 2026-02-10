@@ -1,3 +1,5 @@
+import 'server-only'
+
 // Environment variable validation
 // Validates required env vars at build time
 

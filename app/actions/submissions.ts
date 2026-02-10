@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { getLetterGrade } from '@/lib/config/constants'
+import { sanitizeText, sanitizeRichText } from '@/lib/sanitize'
 
 // ============================================
 // TEACHER: Get all submissions for an assignment
@@ -34,6 +35,8 @@ export async function getSubmissions(assignmentId: string) {
     return { error: 'Not authorized to view these submissions' }
   }
 
+  if (!tenantId) return { error: 'No tenant context' }
+
   // Get submissions with student profiles
   let query = supabase
     .from('submissions')
@@ -44,9 +47,7 @@ export async function getSubmissions(assignmentId: string) {
     .eq('assignment_id', assignmentId)
     .order('submitted_at', { ascending: false })
 
-  if (tenantId) {
-    query = query.eq('tenant_id', tenantId)
-  }
+  query = query.eq('tenant_id', tenantId)
 
   const { data: submissions, error } = await query
 
@@ -110,6 +111,7 @@ export async function getMySubmission(assignmentId: string) {
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) return { error: 'No tenant context' }
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
@@ -120,9 +122,7 @@ export async function getMySubmission(assignmentId: string) {
     .eq('assignment_id', assignmentId)
     .eq('student_id', user.id)
 
-  if (tenantId) {
-    query = query.eq('tenant_id', tenantId)
-  }
+  query = query.eq('tenant_id', tenantId)
 
   const { data: submission } = await query.maybeSingle()
 
@@ -162,6 +162,7 @@ export async function submitWork(
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) return { error: 'No tenant context' }
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
@@ -189,7 +190,7 @@ export async function submitWork(
   // Check for existing submission
   const { data: existing } = await supabase
     .from('submissions')
-    .select('id')
+    .select('id, status')
     .eq('assignment_id', assignmentId)
     .eq('student_id', user.id)
     .maybeSingle()
@@ -201,27 +202,33 @@ export async function submitWork(
     return { error: 'This assignment does not accept late submissions' }
   }
 
+  // Sanitize user-generated text content
+  const sanitizedContent = formData.content ? sanitizeRichText(formData.content) : null
+
   const submissionData: Record<string, unknown> = {
     assignment_id: assignmentId,
     student_id: user.id,
-    submission_text: formData.content || null,
+    submission_text: sanitizedContent,
     file_path: formData.fileUrls || null,
     submitted_at: now.toISOString(),
     status: 'submitted',
     is_late: isLate,
   }
 
-  if (tenantId) {
-    submissionData.tenant_id = tenantId
-  }
+  submissionData.tenant_id = tenantId
 
   let result
   if (existing) {
+    // Prevent resubmission after grading
+    if (existing.status === 'graded') {
+      return { error: 'Cannot resubmit — this submission has already been graded' }
+    }
+
     // Update existing submission
     const { data, error } = await supabase
       .from('submissions')
       .update({
-        submission_text: formData.content || null,
+        submission_text: sanitizedContent,
         file_path: formData.fileUrls || null,
         submitted_at: now.toISOString(),
         is_late: isLate,
@@ -278,6 +285,7 @@ export async function gradeSubmission(
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) return { error: 'No tenant context' }
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
@@ -302,8 +310,14 @@ export async function gradeSubmission(
   }
 
   const maxPoints = assignmentData.max_points
+  if (maxPoints > 0 && score > maxPoints) {
+    return { error: `Score cannot exceed max points (${maxPoints})` }
+  }
   const percentage = maxPoints > 0 ? (score / maxPoints) * 100 : 0
   const letterGrade = getLetterGrade(percentage)
+
+  // Sanitize user-generated text content
+  const sanitizedFeedback = feedback ? sanitizeText(feedback) : null
 
   // Check if grade already exists
   const { data: existingGrade } = await supabase
@@ -320,14 +334,12 @@ export async function gradeSubmission(
     points_earned: score,
     percentage,
     letter_grade: letterGrade,
-    feedback: feedback || null,
+    feedback: sanitizedFeedback,
     rubric_scores: rubricScores || null,
     graded_at: new Date().toISOString(),
   }
 
-  if (tenantId) {
-    gradeData.tenant_id = tenantId
-  }
+  gradeData.tenant_id = tenantId
 
   let result
   if (existingGrade) {
@@ -337,7 +349,7 @@ export async function gradeSubmission(
         points_earned: score,
         percentage,
         letter_grade: letterGrade,
-        feedback: feedback || null,
+        feedback: sanitizedFeedback,
         rubric_scores: rubricScores || null,
         graded_at: new Date().toISOString(),
         graded_by: user.id,
@@ -413,12 +425,15 @@ export async function returnSubmission(submissionId: string, feedback: string) {
     return { error: 'Not authorized to return this submission' }
   }
 
+  // Sanitize user-generated text content
+  const sanitizedReturnFeedback = sanitizeText(feedback)
+
   // Update submission status to returned with feedback
   const { error } = await supabase
     .from('submissions')
     .update({
       status: 'returned',
-      return_feedback: feedback,
+      return_feedback: sanitizedReturnFeedback,
       returned_at: new Date().toISOString(),
     })
     .eq('id', submissionId)

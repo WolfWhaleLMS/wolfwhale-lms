@@ -1,8 +1,10 @@
 'use server'
 
+import { z } from 'zod'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { sanitizeText } from '@/lib/sanitize'
 
 async function getContext() {
   const supabase = await createClient()
@@ -82,15 +84,56 @@ export async function createNotification(
   body: string,
   link?: string
 ) {
-  const { supabase, tenantId } = await getContext()
+  // Validate all inputs with Zod
+  const createNotificationSchema = z.object({
+    userId: z.string().uuid(),
+    type: z.string().min(1).max(100),
+    title: z.string().min(1).max(255),
+    body: z.string().min(1).max(5000),
+    link: z.string().max(2000).optional(),
+  })
+  const parsed = createNotificationSchema.safeParse({ userId, type, title, body, link })
+  if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
+
+  const { supabase, user, tenantId } = await getContext()
+
+  // Only teachers, admins, and super_admins can create notifications for others
+  const { data: membership } = await supabase
+    .from('tenant_memberships')
+    .select('role')
+    .eq('user_id', user.id)
+    .eq('tenant_id', tenantId)
+    .eq('status', 'active')
+    .single()
+
+  if (!membership || !['teacher', 'admin', 'super_admin'].includes(membership.role)) {
+    throw new Error('Not authorized - only teachers and admins can create notifications')
+  }
+
+  // Verify the target user is in the same tenant
+  const { data: targetMembership } = await supabase
+    .from('tenant_memberships')
+    .select('id')
+    .eq('user_id', parsed.data.userId)
+    .eq('tenant_id', tenantId)
+    .eq('status', 'active')
+    .maybeSingle()
+
+  if (!targetMembership) {
+    throw new Error('Target user is not a member of this tenant')
+  }
+
+  // Sanitize text content
+  const sanitizedTitle = sanitizeText(parsed.data.title)
+  const sanitizedBody = sanitizeText(parsed.data.body)
 
   const { error } = await supabase.from('notifications').insert({
     tenant_id: tenantId,
-    user_id: userId,
-    type,
-    title,
-    body,
-    link,
+    user_id: parsed.data.userId,
+    type: parsed.data.type,
+    title: sanitizedTitle,
+    body: sanitizedBody,
+    link: parsed.data.link,
     read: false,
   })
 

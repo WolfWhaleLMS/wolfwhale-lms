@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
+import { sanitizeText, sanitizeRichText } from '@/lib/sanitize'
 
 // ============================================
 // TEACHER: Create a quiz
@@ -35,6 +36,10 @@ export async function createQuiz(formData: {
   const parsed = createQuizSchema.safeParse(formData)
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
+  // Sanitize user-generated text content
+  const sanitizedTitle = sanitizeText(parsed.data.title)
+  const sanitizedDescription = parsed.data.description ? sanitizeText(parsed.data.description) : null
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -55,8 +60,8 @@ export async function createQuiz(formData: {
 
   const insertData: Record<string, unknown> = {
     course_id: parsed.data.courseId,
-    title: parsed.data.title,
-    description: parsed.data.description || null,
+    title: sanitizedTitle,
+    description: sanitizedDescription,
     time_limit_minutes: parsed.data.timeLimitMinutes || null,
     shuffle_questions: parsed.data.shuffleQuestions ?? false,
     shuffle_answers: parsed.data.shuffleAnswers ?? false,
@@ -123,12 +128,44 @@ export async function getQuiz(quizId: string) {
     .order('order_index', { ascending: true })
 
   // Sort options by order_index
-  const sortedQuestions = (questions || []).map(q => ({
+  let sortedQuestions = (questions || []).map(q => ({
     ...q,
     quiz_options: (q.quiz_options || []).sort(
       (a: { order_index: number }, b: { order_index: number }) => a.order_index - b.order_index
     ),
   }))
+
+  // Security: strip is_correct from options for non-teacher/non-admin users
+  // to prevent students from seeing correct answers before submitting
+  const courseData = quiz.courses as unknown as { id: string; name: string; created_by: string }
+  const isTeacher = courseData?.created_by === user.id
+
+  let isAdmin = false
+  if (!isTeacher) {
+    const headersList = await headers()
+    const tenantId = headersList.get('x-tenant-id')
+    if (tenantId) {
+      const { data: membership } = await supabase
+        .from('tenant_memberships')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('tenant_id', tenantId)
+        .eq('status', 'active')
+        .maybeSingle()
+
+      isAdmin = membership?.role === 'admin' || membership?.role === 'super_admin'
+    }
+  }
+
+  if (!isTeacher && !isAdmin) {
+    sortedQuestions = sortedQuestions.map(q => ({
+      ...q,
+      quiz_options: q.quiz_options.map((opt: Record<string, unknown>) => ({
+        ...opt,
+        is_correct: undefined,
+      })),
+    }))
+  }
 
   return { data: { ...quiz, questions: sortedQuestions } }
 }
@@ -226,8 +263,8 @@ export async function updateQuiz(quizId: string, formData: {
   }
 
   const updateData: Record<string, unknown> = {}
-  if (formData.title !== undefined) updateData.title = formData.title
-  if (formData.description !== undefined) updateData.description = formData.description
+  if (formData.title !== undefined) updateData.title = sanitizeText(formData.title)
+  if (formData.description !== undefined) updateData.description = sanitizeText(formData.description)
   if (formData.timeLimitMinutes !== undefined) updateData.time_limit_minutes = formData.timeLimitMinutes
   if (formData.shuffleQuestions !== undefined) updateData.shuffle_questions = formData.shuffleQuestions
   if (formData.shuffleAnswers !== undefined) updateData.shuffle_answers = formData.shuffleAnswers
@@ -350,16 +387,20 @@ export async function addQuestion(quizId: string, questionData: {
     orderIndex = existing && existing.length > 0 ? existing[0].order_index + 1 : 0
   }
 
+  // Sanitize user-generated text content
+  const sanitizedQuestionText = sanitizeRichText(questionData.questionText)
+  const sanitizedExplanation = questionData.explanation ? sanitizeRichText(questionData.explanation) : null
+
   // Insert question
   const { data: question, error: questionError } = await supabase
     .from('quiz_questions')
     .insert({
       quiz_id: quizId,
       type: questionData.type,
-      question_text: questionData.questionText,
+      question_text: sanitizedQuestionText,
       points: questionData.points ?? 1,
       order_index: orderIndex,
-      explanation: questionData.explanation || null,
+      explanation: sanitizedExplanation,
     })
     .select()
     .single()
@@ -373,7 +414,7 @@ export async function addQuestion(quizId: string, questionData: {
   if (questionData.options && questionData.options.length > 0) {
     const optionsToInsert = questionData.options.map((opt) => ({
       question_id: question.id,
-      option_text: opt.optionText,
+      option_text: sanitizeText(opt.optionText),
       is_correct: opt.isCorrect,
       order_index: opt.orderIndex,
     }))
@@ -438,10 +479,10 @@ export async function updateQuestion(questionId: string, questionData: {
   }
 
   const updateData: Record<string, unknown> = {}
-  if (questionData.questionText !== undefined) updateData.question_text = questionData.questionText
+  if (questionData.questionText !== undefined) updateData.question_text = sanitizeRichText(questionData.questionText)
   if (questionData.points !== undefined) updateData.points = questionData.points
   if (questionData.orderIndex !== undefined) updateData.order_index = questionData.orderIndex
-  if (questionData.explanation !== undefined) updateData.explanation = questionData.explanation
+  if (questionData.explanation !== undefined) updateData.explanation = sanitizeRichText(questionData.explanation)
 
   if (Object.keys(updateData).length > 0) {
     const { error } = await supabase
@@ -467,7 +508,7 @@ export async function updateQuestion(questionId: string, questionData: {
     if (questionData.options.length > 0) {
       const optionsToInsert = questionData.options.map((opt) => ({
         question_id: questionId,
-        option_text: opt.optionText,
+        option_text: sanitizeText(opt.optionText),
         is_correct: opt.isCorrect,
         order_index: opt.orderIndex,
       }))
@@ -711,7 +752,7 @@ export async function submitAttempt(attemptId: string, answers: {
       attempt_id: attemptId,
       question_id: answer.questionId,
       selected_option_id: answer.selectedOptionId || null,
-      answer_text: answer.answerText || null,
+      answer_text: answer.answerText ? sanitizeText(answer.answerText) : null,
       is_correct: isCorrect,
       points_earned: pointsEarned,
     }
@@ -769,9 +810,38 @@ export async function getAttempts(quizId: string) {
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
   const supabase = await createClient()
+  const headersList = await headers()
+  const tenantId = headersList.get('x-tenant-id')
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
+
+  // Verify the caller is the course teacher or an admin/super_admin
+  const { data: quiz } = await supabase
+    .from('quizzes')
+    .select('course_id, courses:courses(created_by)')
+    .eq('id', quizId)
+    .single()
+
+  if (!quiz) return { error: 'Quiz not found' }
+
+  const courseData = quiz.courses as unknown as { created_by: string }
+  if (courseData?.created_by !== user.id) {
+    // Check if user is admin/super_admin
+    if (!tenantId) return { error: 'No tenant context' }
+
+    const { data: membership } = await supabase
+      .from('tenant_memberships')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('tenant_id', tenantId)
+      .eq('status', 'active')
+      .single()
+
+    if (!membership || !['admin', 'super_admin'].includes(membership.role)) {
+      return { error: 'Not authorized to view attempts for this quiz' }
+    }
+  }
 
   const { data: attempts, error } = await supabase
     .from('quiz_attempts')
