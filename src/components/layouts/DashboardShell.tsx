@@ -70,8 +70,9 @@ export function DashboardShell({ children, userData }: DashboardShellProps) {
     } catch (err) {
       console.error('Sign-out error:', err);
     } finally {
-      // Always redirect even if signOut threw
-      router.push('/login');
+      // Clear Next.js server-side cache, then redirect
+      router.refresh();
+      window.location.href = '/login';
     }
   }, [supabase, router]);
 
