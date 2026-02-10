@@ -113,8 +113,9 @@ function extractTenantSlug(request: NextRequest): string | null {
   const subdomain = host.slice(0, -(ROOT_DOMAIN.length + 1)) // +1 for the dot
 
   if (!subdomain || subdomain === '') {
-    // Bare root domain -- landing / marketing site
-    return null
+    // Bare root domain -- default to "demo" tenant for now
+    // (single-tenant mode until marketing site is built)
+    return 'demo'
   }
 
   return subdomain
