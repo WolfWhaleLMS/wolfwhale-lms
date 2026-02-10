@@ -12,7 +12,7 @@ async function getAdminContext() {
   const tenantId = headersList.get('x-tenant-id')
   const role = headersList.get('x-user-role')
   if (!tenantId) throw new Error('No tenant context')
-  if (role !== 'school_admin' && role !== 'super_admin') {
+  if (role !== 'admin' && role !== 'super_admin') {
     throw new Error('Admin access required')
   }
   return { supabase, user, tenantId, role }

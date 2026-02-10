@@ -14,8 +14,8 @@ import {
   AlertTriangle,
   ArrowLeft,
 } from 'lucide-react'
-import { createClient } from '@/lib/supabase/server'
 import { getStudentAttendance, getAttendanceSummary } from '@/app/actions/attendance'
+import { getChildProgress } from '@/app/actions/parent'
 import { Button } from '@/components/ui/button'
 
 type AttendanceStatus = 'present' | 'absent' | 'tardy' | 'excused' | 'online'
@@ -79,59 +79,6 @@ const STATUS_CONFIG: Record<
   },
 }
 
-// Mock data
-const MOCK_SUMMARY: Summary = {
-  total: 48,
-  present: 42,
-  absent: 3,
-  tardy: 2,
-  excused: 1,
-  rate: 88,
-}
-
-const MOCK_RECORDS: AttendanceRecord[] = [
-  {
-    id: '1',
-    date: '2024-02-06',
-    status: 'present',
-    notes: null,
-    courses: { title: 'Marine Biology 101' },
-    course_id: 'course-1',
-  },
-  {
-    id: '2',
-    date: '2024-02-05',
-    status: 'present',
-    notes: null,
-    courses: { title: 'Marine Biology 101' },
-    course_id: 'course-1',
-  },
-  {
-    id: '3',
-    date: '2024-02-04',
-    status: 'tardy',
-    notes: 'Arrived at 9:20',
-    courses: { title: 'Marine Biology 101' },
-    course_id: 'course-1',
-  },
-  {
-    id: '4',
-    date: '2024-02-03',
-    status: 'absent',
-    notes: 'Sick',
-    courses: { title: 'Ocean Conservation' },
-    course_id: 'course-2',
-  },
-  {
-    id: '5',
-    date: '2024-02-02',
-    status: 'present',
-    notes: null,
-    courses: { title: 'Marine Biology 101' },
-    course_id: 'course-1',
-  },
-]
-
 export default function ParentChildAttendancePage({
   params,
 }: {
@@ -140,7 +87,14 @@ export default function ParentChildAttendancePage({
   const { studentId } = use(params)
   const [childName, setChildName] = useState('Your Child')
   const [records, setRecords] = useState<AttendanceRecord[]>([])
-  const [summary, setSummary] = useState<Summary>(MOCK_SUMMARY)
+  const [summary, setSummary] = useState<Summary>({
+    total: 0,
+    present: 0,
+    absent: 0,
+    tardy: 0,
+    excused: 0,
+    rate: 0,
+  })
   const [loading, setLoading] = useState(true)
   const [currentMonth, setCurrentMonth] = useState(new Date())
 
@@ -148,27 +102,22 @@ export default function ParentChildAttendancePage({
     async function load() {
       setLoading(true)
       try {
-        // In a real app, fetch child's name from profile
-        // For now, use mock data
-        setChildName('Emma Wilson')
-
-        const [recordsData, summaryData] = await Promise.all([
+        const [recordsData, summaryData, progressData] = await Promise.all([
           getStudentAttendance(studentId),
           getAttendanceSummary(studentId),
+          getChildProgress(studentId),
         ])
+
+        if (progressData?.student?.fullName) {
+          setChildName(progressData.student.fullName)
+        }
 
         if (recordsData && Array.isArray(recordsData) && recordsData.length > 0) {
           setRecords(recordsData as AttendanceRecord[])
           setSummary(summaryData as Summary)
-        } else {
-          // Use mock data
-          setRecords(MOCK_RECORDS)
-          setSummary(MOCK_SUMMARY)
         }
       } catch {
-        // Use mock data on error
-        setRecords(MOCK_RECORDS)
-        setSummary(MOCK_SUMMARY)
+        // Keep empty state on error
       } finally {
         setLoading(false)
       }

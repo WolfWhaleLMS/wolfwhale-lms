@@ -77,62 +77,18 @@ const STATUS_CONFIG: Record<
   },
 }
 
-// Mock data
-const MOCK_SUMMARY: Summary = {
-  total: 45,
-  present: 40,
-  absent: 2,
-  tardy: 2,
-  excused: 1,
-  rate: 89,
+const EMPTY_SUMMARY: Summary = {
+  total: 0,
+  present: 0,
+  absent: 0,
+  tardy: 0,
+  excused: 0,
+  rate: 0,
 }
-
-const MOCK_RECORDS: AttendanceRecord[] = [
-  {
-    id: '1',
-    date: '2024-02-05',
-    status: 'present',
-    notes: null,
-    courses: { title: 'Marine Biology 101' },
-    course_id: 'course-1',
-  },
-  {
-    id: '2',
-    date: '2024-02-04',
-    status: 'present',
-    notes: null,
-    courses: { title: 'Marine Biology 101' },
-    course_id: 'course-1',
-  },
-  {
-    id: '3',
-    date: '2024-02-03',
-    status: 'tardy',
-    notes: 'Arrived at 9:15',
-    courses: { title: 'Marine Biology 101' },
-    course_id: 'course-1',
-  },
-  {
-    id: '4',
-    date: '2024-02-02',
-    status: 'present',
-    notes: null,
-    courses: { title: 'Ocean Conservation' },
-    course_id: 'course-2',
-  },
-  {
-    id: '5',
-    date: '2024-02-01',
-    status: 'absent',
-    notes: 'Sick',
-    courses: { title: 'Marine Biology 101' },
-    course_id: 'course-1',
-  },
-]
 
 export default function StudentAttendancePage() {
   const [records, setRecords] = useState<AttendanceRecord[]>([])
-  const [summary, setSummary] = useState<Summary>(MOCK_SUMMARY)
+  const [summary, setSummary] = useState<Summary>(EMPTY_SUMMARY)
   const [loading, setLoading] = useState(true)
   const [currentMonth, setCurrentMonth] = useState(new Date())
 
@@ -145,18 +101,20 @@ export default function StudentAttendancePage() {
           getAttendanceSummary(),
         ])
 
-        if (recordsData && Array.isArray(recordsData) && recordsData.length > 0) {
+        if (recordsData && Array.isArray(recordsData)) {
           setRecords(recordsData as AttendanceRecord[])
+        } else {
+          setRecords([])
+        }
+
+        if (summaryData) {
           setSummary(summaryData as Summary)
         } else {
-          // Use mock data
-          setRecords(MOCK_RECORDS)
-          setSummary(MOCK_SUMMARY)
+          setSummary(EMPTY_SUMMARY)
         }
       } catch {
-        // Use mock data on error
-        setRecords(MOCK_RECORDS)
-        setSummary(MOCK_SUMMARY)
+        setRecords([])
+        setSummary(EMPTY_SUMMARY)
       } finally {
         setLoading(false)
       }

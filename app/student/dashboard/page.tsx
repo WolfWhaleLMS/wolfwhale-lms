@@ -1,55 +1,433 @@
-'use client'
-
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
+import { getLetterGrade } from '@/lib/config/constants'
 
-export default function StudentDashboardPage() {
-  const [greeting, setGreeting] = useState('Good day')
-  const studentName = 'Student' // Placeholder
+export default async function StudentDashboardPage() {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-  // Set greeting based on time of day
-  useEffect(() => {
-    const hour = new Date().getHours()
-    if (hour < 12) setGreeting('Good morning')
-    else if (hour < 18) setGreeting('Good afternoon')
-    else setGreeting('Good evening')
-  }, [])
+  if (!user) redirect('/login')
 
-  // Placeholder data
-  const stats = {
-    coursesEnrolled: 0,
-    assignmentsDue: 0,
-    currentGPA: '—',
-    streak: 0,
-  }
+  const headersList = await headers()
+  const tenantId = headersList.get('x-tenant-id')
 
-  const xpData = {
+  // Fetch student profile
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('first_name, last_name, full_name')
+    .eq('id', user.id)
+    .single()
+
+  const studentName =
+    profile?.full_name ||
+    [profile?.first_name, profile?.last_name].filter(Boolean).join(' ') ||
+    'Student'
+
+  // Time-of-day greeting (server-side)
+  const hour = new Date().getHours()
+  const greeting =
+    hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
+
+  // Initialize data defaults
+  let enrolledCourses: {
+    id: string
+    name: string
+    teacher: string
+    progress: number
+    nextLesson: string
+  }[] = []
+  let upcomingAssignments: {
+    id: string
+    name: string
+    course: string
+    dueDate: string
+    points: number
+    urgency: string
+  }[] = []
+  let grades: {
+    courseId: string
+    courseName: string
+    grade: string
+    percentage: number
+  }[] = []
+  let achievements: {
+    id: string
+    name: string
+    icon: string
+    earnedAt: string
+  }[] = []
+  let xpData = {
     currentXP: 0,
     nextLevelXP: 100,
     level: 1,
     levelName: 'Rookie Navigator',
     tier: 'Bronze',
   }
+  let streak = 0
 
-  const upcomingAssignments: { id: number; name: string; course: string; dueDate: string; points: number; urgency: string }[] = [
-  ]
+  if (tenantId) {
+    // Fetch enrolled courses
+    const { data: enrollments } = await supabase
+      .from('course_enrollments')
+      .select(`
+        id,
+        course_id,
+        status,
+        courses (
+          id,
+          name,
+          created_by
+        )
+      `)
+      .eq('tenant_id', tenantId)
+      .eq('student_id', user.id)
+      .eq('status', 'active')
+      .order('enrolled_at', { ascending: false })
 
-  const enrolledCourses: { id: number; name: string; teacher: string; progress: number; nextLesson: string }[] = [
-  ]
+    const courseData = (enrollments || [])
+      .filter((e) => e.courses)
+      .map((e) => ({
+        enrollment_id: e.id,
+        ...(e.courses as any),
+      }))
 
-  const grades: { courseId: number; courseName: string; grade: string; percentage: number }[] = [
-  ]
+    const courseIds = courseData.map((c: any) => c.id)
+    const teacherIds = [...new Set(courseData.map((c: any) => c.created_by))]
 
-  const achievements: { id: number; name: string; icon: string; earnedAt: string }[] = [
-  ]
+    // Fetch in parallel: profiles, lessons, lesson_progress, assignments, grades, xp, achievements
+    const now = new Date()
+    const sevenDaysFromNow = new Date(now)
+    sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7)
+    const todayStr = now.toISOString().split('T')[0]
+    const futureStr = sevenDaysFromNow.toISOString().split('T')[0]
 
-  const xpProgress = (xpData.currentXP / xpData.nextLevelXP) * 100
+    const [
+      profileResult,
+      lessonResult,
+      progressResult,
+      assignmentResult,
+      gradeResult,
+      xpResult,
+      achievementResult,
+    ] = await Promise.all([
+      // Teacher profiles
+      teacherIds.length > 0
+        ? supabase
+            .from('profiles')
+            .select('id, first_name, last_name, full_name')
+            .in('id', teacherIds as string[])
+        : Promise.resolve({ data: [] }),
+
+      // Lessons per course
+      courseIds.length > 0
+        ? supabase
+            .from('lessons')
+            .select('id, course_id, title, order_index')
+            .in('course_id', courseIds)
+            .order('order_index', { ascending: true })
+        : Promise.resolve({ data: [] }),
+
+      // Lesson progress for the student
+      courseIds.length > 0
+        ? supabase
+            .from('lesson_progress')
+            .select('lesson_id, status')
+            .eq('user_id', user.id)
+            .eq('status', 'completed')
+        : Promise.resolve({ data: [] }),
+
+      // Upcoming assignments (due within 7 days)
+      courseIds.length > 0
+        ? supabase
+            .from('assignments')
+            .select('id, title, course_id, due_date, points_possible')
+            .in('course_id', courseIds)
+            .gte('due_date', todayStr)
+            .lte('due_date', futureStr)
+            .order('due_date', { ascending: true })
+            .limit(10)
+        : Promise.resolve({ data: [] }),
+
+      // Student grades
+      courseIds.length > 0
+        ? supabase
+            .from('grades')
+            .select('id, score, max_score, assignment_id, assignments:assignment_id(course_id, title)')
+            .eq('student_id', user.id)
+            .eq('tenant_id', tenantId)
+            .order('graded_at', { ascending: false })
+            .limit(50)
+        : Promise.resolve({ data: [] }),
+
+      // XP / level data
+      supabase
+        .from('user_levels')
+        .select('total_xp, current_level, current_tier')
+        .eq('user_id', user.id)
+        .eq('tenant_id', tenantId)
+        .single(),
+
+      // Recent achievements
+      supabase
+        .from('user_achievements')
+        .select('id, earned_at, achievements(id, name, icon)')
+        .eq('user_id', user.id)
+        .eq('tenant_id', tenantId)
+        .order('earned_at', { ascending: false })
+        .limit(5),
+    ])
+
+    const profiles = profileResult.data || []
+    const lessons = lessonResult.data || []
+    const progressData = progressResult.data || []
+    const assignmentsData = assignmentResult.data || []
+    const gradesData = gradeResult.data || []
+    const userLevel = xpResult.data
+    const achievementsData = achievementResult.data || []
+
+    // Build course name map for assignments
+    const courseNameMap: Record<string, string> = {}
+    for (const c of courseData) {
+      courseNameMap[(c as any).id] = (c as any).name
+    }
+
+    // Build enrolled courses with progress and teacher info
+    enrolledCourses = courseData.map((course: any) => {
+      const teacher = profiles.find((p) => p.id === course.created_by)
+      const teacherName = teacher
+        ? teacher.full_name ||
+          [teacher.first_name, teacher.last_name].filter(Boolean).join(' ') ||
+          'Teacher'
+        : 'Teacher'
+
+      const courseLessons = lessons.filter((l) => l.course_id === course.id)
+      const completedLessonIds = new Set(progressData.map((p) => p.lesson_id))
+      const completedCount = courseLessons.filter((l) =>
+        completedLessonIds.has(l.id)
+      ).length
+      const progressPct =
+        courseLessons.length > 0
+          ? Math.round((completedCount / courseLessons.length) * 100)
+          : 0
+
+      // Find the next incomplete lesson
+      const nextLesson = courseLessons.find(
+        (l) => !completedLessonIds.has(l.id)
+      )
+
+      return {
+        id: course.id,
+        name: course.name,
+        teacher: teacherName,
+        progress: progressPct,
+        nextLesson: nextLesson?.title || 'All caught up!',
+      }
+    })
+
+    // Build upcoming assignments
+    upcomingAssignments = assignmentsData.map((a: any) => {
+      const dueDate = new Date(a.due_date + 'T00:00:00')
+      const diffDays = Math.ceil(
+        (dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+      )
+
+      let urgency = 'upcoming'
+      if (diffDays <= 0) urgency = 'today'
+      if (diffDays < 0) urgency = 'overdue'
+
+      return {
+        id: a.id,
+        name: a.title,
+        course: courseNameMap[a.course_id] || 'Course',
+        dueDate: dueDate.toLocaleDateString('en-US', {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+        }),
+        points: a.points_possible || 0,
+        urgency,
+      }
+    })
+
+    // Build grades per course (average score per course)
+    const courseTotals: Record<
+      string,
+      { courseName: string; totalScore: number; totalMax: number }
+    > = {}
+    for (const g of gradesData) {
+      const assignment = g.assignments as any
+      if (!assignment?.course_id) continue
+      const cId = assignment.course_id
+      if (!courseTotals[cId]) {
+        courseTotals[cId] = {
+          courseName: courseNameMap[cId] || 'Course',
+          totalScore: 0,
+          totalMax: 0,
+        }
+      }
+      courseTotals[cId].totalScore += g.score || 0
+      courseTotals[cId].totalMax += g.max_score || 0
+    }
+
+    grades = Object.entries(courseTotals).map(([cId, data]) => {
+      const pct =
+        data.totalMax > 0
+          ? Math.round((data.totalScore / data.totalMax) * 100)
+          : 0
+      return {
+        courseId: cId,
+        courseName: data.courseName,
+        grade: getLetterGrade(pct),
+        percentage: pct,
+      }
+    })
+
+    // XP data
+    if (userLevel) {
+      const level = userLevel.current_level || 1
+      // Approximate next level XP thresholds
+      const xpThresholds: Record<number, number> = {
+        1: 100,
+        2: 250,
+        3: 500,
+        4: 1000,
+        5: 2000,
+        6: 3500,
+        7: 5500,
+        8: 8000,
+        9: 12000,
+        10: 20000,
+      }
+      const nextLevelXP = xpThresholds[level + 1] || xpThresholds[level] || 100
+      const currentLevelXP = xpThresholds[level] || 0
+
+      // Level name mapping
+      const levelNames: Record<number, string> = {
+        1: 'Rookie Navigator',
+        2: 'Wave Rider',
+        3: 'Reef Explorer',
+        4: 'Ocean Scout',
+        5: 'Tide Master',
+        6: 'Deep Diver',
+        7: 'Sea Sage',
+        8: 'Whale Whisperer',
+        9: 'Ocean Guardian',
+        10: 'Legendary Leviathan',
+      }
+
+      xpData = {
+        currentXP: userLevel.total_xp || 0,
+        nextLevelXP: nextLevelXP,
+        level: level,
+        levelName: levelNames[level] || 'Rookie Navigator',
+        tier: userLevel.current_tier || 'Bronze',
+      }
+    }
+
+    // Recent achievements
+    achievements = achievementsData.map((ua: any) => {
+      const ach = ua.achievements as any
+      return {
+        id: ach?.id || ua.id,
+        name: ach?.name || 'Achievement',
+        icon: ach?.icon || '🏆',
+        earnedAt: ua.earned_at
+          ? new Date(ua.earned_at).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })
+          : '',
+      }
+    })
+
+    // Calculate streak from XP events (consecutive days with activity)
+    const { data: xpEvents } = await supabase
+      .from('xp_events')
+      .select('created_at')
+      .eq('user_id', user.id)
+      .eq('tenant_id', tenantId)
+      .order('created_at', { ascending: false })
+      .limit(100)
+
+    if (xpEvents && xpEvents.length > 0) {
+      const uniqueDays = [
+        ...new Set(
+          xpEvents.map((e) => e.created_at?.split('T')[0]).filter(Boolean)
+        ),
+      ].sort((a, b) => (b as string).localeCompare(a as string))
+
+      let currentStreak = 0
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+
+      for (let i = 0; i < uniqueDays.length; i++) {
+        const expectedDate = new Date(today)
+        expectedDate.setDate(expectedDate.getDate() - i)
+        const expectedStr = expectedDate.toISOString().split('T')[0]
+
+        if (uniqueDays[i] === expectedStr) {
+          currentStreak++
+        } else {
+          break
+        }
+      }
+      streak = currentStreak
+    }
+  }
+
+  // Compute derived values
+  const xpProgress =
+    xpData.nextLevelXP > 0
+      ? Math.min((xpData.currentXP / xpData.nextLevelXP) * 100, 100)
+      : 0
+
+  // Calculate GPA from grades
+  const gradePoints: Record<string, number> = {
+    'A+': 4.0,
+    A: 4.0,
+    'A-': 3.7,
+    'B+': 3.3,
+    B: 3.0,
+    'B-': 2.7,
+    'C+': 2.3,
+    C: 2.0,
+    'C-': 1.7,
+    'D+': 1.3,
+    D: 1.0,
+    'D-': 0.7,
+    F: 0.0,
+  }
+
+  const currentGPA =
+    grades.length > 0
+      ? (
+          grades.reduce(
+            (sum, g) => sum + (gradePoints[g.grade] ?? 0),
+            0
+          ) / grades.length
+        ).toFixed(2)
+      : '--'
+
+  const stats = {
+    coursesEnrolled: enrolledCourses.length,
+    assignmentsDue: upcomingAssignments.length,
+    currentGPA,
+    streak,
+  }
 
   // Helper function to get grade color
   const getGradeColor = (grade: string) => {
-    if (grade === 'A') return 'text-green-600 bg-green-50 border-green-200'
-    if (grade === 'B') return 'text-blue-600 bg-blue-50 border-blue-200'
-    if (grade === 'C') return 'text-amber-600 bg-amber-50 border-amber-200'
+    if (grade.startsWith('A'))
+      return 'text-green-600 bg-green-50 border-green-200'
+    if (grade.startsWith('B'))
+      return 'text-blue-600 bg-blue-50 border-blue-200'
+    if (grade.startsWith('C'))
+      return 'text-amber-600 bg-amber-50 border-amber-200'
     return 'text-red-600 bg-red-50 border-red-200'
   }
 
@@ -165,7 +543,7 @@ export default function StudentDashboardPage() {
 
             {upcomingAssignments.length > 0 ? (
               <div className="space-y-3">
-                {upcomingAssignments.map((assignment: any) => (
+                {upcomingAssignments.map((assignment) => (
                   <div
                     key={assignment.id}
                     className={`rounded-xl border-l-4 p-4 transition-all hover:shadow-md ${getUrgencyColor(
@@ -226,7 +604,7 @@ export default function StudentDashboardPage() {
 
             {enrolledCourses.length > 0 ? (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {enrolledCourses.map((course: any) => (
+                {enrolledCourses.map((course) => (
                   <Link
                     key={course.id}
                     href={`/student/courses/${course.id}`}
@@ -293,7 +671,7 @@ export default function StudentDashboardPage() {
 
             {grades.length > 0 ? (
               <div className="space-y-3">
-                {grades.map((grade: any) => (
+                {grades.map((grade) => (
                   <div
                     key={grade.courseId}
                     className={`rounded-xl border p-4 ${getGradeColor(
@@ -349,7 +727,7 @@ export default function StudentDashboardPage() {
 
             {achievements.length > 0 ? (
               <div className="space-y-3">
-                {achievements.slice(0, 3).map((achievement: any) => (
+                {achievements.slice(0, 3).map((achievement) => (
                   <div
                     key={achievement.id}
                     className="rounded-xl bg-gradient-to-r from-amber-50 to-yellow-50 p-4 border border-amber-200"
@@ -387,7 +765,7 @@ export default function StudentDashboardPage() {
         </h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           <Link
-            href="/student/study"
+            href="/student/study-mode"
             className="group flex flex-col items-center gap-2 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 p-6 transition-all hover:shadow-lg hover:scale-105"
           >
             <span className="text-4xl">📚</span>
@@ -397,7 +775,7 @@ export default function StudentDashboardPage() {
           </Link>
 
           <Link
-            href="/student/messages"
+            href="/messaging"
             className="group flex flex-col items-center gap-2 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 p-6 transition-all hover:shadow-lg hover:scale-105"
           >
             <span className="text-4xl">💬</span>
@@ -407,7 +785,7 @@ export default function StudentDashboardPage() {
           </Link>
 
           <Link
-            href="/student/calendar"
+            href="/calendar"
             className="group flex flex-col items-center gap-2 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 p-6 transition-all hover:shadow-lg hover:scale-105"
           >
             <span className="text-4xl">📅</span>
