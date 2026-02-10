@@ -19,11 +19,15 @@ export default async function TeacherLayout({
 
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  const headerRole = headersList.get('x-user-role') as UserRole | null
+
+  // super_admin can access /teacher/* routes — show their actual role
+  const role: UserRole = headerRole === 'super_admin' ? 'super_admin' : 'teacher'
 
   const [profileResult, tenantResult] = await Promise.all([
     supabase
       .from('profiles')
-      .select('full_name, avatar_url, grade_level')
+      .select('first_name, last_name, full_name, avatar_url, grade_level')
       .eq('id', user.id)
       .single(),
     tenantId
@@ -41,8 +45,8 @@ export default async function TeacherLayout({
   return (
     <AgeVariantProvider initialGradeLevel={profile?.grade_level}>
       <DashboardLayout
-        role={'teacher' as UserRole}
-        userName={profile?.full_name || user.email || 'Teacher'}
+        role={role}
+        userName={profile?.full_name?.trim() || [profile?.first_name, profile?.last_name].filter(Boolean).join(' ') || user.email || 'Teacher'}
         userAvatar={profile?.avatar_url}
         tenantName={tenant?.name || 'Wolf Whale LMS'}
         tenantLogo={(tenant?.branding as any)?.logo_url || null}

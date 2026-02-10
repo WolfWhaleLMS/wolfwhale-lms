@@ -235,6 +235,9 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
     super_admin: [
       { label: 'Tenants',       href: '/admin/tenants',          icon: 'Building2' },
       { label: 'All Users',     href: '/admin/users',            icon: 'Users' },
+      { label: 'Courses',       href: '/teacher/courses',        icon: 'BookOpen' },
+      { label: 'Assignments',   href: '/teacher/assignments',    icon: 'ClipboardList' },
+      { label: 'Gradebook',     href: '/teacher/gradebook',      icon: 'GraduationCap' },
       { label: 'Classes',       href: '/admin/classes',          icon: 'BookOpen' },
       { label: 'Reports',       href: '/admin/reports',          icon: 'BarChart3' },
       { label: 'Attendance',    href: '/admin/attendance',        icon: 'CalendarCheck' },

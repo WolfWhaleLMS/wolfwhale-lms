@@ -48,6 +48,18 @@ const ROLE_DASHBOARDS: Record<string, string> = {
   super_admin: '/admin/dashboard',
 }
 
+// Role -> allowed route prefixes (which /role/* routes can this role access?)
+const ROLE_ALLOWED_PREFIXES: Record<string, string[]> = {
+  student: ['/student'],
+  teacher: ['/teacher'],
+  parent: ['/parent'],
+  admin: ['/admin'],
+  super_admin: ['/admin', '/teacher'], // super_admin gets teacher features too
+}
+
+// All role-specific route prefixes
+const ROLE_ROUTE_PREFIXES = ['/student', '/teacher', '/parent', '/admin']
+
 // The root domain for production (subdomains are parsed relative to this)
 const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'wolfwhale.ca'
 
@@ -255,6 +267,37 @@ export async function middleware(request: NextRequest) {
       requestHeaders.set('x-user-role', membership.role)
       requestHeaders.set('x-tenant-id', membership.tenant_id)
 
+      // ----------------------------------------------------------------
+      // 6b. Role-route enforcement
+      //     Redirect users who land on the wrong role's routes.
+      //     e.g. a teacher visiting /student/* → redirect to /teacher/dashboard
+      // ----------------------------------------------------------------
+      const isOnRoleSpecificRoute = ROLE_ROUTE_PREFIXES.find((prefix) =>
+        pathname.startsWith(prefix)
+      )
+
+      if (isOnRoleSpecificRoute) {
+        const allowedPrefixes = ROLE_ALLOWED_PREFIXES[membership.role] || []
+        const isAllowed = allowedPrefixes.some((prefix) =>
+          pathname.startsWith(prefix)
+        )
+
+        if (!isAllowed) {
+          const dashboardPath =
+            ROLE_DASHBOARDS[membership.role] || '/dashboard'
+          return NextResponse.redirect(new URL(dashboardPath, request.url))
+        }
+      }
+
+      // ----------------------------------------------------------------
+      // 6c. Redirect generic /dashboard to role-appropriate dashboard
+      // ----------------------------------------------------------------
+      if (pathname === '/dashboard') {
+        const dashboardPath =
+          ROLE_DASHBOARDS[membership.role] || '/student/dashboard'
+        return NextResponse.redirect(new URL(dashboardPath, request.url))
+      }
+
       // Build a fresh response with the updated headers. Because the
       // Supabase `setAll` callback captures `response` by reference
       // (not by value), updating this variable ensures that any
@@ -270,6 +313,12 @@ export async function middleware(request: NextRequest) {
       // again would be wasteful; instead we force the cookie setter
       // to run by calling getSession() which reads from cache.
       await supabase.auth.getSession()
+    } else if (user && isProtectedRoute(pathname)) {
+      // User is authenticated but has no membership in this tenant.
+      // Redirect to login with an error message.
+      const loginUrl = new URL('/login', request.url)
+      loginUrl.searchParams.set('error', 'no_membership')
+      return NextResponse.redirect(loginUrl)
     }
   }
 

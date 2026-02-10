@@ -24,7 +24,7 @@ export default async function LegacyDashboardLayout({
   const [profileResult, tenantResult] = await Promise.all([
     supabase
       .from('profiles')
-      .select('full_name, avatar_url, grade_level')
+      .select('first_name, last_name, full_name, avatar_url, grade_level')
       .eq('id', user.id)
       .single(),
     tenantId
@@ -43,7 +43,7 @@ export default async function LegacyDashboardLayout({
     <AgeVariantProvider initialGradeLevel={profile?.grade_level}>
       <DashboardLayout
         role={headerRole}
-        userName={profile?.full_name || user.email || 'User'}
+        userName={profile?.full_name?.trim() || [profile?.first_name, profile?.last_name].filter(Boolean).join(' ') || user.email || 'User'}
         userAvatar={profile?.avatar_url}
         tenantName={tenant?.name || 'Wolf Whale LMS'}
         tenantLogo={(tenant?.branding as any)?.logo_url || null}
