@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { SoundProvider } from "@/components/providers/sound-provider";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
@@ -118,12 +119,14 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem={false}
           disableTransitionOnChange
         >
-          {children}
-          <Toaster richColors position="top-right" />
+          <SoundProvider>
+            {children}
+            <Toaster richColors position="top-right" />
+          </SoundProvider>
         </ThemeProvider>
       </body>
     </html>

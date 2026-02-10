@@ -85,6 +85,29 @@ export default function LoginPage() {
           </Link>
         </p>
       </div>
+
+      {/* Learn More Link */}
+      <div className="text-center">
+        <Link
+          href="/info"
+          className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-[oklch(0.74_0.13_180)] transition-colors group"
+        >
+          <span>Learn More About Wolf Whale LMS</span>
+          <svg
+            className="h-4 w-4 group-hover:translate-x-1 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </Link>
+      </div>
     </div>
   )
 }

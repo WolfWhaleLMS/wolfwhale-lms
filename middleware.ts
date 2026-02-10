@@ -14,6 +14,7 @@ const PUBLIC_PATHS = new Set([
   '/privacy',
   '/terms',
   '/help',
+  '/info',
 ])
 
 const PUBLIC_PREFIXES = [

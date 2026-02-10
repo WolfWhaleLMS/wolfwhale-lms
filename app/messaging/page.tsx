@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { getConversations } from '@/app/actions/messages'
-import { MessageSquare, Plus, Users } from 'lucide-react'
+import { MessageSquare, Plus, Users, ArrowLeft } from 'lucide-react'
 
 function formatRelativeTime(dateString: string): string {
   const date = new Date(dateString)
@@ -42,6 +42,15 @@ export default async function MessagingPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-4 sm:p-6">
+      {/* Back Button */}
+      <Link
+        href="/dashboard"
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Dashboard
+      </Link>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

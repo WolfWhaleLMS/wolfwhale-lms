@@ -6,6 +6,7 @@ import {
   AlertCircle,
   ChevronRight,
   TrendingUp,
+  ArrowLeft,
 } from 'lucide-react'
 import { getChildren } from '@/app/actions/parent'
 
@@ -21,6 +22,15 @@ export default async function ChildrenListPage() {
 
   return (
     <div className="space-y-8">
+      {/* Back Button */}
+      <Link
+        href="/parent/dashboard"
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Dashboard
+      </Link>
+
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold tracking-tight text-foreground">

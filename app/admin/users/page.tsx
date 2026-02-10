@@ -1,7 +1,8 @@
 import { Suspense } from 'react'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { headers } from 'next/headers'
-import { Users, UserPlus, Search } from 'lucide-react'
+import { Users, UserPlus, Search, ArrowLeft } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { UserSearchBar } from './user-search-bar'
@@ -82,6 +83,15 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
 
   return (
     <div className="space-y-6">
+      {/* Back Button */}
+      <Link
+        href="/admin/dashboard"
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Dashboard
+      </Link>
+
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>

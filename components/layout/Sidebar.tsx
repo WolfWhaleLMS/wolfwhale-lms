@@ -28,6 +28,7 @@ import {
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 import { getRoleMenuItems, type UserRole } from '@/lib/auth/permissions'
+import { useSound } from '@/components/providers/sound-provider'
 
 // ---------------------------------------------------------------------------
 // Icon mapping: string name -> lucide-react component
@@ -72,6 +73,7 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
   const pathname = usePathname()
   const router = useRouter()
   const menuItems = getRoleMenuItems(role)
+  const sounds = useSound()
 
   const handleSignOut = async () => {
     const supabase = createClient()
@@ -135,7 +137,10 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  onClick={onClose}
+                  onClick={() => {
+                    sounds.playNavigate()
+                    onClose?.()
+                  }}
                   className={cn(
                     'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
                     isActive

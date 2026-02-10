@@ -206,7 +206,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Study Mode',    href: '/student/study-mode',     icon: 'Brain' },
       { label: 'Achievements',  href: '/student/achievements',   icon: 'Trophy' },
       { label: 'Leaderboard',   href: '/student/leaderboard',    icon: 'Medal' },
-      { label: 'Tools',         href: '/tools',                  icon: 'Gamepad2' },
+      { label: 'Tools Arcade',  href: '/student/tools',          icon: 'Gamepad2' },
     ],
 
     teacher: [

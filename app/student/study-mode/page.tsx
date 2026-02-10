@@ -16,6 +16,7 @@ import FocusTimer from '@/components/study-mode/FocusTimer'
 import MusicSelector, { type MusicType, MUSIC_OPTIONS } from '@/components/study-mode/MusicSelector'
 import StudyStats from '@/components/study-mode/StudyStats'
 import { recordStudySession, getStudyStats } from '@/app/actions/study-mode'
+import { useAmbientSound } from '@/hooks/useAmbientSound'
 
 type SessionState = 'setup' | 'active' | 'complete'
 
@@ -31,6 +32,10 @@ export default function StudyModePage() {
   const [sessionState, setSessionState] = useState<SessionState>('setup')
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [dndEnabled, setDndEnabled] = useState(false)
+
+  // Ambient sound
+  const ambientSound = useAmbientSound()
+  const [volume, setVolume] = useState(0.8)
 
   // Completion state
   const [xpAwarded, setXpAwarded] = useState(0)
@@ -63,6 +68,8 @@ export default function StudyModePage() {
   const handleComplete = useCallback(async () => {
     setSessionState('complete')
     setShowConfetti(true)
+    // Stop ambient sound
+    ambientSound.stop()
 
     const actualMinutes = Math.max(1, Math.round(elapsedSeconds / 60) || duration)
 
@@ -81,17 +88,22 @@ export default function StudyModePage() {
 
     // Hide confetti after 4 seconds
     setTimeout(() => setShowConfetti(false), 4000)
-  }, [duration, elapsedSeconds, musicType])
+  }, [duration, elapsedSeconds, musicType, ambientSound])
 
   const handleStartSession = () => {
     setElapsedSeconds(0)
     setSessionState('active')
+    // Start ambient sound
+    ambientSound.play(musicType)
+    ambientSound.setVolume(volume)
   }
 
   const handleNewSession = () => {
     setSessionState('setup')
     setXpAwarded(0)
     setElapsedSeconds(0)
+    // Ensure sound is stopped
+    ambientSound.stop()
   }
 
   const toggleFullscreen = () => {
@@ -301,15 +313,33 @@ export default function StudyModePage() {
               />
             </div>
 
-            {/* Minimal music indicator at bottom */}
-            <div className="mt-12 flex items-center gap-2 text-white/30">
-              {musicType !== 'silent' ? (
-                <>
-                  <Volume2 className="size-4" />
-                  <span className="text-sm">{selectedMusicOption?.name}</span>
-                </>
-              ) : (
-                <span className="text-sm">Silent mode</span>
+            {/* Volume control and music indicator */}
+            <div className="mt-12 space-y-4">
+              {musicType !== 'silent' && (
+                <div className="glass-panel-ocean rounded-2xl px-6 py-4">
+                  <div className="flex items-center gap-4">
+                    <Volume2 className="size-4 text-white/40" />
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={volume * 100}
+                      onChange={(e) => {
+                        const newVol = parseInt(e.target.value, 10) / 100
+                        setVolume(newVol)
+                        ambientSound.setVolume(newVol)
+                      }}
+                      className="h-2 w-32 cursor-pointer appearance-none rounded-full bg-white/10 outline-none [&::-webkit-slider-thumb]:size-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:shadow-primary/30 [&::-moz-range-thumb]:size-4 [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:shadow-lg [&::-moz-range-thumb]:shadow-primary/30"
+                      aria-label="Adjust volume"
+                    />
+                    <span className="text-sm text-white/60">{selectedMusicOption?.name}</span>
+                  </div>
+                </div>
+              )}
+              {musicType === 'silent' && (
+                <div className="flex items-center justify-center gap-2 text-white/30">
+                  <span className="text-sm">Silent mode</span>
+                </div>
               )}
             </div>
           </div>

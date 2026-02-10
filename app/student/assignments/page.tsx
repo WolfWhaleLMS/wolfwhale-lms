@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { getStudentAssignments } from '@/app/actions/assignments'
 import { ASSIGNMENT_TYPES } from '@/lib/config/constants'
+import { Clock, CheckCircle, AlertCircle, ListTodo } from 'lucide-react'
 
 interface StudentAssignment {
   id: string
@@ -166,12 +167,20 @@ export default function StudentAssignmentsPage() {
     )
   }
 
+  const totalAssignments = assignments.length
+  const completedCount = assignments.filter(a => a.submissionStatus === 'graded').length
+  const pendingCount = assignments.filter(a => a.submissionStatus === 'pending').length
+  const overdueCount = assignments.filter(a => a.submissionStatus === 'overdue').length
+
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">My Assignments</h1>
-        <p className="mt-1 text-muted-foreground">
+      {/* Visual Header with Whale Gradient */}
+      <div className="whale-gradient rounded-2xl p-8 text-white shadow-lg">
+        <div className="flex items-center gap-3 mb-2">
+          <ListTodo className="h-8 w-8" />
+          <h1 className="text-3xl font-bold tracking-tight">My Assignments</h1>
+        </div>
+        <p className="text-white/90">
           View and submit assignments across all your courses.
         </p>
       </div>
@@ -182,23 +191,37 @@ export default function StudentAssignmentsPage() {
         </div>
       )}
 
-      {/* Stats */}
+      {/* Enhanced Stats Row */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="ocean-card rounded-2xl p-4 text-center">
-          <p className="text-2xl font-bold text-primary">{statusCounts.pending}</p>
-          <p className="mt-1 text-xs text-muted-foreground">Pending</p>
+        <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-lg">
+          <div className="mb-2 flex items-center justify-center">
+            <ListTodo className="h-6 w-6 text-primary" />
+          </div>
+          <p className="text-3xl font-bold text-primary">{totalAssignments}</p>
+          <p className="mt-1 text-xs font-medium text-muted-foreground">Total Assignments</p>
         </div>
-        <div className="ocean-card rounded-2xl p-4 text-center">
-          <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{statusCounts.submitted}</p>
-          <p className="mt-1 text-xs text-muted-foreground">Submitted</p>
+        <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-lg">
+          <div className="mb-2 flex items-center justify-center">
+            <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+          </div>
+          <p className="text-3xl font-bold text-green-600 dark:text-green-400">{completedCount}</p>
+          <p className="mt-1 text-xs font-medium text-muted-foreground">Completed</p>
         </div>
-        <div className="ocean-card rounded-2xl p-4 text-center">
-          <p className="text-2xl font-bold text-green-600 dark:text-green-400">{statusCounts.graded}</p>
-          <p className="mt-1 text-xs text-muted-foreground">Graded</p>
+        <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-lg">
+          <div className="mb-2 flex items-center justify-center">
+            <Clock className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+          </div>
+          <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{pendingCount}</p>
+          <p className="mt-1 text-xs font-medium text-muted-foreground">Pending</p>
         </div>
-        <div className="ocean-card rounded-2xl p-4 text-center">
-          <p className="text-2xl font-bold text-red-600 dark:text-red-400">{statusCounts.overdue}</p>
-          <p className="mt-1 text-xs text-muted-foreground">Overdue</p>
+        <div className={`ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 ${
+          overdueCount > 0 ? 'ring-2 ring-red-500/50 glow-animate' : ''
+        }`}>
+          <div className="mb-2 flex items-center justify-center">
+            <AlertCircle className={`h-6 w-6 ${overdueCount > 0 ? 'text-red-600 dark:text-red-400 animate-pulse' : 'text-red-600/50 dark:text-red-400/50'}`} />
+          </div>
+          <p className={`text-3xl font-bold ${overdueCount > 0 ? 'text-red-600 dark:text-red-400' : 'text-red-600/50 dark:text-red-400/50'}`}>{overdueCount}</p>
+          <p className="mt-1 text-xs font-medium text-muted-foreground">Overdue</p>
         </div>
       </div>
 
@@ -237,61 +260,96 @@ export default function StudentAssignmentsPage() {
 
       {/* Assignments List */}
       {filteredAssignments.length === 0 ? (
-        <div className="ocean-card flex flex-col items-center justify-center rounded-2xl py-16 text-center">
-          <div className="mb-3 text-5xl opacity-40">📝</div>
-          <p className="text-lg font-medium text-foreground">
-            {assignments.length === 0 ? 'No assignments yet' : 'No matching assignments'}
-          </p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {assignments.length === 0
-              ? 'Assignments from your enrolled courses will appear here.'
-              : 'Try changing the filter to see more assignments.'}
-          </p>
+        <div className="ocean-card relative overflow-hidden rounded-2xl py-16 text-center">
+          <div className="blob-ocean absolute left-1/3 top-0 h-48 w-48 opacity-20" />
+          <div className="relative z-10 flex flex-col items-center justify-center">
+            <div className="mb-3 text-6xl">📝</div>
+            <p className="text-xl font-bold text-foreground">
+              {assignments.length === 0 ? 'All Clear!' : 'No matching assignments'}
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {assignments.length === 0
+                ? 'Assignments from your enrolled courses will appear here.'
+                : 'Try changing the filter to see more assignments.'}
+            </p>
+          </div>
         </div>
       ) : (
-        <div className="grid gap-3">
-          {filteredAssignments.map((assignment) => (
-            <button
-              key={assignment.id}
-              onClick={() => router.push(`/student/assignments/${assignment.id}`)}
-              className="ocean-card w-full rounded-2xl p-5 text-left transition-shadow hover:shadow-md"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-foreground">{assignment.title}</h3>
-                    <TypeBadge type={assignment.type} />
-                    <StatusBadge status={assignment.submissionStatus} />
-                  </div>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {assignment.courseTitle}
-                  </p>
-                  <div className="mt-2 flex items-center gap-4 text-xs text-muted-foreground">
-                    <span className={isDueSoon(assignment.due_date) ? 'font-medium text-amber-600 dark:text-amber-400' : ''}>
-                      {formatDate(assignment.due_date)}
-                    </span>
-                    <span>{assignment.points_possible} points</span>
-                  </div>
-                </div>
-                <div className="text-right">
-                  {assignment.grade ? (
-                    <div>
-                      <p className="text-lg font-bold text-foreground">
-                        {assignment.grade.score}/{assignment.grade.max_score}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {Math.round((assignment.grade.score / assignment.grade.max_score) * 100)}%
-                      </p>
+        <div className="grid gap-4">
+          {filteredAssignments.map((assignment) => {
+            const isOverdue = assignment.submissionStatus === 'overdue'
+            const isDueToday = assignment.due_date && new Date(assignment.due_date).toDateString() === new Date().toDateString()
+            const isUpcoming = !isOverdue && !isDueToday
+
+            const cardClasses = `ocean-card w-full rounded-2xl p-5 text-left transition-all hover:scale-[1.01] hover:shadow-xl relative overflow-hidden ${
+              isOverdue ? 'ring-2 ring-red-500/50' :
+              isDueToday ? 'ring-2 ring-amber-500/50' :
+              'ring-1 ring-transparent hover:ring-primary/20'
+            }`
+
+            return (
+              <button
+                key={assignment.id}
+                onClick={() => router.push(`/student/assignments/${assignment.id}`)}
+                className={cardClasses}
+              >
+                {/* Status indicator stripe */}
+                <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${
+                  isOverdue ? 'bg-gradient-to-b from-red-500 to-red-600' :
+                  isDueToday ? 'bg-gradient-to-b from-amber-500 to-orange-500' :
+                  assignment.submissionStatus === 'graded' ? 'bg-gradient-to-b from-green-500 to-emerald-500' :
+                  'bg-gradient-to-b from-blue-500 to-teal-500'
+                }`} />
+
+                <div className="flex items-start justify-between gap-4 pl-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {isOverdue && <AlertCircle className="h-5 w-5 text-red-500 animate-pulse" />}
+                      {isDueToday && <Clock className="h-5 w-5 text-amber-500" />}
+                      {assignment.submissionStatus === 'graded' && <CheckCircle className="h-5 w-5 text-green-500" />}
+                      <h3 className="font-semibold text-foreground">{assignment.title}</h3>
+                      <TypeBadge type={assignment.type} />
+                      <StatusBadge status={assignment.submissionStatus} />
                     </div>
-                  ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-muted-foreground" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                    </svg>
-                  )}
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {assignment.courseTitle}
+                    </p>
+                    <div className="mt-2 flex items-center gap-4 text-xs">
+                      <span className={`flex items-center gap-1 ${
+                        isOverdue ? 'font-bold text-red-600 dark:text-red-400' :
+                        isDueToday ? 'font-bold text-amber-600 dark:text-amber-400' :
+                        isDueSoon(assignment.due_date) ? 'font-medium text-amber-600 dark:text-amber-400' :
+                        'text-muted-foreground'
+                      }`}>
+                        <Clock className="h-3 w-3" />
+                        {formatDate(assignment.due_date)}
+                      </span>
+                      <span className="flex items-center gap-1 text-muted-foreground">
+                        <span className="text-lg">⭐</span>
+                        {assignment.points_possible} points
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    {assignment.grade ? (
+                      <div className="rounded-lg bg-gradient-to-br from-green-500/10 to-emerald-500/10 px-3 py-2">
+                        <p className="text-lg font-bold text-green-600 dark:text-green-400">
+                          {assignment.grade.score}/{assignment.grade.max_score}
+                        </p>
+                        <p className="text-xs font-semibold text-green-600/80 dark:text-green-400/80">
+                          {Math.round((assignment.grade.score / assignment.grade.max_score) * 100)}%
+                        </p>
+                      </div>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-muted-foreground" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </button>
-          ))}
+              </button>
+            )
+          })}
         </div>
       )}
     </div>

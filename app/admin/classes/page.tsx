@@ -1,5 +1,5 @@
 import { getTenantClasses } from '@/app/actions/school-admin'
-import { BookOpen, Users, GraduationCap } from 'lucide-react'
+import { BookOpen, Users, GraduationCap, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
 function statusColor(status: string) {
@@ -26,6 +26,15 @@ export default async function AdminClassesPage() {
 
   return (
     <div className="space-y-8">
+      {/* Back Button */}
+      <Link
+        href="/admin/dashboard"
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Dashboard
+      </Link>
+
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Classes</h1>

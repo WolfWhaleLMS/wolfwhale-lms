@@ -139,11 +139,11 @@
   --ww-ocean-foam: oklch(0.30 0.04 220);
 
   /* Base Theme — Arctic Moonlight */
-  --background: oklch(0.16 0.04 260);          /* Deep midnight */
+  --background: oklch(0.20 0.04 258);          /* Softer midnight */
   --foreground: oklch(0.95 0.005 250);         /* Near white */
-  --card: oklch(0.22 0.04 258);                /* Raised dark surface */
+  --card: oklch(0.26 0.04 258);                /* Raised dark surface */
   --card-foreground: oklch(0.95 0.005 250);
-  --popover: oklch(0.20 0.04 258);
+  --popover: oklch(0.24 0.04 258);
   --popover-foreground: oklch(0.95 0.005 250);
   --primary: oklch(0.74 0.13 180);             /* Bright Teal */
   --primary-foreground: oklch(0.16 0.04 260);
@@ -820,4 +820,62 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ============================================
+   BUTTON GLOW EFFECTS
+   ============================================ */
+
+/* Glow pulse on active/click for primary buttons */
+.whale-gradient:active,
+button.whale-gradient:active {
+  box-shadow: 0 0 20px oklch(0.70 0.12 180 / 0.6), 0 0 40px oklch(0.70 0.12 180 / 0.3);
+  transform: scale(0.97);
+  transition: all 0.1s ease;
+}
+
+/* Glow for ocean-themed elements */
+.ocean-glow:active {
+  box-shadow: 0 0 15px oklch(0.35 0.08 220 / 0.5), 0 0 30px oklch(0.35 0.08 220 / 0.2);
+}
+
+/* General button glow on click */
+button:active:not(:disabled),
+a[role="button"]:active {
+  transition: box-shadow 0.1s ease, transform 0.1s ease;
+}
+
+/* Glow border animation for important elements */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 5px oklch(0.70 0.12 180 / 0.3); }
+  50% { box-shadow: 0 0 20px oklch(0.70 0.12 180 / 0.6), 0 0 40px oklch(0.70 0.12 180 / 0.2); }
+}
+
+.glow-animate {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Click ripple glow effect */
+@keyframes click-glow {
+  0% { box-shadow: 0 0 0 oklch(0.70 0.12 180 / 0.5); }
+  50% { box-shadow: 0 0 25px oklch(0.70 0.12 180 / 0.4), 0 0 50px oklch(0.70 0.12 180 / 0.1); }
+  100% { box-shadow: 0 0 0 oklch(0.70 0.12 180 / 0); }
+}
+
+button:focus-visible {
+  animation: click-glow 0.4s ease-out;
+}
+
+/* Sidebar active link glow */
+.glow-border-ocean {
+  box-shadow: 0 0 12px oklch(0.70 0.12 180 / 0.4), inset 0 0 12px oklch(0.70 0.12 180 / 0.1);
+}
+
+/* Dark mode enhanced glows */
+.dark button:active:not(:disabled) {
+  box-shadow: 0 0 15px oklch(0.74 0.13 180 / 0.4);
+}
+
+.dark .whale-gradient:active {
+  box-shadow: 0 0 25px oklch(0.74 0.13 180 / 0.6), 0 0 50px oklch(0.74 0.13 180 / 0.3);
 }

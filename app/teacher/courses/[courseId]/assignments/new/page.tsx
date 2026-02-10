@@ -2,14 +2,78 @@
 
 import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { createAssignment } from '@/app/actions/assignments'
 import { ASSIGNMENT_TYPES, SUBMISSION_TYPES } from '@/lib/config/constants'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { Badge } from '@/components/ui/badge'
+import { Checkbox } from '@/components/ui/checkbox'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
+  Plus,
+  Trash2,
+  ChevronUp,
+  ChevronDown,
+  GripVertical,
+  Check,
+  X,
+  HelpCircle,
+  FileText,
+  ArrowLeft,
+} from 'lucide-react'
+import { toast } from 'sonner'
+
+type QuestionType = 'multiple_choice' | 'multiple_select' | 'true_false' | 'short_answer' | 'essay'
+
+type QuestionOption = {
+  id: string
+  text: string
+}
+
+type QuestionData = {
+  options?: QuestionOption[]
+  correctOptionIds?: string[]
+  correctAnswer?: boolean
+  acceptedAnswers?: string[]
+  caseSensitive?: boolean
+  rubricGuidelines?: string
+  minWords?: number
+  maxWords?: number
+}
+
+type Question = {
+  id: string
+  type: QuestionType
+  text: string
+  points: number
+  data: QuestionData
+  explanation?: string
+  order: number
+}
+
+const QUESTION_TYPES: { value: QuestionType; label: string; icon: typeof FileText }[] = [
+  { value: 'multiple_choice', label: 'Multiple Choice', icon: FileText },
+  { value: 'multiple_select', label: 'Multiple Select', icon: FileText },
+  { value: 'true_false', label: 'True/False', icon: FileText },
+  { value: 'short_answer', label: 'Short Answer', icon: FileText },
+  { value: 'essay', label: 'Essay', icon: FileText },
+]
 
 export default function CreateAssignmentPage() {
   const params = useParams()
   const router = useRouter()
   const courseId = params.courseId as string
 
+  // Basic assignment fields
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [type, setType] = useState('homework')
@@ -19,6 +83,253 @@ export default function CreateAssignmentPage() {
   const [latePolicy, setLatePolicy] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // Question builder state
+  const [questions, setQuestions] = useState<Question[]>([])
+  const [showQuestionBuilder, setShowQuestionBuilder] = useState(false)
+  const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(new Set())
+
+  // Update showQuestionBuilder when type changes
+  const handleTypeChange = (newType: string) => {
+    setType(newType)
+    setShowQuestionBuilder(newType === 'quiz' || newType === 'exam')
+  }
+
+  // Question management functions
+  const addQuestion = (questionType: QuestionType) => {
+    const newQuestion: Question = {
+      id: crypto.randomUUID(),
+      type: questionType,
+      text: '',
+      points: 10,
+      data: {},
+      explanation: '',
+      order: questions.length,
+    }
+
+    // Initialize data based on question type
+    if (questionType === 'multiple_choice' || questionType === 'multiple_select') {
+      newQuestion.data = {
+        options: [
+          { id: crypto.randomUUID(), text: '' },
+          { id: crypto.randomUUID(), text: '' },
+        ],
+        correctOptionIds: [],
+      }
+    } else if (questionType === 'true_false') {
+      newQuestion.data = { correctAnswer: true }
+    } else if (questionType === 'short_answer') {
+      newQuestion.data = { acceptedAnswers: [''], caseSensitive: false }
+    } else if (questionType === 'essay') {
+      newQuestion.data = { rubricGuidelines: '', minWords: 0, maxWords: 0 }
+    }
+
+    setQuestions([...questions, newQuestion])
+    setExpandedQuestions(new Set([...expandedQuestions, newQuestion.id]))
+  }
+
+  const deleteQuestion = (id: string) => {
+    setQuestions(questions.filter((q) => q.id !== id))
+    const newExpanded = new Set(expandedQuestions)
+    newExpanded.delete(id)
+    setExpandedQuestions(newExpanded)
+  }
+
+  const moveQuestion = (id: string, direction: 'up' | 'down') => {
+    const index = questions.findIndex((q) => q.id === id)
+    if (
+      (direction === 'up' && index === 0) ||
+      (direction === 'down' && index === questions.length - 1)
+    ) {
+      return
+    }
+
+    const newQuestions = [...questions]
+    const targetIndex = direction === 'up' ? index - 1 : index + 1
+    ;[newQuestions[index], newQuestions[targetIndex]] = [
+      newQuestions[targetIndex],
+      newQuestions[index],
+    ]
+
+    // Update order numbers
+    newQuestions.forEach((q, i) => {
+      q.order = i
+    })
+
+    setQuestions(newQuestions)
+  }
+
+  const updateQuestion = (id: string, updates: Partial<Question>) => {
+    setQuestions(questions.map((q) => (q.id === id ? { ...q, ...updates } : q)))
+  }
+
+  const toggleQuestionExpanded = (id: string) => {
+    const newExpanded = new Set(expandedQuestions)
+    if (newExpanded.has(id)) {
+      newExpanded.delete(id)
+    } else {
+      newExpanded.add(id)
+    }
+    setExpandedQuestions(newExpanded)
+  }
+
+  // Option management for MC/MS questions
+  const addOption = (questionId: string) => {
+    const question = questions.find((q) => q.id === questionId)
+    if (!question || !question.data.options) return
+
+    const newOption: QuestionOption = {
+      id: crypto.randomUUID(),
+      text: '',
+    }
+
+    updateQuestion(questionId, {
+      data: {
+        ...question.data,
+        options: [...question.data.options, newOption],
+      },
+    })
+  }
+
+  const deleteOption = (questionId: string, optionId: string) => {
+    const question = questions.find((q) => q.id === questionId)
+    if (!question || !question.data.options) return
+
+    const newOptions = question.data.options.filter((o) => o.id !== optionId)
+    const newCorrectIds = (question.data.correctOptionIds || []).filter((id) => id !== optionId)
+
+    updateQuestion(questionId, {
+      data: {
+        ...question.data,
+        options: newOptions,
+        correctOptionIds: newCorrectIds,
+      },
+    })
+  }
+
+  const updateOption = (questionId: string, optionId: string, text: string) => {
+    const question = questions.find((q) => q.id === questionId)
+    if (!question || !question.data.options) return
+
+    updateQuestion(questionId, {
+      data: {
+        ...question.data,
+        options: question.data.options.map((o) => (o.id === optionId ? { ...o, text } : o)),
+      },
+    })
+  }
+
+  const toggleCorrectOption = (questionId: string, optionId: string) => {
+    const question = questions.find((q) => q.id === questionId)
+    if (!question) return
+
+    if (question.type === 'multiple_choice') {
+      // Single selection
+      updateQuestion(questionId, {
+        data: {
+          ...question.data,
+          correctOptionIds: [optionId],
+        },
+      })
+    } else if (question.type === 'multiple_select') {
+      // Multiple selection
+      const currentIds = question.data.correctOptionIds || []
+      const newIds = currentIds.includes(optionId)
+        ? currentIds.filter((id) => id !== optionId)
+        : [...currentIds, optionId]
+
+      updateQuestion(questionId, {
+        data: {
+          ...question.data,
+          correctOptionIds: newIds,
+        },
+      })
+    }
+  }
+
+  // Short answer management
+  const addAcceptedAnswer = (questionId: string) => {
+    const question = questions.find((q) => q.id === questionId)
+    if (!question || !question.data.acceptedAnswers) return
+
+    updateQuestion(questionId, {
+      data: {
+        ...question.data,
+        acceptedAnswers: [...question.data.acceptedAnswers, ''],
+      },
+    })
+  }
+
+  const updateAcceptedAnswer = (questionId: string, index: number, value: string) => {
+    const question = questions.find((q) => q.id === questionId)
+    if (!question || !question.data.acceptedAnswers) return
+
+    const newAnswers = [...question.data.acceptedAnswers]
+    newAnswers[index] = value
+
+    updateQuestion(questionId, {
+      data: {
+        ...question.data,
+        acceptedAnswers: newAnswers,
+      },
+    })
+  }
+
+  const deleteAcceptedAnswer = (questionId: string, index: number) => {
+    const question = questions.find((q) => q.id === questionId)
+    if (!question || !question.data.acceptedAnswers) return
+
+    updateQuestion(questionId, {
+      data: {
+        ...question.data,
+        acceptedAnswers: question.data.acceptedAnswers.filter((_, i) => i !== index),
+      },
+    })
+  }
+
+  // Calculate total points from questions
+  const totalQuestionPoints = questions.reduce((sum, q) => sum + q.points, 0)
+
+  // Validation
+  const validateQuestions = (): string | null => {
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i]
+
+      if (!q.text.trim()) {
+        return `Question ${i + 1}: Question text is required`
+      }
+
+      if (q.points <= 0) {
+        return `Question ${i + 1}: Points must be greater than 0`
+      }
+
+      if (q.type === 'multiple_choice' || q.type === 'multiple_select') {
+        if (!q.data.options || q.data.options.length < 2) {
+          return `Question ${i + 1}: At least 2 options are required`
+        }
+
+        if (q.data.options.some((o) => !o.text.trim())) {
+          return `Question ${i + 1}: All options must have text`
+        }
+
+        if (!q.data.correctOptionIds || q.data.correctOptionIds.length === 0) {
+          return `Question ${i + 1}: At least one correct answer must be selected`
+        }
+
+        if (q.data.options.length > 6) {
+          return `Question ${i + 1}: Maximum 6 options allowed`
+        }
+      }
+
+      if (q.type === 'short_answer') {
+        if (!q.data.acceptedAnswers || q.data.acceptedAnswers.every((a) => !a.trim())) {
+          return `Question ${i + 1}: At least one accepted answer is required`
+        }
+      }
+    }
+
+    return null
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -34,6 +345,23 @@ export default function CreateAssignmentPage() {
       return
     }
 
+    // Validate questions for quiz/exam types
+    if (showQuestionBuilder && questions.length > 0) {
+      const questionError = validateQuestions()
+      if (questionError) {
+        setError(questionError)
+        toast.error(questionError)
+        return
+      }
+    }
+
+    // Warn if quiz/exam but no questions
+    if (showQuestionBuilder && questions.length === 0) {
+      if (!confirm('This quiz/exam has no questions. Are you sure you want to continue?')) {
+        return
+      }
+    }
+
     setSubmitting(true)
 
     const result = await createAssignment({
@@ -45,29 +373,30 @@ export default function CreateAssignmentPage() {
       pointsPossible,
       submissionType,
       latePolicy,
+      questions: showQuestionBuilder ? questions : undefined,
     })
 
     if (result.error) {
       setError(result.error)
+      toast.error(result.error)
       setSubmitting(false)
     } else {
+      toast.success('Assignment created successfully!')
       router.push(`/teacher/courses/${courseId}/assignments`)
     }
   }
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8">
+    <div className="mx-auto max-w-4xl space-y-8">
       {/* Header */}
       <div>
-        <button
-          onClick={() => router.back()}
-          className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        <Link
+          href={`/teacher/courses/${courseId}/assignments`}
+          className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
-          </svg>
+          <ArrowLeft className="h-4 w-4" />
           Back to Assignments
-        </button>
+        </Link>
         <h1 className="text-3xl font-bold tracking-tight text-foreground">Create Assignment</h1>
         <p className="mt-1 text-muted-foreground">
           Add a new assignment for your students.
@@ -81,147 +410,508 @@ export default function CreateAssignmentPage() {
       )}
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="ocean-card space-y-6 rounded-2xl p-6">
-        {/* Title */}
-        <div>
-          <label htmlFor="title" className="block text-sm font-medium text-foreground">
-            Title <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="title"
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter assignment title"
-            className="mt-1.5 w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            required
-          />
-        </div>
-
-        {/* Description */}
-        <div>
-          <label htmlFor="description" className="block text-sm font-medium text-foreground">
-            Description
-          </label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Describe the assignment, instructions, and expectations..."
-            rows={5}
-            className="mt-1.5 w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          />
-        </div>
-
-        {/* Type & Submission Type */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <div>
-            <label htmlFor="type" className="block text-sm font-medium text-foreground">
-              Assignment Type
-            </label>
-            <select
-              id="type"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              className="mt-1.5 w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            >
-              {ASSIGNMENT_TYPES.map((t) => (
-                <option key={t.value} value={t.value}>
-                  {t.label}
-                </option>
-              ))}
-            </select>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Basic Assignment Info */}
+        <div className="ocean-card space-y-6 rounded-2xl p-6">
+          <div className="border-b border-border pb-3">
+            <h2 className="text-lg font-semibold text-foreground">Basic Information</h2>
           </div>
 
+          {/* Title */}
           <div>
-            <label htmlFor="submissionType" className="block text-sm font-medium text-foreground">
-              Submission Type
-            </label>
-            <select
-              id="submissionType"
-              value={submissionType}
-              onChange={(e) => setSubmissionType(e.target.value)}
-              className="mt-1.5 w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            >
-              {SUBMISSION_TYPES.map((t) => (
-                <option key={t.value} value={t.value}>
-                  {t.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Due Date & Points */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <div>
-            <label htmlFor="dueDate" className="block text-sm font-medium text-foreground">
-              Due Date
-            </label>
-            <input
-              id="dueDate"
-              type="datetime-local"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
-              className="mt-1.5 w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            <Label htmlFor="title">
+              Title <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="title"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter assignment title"
+              required
+              className="mt-1.5"
             />
           </div>
 
+          {/* Description */}
           <div>
-            <label htmlFor="points" className="block text-sm font-medium text-foreground">
-              Points Possible
-            </label>
-            <input
-              id="points"
-              type="number"
-              min="0"
-              step="1"
-              value={pointsPossible}
-              onChange={(e) => setPointsPossible(parseInt(e.target.value) || 0)}
-              className="mt-1.5 w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Describe the assignment, instructions, and expectations..."
+              rows={5}
+              className="mt-1.5"
             />
           </div>
-        </div>
 
-        {/* Late Policy */}
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            role="switch"
-            aria-checked={latePolicy}
-            onClick={() => setLatePolicy(!latePolicy)}
-            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ${
-              latePolicy ? 'bg-primary' : 'bg-muted'
-            }`}
-          >
-            <span
-              className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform duration-200 ${
-                latePolicy ? 'translate-x-5' : 'translate-x-0'
+          {/* Type & Submission Type */}
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="type">Assignment Type</Label>
+              <select
+                id="type"
+                value={type}
+                onChange={(e) => handleTypeChange(e.target.value)}
+                className="mt-1.5 w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              >
+                {ASSIGNMENT_TYPES.map((t) => (
+                  <option key={t.value} value={t.value}>
+                    {t.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <Label htmlFor="submissionType">Submission Type</Label>
+              <select
+                id="submissionType"
+                value={submissionType}
+                onChange={(e) => setSubmissionType(e.target.value)}
+                className="mt-1.5 w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              >
+                {SUBMISSION_TYPES.map((t) => (
+                  <option key={t.value} value={t.value}>
+                    {t.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Due Date & Points */}
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="dueDate">Due Date</Label>
+              <Input
+                id="dueDate"
+                type="datetime-local"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+                className="mt-1.5"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="points">Points Possible</Label>
+              <Input
+                id="points"
+                type="number"
+                min="0"
+                step="1"
+                value={pointsPossible}
+                onChange={(e) => setPointsPossible(parseInt(e.target.value) || 0)}
+                className="mt-1.5"
+              />
+            </div>
+          </div>
+
+          {/* Late Policy */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              role="switch"
+              aria-checked={latePolicy}
+              onClick={() => setLatePolicy(!latePolicy)}
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ${
+                latePolicy ? 'bg-primary' : 'bg-muted'
               }`}
-            />
-          </button>
-          <label className="text-sm font-medium text-foreground">
-            Accept late submissions
-          </label>
+            >
+              <span
+                className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform duration-200 ${
+                  latePolicy ? 'translate-x-5' : 'translate-x-0'
+                }`}
+              />
+            </button>
+            <Label className="cursor-pointer" onClick={() => setLatePolicy(!latePolicy)}>
+              Accept late submissions
+            </Label>
+          </div>
         </div>
+
+        {/* Question Builder - Only shown for quiz/exam */}
+        {showQuestionBuilder && (
+          <div className="ocean-card space-y-6 rounded-2xl p-6">
+            <div className="border-b border-border pb-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold text-foreground">Question Builder</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Create questions for this {type}
+                  </p>
+                </div>
+                {questions.length > 0 && (
+                  <div className="text-right">
+                    <div className="text-sm text-muted-foreground">{questions.length} questions</div>
+                    <div className="text-lg font-semibold text-foreground">{totalQuestionPoints} points</div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Add Question Dropdown */}
+            <div className="flex flex-wrap gap-2">
+              {QUESTION_TYPES.map((qt) => (
+                <Button
+                  key={qt.value}
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => addQuestion(qt.value)}
+                  className="gap-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  {qt.label}
+                </Button>
+              ))}
+            </div>
+
+            {/* Questions List */}
+            {questions.length === 0 ? (
+              <div className="rounded-xl border-2 border-dashed border-border bg-muted/30 p-12 text-center">
+                <HelpCircle className="mx-auto h-12 w-12 text-muted-foreground" />
+                <h3 className="mt-4 text-lg font-semibold text-foreground">No questions yet</h3>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Add questions using the buttons above to build your {type}
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {questions.map((question, index) => {
+                  const isExpanded = expandedQuestions.has(question.id)
+                  const questionTypeLabel = QUESTION_TYPES.find((t) => t.value === question.type)?.label || question.type
+
+                  return (
+                    <div key={question.id} className="rounded-xl border border-border bg-background">
+                      {/* Question Header */}
+                      <div className="flex items-center gap-3 p-4">
+                        <div className="flex items-center gap-2">
+                          <GripVertical className="h-5 w-5 text-muted-foreground" />
+                          <span className="text-sm font-medium text-muted-foreground">Q{index + 1}</span>
+                        </div>
+
+                        <Badge variant="secondary" className="text-xs">
+                          {questionTypeLabel}
+                        </Badge>
+
+                        <div className="flex-1 truncate text-sm text-foreground">
+                          {question.text || <span className="text-muted-foreground italic">No question text</span>}
+                        </div>
+
+                        <div className="flex items-center gap-1">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => moveQuestion(question.id, 'up')}
+                            disabled={index === 0}
+                          >
+                            <ChevronUp className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => moveQuestion(question.id, 'down')}
+                            disabled={index === questions.length - 1}
+                          >
+                            <ChevronDown className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => toggleQuestionExpanded(question.id)}
+                          >
+                            {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => deleteQuestion(question.id)}
+                            className="text-red-600 hover:text-red-700"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Question Body (Expanded) */}
+                      {isExpanded && (
+                        <div className="space-y-4 border-t border-border p-4">
+                          {/* Question Text */}
+                          <div>
+                            <Label htmlFor={`question-text-${question.id}`}>Question Text *</Label>
+                            <Textarea
+                              id={`question-text-${question.id}`}
+                              value={question.text}
+                              onChange={(e) => updateQuestion(question.id, { text: e.target.value })}
+                              placeholder="Enter your question here..."
+                              rows={3}
+                              className="mt-1.5"
+                            />
+                          </div>
+
+                          {/* Points */}
+                          <div>
+                            <Label htmlFor={`question-points-${question.id}`}>Points *</Label>
+                            <Input
+                              id={`question-points-${question.id}`}
+                              type="number"
+                              min="1"
+                              value={question.points}
+                              onChange={(e) => updateQuestion(question.id, { points: parseInt(e.target.value) || 1 })}
+                              className="mt-1.5 w-32"
+                            />
+                          </div>
+
+                          {/* Type-specific fields */}
+                          {(question.type === 'multiple_choice' || question.type === 'multiple_select') && (
+                            <div>
+                              <div className="mb-2 flex items-center justify-between">
+                                <Label>
+                                  Options * {question.type === 'multiple_select' && '(Check all correct answers)'}
+                                </Label>
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => addOption(question.id)}
+                                  disabled={(question.data.options?.length || 0) >= 6}
+                                >
+                                  <Plus className="h-4 w-4 mr-1" />
+                                  Add Option
+                                </Button>
+                              </div>
+                              <div className="space-y-2">
+                                {question.data.options?.map((option, optIndex) => (
+                                  <div key={option.id} className="flex items-center gap-2">
+                                    {question.type === 'multiple_choice' ? (
+                                      <input
+                                        type="radio"
+                                        name={`correct-${question.id}`}
+                                        checked={question.data.correctOptionIds?.includes(option.id)}
+                                        onChange={() => toggleCorrectOption(question.id, option.id)}
+                                        className="h-4 w-4"
+                                      />
+                                    ) : (
+                                      <Checkbox
+                                        checked={question.data.correctOptionIds?.includes(option.id)}
+                                        onCheckedChange={() => toggleCorrectOption(question.id, option.id)}
+                                      />
+                                    )}
+                                    <Input
+                                      value={option.text}
+                                      onChange={(e) => updateOption(question.id, option.id, e.target.value)}
+                                      placeholder={`Option ${optIndex + 1}`}
+                                      className="flex-1"
+                                    />
+                                    {(question.data.options?.length || 0) > 2 && (
+                                      <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => deleteOption(question.id, option.id)}
+                                      >
+                                        <X className="h-4 w-4" />
+                                      </Button>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {question.type === 'true_false' && (
+                            <div>
+                              <Label>Correct Answer *</Label>
+                              <div className="mt-2 flex gap-4">
+                                <label className="flex items-center gap-2">
+                                  <input
+                                    type="radio"
+                                    name={`tf-${question.id}`}
+                                    checked={question.data.correctAnswer === true}
+                                    onChange={() => updateQuestion(question.id, { data: { ...question.data, correctAnswer: true } })}
+                                    className="h-4 w-4"
+                                  />
+                                  <span className="text-sm">True</span>
+                                </label>
+                                <label className="flex items-center gap-2">
+                                  <input
+                                    type="radio"
+                                    name={`tf-${question.id}`}
+                                    checked={question.data.correctAnswer === false}
+                                    onChange={() => updateQuestion(question.id, { data: { ...question.data, correctAnswer: false } })}
+                                    className="h-4 w-4"
+                                  />
+                                  <span className="text-sm">False</span>
+                                </label>
+                              </div>
+                            </div>
+                          )}
+
+                          {question.type === 'short_answer' && (
+                            <div className="space-y-4">
+                              <div>
+                                <div className="mb-2 flex items-center justify-between">
+                                  <Label>Accepted Answers *</Label>
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => addAcceptedAnswer(question.id)}
+                                  >
+                                    <Plus className="h-4 w-4 mr-1" />
+                                    Add Answer
+                                  </Button>
+                                </div>
+                                <div className="space-y-2">
+                                  {question.data.acceptedAnswers?.map((answer, answerIndex) => (
+                                    <div key={answerIndex} className="flex items-center gap-2">
+                                      <Input
+                                        value={answer}
+                                        onChange={(e) => updateAcceptedAnswer(question.id, answerIndex, e.target.value)}
+                                        placeholder={`Answer ${answerIndex + 1}`}
+                                        className="flex-1"
+                                      />
+                                      {(question.data.acceptedAnswers?.length || 0) > 1 && (
+                                        <Button
+                                          type="button"
+                                          variant="ghost"
+                                          size="sm"
+                                          onClick={() => deleteAcceptedAnswer(question.id, answerIndex)}
+                                        >
+                                          <X className="h-4 w-4" />
+                                        </Button>
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Checkbox
+                                  id={`case-sensitive-${question.id}`}
+                                  checked={question.data.caseSensitive}
+                                  onCheckedChange={(checked) =>
+                                    updateQuestion(question.id, {
+                                      data: { ...question.data, caseSensitive: checked === true },
+                                    })
+                                  }
+                                />
+                                <Label htmlFor={`case-sensitive-${question.id}`}>Case sensitive</Label>
+                              </div>
+                            </div>
+                          )}
+
+                          {question.type === 'essay' && (
+                            <div className="space-y-4">
+                              <div>
+                                <Label htmlFor={`rubric-${question.id}`}>Rubric Guidelines (Optional)</Label>
+                                <Textarea
+                                  id={`rubric-${question.id}`}
+                                  value={question.data.rubricGuidelines || ''}
+                                  onChange={(e) =>
+                                    updateQuestion(question.id, {
+                                      data: { ...question.data, rubricGuidelines: e.target.value },
+                                    })
+                                  }
+                                  placeholder="Enter grading rubric or guidelines..."
+                                  rows={3}
+                                  className="mt-1.5"
+                                />
+                              </div>
+                              <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                  <Label htmlFor={`min-words-${question.id}`}>Min Words</Label>
+                                  <Input
+                                    id={`min-words-${question.id}`}
+                                    type="number"
+                                    min="0"
+                                    value={question.data.minWords || 0}
+                                    onChange={(e) =>
+                                      updateQuestion(question.id, {
+                                        data: { ...question.data, minWords: parseInt(e.target.value) || 0 },
+                                      })
+                                    }
+                                    className="mt-1.5"
+                                  />
+                                </div>
+                                <div>
+                                  <Label htmlFor={`max-words-${question.id}`}>Max Words</Label>
+                                  <Input
+                                    id={`max-words-${question.id}`}
+                                    type="number"
+                                    min="0"
+                                    value={question.data.maxWords || 0}
+                                    onChange={(e) =>
+                                      updateQuestion(question.id, {
+                                        data: { ...question.data, maxWords: parseInt(e.target.value) || 0 },
+                                      })
+                                    }
+                                    className="mt-1.5"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Explanation (Optional) */}
+                          <div>
+                            <Label htmlFor={`explanation-${question.id}`}>Explanation (Optional)</Label>
+                            <Textarea
+                              id={`explanation-${question.id}`}
+                              value={question.explanation || ''}
+                              onChange={(e) => updateQuestion(question.id, { explanation: e.target.value })}
+                              placeholder="Shown to students after answering..."
+                              rows={2}
+                              className="mt-1.5"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+
+            {/* Summary */}
+            {questions.length > 0 && (
+              <div className="rounded-xl bg-muted/50 p-4">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-medium text-foreground">Total Questions:</span>
+                  <span className="text-foreground">{questions.length}</span>
+                </div>
+                <div className="mt-2 flex items-center justify-between text-sm">
+                  <span className="font-medium text-foreground">Total Points:</span>
+                  <span className="text-lg font-bold text-foreground">{totalQuestionPoints}</span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 border-t border-border pt-6">
-          <button
+        <div className="ocean-card flex items-center justify-end gap-3 rounded-2xl p-6">
+          <Button
             type="button"
+            variant="outline"
             onClick={() => router.back()}
-            className="rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+            disabled={submitting}
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
             disabled={submitting}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 disabled:opacity-50"
+            className="whale-gradient"
           >
             {submitting ? (
               <>
-                <svg className="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="h-4 w-4 animate-spin mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
@@ -230,7 +920,7 @@ export default function CreateAssignmentPage() {
             ) : (
               'Create Assignment'
             )}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

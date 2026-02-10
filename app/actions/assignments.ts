@@ -117,6 +117,7 @@ export async function createAssignment(formData: {
   pointsPossible: number
   submissionType: string
   latePolicy?: boolean
+  questions?: unknown[]
 }) {
   const supabase = await createClient()
   const headersList = await headers()
@@ -146,6 +147,7 @@ export async function createAssignment(formData: {
     submission_type: formData.submissionType,
     late_policy: formData.latePolicy ? 'accept_late' : 'no_late',
     status: 'published',
+    questions: formData.questions || [],
   }
 
   if (tenantId) {

@@ -1,9 +1,11 @@
 'use client'
 
 import Image from 'next/image'
-import { Menu, Search, Bell } from 'lucide-react'
+import { Menu, Search, Bell, Sun, Moon } from 'lucide-react'
+import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
 import { getRoleLabel, type UserRole } from '@/lib/auth/permissions'
+import { useSound } from '@/components/providers/sound-provider'
 
 // ---------------------------------------------------------------------------
 // Props
@@ -50,6 +52,8 @@ function roleBadgeClasses(role: UserRole): string {
 export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps) {
   const initials = getInitials(userName)
   const roleLabel = getRoleLabel(role)
+  const { theme, setTheme } = useTheme()
+  const sounds = useSound()
 
   return (
     <header className="flex h-16 shrink-0 items-center gap-4 border-b border-border/50 bg-background/80 px-4 backdrop-blur-sm md:px-6">
@@ -57,7 +61,10 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
       {/* Mobile hamburger                                                 */}
       {/* --------------------------------------------------------------- */}
       <button
-        onClick={onMenuToggle}
+        onClick={() => {
+          sounds.playClick()
+          onMenuToggle()
+        }}
         className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:hidden"
         aria-label="Toggle menu"
       >
@@ -89,8 +96,25 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
       {/* Right side: notifications, avatar, name, role badge              */}
       {/* --------------------------------------------------------------- */}
       <div className="flex items-center gap-3">
+        {/* Theme toggle */}
+        <button
+          onClick={() => {
+            sounds.playClick()
+            setTheme(theme === 'dark' ? 'light' : 'dark')
+          }}
+          className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          aria-label="Toggle theme"
+        >
+          {theme === 'dark' ? (
+            <Sun className="h-5 w-5" />
+          ) : (
+            <Moon className="h-5 w-5" />
+          )}
+        </button>
+
         {/* Notification bell */}
         <button
+          onClick={() => sounds.playClick()}
           className="relative rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           aria-label="Notifications"
         >

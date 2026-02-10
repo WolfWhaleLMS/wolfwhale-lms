@@ -72,25 +72,30 @@ export default async function AchievementsPage({
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          Achievements
-        </h1>
-        <p className="mt-1 text-muted-foreground">
+      {/* Visual Header with Whale Gradient */}
+      <div className="whale-gradient rounded-2xl p-8 text-white shadow-lg">
+        <div className="flex items-center gap-3 mb-2">
+          <Trophy className="h-8 w-8" />
+          <h1 className="text-3xl font-bold tracking-tight">
+            Achievements
+          </h1>
+        </div>
+        <p className="text-white/90">
           Track your progress and unlock achievements as you learn.
         </p>
       </div>
 
-      {/* XP Progress Section */}
-      <div className="ocean-card rounded-2xl p-6">
+      {/* XP Progress Section with Glow */}
+      <div className="ocean-card rounded-2xl p-6 ring-2 ring-primary/20 shadow-lg">
         <div className="mb-4 flex items-center gap-3">
-          <Zap className="size-6 text-primary" />
+          <div className="rounded-full bg-gradient-to-br from-primary/20 to-primary/10 p-3">
+            <Zap className="size-6 text-primary" />
+          </div>
           <div>
-            <h2 className="text-lg font-semibold text-foreground">
+            <h2 className="text-xl font-bold text-foreground">
               {levelName}
             </h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm font-medium text-muted-foreground">
               Level {currentLevel} - {currentTier} Tier
             </p>
           </div>
@@ -104,27 +109,33 @@ export default async function AchievementsPage({
         />
       </div>
 
-      {/* Stats Row */}
+      {/* Enhanced Stats Row */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="ocean-card rounded-2xl p-5 text-center">
-          <Trophy className="mx-auto mb-2 size-6 text-yellow-500" />
-          <p className="text-2xl font-bold text-foreground">{totalEarned}</p>
-          <p className="text-sm text-muted-foreground">Earned</p>
+        <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-xl ring-2 ring-yellow-500/30">
+          <div className="mb-2 flex items-center justify-center">
+            <Trophy className="size-8 text-yellow-500 group-hover:animate-float" />
+          </div>
+          <p className="text-4xl font-bold text-yellow-600 dark:text-yellow-400">{totalEarned}</p>
+          <p className="text-sm font-medium text-muted-foreground">Earned</p>
         </div>
-        <div className="ocean-card rounded-2xl p-5 text-center">
-          <Star className="mx-auto mb-2 size-6 text-primary" />
-          <p className="text-2xl font-bold text-foreground">{totalAvailable}</p>
-          <p className="text-sm text-muted-foreground">Total Available</p>
+        <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-xl ring-2 ring-primary/30">
+          <div className="mb-2 flex items-center justify-center">
+            <Star className="size-8 text-primary group-hover:animate-pulse" />
+          </div>
+          <p className="text-4xl font-bold text-foreground">{totalAvailable}</p>
+          <p className="text-sm font-medium text-muted-foreground">Total Available</p>
         </div>
-        <div className="ocean-card rounded-2xl p-5 text-center">
-          <Zap className="mx-auto mb-2 size-6 text-emerald-500" />
-          <p className="text-2xl font-bold text-foreground">
+        <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-xl ring-2 ring-emerald-500/30">
+          <div className="mb-2 flex items-center justify-center">
+            <Zap className="size-8 text-emerald-500 group-hover:rotate-12 transition-transform" />
+          </div>
+          <p className="text-4xl font-bold text-emerald-600 dark:text-emerald-400">
             {totalAvailable > 0
               ? Math.round((totalEarned / totalAvailable) * 100)
               : 0}
             %
           </p>
-          <p className="text-sm text-muted-foreground">Completion</p>
+          <p className="text-sm font-medium text-muted-foreground">Completion</p>
         </div>
       </div>
 
@@ -138,7 +149,7 @@ export default async function AchievementsPage({
       {earnedAchievements.length > 0 && (
         <section>
           <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-foreground">
-            <Trophy className="size-5 text-yellow-500" />
+            <Trophy className="size-5 text-yellow-500 animate-pulse" />
             Earned ({earnedAchievements.length})
           </h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -175,11 +186,17 @@ export default async function AchievementsPage({
 
       {/* Empty State */}
       {filteredAchievements.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-16 text-center">
-          <div className="mb-3 text-5xl opacity-40">{'\u{1F30A}'}</div>
-          <p className="text-muted-foreground">
-            No achievements in this category yet.
-          </p>
+        <div className="ocean-card relative overflow-hidden rounded-2xl py-16 text-center">
+          <div className="blob-ocean absolute left-1/3 top-0 h-64 w-64 opacity-20" />
+          <div className="relative z-10 flex flex-col items-center justify-center">
+            <div className="mb-4 text-6xl animate-float">🏆</div>
+            <p className="text-xl font-bold text-foreground">
+              No achievements in this category yet
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Keep learning to unlock amazing achievements!
+            </p>
+          </div>
         </div>
       )}
     </div>

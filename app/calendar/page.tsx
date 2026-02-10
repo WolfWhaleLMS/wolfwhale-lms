@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import Link from 'next/link'
 import {
   Calendar,
   ChevronLeft,
@@ -9,6 +10,7 @@ import {
   CheckCircle,
   Star,
   X,
+  ArrowLeft,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -164,7 +166,16 @@ export default function CalendarPage() {
     : []
 
   return (
-    <div className="space-y-8">
+    <div className="mx-auto max-w-6xl space-y-8 px-2 sm:px-4">
+      {/* Back Button */}
+      <Link
+        href="/dashboard"
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Dashboard
+      </Link>
+
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold tracking-tight text-foreground">

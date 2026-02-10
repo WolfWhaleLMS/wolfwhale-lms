@@ -16,6 +16,9 @@ import {
 } from 'lucide-react'
 import { CopyCodeButton } from './copy-code-button'
 import { LessonActions } from './lesson-actions'
+import { ModuleActions } from './module-actions'
+import { ModuleList } from './module-list'
+import { getModulesWithLessons } from '@/app/actions/modules'
 
 export default async function TeacherCourseDetailPage({
   params,
@@ -46,35 +49,34 @@ export default async function TeacherCourseDetailPage({
 
   if (error || !course) return notFound()
 
-  // Fetch lessons, enrollments, class code, and assignment count in parallel
-  const [lessonResult, enrollmentResult, codeResult, assignmentResult] =
-    await Promise.all([
-      supabase
-        .from('lessons')
-        .select(
-          'id, title, description, order_index, status, duration_minutes, created_at'
-        )
-        .eq('course_id', courseId)
-        .order('order_index', { ascending: true }),
-      supabase
-        .from('course_enrollments')
-        .select('id, student_id, status, enrolled_at, grade_letter, grade_numeric')
-        .eq('course_id', courseId)
-        .eq('status', 'active'),
-      supabase
-        .from('class_codes')
-        .select('id, code, is_active, expires_at, use_count, max_uses')
-        .eq('course_id', courseId)
-        .eq('is_active', true)
-        .order('created_at', { ascending: false })
-        .limit(1),
-      supabase
-        .from('assignments')
-        .select('id')
-        .eq('course_id', courseId),
-    ])
+  // Fetch modules, lessons, enrollments, class code, and assignment count in parallel
+  const [
+    modulesWithLessons,
+    enrollmentResult,
+    codeResult,
+    assignmentResult,
+  ] = await Promise.all([
+    getModulesWithLessons(courseId),
+    supabase
+      .from('course_enrollments')
+      .select('id, student_id, status, enrolled_at, grade_letter, grade_numeric')
+      .eq('course_id', courseId)
+      .eq('status', 'active'),
+    supabase
+      .from('class_codes')
+      .select('id, code, is_active, expires_at, use_count, max_uses')
+      .eq('course_id', courseId)
+      .eq('is_active', true)
+      .order('created_at', { ascending: false })
+      .limit(1),
+    supabase
+      .from('assignments')
+      .select('id')
+      .eq('course_id', courseId),
+  ])
 
-  const lessons = lessonResult.data || []
+  const modules = modulesWithLessons.modules
+  const lessons = modulesWithLessons.lessons
   const enrollments = enrollmentResult.data || []
   const classCode = codeResult.data?.[0] || null
   const assignmentCount = assignmentResult.data?.length || 0
@@ -239,59 +241,17 @@ export default async function TeacherCourseDetailPage({
         {/* --- Lessons Tab --- */}
         <TabsContent value="lessons">
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap gap-3">
               <h2 className="text-lg font-semibold text-foreground">
-                Course Lessons
+                Course Modules & Lessons
               </h2>
-              <LessonActions courseId={courseId} />
+              <div className="flex items-center gap-2">
+                <ModuleActions courseId={courseId} />
+                <LessonActions courseId={courseId} />
+              </div>
             </div>
 
-            {lessons.length === 0 ? (
-              <div className="ocean-card flex flex-col items-center justify-center rounded-2xl py-16 text-center">
-                <BookOpen className="mb-3 h-12 w-12 text-muted-foreground/40" />
-                <h3 className="text-lg font-semibold text-foreground">
-                  No lessons yet
-                </h3>
-                <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-                  Start building your course by adding your first lesson.
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {lessons.map((lesson, index) => (
-                  <div
-                    key={lesson.id}
-                    className="ocean-card flex items-center gap-4 rounded-xl p-4 transition-colors hover:bg-muted/30"
-                  >
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-sm font-bold text-primary">
-                      {index + 1}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-medium text-foreground truncate">
-                          {lesson.title}
-                        </h4>
-                        <span
-                          className={`inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${statusColor(lesson.status)}`}
-                        >
-                          {lesson.status}
-                        </span>
-                      </div>
-                      {lesson.description && (
-                        <p className="mt-0.5 text-sm text-muted-foreground truncate">
-                          {lesson.description}
-                        </p>
-                      )}
-                    </div>
-                    {lesson.duration_minutes && (
-                      <span className="shrink-0 text-xs text-muted-foreground">
-                        {lesson.duration_minutes} min
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+            <ModuleList modules={modules} lessons={lessons} />
           </div>
         </TabsContent>
 

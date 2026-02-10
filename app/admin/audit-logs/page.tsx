@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
-import { Shield, Eye, Clock } from 'lucide-react'
+import Link from 'next/link'
+import { Shield, Eye, Clock, ArrowLeft } from 'lucide-react'
 import { getAuditLogs } from '@/lib/compliance/audit-logger'
 import { AuditFilters } from './audit-filters'
 import { AuditLogTable } from './audit-log-table'
@@ -39,6 +40,15 @@ export default async function AuditLogsPage({ searchParams }: AuditLogsPageProps
 
   return (
     <div className="space-y-6">
+      {/* Back Button */}
+      <Link
+        href="/admin/dashboard"
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Dashboard
+      </Link>
+
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold tracking-tight text-foreground">

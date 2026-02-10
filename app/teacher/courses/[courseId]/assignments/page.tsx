@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { getAssignments, deleteAssignment } from '@/app/actions/assignments'
 import { ASSIGNMENT_TYPES } from '@/lib/config/constants'
+import { ArrowLeft } from 'lucide-react'
 
 interface Assignment {
   id: string
@@ -118,6 +120,15 @@ export default function TeacherAssignmentsPage() {
 
   return (
     <div className="space-y-8">
+      {/* Back Button */}
+      <Link
+        href={`/teacher/courses/${courseId}`}
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Course
+      </Link>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

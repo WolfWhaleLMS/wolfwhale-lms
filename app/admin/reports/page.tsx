@@ -1,5 +1,6 @@
+import Link from 'next/link'
 import { getDashboardStats, getAttendanceReport, getEnrollmentTrends } from '@/app/actions/school-admin'
-import { Users, BookOpen, GraduationCap, LogIn, TrendingUp, Calendar } from 'lucide-react'
+import { Users, BookOpen, GraduationCap, LogIn, TrendingUp, Calendar, ArrowLeft } from 'lucide-react'
 
 export default async function AdminReportsPage() {
   let stats, attendance, trends
@@ -25,6 +26,15 @@ export default async function AdminReportsPage() {
 
   return (
     <div className="space-y-8">
+      {/* Back Button */}
+      <Link
+        href="/admin/dashboard"
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Dashboard
+      </Link>
+
       <div>
         <h1 className="text-3xl font-bold tracking-tight text-foreground">Reports & Analytics</h1>
         <p className="mt-1 text-muted-foreground">

@@ -111,84 +111,132 @@ export default async function StudentCoursesPage() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            My Courses
-          </h1>
-          <p className="mt-1 text-muted-foreground">
-            View your enrolled courses and track your learning progress.
-          </p>
+      {/* Visual Header with Whale Gradient */}
+      <div className="whale-gradient rounded-2xl p-8 text-white shadow-lg">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="mb-2 flex items-center gap-3">
+              <BookOpen className="h-8 w-8" />
+              <h1 className="text-3xl font-bold tracking-tight">
+                My Courses
+              </h1>
+            </div>
+            <p className="text-white/90">
+              View your enrolled courses and track your learning progress.
+            </p>
+            {coursesWithMeta.length > 0 && (
+              <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-semibold backdrop-blur-sm">
+                <span className="text-2xl">{coursesWithMeta.length}</span>
+                <span>Active Course{coursesWithMeta.length !== 1 ? 's' : ''}</span>
+              </div>
+            )}
+          </div>
+          <JoinCourseDialog />
         </div>
-        <JoinCourseDialog />
       </div>
 
       {/* Course Grid */}
       {coursesWithMeta.length === 0 ? (
-        <div className="ocean-card flex flex-col items-center justify-center rounded-2xl py-20 text-center">
-          <GraduationCap className="mb-4 h-16 w-16 text-muted-foreground/40" />
-          <h3 className="text-lg font-semibold text-foreground">
-            No courses yet
-          </h3>
-          <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-            Join a course using a class code from your teacher to start
-            learning.
-          </p>
-          <div className="mt-6">
-            <JoinCourseDialog />
+        <div className="ocean-card relative overflow-hidden rounded-2xl py-20 text-center">
+          <div className="blob-ocean absolute left-1/4 top-0 h-64 w-64 opacity-30" />
+          <div className="blob-teal absolute bottom-0 right-1/4 h-64 w-64 opacity-30" />
+          <div className="relative z-10 flex flex-col items-center justify-center">
+            <div className="mb-4 text-6xl">🐋</div>
+            <GraduationCap className="mb-4 h-16 w-16 text-primary/40" />
+            <h3 className="text-xl font-bold text-foreground">
+              Ready to Dive In?
+            </h3>
+            <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+              Join a course using a class code from your teacher to start your learning adventure!
+            </p>
+            <div className="mt-6">
+              <JoinCourseDialog />
+            </div>
           </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {coursesWithMeta.map((course) => (
-            <Link
-              key={course.id}
-              href={`/student/courses/${course.id}`}
-              className="ocean-card group rounded-2xl p-6 transition-all hover:shadow-lg"
-            >
-              <div className="mb-3">
-                <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-1">
-                  {course.name}
-                </h3>
-                <p className="mt-0.5 text-sm text-muted-foreground">
-                  {course.teacher_name}
-                </p>
-              </div>
+          {coursesWithMeta.map((course) => {
+            const progressColor =
+              course.progress_percentage === 100 ? 'bg-gradient-to-r from-green-500 to-emerald-500' :
+              course.progress_percentage >= 70 ? 'bg-gradient-to-r from-blue-500 to-teal-500' :
+              course.progress_percentage >= 40 ? 'bg-gradient-to-r from-amber-500 to-yellow-500' :
+              'bg-gradient-to-r from-purple-500 to-pink-500'
 
-              {course.subject && (
-                <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
-                  <span className="rounded-md bg-muted px-2 py-1 text-muted-foreground">
-                    {course.subject}
-                  </span>
-                  {course.grade_level && (
-                    <span className="rounded-md bg-muted px-2 py-1 text-muted-foreground">
-                      Grade {course.grade_level}
-                    </span>
+            return (
+              <Link
+                key={course.id}
+                href={`/student/courses/${course.id}`}
+                className="ocean-card group relative overflow-hidden rounded-2xl p-6 transition-all hover:scale-[1.02] hover:shadow-xl"
+              >
+                {/* Progress indicator on top edge */}
+                <div className="absolute left-0 right-0 top-0 h-1.5 bg-muted">
+                  <div
+                    className={`h-full transition-all duration-500 ${progressColor}`}
+                    style={{ width: `${course.progress_percentage}%` }}
+                  />
+                </div>
+
+                <div className="mb-3 flex items-start justify-between gap-2">
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                      {course.name}
+                    </h3>
+                    <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
+                      <Users className="h-3.5 w-3.5" />
+                      <span>{course.teacher_name}</span>
+                    </div>
+                  </div>
+                  {course.progress_percentage === 100 && (
+                    <div className="text-2xl animate-float">🏆</div>
                   )}
                 </div>
-              )}
 
-              {course.description && (
-                <p className="mb-4 text-sm text-muted-foreground line-clamp-2">
-                  {course.description}
-                </p>
-              )}
+                {course.subject && (
+                  <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
+                    <span className="rounded-full bg-gradient-to-r from-primary/20 to-primary/10 px-3 py-1 font-medium text-primary">
+                      {course.subject}
+                    </span>
+                    {course.grade_level && (
+                      <span className="rounded-full bg-muted px-3 py-1 font-medium text-muted-foreground">
+                        Grade {course.grade_level}
+                      </span>
+                    )}
+                  </div>
+                )}
 
-              {/* Progress */}
-              <div className="mt-auto space-y-2 border-t border-border pt-4">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">
-                    {course.completed_lessons} / {course.lesson_count} lessons
-                  </span>
-                  <span className="font-medium text-foreground">
-                    {course.progress_percentage}%
-                  </span>
+                {course.description && (
+                  <p className="mb-4 text-sm text-muted-foreground line-clamp-2">
+                    {course.description}
+                  </p>
+                )}
+
+                {/* Enhanced Progress Section */}
+                <div className="mt-auto space-y-3 border-t border-border pt-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <BookOpen className="h-4 w-4" />
+                      <span>{course.completed_lessons} / {course.lesson_count} lessons</span>
+                    </div>
+                    <span className={`text-lg font-bold ${
+                      course.progress_percentage === 100 ? 'text-green-600 dark:text-green-400' :
+                      course.progress_percentage >= 70 ? 'text-blue-600 dark:text-blue-400' :
+                      course.progress_percentage >= 40 ? 'text-amber-600 dark:text-amber-400' :
+                      'text-purple-600 dark:text-purple-400'
+                    }`}>
+                      {course.progress_percentage}%
+                    </span>
+                  </div>
+                  <div className="relative h-3 overflow-hidden rounded-full bg-muted">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${progressColor} shadow-md`}
+                      style={{ width: `${course.progress_percentage}%` }}
+                    />
+                  </div>
                 </div>
-                <Progress value={course.progress_percentage} className="h-2" />
-              </div>
-            </Link>
-          ))}
+              </Link>
+            )
+          })}
         </div>
       )}
     </div>

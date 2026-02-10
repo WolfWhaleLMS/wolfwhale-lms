@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { getGradebook } from '@/app/actions/grades'
 import { getLetterGrade } from '@/lib/config/constants'
+import { ArrowLeft } from 'lucide-react'
 
 interface Course {
   id: string
@@ -110,6 +112,15 @@ export default function TeacherGradebookPage() {
 
   return (
     <div className="space-y-8">
+      {/* Back Button */}
+      <Link
+        href="/teacher/dashboard"
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Dashboard
+      </Link>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

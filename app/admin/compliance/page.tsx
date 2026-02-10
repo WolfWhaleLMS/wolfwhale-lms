@@ -12,6 +12,7 @@ import {
   ClipboardList,
   ExternalLink,
   Users,
+  ArrowLeft,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -64,6 +65,15 @@ export default async function CompliancePage() {
 
   return (
     <div className="space-y-6">
+      {/* Back Button */}
+      <Link
+        href="/admin/dashboard"
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Dashboard
+      </Link>
+
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
