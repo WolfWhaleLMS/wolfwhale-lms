@@ -6,6 +6,7 @@ import { Users, UserPlus, Search, ArrowLeft } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { UserSearchBar } from './user-search-bar'
+import { AddUserDialog } from './add-user-dialog'
 
 const ROLE_CONFIG: Record<
   string,
@@ -57,26 +58,59 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
 
+  // Query tenant_memberships joined with profiles (email/role/is_active don't live on profiles)
   let query = supabase
-    .from('profiles')
-    .select('id, full_name, email, avatar_url, role, grade_level, created_at, is_active')
+    .from('tenant_memberships')
+    .select('user_id, role, is_active, created_at, profiles:user_id(id, full_name, avatar_url, grade_level)')
     .order('created_at', { ascending: false })
 
   if (tenantId) {
     query = query.eq('tenant_id', tenantId)
   }
 
-  if (search) {
-    query = query.or(`full_name.ilike.%${search}%,email.ilike.%${search}%`)
-  }
-
   query = query.limit(100)
 
-  const { data: users, error } = await query
+  const { data: memberships, error } = await query
+
+  // Fetch seat usage for Add User dialog
+  let maxUsers = 50
+  let currentUserCount = 0
+  if (tenantId) {
+    const [tenantResult, countResult] = await Promise.all([
+      supabase
+        .from('tenants')
+        .select('max_users')
+        .eq('id', tenantId)
+        .single(),
+      supabase
+        .from('tenant_memberships')
+        .select('id', { count: 'exact', head: true })
+        .eq('tenant_id', tenantId),
+    ])
+    maxUsers = tenantResult.data?.max_users ?? 50
+    currentUserCount = countResult.count ?? 0
+  }
+
+  // Flatten memberships into a user-like shape for the template
+  const users = (memberships ?? [])
+    .map((m: any) => ({
+      id: m.user_id,
+      full_name: m.profiles?.full_name ?? null,
+      avatar_url: m.profiles?.avatar_url ?? null,
+      grade_level: m.profiles?.grade_level ?? null,
+      role: m.role ?? 'student',
+      is_active: m.is_active !== false,
+      created_at: m.created_at,
+    }))
+    .filter((u: any) => {
+      if (!search) return true
+      const name = (u.full_name || '').toLowerCase()
+      return name.includes(search.toLowerCase())
+    })
 
   // Aggregate role counts
   const roleCounts: Record<string, number> = {}
-  for (const user of users ?? []) {
+  for (const user of users) {
     const role = user.role ?? 'student'
     roleCounts[role] = (roleCounts[role] ?? 0) + 1
   }
@@ -102,10 +136,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
             View and manage all users across your institution.
           </p>
         </div>
-        <Button size="sm" disabled title="Coming soon">
-          <UserPlus className="size-4" />
-          Add User
-        </Button>
+        <AddUserDialog currentUsers={currentUserCount} maxUsers={maxUsers} />
       </div>
 
       {/* Role summary chips */}
@@ -137,6 +168,17 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
             {(users ?? []).length} total
           </span>
         </div>
+        <div className="ocean-card flex items-center gap-2 rounded-2xl px-4 py-2">
+          <span className="text-sm text-muted-foreground">Seats:</span>
+          <span className={`text-sm font-semibold ${currentUserCount >= maxUsers ? 'text-red-600 dark:text-red-400' : 'text-foreground'}`}>
+            {currentUserCount}/{maxUsers}
+          </span>
+          {currentUserCount >= maxUsers && (
+            <span className="inline-flex items-center rounded-full bg-red-100 dark:bg-red-950/50 px-2 py-0.5 text-[10px] font-medium text-red-700 dark:text-red-400">
+              Full
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Search */}
@@ -159,9 +201,6 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
                     Name
                   </th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Email
-                  </th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                     Role
                   </th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">
@@ -179,7 +218,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
                 {(users ?? []).length === 0 ? (
                   <tr>
                     <td
-                      colSpan={6}
+                      colSpan={5}
                       className="px-4 py-12 text-center text-muted-foreground"
                     >
                       {search
@@ -223,9 +262,6 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
                               {user.full_name ?? 'Unnamed User'}
                             </span>
                           </div>
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {user.email ?? '--'}
                         </td>
                         <td className="px-4 py-3">
                           <span

@@ -8,8 +8,8 @@ import { TrendingUp, TrendingDown, Minus, Award, BarChart3 } from 'lucide-react'
 interface CourseGrade {
   courseId: string
   courseTitle: string
-  totalScore: number
-  totalMaxScore: number
+  totalPointsEarned: number
+  totalPercentage: number
   percentage: number
   letterGrade: string
   grades: unknown[]
@@ -17,8 +17,8 @@ interface CourseGrade {
 
 interface GradeEntry {
   id: string
-  score: number
-  max_score: number
+  points_earned: number
+  percentage: number
   letter_grade: string
   feedback: string | null
   graded_at: string
@@ -205,7 +205,7 @@ export default function StudentGradesPage() {
                 <div className="rounded-xl bg-gradient-to-br from-green-500/10 to-green-500/5 p-4 text-center">
                   <div className="flex items-center justify-center gap-1">
                     <p className="text-3xl font-bold text-green-600 dark:text-green-400">
-                      {recentGrades.filter((g) => (g.score / g.max_score) * 100 >= 90).length}
+                      {recentGrades.filter((g) => (g.points_earned / g.percentage) * 100 >= 90).length}
                     </p>
                     <span className="text-lg">🏆</span>
                   </div>
@@ -312,7 +312,7 @@ export default function StudentGradesPage() {
                       {recentGrades
                         .filter((g) => g.courseTitle === course.courseTitle)
                         .map((grade) => {
-                          const pct = grade.max_score > 0 ? (grade.score / grade.max_score) * 100 : 0
+                          const pct = grade.percentage > 0 ? (grade.points_earned / grade.percentage) * 100 : 0
                           return (
                             <div
                               key={grade.id}
@@ -335,7 +335,7 @@ export default function StudentGradesPage() {
                               </div>
                               <div className="text-right">
                                 <p className={`font-medium ${gradeColorClass(pct)}`}>
-                                  {grade.score}/{grade.max_score}
+                                  {grade.points_earned}/{grade.percentage}
                                 </p>
                                 <p className="text-xs text-muted-foreground">
                                   {Math.round(pct)}% - {grade.letter_grade}
@@ -351,7 +351,7 @@ export default function StudentGradesPage() {
                       <div className="flex items-center justify-between text-sm">
                         <span className="font-medium text-foreground">Course Total</span>
                         <span className={`font-bold ${gradeColorClass(course.percentage)}`}>
-                          {course.totalScore}/{course.totalMaxScore} ({course.percentage}%)
+                          {course.totalPointsEarned}/{course.totalPercentage} ({course.percentage}%)
                         </span>
                       </div>
                     </div>
@@ -391,7 +391,7 @@ export default function StudentGradesPage() {
               <tbody className="divide-y divide-border">
                 {recentGrades.slice(0, 20).map((grade) => {
                   const pct =
-                    grade.max_score > 0 ? (grade.score / grade.max_score) * 100 : 0
+                    grade.percentage > 0 ? (grade.points_earned / grade.percentage) * 100 : 0
                   return (
                     <tr key={grade.id} className="transition-colors hover:bg-muted/20">
                       <td className="px-4 py-3">
@@ -407,7 +407,7 @@ export default function StudentGradesPage() {
                       </td>
                       <td className="px-4 py-3 text-right">
                         <span className={`font-medium ${gradeColorClass(pct)}`}>
-                          {grade.score}/{grade.max_score}
+                          {grade.points_earned}/{grade.percentage}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-right">

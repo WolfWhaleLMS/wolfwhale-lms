@@ -28,7 +28,7 @@ export async function recordStudySession(durationMinutes: number, musicType: str
 
   // Get current user level for XP calculation
   const { data: userLevel } = await supabase
-    .from('user_levels')
+    .from('student_xp')
     .select('total_xp, current_level')
     .eq('user_id', user.id)
     .eq('tenant_id', tenantId)
@@ -39,7 +39,7 @@ export async function recordStudySession(durationMinutes: number, musicType: str
   // Get today's XP to respect daily cap
   const today = new Date().toISOString().split('T')[0]
   const { data: todayEvents } = await supabase
-    .from('xp_events')
+    .from('xp_transactions')
     .select('xp_amount')
     .eq('user_id', user.id)
     .eq('tenant_id', tenantId)
@@ -66,7 +66,7 @@ export async function recordStudySession(durationMinutes: number, musicType: str
   }
 
   // Record the XP event with study session metadata
-  await supabase.from('xp_events').insert({
+  await supabase.from('xp_transactions').insert({
     tenant_id: tenantId,
     user_id: user.id,
     event_type: eventType,
@@ -84,7 +84,7 @@ export async function recordStudySession(durationMinutes: number, musicType: str
   const newLevel = result.newLevel
   const newTier = result.newTier
 
-  await supabase.from('user_levels').upsert({
+  await supabase.from('student_xp').upsert({
     tenant_id: tenantId,
     user_id: user.id,
     total_xp: newTotalXp,
@@ -114,7 +114,7 @@ export async function getStudyStats() {
 
   // Get all study session XP events
   const { data: sessions } = await supabase
-    .from('xp_events')
+    .from('xp_transactions')
     .select('xp_amount, created_at, metadata')
     .eq('user_id', user.id)
     .eq('tenant_id', tenantId)
@@ -193,7 +193,7 @@ export async function getStudyHistory(limit = 20) {
   const { supabase, user, tenantId } = await getContext()
 
   const { data } = await supabase
-    .from('xp_events')
+    .from('xp_transactions')
     .select('xp_amount, created_at, metadata')
     .eq('user_id', user.id)
     .eq('tenant_id', tenantId)

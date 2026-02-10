@@ -70,22 +70,22 @@ export function LoginForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white/80">Email</FormLabel>
+                <FormLabel className="text-[#1a2a4e]/70">Email</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a2a4e]/30" />
                     <Input
                       type="email"
                       placeholder="you@school.edu"
                       autoComplete="email"
                       autoFocus
                       disabled={isLoading}
-                      className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[oklch(0.70_0.12_180/0.50)] focus:ring-[oklch(0.70_0.12_180/0.20)]"
+                      className="pl-10 bg-white/80 border-[#1a2a4e]/15 text-[#1a2a4e] placeholder:text-[#1a2a4e]/30 focus:border-[#0a4d68]/50 focus:ring-[#0a4d68]/20"
                       {...field}
                     />
                   </div>
                 </FormControl>
-                <FormMessage className="text-red-400" />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -96,34 +96,34 @@ export function LoginForm() {
             render={({ field }) => (
               <FormItem>
                 <div className="flex items-center justify-between">
-                  <FormLabel className="text-white/80">Password</FormLabel>
+                  <FormLabel className="text-[#1a2a4e]/70">Password</FormLabel>
                   <a
                     href="/forgot-password"
-                    className="text-sm text-[oklch(0.74_0.13_180/0.80)] hover:text-[oklch(0.74_0.13_180)] transition-colors"
+                    className="text-sm text-[#0a4d68]/70 hover:text-[#0a4d68] transition-colors"
                   >
                     Forgot password?
                   </a>
                 </div>
                 <FormControl>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a2a4e]/30" />
                     <Input
                       type="password"
                       placeholder="••••••••"
                       autoComplete="current-password"
                       disabled={isLoading}
-                      className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[oklch(0.70_0.12_180/0.50)] focus:ring-[oklch(0.70_0.12_180/0.20)]"
+                      className="pl-10 bg-white/80 border-[#1a2a4e]/15 text-[#1a2a4e] placeholder:text-[#1a2a4e]/30 focus:border-[#0a4d68]/50 focus:ring-[#0a4d68]/20"
                       {...field}
                     />
                   </div>
                 </FormControl>
-                <FormMessage className="text-red-400" />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
 
           {error && (
-            <div className="flex items-center gap-2 text-sm text-red-400 bg-red-500/10 border border-red-500/20 p-3 rounded-lg">
+            <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-200 p-3 rounded-lg">
               <AlertCircle className="h-4 w-4 shrink-0" />
               <span>{error}</span>
             </div>
@@ -131,7 +131,7 @@ export function LoginForm() {
 
           <Button
             type="submit"
-            className="w-full whale-gradient text-white font-medium h-11 hover:opacity-90 transition-opacity"
+            className="w-full bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] text-white font-medium h-11 hover:opacity-90 transition-opacity"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -146,7 +146,7 @@ export function LoginForm() {
         </form>
       </Form>
 
-      <p className="text-xs text-center text-white/40">
+      <p className="text-xs text-center text-[#1a2a4e]/40">
         Your administrator will provide your login credentials
       </p>
     </div>

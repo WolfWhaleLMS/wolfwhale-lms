@@ -62,11 +62,11 @@ export default async function AdminAttendancePage() {
       const { data } = await supabase
         .from('attendance_records')
         .select(
-          'id, date, status, notes, student_id, course_id, profiles:student_id(full_name), courses:course_id(name)'
+          'id, attendance_date, status, notes, student_id, course_id, profiles:student_id(full_name), courses:course_id(name)'
         )
         .eq('tenant_id', tenantId)
-        .gte('date', sevenDaysAgo)
-        .order('date', { ascending: false })
+        .gte('attendance_date', sevenDaysAgo)
+        .order('attendance_date', { ascending: false })
         .limit(50)
 
       recentRecords = data ?? []
@@ -282,8 +282,8 @@ export default async function AdminAttendancePage() {
                       className="transition-colors hover:bg-muted/30"
                     >
                       <td className="whitespace-nowrap px-4 py-3 text-foreground">
-                        {record.date
-                          ? new Date(record.date + 'T00:00:00').toLocaleDateString(
+                        {record.attendance_date
+                          ? new Date(record.attendance_date + 'T00:00:00').toLocaleDateString(
                               'en-US',
                               {
                                 weekday: 'short',

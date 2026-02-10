@@ -29,7 +29,7 @@ export async function awardXP(eventType: XPEventType, sourceType?: string, sourc
 
   // Get current user level
   const { data: userLevel } = await supabase
-    .from('user_levels')
+    .from('student_xp')
     .select('total_xp, current_level')
     .eq('user_id', user.id)
     .eq('tenant_id', tenantId)
@@ -40,7 +40,7 @@ export async function awardXP(eventType: XPEventType, sourceType?: string, sourc
   // Get today's XP
   const today = new Date().toISOString().split('T')[0]
   const { data: todayEvents } = await supabase
-    .from('xp_events')
+    .from('xp_transactions')
     .select('xp_amount')
     .eq('user_id', user.id)
     .eq('tenant_id', tenantId)
@@ -55,7 +55,7 @@ export async function awardXP(eventType: XPEventType, sourceType?: string, sourc
   if (result.xpAwarded <= 0) return result
 
   // Record XP event
-  await supabase.from('xp_events').insert({
+  await supabase.from('xp_transactions').insert({
     tenant_id: tenantId,
     user_id: user.id,
     event_type: eventType,
@@ -65,7 +65,7 @@ export async function awardXP(eventType: XPEventType, sourceType?: string, sourc
   })
 
   // Update user level
-  await supabase.from('user_levels').upsert({
+  await supabase.from('student_xp').upsert({
     tenant_id: tenantId,
     user_id: user.id,
     total_xp: result.newTotalXp,
@@ -82,7 +82,7 @@ export async function getUserLevel() {
   const { supabase, user, tenantId } = await getContext()
 
   const { data } = await supabase
-    .from('user_levels')
+    .from('student_xp')
     .select('*')
     .eq('user_id', user.id)
     .eq('tenant_id', tenantId)
@@ -95,7 +95,7 @@ export async function getXPHistory(limit = 20) {
   const { supabase, user, tenantId } = await getContext()
 
   const { data } = await supabase
-    .from('xp_events')
+    .from('xp_transactions')
     .select('*')
     .eq('user_id', user.id)
     .eq('tenant_id', tenantId)
@@ -113,7 +113,7 @@ export async function getUserAchievements() {
   const { supabase, user, tenantId } = await getContext()
 
   const { data } = await supabase
-    .from('user_achievements')
+    .from('student_achievements')
     .select('*, achievements(*)')
     .eq('user_id', user.id)
     .eq('tenant_id', tenantId)

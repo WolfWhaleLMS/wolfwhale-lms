@@ -12,15 +12,15 @@ interface StudentAssignment {
   description: string | null
   type: string
   due_date: string | null
-  points_possible: number
+  max_points: number
   submission_type: string
   course_id: string
-  courseTitle: string
+  courseName: string
   submissionStatus: string
   submittedAt: string | null
   grade: {
-    score: number
-    max_score: number
+    points_earned: number
+    percentage: number
     feedback: string | null
   } | null
 }
@@ -136,7 +136,7 @@ export default function StudentAssignmentsPage() {
         case 'title':
           return a.title.localeCompare(b.title)
         case 'course':
-          return a.courseTitle.localeCompare(b.courseTitle)
+          return a.courseName.localeCompare(b.courseName)
         case 'status':
           return a.submissionStatus.localeCompare(b.submissionStatus)
         default:
@@ -322,7 +322,7 @@ export default function StudentAssignmentsPage() {
                       <StatusBadge status={assignment.submissionStatus} />
                     </div>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      {assignment.courseTitle}
+                      {assignment.courseName}
                     </p>
                     <div className="mt-2 flex items-center gap-4 text-xs">
                       <span className={`flex items-center gap-1 ${
@@ -336,7 +336,7 @@ export default function StudentAssignmentsPage() {
                       </span>
                       <span className="flex items-center gap-1 text-muted-foreground">
                         <span className="text-lg">⭐</span>
-                        {assignment.points_possible} points
+                        {assignment.max_points} points
                       </span>
                     </div>
                   </div>
@@ -344,10 +344,10 @@ export default function StudentAssignmentsPage() {
                     {assignment.grade ? (
                       <div className="rounded-lg bg-gradient-to-br from-green-500/10 to-emerald-500/10 px-3 py-2">
                         <p className="text-lg font-bold text-green-600 dark:text-green-400">
-                          {assignment.grade.score}/{assignment.grade.max_score}
+                          {assignment.grade.points_earned}/{assignment.grade.percentage}
                         </p>
                         <p className="text-xs font-semibold text-green-600/80 dark:text-green-400/80">
-                          {Math.round((assignment.grade.score / assignment.grade.max_score) * 100)}%
+                          {Math.round((assignment.grade.points_earned / assignment.grade.percentage) * 100)}%
                         </p>
                       </div>
                     ) : (

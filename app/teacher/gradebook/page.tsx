@@ -8,26 +8,25 @@ import { ArrowLeft } from 'lucide-react'
 
 interface Course {
   id: string
-  title: string
+  name: string
 }
 
 interface Assignment {
   id: string
   title: string
   type: string
-  points_possible: number
+  max_points: number
   due_date: string | null
 }
 
 interface Student {
   id: string
   name: string
-  email: string
 }
 
 interface GradeCell {
-  score: number
-  maxScore: number
+  pointsEarned: number
+  percentage: number
   letterGrade: string
 }
 
@@ -75,9 +74,9 @@ export default function TeacherGradebookPage() {
 
         const { data } = await supabase
           .from('courses')
-          .select('id, title')
-          .eq('teacher_id', user.id)
-          .order('title')
+          .select('id, name')
+          .eq('created_by', user.id)
+          .order('name')
 
         if (data && data.length > 0) {
           setCourses(data)
@@ -149,7 +148,7 @@ export default function TeacherGradebookPage() {
           )}
           {courses.map((c) => (
             <option key={c.id} value={c.id}>
-              {c.title}
+              {c.name}
             </option>
           ))}
         </select>
@@ -197,7 +196,7 @@ export default function TeacherGradebookPage() {
                         >
                           <div className="truncate text-xs">{a.title}</div>
                           <div className="mt-0.5 text-xs font-normal opacity-60">
-                            {a.points_possible} pts
+                            {a.max_points} pts
                           </div>
                         </th>
                       ))}
@@ -214,7 +213,6 @@ export default function TeacherGradebookPage() {
                           <td className="sticky left-0 z-10 bg-background/80 px-4 py-3 backdrop-blur-sm">
                             <div>
                               <p className="font-medium text-foreground">{student.name}</p>
-                              <p className="text-xs text-muted-foreground">{student.email}</p>
                             </div>
                           </td>
                           {gradebook.assignments.map((a) => {
@@ -226,14 +224,13 @@ export default function TeacherGradebookPage() {
                                 </td>
                               )
                             }
-                            const pct = grade.maxScore > 0 ? (grade.score / grade.maxScore) * 100 : 0
                             return (
                               <td key={a.id} className="px-3 py-3 text-center">
-                                <span className={`font-medium ${gradeColorClass(pct)}`}>
-                                  {grade.score}
+                                <span className={`font-medium ${gradeColorClass(grade.percentage)}`}>
+                                  {grade.pointsEarned}
                                 </span>
                                 <span className="text-xs text-muted-foreground">
-                                  /{grade.maxScore}
+                                  /{a.max_points}
                                 </span>
                               </td>
                             )

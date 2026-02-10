@@ -67,7 +67,7 @@ export async function exportUserData(
       .from('attendance_records')
       .select('*')
       .eq('student_id', userId)
-      .order('date', { ascending: false }),
+      .order('attendance_date', { ascending: false }),
 
     // Messages (sent by this user)
     supabase

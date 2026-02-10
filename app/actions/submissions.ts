@@ -19,14 +19,14 @@ export async function getSubmissions(assignmentId: string) {
   // Get the assignment and verify teacher ownership
   const { data: assignment } = await supabase
     .from('assignments')
-    .select('*, courses:courses(id, title, teacher_id)')
+    .select('*, courses:courses(id, name, created_by)')
     .eq('id', assignmentId)
     .single()
 
   if (!assignment) return { error: 'Assignment not found' }
 
-  const courseData = assignment.courses as unknown as { id: string; title: string; teacher_id: string }
-  if (courseData?.teacher_id !== user.id) {
+  const courseData = assignment.courses as unknown as { id: string; name: string; created_by: string }
+  if (courseData?.created_by !== user.id) {
     return { error: 'Not authorized to view these submissions' }
   }
 
@@ -53,19 +53,19 @@ export async function getSubmissions(assignmentId: string) {
 
   // Get grades for these submissions
   const submissionIds = (submissions || []).map((s) => s.id)
-  let gradeMap: Record<string, { score: number; max_score: number; feedback: string | null; letter_grade: string | null; rubric_scores: unknown }> = {}
+  let gradeMap: Record<string, { points_earned: number; percentage: number; feedback: string | null; letter_grade: string | null; rubric_scores: unknown }> = {}
 
   if (submissionIds.length > 0) {
     const { data: grades } = await supabase
       .from('grades')
-      .select('submission_id, score, max_score, feedback, letter_grade, rubric_scores')
+      .select('submission_id, points_earned, percentage, feedback, letter_grade, rubric_scores')
       .in('submission_id', submissionIds)
 
     if (grades) {
       for (const g of grades) {
         gradeMap[g.submission_id] = {
-          score: g.score,
-          max_score: g.max_score,
+          points_earned: g.points_earned,
+          percentage: g.percentage,
           feedback: g.feedback,
           letter_grade: g.letter_grade,
           rubric_scores: g.rubric_scores,
@@ -87,11 +87,11 @@ export async function getSubmissions(assignmentId: string) {
     assignment: {
       id: assignment.id,
       title: assignment.title,
-      pointsPossible: assignment.points_possible,
+      maxPoints: assignment.max_points,
       type: assignment.type,
       dueDate: assignment.due_date,
       courseId: courseData.id,
-      courseTitle: courseData.title,
+      courseName: courseData.name,
     },
   }
 }
@@ -154,18 +154,18 @@ export async function submitWork(
   // Get assignment details
   const { data: assignment } = await supabase
     .from('assignments')
-    .select('id, course_id, due_date, late_policy, status')
+    .select('id, course_id, due_date, allow_late_submission, status')
     .eq('id', assignmentId)
     .single()
 
   if (!assignment) return { error: 'Assignment not found' }
-  if (assignment.status !== 'published') return { error: 'This assignment is not accepting submissions' }
+  if (assignment.status !== 'assigned') return { error: 'This assignment is not accepting submissions' }
 
   // Verify enrollment
   const { data: enrollment } = await supabase
-    .from('enrollments')
+    .from('course_enrollments')
     .select('id')
-    .eq('user_id', user.id)
+    .eq('student_id', user.id)
     .eq('course_id', assignment.course_id)
     .single()
 
@@ -182,15 +182,15 @@ export async function submitWork(
   const now = new Date()
   const isLate = assignment.due_date ? now > new Date(assignment.due_date) : false
 
-  if (isLate && assignment.late_policy === 'no_late') {
+  if (isLate && !assignment.allow_late_submission) {
     return { error: 'This assignment does not accept late submissions' }
   }
 
   const submissionData: Record<string, unknown> = {
     assignment_id: assignmentId,
     student_id: user.id,
-    content: formData.content || null,
-    file_urls: formData.fileUrls || null,
+    submission_text: formData.content || null,
+    file_path: formData.fileUrls || null,
     submitted_at: now.toISOString(),
     status: 'submitted',
     is_late: isLate,
@@ -206,8 +206,8 @@ export async function submitWork(
     const { data, error } = await supabase
       .from('submissions')
       .update({
-        content: formData.content || null,
-        file_urls: formData.fileUrls || null,
+        submission_text: formData.content || null,
+        file_path: formData.fileUrls || null,
         submitted_at: now.toISOString(),
         is_late: isLate,
         status: 'submitted',
@@ -261,7 +261,7 @@ export async function gradeSubmission(
   // Get submission details
   const { data: submission } = await supabase
     .from('submissions')
-    .select('id, assignment_id, student_id, assignments:assignment_id(course_id, points_possible, courses:courses(teacher_id))')
+    .select('id, assignment_id, student_id, assignments:assignment_id(course_id, max_points, courses:courses(created_by))')
     .eq('id', submissionId)
     .single()
 
@@ -269,16 +269,16 @@ export async function gradeSubmission(
 
   const assignmentData = submission.assignments as unknown as {
     course_id: string
-    points_possible: number
-    courses: { teacher_id: string }
+    max_points: number
+    courses: { created_by: string }
   }
 
-  if (assignmentData?.courses?.teacher_id !== user.id) {
+  if (assignmentData?.courses?.created_by !== user.id) {
     return { error: 'Not authorized to grade this submission' }
   }
 
-  const maxScore = assignmentData.points_possible
-  const percentage = maxScore > 0 ? (score / maxScore) * 100 : 0
+  const maxPoints = assignmentData.max_points
+  const percentage = maxPoints > 0 ? (score / maxPoints) * 100 : 0
   const letterGrade = getLetterGrade(percentage)
 
   // Check if grade already exists
@@ -292,9 +292,9 @@ export async function gradeSubmission(
     submission_id: submissionId,
     assignment_id: submission.assignment_id,
     student_id: submission.student_id,
-    grader_id: user.id,
-    score,
-    max_score: maxScore,
+    graded_by: user.id,
+    points_earned: score,
+    percentage,
     letter_grade: letterGrade,
     feedback: feedback || null,
     rubric_scores: rubricScores || null,
@@ -310,13 +310,13 @@ export async function gradeSubmission(
     const { data, error } = await supabase
       .from('grades')
       .update({
-        score,
-        max_score: maxScore,
+        points_earned: score,
+        percentage,
         letter_grade: letterGrade,
         feedback: feedback || null,
         rubric_scores: rubricScores || null,
         graded_at: new Date().toISOString(),
-        grader_id: user.id,
+        graded_by: user.id,
       })
       .eq('id', existingGrade.id)
       .select()
@@ -368,7 +368,7 @@ export async function returnSubmission(submissionId: string, feedback: string) {
   // Get submission details and verify teacher ownership
   const { data: submission } = await supabase
     .from('submissions')
-    .select('id, assignment_id, student_id, assignments:assignment_id(course_id, courses:courses(teacher_id))')
+    .select('id, assignment_id, student_id, assignments:assignment_id(course_id, courses:courses(created_by))')
     .eq('id', submissionId)
     .single()
 
@@ -376,10 +376,10 @@ export async function returnSubmission(submissionId: string, feedback: string) {
 
   const assignmentData = submission.assignments as unknown as {
     course_id: string
-    courses: { teacher_id: string }
+    courses: { created_by: string }
   }
 
-  if (assignmentData?.courses?.teacher_id !== user.id) {
+  if (assignmentData?.courses?.created_by !== user.id) {
     return { error: 'Not authorized to return this submission' }
   }
 

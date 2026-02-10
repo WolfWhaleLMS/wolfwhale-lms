@@ -10,6 +10,9 @@ import {
   BarChart3,
   Activity,
   Clock,
+  Building2,
+  Globe,
+  Calendar,
 } from 'lucide-react'
 
 function DashboardCard({
@@ -69,6 +72,8 @@ export default async function AdminDashboardPage() {
 
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  const userRole = headersList.get('x-user-role')
+  const isSuperAdmin = userRole === 'super_admin'
 
   // Fetch dashboard data with error handling
   let stats: {
@@ -114,6 +119,61 @@ export default async function AdminDashboardPage() {
     }
   }
 
+  // Fetch seat usage for current tenant
+  let seatUsage = { currentUsers: 0, maxUsers: 50 }
+  if (tenantId) {
+    try {
+      const [tenantResult, countResult] = await Promise.all([
+        supabase
+          .from('tenants')
+          .select('max_users')
+          .eq('id', tenantId)
+          .single(),
+        supabase
+          .from('tenant_memberships')
+          .select('id', { count: 'exact', head: true })
+          .eq('tenant_id', tenantId),
+      ])
+      seatUsage = {
+        currentUsers: countResult.count ?? 0,
+        maxUsers: tenantResult.data?.max_users ?? 50,
+      }
+    } catch {
+      // Seat usage may fail silently
+    }
+  }
+
+  // Fetch all schools for super_admin overview
+  let allSchools: any[] = []
+  let schoolMemberCounts: Record<string, number> = {}
+  if (isSuperAdmin) {
+    try {
+      const { data: tenants } = await supabase
+        .from('tenants')
+        .select('id, name, slug, subscription_plan, max_users, status, created_at')
+        .order('created_at', { ascending: false })
+
+      allSchools = tenants ?? []
+
+      if (allSchools.length > 0) {
+        const tenantIds = allSchools.map((t: any) => t.id)
+        const { data: memberships } = await supabase
+          .from('tenant_memberships')
+          .select('tenant_id')
+          .in('tenant_id', tenantIds)
+
+        if (memberships) {
+          for (const m of memberships) {
+            const tid = (m as any).tenant_id
+            schoolMemberCounts[tid] = (schoolMemberCounts[tid] || 0) + 1
+          }
+        }
+      }
+    } catch {
+      // Schools data may fail silently
+    }
+  }
+
   const studentCount = stats?.roleCounts?.student ?? 0
   const teacherCount = stats?.roleCounts?.teacher ?? 0
   const adminCount =
@@ -134,6 +194,51 @@ export default async function AdminDashboardPage() {
         <p className="mt-1 text-muted-foreground">
           School overview, enrollment data, and system health at a glance.
         </p>
+      </div>
+
+      {/* Seat Usage Banner */}
+      <div className="ocean-card rounded-2xl p-5">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="rounded-xl bg-indigo-500/10 p-3">
+              <Users className="h-6 w-6 text-indigo-500" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-foreground">Seat Usage</p>
+              <p className="text-xs text-muted-foreground">
+                {seatUsage.currentUsers} of {seatUsage.maxUsers} seats used
+              </p>
+            </div>
+          </div>
+          <div className="text-right">
+            <p className={`text-2xl font-bold ${seatUsage.currentUsers >= seatUsage.maxUsers ? 'text-red-600 dark:text-red-400' : 'text-foreground'}`}>
+              {seatUsage.currentUsers}/{seatUsage.maxUsers}
+            </p>
+            {seatUsage.currentUsers >= seatUsage.maxUsers && (
+              <span className="inline-flex items-center rounded-full bg-red-100 dark:bg-red-950/50 px-2.5 py-0.5 text-xs font-medium text-red-700 dark:text-red-400">
+                Limit Reached
+              </span>
+            )}
+          </div>
+        </div>
+        <div className="mt-3 h-2 overflow-hidden rounded-full bg-muted">
+          <div
+            className={`h-full rounded-full transition-all ${
+              seatUsage.currentUsers >= seatUsage.maxUsers
+                ? 'bg-red-500'
+                : seatUsage.currentUsers >= seatUsage.maxUsers * 0.8
+                  ? 'bg-amber-500'
+                  : 'bg-primary'
+            }`}
+            style={{
+              width: `${Math.min(100, Math.round((seatUsage.currentUsers / seatUsage.maxUsers) * 100))}%`,
+            }}
+          />
+        </div>
+        <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+          <span>{Math.max(0, seatUsage.maxUsers - seatUsage.currentUsers)} seats remaining</span>
+          <span>{Math.round((seatUsage.currentUsers / seatUsage.maxUsers) * 100)}% utilized</span>
+        </div>
       </div>
 
       {/* Stats Row */}
@@ -394,6 +499,155 @@ export default async function AdminDashboardPage() {
           </div>
         </DashboardCard>
       </div>
+
+      {/* Schools Overview (Super Admin only) */}
+      {isSuperAdmin && (
+        <DashboardCard
+          title="Schools Overview"
+          icon={<Building2 className="h-6 w-6 text-primary" />}
+          className="w-full"
+        >
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">
+              {allSchools.length} registered school{allSchools.length !== 1 ? 's' : ''} across the platform.
+            </p>
+            <Link
+              href="/admin/tenants"
+              className="text-sm text-primary hover:underline"
+            >
+              Manage tenants
+            </Link>
+          </div>
+          <div className="overflow-hidden rounded-xl border border-border">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-muted/50">
+                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                      School
+                    </th>
+                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                      Slug
+                    </th>
+                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                      Plan
+                    </th>
+                    <th className="px-4 py-3 text-center font-medium text-muted-foreground">
+                      Users / Max
+                    </th>
+                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                      Status
+                    </th>
+                    <th className="px-4 py-3 text-right font-medium text-muted-foreground">
+                      Created
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {allSchools.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-8 text-center text-muted-foreground"
+                      >
+                        No schools registered yet.
+                      </td>
+                    </tr>
+                  ) : (
+                    allSchools.map((school: any) => {
+                      const members = schoolMemberCounts[school.id] ?? 0
+                      const max = school.max_users ?? 50
+                      const plan = school.subscription_plan ?? 'starter'
+                      const status = school.status ?? 'active'
+                      const seatPct = max > 0 ? Math.round((members / max) * 100) : 0
+
+                      const planStyles: Record<string, string> = {
+                        free: 'bg-muted text-muted-foreground',
+                        starter: 'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400',
+                        growth: 'bg-purple-100 text-purple-700 dark:bg-purple-950/50 dark:text-purple-400',
+                        enterprise: 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400',
+                      }
+
+                      const statusStyles: Record<string, string> = {
+                        active: 'bg-green-100 text-green-700 dark:bg-green-950/50 dark:text-green-400',
+                        suspended: 'bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-400',
+                        cancelled: 'bg-muted text-muted-foreground',
+                      }
+
+                      return (
+                        <tr
+                          key={school.id}
+                          className="transition-colors hover:bg-muted/30"
+                        >
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-2">
+                              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+                                <Building2 className="h-4 w-4 text-primary" />
+                              </div>
+                              <span className="font-medium text-foreground">
+                                {school.name ?? 'Unnamed School'}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                              <Globe className="h-3 w-3" />
+                              {school.slug ?? '--'}
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span
+                              className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${planStyles[plan] ?? 'bg-muted text-muted-foreground'}`}
+                            >
+                              {plan}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <span className={`text-sm font-semibold ${members >= max ? 'text-red-600 dark:text-red-400' : 'text-foreground'}`}>
+                              {members}/{max}
+                            </span>
+                            <div className="mx-auto mt-1 h-1.5 w-20 overflow-hidden rounded-full bg-muted">
+                              <div
+                                className={`h-full rounded-full ${
+                                  members >= max
+                                    ? 'bg-red-500'
+                                    : seatPct >= 80
+                                      ? 'bg-amber-500'
+                                      : 'bg-primary'
+                                }`}
+                                style={{ width: `${Math.min(100, seatPct)}%` }}
+                              />
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span
+                              className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${statusStyles[status] ?? 'bg-muted text-muted-foreground'}`}
+                            >
+                              {status}
+                            </span>
+                          </td>
+                          <td className="whitespace-nowrap px-4 py-3 text-right text-xs text-muted-foreground">
+                            {school.created_at
+                              ? new Date(school.created_at).toLocaleDateString(
+                                  'en-US',
+                                  {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: 'numeric',
+                                  }
+                                )
+                              : '--'}
+                          </td>
+                        </tr>
+                      )
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </DashboardCard>
+      )}
 
       {/* Recent Activity */}
       <DashboardCard

@@ -58,7 +58,7 @@ export default async function TeacherAllAssignmentsPage() {
         course_id,
         type,
         due_date,
-        points_possible,
+        max_points,
         status,
         created_at,
         submissions:submissions(count)
@@ -298,7 +298,7 @@ export default async function TeacherAllAssignmentsPage() {
                         <div className="flex items-center justify-center gap-1">
                           <Award className="h-3.5 w-3.5 text-muted-foreground" />
                           <span className="font-medium text-foreground">
-                            {assignment.points_possible ?? 0}
+                            {assignment.max_points ?? 0}
                           </span>
                         </div>
                       </td>

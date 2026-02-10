@@ -15,6 +15,8 @@ const PLAN_STYLES: Record<string, string> = {
   free: 'bg-muted text-muted-foreground',
   starter:
     'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400',
+  growth:
+    'bg-purple-100 text-purple-700 dark:bg-purple-950/50 dark:text-purple-400',
   pro: 'bg-purple-100 text-purple-700 dark:bg-purple-950/50 dark:text-purple-400',
   enterprise:
     'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400',
@@ -69,7 +71,7 @@ export default async function AdminTenantsPage() {
   // Fetch all tenants (super_admin sees all, no tenant filter)
   const { data: tenants, error: tenantsError } = await supabase
     .from('tenants')
-    .select('id, name, slug, status, created_at, plan, branding')
+    .select('id, name, slug, status, created_at, subscription_plan, max_users, branding')
     .order('created_at', { ascending: false })
 
   // Fetch member counts per tenant
@@ -146,8 +148,9 @@ export default async function AdminTenantsPage() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {tenantList.map((tenant: any) => {
             const status = tenant.status ?? 'active'
-            const plan = tenant.plan ?? 'free'
+            const plan = tenant.subscription_plan ?? 'free'
             const members = memberCounts[tenant.id] ?? 0
+            const maxUsers = tenant.max_users ?? 50
             const statusStyle =
               STATUS_STYLES[status] ?? 'bg-muted text-muted-foreground'
             const planStyle =
@@ -185,14 +188,28 @@ export default async function AdminTenantsPage() {
 
                 {/* Details */}
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between rounded-xl bg-muted/50 px-4 py-3">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Users className="h-4 w-4" />
-                      Members
+                  <div className="rounded-xl bg-muted/50 px-4 py-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Users className="h-4 w-4" />
+                        Seats
+                      </div>
+                      <span className={`text-sm font-semibold ${members >= maxUsers ? 'text-red-600 dark:text-red-400' : 'text-foreground'}`}>
+                        {members}/{maxUsers}
+                      </span>
                     </div>
-                    <span className="text-sm font-semibold text-foreground">
-                      {members}
-                    </span>
+                    <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted">
+                      <div
+                        className={`h-full rounded-full ${
+                          members >= maxUsers
+                            ? 'bg-red-500'
+                            : members >= maxUsers * 0.8
+                              ? 'bg-amber-500'
+                              : 'bg-primary'
+                        }`}
+                        style={{ width: `${Math.min(100, maxUsers > 0 ? Math.round((members / maxUsers) * 100) : 0)}%` }}
+                      />
+                    </div>
                   </div>
 
                   <div className="flex items-center justify-between rounded-xl bg-muted/50 px-4 py-3">

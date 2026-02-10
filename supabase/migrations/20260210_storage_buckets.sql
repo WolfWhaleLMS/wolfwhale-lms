@@ -136,7 +136,7 @@ CREATE POLICY "submissions_teacher_read"
     bucket_id = 'submissions'
     AND EXISTS (
       SELECT 1 FROM courses
-      WHERE courses.teacher_id = auth.uid()
+      WHERE courses.created_by = auth.uid()
     )
   );
 

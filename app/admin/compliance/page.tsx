@@ -13,10 +13,11 @@ import {
   ExternalLink,
   Users,
   ArrowLeft,
+  MapPin,
+  Globe,
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { getComplianceStatus, getConsentRecords } from '@/app/actions/compliance'
+import { getComplianceStatus, getConsentRecords, getDataRequests } from '@/app/actions/compliance'
 
 function StatusIcon({ status }: { status: 'pass' | 'warning' | 'fail' }) {
   if (status === 'pass') {
@@ -49,19 +50,28 @@ function overallStatus(items: { status: 'pass' | 'warning' | 'fail' }[]) {
 }
 
 export default async function CompliancePage() {
-  const [complianceResult, consentResult] = await Promise.all([
+  const [complianceResult, consentResult, dataRequestsResult] = await Promise.all([
     getComplianceStatus(),
     getConsentRecords(),
+    getDataRequests(),
   ])
 
   const compliance = complianceResult.data
   const consentRecords = consentResult.data ?? []
+  const dataRequests = dataRequestsResult.data ?? []
 
   const ferpaStatus = compliance ? overallStatus(compliance.ferpa) : 'warning'
   const coppaStatus = compliance ? overallStatus(compliance.coppa) : 'warning'
+  const pipedaStatus = compliance?.pipeda?.length
+    ? overallStatus(compliance.pipeda)
+    : 'warning'
 
   const consentGiven = consentRecords.filter((r) => r.consent_given).length
   const consentPending = consentRecords.filter((r) => !r.consent_given).length
+
+  const pendingRequests = dataRequests.filter(
+    (r) => r.status === 'pending' || r.status === 'in_progress'
+  ).length
 
   return (
     <div className="space-y-6">
@@ -81,7 +91,7 @@ export default async function CompliancePage() {
             Compliance Dashboard
           </h1>
           <p className="mt-1 text-muted-foreground">
-            FERPA, COPPA, and data privacy compliance status for your institution.
+            FERPA, COPPA, PIPEDA, and Canadian privacy law compliance status.
           </p>
         </div>
         {compliance?.lastAuditDate && (
@@ -99,13 +109,13 @@ export default async function CompliancePage() {
       </div>
 
       {/* Overall status summary */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="ocean-card flex items-center gap-4 rounded-2xl p-5">
           <div className="rounded-xl bg-primary/10 p-3">
             <Shield className="size-5 text-primary" />
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">FERPA Status</p>
+            <p className="text-sm text-muted-foreground">FERPA</p>
             <span
               className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusBadgeClass(ferpaStatus)}`}
             >
@@ -118,11 +128,24 @@ export default async function CompliancePage() {
             <Lock className="size-5 text-primary" />
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">COPPA Status</p>
+            <p className="text-sm text-muted-foreground">COPPA</p>
             <span
               className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusBadgeClass(coppaStatus)}`}
             >
               {statusLabel(coppaStatus)}
+            </span>
+          </div>
+        </div>
+        <div className="ocean-card flex items-center gap-4 rounded-2xl p-5">
+          <div className="rounded-xl bg-primary/10 p-3">
+            <MapPin className="size-5 text-primary" />
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">PIPEDA</p>
+            <span
+              className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusBadgeClass(pipedaStatus)}`}
+            >
+              {statusLabel(pipedaStatus)}
             </span>
           </div>
         </div>
@@ -141,6 +164,51 @@ export default async function CompliancePage() {
 
       {/* Main Grid */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {/* PIPEDA / Canadian Compliance Card */}
+        <div className="ocean-card rounded-2xl p-6 lg:col-span-2">
+          <div className="mb-5 flex items-center gap-3">
+            <MapPin className="size-5 text-red-600" />
+            <h2 className="text-lg font-semibold text-foreground">
+              Canadian Privacy Law (PIPEDA & Provincial)
+            </h2>
+            <span className="ml-auto text-xs text-muted-foreground">
+              PIPEDA, FIPPA (BC), MFIPPA (ON), Law 25 (QC), FOIP (AB)
+            </span>
+          </div>
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            {compliance?.pipeda?.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-start gap-3 rounded-xl bg-muted/50 p-4"
+              >
+                <StatusIcon status={item.status} />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-sm font-medium text-foreground">
+                      {item.label}
+                    </p>
+                    <span
+                      className={`inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${statusBadgeClass(item.status)}`}
+                    >
+                      {statusLabel(item.status)}
+                    </span>
+                  </div>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {item.description}
+                  </p>
+                  <span className="mt-1 inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                    {item.category === 'pipeda' ? 'Federal (PIPEDA)' : 'Provincial'}
+                  </span>
+                </div>
+              </div>
+            )) ?? (
+              <p className="py-4 text-center text-sm text-muted-foreground col-span-2">
+                Unable to load Canadian compliance data.
+              </p>
+            )}
+          </div>
+        </div>
+
         {/* FERPA Compliance Card */}
         <div className="ocean-card rounded-2xl p-6">
           <div className="mb-5 flex items-center gap-3">
@@ -296,15 +364,83 @@ export default async function CompliancePage() {
           )}
         </div>
 
-        {/* Quick Actions */}
+        {/* Data Requests (PIPEDA) */}
         <div className="ocean-card rounded-2xl p-6">
+          <div className="mb-5 flex items-center gap-3">
+            <FileCheck className="size-5 text-primary" />
+            <h2 className="text-lg font-semibold text-foreground">
+              Data Requests (PIPEDA)
+            </h2>
+            {pendingRequests > 0 && (
+              <span className="ml-auto inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
+                {pendingRequests} pending
+              </span>
+            )}
+          </div>
+          <p className="mb-3 text-xs text-muted-foreground">
+            Under PIPEDA, individuals have the right to request access, correction,
+            deletion, or portability of their personal information. Requests must be
+            processed within 30 days.
+          </p>
+          {dataRequests.length > 0 ? (
+            <div className="overflow-hidden rounded-xl border border-border">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-muted/50">
+                    <th className="px-3 py-2 text-left font-medium text-muted-foreground">
+                      Type
+                    </th>
+                    <th className="px-3 py-2 text-left font-medium text-muted-foreground">
+                      Status
+                    </th>
+                    <th className="px-3 py-2 text-right font-medium text-muted-foreground">
+                      Date
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {dataRequests.slice(0, 5).map((req) => (
+                    <tr key={req.id}>
+                      <td className="px-3 py-2 capitalize text-foreground">
+                        {req.request_type}
+                      </td>
+                      <td className="px-3 py-2">
+                        <Badge
+                          className={
+                            req.status === 'completed'
+                              ? 'bg-green-100 text-green-700'
+                              : req.status === 'denied'
+                                ? 'bg-red-100 text-red-700'
+                                : 'bg-amber-100 text-amber-700'
+                          }
+                        >
+                          {req.status}
+                        </Badge>
+                      </td>
+                      <td className="px-3 py-2 text-right text-xs text-muted-foreground">
+                        {new Date(req.created_at).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-center text-sm text-muted-foreground">
+              No data requests submitted.
+            </p>
+          )}
+        </div>
+
+        {/* Quick Actions */}
+        <div className="ocean-card rounded-2xl p-6 lg:col-span-2">
           <div className="mb-5 flex items-center gap-3">
             <FileCheck className="size-5 text-primary" />
             <h2 className="text-lg font-semibold text-foreground">
               Quick Actions
             </h2>
           </div>
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Link href="/admin/audit-logs" className="block">
               <div className="flex items-center justify-between rounded-xl bg-muted/50 p-4 transition-colors hover:bg-muted">
                 <div className="flex items-center gap-3">
@@ -353,16 +489,16 @@ export default async function CompliancePage() {
                 <ExternalLink className="size-4 text-muted-foreground" />
               </div>
             </Link>
-            <Link href="/admin/users" className="block">
+            <Link href="/privacy" className="block">
               <div className="flex items-center justify-between rounded-xl bg-muted/50 p-4 transition-colors hover:bg-muted">
                 <div className="flex items-center gap-3">
-                  <Users className="size-4 text-muted-foreground" />
+                  <Globe className="size-4 text-muted-foreground" />
                   <div>
                     <p className="text-sm font-medium text-foreground">
-                      Manage Users
+                      Privacy Policy (EN/FR)
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      View and manage user accounts and roles
+                      View bilingual privacy policy page
                     </p>
                   </div>
                 </div>

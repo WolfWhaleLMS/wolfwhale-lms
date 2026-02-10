@@ -512,7 +512,7 @@ export async function getChildProgress(studentId: string) {
 
   // Get XP / gamification level
   const { data: userLevel } = await supabase
-    .from('user_levels')
+    .from('student_xp')
     .select('total_xp, current_level, current_tier, streak_days, longest_streak, coins')
     .eq('tenant_id', tenantId)
     .eq('user_id', studentId)

@@ -3,36 +3,62 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
 import { LoginForm } from '@/components/auth/LoginForm'
-import { GraduationCap, Shield, Users } from 'lucide-react'
+import { GraduationCap, Shield, Users, ArrowRight } from 'lucide-react'
 
 function LoginFormSkeleton() {
   return (
     <div className="space-y-4 animate-pulse">
-      <div className="h-10 bg-white/10 rounded-lg" />
-      <div className="h-10 bg-white/10 rounded-lg" />
-      <div className="h-12 bg-white/10 rounded-lg" />
+      <div className="h-10 bg-[#1a2a4e]/10 rounded-lg" />
+      <div className="h-10 bg-[#1a2a4e]/10 rounded-lg" />
+      <div className="h-12 bg-[#1a2a4e]/10 rounded-lg" />
     </div>
   )
 }
 
 export default function LoginPage() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      {/* EVA-style Title */}
+      <div className="text-center space-y-1 mb-2">
+        <h1
+          className="eva-heading text-5xl sm:text-6xl font-extrabold tracking-tight text-[#1a2a4e] leading-none"
+          style={{
+            fontFamily: "'Shippori Mincho B1', Georgia, 'Times New Roman', serif",
+            fontWeight: 800,
+            transform: 'scaleX(0.85)',
+            transformOrigin: 'center',
+            letterSpacing: '-0.03em',
+          }}
+        >
+          WOLF WHALE
+        </h1>
+        <p
+          className="text-sm sm:text-base tracking-[0.25em] uppercase text-[#0a4d68]/70 font-medium"
+          style={{
+            fontFamily: "'Shippori Mincho B1', Georgia, 'Times New Roman', serif",
+            fontWeight: 400,
+          }}
+        >
+          Learning Management System
+        </p>
+      </div>
+
+      {/* Learn More — BIG button near the top */}
+      <Link
+        href="/info"
+        className="flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] text-white font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all group"
+      >
+        <span>Learn More About Wolf Whale LMS</span>
+        <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+      </Link>
+
       {/* Glass Card */}
-      <div className="glass-panel rounded-2xl border border-white/10 overflow-hidden">
+      <div className="rounded-2xl border border-[#1a2a4e]/10 overflow-hidden bg-white/70 backdrop-blur-xl shadow-xl">
         {/* Header */}
-        <div className="relative px-8 py-6 bg-gradient-to-r from-[oklch(0.35_0.08_220/0.30)] via-[oklch(0.70_0.12_180/0.15)] to-[oklch(0.35_0.08_220/0.30)] border-b border-white/10">
-          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent" />
-          <div className="relative text-center space-y-2">
-            <div className="inline-flex p-3 rounded-full bg-[oklch(0.70_0.12_180/0.20)] border border-[oklch(0.70_0.12_180/0.30)] mb-2">
-              <svg className="h-6 w-6 text-[oklch(0.74_0.13_180)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                <path d="M2 17l10 5 10-5" />
-                <path d="M2 12l10 5 10-5" />
-              </svg>
-            </div>
-            <h1 className="text-2xl font-bold text-white">Welcome Back</h1>
-            <p className="text-white/60 text-sm">
+        <div className="relative px-8 py-5 bg-gradient-to-r from-[#1a2a4e]/5 via-[#0a4d68]/5 to-[#1a2a4e]/5 border-b border-[#1a2a4e]/10">
+          <div className="text-center space-y-1">
+            <h2 className="text-xl font-bold text-[#1a2a4e]">Welcome Back</h2>
+            <p className="text-[#1a2a4e]/50 text-sm">
               Sign in to continue your learning journey
             </p>
           </div>
@@ -40,7 +66,7 @@ export default function LoginPage() {
 
         {/* Form */}
         <div className="p-8">
-          <p className="text-sm text-white/60 mb-4 text-center">
+          <p className="text-sm text-[#1a2a4e]/50 mb-4 text-center">
             Sign in with credentials assigned by your administrator
           </p>
           <Suspense fallback={<LoginFormSkeleton />}>
@@ -49,10 +75,10 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <div className="px-8 py-4 bg-white/[0.02] border-t border-white/10 text-center">
-          <p className="text-sm text-white/60">
+        <div className="px-8 py-4 bg-[#1a2a4e]/[0.02] border-t border-[#1a2a4e]/10 text-center">
+          <p className="text-sm text-[#1a2a4e]/50">
             Need access?{' '}
-            <span className="text-[oklch(0.74_0.13_180)]">
+            <span className="text-[#0a4d68] font-medium">
               Contact your administrator for credentials
             </span>
           </p>
@@ -60,54 +86,38 @@ export default function LoginPage() {
       </div>
 
       {/* Feature Highlights */}
-      <div className="grid grid-cols-3 gap-4">
-        <div className="glass-panel rounded-xl p-4 text-center border border-white/5 hover:border-[oklch(0.70_0.12_180/0.30)] transition-colors">
-          <GraduationCap className="h-5 w-5 text-[oklch(0.74_0.13_180)] mx-auto mb-2" />
-          <p className="text-xs text-white/60">100+ Tools</p>
+      <div className="grid grid-cols-3 gap-3">
+        <div className="rounded-xl p-4 text-center bg-white/60 backdrop-blur-sm border border-[#1a2a4e]/8 hover:border-[#0a4d68]/30 transition-colors shadow-sm">
+          <GraduationCap className="h-5 w-5 text-[#0a4d68] mx-auto mb-2" />
+          <p className="text-xs font-medium text-[#1a2a4e]/60">100+ Tools</p>
         </div>
-        <div className="glass-panel rounded-xl p-4 text-center border border-white/5 hover:border-[oklch(0.70_0.12_180/0.30)] transition-colors">
-          <Users className="h-5 w-5 text-[oklch(0.74_0.13_180)] mx-auto mb-2" />
-          <p className="text-xs text-white/60">K-12 Ready</p>
+        <div className="rounded-xl p-4 text-center bg-white/60 backdrop-blur-sm border border-[#1a2a4e]/8 hover:border-[#0a4d68]/30 transition-colors shadow-sm">
+          <Users className="h-5 w-5 text-[#0a4d68] mx-auto mb-2" />
+          <p className="text-xs font-medium text-[#1a2a4e]/60">K-12 Ready</p>
         </div>
-        <div className="glass-panel rounded-xl p-4 text-center border border-white/5 hover:border-[oklch(0.70_0.12_180/0.30)] transition-colors">
-          <Shield className="h-5 w-5 text-[oklch(0.74_0.13_180)] mx-auto mb-2" />
-          <p className="text-xs text-white/60">FERPA Secure</p>
+        <div className="rounded-xl p-4 text-center bg-white/60 backdrop-blur-sm border border-[#1a2a4e]/8 hover:border-[#0a4d68]/30 transition-colors shadow-sm">
+          <Shield className="h-5 w-5 text-[#0a4d68] mx-auto mb-2" />
+          <p className="text-xs font-medium text-[#1a2a4e]/60">FERPA Secure</p>
         </div>
       </div>
 
-      {/* Info */}
-      <div className="glass-panel rounded-xl p-4 border border-[oklch(0.70_0.12_180/0.20)]">
-        <p className="text-xs text-center text-white/50">
-          <span className="text-[oklch(0.74_0.13_180)] font-medium">School Access:</span>{' '}
+      {/* School Access Info */}
+      <div className="rounded-xl p-4 bg-white/50 backdrop-blur-sm border border-[#0a4d68]/15 shadow-sm">
+        <p className="text-xs text-center text-[#1a2a4e]/50">
+          <span className="text-[#0a4d68] font-medium">School Access:</span>{' '}
           Contact your school administrator or{' '}
-          <Link href="/#contact" className="text-[oklch(0.74_0.13_180)] hover:underline">
+          <Link href="/#contact" className="text-[#0a4d68] hover:underline font-medium">
             request a demo
           </Link>
         </p>
       </div>
 
-      {/* Learn More Link */}
-      <div className="text-center">
-        <Link
-          href="/info"
-          className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-[oklch(0.74_0.13_180)] transition-colors group"
-        >
-          <span>Learn More About Wolf Whale LMS</span>
-          <svg
-            className="h-4 w-4 group-hover:translate-x-1 transition-transform"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </Link>
-      </div>
+      {/* Google Font import */}
+      {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;800&display=swap"
+        rel="stylesheet"
+      />
     </div>
   )
 }

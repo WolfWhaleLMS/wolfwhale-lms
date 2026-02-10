@@ -58,7 +58,7 @@ export async function getAccessLevel(
         id,
         course_enrollments!inner(student_id)
       `)
-      .eq('teacher_id', userId)
+      .eq('created_by', userId)
       .eq('tenant_id', tenantId)
       .eq('course_enrollments.student_id', targetStudentId)
       .limit(1)

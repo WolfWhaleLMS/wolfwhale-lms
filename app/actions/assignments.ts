@@ -42,7 +42,7 @@ export async function getAssignments(courseId: string) {
   if (assignmentIds.length > 0) {
     const { data: grades } = await supabase
       .from('grades')
-      .select('assignment_id, score, max_score')
+      .select('assignment_id, points_earned, percentage')
       .in('assignment_id', assignmentIds)
 
     if (grades) {
@@ -51,8 +51,7 @@ export async function getAssignments(courseId: string) {
           averages[grade.assignment_id] = { avg: 0, count: 0 }
         }
         averages[grade.assignment_id].count++
-        averages[grade.assignment_id].avg +=
-          grade.max_score > 0 ? (grade.score / grade.max_score) * 100 : 0
+        averages[grade.assignment_id].avg += grade.percentage ?? 0
       }
       for (const key of Object.keys(averages)) {
         if (averages[key].count > 0) {
@@ -87,7 +86,7 @@ export async function getAssignment(assignmentId: string) {
     .from('assignments')
     .select(`
       *,
-      courses:courses(id, title, teacher_id)
+      courses:courses(id, name, created_by)
     `)
     .eq('id', assignmentId)
 
@@ -131,11 +130,11 @@ export async function createAssignment(formData: {
   // Verify the user is the course teacher
   const { data: course } = await supabase
     .from('courses')
-    .select('teacher_id')
+    .select('created_by')
     .eq('id', formData.courseId)
     .single()
 
-  if (!course || course.teacher_id !== user.id) {
+  if (!course || course.created_by !== user.id) {
     return { error: 'Not authorized to create assignments for this course' }
   }
 
@@ -145,10 +144,10 @@ export async function createAssignment(formData: {
     description: formData.description || null,
     type: formData.type,
     due_date: formData.dueDate || null,
-    points_possible: formData.pointsPossible,
+    max_points: formData.pointsPossible,
     submission_type: formData.submissionType,
-    late_policy: formData.latePolicy ? 'accept_late' : 'no_late',
-    status: 'published',
+    allow_late_submission: formData.latePolicy ?? false,
+    status: 'assigned',
     questions: formData.questions || [],
   }
 
@@ -206,14 +205,14 @@ export async function updateAssignment(
   // Verify ownership via course
   const { data: assignment } = await supabase
     .from('assignments')
-    .select('course_id, courses:courses(teacher_id)')
+    .select('course_id, courses:courses(created_by)')
     .eq('id', assignmentId)
     .single()
 
   if (!assignment) return { error: 'Assignment not found' }
 
-  const courseData = assignment.courses as unknown as { teacher_id: string }
-  if (courseData?.teacher_id !== user.id) {
+  const courseData = assignment.courses as unknown as { created_by: string }
+  if (courseData?.created_by !== user.id) {
     return { error: 'Not authorized to update this assignment' }
   }
 
@@ -222,9 +221,9 @@ export async function updateAssignment(
   if (formData.description !== undefined) updateData.description = formData.description
   if (formData.type !== undefined) updateData.type = formData.type
   if (formData.dueDate !== undefined) updateData.due_date = formData.dueDate
-  if (formData.pointsPossible !== undefined) updateData.points_possible = formData.pointsPossible
+  if (formData.pointsPossible !== undefined) updateData.max_points = formData.pointsPossible
   if (formData.submissionType !== undefined) updateData.submission_type = formData.submissionType
-  if (formData.latePolicy !== undefined) updateData.late_policy = formData.latePolicy ? 'accept_late' : 'no_late'
+  if (formData.latePolicy !== undefined) updateData.allow_late_submission = formData.latePolicy ?? false
   if (formData.status !== undefined) updateData.status = formData.status
   if (formData.attachments !== undefined) updateData.attachments = JSON.stringify(formData.attachments)
   updateData.updated_at = new Date().toISOString()
@@ -256,14 +255,14 @@ export async function deleteAssignment(assignmentId: string) {
   // Verify ownership via course
   const { data: assignment } = await supabase
     .from('assignments')
-    .select('course_id, courses:courses(teacher_id)')
+    .select('course_id, courses:courses(created_by)')
     .eq('id', assignmentId)
     .single()
 
   if (!assignment) return { error: 'Assignment not found' }
 
-  const courseData = assignment.courses as unknown as { teacher_id: string }
-  if (courseData?.teacher_id !== user.id) {
+  const courseData = assignment.courses as unknown as { created_by: string }
+  if (courseData?.created_by !== user.id) {
     return { error: 'Not authorized to delete this assignment' }
   }
 
@@ -295,9 +294,9 @@ export async function getStudentAssignments() {
 
   // Get enrolled courses
   const { data: enrollments } = await supabase
-    .from('enrollments')
-    .select('course_id, courses:courses(id, title)')
-    .eq('user_id', user.id)
+    .from('course_enrollments')
+    .select('course_id, courses:courses(id, name)')
+    .eq('student_id', user.id)
 
   if (!enrollments || enrollments.length === 0) {
     return { data: [] }
@@ -306,9 +305,9 @@ export async function getStudentAssignments() {
   const courseIds = enrollments.map((e) => e.course_id)
   const courseMap: Record<string, string> = {}
   for (const e of enrollments) {
-    const course = e.courses as unknown as { id: string; title: string }
+    const course = e.courses as unknown as { id: string; name: string }
     if (course) {
-      courseMap[course.id] = course.title
+      courseMap[course.id] = course.name
     }
   }
 
@@ -317,7 +316,7 @@ export async function getStudentAssignments() {
     .from('assignments')
     .select('*')
     .in('course_id', courseIds)
-    .eq('status', 'published')
+    .eq('status', 'assigned')
     .order('due_date', { ascending: true })
 
   if (tenantId) {
@@ -334,7 +333,7 @@ export async function getStudentAssignments() {
   // Get student's submissions
   const assignmentIds = (assignments || []).map((a) => a.id)
   let submissionMap: Record<string, { status: string; submitted_at: string }> = {}
-  let gradeMap: Record<string, { score: number; max_score: number; feedback: string | null }> = {}
+  let gradeMap: Record<string, { points_earned: number; percentage: number; feedback: string | null }> = {}
 
   if (assignmentIds.length > 0) {
     const { data: submissions } = await supabase
@@ -354,15 +353,15 @@ export async function getStudentAssignments() {
 
     const { data: grades } = await supabase
       .from('grades')
-      .select('assignment_id, score, max_score, feedback')
+      .select('assignment_id, points_earned, percentage, feedback')
       .eq('student_id', user.id)
       .in('assignment_id', assignmentIds)
 
     if (grades) {
       for (const g of grades) {
         gradeMap[g.assignment_id] = {
-          score: g.score,
-          max_score: g.max_score,
+          points_earned: g.points_earned,
+          percentage: g.percentage,
           feedback: g.feedback,
         }
       }

@@ -41,15 +41,30 @@ export async function hasParentalConsent(studentId: string): Promise<boolean> {
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
 
-  const { data } = await supabase
+  // Try the student_parents table first (consent_given column added via migration)
+  const { data, error } = await supabase
     .from('student_parents')
     .select('consent_given')
     .eq('student_id', studentId)
     .eq('tenant_id', tenantId)
     .limit(1)
 
-  if (!data || data.length === 0) return false
-  return data.some((r) => r.consent_given === true)
+  // If the query succeeded and we have data, use it
+  if (!error && data && data.length > 0) {
+    return data.some((r) => r.consent_given === true)
+  }
+
+  // Fallback: check the consent_records table if student_parents query failed
+  // (e.g. consent_given column doesn't exist yet)
+  const { data: consentData } = await supabase
+    .from('consent_records')
+    .select('id')
+    .eq('student_id', studentId)
+    .eq('consent_type', 'data_collection')
+    .eq('consent_given', true)
+    .limit(1)
+
+  return (consentData && consentData.length > 0) ?? false
 }
 
 /**

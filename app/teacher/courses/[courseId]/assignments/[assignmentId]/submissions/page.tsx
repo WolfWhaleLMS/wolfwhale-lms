@@ -52,11 +52,11 @@ interface Submission {
 interface AssignmentInfo {
   id: string
   title: string
-  pointsPossible: number
+  maxPoints: number
   type: string
   dueDate: string | null
   courseId: string
-  courseTitle: string
+  courseName: string
 }
 
 // ---------------------------------------------------------------------------
@@ -537,12 +537,12 @@ export default function TeacherSubmissionsPage() {
               </h1>
             </div>
             <p className="text-white/90">
-              {assignment?.courseTitle}
+              {assignment?.courseName}
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-3">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-sm">
                 <Award className="h-3.5 w-3.5" />
-                {assignment?.pointsPossible} points
+                {assignment?.maxPoints} points
               </span>
               <span className="inline-flex items-center rounded-full bg-white/20 px-3 py-1 text-sm">
                 {typeLabel}
@@ -588,7 +588,7 @@ export default function TeacherSubmissionsPage() {
           </div>
           <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
             {gradedCount > 0
-              ? `${Math.round(averageScore)}/${assignment?.pointsPossible}`
+              ? `${Math.round(averageScore)}/${assignment?.maxPoints}`
               : '--'}
           </p>
           <p className="mt-1 text-xs font-medium text-muted-foreground">Average Score</p>
@@ -762,7 +762,7 @@ export default function TeacherSubmissionsPage() {
       {selectedSubmissionId && (
         <GradingPanel
           submission={filteredSubmissions.find((s) => s.id === selectedSubmissionId)!}
-          maxPoints={assignment?.pointsPossible || 100}
+          maxPoints={assignment?.maxPoints || 100}
           onGrade={handleGrade}
           onReturn={handleReturn}
           onClose={() => setSelectedSubmissionId(null)}

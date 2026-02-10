@@ -12,7 +12,7 @@ interface Assignment {
   title: string
   type: string
   due_date: string | null
-  points_possible: number
+  max_points: number
   status: string
   submissionCount: number
   averageScore: number | null
@@ -190,7 +190,7 @@ export default function TeacherAssignmentsPage() {
                     <span className={isPastDue(assignment.due_date) ? 'text-red-500' : ''}>
                       Due: {formatDate(assignment.due_date)}
                     </span>
-                    <span>Points: {assignment.points_possible}</span>
+                    <span>Points: {assignment.max_points}</span>
                     <span>{assignment.submissionCount} submission{assignment.submissionCount !== 1 ? 's' : ''}</span>
                     {assignment.averageScore !== null && (
                       <span>Avg: {assignment.averageScore}%</span>

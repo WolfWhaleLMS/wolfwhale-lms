@@ -2,6 +2,7 @@
 
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 
 async function getAdminContext() {
@@ -119,6 +120,144 @@ export async function deactivateUser(userId: string) {
   revalidatePath('/admin/users')
 }
 
+export async function getSeatUsage() {
+  const { supabase, tenantId } = await getAdminContext()
+
+  // Get tenant's max_users limit
+  const { data: tenant, error: tenantError } = await supabase
+    .from('tenants')
+    .select('max_users, name, subscription_plan')
+    .eq('id', tenantId)
+    .single()
+
+  if (tenantError) throw tenantError
+
+  // Count current memberships
+  const { count, error: countError } = await supabase
+    .from('tenant_memberships')
+    .select('id', { count: 'exact', head: true })
+    .eq('tenant_id', tenantId)
+
+  if (countError) throw countError
+
+  const maxUsers = tenant?.max_users ?? 50
+  const currentUsers = count ?? 0
+
+  return {
+    currentUsers,
+    maxUsers,
+    tenantName: tenant?.name ?? '',
+    plan: tenant?.subscription_plan ?? 'starter',
+    remaining: Math.max(0, maxUsers - currentUsers),
+    isAtLimit: currentUsers >= maxUsers,
+  }
+}
+
+export async function createUser(formData: {
+  first_name: string
+  last_name: string
+  email: string
+  password: string
+  role: string
+  grade_level?: string
+}) {
+  const { tenantId } = await getAdminContext()
+  const adminSupabase = createAdminClient()
+
+  // 1. Check seat limit
+  const { data: tenant, error: tenantError } = await adminSupabase
+    .from('tenants')
+    .select('max_users, name')
+    .eq('id', tenantId)
+    .single()
+
+  if (tenantError) {
+    return { success: false, error: 'Failed to load tenant information.' }
+  }
+
+  const maxUsers = tenant?.max_users ?? 50
+
+  const { count: currentCount, error: countError } = await adminSupabase
+    .from('tenant_memberships')
+    .select('id', { count: 'exact', head: true })
+    .eq('tenant_id', tenantId)
+
+  if (countError) {
+    return { success: false, error: 'Failed to check user count.' }
+  }
+
+  if ((currentCount ?? 0) >= maxUsers) {
+    return {
+      success: false,
+      error: `Your school has reached its user limit of ${maxUsers}. Please upgrade your plan to add more users.`,
+    }
+  }
+
+  // 2. Validate role
+  const validRoles = ['student', 'teacher', 'parent', 'admin']
+  if (!validRoles.includes(formData.role)) {
+    return { success: false, error: 'Invalid role selected.' }
+  }
+
+  // 3. Create auth user via Supabase Admin API
+  const { data: newUser, error: authError } = await adminSupabase.auth.admin.createUser({
+    email: formData.email,
+    password: formData.password,
+    email_confirm: true,
+    user_metadata: {
+      first_name: formData.first_name,
+      last_name: formData.last_name,
+      full_name: `${formData.first_name} ${formData.last_name}`.trim(),
+    },
+  })
+
+  if (authError) {
+    // Handle duplicate email
+    if (authError.message?.includes('already been registered') || authError.message?.includes('already exists')) {
+      return { success: false, error: 'A user with this email already exists.' }
+    }
+    return { success: false, error: authError.message || 'Failed to create user.' }
+  }
+
+  if (!newUser?.user) {
+    return { success: false, error: 'User creation returned no data.' }
+  }
+
+  // 4. The handle_new_user trigger creates the profile automatically.
+  //    Update grade_level if provided (for students).
+  if (formData.grade_level && formData.role === 'student') {
+    await adminSupabase
+      .from('profiles')
+      .update({ grade_level: formData.grade_level })
+      .eq('id', newUser.user.id)
+  }
+
+  // 5. Create tenant_membership linking user to this tenant with the selected role
+  const { error: membershipError } = await adminSupabase
+    .from('tenant_memberships')
+    .insert({
+      tenant_id: tenantId,
+      user_id: newUser.user.id,
+      role: formData.role,
+      status: 'active',
+    })
+
+  if (membershipError) {
+    // Attempt cleanup: delete the auth user if membership fails
+    await adminSupabase.auth.admin.deleteUser(newUser.user.id)
+    return { success: false, error: 'Failed to assign user to school. ' + membershipError.message }
+  }
+
+  revalidatePath('/admin/users')
+  revalidatePath('/admin/dashboard')
+
+  return {
+    success: true,
+    userId: newUser.user.id,
+    message: `${formData.first_name} ${formData.last_name} has been added as a ${formData.role}.`,
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Class Management
 // ---------------------------------------------------------------------------
@@ -131,7 +270,7 @@ export async function getTenantClasses(filters?: {
 
   let query = supabase
     .from('courses')
-    .select('*, profiles:teacher_id(full_name, avatar_url), course_enrollments(count)')
+    .select('*, profiles:created_by(full_name, avatar_url), course_enrollments(count)')
     .eq('tenant_id', tenantId)
     .order('created_at', { ascending: false })
 
@@ -239,9 +378,9 @@ export async function getAttendanceReport() {
 
   const { data } = await supabase
     .from('attendance_records')
-    .select('status, date')
+    .select('status, attendance_date')
     .eq('tenant_id', tenantId)
-    .gte('date', sevenDaysAgo)
+    .gte('attendance_date', sevenDaysAgo)
 
   const records = data ?? []
   const total = records.length

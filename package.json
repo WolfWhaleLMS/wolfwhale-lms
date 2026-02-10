@@ -10,7 +10,8 @@
     "db:migrate": "supabase migration up",
     "db:seed": "supabase db pull && node scripts/seed.js",
     "db:reset": "supabase db reset",
-    "db:types": "supabase gen types typescript --local > types/database.types.ts"
+    "db:types": "supabase gen types typescript --local > types/database.types.ts",
+    "db:test-accounts": "npx tsx scripts/create-test-accounts.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "3.9.1",

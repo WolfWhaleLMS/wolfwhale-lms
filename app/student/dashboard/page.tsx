@@ -3,6 +3,23 @@ import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getLetterGrade } from '@/lib/config/constants'
+import {
+  Sparkles,
+  Star,
+  Trophy,
+  Zap,
+  Flame,
+  BookOpen,
+  Target,
+  Rocket,
+  Crown,
+  ChevronRight,
+  Clock,
+  PartyPopper,
+  GraduationCap,
+  MessageCircle,
+  CalendarDays,
+} from 'lucide-react'
 
 export default async function StudentDashboardPage() {
   const supabase = await createClient()
@@ -144,7 +161,7 @@ export default async function StudentDashboardPage() {
       courseIds.length > 0
         ? supabase
             .from('assignments')
-            .select('id, title, course_id, due_date, points_possible')
+            .select('id, title, course_id, due_date, max_points')
             .in('course_id', courseIds)
             .gte('due_date', todayStr)
             .lte('due_date', futureStr)
@@ -156,7 +173,7 @@ export default async function StudentDashboardPage() {
       courseIds.length > 0
         ? supabase
             .from('grades')
-            .select('id, score, max_score, assignment_id, assignments:assignment_id(course_id, title)')
+            .select('id, points_earned, percentage, assignment_id, assignments:assignment_id(course_id, title)')
             .eq('student_id', user.id)
             .eq('tenant_id', tenantId)
             .order('graded_at', { ascending: false })
@@ -165,7 +182,7 @@ export default async function StudentDashboardPage() {
 
       // XP / level data
       supabase
-        .from('user_levels')
+        .from('student_xp')
         .select('total_xp, current_level, current_tier')
         .eq('user_id', user.id)
         .eq('tenant_id', tenantId)
@@ -173,7 +190,7 @@ export default async function StudentDashboardPage() {
 
       // Recent achievements
       supabase
-        .from('user_achievements')
+        .from('student_achievements')
         .select('id, earned_at, achievements(id, name, icon)')
         .eq('user_id', user.id)
         .eq('tenant_id', tenantId)
@@ -248,7 +265,7 @@ export default async function StudentDashboardPage() {
           month: 'short',
           day: 'numeric',
         }),
-        points: a.points_possible || 0,
+        points: a.max_points || 0,
         urgency,
       }
     })
@@ -269,8 +286,8 @@ export default async function StudentDashboardPage() {
           totalMax: 0,
         }
       }
-      courseTotals[cId].totalScore += g.score || 0
-      courseTotals[cId].totalMax += g.max_score || 0
+      courseTotals[cId].totalScore += g.points_earned || 0
+      courseTotals[cId].totalMax += g.percentage || 0
     }
 
     grades = Object.entries(courseTotals).map(([cId, data]) => {
@@ -347,7 +364,7 @@ export default async function StudentDashboardPage() {
 
     // Calculate streak from XP events (consecutive days with activity)
     const { data: xpEvents } = await supabase
-      .from('xp_events')
+      .from('xp_transactions')
       .select('created_at')
       .eq('user_id', user.id)
       .eq('tenant_id', tenantId)
@@ -420,391 +437,391 @@ export default async function StudentDashboardPage() {
     streak,
   }
 
-  // Helper function to get grade color
-  const getGradeColor = (grade: string) => {
-    if (grade.startsWith('A'))
-      return 'text-green-600 bg-green-50 border-green-200'
-    if (grade.startsWith('B'))
-      return 'text-blue-600 bg-blue-50 border-blue-200'
-    if (grade.startsWith('C'))
-      return 'text-amber-600 bg-amber-50 border-amber-200'
-    return 'text-red-600 bg-red-50 border-red-200'
-  }
+  // Playful gradient palettes for course cards
+  const courseGradients = [
+    'from-violet-500 to-purple-600',
+    'from-blue-500 to-cyan-500',
+    'from-emerald-500 to-teal-500',
+    'from-orange-400 to-pink-500',
+    'from-fuchsia-500 to-rose-500',
+    'from-amber-400 to-orange-500',
+  ]
 
-  // Helper function to get urgency color
-  const getUrgencyColor = (urgency: string) => {
-    if (urgency === 'overdue') return 'border-l-red-500 bg-red-50/50'
-    if (urgency === 'today') return 'border-l-amber-500 bg-amber-50/50'
-    return 'border-l-blue-500 bg-blue-50/20'
-  }
+  // Playful gradient palettes for task cards
+  const taskGradients = [
+    'from-sky-400 to-blue-500',
+    'from-violet-400 to-purple-500',
+    'from-emerald-400 to-green-500',
+    'from-amber-400 to-orange-500',
+    'from-pink-400 to-rose-500',
+  ]
+
+  // Streak encouragement messages
+  const streakMessage =
+    streak >= 7
+      ? "You're UNSTOPPABLE!"
+      : streak >= 3
+        ? "You're on fire!"
+        : streak >= 1
+          ? 'Keep it going!'
+          : 'Start a streak today!'
+
+  // XP encouragement
+  const xpMessage =
+    xpProgress >= 90
+      ? 'Almost there! So close to leveling up!'
+      : xpProgress >= 50
+        ? 'Halfway to the next level!'
+        : 'Every XP counts!'
 
   return (
-    <div className="min-h-screen space-y-6 pb-12">
-      {/* Welcome Header */}
-      <div className="whale-gradient rounded-3xl p-8 text-white shadow-lg">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex-1">
-            <h1 className="mb-2 text-4xl font-bold">
-              {greeting}, {studentName}!
-            </h1>
-            <p className="text-lg text-white/90">
-              Ready to make some waves today?
-            </p>
+    <div className="min-h-screen space-y-8 pb-16">
+      {/* ===== BIG FRIENDLY GREETING ===== */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-purple-500 to-fuchsia-500 p-8 text-white shadow-2xl sm:p-10">
+        {/* Decorative background circles */}
+        <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/10" />
+        <div className="pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/10" />
+        <div className="pointer-events-none absolute right-1/4 top-1/2 h-20 w-20 rounded-full bg-white/5" />
 
-            {/* XP Progress */}
-            <div className="mt-6">
-              <div className="mb-2 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">⭐</span>
-                  <span className="font-semibold">
-                    Level {xpData.level} - {xpData.levelName}
-                  </span>
-                  <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-medium">
-                    {xpData.tier}
-                  </span>
-                </div>
-                <span className="text-sm font-medium">
-                  {xpData.currentXP} / {xpData.nextLevelXP} XP
-                </span>
+        <div className="relative z-10">
+          <div className="flex items-center gap-3">
+            <Sparkles className="h-8 w-8 text-yellow-300" />
+            <p className="text-lg font-medium text-white/80">{greeting}</p>
+          </div>
+          <h1 className="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">
+            Hey {studentName}!
+          </h1>
+          <p className="mt-2 text-xl text-white/90">
+            Ready to learn something awesome today?
+          </p>
+
+          {/* Streak badge */}
+          {streak > 0 && (
+            <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2.5 text-base font-semibold backdrop-blur-sm">
+              <Flame className="h-5 w-5 text-orange-300" />
+              {streak}-day streak &mdash; {streakMessage}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ===== XP / LEVEL PROGRESS BAR ===== */}
+      <div className="rounded-3xl bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 p-6 shadow-lg sm:p-8">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-4">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/30 text-3xl font-black text-white shadow-inner backdrop-blur-sm">
+              {xpData.level}
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <Star className="h-5 w-5 text-white" />
+                <h2 className="text-xl font-bold text-white sm:text-2xl">
+                  {xpData.levelName}
+                </h2>
               </div>
-              <div className="h-4 w-full overflow-hidden rounded-full bg-white/20 backdrop-blur-sm">
-                <div
-                  className="h-full rounded-full bg-white shadow-lg transition-all duration-500"
-                  style={{ width: `${xpProgress}%` }}
-                />
-              </div>
+              <p className="text-sm font-medium text-white/80">
+                {xpData.tier} Tier &middot; {xpMessage}
+              </p>
             </div>
           </div>
-
-          {/* Quick Stats */}
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-1">
-            <div className="rounded-2xl bg-white/10 p-4 backdrop-blur-sm">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">🔥</span>
-                <div>
-                  <p className="text-2xl font-bold">{stats.streak}</p>
-                  <p className="text-sm text-white/80">Day Streak</p>
-                </div>
-              </div>
-            </div>
-            <div className="rounded-2xl bg-white/10 p-4 backdrop-blur-sm">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">📚</span>
-                <div>
-                  <p className="text-2xl font-bold">{stats.coursesEnrolled}</p>
-                  <p className="text-sm text-white/80">Courses</p>
-                </div>
-              </div>
-            </div>
+          <div className="text-right">
+            <p className="text-3xl font-extrabold text-white">
+              {xpData.currentXP}
+              <span className="text-lg font-medium text-white/70">
+                {' '}
+                / {xpData.nextLevelXP} XP
+              </span>
+            </p>
           </div>
         </div>
 
-        {/* Additional Stats Row */}
-        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <div className="text-center">
-            <p className="text-3xl font-bold">{stats.assignmentsDue}</p>
-            <p className="text-sm text-white/80">Due This Week</p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold">{stats.currentGPA}</p>
-            <p className="text-sm text-white/80">Current GPA</p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold">{xpData.currentXP}</p>
-            <p className="text-sm text-white/80">Total XP</p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold">{achievements.length}</p>
-            <p className="text-sm text-white/80">Achievements</p>
+        {/* Big juicy progress bar */}
+        <div className="mt-5 h-6 w-full overflow-hidden rounded-full bg-white/30 shadow-inner backdrop-blur-sm">
+          <div
+            className="flex h-full items-center justify-end rounded-full bg-white px-3 shadow-lg transition-all duration-700 ease-out"
+            style={{ width: `${Math.max(xpProgress, 3)}%` }}
+          >
+            {xpProgress >= 10 && (
+              <Zap className="h-4 w-4 text-amber-500" />
+            )}
           </div>
         </div>
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Left Column - 2/3 width */}
-        <div className="space-y-6 lg:col-span-2">
-          {/* Today's Tasks - Priority Section */}
-          <div className="ocean-card rounded-2xl p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">🎯</span>
-                <h2 className="text-xl font-bold text-foreground">
-                  Today&apos;s Tasks
-                </h2>
-              </div>
-              <Link
-                href="/student/assignments"
-                className="text-sm font-medium text-primary hover:underline"
-              >
-                View All
-              </Link>
+      {/* ===== TODAY'S TASKS ===== */}
+      <section>
+        <div className="mb-5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-blue-500 shadow-md">
+              <Target className="h-5 w-5 text-white" />
             </div>
+            <h2 className="text-2xl font-bold text-foreground">
+              Today&apos;s Tasks
+            </h2>
+          </div>
+          <Link
+            href="/student/assignments"
+            className="flex items-center gap-1 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600 transition-all hover:bg-blue-100 hover:scale-105 dark:bg-blue-950 dark:text-blue-300"
+          >
+            See All <ChevronRight className="h-4 w-4" />
+          </Link>
+        </div>
 
-            {upcomingAssignments.length > 0 ? (
-              <div className="space-y-3">
-                {upcomingAssignments.map((assignment) => (
+        {upcomingAssignments.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {upcomingAssignments.slice(0, 5).map((assignment, idx) => {
+              const gradient = taskGradients[idx % taskGradients.length]
+              const isUrgent =
+                assignment.urgency === 'today' ||
+                assignment.urgency === 'overdue'
+              return (
+                <div
+                  key={assignment.id}
+                  className="group relative overflow-hidden rounded-2xl p-5 text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                >
+                  {/* Gradient background */}
                   <div
-                    key={assignment.id}
-                    className={`rounded-xl border-l-4 p-4 transition-all hover:shadow-md ${getUrgencyColor(
-                      assignment.urgency
-                    )}`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-foreground">
-                          {assignment.name}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {assignment.course}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm font-medium text-foreground">
-                          {assignment.points} pts
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Due {assignment.dueDate}
-                        </p>
-                      </div>
+                    className={`absolute inset-0 bg-gradient-to-br ${gradient} transition-all duration-300 group-hover:scale-105`}
+                  />
+                  {/* Content */}
+                  <div className="relative z-10">
+                    {isUrgent && (
+                      <span className="mb-2 inline-flex items-center gap-1 rounded-full bg-white/25 px-3 py-1 text-xs font-bold uppercase tracking-wide backdrop-blur-sm">
+                        <Clock className="h-3 w-3" />
+                        {assignment.urgency === 'overdue'
+                          ? 'Overdue'
+                          : 'Due Today'}
+                      </span>
+                    )}
+                    <h3 className="mt-1 text-lg font-bold leading-snug">
+                      {assignment.name}
+                    </h3>
+                    <p className="mt-1 text-sm text-white/80">
+                      {assignment.course}
+                    </p>
+                    <div className="mt-4 flex items-center justify-between">
+                      <span className="flex items-center gap-1 rounded-full bg-white/20 px-3 py-1 text-sm font-semibold backdrop-blur-sm">
+                        <Zap className="h-3.5 w-3.5" /> {assignment.points} pts
+                      </span>
+                      <span className="text-sm font-medium text-white/90">
+                        {assignment.dueDate}
+                      </span>
                     </div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="mb-4 text-6xl opacity-40">🌊</div>
-                <p className="text-lg font-medium text-foreground">
-                  Smooth sailing ahead!
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  No assignments due in the next 7 days. Time to get ahead or
-                  relax!
-                </p>
-              </div>
-            )}
+                </div>
+              )
+            })}
           </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-blue-200 bg-blue-50/50 py-16 text-center dark:border-blue-800 dark:bg-blue-950/30">
+            <Rocket className="mb-4 h-16 w-16 text-blue-300" />
+            <p className="text-xl font-bold text-foreground">
+              All clear! Nothing due soon.
+            </p>
+            <p className="mt-2 text-base text-muted-foreground">
+              You&apos;re all caught up &mdash; nice work!
+            </p>
+          </div>
+        )}
+      </section>
 
-          {/* My Courses Grid */}
-          <div className="ocean-card rounded-2xl p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">📖</span>
-                <h2 className="text-xl font-bold text-foreground">
-                  My Courses
-                </h2>
-              </div>
-              <Link
-                href="/student/courses"
-                className="text-sm font-medium text-primary hover:underline"
-              >
-                View All
-              </Link>
+      {/* ===== MY CLASSES ===== */}
+      <section>
+        <div className="mb-5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 shadow-md">
+              <BookOpen className="h-5 w-5 text-white" />
             </div>
+            <h2 className="text-2xl font-bold text-foreground">My Classes</h2>
+          </div>
+          <Link
+            href="/student/courses"
+            className="flex items-center gap-1 rounded-full bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-600 transition-all hover:bg-emerald-100 hover:scale-105 dark:bg-emerald-950 dark:text-emerald-300"
+          >
+            See All <ChevronRight className="h-4 w-4" />
+          </Link>
+        </div>
 
-            {enrolledCourses.length > 0 ? (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {enrolledCourses.map((course) => (
-                  <Link
-                    key={course.id}
-                    href={`/student/courses/${course.id}`}
-                    className="group overflow-hidden rounded-xl border border-border bg-gradient-to-br from-background to-muted/30 p-5 transition-all hover:shadow-lg"
+        {enrolledCourses.length > 0 ? (
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {enrolledCourses.map((course, idx) => {
+              const gradient = courseGradients[idx % courseGradients.length]
+              return (
+                <Link
+                  key={course.id}
+                  href={`/student/courses/${course.id}`}
+                  className="group relative overflow-hidden rounded-2xl shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                >
+                  {/* Top colored band */}
+                  <div
+                    className={`h-28 bg-gradient-to-br ${gradient} flex items-end p-5 transition-all duration-300 group-hover:h-32`}
                   >
-                    <div className="mb-3">
-                      <h3 className="font-semibold text-foreground group-hover:text-primary">
+                    <div className="relative z-10">
+                      <h3 className="text-lg font-bold text-white drop-shadow-sm">
                         {course.name}
                       </h3>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="flex items-center gap-1 text-sm text-white/80">
+                        <GraduationCap className="h-3.5 w-3.5" />{' '}
                         {course.teacher}
                       </p>
                     </div>
-                    <div className="mb-2">
-                      <div className="mb-1 flex items-center justify-between text-xs">
-                        <span className="text-muted-foreground">Progress</span>
-                        <span className="font-medium text-foreground">
-                          {course.progress}%
+                    {/* Decorative circle */}
+                    <div className="pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full bg-white/10" />
+                  </div>
+
+                  {/* Bottom info section */}
+                  <div className="rounded-b-2xl bg-white p-5 dark:bg-gray-900">
+                    {/* Progress bar */}
+                    <div className="mb-1 flex items-center justify-between text-sm">
+                      <span className="font-medium text-muted-foreground">
+                        Progress
+                      </span>
+                      <span className="font-bold text-foreground">
+                        {course.progress}%
+                      </span>
+                    </div>
+                    <div className="h-3 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+                      <div
+                        className={`h-full rounded-full bg-gradient-to-r ${gradient} transition-all duration-500`}
+                        style={{ width: `${course.progress}%` }}
+                      />
+                    </div>
+                    <p className="mt-3 text-sm text-muted-foreground">
+                      {course.progress === 100 ? (
+                        <span className="flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
+                          <PartyPopper className="h-4 w-4" /> All caught up!
                         </span>
-                      </div>
-                      <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-500"
-                          style={{ width: `${course.progress}%` }}
-                        />
-                      </div>
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      Next: {course.nextLesson}
+                      ) : (
+                        <>
+                          <span className="text-muted-foreground">
+                            Up next:{' '}
+                          </span>
+                          <span className="font-medium text-foreground">
+                            {course.nextLesson}
+                          </span>
+                        </>
+                      )}
                     </p>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="mb-4 text-6xl opacity-40">🐺</div>
-                <p className="text-lg font-medium text-foreground">
-                  No courses yet
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Ask your teacher to enroll you in a course to get started!
-                </p>
-              </div>
-            )}
+                  </div>
+                </Link>
+              )
+            })}
           </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-emerald-200 bg-emerald-50/50 py-16 text-center dark:border-emerald-800 dark:bg-emerald-950/30">
+            <BookOpen className="mb-4 h-16 w-16 text-emerald-300" />
+            <p className="text-xl font-bold text-foreground">No classes yet</p>
+            <p className="mt-2 text-base text-muted-foreground">
+              Ask your teacher to enroll you in a class to get started!
+            </p>
+          </div>
+        )}
+      </section>
+
+      {/* ===== ACHIEVEMENTS ===== */}
+      <section>
+        <div className="mb-5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-md">
+              <Trophy className="h-5 w-5 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-foreground">
+              Achievements
+            </h2>
+          </div>
+          <Link
+            href="/student/achievements"
+            className="flex items-center gap-1 rounded-full bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-600 transition-all hover:bg-amber-100 hover:scale-105 dark:bg-amber-950 dark:text-amber-300"
+          >
+            See All <ChevronRight className="h-4 w-4" />
+          </Link>
         </div>
 
-        {/* Right Column - 1/3 width */}
-        <div className="space-y-6">
-          {/* Grade Overview */}
-          <div className="ocean-card rounded-2xl p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">📊</span>
-                <h2 className="text-xl font-bold text-foreground">Grades</h2>
-              </div>
-              <Link
-                href="/student/grades"
-                className="text-sm font-medium text-primary hover:underline"
+        {achievements.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {achievements.slice(0, 3).map((achievement) => (
+              <div
+                key={achievement.id}
+                className="group flex items-center gap-4 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-yellow-50 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-amber-800 dark:from-amber-950/50 dark:to-yellow-950/50"
               >
-                View All
-              </Link>
-            </div>
-
-            {grades.length > 0 ? (
-              <div className="space-y-3">
-                {grades.map((grade) => (
-                  <div
-                    key={grade.courseId}
-                    className={`rounded-xl border p-4 ${getGradeColor(
-                      grade.grade
-                    )}`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">
-                          {grade.courseName}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-2xl font-bold">{grade.grade}</p>
-                        <p className="text-xs">{grade.percentage}%</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                {/* Overall GPA */}
-                <div className="mt-4 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 p-4 text-white">
-                  <p className="text-sm font-medium">Overall GPA</p>
-                  <p className="text-3xl font-bold">{stats.currentGPA}</p>
+                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-2xl shadow-md transition-transform duration-300 group-hover:scale-110">
+                  {achievement.icon}
+                </span>
+                <div className="flex-1">
+                  <p className="text-base font-bold text-foreground">
+                    {achievement.name}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {achievement.earnedAt}
+                  </p>
                 </div>
+                <Crown className="h-5 w-5 text-amber-400" />
               </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-8 text-center">
-                <div className="mb-3 text-5xl opacity-40">📈</div>
-                <p className="text-sm text-muted-foreground">
-                  No grades yet. Keep working hard!
-                </p>
-              </div>
-            )}
+            ))}
           </div>
-
-          {/* Achievement Spotlight */}
-          <div className="ocean-card rounded-2xl p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">🏆</span>
-                <h2 className="text-xl font-bold text-foreground">
-                  Achievements
-                </h2>
-              </div>
-              <Link
-                href="/student/achievements"
-                className="text-sm font-medium text-primary hover:underline"
-              >
-                View All
-              </Link>
-            </div>
-
-            {achievements.length > 0 ? (
-              <div className="space-y-3">
-                {achievements.slice(0, 3).map((achievement) => (
-                  <div
-                    key={achievement.id}
-                    className="rounded-xl bg-gradient-to-r from-amber-50 to-yellow-50 p-4 border border-amber-200"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="text-3xl">{achievement.icon}</span>
-                      <div className="flex-1">
-                        <p className="font-semibold text-foreground">
-                          {achievement.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {achievement.earnedAt}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-8 text-center">
-                <div className="mb-3 text-5xl opacity-40">🎖️</div>
-                <p className="text-sm text-muted-foreground">
-                  Earn achievements by completing tasks!
-                </p>
-              </div>
-            )}
+        ) : (
+          <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-amber-200 bg-amber-50/50 py-12 text-center dark:border-amber-800 dark:bg-amber-950/30">
+            <Trophy className="mb-4 h-14 w-14 text-amber-300" />
+            <p className="text-lg font-bold text-foreground">
+              Your trophy case is waiting!
+            </p>
+            <p className="mt-2 text-base text-muted-foreground">
+              Complete tasks and lessons to earn awesome achievements.
+            </p>
           </div>
-        </div>
-      </div>
+        )}
+      </section>
 
-      {/* Quick Actions Row */}
-      <div className="ocean-card rounded-2xl p-6">
-        <h2 className="mb-4 text-lg font-bold text-foreground">
-          Quick Actions
-        </h2>
+      {/* ===== QUICK ACTIONS ===== */}
+      <section>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <Link
-            href="/student/study-mode"
-            className="group flex flex-col items-center gap-2 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 p-6 transition-all hover:shadow-lg hover:scale-105"
-          >
-            <span className="text-4xl">📚</span>
-            <span className="text-sm font-medium text-foreground group-hover:text-primary">
-              Study Mode
-            </span>
-          </Link>
-
-          <Link
-            href="/messaging"
-            className="group flex flex-col items-center gap-2 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 p-6 transition-all hover:shadow-lg hover:scale-105"
-          >
-            <span className="text-4xl">💬</span>
-            <span className="text-sm font-medium text-foreground group-hover:text-primary">
-              Messages
-            </span>
-          </Link>
-
-          <Link
-            href="/calendar"
-            className="group flex flex-col items-center gap-2 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 p-6 transition-all hover:shadow-lg hover:scale-105"
-          >
-            <span className="text-4xl">📅</span>
-            <span className="text-sm font-medium text-foreground group-hover:text-primary">
-              Calendar
-            </span>
-          </Link>
-
-          <Link
-            href="/student/leaderboard"
-            className="group flex flex-col items-center gap-2 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 p-6 transition-all hover:shadow-lg hover:scale-105"
-          >
-            <span className="text-4xl">🏅</span>
-            <span className="text-sm font-medium text-foreground group-hover:text-primary">
-              Leaderboard
-            </span>
-          </Link>
+          {[
+            {
+              href: '/student/study-mode',
+              label: 'Study Mode',
+              icon: <Rocket className="h-7 w-7" />,
+              gradient: 'from-blue-500 to-cyan-400',
+              bg: 'bg-blue-50 dark:bg-blue-950/40',
+            },
+            {
+              href: '/messaging',
+              label: 'Messages',
+              icon: <MessageCircle className="h-7 w-7" />,
+              gradient: 'from-purple-500 to-pink-400',
+              bg: 'bg-purple-50 dark:bg-purple-950/40',
+            },
+            {
+              href: '/calendar',
+              label: 'Calendar',
+              icon: <CalendarDays className="h-7 w-7" />,
+              gradient: 'from-emerald-500 to-green-400',
+              bg: 'bg-emerald-50 dark:bg-emerald-950/40',
+            },
+            {
+              href: '/student/leaderboard',
+              label: 'Leaderboard',
+              icon: <Crown className="h-7 w-7" />,
+              gradient: 'from-amber-500 to-orange-400',
+              bg: 'bg-amber-50 dark:bg-amber-950/40',
+            },
+          ].map((action) => (
+            <Link
+              key={action.href}
+              href={action.href}
+              className={`group flex flex-col items-center gap-3 rounded-2xl ${action.bg} border border-transparent p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-gray-200 dark:hover:border-gray-700`}
+            >
+              <div
+                className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${action.gradient} text-white shadow-md transition-transform duration-300 group-hover:scale-110`}
+              >
+                {action.icon}
+              </div>
+              <span className="text-sm font-bold text-foreground">
+                {action.label}
+              </span>
+            </Link>
+          ))}
         </div>
-      </div>
+      </section>
     </div>
   )
 }

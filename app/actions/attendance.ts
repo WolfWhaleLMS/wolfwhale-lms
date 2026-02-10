@@ -32,7 +32,7 @@ export async function recordAttendance(
     course_id: courseId,
     student_id: r.studentId,
     recorded_by: user.id,
-    date,
+    attendance_date: date,
     status: r.status,
     notes: r.notes || null,
   }))
@@ -40,7 +40,7 @@ export async function recordAttendance(
   // Upsert to handle re-recording for same date
   const { error } = await supabase
     .from('attendance_records')
-    .upsert(entries, { onConflict: 'tenant_id,course_id,student_id,date' })
+    .upsert(entries, { onConflict: 'tenant_id,course_id,student_id,attendance_date' })
 
   if (error) throw error
   revalidatePath('/teacher/attendance')
@@ -58,10 +58,10 @@ export async function getAttendanceForCourse(courseId: string, date?: string) {
     .select('*, profiles:student_id(full_name, avatar_url)')
     .eq('tenant_id', tenantId)
     .eq('course_id', courseId)
-    .order('date', { ascending: false })
+    .order('attendance_date', { ascending: false })
 
   if (date) {
-    query = query.eq('date', date)
+    query = query.eq('attendance_date', date)
   }
 
   const { data, error } = await query
@@ -77,9 +77,9 @@ export async function getAttendanceHistory(courseId: string, startDate: string, 
     .select('*, profiles:student_id(full_name)')
     .eq('tenant_id', tenantId)
     .eq('course_id', courseId)
-    .gte('date', startDate)
-    .lte('date', endDate)
-    .order('date', { ascending: true })
+    .gte('attendance_date', startDate)
+    .lte('attendance_date', endDate)
+    .order('attendance_date', { ascending: true })
 
   if (error) throw error
   return data ?? []
@@ -96,10 +96,10 @@ export async function getStudentAttendance(studentId?: string) {
 
   const { data, error } = await supabase
     .from('attendance_records')
-    .select('*, courses(title)')
+    .select('*, courses(name)')
     .eq('tenant_id', tenantId)
     .eq('student_id', targetId)
-    .order('date', { ascending: false })
+    .order('attendance_date', { ascending: false })
     .limit(100)
 
   if (error) throw error

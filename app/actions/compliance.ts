@@ -5,6 +5,7 @@ import { headers } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { exportUserData } from '@/lib/compliance/data-export'
 import { logAuditEvent } from '@/lib/compliance/audit-logger'
+import { runCanadianComplianceCheck, CanadianComplianceCheckItem } from '@/lib/compliance/pipeda'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -84,6 +85,7 @@ export interface ComplianceCheckItem {
 export interface ComplianceStatus {
   ferpa: ComplianceCheckItem[]
   coppa: ComplianceCheckItem[]
+  pipeda: CanadianComplianceCheckItem[]
   lastAuditDate: string | null
 }
 
@@ -110,13 +112,42 @@ export async function getComplianceStatus(
       .select('*', { count: 'exact', head: true })
       .eq('tenant_id', resolvedTenantId)
 
-    // Check for users under 13 without consent
-    const { count: minorsWithoutConsent } = await supabase
-      .from('profiles')
-      .select('*, consent_records!left(id)', { count: 'exact', head: true })
+    // Check for students under 13 without consent via tenant_memberships + profiles
+    const { data: studentMembers } = await supabase
+      .from('tenant_memberships')
+      .select('user_id, profiles!inner(date_of_birth)')
       .eq('tenant_id', resolvedTenantId)
-      .lte('age', 12)
-      .is('consent_records.id', null)
+      .eq('role', 'student')
+
+    const minorIds = (studentMembers ?? [])
+      .filter((m: any) => {
+        if (!m.profiles?.date_of_birth) return false
+        const dob = new Date(m.profiles.date_of_birth)
+        const age = new Date().getFullYear() - dob.getFullYear()
+        return age < 13
+      })
+      .map((m: any) => m.user_id)
+
+    let minorsWithoutConsent = 0
+    if (minorIds.length > 0) {
+      const { data: consentedMinors } = await supabase
+        .from('consent_records')
+        .select('student_id')
+        .eq('tenant_id', resolvedTenantId)
+        .eq('consent_type', 'data_collection')
+        .eq('consent_given', true)
+        .in('student_id', minorIds)
+      const consentedSet = new Set((consentedMinors ?? []).map((r: any) => r.student_id))
+      minorsWithoutConsent = minorIds.filter((id: string) => !consentedSet.has(id)).length
+    }
+
+    // Run Canadian compliance checks
+    let pipedaChecks: CanadianComplianceCheckItem[] = []
+    try {
+      pipedaChecks = await runCanadianComplianceCheck()
+    } catch {
+      // Canadian checks are non-blocking
+    }
 
     // Get most recent audit log date
     const { data: latestAudit } = await supabase
@@ -196,6 +227,7 @@ export async function getComplianceStatus(
       data: {
         ferpa: ferpaChecks,
         coppa: coppaChecks,
+        pipeda: pipedaChecks,
         lastAuditDate: latestAudit?.created_at ?? null,
       },
       error: null,
@@ -293,11 +325,14 @@ export async function updateConsentStatus(
           student_id: studentId,
           tenant_id: tenantId,
           parent_id: user.id,
+          consent_type: 'data_collection',
           consent_given: consentGiven,
           consent_date: consentGiven ? new Date().toISOString() : null,
+          withdrawal_date: !consentGiven ? new Date().toISOString() : null,
+          method: 'electronic',
           updated_at: new Date().toISOString(),
         },
-        { onConflict: 'student_id,tenant_id' }
+        { onConflict: 'tenant_id,student_id,consent_type' }
       )
 
     if (error) {
@@ -309,6 +344,139 @@ export async function updateConsentStatus(
       resourceType: 'consent_record',
       resourceId: studentId,
       details: { consent_given: consentGiven },
+    })
+
+    revalidatePath('/admin/compliance')
+    return { success: true, error: null }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Data Deletion / Access Requests (PIPEDA)
+// ---------------------------------------------------------------------------
+
+export interface DataRequest {
+  id: string
+  requested_by: string
+  requester_name: string | null
+  target_user_id: string
+  target_name: string | null
+  request_type: string
+  status: string
+  reason: string | null
+  admin_notes: string | null
+  processed_by: string | null
+  processed_at: string | null
+  created_at: string
+}
+
+export async function submitDataRequest(
+  requestType: 'deletion' | 'access' | 'correction' | 'portability',
+  reason?: string
+): Promise<{ success: boolean; error: string | null }> {
+  try {
+    const { user, tenantId } = await getCurrentUser()
+    const supabase = await createClient()
+
+    const { error } = await supabase.from('data_deletion_requests').insert({
+      tenant_id: tenantId,
+      requested_by: user.id,
+      target_user_id: user.id,
+      request_type: requestType,
+      status: 'pending',
+      reason: reason || null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+
+    if (error) return { success: false, error: error.message }
+
+    await logAuditEvent({
+      action: 'data.access',
+      resourceType: 'data_request',
+      resourceId: user.id,
+      details: { request_type: requestType, reason },
+    })
+
+    return { success: true, error: null }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export async function getDataRequests(): Promise<{
+  data: DataRequest[] | null
+  error: string | null
+}> {
+  try {
+    await requireAdmin()
+    const supabase = await createClient()
+    const headersList = await headers()
+    const tenantId = headersList.get('x-tenant-id')
+
+    const { data, error } = await supabase
+      .from('data_deletion_requests')
+      .select(`
+        id, requested_by, target_user_id, request_type,
+        status, reason, admin_notes, processed_by, processed_at, created_at
+      `)
+      .eq('tenant_id', tenantId)
+      .order('created_at', { ascending: false })
+
+    if (error) return { data: null, error: error.message }
+
+    const requests: DataRequest[] = (data ?? []).map((r: any) => ({
+      ...r,
+      requester_name: null,
+      target_name: null,
+    }))
+
+    return { data: requests, error: null }
+  } catch (error) {
+    return {
+      data: null,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+export async function processDataRequest(
+  requestId: string,
+  status: 'in_progress' | 'completed' | 'denied',
+  adminNotes?: string
+): Promise<{ success: boolean; error: string | null }> {
+  try {
+    const { user } = await requireAdmin()
+    const supabase = await createClient()
+
+    const { error } = await supabase
+      .from('data_deletion_requests')
+      .update({
+        status,
+        admin_notes: adminNotes || null,
+        processed_by: user.id,
+        processed_at: status === 'completed' || status === 'denied'
+          ? new Date().toISOString()
+          : null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', requestId)
+
+    if (error) return { success: false, error: error.message }
+
+    await logAuditEvent({
+      action: 'admin.action',
+      resourceType: 'data_request',
+      resourceId: requestId,
+      details: { status, admin_notes: adminNotes },
     })
 
     revalidatePath('/admin/compliance')

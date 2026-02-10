@@ -356,19 +356,167 @@ function ImageBlockEditor({
   )
 }
 
-function VideoBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: any) => void }) {
+// ---------------------------------------------------------------------------
+// YouTube URL helpers
+// ---------------------------------------------------------------------------
+
+function extractYouTubeVideoId(url: string): string | null {
+  if (!url) return null
+  // Match youtube.com/watch?v=ID
+  const watchMatch = url.match(/(?:youtube\.com\/watch\?.*v=)([a-zA-Z0-9_-]{11})/)
+  if (watchMatch) return watchMatch[1]
+  // Match youtu.be/ID
+  const shortMatch = url.match(/(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/)
+  if (shortMatch) return shortMatch[1]
+  // Match youtube.com/embed/ID
+  const embedMatch = url.match(/(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
+  if (embedMatch) return embedMatch[1]
+  // Match youtube.com/v/ID
+  const vMatch = url.match(/(?:youtube\.com\/v\/)([a-zA-Z0-9_-]{11})/)
+  if (vMatch) return vMatch[1]
+  return null
+}
+
+function getYouTubeThumbnail(videoId: string): string {
+  return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`
+}
+
+// ---------------------------------------------------------------------------
+// Video Block Editor (YouTube + direct URL upload)
+// ---------------------------------------------------------------------------
+
+function VideoBlockEditor({
+  block,
+  onChange,
+  lessonId,
+}: {
+  block: ContentBlock
+  onChange: (data: any) => void
+  lessonId: string
+}) {
+  const { uploadFile, uploading, progress } = useSupabaseUpload(lessonId)
+  const source: 'youtube' | 'url' = block.data.source || 'youtube'
+  const videoId = block.data.videoId || null
+
+  const handleSourceChange = (newSource: string) => {
+    onChange({ ...block.data, source: newSource, url: '', videoId: undefined })
+  }
+
+  const handleYouTubeUrlChange = (url: string) => {
+    const extractedId = extractYouTubeVideoId(url)
+    onChange({
+      ...block.data,
+      source: 'youtube',
+      url,
+      videoId: extractedId || undefined,
+    })
+  }
+
+  const handleVideoUpload = async (file: File) => {
+    const url = await uploadFile(file, 'videos')
+    if (url) {
+      onChange({ ...block.data, source: 'url', url })
+      toast.success('Video uploaded successfully')
+    }
+  }
+
   return (
     <div className="space-y-3">
+      {/* Source selector */}
       <div>
-        <Label>Video URL</Label>
-        <Input
-          value={block.data.url || ''}
-          onChange={(e) => onChange({ ...block.data, url: e.target.value })}
-          placeholder="https://youtube.com/watch?v=... or https://vimeo.com/..."
-          className="mt-1"
-        />
-        <p className="mt-1 text-xs text-muted-foreground">Supports YouTube and Vimeo</p>
+        <Label>Video Source</Label>
+        <Select value={source} onValueChange={handleSourceChange}>
+          <SelectTrigger className="mt-1 w-48">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="youtube">YouTube</SelectItem>
+            <SelectItem value="url">Video URL / Upload</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
+
+      {source === 'youtube' ? (
+        <>
+          <div>
+            <Label>YouTube URL</Label>
+            <Input
+              value={block.data.url || ''}
+              onChange={(e) => handleYouTubeUrlChange(e.target.value)}
+              placeholder="https://youtube.com/watch?v=... or https://youtu.be/..."
+              className="mt-1"
+            />
+            {block.data.url && !videoId && (
+              <p className="mt-1 text-xs text-destructive">
+                Could not extract a YouTube video ID from this URL. Please check the link.
+              </p>
+            )}
+            {videoId && (
+              <p className="mt-1 text-xs text-muted-foreground">
+                Video ID: {videoId}
+              </p>
+            )}
+          </div>
+
+          {/* YouTube preview thumbnail */}
+          {videoId && (
+            <div className="mt-3 rounded-lg border border-border overflow-hidden">
+              <div className="relative aspect-video bg-black">
+                <img
+                  src={getYouTubeThumbnail(videoId)}
+                  alt="YouTube video thumbnail"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="rounded-full bg-red-600 p-3">
+                    <Video className="h-6 w-6 text-white" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <>
+          <div>
+            <Label>Video URL</Label>
+            <div className="flex gap-2 mt-1">
+              <Input
+                value={block.data.url || ''}
+                onChange={(e) => onChange({ ...block.data, source: 'url', url: e.target.value })}
+                placeholder="https://example.com/video.mp4"
+                className="flex-1"
+              />
+              <UploadButton
+                onUpload={handleVideoUpload}
+                accept="video/*"
+                uploading={uploading}
+                progress={progress}
+                label="Upload"
+              />
+            </div>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Supports MP4, WebM, and other browser-compatible video formats
+            </p>
+          </div>
+
+          {/* Direct video preview */}
+          {block.data.url && (
+            <div className="mt-3 rounded-lg border border-border overflow-hidden">
+              <video
+                src={block.data.url}
+                controls
+                className="w-full aspect-video bg-black"
+                preload="metadata"
+              >
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Title field (shared) */}
       <div>
         <Label>Title (optional)</Label>
         <Input
@@ -920,7 +1068,7 @@ function BlockEditor({
           {block.type === 'heading' && <HeadingBlockEditor block={block} onChange={onUpdate} />}
           {block.type === 'text' && <TextBlockEditor block={block} onChange={onUpdate} />}
           {block.type === 'image' && <ImageBlockEditor block={block} onChange={onUpdate} lessonId={lessonId} />}
-          {block.type === 'video' && <VideoBlockEditor block={block} onChange={onUpdate} />}
+          {block.type === 'video' && <VideoBlockEditor block={block} onChange={onUpdate} lessonId={lessonId} />}
           {block.type === 'file' && <FileBlockEditor block={block} onChange={onUpdate} lessonId={lessonId} />}
           {block.type === 'divider' && <DividerBlockEditor />}
           {block.type === 'callout' && <CalloutBlockEditor block={block} onChange={onUpdate} />}

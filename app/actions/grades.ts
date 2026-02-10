@@ -19,8 +19,8 @@ export async function getGrades(courseId: string, studentId?: string) {
     .from('grades')
     .select(`
       *,
-      assignments:assignment_id(id, title, type, points_possible, due_date, course_id),
-      profiles:student_id(id, full_name, email)
+      assignments:assignment_id(id, title, type, max_points, due_date, course_id),
+      profiles:student_id(id, full_name)
     `)
     .order('graded_at', { ascending: false })
 
@@ -71,7 +71,7 @@ export async function getStudentGrades() {
     .from('grades')
     .select(`
       *,
-      assignments:assignment_id(id, title, type, points_possible, due_date, course_id)
+      assignments:assignment_id(id, title, type, max_points, due_date, course_id)
     `)
     .eq('student_id', user.id)
     .order('graded_at', { ascending: false })
@@ -93,16 +93,16 @@ export async function getStudentGrades() {
 
   // Get enrolled courses
   const { data: enrollments } = await supabase
-    .from('enrollments')
-    .select('course_id, courses:courses(id, title)')
-    .eq('user_id', user.id)
+    .from('course_enrollments')
+    .select('course_id, courses:courses(id, name)')
+    .eq('student_id', user.id)
 
   const courseMap: Record<string, string> = {}
   if (enrollments) {
     for (const e of enrollments) {
-      const course = e.courses as unknown as { id: string; title: string }
+      const course = e.courses as unknown as { id: string; name: string }
       if (course) {
-        courseMap[course.id] = course.title
+        courseMap[course.id] = course.name
       }
     }
   }
@@ -112,13 +112,14 @@ export async function getStudentGrades() {
     courseId: string
     courseTitle: string
     grades: typeof grades
-    totalScore: number
-    totalMaxScore: number
+    totalPointsEarned: number
+    totalPercentage: number
+    gradeCount: number
   }> = {}
 
   for (const grade of grades) {
     const assignment = grade.assignments as unknown as {
-      id: string; title: string; type: string; points_possible: number; due_date: string; course_id: string
+      id: string; title: string; type: string; max_points: number; due_date: string; course_id: string
     }
     if (!assignment) continue
 
@@ -128,29 +129,31 @@ export async function getStudentGrades() {
         courseId,
         courseTitle: courseMap[courseId] || 'Unknown Course',
         grades: [],
-        totalScore: 0,
-        totalMaxScore: 0,
+        totalPointsEarned: 0,
+        totalPercentage: 0,
+        gradeCount: 0,
       }
     }
     courseGradesMap[courseId].grades.push(grade)
-    courseGradesMap[courseId].totalScore += grade.score
-    courseGradesMap[courseId].totalMaxScore += grade.max_score
+    courseGradesMap[courseId].totalPointsEarned += grade.points_earned
+    courseGradesMap[courseId].totalPercentage += grade.percentage
+    courseGradesMap[courseId].gradeCount++
   }
 
   const courseGrades = Object.values(courseGradesMap).map((cg) => {
-    const percentage = cg.totalMaxScore > 0
-      ? Math.round((cg.totalScore / cg.totalMaxScore) * 10000) / 100
+    const avgPercentage = cg.gradeCount > 0
+      ? Math.round((cg.totalPercentage / cg.gradeCount) * 100) / 100
       : 0
     return {
       ...cg,
-      percentage,
-      letterGrade: cg.totalMaxScore > 0 ? getLetterGrade(percentage) : '--',
+      percentage: avgPercentage,
+      letterGrade: cg.gradeCount > 0 ? getLetterGrade(avgPercentage) : '--',
     }
   })
 
   // Augment grades with course title
   const augmentedGrades = grades.map((g) => {
-    const assignment = g.assignments as unknown as { course_id: string; title: string; type: string; points_possible: number }
+    const assignment = g.assignments as unknown as { course_id: string; title: string; type: string; max_points: number }
     return {
       ...g,
       courseTitle: assignment ? courseMap[assignment.course_id] || 'Unknown Course' : 'Unknown Course',
@@ -176,20 +179,20 @@ export async function getGradebook(courseId: string) {
   // Verify teacher ownership
   const { data: course } = await supabase
     .from('courses')
-    .select('id, title, teacher_id')
+    .select('id, name, created_by')
     .eq('id', courseId)
     .single()
 
-  if (!course || course.teacher_id !== user.id) {
+  if (!course || course.created_by !== user.id) {
     return { error: 'Not authorized to view this gradebook' }
   }
 
   // Get all assignments for this course
   let assignmentQuery = supabase
     .from('assignments')
-    .select('id, title, type, points_possible, due_date')
+    .select('id, title, type, max_points, due_date')
     .eq('course_id', courseId)
-    .eq('status', 'published')
+    .eq('status', 'assigned')
     .order('due_date', { ascending: true })
 
   if (tenantId) {
@@ -204,16 +207,15 @@ export async function getGradebook(courseId: string) {
 
   // Get enrolled students
   const { data: enrollments } = await supabase
-    .from('enrollments')
-    .select('user_id, profiles:user_id(id, full_name, email)')
+    .from('course_enrollments')
+    .select('student_id, profiles:student_id(id, full_name)')
     .eq('course_id', courseId)
 
   const students = (enrollments || []).map((e) => {
-    const profile = e.profiles as unknown as { id: string; full_name: string; email: string }
+    const profile = e.profiles as unknown as { id: string; full_name: string }
     return {
-      id: profile?.id || e.user_id,
+      id: profile?.id || e.student_id,
       name: profile?.full_name || 'Unknown Student',
-      email: profile?.email || '',
     }
   })
 
@@ -222,7 +224,7 @@ export async function getGradebook(courseId: string) {
 
   let gradesQuery = supabase
     .from('grades')
-    .select('assignment_id, student_id, score, max_score, letter_grade')
+    .select('assignment_id, student_id, points_earned, percentage, letter_grade')
     .in('assignment_id', assignmentIds)
 
   if (tenantId) {
@@ -232,7 +234,7 @@ export async function getGradebook(courseId: string) {
   const { data: allGrades } = await gradesQuery
 
   // Build a grid: grades[studentId][assignmentId] = grade
-  const grades: Record<string, Record<string, { score: number; maxScore: number; letterGrade: string }>> = {}
+  const grades: Record<string, Record<string, { pointsEarned: number; percentage: number; letterGrade: string }>> = {}
 
   if (allGrades) {
     for (const g of allGrades) {
@@ -240,8 +242,8 @@ export async function getGradebook(courseId: string) {
         grades[g.student_id] = {}
       }
       grades[g.student_id][g.assignment_id] = {
-        score: g.score,
-        maxScore: g.max_score,
+        pointsEarned: g.points_earned,
+        percentage: g.percentage,
         letterGrade: g.letter_grade,
       }
     }
@@ -256,22 +258,22 @@ export async function getGradebook(courseId: string) {
       continue
     }
 
-    let totalScore = 0
-    let totalMaxScore = 0
+    let totalPercentage = 0
+    let gradeCount = 0
     for (const aId of assignmentIds) {
       if (studentGrades[aId]) {
-        totalScore += studentGrades[aId].score
-        totalMaxScore += studentGrades[aId].maxScore
+        totalPercentage += studentGrades[aId].percentage
+        gradeCount++
       }
     }
 
-    const percentage = totalMaxScore > 0
-      ? Math.round((totalScore / totalMaxScore) * 10000) / 100
+    const percentage = gradeCount > 0
+      ? Math.round((totalPercentage / gradeCount) * 100) / 100
       : 0
 
     studentOveralls[student.id] = {
       percentage,
-      letterGrade: totalMaxScore > 0 ? getLetterGrade(percentage) : '--',
+      letterGrade: gradeCount > 0 ? getLetterGrade(percentage) : '--',
     }
   }
 

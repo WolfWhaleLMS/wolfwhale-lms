@@ -238,20 +238,59 @@ export default function StudentLessonViewerPage({
                   </figure>
                 )
               }
-              case 'video':
+              case 'video': {
+                const videoUrl = d(block, 'url') || d(block, 'src') || ''
+                const videoTitle = d(block, 'title') || 'Lesson video'
+                const videoSource = d(block, 'source') // 'youtube' | 'url' | undefined
+                let ytVideoId = d(block, 'videoId') || null
+
+                // If no explicit videoId, try to extract from URL for backwards compatibility
+                if (!ytVideoId && videoUrl) {
+                  const watchMatch = videoUrl.match(/(?:youtube\.com\/watch\?.*v=)([a-zA-Z0-9_-]{11})/)
+                  if (watchMatch) ytVideoId = watchMatch[1]
+                  const shortMatch = videoUrl.match(/(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/)
+                  if (!ytVideoId && shortMatch) ytVideoId = shortMatch[1]
+                  const embedMatch = videoUrl.match(/(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
+                  if (!ytVideoId && embedMatch) ytVideoId = embedMatch[1]
+                }
+
+                const isYouTube = videoSource === 'youtube' || ytVideoId
+
                 return (
-                  <div
-                    key={index}
-                    className="my-4 aspect-video overflow-hidden rounded-lg"
-                  >
-                    <iframe
-                      src={d(block, 'url') || d(block, 'src')}
-                      className="h-full w-full"
-                      allowFullScreen
-                      title={d(block, 'title') || 'Lesson video'}
-                    />
+                  <div key={index} className="my-4">
+                    {videoTitle && d(block, 'title') && (
+                      <p className="mb-2 text-sm font-medium text-foreground">{videoTitle}</p>
+                    )}
+                    {isYouTube && ytVideoId ? (
+                      <div className="aspect-video overflow-hidden rounded-lg">
+                        <iframe
+                          src={`https://www.youtube.com/embed/${ytVideoId}?rel=0`}
+                          className="h-full w-full"
+                          allowFullScreen
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          title={videoTitle}
+                        />
+                      </div>
+                    ) : videoUrl ? (
+                      <div className="aspect-video overflow-hidden rounded-lg bg-black">
+                        <video
+                          src={videoUrl}
+                          controls
+                          className="h-full w-full"
+                          preload="metadata"
+                          title={videoTitle}
+                        >
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                    ) : (
+                      <div className="aspect-video flex items-center justify-center rounded-lg bg-muted">
+                        <p className="text-sm text-muted-foreground">No video URL provided</p>
+                      </div>
+                    )}
                   </div>
                 )
+              }
               case 'file': {
                 const fileUrl = d(block, 'url')
                 const filename = d(block, 'filename') || 'Download file'

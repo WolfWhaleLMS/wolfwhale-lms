@@ -20,10 +20,10 @@ type AttendanceStatus = 'present' | 'absent' | 'tardy' | 'excused' | 'online'
 
 interface AttendanceRecord {
   id: string
-  date: string
+  attendance_date: string
   status: AttendanceStatus
   notes: string | null
-  courses: { title: string } | null
+  courses: { name: string } | null
   course_id: string
 }
 
@@ -146,7 +146,7 @@ export default function StudentAttendancePage() {
 
   const getAttendanceForDate = (day: number) => {
     const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-    return records.find(r => r.date === dateStr)
+    return records.find(r => r.attendance_date === dateStr)
   }
 
   const daysInMonth = getDaysInMonth(currentMonth)
@@ -397,7 +397,7 @@ export default function StudentAttendancePage() {
                   <div className="flex items-center gap-4">
                     <div className="flex flex-col">
                       <span className="text-sm font-medium text-foreground">
-                        {new Date(record.date + 'T00:00:00').toLocaleDateString('en-US', {
+                        {new Date(record.attendance_date + 'T00:00:00').toLocaleDateString('en-US', {
                           weekday: 'short',
                           month: 'short',
                           day: 'numeric',
@@ -405,7 +405,7 @@ export default function StudentAttendancePage() {
                         })}
                       </span>
                       <span className="text-xs text-muted-foreground">
-                        {record.courses?.title || 'Unknown Course'}
+                        {record.courses?.name || 'Unknown Course'}
                       </span>
                     </div>
                     {record.notes && (

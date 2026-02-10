@@ -24,7 +24,7 @@ interface Assignment {
   title: string
   type: string
   due_date: string | null
-  points_possible: number
+  max_points: number
   status: string
   submission_type: string
   created_at: string
@@ -178,7 +178,7 @@ export function AssignmentList({
                 </span>
                 <span className="flex items-center gap-1">
                   <Award className="h-3.5 w-3.5" />
-                  {assignment.points_possible} pts
+                  {assignment.max_points} pts
                 </span>
                 <span className="flex items-center gap-1">
                   <Users className="h-3.5 w-3.5" />

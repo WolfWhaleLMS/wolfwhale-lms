@@ -85,21 +85,21 @@ interface AssignmentData {
   description: string | null
   type: string
   due_date: string | null
-  points_possible: number
+  max_points: number
   submission_type: string
-  late_policy: string
+  allow_late_submission: boolean
   status: string
   attachments?: string | TeacherAttachment[] | null
   courses: {
     id: string
-    title: string
+    name: string
   }
 }
 
 interface SubmissionData {
   id: string
-  content: string | null
-  file_urls: string[] | null
+  submission_text: string | null
+  file_path: string[] | null
   submitted_at: string
   status: string
   is_late: boolean
@@ -108,8 +108,8 @@ interface SubmissionData {
 
 interface GradeData {
   id: string
-  score: number
-  max_score: number
+  points_earned: number
+  percentage: number
   letter_grade: string
   feedback: string | null
   rubric_scores: Record<string, number> | null
@@ -190,8 +190,8 @@ export default function StudentAssignmentDetailPage() {
 
     if (submissionResult.data) {
       setSubmission(submissionResult.data as SubmissionData)
-      if (submissionResult.data.content) {
-        setContent(submissionResult.data.content)
+      if (submissionResult.data.submission_text) {
+        setContent(submissionResult.data.submission_text)
       }
     }
     if (submissionResult.grade) {
@@ -374,7 +374,7 @@ export default function StudentAssignmentDetailPage() {
   const pastDue = isPastDue(assignment.due_date)
   const isReturned = submission?.status === 'returned'
   const isGraded = submission?.status === 'graded' && !!grade
-  const canSubmit = ((!pastDue || assignment.late_policy === 'accept_late') && (!isGraded || isReturned))
+  const canSubmit = ((!pastDue || assignment.allow_late_submission === true) && (!isGraded || isReturned))
   const timeLeft = timeUntilDue(assignment.due_date)
 
   return (
@@ -394,12 +394,12 @@ export default function StudentAssignmentDetailPage() {
           <div>
             <h1 className="text-2xl font-bold text-foreground">{assignment.title}</h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              {(assignment.courses as unknown as { title: string })?.title}
+              {(assignment.courses as unknown as { name: string })?.name}
             </p>
           </div>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
             <Award className="h-3.5 w-3.5" />
-            {assignment.points_possible} pts
+            {assignment.max_points} pts
           </span>
         </div>
 
@@ -411,7 +411,7 @@ export default function StudentAssignmentDetailPage() {
           <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
             {submissionTypeLabel}
           </span>
-          {assignment.late_policy === 'accept_late' && (
+          {assignment.allow_late_submission === true && (
             <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
               Late submissions accepted
             </span>
@@ -551,10 +551,10 @@ export default function StudentAssignmentDetailPage() {
           <div className="mt-4 flex items-center gap-6">
             <div className="text-center">
               <p className="text-4xl font-bold text-primary">
-                {grade.score}/{grade.max_score}
+                {grade.points_earned}/{grade.percentage}
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
-                {Math.round((grade.score / grade.max_score) * 100)}%
+                {Math.round((grade.points_earned / grade.percentage) * 100)}%
               </p>
             </div>
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
