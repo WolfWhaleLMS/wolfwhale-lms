@@ -211,11 +211,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
 
     teacher: [
       { label: 'Courses',       href: '/teacher/courses',        icon: 'BookOpen' },
-      { label: 'Assignments',   href: '/teacher/assignments',    icon: 'ClipboardList' },
       { label: 'Gradebook',     href: '/teacher/gradebook',      icon: 'GraduationCap' },
-      { label: 'Attendance',    href: '/teacher/attendance',      icon: 'CalendarCheck' },
-      { label: 'Students',      href: '/teacher/students',       icon: 'Users' },
-      { label: 'Reports',       href: '/teacher/reports',        icon: 'BarChart3' },
     ],
 
     parent: [
