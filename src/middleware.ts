@@ -36,6 +36,9 @@ export async function middleware(request: NextRequest) {
   // Public routes that do not require authentication
   const publicRoutes = ['/login', '/register', '/forgot-password', '/reset-password'];
 
+  // Exact-match public routes (root landing page)
+  const publicExactRoutes = ['/'];
+
   // Protected route prefixes that require authentication
   const protectedPrefixes = [
     '/dashboard',
@@ -46,7 +49,9 @@ export async function middleware(request: NextRequest) {
     '/platform',
   ];
 
-  const isPublicRoute = publicRoutes.some((route) => pathname.startsWith(route));
+  const isPublicRoute =
+    publicRoutes.some((route) => pathname.startsWith(route)) ||
+    publicExactRoutes.includes(pathname);
   const isProtectedRoute = protectedPrefixes.some((prefix) => pathname.startsWith(prefix));
 
   try {
