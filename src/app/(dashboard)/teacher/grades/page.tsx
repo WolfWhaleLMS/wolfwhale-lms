@@ -1,325 +1,230 @@
-'use client';
+import { redirect } from 'next/navigation';
+import { requireRole, getUser, getUserTenantId } from '@/lib/auth';
+import { createClient } from '@/lib/supabase/server';
+import { TeacherGradesClient } from './TeacherGradesClient';
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
-import { Progress } from '@/components/ui/Progress';
-import {
-  BookOpen,
-  TrendingUp,
-  AlertCircle,
-  CheckCircle,
-  Users,
-  BarChart3,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { GradebookGrid } from '@/components/teacher/GradebookGrid';
-import {
-  mockTeacherCourses,
-  mockTeacherAssignments,
-  mockTeacherSubmissions,
-  mockGradebookSnapshot,
-  type MockTeacherCourse,
-} from '@/lib/mock-data/teacher';
+export default async function TeacherGradesPage() {
+  await requireRole(['teacher', 'admin']);
+  const user = await getUser();
+  const tenantId = await getUserTenantId();
 
-export default function TeacherGradesPage() {
-  const [selectedCourseId, setSelectedCourseId] = useState<string>(mockTeacherCourses[0].id);
+  if (!user || !tenantId) {
+    redirect('/login');
+  }
 
-  const selectedCourse = mockTeacherCourses.find((c) => c.id === selectedCourseId)!;
-  const courseAssignments = mockTeacherAssignments.filter((a) => a.courseId === selectedCourseId);
-  const courseSubmissions = mockTeacherSubmissions.filter((s) =>
-    courseAssignments.some((a) => a.id === s.assignmentId)
-  );
+  const supabase = await createClient();
 
-  const snapshot = mockGradebookSnapshot.find((s) => s.courseId === selectedCourseId);
+  // Fetch courses taught by this teacher
+  const { data: courses } = await supabase
+    .from('courses')
+    .select('*')
+    .eq('tenant_id', tenantId)
+    .eq('created_by', user.id)
+    .eq('status', 'active')
+    .order('name');
 
-  const getGradeColor = (grade: number) => {
-    if (grade >= 90) return 'text-green-600 dark:text-green-400';
-    if (grade >= 80) return 'text-blue-600 dark:text-blue-400';
-    if (grade >= 70) return 'text-yellow-600 dark:text-yellow-400';
-    if (grade >= 60) return 'text-orange-600 dark:text-orange-400';
-    return 'text-red-600 dark:text-red-400';
-  };
+  const courseList = courses || [];
+  const courseIds = courseList.map((c) => c.id);
 
-  const getLetterGrade = (pct: number) => {
-    if (pct >= 93) return 'A';
-    if (pct >= 90) return 'A-';
-    if (pct >= 87) return 'B+';
-    if (pct >= 83) return 'B';
-    if (pct >= 80) return 'B-';
-    if (pct >= 77) return 'C+';
-    if (pct >= 73) return 'C';
-    if (pct >= 70) return 'C-';
-    if (pct >= 60) return 'D';
-    return 'F';
-  };
+  if (courseIds.length === 0) {
+    return <TeacherGradesClient courses={[]} />;
+  }
 
-  const handleCellClick = (studentId: string, assignmentId: string) => {
-    // In a real app, this would open a grading panel
-    console.log('Grade cell clicked:', studentId, assignmentId);
-  };
+  // Fetch enrollments with student profiles for each course
+  const { data: enrollments } = await supabase
+    .from('course_enrollments')
+    .select('course_id, student_id, status')
+    .eq('tenant_id', tenantId)
+    .in('course_id', courseIds)
+    .eq('status', 'active');
 
-  // Calculate grade distribution for the selected course
-  const gradeDistribution = (() => {
-    const dist = { A: 0, B: 0, C: 0, D: 0, F: 0 };
-    selectedCourse.students.forEach((s) => {
-      if (s.averageGrade !== null) {
-        const letter = getLetterGrade(s.averageGrade);
-        if (letter.startsWith('A')) dist.A++;
-        else if (letter.startsWith('B')) dist.B++;
-        else if (letter.startsWith('C')) dist.C++;
-        else if (letter.startsWith('D')) dist.D++;
-        else dist.F++;
+  const enrollmentList = enrollments || [];
+  const allStudentIds = [...new Set(enrollmentList.map((e) => e.student_id))];
+
+  // Fetch student profiles
+  let profileMap: Record<string, { first_name: string; last_name: string }> = {};
+  if (allStudentIds.length > 0) {
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, first_name, last_name')
+      .in('id', allStudentIds);
+
+    (profiles || []).forEach((p) => {
+      profileMap[p.id] = { first_name: p.first_name, last_name: p.last_name };
+    });
+  }
+
+  // Fetch all assignments for teacher's courses
+  const { data: assignments } = await supabase
+    .from('assignments')
+    .select('id, course_id, title, max_points, type, due_date, status')
+    .eq('tenant_id', tenantId)
+    .in('course_id', courseIds)
+    .order('due_date');
+
+  const assignmentList = assignments || [];
+  const assignmentIds = assignmentList.map((a) => a.id);
+
+  // Fetch all submissions
+  let submissionList: Array<{
+    id: string;
+    assignment_id: string;
+    student_id: string;
+    status: string;
+    submitted_at: string;
+  }> = [];
+  if (assignmentIds.length > 0) {
+    const { data: submissions } = await supabase
+      .from('submissions')
+      .select('id, assignment_id, student_id, status, submitted_at')
+      .eq('tenant_id', tenantId)
+      .in('assignment_id', assignmentIds);
+    submissionList = submissions || [];
+  }
+
+  // Fetch all grades
+  let gradeList: Array<{
+    id: string;
+    submission_id: string;
+    assignment_id: string;
+    student_id: string;
+    course_id: string;
+    points_earned: number;
+    percentage: number;
+    letter_grade: string;
+    feedback: string;
+  }> = [];
+  if (courseIds.length > 0) {
+    const { data: grades } = await supabase
+      .from('grades')
+      .select('id, submission_id, assignment_id, student_id, course_id, points_earned, percentage, letter_grade, feedback')
+      .eq('tenant_id', tenantId)
+      .in('course_id', courseIds);
+    gradeList = (grades || []).map((g) => ({
+      ...g,
+      points_earned: Number(g.points_earned) || 0,
+      percentage: Number(g.percentage) || 0,
+    }));
+  }
+
+  // Fetch attendance data for each course to compute attendance rates
+  let attendanceMap: Record<string, Record<string, { total: number; present: number }>> = {};
+  if (courseIds.length > 0) {
+    const { data: attendanceRecords } = await supabase
+      .from('attendance_records')
+      .select('course_id, student_id, status')
+      .eq('tenant_id', tenantId)
+      .in('course_id', courseIds);
+
+    (attendanceRecords || []).forEach((ar) => {
+      if (!attendanceMap[ar.course_id]) attendanceMap[ar.course_id] = {};
+      if (!attendanceMap[ar.course_id][ar.student_id]) {
+        attendanceMap[ar.course_id][ar.student_id] = { total: 0, present: 0 };
+      }
+      attendanceMap[ar.course_id][ar.student_id].total++;
+      if (ar.status === 'present' || ar.status === 'tardy') {
+        attendanceMap[ar.course_id][ar.student_id].present++;
       }
     });
-    return dist;
-  })();
+  }
 
-  const totalStudentsWithGrades = Object.values(gradeDistribution).reduce((a, b) => a + b, 0);
+  // Build course data for client
+  const courseData = courseList.map((course) => {
+    const courseEnrollments = enrollmentList.filter((e) => e.course_id === course.id);
+    const courseAssignments = assignmentList.filter((a) => a.course_id === course.id);
+    const courseGrades = gradeList.filter((g) => g.course_id === course.id);
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-2">
-            Gradebook
-          </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400">
-            View and manage grades across your classes
-          </p>
-        </div>
+    // Build students with grades
+    const students = courseEnrollments.map((enrollment) => {
+      const profile = profileMap[enrollment.student_id];
+      const studentGrades = courseGrades.filter((g) => g.student_id === enrollment.student_id);
+      const avgGrade = studentGrades.length > 0
+        ? Math.round(studentGrades.reduce((sum, g) => sum + g.percentage, 0) / studentGrades.length)
+        : null;
 
-        {/* Course Selector */}
-        <div className="flex gap-3 overflow-x-auto pb-2">
-          {mockTeacherCourses.map((course) => {
-            const snap = mockGradebookSnapshot.find((s) => s.courseId === course.id);
-            return (
-              <button
-                key={course.id}
-                onClick={() => setSelectedCourseId(course.id)}
-                className={cn(
-                  'flex-shrink-0 p-4 rounded-xl border-2 transition-all duration-200 text-left min-w-[220px]',
-                  selectedCourseId === course.id
-                    ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20'
-                    : 'border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/50 hover:border-indigo-300'
-                )}
-              >
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-lg">{course.iconEmoji}</span>
-                  <h3 className="font-semibold text-sm text-slate-900 dark:text-white truncate">
-                    {course.name}
-                  </h3>
-                </div>
-                <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
-                  <span>{course.studentCount} students</span>
-                  {snap && (
-                    <span className={getGradeColor(snap.averageGrade)}>
-                      Avg: {snap.averageGrade}%
-                    </span>
-                  )}
-                </div>
-              </button>
-            );
-          })}
-        </div>
+      const attendance = attendanceMap[course.id]?.[enrollment.student_id];
+      const attendanceRate = attendance && attendance.total > 0
+        ? Math.round((attendance.present / attendance.total) * 100)
+        : 100;
 
-        {/* Course Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Class Average</p>
-                  <p className={cn('text-3xl font-bold', getGradeColor(snapshot?.averageGrade ?? 0))}>
-                    {snapshot?.averageGrade ?? '--'}%
-                  </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-500 mt-2">
-                    {getLetterGrade(snapshot?.averageGrade ?? 0)} grade
-                  </p>
-                </div>
-                <div className="p-3 rounded-lg bg-blue-100 dark:bg-blue-900/30">
-                  <TrendingUp className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+      return {
+        id: enrollment.student_id,
+        firstName: profile?.first_name || 'Unknown',
+        lastName: profile?.last_name || '',
+        gradeLevel: course.grade_level || '',
+        enrollmentStatus: 'active' as const,
+        averageGrade: avgGrade,
+        attendanceRate,
+      };
+    });
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Students</p>
-                  <p className="text-3xl font-bold text-slate-900 dark:text-white">
-                    {selectedCourse.studentCount}
-                  </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-500 mt-2">
-                    Active enrollment
-                  </p>
-                </div>
-                <div className="p-3 rounded-lg bg-purple-100 dark:bg-purple-900/30">
-                  <Users className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+    // Build assignment data for this course
+    const assignmentData = courseAssignments.map((a) => {
+      const assignSubmissions = submissionList.filter((s) => s.assignment_id === a.id);
+      const assignGraded = assignSubmissions.filter((s) => s.status === 'graded').length;
+      return {
+        id: a.id,
+        courseId: a.course_id,
+        courseName: course.name,
+        title: a.title,
+        type: (a.type || 'homework') as 'homework' | 'quiz' | 'project' | 'exam' | 'discussion',
+        dueDate: a.due_date,
+        maxPoints: Number(a.max_points) || 100,
+        status: a.status === 'assigned' ? 'published' as const : (a.status || 'draft') as 'draft' | 'published' | 'archived',
+        totalSubmissions: assignSubmissions.length,
+        gradedSubmissions: assignGraded,
+      };
+    });
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Graded</p>
-                  <p className="text-3xl font-bold text-slate-900 dark:text-white">
-                    {snapshot?.percentGraded ?? 0}%
-                  </p>
-                  <Progress value={snapshot?.percentGraded ?? 0} className="h-1.5 mt-2" />
-                </div>
-                <div className="p-3 rounded-lg bg-green-100 dark:bg-green-900/30">
-                  <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+    // Build submission data for this course
+    const submissionData = submissionList
+      .filter((s) => courseAssignments.some((a) => a.id === s.assignment_id))
+      .map((s) => {
+        const assignment = courseAssignments.find((a) => a.id === s.assignment_id);
+        const grade = courseGrades.find((g) => g.submission_id === s.id);
+        const profile = profileMap[s.student_id];
+        return {
+          id: s.id,
+          assignmentId: s.assignment_id,
+          assignmentTitle: assignment?.title || '',
+          studentId: s.student_id,
+          studentName: profile ? `${profile.first_name} ${profile.last_name}` : 'Unknown',
+          status: s.status as 'submitted' | 'graded' | 'returned',
+          grade: grade ? {
+            pointsEarned: grade.points_earned,
+            percentage: grade.percentage,
+            letterGrade: grade.letter_grade,
+            feedback: grade.feedback || '',
+          } : null,
+        };
+      });
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Below C</p>
-                  <p className="text-3xl font-bold text-slate-900 dark:text-white">
-                    {snapshot?.belowC ?? 0}
-                  </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-500 mt-2">
-                    Students at risk
-                  </p>
-                </div>
-                <div className="p-3 rounded-lg bg-red-100 dark:bg-red-900/30">
-                  <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+    // Compute course-level stats
+    const gradePercentages = courseGrades.map((g) => g.percentage);
+    const averageGrade = gradePercentages.length > 0
+      ? Math.round(gradePercentages.reduce((a, b) => a + b, 0) / gradePercentages.length)
+      : 0;
 
-        {/* Grade Distribution */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 text-indigo-600" />
-              Grade Distribution - {selectedCourse.name}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-end gap-4 h-40">
-              {Object.entries(gradeDistribution).map(([letter, count]) => {
-                const maxCount = Math.max(...Object.values(gradeDistribution), 1);
-                const height = (count / maxCount) * 100;
-                const colors: Record<string, string> = {
-                  A: 'bg-green-500',
-                  B: 'bg-blue-500',
-                  C: 'bg-yellow-500',
-                  D: 'bg-orange-500',
-                  F: 'bg-red-500',
-                };
-                return (
-                  <div key={letter} className="flex-1 flex flex-col items-center gap-2">
-                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                      {count}
-                    </span>
-                    <div className="w-full flex items-end" style={{ height: '120px' }}>
-                      <div
-                        className={cn('w-full rounded-t-lg transition-all', colors[letter])}
-                        style={{ height: `${Math.max(height, 4)}%` }}
-                      />
-                    </div>
-                    <span className="text-sm font-semibold text-slate-900 dark:text-white">
-                      {letter}
-                    </span>
-                    <span className="text-xs text-slate-400">
-                      {totalStudentsWithGrades > 0
-                        ? Math.round((count / totalStudentsWithGrades) * 100)
-                        : 0}
-                      %
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
+    const totalPossibleGrades = courseAssignments.filter((a) => a.status === 'assigned' || a.status === 'published').length * students.length;
+    const percentGraded = totalPossibleGrades > 0
+      ? Math.round((courseGrades.length / totalPossibleGrades) * 100)
+      : 0;
 
-        {/* Gradebook Grid */}
-        <GradebookGrid
-          students={selectedCourse.students}
-          assignments={courseAssignments}
-          submissions={courseSubmissions}
-          onCellClick={handleCellClick}
-        />
+    const belowC = students.filter((s) => s.averageGrade !== null && s.averageGrade < 70).length;
 
-        {/* Student Performance List */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Student Performance</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {selectedCourse.students
-              .filter((s) => s.enrollmentStatus === 'active')
-              .sort((a, b) => (b.averageGrade ?? 0) - (a.averageGrade ?? 0))
-              .map((student, idx) => (
-                <div
-                  key={student.id}
-                  className={cn(
-                    'flex items-center justify-between p-3 rounded-lg transition-colors',
-                    idx % 2 === 0
-                      ? 'bg-slate-50/50 dark:bg-slate-800/20'
-                      : 'bg-white dark:bg-slate-900/20'
-                  )}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white text-xs font-medium">
-                      {student.firstName[0]}
-                      {student.lastName[0]}
-                    </div>
-                    <div>
-                      <p className="font-medium text-sm text-slate-900 dark:text-white">
-                        {student.firstName} {student.lastName}
-                      </p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
-                        Grade {student.gradeLevel}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="w-32 hidden md:block">
-                      <Progress value={student.averageGrade ?? 0} className="h-2" />
-                    </div>
-                    <span
-                      className={cn(
-                        'text-sm font-bold w-12 text-right',
-                        getGradeColor(student.averageGrade ?? 0)
-                      )}
-                    >
-                      {student.averageGrade !== null ? `${student.averageGrade}%` : '--'}
-                    </span>
-                    <Badge
-                      className={cn(
-                        'text-xs w-8 text-center justify-center',
-                        student.averageGrade !== null
-                          ? student.averageGrade >= 70
-                            ? 'bg-green-500/20 text-green-700 dark:text-green-300'
-                            : 'bg-red-500/20 text-red-700 dark:text-red-300'
-                          : 'bg-slate-500/20 text-slate-500'
-                      )}
-                    >
-                      {student.averageGrade !== null ? getLetterGrade(student.averageGrade) : '--'}
-                    </Badge>
-                  </div>
-                </div>
-              ))}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+    return {
+      id: course.id,
+      name: course.name,
+      gradeLevel: course.grade_level || '',
+      studentCount: students.length,
+      students,
+      assignments: assignmentData,
+      submissions: submissionData,
+      averageGrade,
+      percentGraded: Math.min(percentGraded, 100),
+      belowC,
+    };
+  });
+
+  return <TeacherGradesClient courses={courseData} />;
 }

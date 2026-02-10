@@ -1,444 +1,179 @@
-'use client';
+import { redirect } from 'next/navigation';
+import { requireRole, getUser, getUserTenantId } from '@/lib/auth';
+import { createClient } from '@/lib/supabase/server';
+import { TeacherAttendanceClient } from './TeacherAttendanceClient';
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
-import { Progress } from '@/components/ui/Progress';
-import {
-  CheckCircle,
-  XCircle,
-  Clock,
-  AlertCircle,
-  Users,
-  Calendar,
-  Save,
-  ChevronLeft,
-  ChevronRight,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import {
-  mockTeacherCourses,
-  mockWeekAttendance,
-  type MockTeacherAttendanceRecord,
-  type MockTeacherCourse,
-} from '@/lib/mock-data/teacher';
+export default async function TeacherAttendancePage() {
+  await requireRole(['teacher', 'admin']);
+  const user = await getUser();
+  const tenantId = await getUserTenantId();
 
-type AttendanceStatus = 'present' | 'absent' | 'tardy' | 'excused' | null;
+  if (!user || !tenantId) {
+    redirect('/login');
+  }
 
-const STATUS_CONFIG: Record<
-  string,
-  { label: string; color: string; bgColor: string; icon: React.ElementType }
-> = {
-  present: {
-    label: 'Present',
-    color: 'text-green-700 dark:text-green-300',
-    bgColor: 'bg-green-500/20 hover:bg-green-500/30',
-    icon: CheckCircle,
-  },
-  absent: {
-    label: 'Absent',
-    color: 'text-red-700 dark:text-red-300',
-    bgColor: 'bg-red-500/20 hover:bg-red-500/30',
-    icon: XCircle,
-  },
-  tardy: {
-    label: 'Tardy',
-    color: 'text-yellow-700 dark:text-yellow-300',
-    bgColor: 'bg-yellow-500/20 hover:bg-yellow-500/30',
-    icon: Clock,
-  },
-  excused: {
-    label: 'Excused',
-    color: 'text-blue-700 dark:text-blue-300',
-    bgColor: 'bg-blue-500/20 hover:bg-blue-500/30',
-    icon: AlertCircle,
-  },
-};
+  const supabase = await createClient();
 
-const WEEK_DATES = ['2026-02-02', '2026-02-03', '2026-02-04', '2026-02-05', '2026-02-06'];
-const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+  // Fetch courses taught by this teacher
+  const { data: courses } = await supabase
+    .from('courses')
+    .select('id, name, grade_level')
+    .eq('tenant_id', tenantId)
+    .eq('created_by', user.id)
+    .eq('status', 'active')
+    .order('name');
 
-export default function TeacherAttendancePage() {
-  const [selectedCourseId, setSelectedCourseId] = useState<string>(mockTeacherCourses[0].id);
-  const [selectedDate, setSelectedDate] = useState<string>('2026-02-09');
-  const [attendance, setAttendance] = useState<Record<string, AttendanceStatus>>(() => {
-    // Initialize with empty statuses for current class's students
-    const initial: Record<string, AttendanceStatus> = {};
-    mockTeacherCourses[0].students.forEach((s) => {
-      initial[s.id] = null;
+  const courseList = courses || [];
+  const courseIds = courseList.map((c) => c.id);
+
+  if (courseIds.length === 0) {
+    return <TeacherAttendanceClient courses={[]} teacherId={user.id} tenantId={tenantId} />;
+  }
+
+  // Fetch enrollments
+  const { data: enrollments } = await supabase
+    .from('course_enrollments')
+    .select('course_id, student_id')
+    .eq('tenant_id', tenantId)
+    .in('course_id', courseIds)
+    .eq('status', 'active');
+
+  const enrollmentList = enrollments || [];
+  const allStudentIds = [...new Set(enrollmentList.map((e) => e.student_id))];
+
+  // Fetch student profiles
+  let profileMap: Record<string, { first_name: string; last_name: string }> = {};
+  if (allStudentIds.length > 0) {
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, first_name, last_name')
+      .in('id', allStudentIds);
+
+    (profiles || []).forEach((p) => {
+      profileMap[p.id] = { first_name: p.first_name, last_name: p.last_name };
     });
-    return initial;
+  }
+
+  // Fetch attendance records for this week (Monday through today)
+  const now = new Date();
+  const dayOfWeek = now.getDay(); // 0=Sun, 1=Mon, ...
+  const mondayOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - mondayOffset);
+  const mondayStr = monday.toISOString().split('T')[0];
+  const todayStr = now.toISOString().split('T')[0];
+
+  const { data: attendanceRecords } = await supabase
+    .from('attendance_records')
+    .select('course_id, student_id, attendance_date, status, notes')
+    .eq('tenant_id', tenantId)
+    .in('course_id', courseIds)
+    .gte('attendance_date', mondayStr)
+    .lte('attendance_date', todayStr);
+
+  const attendanceList = attendanceRecords || [];
+
+  // Also fetch overall attendance for each student to compute their attendance rates
+  const { data: allAttendance } = await supabase
+    .from('attendance_records')
+    .select('course_id, student_id, status')
+    .eq('tenant_id', tenantId)
+    .in('course_id', courseIds);
+
+  const overallAttendanceMap: Record<string, Record<string, { total: number; present: number }>> = {};
+  (allAttendance || []).forEach((ar) => {
+    if (!overallAttendanceMap[ar.course_id]) overallAttendanceMap[ar.course_id] = {};
+    if (!overallAttendanceMap[ar.course_id][ar.student_id]) {
+      overallAttendanceMap[ar.course_id][ar.student_id] = { total: 0, present: 0 };
+    }
+    overallAttendanceMap[ar.course_id][ar.student_id].total++;
+    if (ar.status === 'present' || ar.status === 'tardy') {
+      overallAttendanceMap[ar.course_id][ar.student_id].present++;
+    }
   });
-  const [isSaved, setIsSaved] = useState(false);
 
-  const selectedCourse = mockTeacherCourses.find((c) => c.id === selectedCourseId)!;
+  // Build week attendance data
+  const weekDates: string[] = [];
+  const dayLabels: string[] = [];
+  for (let i = 0; i < 5; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    weekDates.push(d.toISOString().split('T')[0]);
+    dayLabels.push(['Mon', 'Tue', 'Wed', 'Thu', 'Fri'][i]);
+  }
 
-  const handleCourseChange = (courseId: string) => {
-    setSelectedCourseId(courseId);
-    setIsSaved(false);
-    const course = mockTeacherCourses.find((c) => c.id === courseId)!;
-    const initial: Record<string, AttendanceStatus> = {};
-    course.students.forEach((s) => {
-      initial[s.id] = null;
+  // Build course data for client
+  const courseData = courseList.map((course) => {
+    const courseEnrollments = enrollmentList.filter((e) => e.course_id === course.id);
+
+    const students = courseEnrollments.map((enrollment) => {
+      const profile = profileMap[enrollment.student_id];
+      const overall = overallAttendanceMap[course.id]?.[enrollment.student_id];
+      const attendanceRate = overall && overall.total > 0
+        ? Math.round((overall.present / overall.total) * 100)
+        : 100;
+
+      return {
+        id: enrollment.student_id,
+        firstName: profile?.first_name || 'Unknown',
+        lastName: profile?.last_name || '',
+        attendanceRate,
+      };
     });
-    setAttendance(initial);
-  };
 
-  const handleStatusChange = (studentId: string, status: AttendanceStatus) => {
-    setIsSaved(false);
-    setAttendance((prev) => ({
-      ...prev,
-      [studentId]: prev[studentId] === status ? null : status,
-    }));
-  };
-
-  const handleMarkAllPresent = () => {
-    setIsSaved(false);
-    const allPresent: Record<string, AttendanceStatus> = {};
-    selectedCourse.students.forEach((s) => {
-      allPresent[s.id] = 'present';
-    });
-    setAttendance(allPresent);
-  };
-
-  const handleSave = () => {
-    // In a real app, would save to backend
-    setIsSaved(true);
-  };
-
-  // Summary counts
-  const presentCount = Object.values(attendance).filter((s) => s === 'present').length;
-  const absentCount = Object.values(attendance).filter((s) => s === 'absent').length;
-  const tardyCount = Object.values(attendance).filter((s) => s === 'tardy').length;
-  const excusedCount = Object.values(attendance).filter((s) => s === 'excused').length;
-  const unmarkedCount = Object.values(attendance).filter((s) => s === null).length;
-  const totalStudents = selectedCourse.students.length;
-
-  // Historical week data for selected course
-  const getWeekSummary = () => {
-    const courseStudentIds = selectedCourse.students.map((s) => s.id);
-    return WEEK_DATES.map((date, idx) => {
-      const dayData = mockWeekAttendance[date] || {};
+    // Build weekly attendance summary
+    const weekSummary = weekDates.map((date, idx) => {
+      const dayRecords = attendanceList.filter(
+        (ar) => ar.course_id === course.id && ar.attendance_date === date
+      );
       let present = 0;
       let absent = 0;
       let tardy = 0;
       let excused = 0;
-      courseStudentIds.forEach((sid) => {
-        const status = dayData[sid];
-        if (status === 'present') present++;
-        else if (status === 'absent') absent++;
-        else if (status === 'tardy') tardy++;
-        else if (status === 'excused') excused++;
+      dayRecords.forEach((r) => {
+        if (r.status === 'present') present++;
+        else if (r.status === 'absent') absent++;
+        else if (r.status === 'tardy') tardy++;
+        else if (r.status === 'excused') excused++;
       });
       return {
         date,
-        day: DAY_LABELS[idx],
+        day: dayLabels[idx],
         present,
         absent,
         tardy,
         excused,
-        rate: courseStudentIds.length > 0 ? Math.round((present / courseStudentIds.length) * 100) : 0,
+        rate: students.length > 0 ? Math.round((present / students.length) * 100) : 0,
       };
     });
-  };
 
-  const weekSummary = getWeekSummary();
+    // Get today's attendance for pre-filling
+    const todayRecords: Record<string, { status: string; notes: string }> = {};
+    attendanceList
+      .filter((ar) => ar.course_id === course.id && ar.attendance_date === todayStr)
+      .forEach((ar) => {
+        todayRecords[ar.student_id] = {
+          status: ar.status || '',
+          notes: ar.notes || '',
+        };
+      });
+
+    return {
+      id: course.id,
+      name: course.name,
+      gradeLevel: course.grade_level || '',
+      studentCount: students.length,
+      students,
+      weekSummary,
+      todayRecords,
+    };
+  });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-2">
-              Attendance
-            </h1>
-            <p className="text-lg text-slate-600 dark:text-slate-400">
-              Track daily attendance for your classes
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <Button
-              variant="outline"
-              onClick={handleMarkAllPresent}
-            >
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Mark All Present
-            </Button>
-            <Button
-              className={cn(
-                'text-white',
-                isSaved
-                  ? 'bg-green-600 hover:bg-green-700'
-                  : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'
-              )}
-              onClick={handleSave}
-            >
-              {isSaved ? (
-                <>
-                  <CheckCircle className="w-4 h-4 mr-2" />
-                  Saved
-                </>
-              ) : (
-                <>
-                  <Save className="w-4 h-4 mr-2" />
-                  Save Attendance
-                </>
-              )}
-            </Button>
-          </div>
-        </div>
-
-        {/* Course Selector */}
-        <div className="flex gap-3 overflow-x-auto pb-2">
-          {mockTeacherCourses.map((course) => (
-            <button
-              key={course.id}
-              onClick={() => handleCourseChange(course.id)}
-              className={cn(
-                'flex-shrink-0 p-4 rounded-xl border-2 transition-all duration-200 text-left min-w-[200px]',
-                selectedCourseId === course.id
-                  ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20'
-                  : 'border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/50 hover:border-indigo-300'
-              )}
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-lg">{course.iconEmoji}</span>
-                <h3 className="font-semibold text-sm text-slate-900 dark:text-white truncate">
-                  {course.name}
-                </h3>
-              </div>
-              <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
-                <span>{course.studentCount} students</span>
-                <span>Room {course.room}</span>
-              </div>
-            </button>
-          ))}
-        </div>
-
-        {/* Summary */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          <Card>
-            <CardContent className="p-4 text-center">
-              <CheckCircle className="w-6 h-6 text-green-500 mx-auto mb-1" />
-              <p className="text-2xl font-bold text-slate-900 dark:text-white">{presentCount}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Present</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <XCircle className="w-6 h-6 text-red-500 mx-auto mb-1" />
-              <p className="text-2xl font-bold text-slate-900 dark:text-white">{absentCount}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Absent</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <Clock className="w-6 h-6 text-yellow-500 mx-auto mb-1" />
-              <p className="text-2xl font-bold text-slate-900 dark:text-white">{tardyCount}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Tardy</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <AlertCircle className="w-6 h-6 text-blue-500 mx-auto mb-1" />
-              <p className="text-2xl font-bold text-slate-900 dark:text-white">{excusedCount}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Excused</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <Users className="w-6 h-6 text-slate-400 mx-auto mb-1" />
-              <p className="text-2xl font-bold text-slate-900 dark:text-white">{unmarkedCount}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Unmarked</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Take Attendance */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-indigo-600" />
-                Take Attendance - {selectedCourse.name}
-              </CardTitle>
-              <Badge className="bg-indigo-500/20 text-indigo-700 dark:text-indigo-300">
-                Today: Feb 9, 2026
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {selectedCourse.students
-              .filter((s) => s.enrollmentStatus === 'active')
-              .map((student) => {
-                const currentStatus = attendance[student.id];
-                return (
-                  <div
-                    key={student.id}
-                    className={cn(
-                      'flex items-center justify-between p-3 rounded-lg transition-all',
-                      currentStatus === 'present' && 'bg-green-50 dark:bg-green-900/10',
-                      currentStatus === 'absent' && 'bg-red-50 dark:bg-red-900/10',
-                      currentStatus === 'tardy' && 'bg-yellow-50 dark:bg-yellow-900/10',
-                      currentStatus === 'excused' && 'bg-blue-50 dark:bg-blue-900/10',
-                      !currentStatus && 'bg-slate-50 dark:bg-slate-800/30'
-                    )}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white text-sm font-medium">
-                        {student.firstName[0]}
-                        {student.lastName[0]}
-                      </div>
-                      <div>
-                        <p className="font-medium text-sm text-slate-900 dark:text-white">
-                          {student.firstName} {student.lastName}
-                        </p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
-                          Overall: {student.attendanceRate}% attendance
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-2">
-                      {(Object.entries(STATUS_CONFIG) as [string, typeof STATUS_CONFIG[string]][]).map(
-                        ([status, config]) => {
-                          const Icon = config.icon;
-                          const isActive = currentStatus === status;
-                          return (
-                            <button
-                              key={status}
-                              onClick={() => handleStatusChange(student.id, status as AttendanceStatus)}
-                              className={cn(
-                                'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border',
-                                isActive
-                                  ? cn(config.bgColor, config.color, 'border-current')
-                                  : 'border-slate-200 dark:border-slate-700 text-slate-500 hover:border-slate-300'
-                              )}
-                              title={config.label}
-                            >
-                              <Icon className="w-3.5 h-3.5" />
-                              <span className="hidden md:inline">{config.label}</span>
-                            </button>
-                          );
-                        }
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-          </CardContent>
-        </Card>
-
-        {/* Weekly Overview */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Weekly Overview (Feb 2 - Feb 6)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-5 gap-4">
-              {weekSummary.map((day) => (
-                <div key={day.date} className="text-center space-y-2">
-                  <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                    {day.day}
-                  </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                    {new Date(day.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                  </p>
-                  <div
-                    className={cn(
-                      'w-12 h-12 rounded-full mx-auto flex items-center justify-center font-bold text-sm',
-                      day.rate >= 95
-                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
-                        : day.rate >= 85
-                        ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300'
-                        : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
-                    )}
-                  >
-                    {day.rate}%
-                  </div>
-                  <div className="space-y-1 text-xs">
-                    <div className="flex justify-between text-slate-500 dark:text-slate-400">
-                      <span>P: {day.present}</span>
-                      <span>A: {day.absent}</span>
-                    </div>
-                    <div className="flex justify-between text-slate-500 dark:text-slate-400">
-                      <span>T: {day.tardy}</span>
-                      <span>E: {day.excused}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Attendance Alerts */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertCircle className="w-5 h-5 text-orange-600" />
-              Attendance Alerts
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {selectedCourse.students
-              .filter((s) => s.enrollmentStatus === 'active' && s.attendanceRate < 90)
-              .sort((a, b) => a.attendanceRate - b.attendanceRate)
-              .map((student) => (
-                <div
-                  key={student.id}
-                  className="flex items-center justify-between p-3 rounded-lg bg-orange-50 dark:bg-orange-900/10"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-orange-200 dark:bg-orange-800 flex items-center justify-center text-orange-700 dark:text-orange-300 text-xs font-medium">
-                      {student.firstName[0]}
-                      {student.lastName[0]}
-                    </div>
-                    <div>
-                      <p className="font-medium text-sm text-slate-900 dark:text-white">
-                        {student.firstName} {student.lastName}
-                      </p>
-                      <p className="text-xs text-orange-600 dark:text-orange-400">
-                        Attendance below 90% threshold
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="text-right">
-                      <p
-                        className={cn(
-                          'font-bold text-sm',
-                          student.attendanceRate < 85
-                            ? 'text-red-600 dark:text-red-400'
-                            : 'text-orange-600 dark:text-orange-400'
-                        )}
-                      >
-                        {student.attendanceRate}%
-                      </p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">attendance</p>
-                    </div>
-                    <Button variant="outline" size="sm">
-                      Contact
-                    </Button>
-                  </div>
-                </div>
-              ))}
-
-            {selectedCourse.students.filter(
-              (s) => s.enrollmentStatus === 'active' && s.attendanceRate < 90
-            ).length === 0 && (
-              <div className="p-6 text-center">
-                <CheckCircle className="w-8 h-8 text-green-500 mx-auto mb-2" />
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  All students are above the 90% attendance threshold
-                </p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    <TeacherAttendanceClient
+      courses={courseData}
+      teacherId={user.id}
+      tenantId={tenantId}
+    />
   );
 }

@@ -939,6 +939,61 @@ export async function getStudentDashboardData() {
   };
 }
 
+// ─── Gamification / XP / Achievements ──────────────────────────────
+
+export async function getStudentGamificationData() {
+  const { user, tenantId, supabase } = await getStudentContext();
+
+  // Get XP data
+  const { data: xpData } = await supabase
+    .from('student_xp')
+    .select('*')
+    .eq('student_id', user.id)
+    .limit(1)
+    .single();
+
+  // Get achievements
+  const { data: achievements } = await supabase
+    .from('student_achievements')
+    .select('*')
+    .eq('student_id', user.id)
+    .order('unlocked_at', { ascending: false });
+
+  // Get recent XP transactions
+  const { data: xpTransactions } = await supabase
+    .from('xp_transactions')
+    .select('*')
+    .eq('student_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(20);
+
+  return {
+    xp: xpData
+      ? {
+          totalXP: xpData.total_xp || 0,
+          currentLevel: xpData.current_level || 1,
+          currentTier: xpData.current_tier || 'Novice',
+          streakDays: xpData.streak_days || 0,
+          coins: xpData.coins || 0,
+          lastLoginDate: xpData.last_login_date || null,
+        }
+      : null,
+    achievements: (achievements || []).map((a) => ({
+      id: a.id,
+      achievementId: a.achievement_id,
+      unlockedAt: a.unlocked_at,
+      displayed: a.displayed,
+    })),
+    xpTransactions: (xpTransactions || []).map((t) => ({
+      id: t.id,
+      amount: t.amount,
+      sourceType: t.source_type,
+      description: t.description,
+      createdAt: t.created_at,
+    })),
+  };
+}
+
 // ─── Notifications ────────────────────────────────────────────────
 
 export async function getStudentNotifications(limit = 20) {

@@ -1,152 +1,102 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
+import { withAuth, apiResponse, apiError } from '@/lib/api';
 import type { LeaderboardEntry } from '@/types/gamification.types';
 
-// Mock leaderboard data
-const MOCK_STUDENTS = [
-  {
-    id: 'student-1',
-    name: 'Alex Chen',
-    avatarUrl: 'https://i.pravatar.cc/150?img=1',
-    xp: 2500,
-    level: 8,
-    tier: 'Knowledge Keeper',
-  },
-  {
-    id: 'student-2',
-    name: 'Jordan Smith',
-    avatarUrl: 'https://i.pravatar.cc/150?img=2',
-    xp: 2200,
-    level: 7,
-    tier: 'Wave Runner',
-  },
-  {
-    id: 'student-3',
-    name: 'Casey Johnson',
-    avatarUrl: 'https://i.pravatar.cc/150?img=3',
-    xp: 1900,
-    level: 6,
-    tier: 'Wave Runner',
-  },
-  {
-    id: 'student-4',
-    name: 'Morgan Lee',
-    avatarUrl: 'https://i.pravatar.cc/150?img=4',
-    xp: 1650,
-    level: 5,
-    tier: 'Novice',
-  },
-  {
-    id: 'student-5',
-    name: 'Taylor Brown',
-    avatarUrl: 'https://i.pravatar.cc/150?img=5',
-    xp: 1400,
-    level: 5,
-    tier: 'Novice',
-  },
-  {
-    id: 'student-6',
-    name: 'Current User',
-    avatarUrl: 'https://i.pravatar.cc/150?img=6',
-    xp: 1200,
-    level: 4,
-    tier: 'Novice',
-  },
-  {
-    id: 'student-7',
-    name: 'Jordan Wilson',
-    avatarUrl: 'https://i.pravatar.cc/150?img=7',
-    xp: 950,
-    level: 3,
-    tier: 'Novice',
-  },
-  {
-    id: 'student-8',
-    name: 'Casey Martinez',
-    avatarUrl: 'https://i.pravatar.cc/150?img=8',
-    xp: 750,
-    level: 3,
-    tier: 'Novice',
-  },
-];
-
-function createLeaderboardEntry(
-  rank: number,
-  student: (typeof MOCK_STUDENTS)[0],
-  isCurrentUser: boolean
-): LeaderboardEntry {
-  return {
-    rank,
-    studentId: student.id,
-    studentName: student.name,
-    avatarUrl: student.avatarUrl,
-    xp: student.xp,
-    level: student.level,
-    tier: student.tier,
-    isCurrentUser,
-  };
-}
-
-export async function GET(request: NextRequest) {
+/**
+ * GET /api/gamification/leaderboard
+ * Fetch leaderboard data for students in the same tenant
+ * Query params: scope (class|grade|school), timeframe (week|month|all), classId
+ */
+export const GET = withAuth(async (req, opts) => {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(req.url);
     const scope = searchParams.get('scope') || 'class';
     const timeframe = searchParams.get('timeframe') || 'month';
-    const classId = searchParams.get('classId');
 
-    // In production: fetch from database with filters
-    // const students = await db.student.findMany({
-    //   where: {
-    //     ...(scope === 'class' && { classId }),
-    //     ...(scope === 'grade' && { gradeLevel }),
-    //   },
-    //   orderBy: { xp: 'desc' },
-    // });
+    const supabase = await createClient();
 
-    // Sort mock students by XP
-    const sortedStudents = [...MOCK_STUDENTS].sort((a, b) => b.xp - a.xp);
+    // Fetch all students' XP in this tenant, ordered by total_xp descending
+    // Join with profiles to get student names, and filter to students only via tenant_memberships
+    const { data: rows, error } = await supabase
+      .from('student_xp')
+      .select(`
+        student_id,
+        total_xp,
+        current_level,
+        current_tier
+      `)
+      .eq('tenant_id', opts.tenantId)
+      .order('total_xp', { ascending: false });
 
-    // Get top 3
-    const topThree: LeaderboardEntry[] = sortedStudents.slice(0, 3).map((student, index) =>
-      createLeaderboardEntry(index + 1, student, student.id === 'student-6')
-    );
+    if (error) {
+      throw error;
+    }
 
-    // Get all entries
-    const allEntries: LeaderboardEntry[] = sortedStudents.map((student, index) =>
-      createLeaderboardEntry(index + 1, student, student.id === 'student-6')
-    );
+    if (!rows || rows.length === 0) {
+      return apiResponse({
+        topThree: [],
+        allEntries: [],
+        currentUserRank: null,
+        totalStudents: 0,
+        scope,
+        timeframe,
+      });
+    }
 
-    // Get current user rank
-    const currentUserIndex = sortedStudents.findIndex((s) => s.id === 'student-6');
-    const currentUserRank =
-      currentUserIndex !== -1
-        ? createLeaderboardEntry(currentUserIndex + 1, sortedStudents[currentUserIndex], true)
-        : null;
+    // Fetch student profiles for names and avatars
+    const studentIds = rows.map((r) => r.student_id);
 
-    return NextResponse.json(
-      {
-        success: true,
-        data: {
-          topThree,
-          allEntries,
-          currentUserRank,
-          totalStudents: MOCK_STUDENTS.length,
-          scope,
-          timeframe,
-        },
-      },
-      { status: 200 }
-    );
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, first_name, last_name, avatar_url')
+      .in('id', studentIds);
+
+    // Build a lookup map of profiles
+    const profileMap = new Map<string, { firstName: string; lastName: string; avatarUrl: string | null }>();
+    (profiles || []).forEach((p) => {
+      profileMap.set(p.id, {
+        firstName: p.first_name || '',
+        lastName: p.last_name || '',
+        avatarUrl: p.avatar_url,
+      });
+    });
+
+    // Build leaderboard entries
+    const allEntries: LeaderboardEntry[] = rows.map((row, index) => {
+      const profile = profileMap.get(row.student_id);
+      const displayName = profile
+        ? `${profile.firstName} ${profile.lastName}`.trim() || 'Student'
+        : 'Student';
+
+      return {
+        rank: index + 1,
+        studentId: row.student_id,
+        studentName: displayName,
+        avatarUrl: profile?.avatarUrl || undefined,
+        xp: row.total_xp,
+        level: row.current_level,
+        tier: row.current_tier,
+        isCurrentUser: row.student_id === opts.userId,
+      };
+    });
+
+    // Top 3
+    const topThree = allEntries.slice(0, 3);
+
+    // Find current user rank
+    const currentUserRank = allEntries.find((e) => e.isCurrentUser) || null;
+
+    return apiResponse({
+      topThree,
+      allEntries,
+      currentUserRank,
+      totalStudents: allEntries.length,
+      scope,
+      timeframe,
+    });
   } catch (error) {
     console.error('Error fetching leaderboard:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: {
-          code: 'FETCH_ERROR',
-          message: 'Failed to fetch leaderboard data',
-        },
-      },
-      { status: 500 }
-    );
+    return apiError('Failed to fetch leaderboard data', 500, 'FETCH_ERROR');
   }
-}
+});

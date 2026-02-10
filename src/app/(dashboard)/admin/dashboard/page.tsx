@@ -1,61 +1,108 @@
-'use client';
-
-import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Progress } from '@/components/ui/Progress';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import Link from 'next/link';
 import {
   Users,
   BookOpen,
   School,
   Activity,
   AlertTriangle,
-  TrendingUp,
-  ServerCog,
-  Database,
+  UserPlus,
+  Settings,
+  FileText,
+  GraduationCap,
 } from 'lucide-react';
+import { requireRole, getUserTenantId } from '@/lib/auth';
+import { createClient } from '@/lib/supabase/server';
 
-const enrollmentData = [
-  { grade: 'K', students: 45 },
-  { grade: '1', students: 52 },
-  { grade: '2', students: 48 },
-  { grade: '3', students: 55 },
-  { grade: '4', students: 51 },
-  { grade: '5', students: 49 },
-  { grade: '6', students: 58 },
-  { grade: '7', students: 62 },
-  { grade: '8', students: 60 },
-];
+export default async function AdminDashboard() {
+  await requireRole(['admin', 'super_admin']);
+  const tenantId = await getUserTenantId();
+  const supabase = await createClient();
 
-const activityData = [
-  { date: 'Mon', users: 245, assignments: 18 },
-  { date: 'Tue', users: 298, assignments: 22 },
-  { date: 'Wed', users: 267, assignments: 19 },
-  { date: 'Thu', users: 315, assignments: 25 },
-  { date: 'Fri', users: 289, assignments: 21 },
-  { date: 'Sat', users: 145, assignments: 8 },
-  { date: 'Sun', users: 167, assignments: 12 },
-];
+  if (!tenantId) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-slate-600 dark:text-slate-400">No school found for your account.</p>
+      </div>
+    );
+  }
 
-const recentActivity = [
-  { timestamp: '2 hours ago', action: 'New teacher registered: Mr. Thompson', type: 'user' },
-  { timestamp: '4 hours ago', action: 'System backup completed successfully', type: 'system' },
-  { timestamp: '1 day ago', action: '125 new students enrolled this week', type: 'enrollment' },
-  { timestamp: '2 days ago', action: 'Gamification feature enabled for 3 schools', type: 'feature' },
-];
+  // Fetch tenant info
+  const { data: tenant } = await supabase
+    .from('tenants')
+    .select('name, slug, subscription_plan, status')
+    .eq('id', tenantId)
+    .single();
 
-const alerts = [
-  { severity: 'warning', message: 'Storage usage at 72% capacity for Lincoln High School' },
-  { severity: 'info', message: 'Scheduled maintenance: March 15, 2AM - 3AM PST' },
-];
+  // Fetch membership counts by role
+  const { data: memberships } = await supabase
+    .from('tenant_memberships')
+    .select('role, status')
+    .eq('tenant_id', tenantId);
 
-export default function AdminDashboard() {
-  const totalStudents = 536;
-  const totalTeachers = 42;
-  const totalClasses = 86;
-  const activeUsers = 298;
+  const allMembers = memberships || [];
+  const totalStudents = allMembers.filter((m) => m.role === 'student').length;
+  const totalTeachers = allMembers.filter((m) => m.role === 'teacher').length;
+  const totalParents = allMembers.filter((m) => m.role === 'parent').length;
+  const totalAdmins = allMembers.filter((m) => m.role === 'admin' || m.role === 'super_admin').length;
+  const activeUsers = allMembers.filter((m) => m.status === 'active').length;
+  const totalUsers = allMembers.length;
+
+  // Fetch course count
+  const { count: courseCount } = await supabase
+    .from('courses')
+    .select('id', { count: 'exact', head: true })
+    .eq('tenant_id', tenantId)
+    .eq('status', 'active');
+
+  // Fetch total enrollment count
+  const { count: enrollmentCount } = await supabase
+    .from('course_enrollments')
+    .select('id', { count: 'exact', head: true })
+    .eq('tenant_id', tenantId)
+    .eq('status', 'active');
+
+  // Fetch recent audit logs
+  const { data: recentLogs } = await supabase
+    .from('audit_logs')
+    .select('id, action, resource_type, details, created_at, user_id')
+    .eq('tenant_id', tenantId)
+    .order('created_at', { ascending: false })
+    .limit(5);
+
+  // For each audit log, fetch user profile names
+  const logUserIds = [...new Set((recentLogs || []).map((l) => l.user_id).filter(Boolean))];
+  const { data: logProfiles } = logUserIds.length > 0
+    ? await supabase
+        .from('profiles')
+        .select('id, first_name, last_name')
+        .in('id', logUserIds)
+    : { data: [] };
+
+  const profileMap = new Map(
+    (logProfiles || []).map((p) => [p.id, `${p.first_name || ''} ${p.last_name || ''}`.trim()])
+  );
+
+  const recentActivity = (recentLogs || []).map((log) => ({
+    id: log.id,
+    action: log.action,
+    resourceType: log.resource_type || 'system',
+    details: typeof log.details === 'object' && log.details !== null
+      ? (log.details as Record<string, string>).description || log.action
+      : log.action,
+    timestamp: log.created_at,
+    actor: log.user_id ? (profileMap.get(log.user_id) || 'Unknown') : 'System',
+  }));
+
+  // Fetch recent announcements count
+  const { count: announcementCount } = await supabase
+    .from('announcements')
+    .select('id', { count: 'exact', head: true })
+    .eq('tenant_id', tenantId)
+    .eq('status', 'active');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50 to-blue-50 dark:from-slate-950 dark:via-cyan-950 dark:to-blue-950 p-4 md:p-8">
@@ -66,7 +113,10 @@ export default function AdminDashboard() {
             School Administration
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-400">
-            Manage your school, users, and platform settings
+            {tenant?.name || 'Your School'} &middot;{' '}
+            <Badge className="bg-blue-500/20 text-blue-700 dark:text-blue-200 capitalize">
+              {tenant?.subscription_plan || 'starter'}
+            </Badge>
           </p>
         </div>
 
@@ -104,8 +154,8 @@ export default function AdminDashboard() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Classes</p>
-                  <p className="text-3xl font-bold text-slate-900 dark:text-white">{totalClasses}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Active Courses</p>
+                  <p className="text-3xl font-bold text-slate-900 dark:text-white">{courseCount ?? 0}</p>
                 </div>
                 <div className="p-3 rounded-lg bg-purple-100 dark:bg-purple-900/30">
                   <School className="w-6 h-6 text-purple-600" />
@@ -129,136 +179,100 @@ export default function AdminDashboard() {
           </Card>
         </div>
 
-        {/* Alerts */}
-        {alerts.length > 0 && (
-          <div className="space-y-3">
-            {alerts.map((alert, idx) => (
-              <div
-                key={idx}
-                className={`p-4 rounded-lg border-l-4 flex items-start gap-3 ${
-                  alert.severity === 'warning'
-                    ? 'bg-yellow-50 dark:bg-yellow-950 border-yellow-500'
-                    : 'bg-blue-50 dark:bg-blue-950 border-blue-500'
-                }`}
-              >
-                <AlertTriangle
-                  className={`w-5 h-5 flex-shrink-0 ${
-                    alert.severity === 'warning'
-                      ? 'text-yellow-600'
-                      : 'text-blue-600'
-                  }`}
-                />
-                <p
-                  className={`${
-                    alert.severity === 'warning'
-                      ? 'text-yellow-700 dark:text-yellow-200'
-                      : 'text-blue-700 dark:text-blue-200'
-                  }`}
-                >
-                  {alert.message}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Secondary Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card>
-            <CardHeader>
-              <CardTitle>Enrollment by Grade Level</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={enrollmentData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(100,100,100,0.1)" />
-                  <XAxis dataKey="grade" stroke="currentColor" />
-                  <YAxis stroke="currentColor" />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: 'rgba(15, 23, 42, 0.8)',
-                      border: 'none',
-                      borderRadius: '8px',
-                      color: '#fff',
-                    }}
-                  />
-                  <Bar dataKey="students" fill="#3b82f6" radius={[8, 8, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Parents</p>
+                  <p className="text-2xl font-bold text-slate-900 dark:text-white">{totalParents}</p>
+                </div>
+                <div className="p-3 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+                  <Users className="w-5 h-5 text-purple-600" />
+                </div>
+              </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader>
-              <CardTitle>Activity This Week</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={activityData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(100,100,100,0.1)" />
-                  <XAxis dataKey="date" stroke="currentColor" />
-                  <YAxis stroke="currentColor" />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: 'rgba(15, 23, 42, 0.8)',
-                      border: 'none',
-                      borderRadius: '8px',
-                      color: '#fff',
-                    }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="users"
-                    stroke="#3b82f6"
-                    dot={{ fill: '#3b82f6' }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Total Enrollments</p>
+                  <p className="text-2xl font-bold text-slate-900 dark:text-white">{enrollmentCount ?? 0}</p>
+                </div>
+                <div className="p-3 rounded-lg bg-cyan-100 dark:bg-cyan-900/30">
+                  <GraduationCap className="w-5 h-5 text-cyan-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Announcements</p>
+                  <p className="text-2xl font-bold text-slate-900 dark:text-white">{announcementCount ?? 0}</p>
+                </div>
+                <div className="p-3 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+                  <FileText className="w-5 h-5 text-indigo-600" />
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* System Health */}
+        {/* User Breakdown */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <ServerCog className="w-5 h-5" />
-              System Health
-            </CardTitle>
+            <CardTitle>User Breakdown</CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <CardContent className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div>
               <div className="flex justify-between mb-2">
                 <span className="text-sm font-medium text-slate-900 dark:text-white">
-                  Server Uptime
+                  Students
                 </span>
-                <Badge className="bg-green-500/20 text-green-700 dark:text-green-200">
-                  99.9%
-                </Badge>
+                <span className="text-sm text-slate-600 dark:text-slate-400">
+                  {totalStudents} / {totalUsers}
+                </span>
               </div>
-              <Progress value={99.9} className="h-2" />
+              <Progress value={totalUsers > 0 ? (totalStudents / totalUsers) * 100 : 0} className="h-2" />
             </div>
             <div>
               <div className="flex justify-between mb-2">
                 <span className="text-sm font-medium text-slate-900 dark:text-white">
-                  Storage Usage
+                  Teachers
                 </span>
-                <Badge className="bg-yellow-500/20 text-yellow-700 dark:text-yellow-200">
-                  72%
-                </Badge>
+                <span className="text-sm text-slate-600 dark:text-slate-400">
+                  {totalTeachers} / {totalUsers}
+                </span>
               </div>
-              <Progress value={72} className="h-2" />
+              <Progress value={totalUsers > 0 ? (totalTeachers / totalUsers) * 100 : 0} className="h-2" />
             </div>
             <div>
               <div className="flex justify-between mb-2">
                 <span className="text-sm font-medium text-slate-900 dark:text-white">
-                  API Latency
+                  Parents
                 </span>
-                <Badge className="bg-green-500/20 text-green-700 dark:text-green-200">
-                  45ms
-                </Badge>
+                <span className="text-sm text-slate-600 dark:text-slate-400">
+                  {totalParents} / {totalUsers}
+                </span>
               </div>
-              <Progress value={20} className="h-2" />
+              <Progress value={totalUsers > 0 ? (totalParents / totalUsers) * 100 : 0} className="h-2" />
+            </div>
+            <div>
+              <div className="flex justify-between mb-2">
+                <span className="text-sm font-medium text-slate-900 dark:text-white">
+                  Admins
+                </span>
+                <span className="text-sm text-slate-600 dark:text-slate-400">
+                  {totalAdmins} / {totalUsers}
+                </span>
+              </div>
+              <Progress value={totalUsers > 0 ? (totalAdmins / totalUsers) * 100 : 0} className="h-2" />
             </div>
           </CardContent>
         </Card>
@@ -272,32 +286,41 @@ export default function AdminDashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {recentActivity.map((activity, idx) => (
-              <div
-                key={idx}
-                className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-between"
-              >
-                <div className="flex-1">
-                  <p className="font-medium text-slate-900 dark:text-white">
-                    {activity.action}
-                  </p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
-                    {activity.timestamp}
-                  </p>
-                </div>
-                <Badge
-                  className={`text-xs ${
-                    activity.type === 'system'
-                      ? 'bg-slate-500/20'
-                      : activity.type === 'enrollment'
-                      ? 'bg-blue-500/20'
-                      : 'bg-green-500/20'
-                  }`}
+            {recentActivity.length > 0 ? (
+              recentActivity.map((activity) => (
+                <div
+                  key={activity.id}
+                  className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-between"
                 >
-                  {activity.type}
-                </Badge>
+                  <div className="flex-1">
+                    <p className="font-medium text-slate-900 dark:text-white">
+                      {activity.details}
+                    </p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                      {activity.actor} &middot; {new Date(activity.timestamp).toLocaleString()}
+                    </p>
+                  </div>
+                  <Badge
+                    className={`text-xs ${
+                      activity.resourceType === 'system'
+                        ? 'bg-slate-500/20'
+                        : activity.resourceType === 'user'
+                        ? 'bg-blue-500/20'
+                        : 'bg-green-500/20'
+                    }`}
+                  >
+                    {activity.resourceType}
+                  </Badge>
+                </div>
+              ))
+            ) : (
+              <div className="p-8 text-center">
+                <Activity className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  No recent activity to display
+                </p>
               </div>
-            ))}
+            )}
           </CardContent>
         </Card>
 
@@ -307,18 +330,30 @@ export default function AdminDashboard() {
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <Button variant="outline" className="h-12">
-              Add User
-            </Button>
-            <Button variant="outline" className="h-12">
-              Manage Classes
-            </Button>
-            <Button variant="outline" className="h-12">
-              View Reports
-            </Button>
-            <Button variant="outline" className="h-12">
-              School Settings
-            </Button>
+            <Link href="/admin/users/create">
+              <Button variant="outline" className="h-12 w-full">
+                <UserPlus className="w-4 h-4 mr-2" />
+                Add User
+              </Button>
+            </Link>
+            <Link href="/admin/classes">
+              <Button variant="outline" className="h-12 w-full">
+                <School className="w-4 h-4 mr-2" />
+                Manage Classes
+              </Button>
+            </Link>
+            <Link href="/admin/audit-logs">
+              <Button variant="outline" className="h-12 w-full">
+                <FileText className="w-4 h-4 mr-2" />
+                View Audit Logs
+              </Button>
+            </Link>
+            <Link href="/admin/settings">
+              <Button variant="outline" className="h-12 w-full">
+                <Settings className="w-4 h-4 mr-2" />
+                School Settings
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
