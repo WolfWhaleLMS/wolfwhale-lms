@@ -61,7 +61,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
   // Query tenant_memberships joined with profiles (email/role/is_active don't live on profiles)
   let query = supabase
     .from('tenant_memberships')
-    .select('user_id, role, is_active, created_at, profiles:user_id(id, full_name, avatar_url, grade_level)')
+    .select('user_id, role, status, created_at, profiles:user_id(id, full_name, avatar_url, grade_level)')
     .order('created_at', { ascending: false })
 
   if (tenantId) {
@@ -99,7 +99,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
       avatar_url: m.profiles?.avatar_url ?? null,
       grade_level: m.profiles?.grade_level ?? null,
       role: m.role ?? 'student',
-      is_active: m.is_active !== false,
+      is_active: m.status === 'active',
       created_at: m.created_at,
     }))
     .filter((u: any) => {

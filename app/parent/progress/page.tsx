@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { getChildren, getChildProgress } from '@/app/actions/parent'
 import { getAttendanceSummary } from '@/app/actions/attendance'
+import { ExportButton } from '@/components/reports/ExportButton'
 
 export default async function ProgressOverviewPage() {
   let children: Awaited<ReturnType<typeof getChildren>> = []
@@ -128,6 +129,11 @@ export default async function ProgressOverviewPage() {
                   </p>
                 </div>
               </div>
+              <ExportButton
+                pdfUrl={`/api/reports/parent/${child.studentId}/pdf`}
+                csvUrl={`/api/reports/parent/${child.studentId}/csv`}
+                label="Export"
+              />
               <Link
                 href={`/parent/children/${child.studentId}`}
                 className="hidden sm:flex items-center gap-1 rounded-xl bg-white/10 px-4 py-2 text-sm text-white hover:bg-white/20 transition-colors"

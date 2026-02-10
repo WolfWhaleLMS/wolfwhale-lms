@@ -314,7 +314,7 @@ export default async function AdminDashboardPage() {
         {/* School Health */}
         <DashboardCard
           title="School Health"
-          icon={<span className="text-2xl">🏫</span>}
+          icon={<Building2 className="h-6 w-6 text-primary" />}
         >
           <div className="space-y-3">
             <div className="flex items-center justify-between rounded-xl bg-muted/50 p-4">
@@ -370,7 +370,7 @@ export default async function AdminDashboardPage() {
         {/* Enrollment Stats */}
         <DashboardCard
           title="Enrollment Stats"
-          icon={<span className="text-2xl">📈</span>}
+          icon={<BarChart3 className="h-6 w-6 text-primary" />}
         >
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
@@ -443,7 +443,7 @@ export default async function AdminDashboardPage() {
         {/* System Status */}
         <DashboardCard
           title="System Status"
-          icon={<span className="text-2xl">🔧</span>}
+          icon={<Activity className="h-6 w-6 text-primary" />}
         >
           <div className="space-y-3">
             <div className="flex items-center justify-between rounded-xl bg-muted/50 p-4">
@@ -488,10 +488,10 @@ export default async function AdminDashboardPage() {
         {/* Key Alerts */}
         <DashboardCard
           title="Key Alerts"
-          icon={<span className="text-2xl">🔔</span>}
+          icon={<Clock className="h-6 w-6 text-amber-500" />}
         >
           <div className="flex flex-col items-center justify-center py-8 text-center">
-            <div className="mb-3 text-5xl opacity-40">🐺</div>
+            <Clock className="mb-3 h-12 w-12 text-muted-foreground/30" />
             <p className="text-muted-foreground">No active alerts.</p>
             <p className="mt-1 text-sm text-muted-foreground">
               System alerts and important notifications will appear here.

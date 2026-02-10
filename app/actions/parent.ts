@@ -513,9 +513,9 @@ export async function getChildProgress(studentId: string) {
   // Get XP / gamification level
   const { data: userLevel } = await supabase
     .from('student_xp')
-    .select('total_xp, current_level, current_tier, streak_days, longest_streak, coins')
+    .select('total_xp, current_level, current_tier, streak_days, coins')
     .eq('tenant_id', tenantId)
-    .eq('user_id', studentId)
+    .eq('student_id', studentId)
     .single()
 
   // Calculate overall GPA
@@ -573,7 +573,7 @@ export async function getChildProgress(studentId: string) {
       currentLevel: userLevel?.current_level ?? 1,
       currentTier: userLevel?.current_tier ?? 'awakening',
       streakDays: userLevel?.streak_days ?? 0,
-      longestStreak: userLevel?.longest_streak ?? 0,
+      longestStreak: userLevel?.streak_days ?? 0,
       coins: userLevel?.coins ?? 0,
     },
   }

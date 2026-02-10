@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getDashboardStats, getAttendanceReport, getEnrollmentTrends } from '@/app/actions/school-admin'
 import { Users, BookOpen, GraduationCap, LogIn, TrendingUp, Calendar, ArrowLeft } from 'lucide-react'
+import { ExportButton } from '@/components/reports/ExportButton'
 
 export default async function AdminReportsPage() {
   let stats, attendance, trends
@@ -35,11 +36,18 @@ export default async function AdminReportsPage() {
         Back to Dashboard
       </Link>
 
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Reports & Analytics</h1>
-        <p className="mt-1 text-muted-foreground">
-          Overview of school performance and engagement metrics.
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Reports & Analytics</h1>
+          <p className="mt-1 text-muted-foreground">
+            Overview of school performance and engagement metrics.
+          </p>
+        </div>
+        <ExportButton
+          pdfUrl="/api/reports/admin/school/pdf"
+          csvUrl="/api/reports/admin/school/csv"
+          label="Export School Report"
+        />
       </div>
 
       {/* Key Metrics */}

@@ -25,9 +25,9 @@ export async function getAnnouncements(courseId?: string) {
 
   let query = supabase
     .from('announcements')
-    .select('*, profiles:author_id(full_name, avatar_url)')
+    .select('*, profiles:created_by(full_name, avatar_url)')
     .eq('tenant_id', tenantId)
-    .order('pinned', { ascending: false })
+    .order('is_pinned', { ascending: false })
     .order('created_at', { ascending: false })
 
   if (courseId) {
@@ -80,11 +80,11 @@ export async function createAnnouncement(formData: {
     .from('announcements')
     .insert({
       tenant_id: tenantId,
-      author_id: user.id,
+      created_by: user.id,
       course_id: parsed.data.courseId || null,
       title: sanitizedTitle,
       content: sanitizedContent,
-      pinned: parsed.data.pinned || false,
+      is_pinned: parsed.data.pinned || false,
     })
     .select('id')
     .single()
@@ -104,7 +104,7 @@ export async function deleteAnnouncement(announcementId: string) {
     .from('announcements')
     .delete()
     .eq('id', announcementId)
-    .eq('author_id', user.id)
+    .eq('created_by', user.id)
 
   if (error) throw error
   revalidatePath('/announcements')
@@ -122,7 +122,7 @@ export async function togglePinAnnouncement(announcementId: string, pinned: bool
   // Fetch the announcement to check ownership and tenant
   const { data: announcement } = await supabase
     .from('announcements')
-    .select('author_id, tenant_id')
+    .select('created_by, tenant_id')
     .eq('id', announcementId)
     .eq('tenant_id', tenantId)
     .single()
@@ -132,7 +132,7 @@ export async function togglePinAnnouncement(announcementId: string, pinned: bool
   }
 
   // Allow if user is the author, or an admin/super_admin
-  if (announcement.author_id !== user.id) {
+  if (announcement.created_by !== user.id) {
     const { data: membership } = await supabase
       .from('tenant_memberships')
       .select('role')
@@ -148,7 +148,7 @@ export async function togglePinAnnouncement(announcementId: string, pinned: bool
 
   const { error } = await supabase
     .from('announcements')
-    .update({ pinned })
+    .update({ is_pinned: pinned })
     .eq('id', announcementId)
     .eq('tenant_id', tenantId)
 

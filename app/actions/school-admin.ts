@@ -145,7 +145,7 @@ export async function deactivateUser(userId: string) {
 
   const { error } = await supabase
     .from('tenant_memberships')
-    .update({ is_active: false })
+    .update({ status: 'suspended' })
     .eq('tenant_id', tenantId)
     .eq('user_id', userId)
 

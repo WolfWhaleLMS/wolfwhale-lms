@@ -21,6 +21,7 @@ import {
   Shield,
   FileText,
   Building2,
+  Layers,
   LogOut,
   X,
   type LucideIcon,
@@ -29,6 +30,7 @@ import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 import { getRoleMenuItems, type UserRole } from '@/lib/auth/permissions'
 import { useSound } from '@/components/providers/sound-provider'
+import { SidebarXPWidget } from '@/components/gamification/SidebarXPWidget'
 
 // ---------------------------------------------------------------------------
 // Icon mapping: string name -> lucide-react component
@@ -52,6 +54,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Shield,
   FileText,
   Building2,
+  Layers,
 }
 
 // ---------------------------------------------------------------------------
@@ -161,6 +164,11 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
           })}
         </ul>
       </nav>
+
+      {/* ----------------------------------------------------------------- */}
+      {/* Student XP Widget                                                  */}
+      {/* ----------------------------------------------------------------- */}
+      {role === 'student' && <SidebarXPWidget />}
 
       {/* ----------------------------------------------------------------- */}
       {/* Footer: sign-out button                                            */}

@@ -184,17 +184,17 @@ export default async function StudentDashboardPage() {
       supabase
         .from('student_xp')
         .select('total_xp, current_level, current_tier')
-        .eq('user_id', user.id)
+        .eq('student_id', user.id)
         .eq('tenant_id', tenantId)
         .single(),
 
       // Recent achievements
       supabase
         .from('student_achievements')
-        .select('id, earned_at, achievements(id, name, icon)')
-        .eq('user_id', user.id)
+        .select('id, unlocked_at, achievements:achievement_id(id, name, icon)')
+        .eq('student_id', user.id)
         .eq('tenant_id', tenantId)
-        .order('earned_at', { ascending: false })
+        .order('unlocked_at', { ascending: false })
         .limit(5),
     ])
 
@@ -352,8 +352,8 @@ export default async function StudentDashboardPage() {
         id: ach?.id || ua.id,
         name: ach?.name || 'Achievement',
         icon: ach?.icon || '🏆',
-        earnedAt: ua.earned_at
-          ? new Date(ua.earned_at).toLocaleDateString('en-US', {
+        earnedAt: ua.unlocked_at
+          ? new Date(ua.unlocked_at).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
               year: 'numeric',
@@ -366,7 +366,7 @@ export default async function StudentDashboardPage() {
     const { data: xpEvents } = await supabase
       .from('xp_transactions')
       .select('created_at')
-      .eq('user_id', user.id)
+      .eq('student_id', user.id)
       .eq('tenant_id', tenantId)
       .order('created_at', { ascending: false })
       .limit(100)

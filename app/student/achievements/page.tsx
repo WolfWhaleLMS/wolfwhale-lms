@@ -42,7 +42,7 @@ export default async function AchievementsPage({
   for (const ua of userAchievements) {
     const achId = ua.achievements?.id ?? ua.achievement_id
     if (achId) {
-      earnedMap.set(achId, { earnedAt: ua.earned_at })
+      earnedMap.set(achId, { earnedAt: ua.unlocked_at })
     }
   }
 

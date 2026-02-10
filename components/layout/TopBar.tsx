@@ -1,7 +1,8 @@
 'use client'
 
 import Image from 'next/image'
-import { Menu, Search, Bell, Sun, Moon } from 'lucide-react'
+import { Menu, Search, Sun, Moon } from 'lucide-react'
+import { NotificationBell } from '@/components/layout/NotificationBell'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
 import { getRoleLabel, type UserRole } from '@/lib/auth/permissions'
@@ -113,15 +114,7 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
         </button>
 
         {/* Notification bell */}
-        <button
-          onClick={() => sounds.playClick()}
-          className="relative rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          aria-label="Notifications"
-        >
-          <Bell className="h-5 w-5" />
-          {/* Unread badge dot */}
-          <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-ocean-400 ring-2 ring-background" />
-        </button>
+        <NotificationBell />
 
         {/* Divider */}
         <div className="hidden h-6 w-px bg-border/60 md:block" />

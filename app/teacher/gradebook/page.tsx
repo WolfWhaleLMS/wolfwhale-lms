@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { getGradebook } from '@/app/actions/grades'
 import { getLetterGrade } from '@/lib/config/constants'
 import { ArrowLeft } from 'lucide-react'
+import { ExportButton } from '@/components/reports/ExportButton'
 
 interface Course {
   id: string
@@ -128,6 +129,12 @@ export default function TeacherGradebookPage() {
             View and manage grades for all students across assignments.
           </p>
         </div>
+        {courseId && (
+          <ExportButton
+            pdfUrl={`/api/reports/teacher/${courseId}/pdf`}
+            csvUrl={`/api/reports/teacher/${courseId}/csv`}
+          />
+        )}
       </div>
 
       {/* Course Selector */}

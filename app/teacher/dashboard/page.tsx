@@ -173,7 +173,9 @@ export default async function TeacherDashboardPage() {
           <h1 className="text-3xl font-bold tracking-tight text-foreground">
             Welcome back, {teacherName}
           </h1>
-          <p className="mt-1 text-muted-foreground">{currentDate}</p>
+          <p className="mt-1 text-muted-foreground">
+            {currentDate} &mdash; You&apos;re making a difference today.
+          </p>
         </div>
 
         {/* Quick Stats Row */}

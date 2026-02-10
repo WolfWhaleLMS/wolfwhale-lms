@@ -27,7 +27,7 @@ export async function getConversations() {
     .select(`
       conversation_id,
       conversations (
-        id, title, type, course_id, created_at, updated_at,
+        id, subject, type, course_id, created_at, updated_at,
         messages (id, content, sender_id, created_at)
       )
     `)
@@ -127,7 +127,7 @@ export async function createGroupConversation(title: string, memberIds: string[]
     .insert({
       tenant_id: tenantId,
       type: 'group',
-      title,
+      subject: title,
       created_by: user.id,
     })
     .select('id')
@@ -210,11 +210,17 @@ export async function getMessages(conversationId: string, limit = 50, before?: s
   const { data, error } = await query
   if (error) throw error
 
-  // Mark as read
-  await supabase.from('message_read_receipts').upsert(
-    { conversation_id: conversationId, user_id: user.id, last_read_at: new Date().toISOString() },
-    { onConflict: 'conversation_id,user_id' }
-  )
+  // Mark fetched messages as read
+  if (data && data.length > 0) {
+    const receipts = data.map((msg) => ({
+      message_id: msg.id,
+      user_id: user.id,
+      read_at: new Date().toISOString(),
+    }))
+    await supabase
+      .from('message_read_receipts')
+      .upsert(receipts, { onConflict: 'message_id,user_id', ignoreDuplicates: true })
+  }
 
   return data?.reverse() ?? []
 }

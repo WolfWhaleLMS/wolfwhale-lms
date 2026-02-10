@@ -34,7 +34,7 @@ export async function recordStudySession(durationMinutes: number, musicType: str
   const { data: userLevel } = await supabase
     .from('student_xp')
     .select('total_xp, current_level')
-    .eq('user_id', user.id)
+    .eq('student_id', user.id)
     .eq('tenant_id', tenantId)
     .single()
 
@@ -44,13 +44,13 @@ export async function recordStudySession(durationMinutes: number, musicType: str
   const today = new Date().toISOString().split('T')[0]
   const { data: todayEvents } = await supabase
     .from('xp_transactions')
-    .select('xp_amount')
-    .eq('user_id', user.id)
+    .select('amount')
+    .eq('student_id', user.id)
     .eq('tenant_id', tenantId)
     .gte('created_at', `${today}T00:00:00`)
     .lte('created_at', `${today}T23:59:59`)
 
-  const dailyXpSoFar = todayEvents?.reduce((sum, e) => sum + (e.xp_amount || 0), 0) ?? 0
+  const dailyXpSoFar = todayEvents?.reduce((sum, e) => sum + (e.amount || 0), 0) ?? 0
 
   // Use focus_session event type from XP_CONFIG (15 XP base)
   const eventType: XPEventType = 'focus_session'
@@ -72,15 +72,11 @@ export async function recordStudySession(durationMinutes: number, musicType: str
   // Record the XP event with study session metadata
   await supabase.from('xp_transactions').insert({
     tenant_id: tenantId,
-    user_id: user.id,
-    event_type: eventType,
-    xp_amount: scaledXp,
-    source_type: 'study_session',
+    student_id: user.id,
+    amount: scaledXp,
+    source_type: 'study_session' as any,
     source_id: null,
-    metadata: {
-      duration_minutes: durationMinutes,
-      music_type: musicType,
-    },
+    description: `${eventType} | ${durationMinutes}min | ${musicType}`,
   })
 
   // Update user level
@@ -90,12 +86,12 @@ export async function recordStudySession(durationMinutes: number, musicType: str
 
   await supabase.from('student_xp').upsert({
     tenant_id: tenantId,
-    user_id: user.id,
+    student_id: user.id,
     total_xp: newTotalXp,
     current_level: newLevel,
     current_tier: newTier,
     updated_at: new Date().toISOString(),
-  }, { onConflict: 'tenant_id,user_id' })
+  }, { onConflict: 'tenant_id,student_id' })
 
   revalidatePath('/student/study-mode')
   revalidatePath('/student/dashboard')
@@ -119,8 +115,8 @@ export async function getStudyStats() {
   // Get all study session XP events
   const { data: sessions } = await supabase
     .from('xp_transactions')
-    .select('xp_amount, created_at, metadata')
-    .eq('user_id', user.id)
+    .select('amount, created_at, description')
+    .eq('student_id', user.id)
     .eq('tenant_id', tenantId)
     .eq('source_type', 'study_session')
     .order('created_at', { ascending: false })
@@ -137,24 +133,24 @@ export async function getStudyStats() {
 
   const totalSessions = sessions.length
 
-  // Extract duration from metadata
-  const durations = sessions.map((s) => {
-    const meta = s.metadata as Record<string, unknown> | null
-    return (meta?.duration_minutes as number) ?? 0
-  })
+  // Extract duration from description (format: "event | Xmin | musicType")
+  const parseDuration = (desc: string | null): number => {
+    if (!desc) return 0
+    const match = desc.match(/(\d+)min/)
+    return match ? parseInt(match[1], 10) : 0
+  }
+
+  const durations = sessions.map((s) => parseDuration(s.description))
 
   const totalMinutes = durations.reduce((sum, d) => sum + d, 0)
-  const longestSession = Math.max(...durations)
+  const longestSession = Math.max(0, ...durations)
 
   // Calculate weekly minutes (last 7 days)
   const weekAgo = new Date()
   weekAgo.setDate(weekAgo.getDate() - 7)
   const weeklyMinutes = sessions
     .filter((s) => new Date(s.created_at) >= weekAgo)
-    .reduce((sum, s) => {
-      const meta = s.metadata as Record<string, unknown> | null
-      return sum + ((meta?.duration_minutes as number) ?? 0)
-    }, 0)
+    .reduce((sum, s) => sum + parseDuration(s.description), 0)
 
   // Calculate streak: consecutive days with at least one session
   const sessionDates = [...new Set(
@@ -198,19 +194,20 @@ export async function getStudyHistory(limit = 20) {
 
   const { data } = await supabase
     .from('xp_transactions')
-    .select('xp_amount, created_at, metadata')
-    .eq('user_id', user.id)
+    .select('amount, created_at, description')
+    .eq('student_id', user.id)
     .eq('tenant_id', tenantId)
     .eq('source_type', 'study_session')
     .order('created_at', { ascending: false })
     .limit(limit)
 
   return (data ?? []).map((event) => {
-    const meta = event.metadata as Record<string, unknown> | null
+    const parts = (event.description || '').split(' | ')
+    const durationMatch = (parts[1] || '').match(/(\d+)/)
     return {
-      durationMinutes: (meta?.duration_minutes as number) ?? 0,
-      musicType: (meta?.music_type as string) ?? 'silent',
-      xpAwarded: event.xp_amount,
+      durationMinutes: durationMatch ? parseInt(durationMatch[1], 10) : 0,
+      musicType: parts[2] || 'silent',
+      xpAwarded: event.amount,
       completedAt: event.created_at,
     }
   })

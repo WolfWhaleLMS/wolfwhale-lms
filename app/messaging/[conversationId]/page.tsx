@@ -5,6 +5,7 @@ import { use } from 'react'
 import Link from 'next/link'
 import { getConversation, getMessages, sendMessage } from '@/app/actions/messages'
 import { useRealtimeMessages } from '@/hooks/useRealtimeMessages'
+import { useTypingIndicator } from '@/hooks/useTypingIndicator'
 import { createClient } from '@/lib/supabase/client'
 import { ArrowLeft, Send, Users, MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -87,6 +88,12 @@ export default function ConversationPage({
 
   const { messages: realtimeMessages, setMessages: setRealtimeMessages } =
     useRealtimeMessages(conversationId)
+
+  const { typingUsers, sendTyping, stopTyping } = useTypingIndicator(
+    conversationId,
+    currentUserId,
+    'Me'
+  )
 
   // Get current user
   useEffect(() => {
@@ -338,6 +345,14 @@ export default function ConversationPage({
         )}
       </div>
 
+      {/* Typing indicator */}
+      {typingUsers.length > 0 && (
+        <div className="px-4 py-1 text-xs text-muted-foreground italic">
+          {typingUsers.map((u) => u.userName).join(', ')}{' '}
+          {typingUsers.length === 1 ? 'is' : 'are'} typing...
+        </div>
+      )}
+
       {/* Input area */}
       <form
         onSubmit={handleSend}
@@ -345,7 +360,11 @@ export default function ConversationPage({
       >
         <Input
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => {
+            setInputValue(e.target.value)
+            sendTyping()
+          }}
+          onBlur={stopTyping}
           placeholder="Type a message..."
           className="flex-1 border-0 bg-muted/50 rounded-xl px-4 py-2.5 text-sm focus-visible:ring-1"
           disabled={sending}
