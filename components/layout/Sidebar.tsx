@@ -22,6 +22,7 @@ import {
   FileText,
   Building2,
   Layers,
+  Megaphone,
   LogOut,
   X,
   type LucideIcon,
@@ -55,6 +56,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   FileText,
   Building2,
   Layers,
+  Megaphone,
 }
 
 // ---------------------------------------------------------------------------

@@ -14,6 +14,7 @@ import {
   Globe,
   Calendar,
 } from 'lucide-react'
+import { AnnouncementBanner } from '@/components/announcements/AnnouncementBanner'
 
 function DashboardCard({
   title,
@@ -195,6 +196,9 @@ export default async function AdminDashboardPage() {
           School overview, enrollment data, and system health at a glance.
         </p>
       </div>
+
+      {/* Pinned Announcements */}
+      <AnnouncementBanner />
 
       {/* Seat Usage Banner */}
       <div className="ocean-card rounded-2xl p-5">

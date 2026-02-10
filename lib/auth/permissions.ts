@@ -196,6 +196,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
     { label: 'Dashboard',     href: getRouteForRole(role), icon: 'LayoutDashboard' },
     { label: 'Messages',      href: '/messaging',           icon: 'MessageSquare' },
     { label: 'Calendar',      href: '/calendar',             icon: 'Calendar' },
+    { label: 'Announcements', href: '/announcements',        icon: 'Megaphone' },
   ]
 
   const roleSpecific: Record<UserRole, MenuItem[]> = {

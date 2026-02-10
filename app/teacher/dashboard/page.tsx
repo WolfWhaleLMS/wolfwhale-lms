@@ -15,6 +15,7 @@ import {
   Calendar,
   BarChart3,
 } from 'lucide-react'
+import { AnnouncementBanner } from '@/components/announcements/AnnouncementBanner'
 
 export default async function TeacherDashboardPage() {
   const supabase = await createClient()
@@ -167,6 +168,9 @@ export default async function TeacherDashboardPage() {
 
   return (
     <div className="space-y-6">
+      {/* Pinned Announcements */}
+      <AnnouncementBanner />
+
       {/* Welcome Header */}
       <div className="ocean-card rounded-2xl p-6">
         <div className="mb-4">

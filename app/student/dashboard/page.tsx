@@ -20,6 +20,7 @@ import {
   MessageCircle,
   CalendarDays,
 } from 'lucide-react'
+import { AnnouncementBanner } from '@/components/announcements/AnnouncementBanner'
 
 export default async function StudentDashboardPage() {
   const supabase = await createClient()
@@ -504,6 +505,9 @@ export default async function StudentDashboardPage() {
           )}
         </div>
       </div>
+
+      {/* ===== PINNED ANNOUNCEMENTS ===== */}
+      <AnnouncementBanner />
 
       {/* ===== XP / LEVEL PROGRESS BAR ===== */}
       <div className="rounded-3xl bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 p-6 shadow-lg sm:p-8">
