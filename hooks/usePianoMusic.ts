@@ -8,69 +8,76 @@ import { useCallback, useEffect, useRef, useState } from 'react'
  *
  * Recording: Public domain performance from the Internet Archive / Musopen collection.
  * Mozart's compositions (1756-1791) are in the public domain worldwide.
+ *
+ * Uses a global singleton so the audio persists across page navigations.
  */
+
+// Global singleton — survives React component unmounts and re-mounts
+let globalAudio: HTMLAudioElement | null = null
+let globalIsPlaying = false
+
+function getGlobalAudio(): HTMLAudioElement {
+  if (globalAudio) return globalAudio
+
+  const audio = new Audio('/mozart-piano.mp3')
+  audio.loop = true
+  audio.volume = 0.15
+  audio.preload = 'auto'
+
+  // Fallback loop
+  audio.addEventListener('ended', () => {
+    audio.currentTime = 0
+    audio.play().catch(() => {})
+  })
+
+  globalAudio = audio
+  return audio
+}
+
 export function usePianoMusic() {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-  const isPlayingRef = useRef(false)
+  const [isPlaying, setIsPlaying] = useState(globalIsPlaying)
+  const syncRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  const getAudio = useCallback(() => {
-    if (audioRef.current) return audioRef.current
-
-    const audio = new Audio('/mozart-piano.mp3')
-    audio.loop = true
-    audio.volume = 0.15
-    audio.preload = 'auto'
-
-    audio.addEventListener('ended', () => {
-      // Fallback loop in case loop attribute doesn't work
-      audio.currentTime = 0
-      audio.play().catch(() => {})
-    })
-
-    audioRef.current = audio
-    return audio
+  // Sync local state with global state periodically
+  useEffect(() => {
+    setIsPlaying(globalIsPlaying)
+    syncRef.current = setInterval(() => {
+      setIsPlaying(globalIsPlaying)
+    }, 500)
+    return () => {
+      if (syncRef.current) clearInterval(syncRef.current)
+    }
   }, [])
 
   const start = useCallback(() => {
-    if (isPlayingRef.current) return
+    if (globalIsPlaying) return
 
-    const audio = getAudio()
+    const audio = getGlobalAudio()
     audio.play().then(() => {
-      isPlayingRef.current = true
+      globalIsPlaying = true
       setIsPlaying(true)
     }).catch(() => {
       // Autoplay blocked — will retry on next user interaction
     })
-  }, [getAudio])
+  }, [])
 
   const stop = useCallback(() => {
-    const audio = audioRef.current
+    const audio = globalAudio
     if (!audio) return
 
     audio.pause()
-    isPlayingRef.current = false
+    globalIsPlaying = false
     setIsPlaying(false)
   }, [])
 
   const toggle = useCallback(() => {
-    if (isPlayingRef.current) {
+    if (globalIsPlaying) {
       stop()
     } else {
       start()
     }
   }, [start, stop])
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause()
-        audioRef.current.src = ''
-        audioRef.current = null
-      }
-    }
-  }, [])
-
+  // Do NOT clean up globalAudio on unmount — that's the whole point
   return { isPlaying, toggle, start, stop }
 }

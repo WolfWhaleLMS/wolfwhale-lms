@@ -17,18 +17,22 @@ export default function AuthLayout({
     setMounted(true)
   }, [])
 
-  // Auto-start music on first user interaction
+  // Try to auto-start music immediately, then on any interaction
   useEffect(() => {
-    function handleFirstInteraction() {
+    // Attempt immediate autoplay
+    start()
+
+    // Also try on every user interaction until it works
+    function handleInteraction() {
       start()
-      document.removeEventListener('click', handleFirstInteraction)
-      document.removeEventListener('keydown', handleFirstInteraction)
     }
-    document.addEventListener('click', handleFirstInteraction, { once: true })
-    document.addEventListener('keydown', handleFirstInteraction, { once: true })
+    document.addEventListener('click', handleInteraction)
+    document.addEventListener('keydown', handleInteraction)
+    document.addEventListener('touchstart', handleInteraction)
     return () => {
-      document.removeEventListener('click', handleFirstInteraction)
-      document.removeEventListener('keydown', handleFirstInteraction)
+      document.removeEventListener('click', handleInteraction)
+      document.removeEventListener('keydown', handleInteraction)
+      document.removeEventListener('touchstart', handleInteraction)
     }
   }, [start])
 
