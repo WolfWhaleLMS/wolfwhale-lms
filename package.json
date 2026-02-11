@@ -13,7 +13,8 @@
     "db:types": "supabase gen types typescript --local > types/database.types.ts",
     "db:test-accounts": "npx tsx scripts/create-test-accounts.ts",
     "db:backup": "bash scripts/backup-db.sh",
-    "db:restore-drill": "bash scripts/restore-drill.sh"
+    "db:restore-drill": "bash scripts/restore-drill.sh",
+    "db:seed-sk": "npx tsx scripts/seed-saskatchewan.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "3.9.1",

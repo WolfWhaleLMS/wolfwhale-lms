@@ -157,9 +157,9 @@ export default async function ParentDashboardPage() {
                 >
                   <div className="ocean-card rounded-2xl overflow-hidden transition-all group-hover:scale-[1.01] group-hover:shadow-lg">
                     {/* Child Header */}
-                    <div className="whale-gradient p-5">
+                    <div className="child-card-header p-5">
                       <div className="flex items-center gap-4">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/20 text-xl font-bold text-white shadow-lg">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-xl font-bold text-primary dark:text-white shadow-lg">
                           {child.avatarUrl ? (
                             <img
                               src={child.avatarUrl}
@@ -171,10 +171,10 @@ export default async function ParentDashboardPage() {
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-xl font-bold text-white truncate group-hover:underline">
+                          <h3 className="text-xl font-bold text-foreground dark:text-white truncate group-hover:underline">
                             {child.fullName}
                           </h3>
-                          <p className="text-white/70">
+                          <p className="text-muted-foreground dark:text-white/70">
                             {child.gradeLevel
                               ? `Grade ${child.gradeLevel}`
                               : 'Student'}
@@ -185,7 +185,7 @@ export default async function ParentDashboardPage() {
                             )}
                           </p>
                         </div>
-                        <ChevronRight className="h-6 w-6 text-white/50 group-hover:text-white group-hover:translate-x-1 transition-all shrink-0" />
+                        <ChevronRight className="h-6 w-6 text-muted-foreground/50 dark:text-white/50 group-hover:text-primary dark:group-hover:text-white group-hover:translate-x-1 transition-all shrink-0" />
                       </div>
                     </div>
 

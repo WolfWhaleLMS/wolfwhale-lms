@@ -90,9 +90,9 @@ export default async function ChildDetailPage({ params }: PageProps) {
 
       {/* Student Header */}
       <div className="ocean-card rounded-2xl overflow-hidden">
-        <div className="whale-gradient p-8">
+        <div className="child-card-header p-8">
           <div className="flex flex-col sm:flex-row items-center gap-6">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/20 text-3xl font-bold text-white shadow-xl">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-3xl font-bold text-primary dark:text-white shadow-xl">
               {progress.student.avatarUrl ? (
                 <img
                   src={progress.student.avatarUrl}
@@ -104,10 +104,10 @@ export default async function ChildDetailPage({ params }: PageProps) {
               )}
             </div>
             <div className="text-center sm:text-left">
-              <h1 className="text-3xl font-bold text-white">
+              <h1 className="text-3xl font-bold text-foreground dark:text-white">
                 {progress.student.fullName}
               </h1>
-              <p className="mt-1 text-white/70">
+              <p className="mt-1 text-muted-foreground dark:text-white/70">
                 {progress.student.gradeLevel
                   ? `Grade ${progress.student.gradeLevel}`
                   : 'Student'}

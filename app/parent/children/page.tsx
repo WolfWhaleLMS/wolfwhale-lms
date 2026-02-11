@@ -77,10 +77,10 @@ export default async function ChildrenListPage() {
             >
               <div className="ocean-card rounded-2xl overflow-hidden transition-all group-hover:scale-[1.02] group-hover:shadow-lg">
                 {/* Child Header */}
-                <div className="whale-gradient p-6">
+                <div className="child-card-header p-6">
                   <div className="flex items-center gap-4">
                     {/* Avatar */}
-                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 text-2xl font-bold text-white shadow-lg">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-2xl font-bold text-primary dark:text-white shadow-lg">
                       {child.avatarUrl ? (
                         <img
                           src={child.avatarUrl}
@@ -92,10 +92,10 @@ export default async function ChildrenListPage() {
                       )}
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-white group-hover:underline">
+                      <h3 className="text-xl font-bold text-foreground dark:text-white group-hover:underline">
                         {child.fullName}
                       </h3>
-                      <p className="text-white/70">
+                      <p className="text-muted-foreground dark:text-white/70">
                         {child.gradeLevel
                           ? `Grade ${child.gradeLevel}`
                           : 'Grade N/A'}
@@ -106,7 +106,7 @@ export default async function ChildrenListPage() {
                         )}
                       </p>
                     </div>
-                    <ChevronRight className="h-6 w-6 text-white/50 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                    <ChevronRight className="h-6 w-6 text-muted-foreground/50 dark:text-white/50 group-hover:text-primary dark:group-hover:text-white group-hover:translate-x-1 transition-all" />
                   </div>
                 </div>
 

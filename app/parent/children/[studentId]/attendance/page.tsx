@@ -170,17 +170,17 @@ export default function ParentChildAttendancePage({
       </Link>
 
       {/* Visual Header with Whale Gradient */}
-      <div className="whale-gradient rounded-2xl p-8 text-white">
+      <div className="child-card-header rounded-2xl p-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground dark:text-white">
               {childName}&apos;s Attendance
             </h1>
-            <p className="mt-2 text-white/90">
+            <p className="mt-2 text-muted-foreground dark:text-white/90">
               Monitor your child&apos;s attendance and stay informed about their presence in class.
             </p>
           </div>
-          <Calendar className="size-16 opacity-20" />
+          <Calendar className="size-16 text-primary/20 dark:text-white/20" />
         </div>
       </div>
 

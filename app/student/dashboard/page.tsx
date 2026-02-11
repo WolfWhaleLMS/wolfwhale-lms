@@ -674,7 +674,7 @@ export default async function StudentDashboardPage() {
                   </div>
 
                   {/* Bottom info section */}
-                  <div className="rounded-b-2xl bg-white p-5 dark:bg-gray-900">
+                  <div className="rounded-b-2xl bg-card p-5">
                     {/* Progress bar */}
                     <div className="mb-1 flex items-center justify-between text-sm">
                       <span className="font-medium text-muted-foreground">
@@ -684,7 +684,7 @@ export default async function StudentDashboardPage() {
                         {course.progress}%
                       </span>
                     </div>
-                    <div className="h-3 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+                    <div className="h-3 w-full overflow-hidden rounded-full bg-muted">
                       <div
                         className={`h-full rounded-full bg-gradient-to-r ${gradient} transition-all duration-500`}
                         style={{ width: `${course.progress}%` }}
