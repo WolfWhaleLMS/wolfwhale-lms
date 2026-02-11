@@ -794,7 +794,7 @@ export default function PrivacyPolicyPage() {
       <header className="relative z-10 border-b border-[#1a2a4e]/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <img src="/logo.png" alt="Wolf Whale" className="h-12 w-12 rounded-full object-cover shadow-lg" />
+            <img src="/logo.png" alt="Wolf Whale" className="h-12 w-12 rounded-xl object-contain shadow-lg" />
             <div>
               <h1 className="text-lg sm:text-xl font-bold text-[#1a2a4e] group-hover:text-[#0a4d68] transition-colors">
                 Wolf Whale

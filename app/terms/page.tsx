@@ -647,7 +647,7 @@ export default function TermsOfServicePage() {
             <img
               src="/logo.png"
               alt="Wolf Whale Logo"
-              className="h-12 w-12 rounded-full"
+              className="h-12 w-12 rounded-xl object-contain"
             />
             <div>
               <h1 className="text-lg sm:text-xl font-bold text-[#1a2a4e] group-hover:text-[#0a4d68] transition-colors">

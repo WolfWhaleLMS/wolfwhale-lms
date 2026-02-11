@@ -66,7 +66,7 @@ export default function HomePage() {
       {/* Header */}
       <header className="relative z-10 p-6">
         <Link href="/" className="inline-flex items-center gap-3 group">
-          <img src="/logo.png" alt="Wolf Whale" className="h-16 w-16 rounded-full object-cover shadow-lg" />
+          <img src="/logo.png" alt="Wolf Whale" className="h-16 w-16 rounded-xl object-contain shadow-lg" />
           <span className="text-xl font-bold text-white group-hover:text-[oklch(0.74_0.13_180)] transition-colors">
             Wolf Whale
           </span>
@@ -79,8 +79,8 @@ export default function HomePage() {
           {/* Hero Section */}
           <section className="text-center space-y-8 animate-fade-in-up">
             {/* Logo */}
-            <div className="inline-flex rounded-full shadow-2xl overflow-hidden">
-              <img src="/logo.png" alt="Wolf Whale" className="h-48 w-48 rounded-full object-cover" />
+            <div className="inline-flex rounded-2xl shadow-2xl overflow-hidden">
+              <img src="/logo.png" alt="Wolf Whale" className="h-48 w-48 rounded-2xl object-contain" />
             </div>
 
             {/* Heading */}
