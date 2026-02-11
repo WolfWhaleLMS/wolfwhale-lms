@@ -24,6 +24,7 @@ export type Resource =
   | 'reports'
   | 'gamification'
   | 'plaza'
+  | 'skill_trees'
 
 export type Action =
   | 'create'
@@ -64,6 +65,7 @@ const PERMISSION_MATRIX: Record<UserRole, Record<Resource, Action[]>> = {
     reports:       [],
     gamification:  ['read'],
     plaza:         ['read', 'create'],
+    skill_trees:   ['read'],
   },
 
   teacher: {
@@ -82,6 +84,7 @@ const PERMISSION_MATRIX: Record<UserRole, Record<Resource, Action[]>> = {
     reports:       ['read', 'export'],
     gamification:  ['create', 'read', 'update'],
     plaza:         ['read', 'create', 'update'],
+    skill_trees:   ['create', 'read', 'update', 'delete'],
   },
 
   parent: {
@@ -100,6 +103,7 @@ const PERMISSION_MATRIX: Record<UserRole, Record<Resource, Action[]>> = {
     reports:       [],
     gamification:  ['read'],
     plaza:         ['read'],
+    skill_trees:   ['read'],
   },
 
   admin: {
@@ -118,6 +122,7 @@ const PERMISSION_MATRIX: Record<UserRole, Record<Resource, Action[]>> = {
     reports:       ['create', 'read', 'export'],
     gamification:  ['create', 'read', 'update', 'delete'],
     plaza:         ['create', 'read', 'update', 'delete'],
+    skill_trees:   ['create', 'read', 'update', 'delete'],
   },
 
   super_admin: {
@@ -136,6 +141,7 @@ const PERMISSION_MATRIX: Record<UserRole, Record<Resource, Action[]>> = {
     reports:       ['create', 'read', 'update', 'delete', 'export'],
     gamification:  ['create', 'read', 'update', 'delete', 'export'],
     plaza:         ['create', 'read', 'update', 'delete', 'export'],
+    skill_trees:   ['create', 'read', 'update', 'delete', 'export'],
   },
 }
 
@@ -214,6 +220,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Flashcards',    href: '/student/flashcards',          icon: 'Layers' },
       { label: 'Study Mode',    href: '/student/study-mode',          icon: 'Brain' },
       { label: 'Achievements',  href: '/student/achievements',        icon: 'Trophy' },
+      { label: 'Skill Tree',    href: '/student/skill-tree',          icon: 'GitFork' },
       { label: 'Leaderboard',   href: '/student/leaderboard',         icon: 'Medal' },
       { label: 'Tools Arcade',  href: '/student/tools',               icon: 'Gamepad2' },
       { label: 'Mini Games',    href: '/student/tools/mini-games',    icon: 'Dices' },

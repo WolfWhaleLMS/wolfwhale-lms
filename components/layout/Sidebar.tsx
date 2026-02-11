@@ -25,6 +25,7 @@ import {
   Megaphone,
   Map,
   Dices,
+  GitFork,
   LogOut,
   X,
   type LucideIcon,
@@ -61,6 +62,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Megaphone,
   Map,
   Dices,
+  GitFork,
 }
 
 // ---------------------------------------------------------------------------
