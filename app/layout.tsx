@@ -23,7 +23,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wolfwhale.ca";
 
 export const metadata: Metadata = {
   title: {
-    default: "WolfWhale LMS - Interactive Learning Platform",
+    default: "Wolf Whale - Learning Management System",
     template: "%s | WolfWhale LMS",
   },
   description:
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "WolfWhale LMS",
-    title: "WolfWhale LMS - Interactive Learning Platform",
+    title: "Wolf Whale - Learning Management System",
     description:
       "Modern learning management system with interactive courses, quizzes, flashcards, and certificates.",
     images: [
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "WolfWhale LMS - Interactive Learning Platform",
+    title: "Wolf Whale - Learning Management System",
     description:
       "Modern learning management system with interactive courses, quizzes, flashcards, and certificates.",
     images: ["/link-card.png"],
