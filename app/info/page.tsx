@@ -18,6 +18,7 @@ import {
   Sparkles,
   Zap,
   Mail,
+  Phone,
   ChevronRight,
   CheckCircle2
 } from 'lucide-react'
@@ -88,7 +89,7 @@ export default function InfoPage() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="#contact"
+              href="#pricing"
               className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] hover:shadow-[0_0_30px_oklch(0.70_0.12_180/0.4)] transition-all font-semibold text-white flex items-center gap-2 group btn-glow"
             >
               Request a Demo
@@ -635,39 +636,100 @@ export default function InfoPage() {
       </section>
 
       {/* Pricing Section */}
-      <section id="contact" className="relative z-10 py-20 bg-white/30 backdrop-blur-sm">
+      <section id="pricing" className="relative z-10 py-20 bg-white/30 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Get Started?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Simple, Transparent Pricing</h2>
           <p className="text-lg text-[#1a2a4e]/60 mb-12 max-w-2xl mx-auto">
-            Wolf Whale LMS is priced per school. Contact us for a custom quote tailored to your needs.
+            One plan. All features. No hidden fees.
           </p>
 
           <div className="rounded-2xl p-10 liquid-glass max-w-2xl mx-auto">
-            <div className="space-y-6">
+            <div className="space-y-8">
+              {/* Price */}
               <div>
-                <h3 className="text-2xl font-semibold mb-2">Contact Us</h3>
-                <p className="text-[#1a2a4e]/60">Get a personalized demo and pricing for your school</p>
+                <div className="flex items-baseline justify-center gap-1">
+                  <span className="text-5xl md:text-6xl font-bold text-[#1a2a4e]">$7</span>
+                  <span className="text-lg text-[#1a2a4e]/60">CAD</span>
+                </div>
+                <p className="text-[#1a2a4e]/60 mt-2">per user account, per year</p>
               </div>
 
-              <div className="flex items-center justify-center gap-2 text-[#0a4d68]">
-                <Mail className="h-5 w-5" />
-                <a href="mailto:info@wolfwhale.ca" className="text-lg font-medium hover:underline">
-                  info@wolfwhale.ca
-                </a>
+              {/* Key details */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full liquid-glass-subtle">
+                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68]" />
+                  <span className="text-[#1a2a4e]/80">All features included</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full liquid-glass-subtle">
+                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68]" />
+                  <span className="text-[#1a2a4e]/80">2-year minimum contract</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full liquid-glass-subtle">
+                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68]" />
+                  <span className="text-[#1a2a4e]/80">Single tier</span>
+                </div>
               </div>
 
-              <div className="pt-6">
+              {/* What's included */}
+              <div className="grid grid-cols-2 gap-3 text-left text-sm max-w-md mx-auto">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
+                  <span className="text-[#1a2a4e]/70">Unlimited courses</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
+                  <span className="text-[#1a2a4e]/70">Real-time messaging</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
+                  <span className="text-[#1a2a4e]/70">Gradebook & reports</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
+                  <span className="text-[#1a2a4e]/70">Gamification & XP</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
+                  <span className="text-[#1a2a4e]/70">Parent portal</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
+                  <span className="text-[#1a2a4e]/70">Attendance tracking</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
+                  <span className="text-[#1a2a4e]/70">Custom branding</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
+                  <span className="text-[#1a2a4e]/70">FERPA & COPPA compliant</span>
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div className="pt-4 space-y-4">
                 <a
-                  href="mailto:info@wolfwhale.ca?subject=Wolf%20Whale%20LMS%20Demo%20Request"
+                  href="mailto:info@wolfwhale.ca?subject=Wolf%20Whale%20LMS%20-%20Get%20Started"
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] hover:shadow-[0_0_30px_oklch(0.70_0.12_180/0.4)] transition-all font-semibold text-white group btn-glow"
                 >
-                  Request a Demo
+                  Get Started
                   <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </a>
-              </div>
 
-              <div className="pt-4 text-sm text-[#1a2a4e]/50">
-                We typically respond within 24 hours
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-[#0a4d68]">
+                  <div className="flex items-center gap-2">
+                    <Mail className="h-4 w-4" />
+                    <a href="mailto:info@wolfwhale.ca" className="text-sm font-medium hover:underline">
+                      info@wolfwhale.ca
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Phone className="h-4 w-4" />
+                    <a href="tel:+13069815926" className="text-sm font-medium hover:underline">
+                      +1 (306) 981-5926
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -686,16 +748,24 @@ export default function InfoPage() {
                   <p className="text-xs text-[#1a2a4e]/60">Modern K-12 Learning Platform</p>
                 </div>
               </div>
-              <p className="text-sm text-[#1a2a4e]/60 max-w-md">
+              <p className="text-sm text-[#1a2a4e]/60 max-w-md mb-3">
                 Empowering schools with a comprehensive learning management system designed specifically for K-12 education.
               </p>
+              <div className="flex flex-col sm:flex-row gap-3 text-sm text-[#1a2a4e]/60">
+                <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1.5 hover:text-[#0a4d68] transition-colors">
+                  <Mail className="h-3.5 w-3.5" /> info@wolfwhale.ca
+                </a>
+                <a href="tel:+13069815926" className="flex items-center gap-1.5 hover:text-[#0a4d68] transition-colors">
+                  <Phone className="h-3.5 w-3.5" /> +1 (306) 981-5926
+                </a>
+              </div>
             </div>
 
             <div>
               <h4 className="font-semibold mb-3 text-sm">Product</h4>
               <ul className="space-y-2 text-sm text-[#1a2a4e]/60">
                 <li><a href="#" className="hover:text-[#0a4d68] transition-colors">Features</a></li>
-                <li><a href="#contact" className="hover:text-[#0a4d68] transition-colors">Pricing</a></li>
+                <li><a href="#pricing" className="hover:text-[#0a4d68] transition-colors">Pricing</a></li>
                 <li><a href="#" className="hover:text-[#0a4d68] transition-colors">Documentation</a></li>
                 <li><Link href="/login" className="hover:text-[#0a4d68] transition-colors">Login</Link></li>
               </ul>

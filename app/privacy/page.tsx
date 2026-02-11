@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { GraduationCap, Globe, ArrowLeft } from 'lucide-react'
+import { Globe, ArrowLeft } from 'lucide-react'
 
 type Lang = 'en' | 'fr'
 
@@ -313,6 +313,7 @@ All third-party providers are contractually bound to handle personal information
 **Privacy Officer**
 Wolf Whale LMS
 Email: privacy@wolfwhale.ca
+Phone: +1 (306) 981-5926
 
 **Response Times**
 \u2022 General inquiries: within 10 business days
@@ -648,6 +649,7 @@ Tous les fournisseurs tiers sont contractuellement tenus de traiter les renseign
 **Responsable de la protection de la vie priv\u00e9e**
 Wolf Whale LMS
 Courriel\u00a0: privacy@wolfwhale.ca
+T\u00e9l\u00e9phone\u00a0: +1 (306) 981-5926
 
 **D\u00e9lais de r\u00e9ponse**
 \u2022 Demandes g\u00e9n\u00e9rales\u00a0: dans les 10 jours ouvrables
@@ -695,12 +697,12 @@ function renderMarkdown(text: string) {
       return (
         <div key={pIdx} className="mb-4">
           {intro && (
-            <p className="mb-2 text-white/80" dangerouslySetInnerHTML={{ __html: formatInline(intro) }} />
+            <p className="mb-2 text-[#1a2a4e]/70" dangerouslySetInnerHTML={{ __html: formatInline(intro) }} />
           )}
           <ul className="space-y-1.5 ml-1">
             {items.map((item, iIdx) => (
-              <li key={iIdx} className="flex items-start gap-2 text-white/70">
-                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[oklch(0.70_0.12_180)] flex-shrink-0" />
+              <li key={iIdx} className="flex items-start gap-2 text-[#1a2a4e]/60">
+                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#0a4d68] flex-shrink-0" />
                 <span dangerouslySetInnerHTML={{ __html: formatInline(item.slice(2)) }} />
               </li>
             ))}
@@ -715,8 +717,8 @@ function renderMarkdown(text: string) {
       return (
         <ul key={pIdx} className="space-y-1.5 ml-1 mb-4">
           {items.map((item, iIdx) => (
-            <li key={iIdx} className="flex items-start gap-2 text-white/70">
-              <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[oklch(0.70_0.12_180)] flex-shrink-0" />
+            <li key={iIdx} className="flex items-start gap-2 text-[#1a2a4e]/60">
+              <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#0a4d68] flex-shrink-0" />
               <span dangerouslySetInnerHTML={{ __html: formatInline(item.slice(2)) }} />
             </li>
           ))}
@@ -728,7 +730,7 @@ function renderMarkdown(text: string) {
     return (
       <p
         key={pIdx}
-        className="mb-4 text-white/80 leading-relaxed"
+        className="mb-4 text-[#1a2a4e]/70 leading-relaxed"
         dangerouslySetInnerHTML={{ __html: formatInline(paragraph) }}
       />
     )
@@ -737,58 +739,80 @@ function renderMarkdown(text: string) {
 
 function formatInline(text: string): string {
   // Bold **text**
-  let result = text.replace(/\*\*(.+?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
+  let result = text.replace(/\*\*(.+?)\*\*/g, '<strong class="text-[#1a2a4e] font-semibold">$1</strong>')
   // Links
   result = result.replace(
     /(https?:\/\/[^\s<]+)/g,
-    '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-[oklch(0.74_0.13_180)] hover:underline">$1</a>'
+    '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-[#0a4d68] hover:underline">$1</a>'
   )
   // Email
   result = result.replace(
     /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
-    '<a href="mailto:$1" class="text-[oklch(0.74_0.13_180)] hover:underline">$1</a>'
+    '<a href="mailto:$1" class="text-[#0a4d68] hover:underline">$1</a>'
   )
   return result
 }
 
 export default function PrivacyPolicyPage() {
   const [lang, setLang] = useState<Lang>('en')
+  const [mounted, setMounted] = useState(false)
   const t = content[lang]
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[oklch(0.16_0.04_260)] via-[oklch(0.18_0.04_258)] to-[oklch(0.16_0.04_260)] text-white">
+    <div
+      className="min-h-screen text-[#1a2a4e]"
+      style={{ background: 'linear-gradient(135deg, #e8f0fe 0%, #dce8f5 25%, #c5d8ee 50%, #b8d4e8 75%, #d0e4f0 100%)' }}
+    >
       {/* Ambient Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="blob-ocean absolute top-20 left-20 w-96 h-96" />
-        <div className="blob-teal absolute top-60 right-10 w-[400px] h-[400px]" />
-        <div className="blob-midnight absolute bottom-40 left-1/4 w-[500px] h-[500px]" />
+        {mounted && (
+          <div className="absolute inset-0">
+            {[...Array(20)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-1.5 h-1.5 rounded-full animate-twinkle"
+                style={{
+                  background: 'rgba(26,42,78,0.12)',
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 5}s`,
+                  opacity: Math.random() * 0.3 + 0.1,
+                }}
+              />
+            ))}
+          </div>
+        )}
+        <div className="absolute inset-0 opacity-40" style={{ background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(20,184,166,0.15) 0%, transparent 60%)' }} />
+        <div className="absolute inset-0 opacity-25" style={{ background: 'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(26,42,78,0.08) 0%, transparent 50%)' }} />
       </div>
 
       {/* Header */}
-      <header className="relative z-10 border-b border-white/10">
+      <header className="relative z-10 border-b border-[#1a2a4e]/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="p-2 rounded-lg bg-gradient-to-br from-[oklch(0.35_0.08_220)] to-[oklch(0.70_0.12_180)]">
-              <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-            </div>
+            <img src="/logo.png" alt="Wolf Whale" className="h-12 w-12 rounded-full object-cover shadow-lg" />
             <div>
-              <h1 className="text-lg sm:text-xl font-bold group-hover:text-[oklch(0.74_0.13_180)] transition-colors">
+              <h1 className="text-lg sm:text-xl font-bold text-[#1a2a4e] group-hover:text-[#0a4d68] transition-colors">
                 Wolf Whale
               </h1>
-              <p className="text-[10px] sm:text-xs text-white/60">Learning Management System</p>
+              <p className="text-[10px] sm:text-xs text-[#1a2a4e]/60">Learning Management System</p>
             </div>
           </Link>
 
           {/* Language Toggle */}
           <div className="flex items-center gap-2 sm:gap-3">
-            <Globe className="h-4 w-4 text-white/50 hidden sm:block" />
-            <div className="flex rounded-lg border border-white/20 overflow-hidden">
+            <Globe className="h-4 w-4 text-[#1a2a4e]/50 hidden sm:block" />
+            <div className="flex rounded-lg border border-[#1a2a4e]/20 overflow-hidden">
               <button
                 onClick={() => setLang('en')}
                 className={`px-3 py-1.5 text-sm font-medium transition-all ${
                   lang === 'en'
-                    ? 'bg-gradient-to-r from-[oklch(0.35_0.08_220)] to-[oklch(0.70_0.12_180)] text-white'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                    ? 'bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] text-white'
+                    : 'text-[#1a2a4e]/60 hover:text-[#1a2a4e] hover:bg-[#1a2a4e]/5'
                 }`}
               >
                 EN
@@ -797,8 +821,8 @@ export default function PrivacyPolicyPage() {
                 onClick={() => setLang('fr')}
                 className={`px-3 py-1.5 text-sm font-medium transition-all ${
                   lang === 'fr'
-                    ? 'bg-gradient-to-r from-[oklch(0.35_0.08_220)] to-[oklch(0.70_0.12_180)] text-white'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                    ? 'bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] text-white'
+                    : 'text-[#1a2a4e]/60 hover:text-[#1a2a4e] hover:bg-[#1a2a4e]/5'
                 }`}
               >
                 FR
@@ -813,7 +837,7 @@ export default function PrivacyPolicyPage() {
         {/* Back Link */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-[oklch(0.74_0.13_180)] transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-sm text-[#1a2a4e]/50 hover:text-[#0a4d68] transition-colors mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           {t.backToHome}
@@ -821,17 +845,17 @@ export default function PrivacyPolicyPage() {
 
         {/* Title Block */}
         <div className="mb-10 sm:mb-12">
-          <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-[oklch(0.35_0.08_220)] to-[oklch(0.70_0.12_180)] shadow-2xl mb-6">
+          <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-[#1a2a4e] to-[#0a4d68] shadow-2xl mb-6">
             <span className="text-white font-bold text-3xl">W</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3">{t.title}</h1>
-          <p className="text-lg sm:text-xl text-white/60 mb-2">{t.subtitle}</p>
-          <p className="text-sm text-white/40">{t.lastUpdated}</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-[#1a2a4e]">{t.title}</h1>
+          <p className="text-lg sm:text-xl text-[#1a2a4e]/60 mb-2">{t.subtitle}</p>
+          <p className="text-sm text-[#1a2a4e]/40">{t.lastUpdated}</p>
         </div>
 
         {/* Table of Contents */}
-        <nav className="glass-panel rounded-2xl p-5 sm:p-6 border border-white/10 mb-10 sm:mb-12">
-          <h2 className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-4">
+        <nav className="liquid-glass rounded-2xl p-5 sm:p-6 border border-[#1a2a4e]/10 mb-10 sm:mb-12">
+          <h2 className="text-sm font-semibold text-[#1a2a4e]/50 uppercase tracking-wider mb-4">
             {lang === 'en' ? 'Table of Contents' : 'Table des mati\u00e8res'}
           </h2>
           <ol className="space-y-1.5">
@@ -839,7 +863,7 @@ export default function PrivacyPolicyPage() {
               <li key={idx}>
                 <a
                   href={`#${section.id}`}
-                  className="text-sm text-white/70 hover:text-[oklch(0.74_0.13_180)] transition-colors block py-0.5"
+                  className="text-sm text-[#1a2a4e]/70 hover:text-[#0a4d68] transition-colors block py-0.5"
                 >
                   {section.heading}
                 </a>
@@ -852,7 +876,7 @@ export default function PrivacyPolicyPage() {
         <div className="space-y-10 sm:space-y-12">
           {t.sections.map((section, idx) => (
             <section key={idx} id={section.id} className="scroll-mt-24">
-              <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5 text-white border-b border-white/10 pb-3">
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5 text-[#1a2a4e] border-b border-[#1a2a4e]/10 pb-3">
                 {section.heading}
               </h2>
               <div className="text-sm sm:text-base leading-relaxed">
@@ -864,28 +888,28 @@ export default function PrivacyPolicyPage() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-white/10 mt-16 sm:mt-20">
+      <footer className="relative z-10 border-t border-[#1a2a4e]/10 mt-16 sm:mt-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-white/40">
+            <p className="text-sm text-[#1a2a4e]/40">
               &copy; 2026 Wolf Whale LMS. {lang === 'en' ? 'All rights reserved.' : 'Tous droits r\u00e9serv\u00e9s.'}
             </p>
             <div className="flex gap-6">
               <Link
                 href="/privacy"
-                className="text-sm text-[oklch(0.74_0.13_180)] font-medium"
+                className="text-sm text-[#0a4d68] font-medium"
               >
                 {lang === 'en' ? 'Privacy' : 'Confidentialit\u00e9'}
               </Link>
               <Link
                 href="/terms"
-                className="text-sm text-white/50 hover:text-[oklch(0.74_0.13_180)] transition-colors"
+                className="text-sm text-[#1a2a4e]/50 hover:text-[#0a4d68] transition-colors"
               >
                 {lang === 'en' ? 'Terms' : 'Conditions'}
               </Link>
               <Link
                 href="/help"
-                className="text-sm text-white/50 hover:text-[oklch(0.74_0.13_180)] transition-colors"
+                className="text-sm text-[#1a2a4e]/50 hover:text-[#0a4d68] transition-colors"
               >
                 {lang === 'en' ? 'Help' : 'Aide'}
               </Link>
@@ -893,6 +917,16 @@ export default function PrivacyPolicyPage() {
           </div>
         </div>
       </footer>
+
+      <style jsx>{`
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.1; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(1.3); }
+        }
+        .animate-twinkle {
+          animation: twinkle 4s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   )
 }

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { Music, VolumeX } from 'lucide-react'
+import { usePianoMusic } from '@/hooks/usePianoMusic'
 
 export default function AuthLayout({
   children,
@@ -9,10 +11,26 @@ export default function AuthLayout({
   children: React.ReactNode
 }) {
   const [mounted, setMounted] = useState(false)
+  const { isPlaying, toggle, start } = usePianoMusic()
 
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  // Auto-start music on first user interaction
+  useEffect(() => {
+    function handleFirstInteraction() {
+      start()
+      document.removeEventListener('click', handleFirstInteraction)
+      document.removeEventListener('keydown', handleFirstInteraction)
+    }
+    document.addEventListener('click', handleFirstInteraction, { once: true })
+    document.addEventListener('keydown', handleFirstInteraction, { once: true })
+    return () => {
+      document.removeEventListener('click', handleFirstInteraction)
+      document.removeEventListener('keydown', handleFirstInteraction)
+    }
+  }, [start])
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-[#f0f4f8]">
@@ -90,6 +108,19 @@ export default function AuthLayout({
           &copy; {new Date().getFullYear()} Wolf Whale Inc. All rights reserved.
         </p>
       </footer>
+
+      {/* Music Toggle */}
+      <button
+        onClick={toggle}
+        className="fixed bottom-6 right-6 z-50 p-3 rounded-full liquid-glass shadow-lg hover:shadow-xl transition-all hover:scale-110 group"
+        title={isPlaying ? 'Mute music' : 'Play music'}
+      >
+        {isPlaying ? (
+          <Music className="h-5 w-5 text-[#0a4d68] animate-pulse" />
+        ) : (
+          <VolumeX className="h-5 w-5 text-[#1a2a4e]/50" />
+        )}
+      </button>
 
       {/* Animation keyframes */}
       <style jsx>{`
