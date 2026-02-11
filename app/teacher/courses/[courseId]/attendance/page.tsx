@@ -527,7 +527,7 @@ export default function TakeAttendancePage({
               <TrendingUp className="size-5 text-primary" />
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  Today's Summary
+                  Today&apos;s Summary
                 </p>
                 <p className="text-xs text-muted-foreground">
                   {stats.present} of {stats.total} students present ({presentPercentage}%)

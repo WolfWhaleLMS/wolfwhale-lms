@@ -1428,7 +1428,7 @@ export default function LessonEditorPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-2">Lesson not found</h1>
-          <p className="text-muted-foreground mb-4">The lesson you're looking for doesn't exist.</p>
+          <p className="text-muted-foreground mb-4">The lesson you&apos;re looking for doesn&apos;t exist.</p>
           <Link href={`/teacher/courses/${courseId}`}>
             <Button>Back to Course</Button>
           </Link>
