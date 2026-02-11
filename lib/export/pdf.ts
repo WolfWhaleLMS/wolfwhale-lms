@@ -3,6 +3,8 @@ import 'server-only'
 import React from 'react'
 import { renderToBuffer, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'
 
+export const PDF_MAX_ROWS = 500
+
 const styles = StyleSheet.create({
   page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica' },
   header: { marginBottom: 20 },

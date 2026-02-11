@@ -44,7 +44,8 @@ export function LoginForm() {
     setTurnstileToken(null)
   }, [])
 
-  const redirectTo = searchParams.get('redirectTo') || '/dashboard'
+  const rawRedirect = searchParams.get('redirectTo') || '/dashboard'
+  const redirectTo = rawRedirect.startsWith('/') && !rawRedirect.startsWith('//') ? rawRedirect : '/dashboard'
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),

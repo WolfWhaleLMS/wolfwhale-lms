@@ -62,7 +62,7 @@ export async function getTeacherClassReport(courseId: string) {
 
   // Get all grades for this course
   const assignmentIds = (assignments || []).map((a) => a.id)
-  let grades: any[] = []
+  let grades: Array<{ student_id: string; assignment_id: string; points_earned: number | null; percentage: number | null; letter_grade: string | null }> = []
   if (assignmentIds.length > 0) {
     const { data } = await supabase
       .from('grades')
@@ -73,19 +73,19 @@ export async function getTeacherClassReport(courseId: string) {
 
   // Build student rows
   const students = (enrollments || []).map((e) => {
-    const name = (e.profiles as any)?.full_name || 'Unknown'
+    const name = (e.profiles as { full_name?: string } | null)?.full_name || 'Unknown'
     const studentGrades = grades.filter((g) => g.student_id === e.student_id)
     const gradeMap: Record<string, { points: number; pct: number; letter: string }> = {}
     for (const g of studentGrades) {
       gradeMap[g.assignment_id] = {
-        points: g.points_earned,
-        pct: g.percentage,
-        letter: g.letter_grade,
+        points: g.points_earned ?? 0,
+        pct: g.percentage ?? 0,
+        letter: g.letter_grade ?? '',
       }
     }
 
-    const gradedPcts = studentGrades.map((g) => g.percentage).filter((p: number) => p != null)
-    const avg = gradedPcts.length > 0 ? gradedPcts.reduce((s: number, p: number) => s + p, 0) / gradedPcts.length : null
+    const gradedPcts = studentGrades.map((g) => g.percentage).filter((p): p is number => p != null)
+    const avg = gradedPcts.length > 0 ? gradedPcts.reduce((s, p) => s + p, 0) / gradedPcts.length : null
 
     return {
       studentId: e.student_id,
@@ -177,7 +177,7 @@ export async function getAdminSchoolReport() {
         .eq('course_id', c.id)
       return {
         name: c.name,
-        teacher: (c.profiles as any)?.full_name || 'Unknown',
+        teacher: (c.profiles as { full_name?: string } | null)?.full_name || 'Unknown',
         status: c.status,
         students: count || 0,
         createdAt: new Date(c.created_at).toLocaleDateString('en-CA'),
@@ -259,8 +259,9 @@ export async function getParentProgressReport(studentId: string) {
   const presentAtt = (attCounts['present'] || 0) + (attCounts['tardy'] || 0)
 
   // Build grade rows
+  type JoinedAssignmentWithCourse = { title: string; course_id: string; courses: { name: string } | null } | null
   const gradeRows = (allGrades || []).map((g) => {
-    const assignment = g.assignments as any
+    const assignment = g.assignments as unknown as JoinedAssignmentWithCourse
     return {
       assignment: assignment?.title || 'Unknown',
       course: assignment?.courses?.name || 'Unknown',
@@ -292,7 +293,7 @@ export async function getParentProgressReport(studentId: string) {
     },
     grades: gradeRows,
     courses: (enrollments || []).map((e) => ({
-      name: (e.courses as any)?.name || 'Unknown',
+      name: (e.courses as { name?: string } | null)?.name || 'Unknown',
       status: e.status,
     })),
   }

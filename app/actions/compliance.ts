@@ -137,14 +137,16 @@ export async function getComplianceStatus(): Promise<{ data: ComplianceStatus | 
       .eq('tenant_id', resolvedTenantId)
       .eq('role', 'student')
 
+    type MemberWithProfile = { user_id: string; profiles: { date_of_birth: string | null } | null }
     const minorIds = (studentMembers ?? [])
-      .filter((m: any) => {
-        if (!m.profiles?.date_of_birth) return false
-        const dob = new Date(m.profiles.date_of_birth)
+      .filter((m) => {
+        const member = m as unknown as MemberWithProfile
+        if (!member.profiles?.date_of_birth) return false
+        const dob = new Date(member.profiles.date_of_birth)
         const age = new Date().getFullYear() - dob.getFullYear()
         return age < 13
       })
-      .map((m: any) => m.user_id)
+      .map((m) => m.user_id)
 
     let minorsWithoutConsent = 0
     if (minorIds.length > 0) {
@@ -155,7 +157,7 @@ export async function getComplianceStatus(): Promise<{ data: ComplianceStatus | 
         .eq('consent_type', 'data_collection')
         .eq('consent_given', true)
         .in('student_id', minorIds)
-      const consentedSet = new Set((consentedMinors ?? []).map((r: any) => r.student_id))
+      const consentedSet = new Set((consentedMinors ?? []).map((r) => r.student_id))
       minorsWithoutConsent = minorIds.filter((id: string) => !consentedSet.has(id)).length
     }
 
@@ -298,16 +300,29 @@ export async function getConsentRecords(): Promise<{ data: ConsentRecord[] | nul
       return { data: null, error: error.message }
     }
 
-    const records: ConsentRecord[] = (data ?? []).map((r: any) => ({
-      id: r.id,
-      student_id: r.student_id,
-      student_name: r.student?.full_name ?? null,
-      parent_id: r.parent_id,
-      parent_name: r.parent?.full_name ?? null,
-      consent_given: r.consent_given,
-      consent_date: r.consent_date,
-      updated_at: r.updated_at,
-    }))
+    type ConsentRow = {
+      id: string
+      student_id: string
+      parent_id: string | null
+      consent_given: boolean
+      consent_date: string | null
+      updated_at: string | null
+      student: { full_name: string | null } | null
+      parent: { full_name: string | null } | null
+    }
+    const records: ConsentRecord[] = (data ?? []).map((r) => {
+      const row = r as unknown as ConsentRow
+      return {
+        id: row.id,
+        student_id: row.student_id,
+        student_name: row.student?.full_name ?? null,
+        parent_id: row.parent_id,
+        parent_name: row.parent?.full_name ?? null,
+        consent_given: row.consent_given,
+        consent_date: row.consent_date,
+        updated_at: row.updated_at,
+      }
+    })
 
     return { data: records, error: null }
   } catch (error) {
@@ -443,7 +458,7 @@ export async function getDataRequests(): Promise<{
 
     if (error) return { data: null, error: error.message }
 
-    const requests: DataRequest[] = (data ?? []).map((r: any) => ({
+    const requests: DataRequest[] = (data ?? []).map((r) => ({
       ...r,
       requester_name: null,
       target_name: null,

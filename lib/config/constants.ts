@@ -25,6 +25,7 @@ export const GRADE_SCALE = [
 ] as const
 
 export function getLetterGrade(percentage: number): string {
+  if (percentage > 100) return 'A+'
   for (const grade of GRADE_SCALE) {
     if (percentage >= grade.min && percentage <= grade.max) {
       return grade.letter

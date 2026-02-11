@@ -1,9 +1,12 @@
 'use server'
 
+import { z } from 'zod'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { rateLimitAction } from '@/lib/rate-limit-action'
+import { sanitizeText } from '@/lib/sanitize'
+import { logAuditEvent } from '@/lib/compliance/audit-logger'
 
 async function getContext() {
   const supabase = await createClient()
@@ -73,6 +76,9 @@ export async function getConversation(conversationId: string) {
 }
 
 export async function createDirectMessage(recipientId: string) {
+  const parsed = z.object({ recipientId: z.string().uuid() }).safeParse({ recipientId })
+  if (!parsed.success) throw new Error('Invalid input')
+
   const rl = await rateLimitAction('createDirectMessage')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
@@ -120,6 +126,15 @@ export async function createDirectMessage(recipientId: string) {
 }
 
 export async function createGroupConversation(title: string, memberIds: string[]) {
+  const createGroupSchema = z.object({
+    title: z.string().min(1).max(255),
+    memberIds: z.array(z.string().uuid()).min(1).max(100),
+  })
+  const parsed = createGroupSchema.safeParse({ title, memberIds })
+  if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
+
+  const sanitizedTitle = sanitizeText(parsed.data.title)
+
   const { supabase, user, tenantId } = await getContext()
 
   const { data: conversation, error } = await supabase
@@ -127,7 +142,7 @@ export async function createGroupConversation(title: string, memberIds: string[]
     .insert({
       tenant_id: tenantId,
       type: 'group',
-      subject: title,
+      subject: sanitizedTitle,
       created_by: user.id,
     })
     .select('id')
@@ -135,7 +150,7 @@ export async function createGroupConversation(title: string, memberIds: string[]
 
   if (error) throw error
 
-  const allMembers = [user.id, ...memberIds.filter((id) => id !== user.id)]
+  const allMembers = [user.id, ...parsed.data.memberIds.filter((id) => id !== user.id)]
   await supabase.from('conversation_members').insert(
     allMembers.map((userId) => ({
       conversation_id: conversation.id,
@@ -153,6 +168,12 @@ export async function createGroupConversation(title: string, memberIds: string[]
 // ---------------------------------------------------------------------------
 
 export async function sendMessage(conversationId: string, content: string) {
+  const parsed = z.object({
+    conversationId: z.string().uuid(),
+    content: z.string().min(1).max(10000),
+  }).safeParse({ conversationId, content })
+  if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
+
   const rl = await rateLimitAction('sendMessage')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
@@ -170,13 +191,15 @@ export async function sendMessage(conversationId: string, content: string) {
     throw new Error('Not authorized - you are not a member of this conversation')
   }
 
+  const sanitizedContent = sanitizeText(content)
+
   const { data, error } = await supabase
     .from('messages')
     .insert({
       tenant_id: tenantId,
       conversation_id: conversationId,
       sender_id: user.id,
-      content,
+      content: sanitizedContent,
     })
     .select('id, content, sender_id, created_at')
     .single()
@@ -189,11 +212,34 @@ export async function sendMessage(conversationId: string, content: string) {
     .update({ updated_at: new Date().toISOString() })
     .eq('id', conversationId)
 
+  await logAuditEvent({
+    action: 'message.send',
+    resourceType: 'message',
+    resourceId: data.id,
+    details: { conversationId },
+  })
+
   return data
 }
 
 export async function getMessages(conversationId: string, limit = 50, before?: string) {
+  const safeLimit = Math.min(Math.max(1, limit), 200)
+  const parsed = z.object({ conversationId: z.string().uuid() }).safeParse({ conversationId })
+  if (!parsed.success) throw new Error('Invalid input')
+
   const { supabase, user, tenantId } = await getContext()
+
+  // Verify the user is a member of this conversation
+  const { data: membership } = await supabase
+    .from('conversation_members')
+    .select('id')
+    .eq('conversation_id', conversationId)
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (!membership) {
+    throw new Error('Not authorized - you are not a member of this conversation')
+  }
 
   let query = supabase
     .from('messages')
@@ -201,7 +247,7 @@ export async function getMessages(conversationId: string, limit = 50, before?: s
     .eq('conversation_id', conversationId)
     .eq('tenant_id', tenantId)
     .order('created_at', { ascending: false })
-    .limit(limit)
+    .limit(safeLimit)
 
   if (before) {
     query = query.lt('created_at', before)
@@ -226,6 +272,9 @@ export async function getMessages(conversationId: string, limit = 50, before?: s
 }
 
 export async function deleteMessage(messageId: string) {
+  const parsed = z.object({ messageId: z.string().uuid() }).safeParse({ messageId })
+  if (!parsed.success) throw new Error('Invalid input')
+
   const { supabase, user } = await getContext()
 
   const { error } = await supabase
@@ -235,4 +284,10 @@ export async function deleteMessage(messageId: string) {
     .eq('sender_id', user.id)
 
   if (error) throw error
+
+  await logAuditEvent({
+    action: 'message.delete',
+    resourceType: 'message',
+    resourceId: messageId,
+  })
 }

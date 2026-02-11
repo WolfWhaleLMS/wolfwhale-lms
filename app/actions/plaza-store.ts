@@ -64,7 +64,10 @@ export async function getStoreItems(category?: string): Promise<StoreItem[]> {
 
   const { data: items, error } = await query
 
-  if (error) throw new Error(`Failed to get store items: ${error.message}`)
+  if (error) {
+    console.error('[plaza-store] getStoreItems:', error)
+    throw new Error('Failed to get store items')
+  }
   if (!items || items.length === 0) return []
 
   // Get user's inventory to check ownership
@@ -171,6 +174,16 @@ export async function purchaseItem(itemId: string): Promise<PurchaseResult> {
   // Perform purchase
   const newBalance = avatar.token_balance - price
 
+  // Re-check ownership right before insert to narrow race window
+  const { data: recheck } = await admin
+    .from('plaza_avatar_inventory')
+    .select('id')
+    .eq('user_id', user.id)
+    .eq('item_id', itemId)
+    .single()
+
+  if (recheck) return { success: false, error: 'You already own this item.' }
+
   // Add to inventory
   const { data: inventoryRow, error: insertError } = await admin
     .from('plaza_avatar_inventory')
@@ -184,17 +197,33 @@ export async function purchaseItem(itemId: string): Promise<PurchaseResult> {
     .select('id, item_id, is_equipped, purchased_at, price_paid')
     .single()
 
-  if (insertError) return { success: false, error: `Purchase failed: ${insertError.message}` }
+  if (insertError) {
+    if (insertError.code === '23505') return { success: false, error: 'You already own this item.' }
+    console.error('[plaza-store] purchaseItem insert:', insertError)
+    return { success: false, error: 'Purchase failed. Please try again.' }
+  }
 
-  // Deduct tokens from avatar balance
+  // Deduct tokens from avatar balance (with balance guard)
   if (price > 0) {
-    await admin
+    const { data: updated, error: deductError } = await admin
       .from('plaza_avatars')
       .update({
         token_balance: newBalance,
         tokens_spent_total: avatar.tokens_spent_total + price,
       })
       .eq('id', avatar.id)
+      .gte('token_balance', price)
+      .select('id')
+      .single()
+
+    if (deductError || !updated) {
+      // Balance changed between check and deduction -- rollback inventory
+      await admin
+        .from('plaza_avatar_inventory')
+        .delete()
+        .eq('id', inventoryRow.id)
+      return { success: false, error: 'Not enough tokens. Please try again.' }
+    }
 
     // Record token transaction
     await admin.from('plaza_token_transactions').insert({
@@ -209,12 +238,14 @@ export async function purchaseItem(itemId: string): Promise<PurchaseResult> {
     })
   }
 
-  // Increment purchase counter for limited edition items
+  // Increment purchase counter for limited edition items (optimistic concurrency)
   if (item.is_limited_edition) {
+    const currentCount = item.current_purchases ?? 0
     await admin
       .from('plaza_avatar_items')
-      .update({ current_purchases: (item.current_purchases ?? 0) + 1 })
+      .update({ current_purchases: currentCount + 1 })
       .eq('id', itemId)
+      .eq('current_purchases', currentCount)
   }
 
   revalidatePath('/student/plaza')
@@ -305,7 +336,10 @@ export async function equipItem(itemId: string): Promise<void> {
     .update({ is_equipped: true })
     .eq('id', invItem.id)
 
-  if (error) throw new Error(`Failed to equip item: ${error.message}`)
+  if (error) {
+    console.error('[plaza-store] equipItem:', error)
+    throw new Error('Failed to equip item')
+  }
 
   revalidatePath('/student/plaza')
 }
@@ -378,7 +412,10 @@ export async function getInventory(): Promise<InventoryItem[]> {
     .eq('user_id', user.id)
     .order('purchased_at', { ascending: false })
 
-  if (error) throw new Error(`Failed to get inventory: ${error.message}`)
+  if (error) {
+    console.error('[plaza-store] getInventory:', error)
+    throw new Error('Failed to get inventory')
+  }
 
   return (data ?? []).map((row: any) => ({
     id: row.id,
@@ -534,7 +571,10 @@ export async function awardTokens(
     .select('*')
     .single()
 
-  if (error) throw new Error(`Failed to record token transaction: ${error.message}`)
+  if (error) {
+    console.error('[plaza-store] awardTokens:', error)
+    throw new Error('Failed to record token transaction')
+  }
 
   return tx as TokenTransaction
 }
@@ -549,6 +589,7 @@ export async function getTokenLeaderboard(
   limit: number = 25
 ): Promise<LeaderboardEntry[]> {
   const { admin, tenantId } = await getContext()
+  const safeLimit = Math.min(Math.max(1, limit), 100)
 
   if (period === 'all_time') {
     // Use total tokens earned on the avatar
@@ -557,9 +598,12 @@ export async function getTokenLeaderboard(
       .select('user_id, display_name, avatar_config, tokens_earned_total')
       .eq('tenant_id', tenantId)
       .order('tokens_earned_total', { ascending: false })
-      .limit(limit)
+      .limit(safeLimit)
 
-    if (error) throw new Error(`Failed to get leaderboard: ${error.message}`)
+    if (error) {
+      console.error('[plaza-store] getTokenLeaderboard:', error)
+      throw new Error('Failed to get leaderboard')
+    }
 
     return (data ?? []).map((row, index) => ({
       user_id: row.user_id,
@@ -592,7 +636,10 @@ export async function getTokenLeaderboard(
     .gt('amount', 0)
     .gte('created_at', startDate)
 
-  if (error) throw new Error(`Failed to get leaderboard: ${error.message}`)
+  if (error) {
+    console.error('[plaza-store] getTokenLeaderboard:', error)
+    throw new Error('Failed to get leaderboard')
+  }
 
   // Aggregate by user
   const userTotals = new Map<string, number>()
@@ -603,7 +650,7 @@ export async function getTokenLeaderboard(
   // Sort and limit
   const sorted = Array.from(userTotals.entries())
     .sort((a, b) => b[1] - a[1])
-    .slice(0, limit)
+    .slice(0, safeLimit)
 
   if (sorted.length === 0) return []
 

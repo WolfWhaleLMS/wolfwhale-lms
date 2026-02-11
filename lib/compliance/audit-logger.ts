@@ -76,6 +76,21 @@ export async function getAuditLogs(filters?: {
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
 
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user || !tenantId) return []
+
+  const { data: membership } = await supabase
+    .from('tenant_memberships')
+    .select('role')
+    .eq('user_id', user.id)
+    .eq('tenant_id', tenantId)
+    .eq('status', 'active')
+    .single()
+
+  if (!membership || !['admin', 'super_admin'].includes(membership.role)) {
+    return []
+  }
+
   let query = supabase
     .from('audit_logs')
     .select('*, profiles:user_id(full_name, avatar_url)')

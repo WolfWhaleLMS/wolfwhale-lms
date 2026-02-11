@@ -17,6 +17,7 @@ async function getContext() {
 }
 
 export async function getNotifications(limit = 20, unreadOnly = false) {
+  const safeLimit = Math.min(Math.max(1, limit), 100)
   const { supabase, user, tenantId } = await getContext()
 
   let query = supabase
@@ -25,7 +26,7 @@ export async function getNotifications(limit = 20, unreadOnly = false) {
     .eq('user_id', user.id)
     .eq('tenant_id', tenantId)
     .order('created_at', { ascending: false })
-    .limit(limit)
+    .limit(safeLimit)
 
   if (unreadOnly) {
     query = query.eq('read', false)

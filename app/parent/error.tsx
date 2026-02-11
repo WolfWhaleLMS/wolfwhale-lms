@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import * as Sentry from '@sentry/nextjs'
 
 export default function ParentError({
   error,
@@ -10,7 +11,7 @@ export default function ParentError({
   reset: () => void
 }) {
   useEffect(() => {
-    console.error('Parent section error:', error)
+    Sentry.captureException(error)
   }, [error])
 
   return (

@@ -55,8 +55,8 @@ export default async function ChildAssignmentsPage({ params }: PageProps) {
     ])
     assignments = assignmentsData
     progress = progressData
-  } catch (e: any) {
-    error = e.message ?? 'Failed to load assignments'
+  } catch (e) {
+    error = e instanceof Error ? e.message : 'Failed to load assignments'
   }
 
   if (error) {

@@ -91,14 +91,15 @@ export function usePlazaCanvas(): UsePlazaCanvasReturn {
     window.addEventListener('resize', handleResize)
 
     // Handle orientation change on mobile
-    window.addEventListener('orientationchange', () => {
-      // Small delay for the browser to update dimensions
+    const handleOrientationChange = () => {
       setTimeout(recalculate, 100)
-    })
+    }
+    window.addEventListener('orientationchange', handleOrientationChange)
 
     return () => {
       resizeObserver.disconnect()
       window.removeEventListener('resize', handleResize)
+      window.removeEventListener('orientationchange', handleOrientationChange)
     }
   }, [recalculate])
 

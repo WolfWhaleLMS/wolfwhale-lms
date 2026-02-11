@@ -20,11 +20,11 @@ export function useRealtimeNotifications(userId: string | null) {
   const addNotification = useCallback((notification: Notification) => {
     setNotifications((prev) => {
       if (prev.some((n) => n.id === notification.id)) return prev
+      if (!notification.read) {
+        setUnreadCount((c) => c + 1)
+      }
       return [notification, ...prev]
     })
-    if (!notification.read) {
-      setUnreadCount((prev) => prev + 1)
-    }
   }, [])
 
   useEffect(() => {

@@ -153,11 +153,18 @@ export async function deleteFileAction(
     return { error: 'No tenant context' }
   }
 
-  // Verify the user owns the file (path contains their user ID)
-  // Path format: {tenantId}/{userId}/{timestamp}-{random}-{filename}
-  const pathParts = path.split('/')
-  if (pathParts.length < 2) {
+  if (path.includes('..') || path.startsWith('/') || path.includes('\0')) {
     return { error: 'Invalid file path' }
+  }
+
+  const pathParts = path.split('/')
+  if (pathParts.length < 3) {
+    return { error: 'Invalid file path' }
+  }
+
+  const pathTenantId = pathParts[0]
+  if (pathTenantId !== tenantId) {
+    return { error: 'Not authorized to delete files from another tenant' }
   }
 
   const pathUserId = pathParts[1]

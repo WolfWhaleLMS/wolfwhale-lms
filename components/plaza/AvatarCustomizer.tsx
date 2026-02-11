@@ -292,6 +292,7 @@ export function AvatarCustomizer({
         <div className="grid grid-cols-10 gap-2">
           {BODY_COLORS.map((color) => (
             <button
+              type="button"
               key={color}
               onClick={() => setConfig((c) => ({ ...c, body_color: color }))}
               className={cn(
@@ -302,6 +303,7 @@ export function AvatarCustomizer({
               )}
               style={{ backgroundColor: color }}
               title={color}
+              aria-label={`Select color ${color}`}
             />
           ))}
         </div>
@@ -313,6 +315,7 @@ export function AvatarCustomizer({
         <div className="flex flex-wrap gap-2">
           {BODY_SHAPES.map((shape) => (
             <button
+              type="button"
               key={shape.id}
               onClick={() => setConfig((c) => ({ ...c, body_shape: shape.id }))}
               className={cn(
@@ -334,6 +337,7 @@ export function AvatarCustomizer({
         <div className="flex flex-wrap gap-2">
           {EYE_STYLES.map((eye) => (
             <button
+              type="button"
               key={eye.id}
               onClick={() => setConfig((c) => ({ ...c, eye_style: eye.id }))}
               className={cn(
@@ -352,6 +356,7 @@ export function AvatarCustomizer({
       {/* Action buttons */}
       <div className="flex items-center gap-3 pt-2">
         <button
+          type="button"
           onClick={handleReset}
           className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
@@ -359,6 +364,7 @@ export function AvatarCustomizer({
           Reset
         </button>
         <button
+          type="button"
           onClick={() => onSave(config)}
           disabled={isSaving}
           className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"

@@ -81,7 +81,7 @@ export async function getGrades(courseId: string, studentId?: string) {
   const { data, error } = await query
 
   if (error) {
-    console.error('Error fetching grades:', error)
+    console.error('[grades] fetch error')
     return { error: 'Failed to fetch grades' }
   }
 
@@ -115,7 +115,7 @@ export async function getStudentGrades() {
   const { data: grades, error } = await query
 
   if (error) {
-    console.error('Error fetching student grades:', error)
+    console.error('[grades] student fetch error')
     return { error: 'Failed to fetch grades' }
   }
 

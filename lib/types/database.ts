@@ -70,6 +70,7 @@ export interface CourseSettings {
 export interface TenantBranding {
   primary_color: string
   secondary_color: string
+  logo_url?: string | null
 }
 
 export interface RubricCriterion {
@@ -125,6 +126,7 @@ export interface Profile {
   id: string                      // references auth.users(id)
   first_name: string | null
   last_name: string | null
+  full_name: string | null        // stored generated column
   avatar_url: string | null
   phone: string | null
   date_of_birth: string | null    // DATE as ISO string

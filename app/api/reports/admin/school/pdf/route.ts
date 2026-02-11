@@ -1,11 +1,16 @@
 import React from 'react'
 import { NextResponse } from 'next/server'
 import { getAdminSchoolReport } from '@/app/actions/reports'
-import { ReportDocument, StatRow, Table, renderToBuffer } from '@/lib/export/pdf'
+import { ReportDocument, StatRow, Table, renderToBuffer, PDF_MAX_ROWS } from '@/lib/export/pdf'
+import { apiErrorResponse, rateLimitRoute, REPORT_DOWNLOAD_HEADERS } from '@/lib/api-route-helpers'
 
 export async function GET() {
+  const blocked = await rateLimitRoute('admin-school-pdf', 'report')
+  if (blocked) return blocked
+
   try {
     const report = await getAdminSchoolReport()
+    const courses = report.courses.slice(0, PDF_MAX_ROWS)
 
     const doc = React.createElement(
       ReportDocument,
@@ -25,7 +30,7 @@ export async function GET() {
           { key: 'students', header: 'Students', width: 1 },
           { key: 'status', header: 'Status', width: 1 },
         ],
-        rows: report.courses,
+        rows: courses,
       })
     )
 
@@ -35,9 +40,10 @@ export async function GET() {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': 'attachment; filename="school_report.pdf"',
+        ...REPORT_DOWNLOAD_HEADERS,
       },
     })
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 403 })
+  } catch (error: unknown) {
+    return apiErrorResponse(error)
   }
 }

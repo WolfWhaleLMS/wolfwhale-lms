@@ -42,6 +42,8 @@ export function ChatBubble({
   const [opacity, setOpacity] = useState(1)
   const [scale, setScale] = useState(0.5)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const onExpireRef = useRef(onExpire)
+  onExpireRef.current = onExpire
 
   // Pop-in animation
   useEffect(() => {
@@ -60,14 +62,14 @@ export function ChatBubble({
     // Schedule expire
     const expireTimer = setTimeout(() => {
       setPhase('expired')
-      onExpire?.()
+      onExpireRef.current?.()
     }, duration)
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current)
       clearTimeout(expireTimer)
     }
-  }, [duration, onExpire])
+  }, [duration])
 
   if (phase === 'expired') return null
 

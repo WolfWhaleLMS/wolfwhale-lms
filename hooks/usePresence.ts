@@ -57,7 +57,9 @@ export function usePresence(tenantId: string | null, currentUserId: string | nul
 
     return () => {
       document.removeEventListener('visibilitychange', handleVisibility)
-      supabase.removeChannel(channel)
+      channel.untrack().finally(() => {
+        supabase.removeChannel(channel)
+      })
       channelRef.current = null
     }
   }, [tenantId, currentUserId])

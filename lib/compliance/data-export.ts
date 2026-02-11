@@ -9,9 +9,12 @@ export interface UserDataExport {
   grades: Record<string, unknown>[]
   submissions: Record<string, unknown>[]
   attendance: Record<string, unknown>[]
-  messages: Record<string, unknown>[]
+  messagesSent: Record<string, unknown>[]
+  messagesReceived: Record<string, unknown>[]
   notifications: Record<string, unknown>[]
   enrollments: Record<string, unknown>[]
+  consentRecords: Record<string, unknown>[]
+  auditLogs: Record<string, unknown>[]
 }
 
 /**
@@ -37,9 +40,12 @@ export async function exportUserData(
     gradesResult,
     submissionsResult,
     attendanceResult,
-    messagesResult,
+    messagesSentResult,
+    messagesReceivedResult,
     notificationsResult,
     enrollmentsResult,
+    consentRecordsResult,
+    auditLogsResult,
   ] = await Promise.all([
     // Profile
     supabase
@@ -69,12 +75,18 @@ export async function exportUserData(
       .eq('student_id', userId)
       .order('attendance_date', { ascending: false }),
 
-    // Messages (sent by this user)
+    // Messages sent by this user
     supabase
       .from('messages')
       .select('*')
       .eq('sender_id', userId)
       .order('created_at', { ascending: false }),
+
+    // Messages received by this user (via conversation membership)
+    supabase
+      .from('conversation_members')
+      .select('conversation_id, conversations(id, subject, type, created_at)')
+      .eq('user_id', userId),
 
     // Notifications
     supabase
@@ -89,6 +101,20 @@ export async function exportUserData(
       .select('*')
       .eq('student_id', userId)
       .order('created_at', { ascending: false }),
+
+    // Consent records (COPPA/PIPEDA)
+    supabase
+      .from('consent_records')
+      .select('*')
+      .eq('student_id', userId),
+
+    // Audit logs (user's own activity trail)
+    supabase
+      .from('audit_logs')
+      .select('action, resource_type, resource_id, details, created_at, ip_address')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(500),
   ])
 
   return {
@@ -99,9 +125,12 @@ export async function exportUserData(
     grades: gradesResult.data ?? [],
     submissions: submissionsResult.data ?? [],
     attendance: attendanceResult.data ?? [],
-    messages: messagesResult.data ?? [],
+    messagesSent: messagesSentResult.data ?? [],
+    messagesReceived: (messagesReceivedResult.data ?? []) as Record<string, unknown>[],
     notifications: notificationsResult.data ?? [],
     enrollments: enrollmentsResult.data ?? [],
+    consentRecords: (consentRecordsResult.data ?? []) as Record<string, unknown>[],
+    auditLogs: (auditLogsResult.data ?? []) as Record<string, unknown>[],
   }
 }
 

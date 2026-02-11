@@ -22,7 +22,7 @@ export interface ConsentRecord {
  * Check if a student is under 13 (requires COPPA consent).
  */
 export function isUnder13(dateOfBirth: string | null): boolean {
-  if (!dateOfBirth) return false
+  if (!dateOfBirth) return true
   const dob = new Date(dateOfBirth)
   const today = new Date()
   let age = today.getFullYear() - dob.getFullYear()

@@ -1,5 +1,6 @@
 'use server'
 
+import { z } from 'zod'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 
@@ -101,6 +102,9 @@ export async function getStudentSkillTrees(): Promise<SkillTree[]> {
 // ---------------------------------------------------------------------------
 
 export async function getSkillTreeDetail(treeId: string) {
+  const parsed = z.object({ treeId: z.string().uuid() }).safeParse({ treeId })
+  if (!parsed.success) throw new Error('Invalid input')
+
   const { supabase, user, tenantId } = await getContext()
 
   // Fetch tree, nodes, connections, and progress in parallel

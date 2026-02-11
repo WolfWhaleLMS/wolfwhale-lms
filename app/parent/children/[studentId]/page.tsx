@@ -45,8 +45,8 @@ export default async function ChildDetailPage({ params }: PageProps) {
     assignments = assignmentsData
     courses = coursesData
     attendanceSummary = attendanceData
-  } catch (e: any) {
-    error = e.message ?? 'Failed to load student data'
+  } catch (e) {
+    error = e instanceof Error ? e.message : 'Failed to load student data'
   }
 
   if (error || !progress) {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { X, Coins, AlertTriangle, ShoppingCart } from 'lucide-react'
 import type { StoreItem } from './StoreItemCard'
 import { cn } from '@/lib/utils'
@@ -45,10 +45,20 @@ export function StorePurchaseDialog({
     }
   }
 
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
+
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
@@ -59,8 +69,10 @@ export function StorePurchaseDialog({
       <div className="relative w-full max-w-md rounded-2xl bg-card border border-border p-6 shadow-2xl">
         {/* Close button */}
         <button
+          type="button"
           onClick={onClose}
           className="absolute right-4 top-4 rounded-lg p-1 text-muted-foreground hover:text-foreground transition-colors"
+          aria-label="Close dialog"
         >
           <X className="h-5 w-5" />
         </button>
@@ -147,12 +159,14 @@ export function StorePurchaseDialog({
         {/* Action buttons */}
         <div className="flex items-center gap-3">
           <button
+            type="button"
             onClick={onClose}
             className="flex-1 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-muted-foreground transition-colors hover:bg-muted"
           >
             Cancel
           </button>
           <button
+            type="button"
             onClick={handlePurchase}
             disabled={!canAfford || isPurchasing}
             className={cn(

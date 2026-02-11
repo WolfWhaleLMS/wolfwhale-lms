@@ -31,6 +31,21 @@ export async function awardXP(eventType: XPEventType, sourceType?: string, sourc
 
   const { supabase, user, tenantId } = await getContext()
 
+  // Prevent duplicate XP for the same source event
+  if (sourceId) {
+    const { data: duplicate } = await supabase
+      .from('xp_transactions')
+      .select('id')
+      .eq('student_id', user.id)
+      .eq('tenant_id', tenantId)
+      .eq('source_id', sourceId)
+      .eq('source_type', sourceType || eventType)
+      .limit(1)
+      .maybeSingle()
+
+    if (duplicate) return { xpAwarded: 0, newTotalXp: 0, leveledUp: false, newLevel: 0, newTier: '', dailyCapReached: false }
+  }
+
   // Get current user level
   const { data: userLevel } = await supabase
     .from('student_xp')
@@ -59,7 +74,7 @@ export async function awardXP(eventType: XPEventType, sourceType?: string, sourc
   if (result.xpAwarded <= 0) return result
 
   // Record XP event
-  await supabase.from('xp_transactions').insert({
+  const { error: txError } = await supabase.from('xp_transactions').insert({
     tenant_id: tenantId,
     student_id: user.id,
     amount: result.xpAwarded,
@@ -68,8 +83,13 @@ export async function awardXP(eventType: XPEventType, sourceType?: string, sourc
     description: eventType,
   })
 
+  if (txError) {
+    console.error('Error recording XP transaction:', txError)
+    return { ...result, xpAwarded: 0 }
+  }
+
   // Update user level
-  await supabase.from('student_xp').upsert({
+  const { error: upsertError } = await supabase.from('student_xp').upsert({
     tenant_id: tenantId,
     student_id: user.id,
     total_xp: result.newTotalXp,
@@ -77,6 +97,10 @@ export async function awardXP(eventType: XPEventType, sourceType?: string, sourc
     current_tier: result.newTier,
     updated_at: new Date().toISOString(),
   }, { onConflict: 'tenant_id,student_id' })
+
+  if (upsertError) {
+    console.error('Error updating user level:', upsertError)
+  }
 
   revalidatePath('/student/achievements')
   return result
@@ -96,6 +120,7 @@ export async function getUserLevel() {
 }
 
 export async function getXPHistory(limit = 20) {
+  const safeLimit = Math.min(Math.max(1, limit), 100)
   const { supabase, user, tenantId } = await getContext()
 
   const { data } = await supabase
@@ -104,7 +129,7 @@ export async function getXPHistory(limit = 20) {
     .eq('student_id', user.id)
     .eq('tenant_id', tenantId)
     .order('created_at', { ascending: false })
-    .limit(limit)
+    .limit(safeLimit)
 
   return data ?? []
 }
@@ -131,6 +156,7 @@ export async function getUserAchievements() {
 // ---------------------------------------------------------------------------
 
 export async function getLeaderboard(period: 'weekly' | 'monthly' | 'all_time' = 'weekly', limit = 25) {
+  const safeLimit = Math.min(Math.max(1, limit), 100)
   const { supabase, tenantId } = await getContext()
 
   const { data } = await supabase
@@ -139,7 +165,7 @@ export async function getLeaderboard(period: 'weekly' | 'monthly' | 'all_time' =
     .eq('tenant_id', tenantId)
     .eq('period', period)
     .order('xp_total', { ascending: false })
-    .limit(limit)
+    .limit(safeLimit)
 
   return data ?? []
 }

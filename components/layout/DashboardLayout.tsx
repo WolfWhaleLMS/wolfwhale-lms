@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Sidebar } from './Sidebar'
 import { TopBar } from './TopBar'
 import type { UserRole } from '@/lib/auth/permissions'
@@ -24,6 +24,16 @@ export function DashboardLayout({
   tenantLogo,
 }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  // Close sidebar on Escape key
+  useEffect(() => {
+    if (!sidebarOpen) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSidebarOpen(false)
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [sidebarOpen])
 
   return (
     <div className="relative flex h-screen overflow-hidden bg-background" data-role={role}>

@@ -20,7 +20,12 @@ interface TurnstileWidgetProps {
 export function TurnstileWidget({ onVerify, onExpire }: TurnstileWidgetProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const widgetIdRef = useRef<string | null>(null)
+  const onVerifyRef = useRef(onVerify)
+  const onExpireRef = useRef(onExpire)
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+
+  onVerifyRef.current = onVerify
+  onExpireRef.current = onExpire
 
   useEffect(() => {
     if (!siteKey || !containerRef.current) return
@@ -36,16 +41,18 @@ export function TurnstileWidget({ onVerify, onExpire }: TurnstileWidgetProps) {
       document.head.appendChild(script)
     }
 
+    let renderTimeout: ReturnType<typeof setTimeout> | null = null
+
     const renderWidget = () => {
       if (widgetIdRef.current !== null || !containerRef.current) return
       if (typeof window.turnstile === 'undefined') {
-        setTimeout(renderWidget, 100)
+        renderTimeout = setTimeout(renderWidget, 100)
         return
       }
       widgetIdRef.current = window.turnstile.render(containerRef.current, {
         sitekey: siteKey,
-        callback: onVerify,
-        'expired-callback': onExpire,
+        callback: (token: string) => onVerifyRef.current(token),
+        'expired-callback': () => onExpireRef.current?.(),
         theme: 'light',
         size: 'flexible',
       })
@@ -54,6 +61,7 @@ export function TurnstileWidget({ onVerify, onExpire }: TurnstileWidgetProps) {
     renderWidget()
 
     return () => {
+      if (renderTimeout) clearTimeout(renderTimeout)
       if (
         widgetIdRef.current !== null &&
         typeof window.turnstile !== 'undefined'
@@ -62,7 +70,7 @@ export function TurnstileWidget({ onVerify, onExpire }: TurnstileWidgetProps) {
         widgetIdRef.current = null
       }
     }
-  }, [siteKey, onVerify, onExpire])
+  }, [siteKey])
 
   if (!siteKey) return null
 

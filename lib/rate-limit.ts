@@ -7,7 +7,7 @@ import { Redis } from '@upstash/redis'
 // Rate Limit Tiers
 // ---------------------------------------------------------------------------
 
-export type RateLimitTier = 'auth' | 'api' | 'general'
+export type RateLimitTier = 'auth' | 'api' | 'general' | 'report'
 
 const TIER_CONFIG: Record<RateLimitTier, { requests: number; window: `${number} s` }> = {
   /** Auth endpoints (login, signup, forgot-password): 5 requests per 60 seconds */
@@ -16,6 +16,8 @@ const TIER_CONFIG: Record<RateLimitTier, { requests: number; window: `${number} 
   api: { requests: 30, window: '60 s' },
   /** General page loads: 60 requests per 60 seconds */
   general: { requests: 60, window: '60 s' },
+  /** Report generation (expensive PDF/CSV): 5 requests per 60 seconds */
+  report: { requests: 5, window: '60 s' },
 }
 
 // ---------------------------------------------------------------------------
@@ -80,8 +82,13 @@ export async function rateLimit(
 ): Promise<RateLimitResult> {
   const limiter = getLimiter(tier)
 
-  // Graceful degradation: Upstash not configured
   if (!limiter) {
+    if (process.env.NODE_ENV === 'production') {
+      console.warn(
+        `[rate-limit] Upstash not configured — rate limiting disabled for tier "${tier}". ` +
+        'Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN in production.'
+      )
+    }
     const config = TIER_CONFIG[tier]
     return {
       success: true,

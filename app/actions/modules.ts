@@ -1,8 +1,10 @@
 'use server'
 
+import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
+import { sanitizeText } from '@/lib/sanitize'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -48,6 +50,9 @@ async function requireTeacher() {
 // ---------------------------------------------------------------------------
 
 export async function getModules(courseId: string) {
+  const parsed = z.object({ courseId: z.string().uuid() }).safeParse({ courseId })
+  if (!parsed.success) return []
+
   const { supabase } = await getAuthUser()
 
   // Get modules with lesson count
@@ -94,6 +99,9 @@ export async function getModules(courseId: string) {
 // ---------------------------------------------------------------------------
 
 export async function getModulesWithLessons(courseId: string) {
+  const parsed = z.object({ courseId: z.string().uuid() }).safeParse({ courseId })
+  if (!parsed.success) return { modules: [], lessons: [] }
+
   const { supabase } = await getAuthUser()
 
   // Get all modules for this course
@@ -149,6 +157,15 @@ interface CreateModuleInput {
 }
 
 export async function createModule(courseId: string, input: CreateModuleInput) {
+  const createModuleSchema = z.object({
+    courseId: z.string().uuid(),
+    title: z.string().min(1).max(255),
+    description: z.string().max(5000).optional(),
+    status: z.string().max(50).optional(),
+  })
+  const parsed = createModuleSchema.safeParse({ courseId, ...input })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify course ownership
@@ -182,8 +199,8 @@ export async function createModule(courseId: string, input: CreateModuleInput) {
       tenant_id: tenantId,
       course_id: courseId,
       created_by: user.id,
-      title: input.title,
-      description: input.description || null,
+      title: sanitizeText(input.title),
+      description: input.description ? sanitizeText(input.description) : null,
       order_index: nextOrderIndex,
       status: input.status || 'draft',
     })
@@ -207,6 +224,15 @@ export async function updateModule(
   moduleId: string,
   input: Partial<CreateModuleInput>
 ) {
+  const updateModuleSchema = z.object({
+    moduleId: z.string().uuid(),
+    title: z.string().min(1).max(255).optional(),
+    description: z.string().max(5000).optional(),
+    status: z.string().max(50).optional(),
+  })
+  const parsed = updateModuleSchema.safeParse({ moduleId, ...input })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify module ownership
@@ -222,8 +248,8 @@ export async function updateModule(
   }
 
   const updateData: Record<string, unknown> = {}
-  if (input.title !== undefined) updateData.title = input.title
-  if (input.description !== undefined) updateData.description = input.description
+  if (input.title !== undefined) updateData.title = sanitizeText(input.title)
+  if (input.description !== undefined) updateData.description = input.description ? sanitizeText(input.description) : null
   if (input.status !== undefined) updateData.status = input.status
 
   const { error } = await supabase
@@ -245,6 +271,9 @@ export async function updateModule(
 // ---------------------------------------------------------------------------
 
 export async function deleteModule(moduleId: string) {
+  const parsed = z.object({ moduleId: z.string().uuid() }).safeParse({ moduleId })
+  if (!parsed.success) return { error: 'Invalid input' }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   const { data: module } = await supabase
@@ -275,6 +304,12 @@ export async function deleteModule(moduleId: string) {
 // ---------------------------------------------------------------------------
 
 export async function reorderModules(courseId: string, moduleIds: string[]) {
+  const parsed = z.object({
+    courseId: z.string().uuid(),
+    moduleIds: z.array(z.string().uuid()).max(500),
+  }).safeParse({ courseId, moduleIds })
+  if (!parsed.success) return { error: 'Invalid input' }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify course ownership
@@ -312,6 +347,12 @@ export async function assignLessonToModule(
   lessonId: string,
   moduleId: string | null
 ) {
+  const parsed = z.object({
+    lessonId: z.string().uuid(),
+    moduleId: z.string().uuid().nullable(),
+  }).safeParse({ lessonId, moduleId })
+  if (!parsed.success) return { error: 'Invalid input' }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify lesson ownership

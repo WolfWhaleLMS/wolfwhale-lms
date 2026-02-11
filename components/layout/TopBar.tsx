@@ -62,6 +62,7 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
       {/* Mobile hamburger                                                 */}
       {/* --------------------------------------------------------------- */}
       <button
+        type="button"
         onClick={() => {
           sounds.playClick()
           onMenuToggle()
@@ -99,6 +100,7 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
       <div className="flex items-center gap-3">
         {/* Theme toggle */}
         <button
+          type="button"
           onClick={() => {
             sounds.playClick()
             setTheme(theme === 'dark' ? 'light' : 'dark')

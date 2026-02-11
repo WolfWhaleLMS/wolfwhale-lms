@@ -20,8 +20,8 @@ export default async function ProgressOverviewPage() {
 
   try {
     children = await getChildren()
-  } catch (e: any) {
-    error = e.message ?? 'Failed to load children'
+  } catch (e) {
+    error = e instanceof Error ? e.message : 'Failed to load children'
   }
 
   // Load progress data for each child

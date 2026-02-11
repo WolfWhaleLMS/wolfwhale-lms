@@ -8,8 +8,8 @@ export default async function StudentFlashcardsPage() {
 
   try {
     decks = await getStudentDecks()
-  } catch (e: any) {
-    error = e.message
+  } catch (e) {
+    error = e instanceof Error ? e.message : 'Failed to load flashcards'
   }
 
   return (

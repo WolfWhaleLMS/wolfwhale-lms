@@ -43,7 +43,7 @@ export default async function CalendarLayout({
         userName={profile?.full_name?.trim() || [profile?.first_name, profile?.last_name].filter(Boolean).join(' ') || user.email || 'User'}
         userAvatar={profile?.avatar_url}
         tenantName={tenant?.name || 'Wolf Whale LMS'}
-        tenantLogo={(tenant?.branding as any)?.logo_url || null}
+        tenantLogo={tenant?.branding?.logo_url || null}
         gradeLevel={profile?.grade_level}
       >
         {children}

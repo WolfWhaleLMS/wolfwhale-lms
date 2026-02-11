@@ -144,17 +144,41 @@ export async function addCard(deckId: string, frontText: string, backText: strin
 
   if (error) throw error
 
-  // Update card count
+  // Update card count using actual count
+  const { count: actualCount } = await supabase
+    .from('flashcards')
+    .select('id', { count: 'exact', head: true })
+    .eq('deck_id', deckId)
+
   await supabase
     .from('flashcard_decks')
-    .update({ card_count: nextOrder + 1, updated_at: new Date().toISOString() })
+    .update({ card_count: actualCount || 0, updated_at: new Date().toISOString() })
     .eq('id', deckId)
 
   return data
 }
 
 export async function updateCard(cardId: string, updates: { frontText?: string; backText?: string; hint?: string }) {
-  const { supabase } = await getContext()
+  const parsed = z.object({
+    cardId: z.string().uuid(),
+    frontText: z.string().min(1).max(5000).optional(),
+    backText: z.string().min(1).max(5000).optional(),
+    hint: z.string().max(500).optional(),
+  }).safeParse({ cardId, ...updates })
+  if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
+
+  const { supabase, user } = await getContext()
+
+  // Verify ownership via card -> deck -> created_by
+  const { data: card } = await supabase
+    .from('flashcards')
+    .select('deck_id, flashcard_decks:deck_id(created_by)')
+    .eq('id', cardId)
+    .single()
+
+  if (!card) throw new Error('Card not found')
+  const deckData = card.flashcard_decks as unknown as { created_by: string }
+  if (deckData?.created_by !== user.id) throw new Error('Not authorized to update this card')
 
   const updateData: Record<string, unknown> = {}
   if (updates.frontText) updateData.front_text = sanitizeText(updates.frontText)
@@ -170,12 +194,28 @@ export async function updateCard(cardId: string, updates: { frontText?: string; 
 }
 
 export async function deleteCard(cardId: string, deckId: string) {
-  const { supabase } = await getContext()
+  const parsed = z.object({
+    cardId: z.string().uuid(),
+    deckId: z.string().uuid(),
+  }).safeParse({ cardId, deckId })
+  if (!parsed.success) throw new Error('Invalid input')
+
+  const { supabase, user } = await getContext()
+
+  // Verify ownership via deck -> created_by
+  const { data: deck } = await supabase
+    .from('flashcard_decks')
+    .select('created_by')
+    .eq('id', deckId)
+    .single()
+
+  if (!deck || deck.created_by !== user.id) throw new Error('Not authorized to delete this card')
 
   const { error } = await supabase
     .from('flashcards')
     .delete()
     .eq('id', cardId)
+    .eq('deck_id', deckId)
 
   if (error) throw error
 
@@ -327,7 +367,7 @@ export async function reviewCard(deckId: string, cardId: string, quality: number
       })
       .eq('id', existing.id)
   } else {
-    await supabase
+    const { error: insertError } = await supabase
       .from('flashcard_progress')
       .insert({
         tenant_id: tenantId,
@@ -340,6 +380,24 @@ export async function reviewCard(deckId: string, cardId: string, quality: number
         next_review_at: result.nextReviewAt.toISOString(),
         last_quality: quality,
       })
+
+    if (insertError?.code === '23505') {
+      await supabase
+        .from('flashcard_progress')
+        .update({
+          ease_factor: result.easeFactor,
+          interval_days: result.intervalDays,
+          repetitions: result.repetitions,
+          next_review_at: result.nextReviewAt.toISOString(),
+          last_quality: quality,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('student_id', user.id)
+        .eq('card_id', cardId)
+        .eq('tenant_id', tenantId)
+    } else if (insertError) {
+      throw insertError
+    }
   }
 
   return result

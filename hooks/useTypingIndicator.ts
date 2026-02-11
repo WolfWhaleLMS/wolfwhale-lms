@@ -39,7 +39,10 @@ export function useTypingIndicator(conversationId: string | null, currentUserId:
     channelRef.current = channel
 
     return () => {
-      supabase.removeChannel(channel)
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+      channel.untrack().finally(() => {
+        supabase.removeChannel(channel)
+      })
       channelRef.current = null
     }
   }, [conversationId, currentUserId])

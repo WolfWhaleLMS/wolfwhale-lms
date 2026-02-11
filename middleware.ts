@@ -24,6 +24,7 @@ const PUBLIC_PREFIXES = [
   '/tools/',
   '/catalog/',
   '/api/webhooks/',
+  '/api/health',
 ]
 
 const PROTECTED_PREFIXES = [
@@ -36,6 +37,7 @@ const PROTECTED_PREFIXES = [
   '/notifications',
   '/calendar',
   '/study-mode',
+  '/api/reports',
 ]
 
 const AUTH_PATHS = new Set(['/login', '/signup'])
@@ -82,55 +84,43 @@ function isAuthPage(pathname: string): boolean {
   return AUTH_PATHS.has(pathname)
 }
 
-/**
- * Extract the tenant slug from the request hostname.
- *
- * Production:  school1.wolfwhale.ca  -> "school1"
- *              wolfwhale.ca          -> null  (marketing / landing)
- *              www.wolfwhale.ca      -> "www" (handled with redirect)
- *
- * Localhost:   Falls through to query param / header / "demo" default.
- */
+const TENANT_SLUG_PATTERN = /^[a-z0-9][a-z0-9-]{0,62}[a-z0-9]?$/
+
+function isValidTenantSlug(slug: string): boolean {
+  return TENANT_SLUG_PATTERN.test(slug) && !slug.includes('--')
+}
+
 function extractTenantSlug(request: NextRequest): string | null {
   const hostname = request.headers.get('host') || ''
 
-  // --- Local development fallback ---
   if (
     hostname.startsWith('localhost') ||
     hostname.startsWith('127.0.0.1') ||
     hostname.startsWith('[::1]')
   ) {
-    // 1. ?tenant=slug query param
     const paramSlug = request.nextUrl.searchParams.get('tenant')
-    if (paramSlug) return paramSlug
+    if (paramSlug && isValidTenantSlug(paramSlug)) return paramSlug
 
-    // 2. x-tenant-slug header (useful for testing / CI)
     const headerSlug = request.headers.get('x-tenant-slug')
-    if (headerSlug) return headerSlug
+    if (headerSlug && isValidTenantSlug(headerSlug)) return headerSlug
 
-    // 3. Default demo tenant
     return 'demo'
   }
 
-  // --- Production / preview deploys ---
-  // Strip port if present (e.g. from preview URLs)
   const host = hostname.split(':')[0]
 
-  // Check if the hostname ends with the root domain
   if (!host.endsWith(ROOT_DOMAIN)) {
-    // Could be a Vercel preview deploy or custom domain -- treat as no tenant
     return null
   }
 
-  // Remove the root domain suffix to isolate the subdomain portion
-  // e.g. "school1.wolfwhale.ca" -> "school1"
-  // e.g. "wolfwhale.ca" -> ""
-  const subdomain = host.slice(0, -(ROOT_DOMAIN.length + 1)) // +1 for the dot
+  const subdomain = host.slice(0, -(ROOT_DOMAIN.length + 1))
 
   if (!subdomain || subdomain === '') {
-    // Bare root domain -- default to "demo" tenant for now
-    // (single-tenant mode until marketing site is built)
     return 'demo'
+  }
+
+  if (!isValidTenantSlug(subdomain)) {
+    return null
   }
 
   return subdomain
@@ -266,7 +256,9 @@ export async function middleware(request: NextRequest) {
   // ------------------------------------------------------------------
   if (isProtectedRoute(pathname) && !user) {
     const loginUrl = new URL('/login', request.url)
-    loginUrl.searchParams.set('redirectTo', pathname)
+    if (pathname.startsWith('/')) {
+      loginUrl.searchParams.set('redirectTo', pathname)
+    }
     return NextResponse.redirect(loginUrl)
   }
 

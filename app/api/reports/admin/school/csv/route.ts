@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server'
 import { getAdminSchoolReport } from '@/app/actions/reports'
 import { arrayToCSV } from '@/lib/export/csv'
+import { apiErrorResponse, rateLimitRoute, REPORT_DOWNLOAD_HEADERS } from '@/lib/api-route-helpers'
 
 export async function GET() {
+  const blocked = await rateLimitRoute('admin-school-csv', 'report')
+  if (blocked) return blocked
+
   try {
     const report = await getAdminSchoolReport()
 
@@ -20,9 +24,10 @@ export async function GET() {
       headers: {
         'Content-Type': 'text/csv; charset=utf-8',
         'Content-Disposition': 'attachment; filename="school_report.csv"',
+        ...REPORT_DOWNLOAD_HEADERS,
       },
     })
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 403 })
+  } catch (error: unknown) {
+    return apiErrorResponse(error)
   }
 }

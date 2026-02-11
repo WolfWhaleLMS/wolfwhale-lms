@@ -150,12 +150,13 @@ export async function getCourses() {
   }
 
   // Resolve teacher names and lesson counts for enrolled courses
+  type JoinedCourse = { id: string; name: string; description: string | null; subject: string | null; grade_level: string | null; semester: string | null; status: string; created_by: string; created_at: string }
   const courseData = (enrollments || [])
     .filter((e) => e.courses)
-    .map((e) => e.courses as any)
+    .map((e) => e.courses as unknown as JoinedCourse)
 
-  const teacherIds = [...new Set(courseData.map((c: any) => c.created_by))]
-  const courseIds = courseData.map((c: any) => c.id)
+  const teacherIds = [...new Set(courseData.map((c) => c.created_by))]
+  const courseIds = courseData.map((c) => c.id)
 
   const [profileResult, lessonResult, progressResult] = await Promise.all([
     teacherIds.length > 0
@@ -182,7 +183,7 @@ export async function getCourses() {
   const lessons = lessonResult.data || []
   const progress = progressResult.data || []
 
-  return courseData.map((course: any) => {
+  return courseData.map((course) => {
     const teacher = profiles.find((p) => p.id === course.created_by)
     const courseLessons = lessons.filter((l) => l.course_id === course.id)
     const completedLessons = courseLessons.filter((l) =>
@@ -262,7 +263,7 @@ export async function getCourse(courseId: string) {
 
   // Get student profiles
   const studentIds = (studentsResult.data || []).map((s) => s.student_id)
-  let studentProfiles: any[] = []
+  let studentProfiles: Array<{ id: string; first_name: string | null; last_name: string | null; avatar_url: string | null }> = []
   if (studentIds.length > 0) {
     const { data: profiles } = await supabase
       .from('profiles')

@@ -20,6 +20,11 @@ export default function FocusTimer({ duration, onComplete, onTick }: FocusTimerP
   const [hasStarted, setHasStarted] = useState(false)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const completedRef = useRef(false)
+  const onCompleteRef = useRef(onComplete)
+  const onTickRef = useRef(onTick)
+
+  onCompleteRef.current = onComplete
+  onTickRef.current = onTick
 
   // Reset when duration changes
   useEffect(() => {
@@ -45,12 +50,11 @@ export default function FocusTimer({ duration, onComplete, onTick }: FocusTimerP
           setIsRunning(false)
           if (!completedRef.current) {
             completedRef.current = true
-            // Defer to avoid state update during render
-            setTimeout(() => onComplete(), 0)
+            setTimeout(() => onCompleteRef.current(), 0)
           }
           return 0
         }
-        onTick?.(next)
+        onTickRef.current?.(next)
         return next
       })
     }, 1000)
@@ -58,7 +62,7 @@ export default function FocusTimer({ duration, onComplete, onTick }: FocusTimerP
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current)
     }
-  }, [isRunning, onComplete, onTick])
+  }, [isRunning])
 
   const handlePlayPause = useCallback(() => {
     if (!hasStarted) setHasStarted(true)
@@ -197,7 +201,7 @@ export default function FocusTimer({ duration, onComplete, onTick }: FocusTimerP
               setRemaining(0)
               if (!completedRef.current) {
                 completedRef.current = true
-                onComplete()
+                onCompleteRef.current()
               }
             }}
             className="rounded-full text-white/60 hover:bg-white/10 hover:text-white"

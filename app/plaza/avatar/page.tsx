@@ -72,8 +72,8 @@ export default function AvatarPage() {
       }
 
       setHasSaved(true)
-    } catch (err: any) {
-      setError(err?.message ?? 'Failed to save avatar. Please try again.')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save avatar. Please try again.')
     } finally {
       setIsSaving(false)
     }

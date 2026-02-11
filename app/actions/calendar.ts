@@ -52,7 +52,7 @@ export async function getCalendarEvents(
       .eq('status', 'active')
 
     for (const e of enrollments ?? []) {
-      const course = e.courses as any
+      const course = e.courses as unknown as { id: string; name: string } | null
       if (course) {
         courseIds.push(course.id)
         courseNames[course.id] = course.name
@@ -88,7 +88,7 @@ export async function getCalendarEvents(
         .eq('status', 'active')
 
       for (const e of enrollments ?? []) {
-        const course = e.courses as any
+        const course = e.courses as unknown as { id: string; name: string } | null
         if (course && !courseIds.includes(course.id)) {
           courseIds.push(course.id)
           courseNames[course.id] = course.name

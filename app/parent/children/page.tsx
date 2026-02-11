@@ -16,8 +16,8 @@ export default async function ChildrenListPage() {
 
   try {
     children = await getChildren()
-  } catch (e: any) {
-    error = e.message ?? 'Failed to load children'
+  } catch (e) {
+    error = e instanceof Error ? e.message : 'Failed to load children'
   }
 
   return (

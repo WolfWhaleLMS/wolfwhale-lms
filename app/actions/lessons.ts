@@ -1,8 +1,10 @@
 'use server'
 
+import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
+import { sanitizeText } from '@/lib/sanitize'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -48,7 +50,11 @@ async function requireTeacher() {
 // ---------------------------------------------------------------------------
 
 export async function getLessons(courseId: string) {
+  const parsed = z.object({ courseId: z.string().uuid() }).safeParse({ courseId })
+  if (!parsed.success) return []
+
   const { supabase } = await getAuthUser()
+  const tenantId = await getTenantId()
 
   const { data: lessons, error } = await supabase
     .from('lessons')
@@ -66,6 +72,7 @@ export async function getLessons(courseId: string) {
       updated_at
     `)
     .eq('course_id', courseId)
+    .eq('tenant_id', tenantId)
     .order('order_index', { ascending: true })
 
   if (error) {
@@ -81,12 +88,17 @@ export async function getLessons(courseId: string) {
 // ---------------------------------------------------------------------------
 
 export async function getLesson(lessonId: string) {
+  const parsed = z.object({ lessonId: z.string().uuid() }).safeParse({ lessonId })
+  if (!parsed.success) return null
+
   const { supabase, user } = await getAuthUser()
+  const tenantId = await getTenantId()
 
   const { data: lesson, error } = await supabase
     .from('lessons')
     .select('*')
     .eq('id', lessonId)
+    .eq('tenant_id', tenantId)
     .single()
 
   if (error || !lesson) {
@@ -121,24 +133,31 @@ export async function getLesson(lessonId: string) {
 // ---------------------------------------------------------------------------
 
 export async function getLessonWithNavigation(lessonId: string, courseId: string) {
-  const { supabase, user } = await getAuthUser()
+  const parsed = z.object({
+    lessonId: z.string().uuid(),
+    courseId: z.string().uuid(),
+  }).safeParse({ lessonId, courseId })
+  if (!parsed.success) return null
 
-  // Get the lesson itself
+  const { supabase, user } = await getAuthUser()
+  const tenantId = await getTenantId()
+
   const { data: lesson, error } = await supabase
     .from('lessons')
     .select('*')
     .eq('id', lessonId)
+    .eq('tenant_id', tenantId)
     .single()
 
   if (error || !lesson) {
     return null
   }
 
-  // Get all lessons in this course for navigation
   const { data: allLessons } = await supabase
     .from('lessons')
     .select('id, title, order_index, status')
     .eq('course_id', courseId)
+    .eq('tenant_id', tenantId)
     .order('order_index', { ascending: true })
 
   const lessonList = allLessons || []
@@ -188,6 +207,18 @@ interface CreateLessonInput {
 }
 
 export async function createLesson(courseId: string, input: CreateLessonInput) {
+  const createLessonSchema = z.object({
+    courseId: z.string().uuid(),
+    title: z.string().min(1).max(255),
+    description: z.string().max(5000).optional(),
+    content: z.unknown().optional(),
+    learning_objectives: z.array(z.string().max(500)).max(20).optional(),
+    duration_minutes: z.number().min(0).max(600).optional(),
+    status: z.string().max(50).optional(),
+  })
+  const parsed = createLessonSchema.safeParse({ courseId, ...input })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify course ownership
@@ -221,8 +252,8 @@ export async function createLesson(courseId: string, input: CreateLessonInput) {
       tenant_id: tenantId,
       course_id: courseId,
       created_by: user.id,
-      title: input.title,
-      description: input.description || null,
+      title: sanitizeText(input.title),
+      description: input.description ? sanitizeText(input.description) : null,
       content: input.content || [],
       learning_objectives: input.learning_objectives || [],
       duration_minutes: input.duration_minutes || null,
@@ -249,6 +280,18 @@ export async function updateLesson(
   lessonId: string,
   input: Partial<CreateLessonInput>
 ) {
+  const updateLessonSchema = z.object({
+    lessonId: z.string().uuid(),
+    title: z.string().min(1).max(255).optional(),
+    description: z.string().max(5000).optional(),
+    content: z.unknown().optional(),
+    learning_objectives: z.array(z.string().max(500)).max(20).optional(),
+    duration_minutes: z.number().min(0).max(600).optional(),
+    status: z.string().max(50).optional(),
+  })
+  const parsed = updateLessonSchema.safeParse({ lessonId, ...input })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify lesson ownership
@@ -264,8 +307,8 @@ export async function updateLesson(
   }
 
   const updateData: Record<string, unknown> = {}
-  if (input.title !== undefined) updateData.title = input.title
-  if (input.description !== undefined) updateData.description = input.description
+  if (input.title !== undefined) updateData.title = sanitizeText(input.title)
+  if (input.description !== undefined) updateData.description = input.description ? sanitizeText(input.description) : null
   if (input.content !== undefined) updateData.content = input.content
   if (input.learning_objectives !== undefined)
     updateData.learning_objectives = input.learning_objectives
@@ -297,6 +340,9 @@ export async function updateLesson(
 // ---------------------------------------------------------------------------
 
 export async function deleteLesson(lessonId: string) {
+  const parsed = z.object({ lessonId: z.string().uuid() }).safeParse({ lessonId })
+  if (!parsed.success) return { error: 'Invalid input' }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   const { data: lesson } = await supabase
@@ -326,6 +372,12 @@ export async function deleteLesson(lessonId: string) {
 // ---------------------------------------------------------------------------
 
 export async function reorderLessons(courseId: string, lessonIds: string[]) {
+  const parsed = z.object({
+    courseId: z.string().uuid(),
+    lessonIds: z.array(z.string().uuid()).max(500),
+  }).safeParse({ courseId, lessonIds })
+  if (!parsed.success) return { error: 'Invalid input' }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify course ownership
@@ -369,6 +421,16 @@ export async function addLessonAttachment(
     displayName?: string
   }
 ) {
+  const parsed = z.object({
+    lessonId: z.string().uuid(),
+    fileName: z.string().min(1).max(500),
+    filePath: z.string().min(1).max(2000),
+    fileType: z.string().min(1).max(100),
+    fileSize: z.number().min(0),
+    displayName: z.string().max(500).optional(),
+  }).safeParse({ lessonId, ...attachment })
+  if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify lesson ownership
@@ -419,6 +481,9 @@ export async function addLessonAttachment(
 }
 
 export async function deleteLessonAttachment(attachmentId: string) {
+  const parsed = z.object({ attachmentId: z.string().uuid() }).safeParse({ attachmentId })
+  if (!parsed.success) return { error: 'Invalid input' }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify ownership via the attachment -> lesson -> teacher chain
@@ -458,12 +523,17 @@ export async function deleteLessonAttachment(attachmentId: string) {
 }
 
 export async function getLessonAttachments(lessonId: string) {
+  const parsed = z.object({ lessonId: z.string().uuid() }).safeParse({ lessonId })
+  if (!parsed.success) return []
+
   const { supabase } = await getAuthUser()
+  const tenantId = await getTenantId()
 
   const { data: attachments, error } = await supabase
     .from('lesson_attachments')
     .select('*')
     .eq('lesson_id', lessonId)
+    .eq('tenant_id', tenantId)
     .order('order_index', { ascending: true })
 
   if (error) {
@@ -483,6 +553,13 @@ export async function trackProgress(
   status: 'in_progress' | 'completed',
   timeSpentSeconds?: number
 ) {
+  const parsed = z.object({
+    lessonId: z.string().uuid(),
+    status: z.enum(['in_progress', 'completed']),
+    timeSpentSeconds: z.number().min(0).max(86400).optional(),
+  }).safeParse({ lessonId, status, timeSpentSeconds })
+  if (!parsed.success) return { error: 'Invalid input' }
+
   const { supabase, user } = await getAuthUser()
   const tenantId = await getTenantId()
 

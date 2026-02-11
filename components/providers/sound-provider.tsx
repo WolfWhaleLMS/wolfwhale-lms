@@ -9,8 +9,8 @@ const SoundContext = createContext<SoundContextType | null>(null)
 
 export function SoundProvider({ children }: { children: React.ReactNode }) {
   const sounds = useSoundEffects()
+  const { playClick, playHover } = sounds
 
-  // Global click event listener for all interactive elements
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       const target = e.target as HTMLElement
@@ -18,20 +18,19 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
 
       if (interactive) {
         if (interactive.hasAttribute('data-no-sound')) return
-        sounds.playClick()
+        playClick()
       }
     }
 
-    // Hover sound for buttons (throttled)
     let lastHover = 0
     function handleHover(e: MouseEvent) {
       const now = Date.now()
-      if (now - lastHover < 100) return // throttle hover sounds
+      if (now - lastHover < 100) return
       const target = e.target as HTMLElement
       const interactive = target.closest('button, a[href], [role="button"]')
       if (interactive && !interactive.hasAttribute('data-no-sound')) {
         lastHover = now
-        sounds.playHover()
+        playHover()
       }
     }
 
@@ -42,7 +41,7 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
       document.removeEventListener('click', handleClick, { capture: true })
       document.removeEventListener('mouseenter', handleHover, { capture: true })
     }
-  }, [sounds])
+  }, [playClick, playHover])
 
   return <SoundContext.Provider value={sounds}>{children}</SoundContext.Provider>
 }

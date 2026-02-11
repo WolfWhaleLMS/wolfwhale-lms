@@ -1,12 +1,16 @@
 import React from 'react'
 import { NextRequest, NextResponse } from 'next/server'
 import { getParentProgressReport } from '@/app/actions/reports'
-import { ReportDocument, StatRow, Table, renderToBuffer } from '@/lib/export/pdf'
+import { ReportDocument, StatRow, Table, renderToBuffer, PDF_MAX_ROWS } from '@/lib/export/pdf'
+import { apiErrorResponse, rateLimitRoute, REPORT_DOWNLOAD_HEADERS } from '@/lib/api-route-helpers'
 
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ studentId: string }> }
 ) {
+  const blocked = await rateLimitRoute('parent-student-pdf', 'report')
+  if (blocked) return blocked
+
   try {
     const { studentId } = await params
     const report = await getParentProgressReport(studentId)
@@ -33,7 +37,7 @@ export async function GET(
           { key: 'letter', header: 'Grade', width: 1 },
           { key: 'date', header: 'Date', width: 1 },
         ],
-        rows: report.grades,
+        rows: report.grades.slice(0, PDF_MAX_ROWS),
       })
     )
 
@@ -44,9 +48,10 @@ export async function GET(
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${filename}"`,
+        ...REPORT_DOWNLOAD_HEADERS,
       },
     })
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 403 })
+  } catch (error: unknown) {
+    return apiErrorResponse(error)
   }
 }

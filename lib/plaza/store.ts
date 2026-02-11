@@ -79,7 +79,7 @@ export const usePlazaStore = create<PlazaStore>((set, get) => ({
   tokenBalance: 0,
   setTokenBalance: (balance: number) => set({ tokenBalance: balance }),
   addTokens: (amount: number) =>
-    set((prev) => ({ tokenBalance: prev.tokenBalance + amount })),
+    set((prev) => ({ tokenBalance: Math.max(0, prev.tokenBalance + amount) })),
 
   // ---- UI state ----
   ...initialUIState,

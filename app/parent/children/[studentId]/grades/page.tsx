@@ -46,8 +46,8 @@ export default async function ChildGradesPage({ params }: PageProps) {
     ])
     courseGrades = gradesData
     progress = progressData
-  } catch (e: any) {
-    error = e.message ?? 'Failed to load grades'
+  } catch (e) {
+    error = e instanceof Error ? e.message : 'Failed to load grades'
   }
 
   if (error) {

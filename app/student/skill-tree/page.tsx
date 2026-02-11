@@ -49,8 +49,8 @@ export default async function SkillTreePage() {
 
   try {
     trees = await getStudentSkillTrees()
-  } catch (e: any) {
-    error = e.message
+  } catch (e) {
+    error = e instanceof Error ? e.message : 'Failed to load skill trees'
   }
 
   const totalNodes = trees.reduce((sum, t) => sum + (t.totalNodes ?? 0), 0)

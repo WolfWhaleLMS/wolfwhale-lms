@@ -4,7 +4,9 @@ import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
+import { z } from 'zod'
 import { rateLimitAction } from '@/lib/rate-limit-action'
+import { sanitizeText } from '@/lib/sanitize'
 import { AVATAR_DEFAULTS, TOKEN_DAILY_CAP, TOKEN_RATES } from '@/lib/plaza/constants'
 import type {
   PlazaAvatar,
@@ -14,6 +16,32 @@ import type {
   ChatPhrase,
   DailyLoginResult,
 } from '@/lib/plaza/types'
+
+// ---------------------------------------------------------------------------
+// Zod Schemas
+// ---------------------------------------------------------------------------
+
+const createAvatarSchema = z.object({
+  displayName: z.string().min(1).max(50),
+})
+
+const avatarConfigSchema = z.object({
+  body_color: z.string().max(50).optional(),
+  body_shape: z.string().max(50).optional(),
+  eye_style: z.string().max(50).optional(),
+  hat: z.string().max(100).nullable().optional(),
+  outfit: z.string().max(100).nullable().optional(),
+  accessory: z.string().max(100).nullable().optional(),
+  trail_effect: z.string().max(100).nullable().optional(),
+  emote: z.string().max(100).nullable().optional(),
+  background_id: z.string().max(100).nullable().optional(),
+})
+
+const updateAvatarRoomSchema = z.object({
+  roomSlug: z.string().min(1).max(100),
+  x: z.number().min(0).max(10000),
+  y: z.number().min(0).max(10000),
+})
 
 // ---------------------------------------------------------------------------
 // Context helper — uses anon client for auth, admin client for DB writes
@@ -40,6 +68,11 @@ async function getContext() {
 export async function createAvatar(displayName: string): Promise<PlazaAvatar> {
   const rl = await rateLimitAction('createAvatar')
   if (!rl.success) throw new Error(rl.error)
+
+  const parsed = createAvatarSchema.safeParse({ displayName })
+  if (!parsed.success) throw new Error('Invalid display name')
+  const safeName = sanitizeText(parsed.data.displayName).slice(0, 50)
+  if (!safeName) throw new Error('Display name cannot be empty')
 
   const { admin, user, tenantId } = await getContext()
 
@@ -70,7 +103,7 @@ export async function createAvatar(displayName: string): Promise<PlazaAvatar> {
     .insert({
       tenant_id: tenantId,
       user_id: user.id,
-      display_name: displayName.trim().slice(0, 50),
+      display_name: safeName,
       avatar_config: defaultConfig,
       current_room: 'plaza_main',
       pos_x: AVATAR_DEFAULTS.spawn_x,
@@ -80,7 +113,10 @@ export async function createAvatar(displayName: string): Promise<PlazaAvatar> {
     .select('*')
     .single()
 
-  if (error) throw new Error(`Failed to create avatar: ${error.message}`)
+  if (error) {
+    console.error('Failed to create avatar:', error)
+    throw new Error('Failed to create avatar')
+  }
 
   revalidatePath('/student/plaza')
   return data as PlazaAvatar
@@ -105,12 +141,15 @@ export async function updateAvatarConfig(config: AvatarConfig): Promise<PlazaAva
   const rl = await rateLimitAction('updateAvatarConfig')
   if (!rl.success) throw new Error(rl.error)
 
+  const parsed = avatarConfigSchema.safeParse(config)
+  if (!parsed.success) throw new Error('Invalid avatar configuration')
+
   const { admin, user, tenantId } = await getContext()
 
   const { data, error } = await admin
     .from('plaza_avatars')
     .update({
-      avatar_config: config,
+      avatar_config: parsed.data as AvatarConfig,
       updated_at: new Date().toISOString(),
     })
     .eq('tenant_id', tenantId)
@@ -118,7 +157,10 @@ export async function updateAvatarConfig(config: AvatarConfig): Promise<PlazaAva
     .select('*')
     .single()
 
-  if (error) throw new Error(`Failed to update avatar config: ${error.message}`)
+  if (error) {
+    console.error('Failed to update avatar config:', error)
+    throw new Error('Failed to update avatar config')
+  }
 
   revalidatePath('/student/plaza')
   return data as PlazaAvatar
@@ -130,20 +172,26 @@ export async function updateAvatarRoom(
   x: number,
   y: number
 ): Promise<void> {
+  const parsed = updateAvatarRoomSchema.safeParse({ roomSlug, x, y })
+  if (!parsed.success) throw new Error('Invalid room or position data')
+
   const { admin, user, tenantId } = await getContext()
 
   const { error } = await admin
     .from('plaza_avatars')
     .update({
-      current_room: roomSlug,
-      pos_x: x,
-      pos_y: y,
+      current_room: parsed.data.roomSlug,
+      pos_x: parsed.data.x,
+      pos_y: parsed.data.y,
       last_seen_at: new Date().toISOString(),
     })
     .eq('tenant_id', tenantId)
     .eq('user_id', user.id)
 
-  if (error) throw new Error(`Failed to update avatar room: ${error.message}`)
+  if (error) {
+    console.error('Failed to update avatar room:', error)
+    throw new Error('Failed to update avatar room')
+  }
 }
 
 /** Set avatar online/offline status */
@@ -159,7 +207,10 @@ export async function setAvatarOnlineStatus(isOnline: boolean): Promise<void> {
     .eq('tenant_id', tenantId)
     .eq('user_id', user.id)
 
-  if (error) throw new Error(`Failed to update online status: ${error.message}`)
+  if (error) {
+    console.error('Failed to update online status:', error)
+    throw new Error('Failed to update online status')
+  }
 }
 
 /** Get all online avatars in a room */
@@ -173,7 +224,10 @@ export async function getRoomAvatars(roomSlug: string): Promise<PlazaAvatar[]> {
     .eq('current_room', roomSlug)
     .eq('is_online', true)
 
-  if (error) throw new Error(`Failed to get room avatars: ${error.message}`)
+  if (error) {
+    console.error('Failed to get room avatars:', error)
+    throw new Error('Failed to get room avatars')
+  }
 
   return (data ?? []) as PlazaAvatar[]
 }
@@ -194,7 +248,10 @@ export async function getPlazaRooms(): Promise<RoomInfo[]> {
     .eq('is_active', true)
     .order('sort_order', { ascending: true })
 
-  if (error) throw new Error(`Failed to get plaza rooms: ${error.message}`)
+  if (error) {
+    console.error('Failed to get plaza rooms:', error)
+    throw new Error('Failed to get plaza rooms')
+  }
   if (!rooms || rooms.length === 0) return []
 
   // Get online avatar counts per room
@@ -254,7 +311,10 @@ export async function getChatPhrases(): Promise<ChatPhrase[]> {
     .eq('is_active', true)
     .order('sort_order', { ascending: true })
 
-  if (error) throw new Error(`Failed to get chat phrases: ${error.message}`)
+  if (error) {
+    console.error('Failed to get chat phrases:', error)
+    throw new Error('Failed to get chat phrases')
+  }
 
   return (data ?? []) as ChatPhrase[]
 }
@@ -333,8 +393,8 @@ export async function recordDailyLogin(): Promise<DailyLoginResult> {
 
   const newBalance = avatar.token_balance + totalTokens
 
-  // Update avatar
-  await admin
+  // Update avatar (optimistic concurrency on last_daily_login to prevent double-awarding)
+  const { data: updateResult, error: updateError } = await admin
     .from('plaza_avatars')
     .update({
       last_daily_login: today,
@@ -345,6 +405,19 @@ export async function recordDailyLogin(): Promise<DailyLoginResult> {
       last_seen_at: new Date().toISOString(),
     })
     .eq('id', avatar.id)
+    .neq('last_daily_login', today)
+    .select('id')
+
+  if (updateError || !updateResult || updateResult.length === 0) {
+    // Already processed by a concurrent request
+    return {
+      is_new_day: false,
+      tokens_awarded: 0,
+      streak: newStreak,
+      streak_bonus: 0,
+      new_balance: avatar.token_balance,
+    }
+  }
 
   // Record token transaction
   if (totalTokens > 0) {

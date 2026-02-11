@@ -19,11 +19,11 @@ export interface XPAwardResult {
 // Level calculation
 // ---------------------------------------------------------------------------
 
-/** Get level from total XP */
+/** Get level from total XP (minimum level is 1) */
 export function getLevelFromXP(totalXp: number): number {
   const levels = XP_CONFIG.levels
   for (let i = levels.length - 1; i >= 0; i--) {
-    if (totalXp >= levels[i]) return i
+    if (totalXp >= levels[i]) return Math.max(1, i)
   }
   return 1
 }
@@ -72,12 +72,11 @@ export function calculateXPAward(
   const baseXp = XP_CONFIG.events[eventType]
   if (!baseXp) return 0
 
-  // Determine daily cap
   const dailyCap = ageVariant === 'k5'
     ? XP_CONFIG.dailyCap.k5
     : XP_CONFIG.dailyCap['6-12']
 
-  const remaining = Math.max(0, dailyCap - dailyXpSoFar)
+  const remaining = Math.max(0, dailyCap - Math.max(0, dailyXpSoFar))
   return Math.min(baseXp, remaining)
 }
 
@@ -88,9 +87,10 @@ export function processXPAward(
   dailyXpSoFar: number,
   ageVariant: 'k5' | '68' | '912' = '68'
 ): XPAwardResult {
+  const safeTotalXp = Math.max(0, currentTotalXp)
   const xpAwarded = calculateXPAward(eventType, dailyXpSoFar, ageVariant)
-  const newTotalXp = currentTotalXp + xpAwarded
-  const oldLevel = getLevelFromXP(currentTotalXp)
+  const newTotalXp = safeTotalXp + xpAwarded
+  const oldLevel = getLevelFromXP(safeTotalXp)
   const newLevel = getLevelFromXP(newTotalXp)
   const dailyCap = ageVariant === 'k5'
     ? XP_CONFIG.dailyCap.k5

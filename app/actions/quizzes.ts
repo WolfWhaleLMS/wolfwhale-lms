@@ -43,6 +43,7 @@ export async function createQuiz(formData: {
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) return { error: 'No tenant context' }
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
@@ -59,6 +60,7 @@ export async function createQuiz(formData: {
   }
 
   const insertData: Record<string, unknown> = {
+    tenant_id: tenantId,
     course_id: parsed.data.courseId,
     title: sanitizedTitle,
     description: sanitizedDescription,
@@ -70,10 +72,6 @@ export async function createQuiz(formData: {
     passing_score: parsed.data.passingScore ?? 70,
     status: parsed.data.status || 'draft',
     created_by: user.id,
-  }
-
-  if (tenantId) {
-    insertData.tenant_id = tenantId
   }
 
   const { data, error } = await supabase
@@ -99,18 +97,25 @@ export async function getQuiz(quizId: string) {
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
   const supabase = await createClient()
+  const headersList = await headers()
+  const tenantId = headersList.get('x-tenant-id')
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
 
-  const { data: quiz, error } = await supabase
+  let quizQuery = supabase
     .from('quizzes')
     .select(`
       *,
       courses:courses(id, name, created_by)
     `)
     .eq('id', quizId)
-    .single()
+
+  if (tenantId) {
+    quizQuery = quizQuery.eq('tenant_id', tenantId)
+  }
+
+  const { data: quiz, error } = await quizQuery.single()
 
   if (error || !quiz) {
     console.error('Error fetching quiz:', error)
@@ -244,16 +249,22 @@ export async function updateQuiz(quizId: string, formData: {
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
   const supabase = await createClient()
+  const headersList = await headers()
+  const tenantId = headersList.get('x-tenant-id')
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
 
-  // Verify ownership via course
-  const { data: quiz } = await supabase
+  let updateQuizQuery = supabase
     .from('quizzes')
     .select('course_id, courses:courses(created_by)')
     .eq('id', quizId)
-    .single()
+
+  if (tenantId) {
+    updateQuizQuery = updateQuizQuery.eq('tenant_id', tenantId)
+  }
+
+  const { data: quiz } = await updateQuizQuery.single()
 
   if (!quiz) return { error: 'Quiz not found' }
 
@@ -296,16 +307,22 @@ export async function deleteQuiz(quizId: string) {
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
   const supabase = await createClient()
+  const headersList = await headers()
+  const tenantId = headersList.get('x-tenant-id')
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
 
-  // Verify ownership via course
-  const { data: quiz } = await supabase
+  let deleteQuizQuery = supabase
     .from('quizzes')
     .select('course_id, courses:courses(created_by)')
     .eq('id', quizId)
-    .single()
+
+  if (tenantId) {
+    deleteQuizQuery = deleteQuizQuery.eq('tenant_id', tenantId)
+  }
+
+  const { data: quiz } = await deleteQuizQuery.single()
 
   if (!quiz) return { error: 'Quiz not found' }
 

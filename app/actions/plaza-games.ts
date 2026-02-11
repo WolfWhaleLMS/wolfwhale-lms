@@ -72,7 +72,10 @@ export async function getMiniGames(): Promise<MiniGame[]> {
     .eq('is_active', true)
     .order('sort_order', { ascending: true })
 
-  if (error) throw new Error(`Failed to get mini games: ${error.message}`)
+  if (error) {
+    console.error('[plaza-games] getMiniGames:', error)
+    throw new Error('Failed to get mini games')
+  }
 
   return (data ?? []) as MiniGame[]
 }
@@ -121,7 +124,10 @@ export async function createGameSession(
     .select('*')
     .single()
 
-  if (error) throw new Error(`Failed to create game session: ${error.message}`)
+  if (error) {
+    console.error('[plaza-games] createGameSession:', error)
+    throw new Error('Failed to create game session')
+  }
 
   // For solo mode, also create a score placeholder
   if (mode === 'solo') {
@@ -207,7 +213,10 @@ export async function startGameSession(sessionId: string): Promise<void> {
     })
     .eq('id', sessionId)
 
-  if (error) throw new Error(`Failed to start game session: ${error.message}`)
+  if (error) {
+    console.error('[plaza-games] startGameSession:', error)
+    throw new Error('Failed to start game session')
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -226,6 +235,14 @@ export async function submitGameScore(
   const rl = await rateLimitAction('submitGameScore')
   if (!rl.success) throw new Error(rl.error)
 
+  // Validate input bounds
+  score = Math.max(0, Math.min(Math.floor(score), 1000000))
+  accuracy = Math.max(0, Math.min(accuracy, 100))
+  timeTaken = Math.max(0, Math.min(timeTaken, 7200))
+  correctAnswers = Math.max(0, Math.floor(correctAnswers))
+  totalQuestions = Math.max(0, Math.floor(totalQuestions))
+  if (correctAnswers > totalQuestions) correctAnswers = totalQuestions
+
   const { admin, user, tenantId } = await getContext()
 
   // Validate session exists and is in progress
@@ -238,6 +255,16 @@ export async function submitGameScore(
 
   if (sessionError || !session) throw new Error('Game session not found.')
   if (session.status !== 'in_progress') throw new Error('Game session is not in progress.')
+
+  // Check if user already submitted a completed score for this session
+  const { data: existingScore } = await admin
+    .from('plaza_game_scores')
+    .select('id, completed_at')
+    .eq('session_id', sessionId)
+    .eq('user_id', user.id)
+    .single()
+
+  if (existingScore?.completed_at) throw new Error('Score already submitted for this session.')
 
   // Anti-cheat: validate minimum duration
   if (session.started_at) {
@@ -316,7 +343,10 @@ export async function submitGameScore(
     .select('id')
     .single()
 
-  if (scoreError) throw new Error(`Failed to submit score: ${scoreError.message}`)
+  if (scoreError) {
+    console.error('[plaza-games] submitGameScore:', scoreError)
+    throw new Error('Failed to submit score')
+  }
 
   // Award tokens
   let newTokenBalance = 0
@@ -331,7 +361,7 @@ export async function submitGameScore(
     if (avatar) {
       newTokenBalance = avatar.token_balance + tokensEarned
 
-      await admin
+      const { data: updateResult } = await admin
         .from('plaza_avatars')
         .update({
           token_balance: newTokenBalance,
@@ -339,6 +369,28 @@ export async function submitGameScore(
           games_played: avatar.games_played + 1,
         })
         .eq('id', avatar.id)
+        .eq('token_balance', avatar.token_balance)
+        .select('token_balance')
+
+      if (!updateResult || updateResult.length === 0) {
+        // Concurrent modification - re-read and retry once
+        const { data: freshAvatar } = await admin
+          .from('plaza_avatars')
+          .select('id, token_balance, tokens_earned_total, games_played')
+          .eq('id', avatar.id)
+          .single()
+        if (freshAvatar) {
+          newTokenBalance = freshAvatar.token_balance + tokensEarned
+          await admin
+            .from('plaza_avatars')
+            .update({
+              token_balance: newTokenBalance,
+              tokens_earned_total: freshAvatar.tokens_earned_total + tokensEarned,
+              games_played: freshAvatar.games_played + 1,
+            })
+            .eq('id', freshAvatar.id)
+        }
+      }
 
       // Record token transaction
       await admin.from('plaza_token_transactions').insert({
@@ -407,6 +459,7 @@ export async function getGameHighScores(
   completed_at: string
   rank: number
 }>> {
+  const safeLimit = Math.min(Math.max(1, limit), 100)
   const { admin, tenantId } = await getContext()
 
   // Get game ID from slug
@@ -430,9 +483,12 @@ export async function getGameHighScores(
     .eq('game_id', game.id)
     .eq('tenant_id', tenantId)
     .order('score', { ascending: false })
-    .limit(limit)
+    .limit(safeLimit)
 
-  if (error) throw new Error(`Failed to get high scores: ${error.message}`)
+  if (error) {
+    console.error('[plaza-games] getGameHighScores:', error)
+    throw new Error('Failed to get high scores')
+  }
 
   return (scores ?? []).map((row: any, index: number) => ({
     user_id: row.user_id,

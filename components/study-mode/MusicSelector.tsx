@@ -27,6 +27,7 @@ export default function MusicSelector({ selected, onSelect }: MusicSelectorProps
         const isActive = selected === option.id
         return (
           <button
+            type="button"
             key={option.id}
             onClick={() => onSelect(option.id)}
             className={cn(

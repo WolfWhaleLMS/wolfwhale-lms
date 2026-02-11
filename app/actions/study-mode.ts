@@ -1,5 +1,6 @@
 'use server'
 
+import { z } from 'zod'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
@@ -25,6 +26,12 @@ async function getContext() {
  * We store sessions as xp_events with source_type = 'study_session'.
  */
 export async function recordStudySession(durationMinutes: number, musicType: string) {
+  const parsed = z.object({
+    durationMinutes: z.number().min(1).max(480),
+    musicType: z.string().min(1).max(50),
+  }).safeParse({ durationMinutes, musicType })
+  if (!parsed.success) return { xpAwarded: 0, error: 'Invalid input' }
+
   const rl = await rateLimitAction('recordStudySession')
   if (!rl.success) return { xpAwarded: 0, error: rl.error }
 
@@ -190,6 +197,7 @@ export async function getStudyStats() {
  * Get recent study session history.
  */
 export async function getStudyHistory(limit = 20) {
+  const safeLimit = Math.min(Math.max(1, limit), 100)
   const { supabase, user, tenantId } = await getContext()
 
   const { data } = await supabase
@@ -199,7 +207,7 @@ export async function getStudyHistory(limit = 20) {
     .eq('tenant_id', tenantId)
     .eq('source_type', 'study_session')
     .order('created_at', { ascending: false })
-    .limit(limit)
+    .limit(safeLimit)
 
   return (data ?? []).map((event) => {
     const parts = (event.description || '').split(' | ')

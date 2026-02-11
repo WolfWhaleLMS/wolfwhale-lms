@@ -22,8 +22,8 @@ export default async function ParentDashboardPage() {
 
   try {
     children = await getChildren()
-  } catch (e: any) {
-    error = e.message ?? 'Failed to load data'
+  } catch (e) {
+    error = e instanceof Error ? e.message : 'Failed to load data'
   }
 
   const totalMissing = children.reduce((s, c) => s + c.missingAssignments, 0)

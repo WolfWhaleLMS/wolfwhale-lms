@@ -137,6 +137,7 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
         {/* Mobile close button */}
         {onClose && (
           <button
+            type="button"
             onClick={onClose}
             className="rounded-lg p-1.5 text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground lg:hidden"
             aria-label="Close sidebar"
@@ -209,6 +210,7 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
       {/* ----------------------------------------------------------------- */}
       <div className="border-t border-sidebar-border p-3">
         <button
+          type="button"
           onClick={handleSignOut}
           className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-400 transition-all duration-200 hover:bg-red-500/10 hover:text-red-300"
         >

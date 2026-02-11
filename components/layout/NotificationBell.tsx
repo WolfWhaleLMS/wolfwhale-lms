@@ -82,6 +82,7 @@ export function NotificationBell() {
   return (
     <div className="relative" ref={panelRef}>
       <button
+        type="button"
         onClick={() => {
           sounds.playClick()
           setOpen(!open)
@@ -103,6 +104,7 @@ export function NotificationBell() {
             <h3 className="text-sm font-semibold">Notifications</h3>
             {unreadCount > 0 && (
               <button
+                type="button"
                 onClick={handleMarkAllRead}
                 className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700"
               >
@@ -140,6 +142,7 @@ export function NotificationBell() {
                   </div>
                   {!n.read && (
                     <button
+                      type="button"
                       onClick={() => handleMarkRead(n.id)}
                       className="mt-1 rounded p-1 text-muted-foreground hover:bg-muted"
                       aria-label="Mark as read"

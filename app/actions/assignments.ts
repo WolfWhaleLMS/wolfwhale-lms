@@ -251,16 +251,22 @@ export async function updateAssignment(
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
   const supabase = await createClient()
+  const headersList = await headers()
+  const tenantId = headersList.get('x-tenant-id')
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
 
-  // Verify ownership via course
-  const { data: assignment } = await supabase
+  let assignmentLookup = supabase
     .from('assignments')
     .select('course_id, courses:courses(created_by)')
     .eq('id', assignmentId)
-    .single()
+
+  if (tenantId) {
+    assignmentLookup = assignmentLookup.eq('tenant_id', tenantId)
+  }
+
+  const { data: assignment } = await assignmentLookup.single()
 
   if (!assignment) return { error: 'Assignment not found' }
 
@@ -304,16 +310,22 @@ export async function deleteAssignment(assignmentId: string) {
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
   const supabase = await createClient()
+  const headersList = await headers()
+  const tenantId = headersList.get('x-tenant-id')
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
 
-  // Verify ownership via course
-  const { data: assignment } = await supabase
+  let deleteAssignmentQuery = supabase
     .from('assignments')
     .select('course_id, courses:courses(created_by)')
     .eq('id', assignmentId)
-    .single()
+
+  if (tenantId) {
+    deleteAssignmentQuery = deleteAssignmentQuery.eq('tenant_id', tenantId)
+  }
+
+  const { data: assignment } = await deleteAssignmentQuery.single()
 
   if (!assignment) return { error: 'Assignment not found' }
 

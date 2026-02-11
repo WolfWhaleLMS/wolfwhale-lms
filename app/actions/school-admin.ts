@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { rateLimitAction } from '@/lib/rate-limit-action'
+import { logAuditEvent } from '@/lib/compliance/audit-logger'
 
 async function getAdminContext() {
   const supabase = await createClient()
@@ -67,9 +68,10 @@ export async function getTenantUsers(filters?: {
   // Client-side filter by search (name or email)
   if (filters?.search) {
     const search = filters.search.toLowerCase()
-    users = users.filter((u: any) => {
-      const name = (u.profiles?.full_name || '').toLowerCase()
-      const email = (u.profiles?.email || '').toLowerCase()
+    users = users.filter((u) => {
+      const profile = u.profiles as { full_name?: string; email?: string } | null
+      const name = (profile?.full_name || '').toLowerCase()
+      const email = (profile?.email || '').toLowerCase()
       return name.includes(search) || email.includes(search)
     })
   }
@@ -137,11 +139,26 @@ export async function updateUserRole(userId: string, newRole: string) {
     .eq('user_id', parsed.data.userId)
 
   if (error) throw error
+
+  await logAuditEvent({
+    action: 'user.update',
+    resourceType: 'user_role',
+    resourceId: parsed.data.userId,
+    details: { newRole: parsed.data.newRole, changedBy: user.id },
+  })
+
   revalidatePath('/admin/users')
 }
 
 export async function deactivateUser(userId: string) {
-  const { supabase, tenantId } = await getAdminContext()
+  const parsed = z.object({ userId: z.string().uuid() }).safeParse({ userId })
+  if (!parsed.success) throw new Error('Invalid input')
+
+  const { supabase, user, tenantId } = await getAdminContext()
+
+  if (userId === user.id) {
+    throw new Error('You cannot deactivate your own account.')
+  }
 
   const { error } = await supabase
     .from('tenant_memberships')
@@ -150,6 +167,14 @@ export async function deactivateUser(userId: string) {
     .eq('user_id', userId)
 
   if (error) throw error
+
+  await logAuditEvent({
+    action: 'user.delete',
+    resourceType: 'user',
+    resourceId: userId,
+    details: { action: 'deactivated', deactivatedBy: user.id },
+  })
+
   revalidatePath('/admin/users')
 }
 
@@ -194,6 +219,17 @@ export async function createUser(formData: {
   role: string
   grade_level?: string
 }) {
+  const createUserSchema = z.object({
+    first_name: z.string().min(1).max(100),
+    last_name: z.string().min(1).max(100),
+    email: z.string().email().max(255),
+    password: z.string().min(8).max(128),
+    role: z.enum(['student', 'teacher', 'parent', 'admin']),
+    grade_level: z.string().max(50).optional(),
+  })
+  const parsed = createUserSchema.safeParse(formData)
+  if (!parsed.success) return { success: false, error: 'Invalid input: ' + parsed.error.issues[0].message }
+
   const rl = await rateLimitAction('createUser')
   if (!rl.success) return { success: false, error: rl.error }
 
@@ -284,6 +320,13 @@ export async function createUser(formData: {
     return { success: false, error: 'Failed to assign user to school. ' + membershipError.message }
   }
 
+  await logAuditEvent({
+    action: 'user.create',
+    resourceType: 'user',
+    resourceId: newUser.user.id,
+    details: { role: formData.role },
+  })
+
   revalidatePath('/admin/users')
   revalidatePath('/admin/dashboard')
 
@@ -321,7 +364,7 @@ export async function getTenantClasses(filters?: {
 
   if (filters?.search) {
     const search = filters.search.toLowerCase()
-    classes = classes.filter((c: any) =>
+    classes = classes.filter((c) =>
       c.name?.toLowerCase().includes(search) ||
       c.subject?.toLowerCase().includes(search)
     )
@@ -371,7 +414,7 @@ export async function getDashboardStats() {
   const memberships = userCountResult.data ?? []
   const roleCounts: Record<string, number> = {}
   for (const m of memberships) {
-    const role = (m as any).role || 'unknown'
+    const role = m.role || 'unknown'
     roleCounts[role] = (roleCounts[role] || 0) + 1
   }
 
@@ -455,6 +498,14 @@ export async function updateTenantSettings(settings: {
   logo_url?: string
   settings?: Record<string, unknown>
 }) {
+  const updateSettingsSchema = z.object({
+    name: z.string().min(1).max(255).optional(),
+    logo_url: z.string().max(2000).optional(),
+    settings: z.record(z.unknown()).optional(),
+  })
+  const parsed = updateSettingsSchema.safeParse(settings)
+  if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
+
   const { supabase, tenantId } = await getAdminContext()
 
   const { error } = await supabase
@@ -463,5 +514,13 @@ export async function updateTenantSettings(settings: {
     .eq('id', tenantId)
 
   if (error) throw error
+
+  await logAuditEvent({
+    action: 'settings.update',
+    resourceType: 'tenant',
+    resourceId: tenantId,
+    details: { updatedFields: Object.keys(settings) },
+  })
+
   revalidatePath('/admin/settings')
 }

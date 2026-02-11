@@ -75,7 +75,7 @@ export async function getChildren() {
   // Get enrollment counts per student
   const { data: enrollments } = await supabase
     .from('course_enrollments')
-    .select('student_id, status')
+    .select('student_id, status, course_id')
     .eq('tenant_id', tenantId)
     .in('student_id', studentIds)
     .eq('status', 'active')
@@ -143,7 +143,7 @@ export async function getChildren() {
       : 0
 
     // Count missing assignments (enrolled courses, past due, no submission)
-    const enrolledCourseIds = new Set(studentEnrollments.map(e => (e as any).course_id))
+    const enrolledCourseIds = new Set(studentEnrollments.map(e => e.course_id))
     const studentSubmissions = submissionMap.get(rel.student_id) ?? new Set()
     const missingCount = (pastDueAssignments ?? []).filter(a =>
       enrolledCourseIds.has(a.course_id) && !studentSubmissions.has(a.id)
@@ -212,20 +212,23 @@ export async function getChildGrades(studentId: string) {
   const courseMap = new Map<string, {
     courseId: string
     courseName: string
-    gradingPolicy: any
+    gradingPolicy: Record<string, unknown> | null
     grades: typeof gradeRecords
     totalPercentage: number
     gradeCount: number
   }>()
 
+  type JoinedCourseInfo = { id: string; name: string; grading_policy: Record<string, unknown> | null } | null
+  type JoinedAssignmentInfo = { id: string; title: string; category: string | null; type: string; max_points: number; due_date: string } | null
+
   for (const grade of gradeRecords ?? []) {
-    const course = grade.courses as any
+    const course = grade.courses as unknown as JoinedCourseInfo
     const courseId = grade.course_id
     if (!courseMap.has(courseId)) {
       courseMap.set(courseId, {
         courseId,
         courseName: course?.name ?? 'Unknown Course',
-        gradingPolicy: course?.grading_policy,
+        gradingPolicy: course?.grading_policy ?? null,
         grades: [],
         totalPercentage: 0,
         gradeCount: 0,
@@ -250,7 +253,7 @@ export async function getChildGrades(studentId: string) {
     // Group grades by assignment category
     const categoryMap = new Map<string, { total: number; count: number }>()
     for (const g of entry.grades) {
-      const assignment = g.assignments as any
+      const assignment = g.assignments as unknown as JoinedAssignmentInfo
       const cat = assignment?.category || 'Uncategorized'
       if (!categoryMap.has(cat)) categoryMap.set(cat, { total: 0, count: 0 })
       if (g.percentage != null && !g.is_excused) {
@@ -272,7 +275,7 @@ export async function getChildGrades(studentId: string) {
       letterGrade,
       categoryBreakdown,
       grades: entry.grades.map(g => {
-        const assignment = g.assignments as any
+        const assignment = g.assignments as unknown as JoinedAssignmentInfo
         return {
           id: g.id,
           assignmentTitle: assignment?.title ?? 'Assignment',
@@ -365,7 +368,7 @@ export async function getChildAssignments(studentId: string) {
   const now = new Date()
 
   const enrichedAssignments = (assignments ?? []).map(a => {
-    const course = a.courses as any
+    const course = a.courses as unknown as { id: string; name: string } | null
     const submission = submissionMap.get(a.id)
     const grade = gradeMap.get(a.id)
     const dueDate = new Date(a.due_date)
@@ -440,10 +443,12 @@ export async function getChildCourses(studentId: string) {
   if (error) throw error
 
   // Get teacher profiles
+  type JoinedEnrollmentCourse = { id: string; name: string; subject: string | null; grade_level: string | null; semester: string | null; created_by: string; status: string } | null
+
   const teacherIds = [...new Set((data ?? []).map(e => {
-    const course = e.courses as any
+    const course = e.courses as unknown as JoinedEnrollmentCourse
     return e.teacher_id || course?.created_by
-  }).filter(Boolean))]
+  }).filter(Boolean))] as string[]
 
   const { data: teacherProfiles } = await supabase
     .from('profiles')
@@ -455,7 +460,7 @@ export async function getChildCourses(studentId: string) {
   )
 
   return (data ?? []).map(enrollment => {
-    const course = enrollment.courses as any
+    const course = enrollment.courses as unknown as JoinedEnrollmentCourse
     const teacherId = enrollment.teacher_id || course?.created_by
     return {
       enrollmentId: enrollment.id,

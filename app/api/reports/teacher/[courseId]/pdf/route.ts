@@ -1,12 +1,16 @@
 import React from 'react'
 import { NextRequest, NextResponse } from 'next/server'
 import { getTeacherClassReport } from '@/app/actions/reports'
-import { ReportDocument, StatRow, Table, renderToBuffer } from '@/lib/export/pdf'
+import { ReportDocument, StatRow, Table, renderToBuffer, PDF_MAX_ROWS } from '@/lib/export/pdf'
+import { apiErrorResponse, rateLimitRoute, REPORT_DOWNLOAD_HEADERS } from '@/lib/api-route-helpers'
 
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ courseId: string }> }
 ) {
+  const blocked = await rateLimitRoute('teacher-course-pdf', 'report')
+  if (blocked) return blocked
+
   try {
     const { courseId } = await params
     const report = await getTeacherClassReport(courseId)
@@ -21,7 +25,7 @@ export async function GET(
       { key: 'overall', header: 'Overall', width: 1 },
     ]
 
-    const rows = report.students.map((s) => {
+    const rows = report.students.slice(0, PDF_MAX_ROWS).map((s) => {
       const row: Record<string, string | number> = { name: s.name }
       for (const a of report.assignments) {
         const g = s.grades[a.id]
@@ -54,9 +58,10 @@ export async function GET(
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${filename}"`,
+        ...REPORT_DOWNLOAD_HEADERS,
       },
     })
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 403 })
+  } catch (error: unknown) {
+    return apiErrorResponse(error)
   }
 }

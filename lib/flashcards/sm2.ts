@@ -44,13 +44,13 @@ export function calculateNextReview(
       intervalDays = Math.round(intervalDays * easeFactor)
     }
     repetitions += 1
-  }
 
-  // Update ease factor (minimum 1.3)
-  easeFactor = Math.max(
-    1.3,
-    easeFactor + (0.1 - (5 - q5) * (0.08 + (5 - q5) * 0.02))
-  )
+    // Update ease factor only on successful responses (SM-2 spec)
+    easeFactor = Math.max(
+      1.3,
+      easeFactor + (0.1 - (5 - q5) * (0.08 + (5 - q5) * 0.02))
+    )
+  }
 
   // Cap max interval at 365 days
   intervalDays = Math.min(intervalDays, 365)

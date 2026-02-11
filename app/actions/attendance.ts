@@ -3,6 +3,7 @@
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { logAuditEvent } from '@/lib/compliance/audit-logger'
 
 async function getContext() {
   const supabase = await createClient()
@@ -74,6 +75,14 @@ export async function recordAttendance(
     .upsert(entries, { onConflict: 'tenant_id,course_id,student_id,attendance_date' })
 
   if (error) throw error
+
+  await logAuditEvent({
+    action: 'attendance.record',
+    resourceType: 'attendance',
+    resourceId: courseId,
+    details: { date, recordCount: records.length },
+  })
+
   revalidatePath('/teacher/attendance')
 }
 
@@ -177,7 +186,19 @@ export async function getStudentAttendance(studentId?: string) {
       if (!parentLink) {
         throw new Error('Not authorized to view this student\'s attendance')
       }
-    } else if (!['teacher', 'admin', 'super_admin'].includes(role)) {
+    } else if (role === 'teacher') {
+      const { data: sharedCourses } = await supabase
+        .from('courses')
+        .select('id, course_enrollments!inner(student_id)')
+        .eq('created_by', user.id)
+        .eq('tenant_id', tenantId)
+        .eq('course_enrollments.student_id', targetId)
+        .limit(1)
+
+      if (!sharedCourses || sharedCourses.length === 0) {
+        throw new Error('Not authorized to view this student\'s attendance')
+      }
+    } else if (!['admin', 'super_admin'].includes(role)) {
       throw new Error('Not authorized to view this student\'s attendance')
     }
   }
@@ -205,7 +226,6 @@ export async function getAttendanceSummary(studentId?: string) {
     if (!role) throw new Error('Not authorized')
 
     if (role === 'parent') {
-      // Parents can only view their linked children's attendance
       const { data: parentLink } = await supabase
         .from('student_parents')
         .select('id')
@@ -217,7 +237,19 @@ export async function getAttendanceSummary(studentId?: string) {
       if (!parentLink) {
         throw new Error('Not authorized to view this student\'s attendance summary')
       }
-    } else if (!['teacher', 'admin', 'super_admin'].includes(role)) {
+    } else if (role === 'teacher') {
+      const { data: sharedCourses } = await supabase
+        .from('courses')
+        .select('id, course_enrollments!inner(student_id)')
+        .eq('created_by', user.id)
+        .eq('tenant_id', tenantId)
+        .eq('course_enrollments.student_id', targetId)
+        .limit(1)
+
+      if (!sharedCourses || sharedCourses.length === 0) {
+        throw new Error('Not authorized to view this student\'s attendance summary')
+      }
+    } else if (!['admin', 'super_admin'].includes(role)) {
       throw new Error('Not authorized to view this student\'s attendance summary')
     }
   }

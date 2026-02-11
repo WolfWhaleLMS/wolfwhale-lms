@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import * as Sentry from '@sentry/nextjs'
 
 export default function StudentError({
   error,
@@ -10,7 +11,7 @@ export default function StudentError({
   reset: () => void
 }) {
   useEffect(() => {
-    console.error('Student section error:', error)
+    Sentry.captureException(error)
   }, [error])
 
   return (

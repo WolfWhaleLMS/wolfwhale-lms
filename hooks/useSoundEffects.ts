@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 // Use Web Audio API to generate simple retro/video-game-like synth sounds
 // No external audio files needed!
@@ -114,5 +114,17 @@ export function useSoundEffects() {
     osc.stop(t + 0.03)
   }, [])
 
-  return { playClick, playSuccess, playNavigate, playHover }
+  useEffect(() => {
+    return () => {
+      if (ctxRef.current) {
+        ctxRef.current.close()
+        ctxRef.current = null
+      }
+    }
+  }, [])
+
+  return useMemo(
+    () => ({ playClick, playSuccess, playNavigate, playHover }),
+    [playClick, playSuccess, playNavigate, playHover]
+  )
 }

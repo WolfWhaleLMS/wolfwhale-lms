@@ -6,6 +6,7 @@ import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { getLetterGrade } from '@/lib/config/constants'
 import { sanitizeText, sanitizeRichText } from '@/lib/sanitize'
+import { logAuditEvent } from '@/lib/compliance/audit-logger'
 
 // ============================================
 // TEACHER: Get all submissions for an assignment
@@ -21,11 +22,14 @@ export async function getSubmissions(assignmentId: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
 
+  if (!tenantId) return { error: 'No tenant context' }
+
   // Get the assignment and verify teacher ownership
   const { data: assignment } = await supabase
     .from('assignments')
     .select('*, courses:courses(id, name, created_by)')
     .eq('id', assignmentId)
+    .eq('tenant_id', tenantId)
     .single()
 
   if (!assignment) return { error: 'Assignment not found' }
@@ -34,8 +38,6 @@ export async function getSubmissions(assignmentId: string) {
   if (courseData?.created_by !== user.id) {
     return { error: 'Not authorized to view these submissions' }
   }
-
-  if (!tenantId) return { error: 'No tenant context' }
 
   // Get submissions with student profiles
   let query = supabase
@@ -52,7 +54,7 @@ export async function getSubmissions(assignmentId: string) {
   const { data: submissions, error } = await query
 
   if (error) {
-    console.error('Error fetching submissions:', error)
+    console.error('[submissions] fetch error')
     return { error: 'Failed to fetch submissions' }
   }
 
@@ -239,7 +241,7 @@ export async function submitWork(
       .single()
 
     if (error) {
-      console.error('Error updating submission:', error)
+      console.error('[submissions] update error')
       return { error: 'Failed to update submission' }
     }
     result = data
@@ -252,7 +254,7 @@ export async function submitWork(
       .single()
 
     if (error) {
-      console.error('Error creating submission:', error)
+      console.error('[submissions] create error')
       return { error: 'Failed to submit work' }
     }
     result = data
@@ -295,6 +297,7 @@ export async function gradeSubmission(
     .from('submissions')
     .select('id, assignment_id, student_id, assignments:assignment_id(course_id, max_points, courses:courses(created_by))')
     .eq('id', submissionId)
+    .eq('tenant_id', tenantId)
     .single()
 
   if (!submission) return { error: 'Submission not found' }
@@ -359,7 +362,7 @@ export async function gradeSubmission(
       .single()
 
     if (error) {
-      console.error('Error updating grade:', error)
+      console.error('[grades] update error')
       return { error: 'Failed to update grade' }
     }
     result = data
@@ -371,7 +374,7 @@ export async function gradeSubmission(
       .single()
 
     if (error) {
-      console.error('Error creating grade:', error)
+      console.error('[grades] create error')
       return { error: 'Failed to save grade' }
     }
     result = data
@@ -382,6 +385,19 @@ export async function gradeSubmission(
     .from('submissions')
     .update({ status: 'graded' })
     .eq('id', submissionId)
+
+  await logAuditEvent({
+    action: existingGrade ? 'grade.update' : 'grade.create',
+    resourceType: 'grade',
+    resourceId: submission.student_id,
+    details: {
+      submissionId,
+      assignmentId: submission.assignment_id,
+      score,
+      percentage,
+      letterGrade,
+    },
+  })
 
   revalidatePath(`/teacher/courses/${assignmentData.course_id}/assignments/${submission.assignment_id}/submissions`)
   revalidatePath('/teacher/gradebook')
@@ -403,6 +419,7 @@ export async function returnSubmission(submissionId: string, feedback: string) {
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) return { error: 'No tenant context' }
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
@@ -412,6 +429,7 @@ export async function returnSubmission(submissionId: string, feedback: string) {
     .from('submissions')
     .select('id, assignment_id, student_id, assignments:assignment_id(course_id, courses:courses(created_by))')
     .eq('id', submissionId)
+    .eq('tenant_id', tenantId)
     .single()
 
   if (!submission) return { error: 'Submission not found' }
@@ -439,9 +457,15 @@ export async function returnSubmission(submissionId: string, feedback: string) {
     .eq('id', submissionId)
 
   if (error) {
-    console.error('Error returning submission:', error)
     return { error: 'Failed to return submission' }
   }
+
+  await logAuditEvent({
+    action: 'submission.grade',
+    resourceType: 'submission',
+    resourceId: submissionId,
+    details: { action: 'returned_for_revision', studentId: submission.student_id },
+  })
 
   revalidatePath(`/teacher/courses/${assignmentData.course_id}/assignments/${submission.assignment_id}/submissions`)
   revalidatePath('/student/assignments')
