@@ -19,8 +19,10 @@ import {
   GraduationCap,
   MessageCircle,
   CalendarDays,
+  Calendar,
 } from 'lucide-react'
 import { AnnouncementBanner } from '@/components/announcements/AnnouncementBanner'
+import { CircularGauge } from '@/components/ui/circular-gauge'
 
 export default async function StudentDashboardPage() {
   const supabase = await createClient()
@@ -86,6 +88,8 @@ export default async function StudentDashboardPage() {
     tier: 'Bronze',
   }
   let streak = 0
+
+  let attendanceRate = 0
 
   if (tenantId) {
     // Fetch enrolled courses
@@ -363,6 +367,18 @@ export default async function StudentDashboardPage() {
       }
     })
 
+    // Fetch attendance summary
+    const { data: attendanceRecords } = await supabase
+      .from('attendance_records')
+      .select('status')
+      .eq('tenant_id', tenantId)
+      .eq('student_id', user.id)
+
+    if (attendanceRecords && attendanceRecords.length > 0) {
+      const present = attendanceRecords.filter((r) => r.status === 'present' || r.status === 'online').length
+      attendanceRate = Math.round((present / attendanceRecords.length) * 100)
+    }
+
     // Calculate streak from XP events (consecutive days with activity)
     const { data: xpEvents } = await supabase
       .from('xp_transactions')
@@ -551,6 +567,60 @@ export default async function StudentDashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* ===== PERFORMANCE GAUGES ===== */}
+      <section>
+        <div className="ocean-card rounded-3xl p-6 sm:p-8">
+          <h2 className="mb-6 text-center text-lg font-bold text-foreground">
+            Your Performance at a Glance
+          </h2>
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+            <CircularGauge
+              value={currentGPA !== '--' ? parseFloat(currentGPA) : 0}
+              max={4}
+              label="GPA"
+              sublabel={currentGPA !== '--' ? (parseFloat(currentGPA) >= 3.5 ? 'Excellent' : parseFloat(currentGPA) >= 2.5 ? 'Good' : parseFloat(currentGPA) >= 1.5 ? 'Fair' : 'Needs Work') : undefined}
+              valueDisplay={currentGPA !== '--' ? currentGPA : '--'}
+              colorThresholds={[
+                { value: 87.5, color: '#22c55e', bgColor: '#22c55e20' },
+                { value: 62.5, color: '#3b82f6', bgColor: '#3b82f620' },
+                { value: 37.5, color: '#f59e0b', bgColor: '#f59e0b20' },
+                { value: 0, color: '#ef4444', bgColor: '#ef444420' },
+              ]}
+            />
+            <CircularGauge
+              value={attendanceRate}
+              label="Attendance"
+              sublabel={attendanceRate > 0 ? (attendanceRate >= 95 ? 'Excellent' : attendanceRate >= 85 ? 'Good' : 'Needs Attention') : undefined}
+              colorThresholds={[
+                { value: 95, color: '#22c55e', bgColor: '#22c55e20' },
+                { value: 85, color: '#f59e0b', bgColor: '#f59e0b20' },
+                { value: 0, color: '#ef4444', bgColor: '#ef444420' },
+              ]}
+            />
+            <div className="flex flex-col items-center gap-2" role="status" aria-label={`${stats.coursesEnrolled} courses enrolled`}>
+              <div className="flex h-[140px] w-[140px] items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/20">
+                <div className="text-center">
+                  <BookOpen className="mx-auto mb-1 h-6 w-6 text-blue-500" />
+                  <p className="text-2xl font-extrabold text-foreground">{stats.coursesEnrolled}</p>
+                </div>
+              </div>
+              <p className="text-sm font-semibold text-foreground">Courses</p>
+              <p className="text-xs text-muted-foreground">Enrolled</p>
+            </div>
+            <div className="flex flex-col items-center gap-2" role="status" aria-label={`${stats.assignmentsDue} assignments due this week`}>
+              <div className={`flex h-[140px] w-[140px] items-center justify-center rounded-full ${stats.assignmentsDue > 0 ? 'bg-amber-50 dark:bg-amber-950/20' : 'bg-muted/30'}`}>
+                <div className="text-center">
+                  <Calendar className={`mx-auto mb-1 h-6 w-6 ${stats.assignmentsDue > 0 ? 'text-amber-500' : 'text-muted-foreground'}`} />
+                  <p className={`text-2xl font-extrabold ${stats.assignmentsDue > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-foreground'}`}>{stats.assignmentsDue}</p>
+                </div>
+              </div>
+              <p className="text-sm font-semibold text-foreground">Due Soon</p>
+              <p className="text-xs text-muted-foreground">This Week</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ===== TODAY'S TASKS ===== */}
       <section>

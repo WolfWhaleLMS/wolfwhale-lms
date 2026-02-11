@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import { getChildren } from '@/app/actions/parent'
 import { AnnouncementBanner } from '@/components/announcements/AnnouncementBanner'
+import { CircularGauge } from '@/components/ui/circular-gauge'
 
 export default async function ParentDashboardPage() {
   let children: Awaited<ReturnType<typeof getChildren>> = []
@@ -99,47 +100,45 @@ export default async function ParentDashboardPage() {
 
       {children.length > 0 && (
         <>
-          {/* Summary Stats */}
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <div className="ocean-card rounded-2xl p-5 text-center">
-              <Users className="mx-auto mb-2 h-6 w-6 text-primary" />
-              <p className="text-3xl font-bold text-foreground">
-                {children.length}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {children.length === 1 ? 'Child' : 'Children'}
-              </p>
-            </div>
-            <div className="ocean-card rounded-2xl p-5 text-center">
-              <GraduationCap className="mx-auto mb-2 h-6 w-6 text-blue-500" />
-              <p
-                className={`text-3xl font-bold ${avgGPA ? getGradeColor(avgGPA) : 'text-foreground'}`}
-              >
-                {avgGPA ? `${avgGPA}%` : '--'}
-              </p>
-              <p className="text-sm text-muted-foreground">Avg Grade</p>
-            </div>
-            <div className="ocean-card rounded-2xl p-5 text-center">
-              <Calendar className="mx-auto mb-2 h-6 w-6 text-green-500" />
-              <p
-                className={`text-3xl font-bold ${avgAttendance ? getAttendanceColor(avgAttendance) : 'text-foreground'}`}
-              >
-                {avgAttendance ? `${avgAttendance}%` : '--'}
-              </p>
-              <p className="text-sm text-muted-foreground">Avg Attendance</p>
-            </div>
-            <div className="ocean-card rounded-2xl p-5 text-center">
-              <AlertCircle
-                className={`mx-auto mb-2 h-6 w-6 ${totalMissing > 0 ? 'text-red-500' : 'text-muted-foreground'}`}
+          {/* Summary Stats with Gauges */}
+          <div className="ocean-card rounded-2xl p-6">
+            <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+              <div className="flex flex-col items-center">
+                <div className="flex h-[140px] w-[140px] flex-col items-center justify-center rounded-full bg-primary/5 dark:bg-primary/10">
+                  <Users className="mb-1 h-8 w-8 text-primary" />
+                  <p className="text-3xl font-extrabold text-foreground">
+                    {children.length}
+                  </p>
+                </div>
+                <p className="mt-2 text-sm font-semibold text-foreground">
+                  {children.length === 1 ? 'Child' : 'Children'}
+                </p>
+              </div>
+              <CircularGauge
+                value={avgGPA ?? 0}
+                label="Avg Grade"
+                sublabel={avgGPA ? (avgGPA >= 90 ? 'Excellent' : avgGPA >= 80 ? 'Good' : avgGPA >= 70 ? 'Fair' : 'Needs Work') : undefined}
               />
-              <p
-                className={`text-3xl font-bold ${totalMissing > 0 ? 'text-red-500' : 'text-foreground'}`}
-              >
-                {totalMissing}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Missing Assignments
-              </p>
+              <CircularGauge
+                value={avgAttendance ?? 0}
+                label="Avg Attendance"
+                sublabel={avgAttendance ? (avgAttendance >= 95 ? 'Excellent' : avgAttendance >= 85 ? 'Good' : 'Needs Attention') : undefined}
+                colorThresholds={[
+                  { value: 95, color: '#22c55e', bgColor: '#22c55e20' },
+                  { value: 85, color: '#f59e0b', bgColor: '#f59e0b20' },
+                  { value: 0, color: '#ef4444', bgColor: '#ef444420' },
+                ]}
+              />
+              <div className="flex flex-col items-center">
+                <div className={`flex h-[140px] w-[140px] flex-col items-center justify-center rounded-full ${totalMissing > 0 ? 'bg-red-50 dark:bg-red-950/20' : 'bg-muted/30'}`}>
+                  <AlertCircle className={`mb-1 h-8 w-8 ${totalMissing > 0 ? 'text-red-500' : 'text-muted-foreground'}`} />
+                  <p className={`text-3xl font-extrabold ${totalMissing > 0 ? 'text-red-500' : 'text-foreground'}`}>
+                    {totalMissing}
+                  </p>
+                </div>
+                <p className="mt-2 text-sm font-semibold text-foreground">Missing</p>
+                <p className="text-xs text-muted-foreground">Assignments</p>
+              </div>
             </div>
           </div>
 
@@ -189,52 +188,43 @@ export default async function ParentDashboardPage() {
                       </div>
                     </div>
 
-                    {/* Quick Stats */}
+                    {/* Quick Stats with Mini Gauges */}
                     <div className="p-5">
-                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                        <div className="rounded-xl bg-muted/50 p-3 text-center">
-                          <GraduationCap className="mx-auto mb-1 h-4 w-4 text-primary" />
-                          <p
-                            className={`text-lg font-bold ${child.gpa > 0 ? getGradeColor(child.gpa) : 'text-foreground'}`}
-                          >
-                            {child.gpa > 0 ? `${child.gpa}%` : '--'}
-                          </p>
-                          <p className="text-xs text-muted-foreground">Grade</p>
+                      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                        <CircularGauge
+                          value={child.gpa}
+                          size={90}
+                          strokeWidth={8}
+                          label="Grade"
+                        />
+                        <CircularGauge
+                          value={child.attendanceRate}
+                          size={90}
+                          strokeWidth={8}
+                          label="Attendance"
+                          colorThresholds={[
+                            { value: 95, color: '#22c55e', bgColor: '#22c55e20' },
+                            { value: 85, color: '#f59e0b', bgColor: '#f59e0b20' },
+                            { value: 0, color: '#ef4444', bgColor: '#ef444420' },
+                          ]}
+                        />
+                        <div className="flex flex-col items-center gap-2" role="status" aria-label={`Courses: ${child.courseCount}`}>
+                          <div className="flex h-[90px] w-[90px] items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/20">
+                            <div className="text-center">
+                              <BookOpen className="mx-auto mb-0.5 h-4 w-4 text-blue-500" />
+                              <p className="text-lg font-extrabold text-foreground">{child.courseCount}</p>
+                            </div>
+                          </div>
+                          <p className="text-sm font-semibold text-foreground">Courses</p>
                         </div>
-                        <div className="rounded-xl bg-muted/50 p-3 text-center">
-                          <Calendar className="mx-auto mb-1 h-4 w-4 text-green-500" />
-                          <p
-                            className={`text-lg font-bold ${child.attendanceRate > 0 ? getAttendanceColor(child.attendanceRate) : 'text-foreground'}`}
-                          >
-                            {child.attendanceRate > 0
-                              ? `${child.attendanceRate}%`
-                              : '--'}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            Attendance
-                          </p>
-                        </div>
-                        <div className="rounded-xl bg-muted/50 p-3 text-center">
-                          <BookOpen className="mx-auto mb-1 h-4 w-4 text-blue-500" />
-                          <p className="text-lg font-bold text-foreground">
-                            {child.courseCount}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            Courses
-                          </p>
-                        </div>
-                        <div className="rounded-xl bg-muted/50 p-3 text-center">
-                          <AlertCircle
-                            className={`mx-auto mb-1 h-4 w-4 ${child.missingAssignments > 0 ? 'text-red-500' : 'text-muted-foreground'}`}
-                          />
-                          <p
-                            className={`text-lg font-bold ${child.missingAssignments > 0 ? 'text-red-500' : 'text-foreground'}`}
-                          >
-                            {child.missingAssignments}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            Missing
-                          </p>
+                        <div className="flex flex-col items-center gap-2" role="status" aria-label={`Missing assignments: ${child.missingAssignments}`}>
+                          <div className={`flex h-[90px] w-[90px] items-center justify-center rounded-full ${child.missingAssignments > 0 ? 'bg-red-50 dark:bg-red-950/20' : 'bg-muted/30'}`}>
+                            <div className="text-center">
+                              <AlertCircle className={`mx-auto mb-0.5 h-4 w-4 ${child.missingAssignments > 0 ? 'text-red-500' : 'text-muted-foreground'}`} />
+                              <p className={`text-lg font-extrabold ${child.missingAssignments > 0 ? 'text-red-500' : 'text-foreground'}`}>{child.missingAssignments}</p>
+                            </div>
+                          </div>
+                          <p className="text-sm font-semibold text-foreground">Missing</p>
                         </div>
                       </div>
                     </div>
