@@ -57,7 +57,7 @@ export const metadata: Metadata = {
       "Modern learning management system with interactive courses, quizzes, flashcards, and certificates.",
     images: [
       {
-        url: "/link-card.png",
+        url: "/ww-card.png",
         width: 1200,
         height: 630,
         alt: "WolfWhale LMS",
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     title: "Wolf Whale - Learning Management System",
     description:
       "Modern learning management system with interactive courses, quizzes, flashcards, and certificates.",
-    images: ["/link-card.png"],
+    images: ["/ww-card.png"],
     creator: "@wolfwhale",
   },
   robots: {
