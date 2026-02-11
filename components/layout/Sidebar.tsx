@@ -30,6 +30,7 @@ import {
   X,
   type LucideIcon,
 } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 import { getRoleMenuItems, type UserRole } from '@/lib/auth/permissions'
@@ -85,6 +86,24 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
   const router = useRouter()
   const menuItems = getRoleMenuItems(role)
   const sounds = useSound()
+  const navRef = useRef<HTMLElement>(null)
+  const [canScrollDown, setCanScrollDown] = useState(false)
+
+  useEffect(() => {
+    const nav = navRef.current
+    if (!nav) return
+    function check() {
+      if (!nav) return
+      setCanScrollDown(nav.scrollTop + nav.clientHeight < nav.scrollHeight - 8)
+    }
+    check()
+    nav.addEventListener('scroll', check, { passive: true })
+    window.addEventListener('resize', check)
+    return () => {
+      nav.removeEventListener('scroll', check)
+      window.removeEventListener('resize', check)
+    }
+  }, [menuItems.length])
 
   const handleSignOut = async () => {
     const supabase = createClient()
@@ -130,42 +149,55 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
       {/* ----------------------------------------------------------------- */}
       {/* Navigation links                                                   */}
       {/* ----------------------------------------------------------------- */}
-      <nav className="flex-1 overflow-y-auto px-3 py-4">
-        <ul className="space-y-1" role="list">
-          {menuItems.map((item) => {
-            const Icon = ICON_MAP[item.icon] ?? LayoutDashboard
-            const isActive =
-              pathname === item.href ||
-              (item.href !== '/' && pathname.startsWith(item.href + '/'))
+      <div className="relative flex-1 min-h-0">
+        <nav
+          ref={navRef}
+          className="h-full overflow-y-auto px-3 py-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-sidebar-border hover:scrollbar-thumb-sidebar-foreground/20"
+        >
+          <ul className="space-y-1" role="list">
+            {menuItems.map((item) => {
+              const Icon = ICON_MAP[item.icon] ?? LayoutDashboard
+              const isActive =
+                pathname === item.href ||
+                (item.href !== '/' && pathname.startsWith(item.href + '/'))
 
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  onClick={() => {
-                    sounds.playNavigate()
-                    onClose?.()
-                  }}
-                  className={cn(
-                    'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
-                    isActive
-                      ? 'wolf-gradient text-white shadow-md shadow-ocean-500/20 glow-border-ocean'
-                      : 'text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground'
-                  )}
-                >
-                  <Icon
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    onClick={() => {
+                      sounds.playNavigate()
+                      onClose?.()
+                    }}
                     className={cn(
-                      'h-5 w-5 flex-shrink-0',
-                      isActive ? 'text-white' : 'text-sidebar-foreground/50'
+                      'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
+                      isActive
+                        ? 'wolf-gradient text-white shadow-md shadow-ocean-500/20 glow-border-ocean'
+                        : 'text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground'
                     )}
-                  />
-                  <span className="truncate">{item.label}</span>
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
-      </nav>
+                  >
+                    <Icon
+                      className={cn(
+                        'h-5 w-5 flex-shrink-0',
+                        isActive ? 'text-white' : 'text-sidebar-foreground/50'
+                      )}
+                    />
+                    <span className="truncate">{item.label}</span>
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        </nav>
+
+        {/* Scroll fade indicator */}
+        <div
+          className={cn(
+            'pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-sidebar to-transparent transition-opacity duration-300',
+            canScrollDown ? 'opacity-100' : 'opacity-0'
+          )}
+        />
+      </div>
 
       {/* ----------------------------------------------------------------- */}
       {/* Student XP Widget                                                  */}
