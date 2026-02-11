@@ -645,20 +645,20 @@ export default function InfoPage() {
           <div className="rounded-2xl p-10 liquid-glass max-w-2xl mx-auto">
             <div className="space-y-6">
               <div>
-                <h3 className="text-2xl font-semibold mb-2">Contact Sales</h3>
+                <h3 className="text-2xl font-semibold mb-2">Contact Us</h3>
                 <p className="text-[#1a2a4e]/60">Get a personalized demo and pricing for your school</p>
               </div>
 
               <div className="flex items-center justify-center gap-2 text-[#0a4d68]">
                 <Mail className="h-5 w-5" />
-                <a href="mailto:sales@wolfwhale.ca" className="text-lg font-medium hover:underline">
-                  sales@wolfwhale.ca
+                <a href="mailto:info@wolfwhale.ca" className="text-lg font-medium hover:underline">
+                  info@wolfwhale.ca
                 </a>
               </div>
 
               <div className="pt-6">
                 <a
-                  href="mailto:sales@wolfwhale.ca?subject=Wolf%20Whale%20LMS%20Demo%20Request"
+                  href="mailto:info@wolfwhale.ca?subject=Wolf%20Whale%20LMS%20Demo%20Request"
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] hover:shadow-[0_0_30px_oklch(0.70_0.12_180/0.4)] transition-all font-semibold text-white group btn-glow"
                 >
                   Request a Demo
