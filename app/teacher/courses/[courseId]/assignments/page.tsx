@@ -29,7 +29,7 @@ function TypeBadge({ type }: { type: string }) {
     quiz: 'bg-purple-100 text-purple-700 dark:bg-purple-950/40 dark:text-purple-300',
     project: 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-300',
     exam: 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-300',
-    discussion: 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300',
+    discussion: 'bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300',
     presentation: 'bg-pink-100 text-pink-700 dark:bg-pink-950/40 dark:text-pink-300',
     other: 'bg-gray-100 text-gray-700 dark:bg-gray-950/40 dark:text-gray-300',
   }

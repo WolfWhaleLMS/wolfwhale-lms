@@ -94,7 +94,7 @@ export default async function TeacherAllAssignmentsPage() {
       case 'past_due':
         return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
       case 'due_soon':
-        return 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+        return 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400'
       case 'published':
         return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
       default:
@@ -192,8 +192,8 @@ export default async function TeacherAllAssignmentsPage() {
             <p className="mt-1 text-xs text-muted-foreground">Active</p>
           </div>
           <div className="ocean-card rounded-2xl p-4 text-center">
-            <AlertTriangle className="mx-auto mb-1 h-5 w-5 text-amber-500" />
-            <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+            <AlertTriangle className="mx-auto mb-1 h-5 w-5 text-rose-500" />
+            <p className="text-2xl font-bold text-rose-600 dark:text-rose-400">
               {assignments.filter((a) => getAssignmentStatus(a) === 'due_soon').length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Due Soon</p>

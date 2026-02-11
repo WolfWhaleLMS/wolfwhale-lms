@@ -289,7 +289,7 @@ export function CourseSettings({
             }}
             className={
               formData.status === 'draft'
-                ? 'bg-amber-600 hover:bg-amber-700'
+                ? 'bg-rose-600 hover:bg-rose-700'
                 : ''
             }
           >

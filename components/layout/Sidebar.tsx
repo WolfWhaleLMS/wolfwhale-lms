@@ -108,7 +108,7 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
             />
           </div>
 
-          <span className="truncate text-lg font-bold tracking-tight">
+          <span className="text-base font-bold tracking-tight leading-tight line-clamp-2">
             {tenantName}
           </span>
         </Link>

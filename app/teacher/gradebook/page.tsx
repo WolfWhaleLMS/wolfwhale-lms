@@ -42,7 +42,7 @@ interface GradebookData {
 function GradeColor({ percentage }: { percentage: number }) {
   if (percentage >= 90) return 'text-green-600 dark:text-green-400'
   if (percentage >= 80) return 'text-blue-600 dark:text-blue-400'
-  if (percentage >= 70) return 'text-amber-600 dark:text-amber-400'
+  if (percentage >= 70) return 'text-rose-600 dark:text-rose-400'
   if (percentage >= 60) return 'text-orange-600 dark:text-orange-400'
   return 'text-red-600 dark:text-red-400'
 }
@@ -50,7 +50,7 @@ function GradeColor({ percentage }: { percentage: number }) {
 function gradeColorClass(percentage: number): string {
   if (percentage >= 90) return 'text-green-600 dark:text-green-400'
   if (percentage >= 80) return 'text-blue-600 dark:text-blue-400'
-  if (percentage >= 70) return 'text-amber-600 dark:text-amber-400'
+  if (percentage >= 70) return 'text-rose-600 dark:text-rose-400'
   if (percentage >= 60) return 'text-orange-600 dark:text-orange-400'
   return 'text-red-600 dark:text-red-400'
 }

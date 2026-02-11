@@ -271,9 +271,9 @@ export default function InfoPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Student Dashboard Preview */}
-            <div className="rounded-2xl p-8 liquid-glass liquid-glass-hover overflow-hidden group">
-              <div className="flex items-center gap-3 mb-6">
+            {/* Student Dashboard */}
+            <div className="rounded-2xl overflow-hidden liquid-glass liquid-glass-hover group">
+              <div className="flex items-center gap-3 p-5 border-b border-[#1a2a4e]/10">
                 <div className="p-2 rounded-lg bg-gradient-to-br from-[#1a2a4e] to-[#0a4d68]">
                   <GraduationCap className="h-5 w-5 text-white" />
                 </div>
@@ -282,34 +282,12 @@ export default function InfoPage() {
                   <p className="text-xs text-[#1a2a4e]/60">Your learning command center</p>
                 </div>
               </div>
-              <div className="space-y-3">
-                <div className="h-16 rounded-lg bg-gradient-to-r from-[#1a2a4e]/5 to-[#1a2a4e]/8 border border-[#1a2a4e]/10 p-3">
-                  <div className="h-2 w-24 bg-[#1a2a4e]/20 rounded mb-2"></div>
-                  <div className="h-2 w-32 bg-[#1a2a4e]/10 rounded"></div>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="h-20 rounded-lg bg-gradient-to-br from-[#1a2a4e]/5 to-[#0a4d68]/5 border border-[#1a2a4e]/10 p-3">
-                    <div className="h-2 w-16 bg-[#1a2a4e]/20 rounded mb-2"></div>
-                    <div className="h-3 w-12 bg-[#0a4d68] rounded"></div>
-                  </div>
-                  <div className="h-20 rounded-lg bg-gradient-to-br from-[#1a2a4e]/5 to-[#0a4d68]/5 border border-[#1a2a4e]/10 p-3">
-                    <div className="h-2 w-16 bg-[#1a2a4e]/20 rounded mb-2"></div>
-                    <div className="h-3 w-12 bg-[#0a4d68] rounded"></div>
-                  </div>
-                </div>
-                <div className="h-24 rounded-lg bg-gradient-to-r from-[#1a2a4e]/5 to-[#1a2a4e]/8 border border-[#1a2a4e]/10 p-3">
-                  <div className="h-2 w-28 bg-[#1a2a4e]/20 rounded mb-3"></div>
-                  <div className="space-y-2">
-                    <div className="h-2 w-full bg-[#1a2a4e]/10 rounded"></div>
-                    <div className="h-2 w-3/4 bg-[#1a2a4e]/10 rounded"></div>
-                  </div>
-                </div>
-              </div>
+              <img src="/screenshot-student.png" alt="Student Dashboard" className="w-full h-auto" />
             </div>
 
-            {/* Teacher Dashboard Preview */}
-            <div className="rounded-2xl p-8 liquid-glass liquid-glass-hover overflow-hidden group">
-              <div className="flex items-center gap-3 mb-6">
+            {/* Teacher Dashboard */}
+            <div className="rounded-2xl overflow-hidden liquid-glass liquid-glass-hover group">
+              <div className="flex items-center gap-3 p-5 border-b border-[#1a2a4e]/10">
                 <div className="p-2 rounded-lg bg-gradient-to-br from-[#1a2a4e] to-[#0a4d68]">
                   <BookOpen className="h-5 w-5 text-white" />
                 </div>
@@ -318,35 +296,12 @@ export default function InfoPage() {
                   <p className="text-xs text-[#1a2a4e]/60">Manage courses and students</p>
                 </div>
               </div>
-              <div className="space-y-3">
-                <div className="h-16 rounded-lg bg-gradient-to-r from-[#1a2a4e]/5 to-[#1a2a4e]/8 border border-[#1a2a4e]/10 p-3">
-                  <div className="h-2 w-32 bg-[#1a2a4e]/20 rounded mb-2"></div>
-                  <div className="h-2 w-40 bg-[#1a2a4e]/10 rounded"></div>
-                </div>
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="h-16 rounded-lg bg-gradient-to-br from-[#1a2a4e]/5 to-[#0a4d68]/5 border border-[#1a2a4e]/10 p-2">
-                    <div className="h-2 w-12 bg-[#1a2a4e]/20 rounded"></div>
-                  </div>
-                  <div className="h-16 rounded-lg bg-gradient-to-br from-[#1a2a4e]/5 to-[#0a4d68]/5 border border-[#1a2a4e]/10 p-2">
-                    <div className="h-2 w-12 bg-[#1a2a4e]/20 rounded"></div>
-                  </div>
-                  <div className="h-16 rounded-lg bg-gradient-to-br from-[#1a2a4e]/5 to-[#0a4d68]/5 border border-[#1a2a4e]/10 p-2">
-                    <div className="h-2 w-12 bg-[#1a2a4e]/20 rounded"></div>
-                  </div>
-                </div>
-                <div className="h-24 rounded-lg bg-gradient-to-r from-[#1a2a4e]/5 to-[#1a2a4e]/8 border border-[#1a2a4e]/10 p-3">
-                  <div className="h-2 w-24 bg-[#1a2a4e]/20 rounded mb-3"></div>
-                  <div className="space-y-2">
-                    <div className="h-2 w-full bg-[#1a2a4e]/10 rounded"></div>
-                    <div className="h-2 w-5/6 bg-[#1a2a4e]/10 rounded"></div>
-                  </div>
-                </div>
-              </div>
+              <img src="/screenshot-teacher.png" alt="Teacher Dashboard" className="w-full h-auto" />
             </div>
 
-            {/* Parent Dashboard Preview */}
-            <div className="rounded-2xl p-8 liquid-glass liquid-glass-hover overflow-hidden group">
-              <div className="flex items-center gap-3 mb-6">
+            {/* Parent Dashboard */}
+            <div className="rounded-2xl overflow-hidden liquid-glass liquid-glass-hover group">
+              <div className="flex items-center gap-3 p-5 border-b border-[#1a2a4e]/10">
                 <div className="p-2 rounded-lg bg-gradient-to-br from-[#1a2a4e] to-[#0a4d68]">
                   <Users className="h-5 w-5 text-white" />
                 </div>
@@ -355,32 +310,12 @@ export default function InfoPage() {
                   <p className="text-xs text-[#1a2a4e]/60">Monitor child progress</p>
                 </div>
               </div>
-              <div className="space-y-3">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="h-24 rounded-lg bg-gradient-to-br from-[#1a2a4e]/5 to-[#0a4d68]/5 border border-[#1a2a4e]/10 p-3 flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-full border-4 border-[#0a4d68] flex items-center justify-center">
-                      <div className="text-xl font-bold text-[#0a4d68]">A</div>
-                    </div>
-                  </div>
-                  <div className="h-24 rounded-lg bg-gradient-to-br from-[#1a2a4e]/5 to-[#0a4d68]/5 border border-[#1a2a4e]/10 p-3 flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-full border-4 border-emerald-600 flex items-center justify-center">
-                      <div className="text-sm font-bold text-emerald-600">98%</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="h-20 rounded-lg bg-gradient-to-r from-[#1a2a4e]/5 to-[#1a2a4e]/8 border border-[#1a2a4e]/10 p-3">
-                  <div className="h-2 w-32 bg-[#1a2a4e]/20 rounded mb-3"></div>
-                  <div className="space-y-2">
-                    <div className="h-2 w-full bg-[#1a2a4e]/10 rounded"></div>
-                    <div className="h-2 w-2/3 bg-[#1a2a4e]/10 rounded"></div>
-                  </div>
-                </div>
-              </div>
+              <img src="/screenshot-parent.png" alt="Parent Dashboard" className="w-full h-auto" />
             </div>
 
-            {/* Admin Dashboard Preview */}
-            <div className="rounded-2xl p-8 liquid-glass liquid-glass-hover overflow-hidden group">
-              <div className="flex items-center gap-3 mb-6">
+            {/* Admin Dashboard */}
+            <div className="rounded-2xl overflow-hidden liquid-glass liquid-glass-hover group">
+              <div className="flex items-center gap-3 p-5 border-b border-[#1a2a4e]/10">
                 <div className="p-2 rounded-lg bg-gradient-to-br from-[#1a2a4e] to-[#0a4d68]">
                   <LayoutDashboard className="h-5 w-5 text-white" />
                 </div>
@@ -389,26 +324,7 @@ export default function InfoPage() {
                   <p className="text-xs text-[#1a2a4e]/60">School-wide insights</p>
                 </div>
               </div>
-              <div className="space-y-3">
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="h-16 rounded-lg bg-gradient-to-br from-[#1a2a4e]/5 to-[#0a4d68]/5 border border-[#1a2a4e]/10 p-2">
-                    <div className="h-2 w-8 bg-[#1a2a4e]/20 rounded mb-1"></div>
-                    <div className="h-3 w-12 bg-[#0a4d68] rounded"></div>
-                  </div>
-                  <div className="h-16 rounded-lg bg-gradient-to-br from-[#1a2a4e]/5 to-[#0a4d68]/5 border border-[#1a2a4e]/10 p-2">
-                    <div className="h-2 w-8 bg-[#1a2a4e]/20 rounded mb-1"></div>
-                    <div className="h-3 w-12 bg-[#0a4d68] rounded"></div>
-                  </div>
-                  <div className="h-16 rounded-lg bg-gradient-to-br from-[#1a2a4e]/5 to-[#0a4d68]/5 border border-[#1a2a4e]/10 p-2">
-                    <div className="h-2 w-8 bg-[#1a2a4e]/20 rounded mb-1"></div>
-                    <div className="h-3 w-12 bg-[#0a4d68] rounded"></div>
-                  </div>
-                </div>
-                <div className="h-28 rounded-lg bg-gradient-to-r from-[#1a2a4e]/5 to-[#1a2a4e]/8 border border-[#1a2a4e]/10 p-3">
-                  <div className="h-2 w-28 bg-[#1a2a4e]/20 rounded mb-2"></div>
-                  <div className="h-16 w-full bg-gradient-to-t from-[#0a4d68]/30 to-transparent rounded"></div>
-                </div>
-              </div>
+              <img src="/screenshot-admin.png" alt="Admin Dashboard" className="w-full h-auto" />
             </div>
           </div>
         </div>

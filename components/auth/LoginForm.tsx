@@ -83,7 +83,7 @@ export function LoginForm() {
 
   const demoAccounts = [
     { username: 'student', label: 'Student', icon: GraduationCap, color: 'from-purple-500 to-purple-600', hoverGlow: 'hover:shadow-purple-500/30' },
-    { username: 'teacher', label: 'Teacher', icon: BookOpen, color: 'from-amber-500 to-amber-600', hoverGlow: 'hover:shadow-amber-500/30' },
+    { username: 'teacher', label: 'Teacher', icon: BookOpen, color: 'from-rose-500 to-rose-600', hoverGlow: 'hover:shadow-rose-500/30' },
     { username: 'parent', label: 'Parent', icon: Users, color: 'from-emerald-500 to-emerald-600', hoverGlow: 'hover:shadow-emerald-500/30' },
     { username: 'admin', label: 'Admin', icon: Shield, color: 'from-slate-500 to-slate-700', hoverGlow: 'hover:shadow-slate-500/30' },
   ]

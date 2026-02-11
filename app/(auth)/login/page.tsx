@@ -21,7 +21,7 @@ export default function LoginPage() {
       {/* EVA-style Title */}
       <div className="text-center space-y-2 mb-2">
         <h1
-          className="text-5xl sm:text-6xl font-extrabold tracking-tight text-[#1a2a4e] leading-none"
+          className="text-[2.6rem] sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#1a2a4e] leading-none whitespace-nowrap"
           style={{
             fontFamily: "'Shippori Mincho B1', Georgia, 'Times New Roman', serif",
             fontWeight: 800,

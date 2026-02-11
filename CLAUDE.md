@@ -59,7 +59,7 @@
 
 - Build must pass (`npm run build`) before any push to `main`
 - Use Lucide icons (no emoji) in dashboard UI for professional feel
-- Role-scoped theming: student=purple, teacher=amber, admin=blue-gray, parent=green
+- Role-scoped theming: student=purple, teacher=rose, admin=blue-gray, parent=green
 - Supabase migrations go in `supabase/migrations/` with timestamp prefixes
 - Server actions go in `app/actions/`
 - Shared components in `components/`, organized by domain (layout, auth, course, etc.)

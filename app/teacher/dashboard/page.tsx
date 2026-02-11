@@ -197,8 +197,8 @@ export default async function TeacherDashboardPage() {
             <p className="mt-1 text-sm text-muted-foreground">Students</p>
           </div>
           <div className="rounded-xl border border-border bg-muted/30 p-4 text-center">
-            <ClipboardList className="mx-auto mb-1 h-5 w-5 text-amber-500" />
-            <p className="text-3xl font-bold text-amber-600 dark:text-amber-400">
+            <ClipboardList className="mx-auto mb-1 h-5 w-5 text-rose-500" />
+            <p className="text-3xl font-bold text-rose-600 dark:text-rose-400">
               {pendingGrading}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -271,10 +271,10 @@ export default async function TeacherDashboardPage() {
 
           <Link
             href="/calendar"
-            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-amber-500/10 to-amber-500/5 p-6 transition-all hover:shadow-lg hover:scale-105"
+            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-rose-500/10 to-rose-500/5 p-6 transition-all hover:shadow-lg hover:scale-105"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/20">
-              <Calendar className="h-6 w-6 text-amber-500" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-500/20">
+              <Calendar className="h-6 w-6 text-rose-500" />
             </div>
             <span className="text-sm font-semibold text-foreground">
               Calendar

@@ -220,7 +220,7 @@ export default function TeacherQuizzesPage() {
                   {quiz.status === 'published' && (
                     <button
                       onClick={() => handleToggleStatus(quiz)}
-                      className="rounded-lg border border-amber-200 px-3 py-1.5 text-sm font-medium text-amber-600 transition-colors hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400 dark:hover:bg-amber-950/30"
+                      className="rounded-lg border border-rose-200 px-3 py-1.5 text-sm font-medium text-rose-600 transition-colors hover:bg-rose-50 dark:border-rose-800 dark:text-rose-400 dark:hover:bg-rose-950/30"
                     >
                       Close
                     </button>

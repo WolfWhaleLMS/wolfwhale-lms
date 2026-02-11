@@ -117,7 +117,7 @@ function StatusBadge({ status, isLate }: { status: string; isLate: boolean }) {
   return (
     <div className="flex items-center gap-1.5">
       {isLate && (
-        <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
+        <span className="inline-flex items-center gap-1 rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-700 dark:bg-rose-950/40 dark:text-rose-300">
           <AlertTriangle className="h-3 w-3" />
           Late
         </span>
@@ -238,7 +238,7 @@ function GradingPanel({
           <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
             <span>Submitted: {formatDate(submission.submitted_at)}</span>
             {submission.is_late && (
-              <span className="flex items-center gap-1 font-medium text-amber-600 dark:text-amber-400">
+              <span className="flex items-center gap-1 font-medium text-rose-600 dark:text-rose-400">
                 <AlertTriangle className="h-3 w-3" />
                 Late submission
               </span>
@@ -595,9 +595,9 @@ export default function TeacherSubmissionsPage() {
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-lg">
           <div className="mb-2 flex items-center justify-center">
-            <Clock className={`h-6 w-6 ${lateCount > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-amber-600/50 dark:text-amber-400/50'}`} />
+            <Clock className={`h-6 w-6 ${lateCount > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-rose-600/50 dark:text-rose-400/50'}`} />
           </div>
-          <p className={`text-3xl font-bold ${lateCount > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-amber-600/50 dark:text-amber-400/50'}`}>
+          <p className={`text-3xl font-bold ${lateCount > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-rose-600/50 dark:text-rose-400/50'}`}>
             {lateCount}
           </p>
           <p className="mt-1 text-xs font-medium text-muted-foreground">Late</p>

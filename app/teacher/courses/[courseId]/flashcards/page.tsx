@@ -149,7 +149,7 @@ export default function TeacherFlashcardsPage({ params }: { params: Promise<{ co
                     <h3 className="font-semibold text-foreground">{deck.title}</h3>
                     <p className="text-sm text-muted-foreground">
                       {deck.card_count} cards &middot;{' '}
-                      <span className={deck.status === 'published' ? 'text-green-600' : 'text-amber-600'}>
+                      <span className={deck.status === 'published' ? 'text-green-600' : 'text-rose-600'}>
                         {deck.status}
                       </span>
                     </p>

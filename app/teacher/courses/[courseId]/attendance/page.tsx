@@ -68,9 +68,9 @@ const STATUS_CONFIG: Record<
   tardy: {
     label: 'Tardy',
     color:
-      'border-2 border-amber-200 text-amber-700 bg-amber-50 dark:border-amber-800 dark:text-amber-400 dark:bg-amber-950/20',
+      'border-2 border-rose-200 text-rose-700 bg-rose-50 dark:border-rose-800 dark:text-rose-400 dark:bg-rose-950/20',
     activeColor:
-      'bg-amber-500 text-white border-2 border-amber-600 shadow-lg shadow-amber-500/30 scale-105',
+      'bg-rose-500 text-white border-2 border-rose-600 shadow-lg shadow-rose-500/30 scale-105',
     icon: <Clock className="size-5" />,
   },
   excused: {
@@ -334,9 +334,9 @@ export default function TakeAttendancePage({
         </div>
         <div className="ocean-card rounded-2xl p-5 text-center">
           <div className="flex items-center justify-center mb-2">
-            <Clock className="size-5 text-amber-600 dark:text-amber-400" />
+            <Clock className="size-5 text-rose-600 dark:text-rose-400" />
           </div>
-          <p className="text-3xl font-bold text-amber-600 dark:text-amber-400">
+          <p className="text-3xl font-bold text-rose-600 dark:text-rose-400">
             {stats.tardy}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">Tardy Today</p>
@@ -548,7 +548,7 @@ export default function TakeAttendancePage({
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="size-3 rounded-full bg-amber-500"></div>
+                <div className="size-3 rounded-full bg-rose-500"></div>
                 <span className="text-muted-foreground">
                   {Math.round((stats.tardy / stats.total) * 100)}% Tardy
                 </span>

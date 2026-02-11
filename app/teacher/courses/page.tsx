@@ -74,7 +74,7 @@ export default async function TeacherCoursesPage() {
       case 'active':
         return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
       case 'draft':
-        return 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+        return 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400'
       case 'archived':
         return 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
       default:
