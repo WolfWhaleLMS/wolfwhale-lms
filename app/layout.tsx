@@ -5,6 +5,7 @@ import { SoundProvider } from "@/components/providers/sound-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { JsonLd } from "@/components/seo/JsonLd";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,11 +24,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wolfwhale.ca";
 
 export const metadata: Metadata = {
   title: {
-    default: "Wolf Whale - Learning Management System",
-    template: "%s | WolfWhale LMS",
+    default: "Wolf Whale - Canadian Learning Management System for K-12 & Post-Secondary",
+    template: "%s | Wolf Whale LMS",
   },
   description:
-    "WolfWhale LMS is a modern learning management system featuring interactive courses, quizzes, flashcards with spaced repetition, and certificates. Start your learning journey today.",
+    "Wolf Whale is Canada's modern LMS with built-in spaced repetition flashcards, interactive courses, quizzes, and certificates. FERPA & PIPEDA compliant. The only learning platform with spaced repetition technology built in.",
   keywords: [
     "LMS",
     "learning management system",
@@ -39,6 +40,18 @@ export const metadata: Metadata = {
     "spaced repetition",
     "certificates",
     "interactive learning",
+    "Canadian LMS",
+    "K-12 learning platform",
+    "post-secondary LMS",
+    "FERPA compliant",
+    "PIPEDA compliant",
+    "Canvas alternative",
+    "Moodle alternative",
+    "Brightspace alternative",
+    "school learning management system",
+    "LMS for schools Canada",
+    "spaced repetition learning",
+    "student data privacy",
   ],
   authors: [{ name: "WolfWhale" }],
   creator: "WolfWhale",
@@ -52,23 +65,23 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "WolfWhale LMS",
-    title: "Wolf Whale - Learning Management System",
+    title: "Wolf Whale - Canadian Learning Management System for K-12 & Post-Secondary",
     description:
-      "Modern learning management system with interactive courses, quizzes, flashcards, and certificates.",
+      "Canada's modern LMS with built-in spaced repetition flashcards, interactive courses, quizzes, and certificates. FERPA & PIPEDA compliant.",
     images: [
       {
         url: "/ww-card.png",
         width: 1200,
         height: 630,
-        alt: "WolfWhale LMS",
+        alt: "Wolf Whale LMS - Canadian Learning Management System",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Wolf Whale - Learning Management System",
+    title: "Wolf Whale - Canadian Learning Management System for K-12 & Post-Secondary",
     description:
-      "Modern learning management system with interactive courses, quizzes, flashcards, and certificates.",
+      "Canada's modern LMS with built-in spaced repetition flashcards, interactive courses, quizzes, and certificates. FERPA & PIPEDA compliant.",
     images: ["/ww-card.png"],
     creator: "@wolfwhale",
   },
@@ -109,6 +122,34 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "Wolf Whale Inc.",
+            url: "https://wolfwhale.ca",
+            logo: "https://wolfwhale.ca/logo.png",
+            description:
+              "Canadian learning management system for K-12 & post-secondary education",
+            sameAs: [],
+          }}
+        />
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Wolf Whale LMS",
+            applicationCategory: "EducationalApplication",
+            operatingSystem: "Web",
+            description:
+              "Wolf Whale LMS is a Canadian LMS built for K-12 and post-secondary education. Features include interactive courses, quizzes, spaced repetition flashcards, certificates, and FERPA compliant data handling.",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "CAD",
+            },
+          }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
