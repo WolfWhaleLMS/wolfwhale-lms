@@ -54,8 +54,8 @@ export default function InfoPage() {
           <div className="flex items-center gap-3">
             <img src="/logo.png" alt="Wolf Whale" className="h-14 w-14 rounded-xl object-contain shadow-lg" />
             <div>
-              <h1 className="text-xl font-bold text-[#1a2a4e]">Wolf Whale LMS</h1>
-              <p className="text-xs text-[#1a2a4e]/60">Learning Management System</p>
+              <h1 className="text-xl font-bold text-[#1a2a4e]" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>Wolf Whale LMS</h1>
+              <p className="text-xs text-[#1a2a4e]/60 font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 600 }}>Learning Management System</p>
             </div>
           </div>
           <Link
@@ -744,8 +744,8 @@ export default function InfoPage() {
               <div className="flex items-center gap-3 mb-4">
                 <img src="/logo.png" alt="Wolf Whale" className="h-14 w-14 rounded-xl object-contain shadow-lg" />
                 <div>
-                  <h3 className="font-bold">Wolf Whale LMS</h3>
-                  <p className="text-xs text-[#1a2a4e]/60">Modern K-12 Learning Platform</p>
+                  <h3 className="font-bold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>Wolf Whale LMS</h3>
+                  <p className="text-xs text-[#1a2a4e]/60 font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif" }}>Modern K-12 Learning Platform</p>
                 </div>
               </div>
               <p className="text-sm text-[#1a2a4e]/60 max-w-md mb-3">

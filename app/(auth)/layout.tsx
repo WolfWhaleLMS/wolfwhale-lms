@@ -89,10 +89,10 @@ export default function AuthLayout({
         <Link href="/" className="inline-flex items-center gap-3 group">
           <img src="/logo.png" alt="Wolf Whale" className="h-20 w-20 rounded-xl object-contain shadow-lg" />
           <div>
-            <span className="text-xl font-bold text-[#1a2a4e] group-hover:text-[#0a4d68] transition-colors block">
+            <span className="text-xl font-bold text-[#1a2a4e] group-hover:text-[#0a4d68] transition-colors block" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>
               Wolf Whale
             </span>
-            <span className="text-xs text-[#1a2a4e]/60 block">
+            <span className="text-xs text-[#1a2a4e]/60 block font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 600 }}>
               Learning Management System
             </span>
           </div>

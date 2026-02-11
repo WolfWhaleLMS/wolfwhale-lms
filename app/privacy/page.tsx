@@ -796,10 +796,10 @@ export default function PrivacyPolicyPage() {
           <Link href="/" className="flex items-center gap-3 group">
             <img src="/logo.png" alt="Wolf Whale" className="h-12 w-12 rounded-xl object-contain shadow-lg" />
             <div>
-              <h1 className="text-lg sm:text-xl font-bold text-[#1a2a4e] group-hover:text-[#0a4d68] transition-colors">
+              <h1 className="text-lg sm:text-xl font-bold text-[#1a2a4e] group-hover:text-[#0a4d68] transition-colors" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>
                 Wolf Whale
               </h1>
-              <p className="text-[10px] sm:text-xs text-[#1a2a4e]/60">Learning Management System</p>
+              <p className="text-[10px] sm:text-xs text-[#1a2a4e]/60 font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 600 }}>Learning Management System</p>
             </div>
           </Link>
 

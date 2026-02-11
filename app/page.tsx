@@ -67,7 +67,7 @@ export default function HomePage() {
       <header className="relative z-10 p-6">
         <Link href="/" className="inline-flex items-center gap-3 group">
           <img src="/logo.png" alt="Wolf Whale" className="h-16 w-16 rounded-xl object-contain shadow-lg" />
-          <span className="text-xl font-bold text-white group-hover:text-[oklch(0.74_0.13_180)] transition-colors">
+          <span className="text-xl font-bold text-white group-hover:text-[oklch(0.74_0.13_180)] transition-colors" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>
             Wolf Whale
           </span>
         </Link>
@@ -85,7 +85,7 @@ export default function HomePage() {
 
             {/* Heading */}
             <div className="space-y-4">
-              <h1 className="text-5xl md:text-6xl font-bold text-white">
+              <h1 className="text-5xl md:text-6xl font-bold text-white" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>
                 Wolf Whale LMS
               </h1>
               <p className="text-xl md:text-2xl text-white/70 max-w-2xl mx-auto">
