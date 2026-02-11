@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Loader2, AlertCircle, Mail, Lock } from 'lucide-react'
+import { Loader2, AlertCircle, User, Lock, GraduationCap, BookOpen, Users, Shield } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -20,8 +20,8 @@ import {
 import { TurnstileWidget } from '@/components/auth/TurnstileWidget'
 
 const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  email: z.string().min(1, 'Please enter your username'),
+  password: z.string().min(1, 'Please enter your password'),
 })
 
 type LoginFormValues = z.infer<typeof loginSchema>
@@ -31,6 +31,7 @@ export function LoginForm() {
   const searchParams = useSearchParams()
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [demoLoading, setDemoLoading] = useState<string | null>(null)
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
 
   const turnstileEnabled = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
@@ -64,8 +65,9 @@ export function LoginForm() {
     }
 
     const supabase = createClient()
+    const email = data.email.includes('@') ? data.email : `${data.email}@wolfwhale.ca`
     const { error } = await supabase.auth.signInWithPassword({
-      email: data.email,
+      email,
       password: data.password,
     })
 
@@ -79,8 +81,71 @@ export function LoginForm() {
     router.refresh()
   }
 
+  const demoAccounts = [
+    { username: 'student', label: 'Student', icon: GraduationCap, color: 'from-purple-500 to-purple-600', hoverGlow: 'hover:shadow-purple-500/30' },
+    { username: 'teacher', label: 'Teacher', icon: BookOpen, color: 'from-amber-500 to-amber-600', hoverGlow: 'hover:shadow-amber-500/30' },
+    { username: 'parent', label: 'Parent', icon: Users, color: 'from-emerald-500 to-emerald-600', hoverGlow: 'hover:shadow-emerald-500/30' },
+    { username: 'admin', label: 'Admin', icon: Shield, color: 'from-slate-500 to-slate-700', hoverGlow: 'hover:shadow-slate-500/30' },
+  ]
+
+  async function handleDemoLogin(username: string) {
+    setDemoLoading(username)
+    setError(null)
+
+    const supabase = createClient()
+    const { error } = await supabase.auth.signInWithPassword({
+      email: `${username}@wolfwhale.ca`,
+      password: 'demo123',
+    })
+
+    if (error) {
+      setError(error.message)
+      setDemoLoading(null)
+      return
+    }
+
+    router.push(redirectTo)
+    router.refresh()
+  }
+
   return (
     <div className="space-y-6">
+      {/* Demo Quick-Login Buttons */}
+      <div className="space-y-3">
+        <p className="text-xs text-center text-[#1a2a4e]/50 font-medium uppercase tracking-wider">
+          Quick Demo Access
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          {demoAccounts.map((account) => {
+            const Icon = account.icon
+            const loading = demoLoading === account.username
+            return (
+              <button
+                key={account.username}
+                type="button"
+                onClick={() => handleDemoLogin(account.username)}
+                disabled={isLoading || demoLoading !== null}
+                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-gradient-to-br ${account.color} text-white font-semibold shadow-md ${account.hoverGlow} hover:shadow-lg hover:scale-[1.03] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed`}
+              >
+                {loading ? (
+                  <Loader2 className="h-6 w-6 animate-spin" />
+                ) : (
+                  <Icon className="h-6 w-6" />
+                )}
+                <span className="text-sm">{loading ? 'Signing in...' : account.label}</span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-px bg-[#1a2a4e]/10" />
+        <span className="text-xs text-[#1a2a4e]/30 font-medium">or sign in with credentials</span>
+        <div className="flex-1 h-px bg-[#1a2a4e]/10" />
+      </div>
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -88,14 +153,14 @@ export function LoginForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[#1a2a4e]/70">Email</FormLabel>
+                <FormLabel className="text-[#1a2a4e]/70">Username</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a2a4e]/30" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a2a4e]/30" />
                     <Input
-                      type="email"
-                      placeholder="you@school.edu"
-                      autoComplete="email"
+                      type="text"
+                      placeholder="student"
+                      autoComplete="username"
                       autoFocus
                       disabled={isLoading}
                       className="pl-10 bg-white/80 border-[#1a2a4e]/15 text-[#1a2a4e] placeholder:text-[#1a2a4e]/30 focus:border-[#0a4d68]/50 focus:ring-[#0a4d68]/20"

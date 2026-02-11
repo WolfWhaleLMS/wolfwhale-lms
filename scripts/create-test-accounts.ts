@@ -14,11 +14,11 @@
  *   npx tsx scripts/create-test-accounts.ts
  *
  * Accounts created:
- *   student@wolfwhale.ca      / student123  (student)
- *   teacher@wolfwhale.ca      / teacher123  (teacher)
- *   parent@wolfwhale.ca       / parent123   (parent)
- *   admin@wolfwhale.ca        / admin123    (admin)
- *   superadmin@wolfwhale.ca   / super123    (super_admin / platform owner only)
+ *   student@wolfwhale.ca     / demo123  (student)
+ *   teacher@wolfwhale.ca     / demo123  (teacher)
+ *   parent@wolfwhale.ca      / demo123  (parent)
+ *   admin@wolfwhale.ca       / demo123  (admin)
+ *   superadmin@wolfwhale.ca  / demo123  (super_admin / platform owner only)
  */
 
 import { createClient } from '@supabase/supabase-js'
@@ -93,35 +93,35 @@ interface TestAccount {
 const TEST_ACCOUNTS: TestAccount[] = [
   {
     email: 'student@wolfwhale.ca',
-    password: 'student123',
+    password: 'demo123',
     firstName: 'Alex',
     lastName: 'Student',
     role: 'student',
   },
   {
     email: 'teacher@wolfwhale.ca',
-    password: 'teacher123',
+    password: 'demo123',
     firstName: 'Jordan',
     lastName: 'Teacher',
     role: 'teacher',
   },
   {
     email: 'parent@wolfwhale.ca',
-    password: 'parent123',
+    password: 'demo123',
     firstName: 'Morgan',
     lastName: 'Parent',
     role: 'parent',
   },
   {
     email: 'admin@wolfwhale.ca',
-    password: 'admin123',
+    password: 'demo123',
     firstName: 'Sam',
     lastName: 'Admin',
     role: 'admin',
   },
   {
     email: 'superadmin@wolfwhale.ca',
-    password: 'super123',
+    password: 'demo123',
     firstName: 'Taylor',
     lastName: 'SuperAdmin',
     role: 'super_admin',
