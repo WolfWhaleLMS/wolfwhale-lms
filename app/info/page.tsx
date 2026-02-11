@@ -89,7 +89,7 @@ export default function InfoPage() {
 
           {/* Canadian Badge */}
           <div className="flex items-center justify-center gap-3 mb-10 px-6 py-3 rounded-xl bg-white/60 border border-[#1a2a4e]/10 w-fit mx-auto shadow-sm">
-            <img src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" className="h-12 w-auto object-contain" />
+            <img src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" className="h-20 w-auto object-contain" />
             <div className="text-left">
               <p className="text-sm font-bold text-[#1a2a4e]">100% Canadian Owned &amp; Built</p>
               <p className="text-xs text-[#1a2a4e]/60">Proudly designed and developed in Canada</p>
@@ -680,7 +680,7 @@ export default function InfoPage() {
           <div className="pt-8 border-t border-[#1a2a4e]/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#1a2a4e]/50">
             <p>&copy; 2026 Wolf Whale LMS. All rights reserved.</p>
             <div className="flex items-center gap-2">
-              <img src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" className="h-8 w-auto object-contain" />
+              <img src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" className="h-12 w-auto object-contain" />
               <span className="text-xs font-semibold text-[#1a2a4e]/60">100% Canadian Owned &amp; Built</span>
             </div>
           </div>
