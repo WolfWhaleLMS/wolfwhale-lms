@@ -64,7 +64,7 @@ export function PlazaLoading({
           style={{
             background: `
               radial-gradient(ellipse at 30% 50%, #2563eb 0%, transparent 50%),
-              radial-gradient(ellipse at 70% 30%, #14b8a6 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 30%, #02C2AD 0%, transparent 50%),
               radial-gradient(ellipse at 50% 70%, #8b5cf6 0%, transparent 50%)
             `,
             animation: 'plaza-loading-wave 4s ease-in-out infinite',

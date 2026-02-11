@@ -19,6 +19,8 @@ const LANDING_PAGE_SLUGS = [
   'brightspace-alternative',
   'spaced-repetition-lms',
   'ferpa-compliant-lms',
+  'teacher-collaboration',
+  'edsby-alternative',
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {

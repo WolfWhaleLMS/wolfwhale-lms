@@ -112,10 +112,15 @@ export function LoginForm() {
   return (
     <div className="space-y-6">
       {/* Demo Quick-Login Buttons */}
-      <div className="space-y-3">
-        <p className="text-xs text-center text-[#1a2a4e]/50 font-medium uppercase tracking-wider">
-          Quick Demo Access
-        </p>
+      <div className="space-y-4">
+        <div className="text-center space-y-1.5">
+          <h3 className="text-lg font-bold text-[#003C99]">
+            Try It Now — No Sign-Up Required
+          </h3>
+          <p className="text-sm text-[#003C99]/60 leading-relaxed">
+            Tap any role below to instantly explore Wolf Whale as a student, teacher, parent, or admin.
+          </p>
+        </div>
         <div className="grid grid-cols-2 gap-3">
           {demoAccounts.map((account) => {
             const Icon = account.icon
@@ -142,9 +147,9 @@ export function LoginForm() {
 
       {/* Divider */}
       <div className="flex items-center gap-3">
-        <div className="flex-1 h-px bg-[#1a2a4e]/10" />
-        <span className="text-xs text-[#1a2a4e]/30 font-medium">or sign in with credentials</span>
-        <div className="flex-1 h-px bg-[#1a2a4e]/10" />
+        <div className="flex-1 h-px bg-[#003C99]/10" />
+        <span className="text-xs text-[#003C99]/30 font-medium">or sign in with credentials</span>
+        <div className="flex-1 h-px bg-[#003C99]/10" />
       </div>
 
       <Form {...form}>
@@ -154,17 +159,17 @@ export function LoginForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[#1a2a4e]/70">Username</FormLabel>
+                <FormLabel className="text-[#003C99]/70">Username</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a2a4e]/30" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#003C99]/30" />
                     <Input
                       type="text"
                       placeholder="student"
                       autoComplete="username"
                       autoFocus
                       disabled={isLoading}
-                      className="pl-10 bg-white/80 border-[#1a2a4e]/15 text-[#1a2a4e] placeholder:text-[#1a2a4e]/30 focus:border-[#0a4d68]/50 focus:ring-[#0a4d68]/20"
+                      className="pl-10 bg-white/80 border-[#003C99]/15 text-[#003C99] placeholder:text-[#003C99]/30 focus:border-[#812BFF]/50 focus:ring-[#812BFF]/20"
                       {...field}
                     />
                   </div>
@@ -180,23 +185,23 @@ export function LoginForm() {
             render={({ field }) => (
               <FormItem>
                 <div className="flex items-center justify-between">
-                  <FormLabel className="text-[#1a2a4e]/70">Password</FormLabel>
+                  <FormLabel className="text-[#003C99]/70">Password</FormLabel>
                   <a
                     href="/forgot-password"
-                    className="text-sm text-[#0a4d68]/70 hover:text-[#0a4d68] transition-colors"
+                    className="text-sm text-[#812BFF]/70 hover:text-[#812BFF] transition-colors"
                   >
                     Forgot password?
                   </a>
                 </div>
                 <FormControl>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a2a4e]/30" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#003C99]/30" />
                     <Input
                       type="password"
                       placeholder="••••••••"
                       autoComplete="current-password"
                       disabled={isLoading}
-                      className="pl-10 bg-white/80 border-[#1a2a4e]/15 text-[#1a2a4e] placeholder:text-[#1a2a4e]/30 focus:border-[#0a4d68]/50 focus:ring-[#0a4d68]/20"
+                      className="pl-10 bg-white/80 border-[#003C99]/15 text-[#003C99] placeholder:text-[#003C99]/30 focus:border-[#812BFF]/50 focus:ring-[#812BFF]/20"
                       {...field}
                     />
                   </div>
@@ -220,7 +225,7 @@ export function LoginForm() {
 
           <Button
             type="submit"
-            className="w-full bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] text-white font-medium h-11 hover:opacity-90 transition-opacity"
+            className="w-full bg-gradient-to-r from-[#003C99] to-[#812BFF] text-white font-medium h-11 hover:opacity-90 transition-opacity"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -235,7 +240,7 @@ export function LoginForm() {
         </form>
       </Form>
 
-      <p className="text-xs text-center text-[#1a2a4e]/40">
+      <p className="text-xs text-center text-[#003C99]/40">
         Your administrator will provide your login credentials
       </p>
     </div>

@@ -43,7 +43,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   background: '#0ea5e9',
   trail_effect: '#8b5cf6',
   emote: '#f97316',
-  eye_style: '#14b8a6',
+  eye_style: '#02C2AD',
   body_shape: '#ec4899',
 }
 

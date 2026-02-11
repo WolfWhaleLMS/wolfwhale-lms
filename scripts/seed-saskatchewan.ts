@@ -162,8 +162,8 @@ async function main() {
           timezone: "America/Regina",
         },
         branding: {
-          primary_color: "#1a2a4e",
-          secondary_color: "#0a4d68",
+          primary_color: "#003C99",
+          secondary_color: "#812BFF",
           school_mascot: "Prairie Falcon",
         },
       },

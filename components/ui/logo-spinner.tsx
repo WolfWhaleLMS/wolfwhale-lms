@@ -21,7 +21,7 @@ export function LogoSpinner({ size = 80 }: { size?: number }) {
           stroke="currentColor"
           strokeWidth={strokeWidth}
           strokeLinecap="round"
-          className="text-[#0a4d68]/20"
+          className="text-[#812BFF]/20"
         />
         <circle
           cx={svgSize / 2}
@@ -33,7 +33,7 @@ export function LogoSpinner({ size = 80 }: { size?: number }) {
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={circumference * 0.7}
-          className="text-[#0a4d68]"
+          className="text-[#812BFF]"
         />
       </svg>
       {/* Logo */}

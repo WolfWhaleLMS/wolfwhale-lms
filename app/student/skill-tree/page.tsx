@@ -63,7 +63,7 @@ export default async function SkillTreePage() {
       <div
         className="relative overflow-hidden rounded-2xl p-8 text-white shadow-lg"
         style={{
-          background: 'linear-gradient(135deg, #1a2a4e 0%, #0a4d68 50%, #1a2a4e 100%)',
+          background: 'linear-gradient(135deg, #003C99 0%, #812BFF 50%, #003C99 100%)',
         }}
       >
         {/* Decorative gradient overlay for purple student accent */}

@@ -56,7 +56,7 @@ const ROOF_COLORS: Record<string, string> = {
   game_house: '#ef4444',
   store: '#8b5cf6',
   study_hall: '#3b82f6',
-  theater: '#14b8a6',
+  theater: '#02C2AD',
 }
 
 // ─── Game Loop Class ─────────────────────────────────────────────────────────

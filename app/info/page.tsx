@@ -25,7 +25,7 @@ import {
 
 export default function InfoPage() {
   return (
-    <div className="min-h-screen text-[#1a2a4e]">
+    <div className="min-h-screen text-[#003C99]">
       {/* Light Ocean Background — matches login page */}
       <div className="fixed inset-0 z-0">
         <div
@@ -37,30 +37,30 @@ export default function InfoPage() {
         <div
           className="absolute inset-0 opacity-40"
           style={{
-            background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(20,184,166,0.15) 0%, transparent 60%)',
+            background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(2,194,173,0.15) 0%, transparent 60%)',
           }}
         />
         <div
           className="absolute inset-0 opacity-25"
           style={{
-            background: 'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(26,42,78,0.08) 0%, transparent 50%)',
+            background: 'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(0,60,153,0.08) 0%, transparent 50%)',
           }}
         />
       </div>
 
       {/* Header Navigation */}
-      <header className="relative z-10 border-b border-[#1a2a4e]/10 liquid-glass-heavy">
+      <header className="relative z-10 border-b border-[#003C99]/10 liquid-glass-heavy">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src="/logo.png" alt="Wolf Whale" className="h-14 w-14 rounded-xl object-contain shadow-lg" />
             <div>
-              <h1 className="text-xl font-bold text-[#1a2a4e]" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>Wolf Whale LMS</h1>
-              <p className="text-xs text-[#1a2a4e]/60 font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 600 }}>Learning Management System</p>
+              <h1 className="text-xl font-bold text-[#003C99]" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>Wolf Whale LMS</h1>
+              <p className="text-xs text-[#003C99]/60 font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 600 }}>Learning Management System</p>
             </div>
           </div>
           <Link
             href="/login"
-            className="px-6 py-2.5 rounded-lg bg-[#1a2a4e] text-white hover:bg-[#0a4d68] transition-all text-sm font-medium shadow-md"
+            className="px-6 py-2.5 rounded-lg bg-[#003C99] text-white hover:bg-[#812BFF] transition-all text-sm font-medium shadow-md"
           >
             Login
           </Link>
@@ -70,43 +70,50 @@ export default function InfoPage() {
       {/* Hero Section */}
       <section className="relative z-10 py-20 md:py-32">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1a2a4e]/5 border border-[#1a2a4e]/10 mb-6">
-            <Sparkles className="h-4 w-4 text-[#0a4d68]" />
-            <span className="text-sm text-[#1a2a4e]/80">The Modern K-12 & Post-Secondary Learning Platform</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#003C99]/5 border border-[#003C99]/10 mb-6">
+            <Sparkles className="h-4 w-4 text-[#812BFF]" />
+            <span className="text-sm text-[#003C99]/80">The Modern K-12 & Post-Secondary Learning Platform</span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] bg-clip-text text-transparent leading-tight">
-            Wolf Whale LMS
+          <h1
+            className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight text-[#003C99] leading-tight underline decoration-[#812BFF]/30 underline-offset-8"
+            style={{
+              fontFamily: "'Shippori Mincho B1', Georgia, 'Times New Roman', serif",
+              fontWeight: 800,
+              letterSpacing: '0.04em',
+            }}
+          >
+            WOLF WHALE LMS
           </h1>
 
-          <p className="text-xl md:text-2xl text-[#1a2a4e]/70 mb-4 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-[#003C99]/70 mb-4 max-w-3xl mx-auto">
             The comprehensive learning management system built for K-12 and post-secondary institutions
           </p>
 
-          <p className="text-base md:text-lg text-[#1a2a4e]/60 mb-6 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-[#003C99]/60 mb-6 max-w-2xl mx-auto">
             Empower teachers, engage students, and connect parents with a unified platform that combines course management, real-time messaging, gamification, and compliance—all in one place.
           </p>
 
           {/* Canadian Badge */}
-          <div className="flex items-center justify-center gap-3 mb-10 px-6 py-3 rounded-xl bg-white/60 border border-[#1a2a4e]/10 w-fit mx-auto shadow-sm">
+          <div className="flex items-center justify-center gap-3 mb-10 px-6 py-3 rounded-xl bg-white/60 border border-[#003C99]/10 w-fit mx-auto shadow-sm">
             <img src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" className="h-20 w-auto object-contain" />
             <div className="text-left">
-              <p className="text-sm font-bold text-[#1a2a4e]">100% Canadian Owned &amp; Built</p>
-              <p className="text-xs text-[#1a2a4e]/60">Proudly designed and developed in Canada</p>
+              <p className="text-sm font-bold text-[#003C99]">100% Canadian Owned &amp; Built</p>
+              <p className="text-xs text-[#003C99]/60">Proudly designed and developed in Canada</p>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
               href="#pricing"
-              className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] hover:shadow-[0_0_30px_oklch(0.70_0.12_180/0.4)] transition-all font-semibold text-white flex items-center gap-2 group btn-glow"
+              className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#003C99] to-[#812BFF] hover:shadow-[0_0_30px_oklch(0.72_0.13_177/0.4)] transition-all font-semibold text-white flex items-center gap-2 group btn-glow"
             >
               Request a Demo
               <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </a>
             <Link
               href="/login"
-              className="px-8 py-4 rounded-xl border-2 border-[#1a2a4e]/20 hover:border-[#0a4d68] hover:bg-white/50 transition-all font-semibold text-[#1a2a4e]"
+              className="px-8 py-4 rounded-xl border-2 border-[#003C99]/20 hover:border-[#812BFF] hover:bg-white/50 transition-all font-semibold text-[#003C99]"
             >
               Login to Your School
             </Link>
@@ -119,7 +126,7 @@ export default function InfoPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Everything You Need</h2>
-            <p className="text-lg text-[#1a2a4e]/60 max-w-2xl mx-auto">
+            <p className="text-lg text-[#003C99]/60 max-w-2xl mx-auto">
               A complete suite of tools designed for K-12 and post-secondary education
             </p>
           </div>
@@ -127,132 +134,132 @@ export default function InfoPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Course Management */}
             <div className="rounded-2xl p-6 liquid-glass liquid-glass-hover group">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <BookOpen className="h-6 w-6 text-[#0a4d68]" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
+                <BookOpen className="h-6 w-6 text-[#812BFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Course Management</h3>
-              <p className="text-[#1a2a4e]/70 text-sm leading-relaxed">
+              <p className="text-[#003C99]/70 text-sm leading-relaxed">
                 Teachers create courses with modules and lessons using our intuitive block-based content builder. Support for videos, documents, quizzes, and interactive content.
               </p>
             </div>
 
             {/* Assignment & Testing */}
             <div className="rounded-2xl p-6 liquid-glass liquid-glass-hover group">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <ClipboardCheck className="h-6 w-6 text-[#0a4d68]" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
+                <ClipboardCheck className="h-6 w-6 text-[#812BFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Assignment & Testing</h3>
-              <p className="text-[#1a2a4e]/70 text-sm leading-relaxed">
+              <p className="text-[#003C99]/70 text-sm leading-relaxed">
                 Rich quiz builder with multiple choice, true/false, short answer, and essay questions. Auto-grading support and detailed analytics for student performance.
               </p>
             </div>
 
             {/* Gradebook */}
             <div className="rounded-2xl p-6 liquid-glass liquid-glass-hover group">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <BarChart3 className="h-6 w-6 text-[#0a4d68]" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
+                <BarChart3 className="h-6 w-6 text-[#812BFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Gradebook</h3>
-              <p className="text-[#1a2a4e]/70 text-sm leading-relaxed">
+              <p className="text-[#003C99]/70 text-sm leading-relaxed">
                 Traditional weighted gradebook with A-F grading, category weighting, grade statistics, and CSV/PDF export. Full control over grading policies and late work.
               </p>
             </div>
 
             {/* Real-Time Messaging */}
             <div className="rounded-2xl p-6 liquid-glass liquid-glass-hover group">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <MessageSquare className="h-6 w-6 text-[#0a4d68]" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
+                <MessageSquare className="h-6 w-6 text-[#812BFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Real-Time Messaging</h3>
-              <p className="text-[#1a2a4e]/70 text-sm leading-relaxed">
+              <p className="text-[#003C99]/70 text-sm leading-relaxed">
                 Direct messages, group conversations, and class discussions with real-time delivery. File sharing, typing indicators, read receipts, and message search.
               </p>
             </div>
 
             {/* Attendance Tracking */}
             <div className="rounded-2xl p-6 liquid-glass liquid-glass-hover group">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <CalendarCheck className="h-6 w-6 text-[#0a4d68]" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
+                <CalendarCheck className="h-6 w-6 text-[#812BFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Attendance Tracking</h3>
-              <p className="text-[#1a2a4e]/70 text-sm leading-relaxed">
+              <p className="text-[#003C99]/70 text-sm leading-relaxed">
                 Daily attendance with present/absent/tardy/excused statuses. Pattern detection alerts teachers and parents to potential issues before they escalate.
               </p>
             </div>
 
             {/* Parent Portal */}
             <div className="rounded-2xl p-6 liquid-glass liquid-glass-hover group">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <Users className="h-6 w-6 text-[#0a4d68]" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
+                <Users className="h-6 w-6 text-[#812BFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Parent Portal</h3>
-              <p className="text-[#1a2a4e]/70 text-sm leading-relaxed">
+              <p className="text-[#003C99]/70 text-sm leading-relaxed">
                 At-a-glance visual dashboard with grade dials, attendance gauges, upcoming assignments, and easy teacher messaging. Keep parents engaged and informed.
               </p>
             </div>
 
             {/* Gamification */}
             <div className="rounded-2xl p-6 liquid-glass liquid-glass-hover group">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <Trophy className="h-6 w-6 text-[#0a4d68]" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
+                <Trophy className="h-6 w-6 text-[#812BFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Gamification</h3>
-              <p className="text-[#1a2a4e]/70 text-sm leading-relaxed">
+              <p className="text-[#003C99]/70 text-sm leading-relaxed">
                 XP system with 40 levels, 4 tiers, achievements, badges, and age-appropriate leaderboards. Motivate students through friendly competition and recognition.
               </p>
             </div>
 
             {/* Study Mode */}
             <div className="rounded-2xl p-6 liquid-glass liquid-glass-hover group">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <Clock className="h-6 w-6 text-[#0a4d68]" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
+                <Clock className="h-6 w-6 text-[#812BFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Study Mode</h3>
-              <p className="text-[#1a2a4e]/70 text-sm leading-relaxed">
+              <p className="text-[#003C99]/70 text-sm leading-relaxed">
                 Focus timer with ambient music, DND mode, and XP rewards for completion. Helps students build healthy study habits and stay focused on their work.
               </p>
             </div>
 
             {/* Compliance */}
             <div className="rounded-2xl p-6 liquid-glass liquid-glass-hover group">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <Shield className="h-6 w-6 text-[#0a4d68]" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
+                <Shield className="h-6 w-6 text-[#812BFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Compliance</h3>
-              <p className="text-[#1a2a4e]/70 text-sm leading-relaxed">
+              <p className="text-[#003C99]/70 text-sm leading-relaxed">
                 FERPA, COPPA, and PIPEDA compliant with full audit logging and data export. Built from the ground up with student privacy and security in mind.
               </p>
             </div>
 
             {/* Multi-Tenant */}
             <div className="rounded-2xl p-6 liquid-glass liquid-glass-hover group">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <Building2 className="h-6 w-6 text-[#0a4d68]" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
+                <Building2 className="h-6 w-6 text-[#812BFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Multi-Tenant</h3>
-              <p className="text-[#1a2a4e]/70 text-sm leading-relaxed">
+              <p className="text-[#003C99]/70 text-sm leading-relaxed">
                 Each school gets their own subdomain with isolated data, custom branding, and independent settings. Secure, scalable, and fully customizable.
               </p>
             </div>
 
             {/* Calendar */}
             <div className="rounded-2xl p-6 liquid-glass liquid-glass-hover group">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <Calendar className="h-6 w-6 text-[#0a4d68]" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
+                <Calendar className="h-6 w-6 text-[#812BFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Calendar</h3>
-              <p className="text-[#1a2a4e]/70 text-sm leading-relaxed">
+              <p className="text-[#003C99]/70 text-sm leading-relaxed">
                 Auto-populated with assignments, events, and school calendar items. .ics export for external calendar apps. Never miss a deadline or school event.
               </p>
             </div>
 
             {/* Admin Dashboard */}
             <div className="rounded-2xl p-6 liquid-glass liquid-glass-hover group">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <LayoutDashboard className="h-6 w-6 text-[#0a4d68]" />
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
+                <LayoutDashboard className="h-6 w-6 text-[#812BFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Admin Dashboard</h3>
-              <p className="text-[#1a2a4e]/70 text-sm leading-relaxed">
+              <p className="text-[#003C99]/70 text-sm leading-relaxed">
                 School health overview, user management, enrollment stats, and system monitoring. Comprehensive tools for school administrators to manage their LMS.
               </p>
             </div>
@@ -265,7 +272,7 @@ export default function InfoPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Built for Every Role</h2>
-            <p className="text-lg text-[#1a2a4e]/60 max-w-2xl mx-auto">
+            <p className="text-lg text-[#003C99]/60 max-w-2xl mx-auto">
               Tailored experiences for students, teachers, parents, and administrators
             </p>
           </div>
@@ -273,13 +280,13 @@ export default function InfoPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Student Dashboard */}
             <div className="rounded-2xl overflow-hidden liquid-glass liquid-glass-hover group">
-              <div className="flex items-center gap-3 p-5 border-b border-[#1a2a4e]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#1a2a4e] to-[#0a4d68]">
+              <div className="flex items-center gap-3 p-5 border-b border-[#003C99]/10">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#003C99] to-[#812BFF]">
                   <GraduationCap className="h-5 w-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">Student Dashboard</h3>
-                  <p className="text-xs text-[#1a2a4e]/60">Your learning command center</p>
+                  <p className="text-xs text-[#003C99]/60">Your learning command center</p>
                 </div>
               </div>
               <img src="/screenshot-student.png" alt="Student Dashboard" className="w-full h-auto" />
@@ -287,13 +294,13 @@ export default function InfoPage() {
 
             {/* Teacher Dashboard */}
             <div className="rounded-2xl overflow-hidden liquid-glass liquid-glass-hover group">
-              <div className="flex items-center gap-3 p-5 border-b border-[#1a2a4e]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#1a2a4e] to-[#0a4d68]">
+              <div className="flex items-center gap-3 p-5 border-b border-[#003C99]/10">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#003C99] to-[#812BFF]">
                   <BookOpen className="h-5 w-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">Teacher Dashboard</h3>
-                  <p className="text-xs text-[#1a2a4e]/60">Manage courses and students</p>
+                  <p className="text-xs text-[#003C99]/60">Manage courses and students</p>
                 </div>
               </div>
               <img src="/screenshot-teacher.png" alt="Teacher Dashboard" className="w-full h-auto" />
@@ -301,13 +308,13 @@ export default function InfoPage() {
 
             {/* Parent Dashboard */}
             <div className="rounded-2xl overflow-hidden liquid-glass liquid-glass-hover group">
-              <div className="flex items-center gap-3 p-5 border-b border-[#1a2a4e]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#1a2a4e] to-[#0a4d68]">
+              <div className="flex items-center gap-3 p-5 border-b border-[#003C99]/10">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#003C99] to-[#812BFF]">
                   <Users className="h-5 w-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">Parent Dashboard</h3>
-                  <p className="text-xs text-[#1a2a4e]/60">Monitor child progress</p>
+                  <p className="text-xs text-[#003C99]/60">Monitor child progress</p>
                 </div>
               </div>
               <img src="/screenshot-parent.png" alt="Parent Dashboard" className="w-full h-auto" />
@@ -315,13 +322,13 @@ export default function InfoPage() {
 
             {/* Admin Dashboard */}
             <div className="rounded-2xl overflow-hidden liquid-glass liquid-glass-hover group">
-              <div className="flex items-center gap-3 p-5 border-b border-[#1a2a4e]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#1a2a4e] to-[#0a4d68]">
+              <div className="flex items-center gap-3 p-5 border-b border-[#003C99]/10">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#003C99] to-[#812BFF]">
                   <LayoutDashboard className="h-5 w-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">Admin Dashboard</h3>
-                  <p className="text-xs text-[#1a2a4e]/60">School-wide insights</p>
+                  <p className="text-xs text-[#003C99]/60">School-wide insights</p>
                 </div>
               </div>
               <img src="/screenshot-admin.png" alt="Admin Dashboard" className="w-full h-auto" />
@@ -335,7 +342,7 @@ export default function InfoPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Four User Roles</h2>
-            <p className="text-lg text-[#1a2a4e]/60 max-w-2xl mx-auto">
+            <p className="text-lg text-[#003C99]/60 max-w-2xl mx-auto">
               Each role has specific capabilities designed for their needs
             </p>
           </div>
@@ -343,29 +350,29 @@ export default function InfoPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Student */}
             <div className="rounded-xl p-5 liquid-glass liquid-glass-hover">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-3">
-                <GraduationCap className="h-5 w-5 text-[#0a4d68]" />
+              <div className="p-2 rounded-lg bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-3">
+                <GraduationCap className="h-5 w-5 text-[#812BFF]" />
               </div>
               <h3 className="font-semibold mb-3 text-sm">Student</h3>
-              <ul className="space-y-2 text-xs text-[#1a2a4e]/70">
+              <ul className="space-y-2 text-xs text-[#003C99]/70">
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>View courses & lessons</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Submit assignments</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Take quizzes</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Earn XP & badges</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Message teachers</span>
                 </li>
               </ul>
@@ -373,29 +380,29 @@ export default function InfoPage() {
 
             {/* Teacher */}
             <div className="rounded-xl p-5 liquid-glass liquid-glass-hover">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-3">
-                <BookOpen className="h-5 w-5 text-[#0a4d68]" />
+              <div className="p-2 rounded-lg bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-3">
+                <BookOpen className="h-5 w-5 text-[#812BFF]" />
               </div>
               <h3 className="font-semibold mb-3 text-sm">Teacher</h3>
-              <ul className="space-y-2 text-xs text-[#1a2a4e]/70">
+              <ul className="space-y-2 text-xs text-[#003C99]/70">
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Create courses</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Build lessons & quizzes</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Grade assignments</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Track attendance</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Message students/parents</span>
                 </li>
               </ul>
@@ -403,29 +410,29 @@ export default function InfoPage() {
 
             {/* Parent */}
             <div className="rounded-xl p-5 liquid-glass liquid-glass-hover">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-3">
-                <Users className="h-5 w-5 text-[#0a4d68]" />
+              <div className="p-2 rounded-lg bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-3">
+                <Users className="h-5 w-5 text-[#812BFF]" />
               </div>
               <h3 className="font-semibold mb-3 text-sm">Parent</h3>
-              <ul className="space-y-2 text-xs text-[#1a2a4e]/70">
+              <ul className="space-y-2 text-xs text-[#003C99]/70">
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>View child grades</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Monitor attendance</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>See upcoming work</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Message teachers</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Receive alerts</span>
                 </li>
               </ul>
@@ -433,29 +440,29 @@ export default function InfoPage() {
 
             {/* School Admin */}
             <div className="rounded-xl p-5 liquid-glass liquid-glass-hover">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-3">
-                <Building2 className="h-5 w-5 text-[#0a4d68]" />
+              <div className="p-2 rounded-lg bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-3">
+                <Building2 className="h-5 w-5 text-[#812BFF]" />
               </div>
               <h3 className="font-semibold mb-3 text-sm">School Admin</h3>
-              <ul className="space-y-2 text-xs text-[#1a2a4e]/70">
+              <ul className="space-y-2 text-xs text-[#003C99]/70">
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Manage users</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Configure school</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>View reports</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Bulk enrollment</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-3 w-3 text-[#812BFF] mt-0.5 flex-shrink-0" />
                   <span>Custom branding</span>
                 </li>
               </ul>
@@ -470,7 +477,7 @@ export default function InfoPage() {
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Modern Tech Stack</h2>
-            <p className="text-lg text-[#1a2a4e]/60">
+            <p className="text-lg text-[#003C99]/60">
               Built with cutting-edge technologies for performance and scalability
             </p>
           </div>
@@ -479,24 +486,24 @@ export default function InfoPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <div className="flex items-center gap-3 mb-4">
-                  <Zap className="h-6 w-6 text-[#0a4d68]" />
+                  <Zap className="h-6 w-6 text-[#812BFF]" />
                   <h3 className="text-xl font-semibold">Frontend</h3>
                 </div>
-                <ul className="space-y-2 text-[#1a2a4e]/70">
+                <ul className="space-y-2 text-[#003C99]/70">
                   <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#0a4d68]"></div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#812BFF]"></div>
                     Next.js 16 with App Router
                   </li>
                   <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#0a4d68]"></div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#812BFF]"></div>
                     React 19 with Server Components
                   </li>
                   <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#0a4d68]"></div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#812BFF]"></div>
                     Tailwind CSS 4 for styling
                   </li>
                   <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#0a4d68]"></div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#812BFF]"></div>
                     TypeScript throughout
                   </li>
                 </ul>
@@ -504,24 +511,24 @@ export default function InfoPage() {
 
               <div>
                 <div className="flex items-center gap-3 mb-4">
-                  <Shield className="h-6 w-6 text-[#0a4d68]" />
+                  <Shield className="h-6 w-6 text-[#812BFF]" />
                   <h3 className="text-xl font-semibold">Backend</h3>
                 </div>
-                <ul className="space-y-2 text-[#1a2a4e]/70">
+                <ul className="space-y-2 text-[#003C99]/70">
                   <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#0a4d68]"></div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#812BFF]"></div>
                     Supabase for database & auth
                   </li>
                   <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#0a4d68]"></div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#812BFF]"></div>
                     Real-time with Supabase Realtime
                   </li>
                   <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#0a4d68]"></div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#812BFF]"></div>
                     Edge functions on Vercel
                   </li>
                   <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#0a4d68]"></div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#812BFF]"></div>
                     PostgreSQL with Row Level Security
                   </li>
                 </ul>
@@ -535,7 +542,7 @@ export default function InfoPage() {
       <section id="pricing" className="relative z-10 py-20 bg-white/30 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Simple Pricing</h2>
-          <p className="text-lg text-[#1a2a4e]/60 mb-12 max-w-2xl mx-auto">
+          <p className="text-lg text-[#003C99]/60 mb-12 max-w-2xl mx-auto">
             One plan. All features. No hidden fees.
           </p>
 
@@ -544,61 +551,61 @@ export default function InfoPage() {
               {/* Price */}
               <div>
                 <div className="flex items-baseline justify-center gap-1">
-                  <span className="text-5xl md:text-6xl font-bold text-[#1a2a4e]">$12</span>
-                  <span className="text-lg text-[#1a2a4e]/60">CAD</span>
+                  <span className="text-5xl md:text-6xl font-bold text-[#003C99]">$12</span>
+                  <span className="text-lg text-[#003C99]/60">CAD</span>
                 </div>
-                <p className="text-[#1a2a4e]/60 mt-2">per user account, per month</p>
+                <p className="text-[#003C99]/60 mt-2">per user account, per month</p>
               </div>
 
               {/* Key details */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full liquid-glass-subtle">
-                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68]" />
-                  <span className="text-[#1a2a4e]/80">All features included</span>
+                  <CheckCircle2 className="h-4 w-4 text-[#812BFF]" />
+                  <span className="text-[#003C99]/80">All features included</span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full liquid-glass-subtle">
-                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68]" />
-                  <span className="text-[#1a2a4e]/80">2-year minimum contract</span>
+                  <CheckCircle2 className="h-4 w-4 text-[#812BFF]" />
+                  <span className="text-[#003C99]/80">2-year minimum contract</span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full liquid-glass-subtle">
-                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68]" />
-                  <span className="text-[#1a2a4e]/80">Single tier</span>
+                  <CheckCircle2 className="h-4 w-4 text-[#812BFF]" />
+                  <span className="text-[#003C99]/80">Single tier</span>
                 </div>
               </div>
 
               {/* What's included */}
               <div className="grid grid-cols-2 gap-3 text-left text-sm max-w-md mx-auto">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
-                  <span className="text-[#1a2a4e]/70">Unlimited courses</span>
+                  <CheckCircle2 className="h-4 w-4 text-[#812BFF] flex-shrink-0" />
+                  <span className="text-[#003C99]/70">Unlimited courses</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
-                  <span className="text-[#1a2a4e]/70">Real-time messaging</span>
+                  <CheckCircle2 className="h-4 w-4 text-[#812BFF] flex-shrink-0" />
+                  <span className="text-[#003C99]/70">Real-time messaging</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
-                  <span className="text-[#1a2a4e]/70">Gradebook & reports</span>
+                  <CheckCircle2 className="h-4 w-4 text-[#812BFF] flex-shrink-0" />
+                  <span className="text-[#003C99]/70">Gradebook & reports</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
-                  <span className="text-[#1a2a4e]/70">Gamification & XP</span>
+                  <CheckCircle2 className="h-4 w-4 text-[#812BFF] flex-shrink-0" />
+                  <span className="text-[#003C99]/70">Gamification & XP</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
-                  <span className="text-[#1a2a4e]/70">Parent portal</span>
+                  <CheckCircle2 className="h-4 w-4 text-[#812BFF] flex-shrink-0" />
+                  <span className="text-[#003C99]/70">Parent portal</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
-                  <span className="text-[#1a2a4e]/70">Attendance tracking</span>
+                  <CheckCircle2 className="h-4 w-4 text-[#812BFF] flex-shrink-0" />
+                  <span className="text-[#003C99]/70">Attendance tracking</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
-                  <span className="text-[#1a2a4e]/70">Custom branding</span>
+                  <CheckCircle2 className="h-4 w-4 text-[#812BFF] flex-shrink-0" />
+                  <span className="text-[#003C99]/70">Custom branding</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#0a4d68] flex-shrink-0" />
-                  <span className="text-[#1a2a4e]/70">FERPA & COPPA compliant</span>
+                  <CheckCircle2 className="h-4 w-4 text-[#812BFF] flex-shrink-0" />
+                  <span className="text-[#003C99]/70">FERPA & COPPA compliant</span>
                 </div>
               </div>
 
@@ -606,13 +613,13 @@ export default function InfoPage() {
               <div className="pt-4 space-y-4">
                 <a
                   href="mailto:info@wolfwhale.ca?subject=Wolf%20Whale%20LMS%20-%20Get%20Started"
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] hover:shadow-[0_0_30px_oklch(0.70_0.12_180/0.4)] transition-all font-semibold text-white group btn-glow"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#003C99] to-[#812BFF] hover:shadow-[0_0_30px_oklch(0.72_0.13_177/0.4)] transition-all font-semibold text-white group btn-glow"
                 >
                   Get Started
                   <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </a>
 
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-[#0a4d68]">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-[#812BFF]">
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4" />
                     <a href="mailto:info@wolfwhale.ca" className="text-sm font-medium hover:underline">
@@ -633,7 +640,7 @@ export default function InfoPage() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-[#1a2a4e]/10 py-12 liquid-glass-heavy">
+      <footer className="relative z-10 border-t border-[#003C99]/10 py-12 liquid-glass-heavy">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="md:col-span-2">
@@ -641,17 +648,17 @@ export default function InfoPage() {
                 <img src="/logo.png" alt="Wolf Whale" className="h-14 w-14 rounded-xl object-contain shadow-lg" />
                 <div>
                   <h3 className="font-bold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>Wolf Whale LMS</h3>
-                  <p className="text-xs text-[#1a2a4e]/60 font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif" }}>Modern K-12 & Post-Secondary Learning Platform</p>
+                  <p className="text-xs text-[#003C99]/60 font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif" }}>Modern K-12 & Post-Secondary Learning Platform</p>
                 </div>
               </div>
-              <p className="text-sm text-[#1a2a4e]/60 max-w-md mb-3">
+              <p className="text-sm text-[#003C99]/60 max-w-md mb-3">
                 Empowering schools with a comprehensive learning management system designed for K-12 and post-secondary education.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 text-sm text-[#1a2a4e]/60">
-                <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1.5 hover:text-[#0a4d68] transition-colors">
+              <div className="flex flex-col sm:flex-row gap-3 text-sm text-[#003C99]/60">
+                <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1.5 hover:text-[#812BFF] transition-colors">
                   <Mail className="h-3.5 w-3.5" /> info@wolfwhale.ca
                 </a>
-                <a href="tel:+13069815926" className="flex items-center gap-1.5 hover:text-[#0a4d68] transition-colors">
+                <a href="tel:+13069815926" className="flex items-center gap-1.5 hover:text-[#812BFF] transition-colors">
                   <Phone className="h-3.5 w-3.5" /> +1 (306) 981-5926
                 </a>
               </div>
@@ -659,29 +666,29 @@ export default function InfoPage() {
 
             <div>
               <h4 className="font-semibold mb-3 text-sm">Product</h4>
-              <ul className="space-y-2 text-sm text-[#1a2a4e]/60">
-                <li><a href="#" className="hover:text-[#0a4d68] transition-colors">Features</a></li>
-                <li><a href="#pricing" className="hover:text-[#0a4d68] transition-colors">Pricing</a></li>
-                <li><a href="#" className="hover:text-[#0a4d68] transition-colors">Documentation</a></li>
-                <li><Link href="/login" className="hover:text-[#0a4d68] transition-colors">Login</Link></li>
+              <ul className="space-y-2 text-sm text-[#003C99]/60">
+                <li><a href="#" className="hover:text-[#812BFF] transition-colors">Features</a></li>
+                <li><a href="#pricing" className="hover:text-[#812BFF] transition-colors">Pricing</a></li>
+                <li><a href="#" className="hover:text-[#812BFF] transition-colors">Documentation</a></li>
+                <li><Link href="/login" className="hover:text-[#812BFF] transition-colors">Login</Link></li>
               </ul>
             </div>
 
             <div>
               <h4 className="font-semibold mb-3 text-sm">Legal</h4>
-              <ul className="space-y-2 text-sm text-[#1a2a4e]/60">
-                <li><Link href="/privacy" className="hover:text-[#0a4d68] transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="hover:text-[#0a4d68] transition-colors">Terms of Service</Link></li>
-                <li><Link href="/help" className="hover:text-[#0a4d68] transition-colors">Help Center</Link></li>
+              <ul className="space-y-2 text-sm text-[#003C99]/60">
+                <li><Link href="/privacy" className="hover:text-[#812BFF] transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="hover:text-[#812BFF] transition-colors">Terms of Service</Link></li>
+                <li><Link href="/help" className="hover:text-[#812BFF] transition-colors">Help Center</Link></li>
               </ul>
             </div>
           </div>
 
-          <div className="pt-8 border-t border-[#1a2a4e]/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#1a2a4e]/50">
+          <div className="pt-8 border-t border-[#003C99]/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#003C99]/50">
             <p>&copy; 2026 Wolf Whale LMS. All rights reserved.</p>
             <div className="flex items-center gap-2">
               <img src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" className="h-12 w-auto object-contain" />
-              <span className="text-xs font-semibold text-[#1a2a4e]/60">100% Canadian Owned &amp; Built</span>
+              <span className="text-xs font-semibold text-[#003C99]/60">100% Canadian Owned &amp; Built</span>
             </div>
           </div>
         </div>

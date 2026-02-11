@@ -22,21 +22,21 @@ export default function HomePage() {
         <div
           className="absolute inset-0 opacity-30"
           style={{
-            background: 'radial-gradient(ellipse 150% 80% at 50% 20%, oklch(0.70 0.12 180 / 0.30) 0%, transparent 60%)',
+            background: 'radial-gradient(ellipse 150% 80% at 50% 20%, oklch(0.72 0.13 177 / 0.30) 0%, transparent 60%)',
             animation: 'ocean-pulse 8s ease-in-out infinite',
           }}
         />
         <div
           className="absolute inset-0 opacity-20"
           style={{
-            background: 'radial-gradient(ellipse 120% 60% at 30% 30%, oklch(0.35 0.08 220 / 0.25) 0%, transparent 50%)',
+            background: 'radial-gradient(ellipse 120% 60% at 30% 30%, oklch(0.48 0.29 285 / 0.25) 0%, transparent 50%)',
             animation: 'ocean-drift 12s ease-in-out infinite',
           }}
         />
         <div
           className="absolute inset-0 opacity-15"
           style={{
-            background: 'radial-gradient(ellipse 100% 50% at 70% 25%, oklch(0.74 0.13 180 / 0.20) 0%, transparent 45%)',
+            background: 'radial-gradient(ellipse 100% 50% at 70% 25%, oklch(0.76 0.13 177 / 0.20) 0%, transparent 45%)',
             animation: 'ocean-wave-slow 15s ease-in-out infinite reverse',
           }}
         />
@@ -60,7 +60,7 @@ export default function HomePage() {
         )}
 
         {/* Depth overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.15_0.04_262)] via-transparent to-transparent opacity-60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.18_0.08_265)] via-transparent to-transparent opacity-60" />
       </div>
 
       {/* Header */}

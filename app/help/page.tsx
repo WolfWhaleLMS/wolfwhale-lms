@@ -272,14 +272,14 @@ const content = {
 
 function AccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: boolean; onToggle: () => void }) {
   return (
-    <div className="border border-[#1a2a4e]/10 rounded-xl overflow-hidden transition-all">
+    <div className="border border-[#003C99]/10 rounded-xl overflow-hidden transition-all">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-[#1a2a4e]/[0.03] transition-colors"
+        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-[#003C99]/[0.03] transition-colors"
       >
-        <span className="font-semibold text-[#1a2a4e] text-sm sm:text-base">{item.q}</span>
+        <span className="font-semibold text-[#003C99] text-sm sm:text-base">{item.q}</span>
         <ChevronDown
-          className={`h-5 w-5 text-[#0a4d68] flex-shrink-0 transition-transform duration-300 ${
+          className={`h-5 w-5 text-[#812BFF] flex-shrink-0 transition-transform duration-300 ${
             isOpen ? 'rotate-180' : ''
           }`}
         />
@@ -289,7 +289,7 @@ function AccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: bool
           isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="px-5 pb-4 text-sm sm:text-base text-[#1a2a4e]/70 leading-relaxed">
+        <div className="px-5 pb-4 text-sm sm:text-base text-[#003C99]/70 leading-relaxed">
           {item.a}
         </div>
       </div>
@@ -364,7 +364,7 @@ export default function HelpCenterPage() {
       </div>
 
       {/* Header */}
-      <header className="relative z-10 border-b border-[#1a2a4e]/10 bg-white/30 backdrop-blur-sm">
+      <header className="relative z-10 border-b border-[#003C99]/10 bg-white/30 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
             <img
@@ -373,10 +373,10 @@ export default function HelpCenterPage() {
               className="h-12 w-12 rounded-xl object-contain shadow-lg"
             />
             <div>
-              <span className="text-lg sm:text-xl font-bold text-[#1a2a4e] group-hover:text-[#0a4d68] transition-colors block" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>
+              <span className="text-lg sm:text-xl font-bold text-[#003C99] group-hover:text-[#812BFF] transition-colors block" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>
                 Wolf Whale
               </span>
-              <span className="text-xs text-[#1a2a4e]/60 block font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 600 }}>
+              <span className="text-xs text-[#003C99]/60 block font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 600 }}>
                 Learning Management System
               </span>
             </div>
@@ -384,14 +384,14 @@ export default function HelpCenterPage() {
 
           {/* Language Toggle */}
           <div className="flex items-center gap-2 sm:gap-3">
-            <Globe className="h-4 w-4 text-[#1a2a4e]/50 hidden sm:block" />
-            <div className="flex rounded-lg border border-[#1a2a4e]/20 overflow-hidden">
+            <Globe className="h-4 w-4 text-[#003C99]/50 hidden sm:block" />
+            <div className="flex rounded-lg border border-[#003C99]/20 overflow-hidden">
               <button
                 onClick={() => setLang('en')}
                 className={`px-3 py-1.5 text-sm font-medium transition-all ${
                   lang === 'en'
-                    ? 'bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] text-white'
-                    : 'text-[#1a2a4e]/60 hover:text-[#1a2a4e] hover:bg-[#1a2a4e]/5'
+                    ? 'bg-gradient-to-r from-[#003C99] to-[#812BFF] text-white'
+                    : 'text-[#003C99]/60 hover:text-[#003C99] hover:bg-[#003C99]/5'
                 }`}
               >
                 EN
@@ -400,8 +400,8 @@ export default function HelpCenterPage() {
                 onClick={() => setLang('fr')}
                 className={`px-3 py-1.5 text-sm font-medium transition-all ${
                   lang === 'fr'
-                    ? 'bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] text-white'
-                    : 'text-[#1a2a4e]/60 hover:text-[#1a2a4e] hover:bg-[#1a2a4e]/5'
+                    ? 'bg-gradient-to-r from-[#003C99] to-[#812BFF] text-white'
+                    : 'text-[#003C99]/60 hover:text-[#003C99] hover:bg-[#003C99]/5'
                 }`}
               >
                 FR
@@ -416,7 +416,7 @@ export default function HelpCenterPage() {
         {/* Back Link */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-[#1a2a4e]/50 hover:text-[#0a4d68] transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-sm text-[#003C99]/50 hover:text-[#812BFF] transition-colors mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           {t.backToHome}
@@ -424,55 +424,55 @@ export default function HelpCenterPage() {
 
         {/* Hero Section */}
         <div className="mb-10 sm:mb-12 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1a2a4e] mb-3">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#003C99] mb-3">
             {t.title}
           </h1>
-          <p className="text-base sm:text-lg text-[#1a2a4e]/70 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-[#003C99]/70 max-w-2xl mx-auto">
             {t.subtitle}
           </p>
         </div>
 
         {/* Quick Contact Card */}
-        <div className="liquid-glass rounded-2xl p-6 sm:p-8 border border-[#1a2a4e]/10 mb-10 sm:mb-12">
-          <h2 className="text-lg sm:text-xl font-bold text-[#1a2a4e] mb-5">
+        <div className="liquid-glass rounded-2xl p-6 sm:p-8 border border-[#003C99]/10 mb-10 sm:mb-12">
+          <h2 className="text-lg sm:text-xl font-bold text-[#003C99] mb-5">
             {t.quickContactTitle}
           </h2>
           <div className="grid sm:grid-cols-3 gap-4">
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-[#0a4d68]/10 flex-shrink-0">
-                <Mail className="h-5 w-5 text-[#0a4d68]" />
+              <div className="p-2 rounded-lg bg-[#812BFF]/10 flex-shrink-0">
+                <Mail className="h-5 w-5 text-[#812BFF]" />
               </div>
               <div>
-                <p className="text-sm font-medium text-[#1a2a4e]/70">{t.emailLabel}</p>
+                <p className="text-sm font-medium text-[#003C99]/70">{t.emailLabel}</p>
                 <a
                   href="mailto:info@wolfwhale.ca"
-                  className="text-[#0a4d68] font-semibold hover:underline"
+                  className="text-[#812BFF] font-semibold hover:underline"
                 >
                   {t.emailValue}
                 </a>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-[#0a4d68]/10 flex-shrink-0">
-                <Phone className="h-5 w-5 text-[#0a4d68]" />
+              <div className="p-2 rounded-lg bg-[#812BFF]/10 flex-shrink-0">
+                <Phone className="h-5 w-5 text-[#812BFF]" />
               </div>
               <div>
-                <p className="text-sm font-medium text-[#1a2a4e]/70">{t.phoneLabel}</p>
+                <p className="text-sm font-medium text-[#003C99]/70">{t.phoneLabel}</p>
                 <a
                   href="tel:+13069815926"
-                  className="text-[#0a4d68] font-semibold hover:underline"
+                  className="text-[#812BFF] font-semibold hover:underline"
                 >
                   {t.phoneValue}
                 </a>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-[#0a4d68]/10 flex-shrink-0">
-                <Clock className="h-5 w-5 text-[#0a4d68]" />
+              <div className="p-2 rounded-lg bg-[#812BFF]/10 flex-shrink-0">
+                <Clock className="h-5 w-5 text-[#812BFF]" />
               </div>
               <div>
-                <p className="text-sm font-medium text-[#1a2a4e]/70">{t.responseLabel}</p>
-                <p className="text-[#1a2a4e] font-semibold">{t.responseValue}</p>
+                <p className="text-sm font-medium text-[#003C99]/70">{t.responseLabel}</p>
+                <p className="text-[#003C99] font-semibold">{t.responseValue}</p>
               </div>
             </div>
           </div>
@@ -482,7 +482,7 @@ export default function HelpCenterPage() {
         <div className="space-y-10 sm:space-y-12">
           {t.sections.map((section) => (
             <section key={section.id} id={section.id} className="scroll-mt-24">
-              <h2 className="text-xl sm:text-2xl font-bold text-[#1a2a4e] mb-4 sm:mb-5 border-b border-[#1a2a4e]/10 pb-3">
+              <h2 className="text-xl sm:text-2xl font-bold text-[#003C99] mb-4 sm:mb-5 border-b border-[#003C99]/10 pb-3">
                 {section.heading}
               </h2>
               <div className="space-y-3">
@@ -504,16 +504,16 @@ export default function HelpCenterPage() {
         </div>
 
         {/* Still Need Help CTA */}
-        <div className="mt-12 sm:mt-16 liquid-glass rounded-2xl p-8 sm:p-10 border border-[#1a2a4e]/10 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#1a2a4e] mb-3">
+        <div className="mt-12 sm:mt-16 liquid-glass rounded-2xl p-8 sm:p-10 border border-[#003C99]/10 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#003C99] mb-3">
             {t.stillNeedHelp}
           </h2>
-          <p className="text-[#1a2a4e]/70 mb-6 max-w-lg mx-auto">
+          <p className="text-[#003C99]/70 mb-6 max-w-lg mx-auto">
             {t.stillNeedHelpDesc}
           </p>
           <a
             href="mailto:info@wolfwhale.ca"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#003C99] to-[#812BFF] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all"
           >
             <Mail className="h-5 w-5" />
             {t.contactUs}
@@ -522,29 +522,29 @@ export default function HelpCenterPage() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-[#1a2a4e]/10 mt-16 sm:mt-20">
+      <footer className="relative z-10 border-t border-[#003C99]/10 mt-16 sm:mt-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-[#1a2a4e]/40">
+            <p className="text-sm text-[#003C99]/40">
               &copy; 2026 Wolf Whale LMS.{' '}
               {lang === 'en' ? 'All rights reserved.' : 'Tous droits r\u00e9serv\u00e9s.'}
             </p>
             <div className="flex gap-6">
               <Link
                 href="/privacy"
-                className="text-sm text-[#1a2a4e]/50 hover:text-[#0a4d68] transition-colors"
+                className="text-sm text-[#003C99]/50 hover:text-[#812BFF] transition-colors"
               >
                 {lang === 'en' ? 'Privacy' : 'Confidentialit\u00e9'}
               </Link>
               <Link
                 href="/terms"
-                className="text-sm text-[#1a2a4e]/50 hover:text-[#0a4d68] transition-colors"
+                className="text-sm text-[#003C99]/50 hover:text-[#812BFF] transition-colors"
               >
                 {lang === 'en' ? 'Terms' : 'Conditions'}
               </Link>
               <Link
                 href="/help"
-                className="text-sm text-[#0a4d68] font-medium"
+                className="text-sm text-[#812BFF] font-medium"
               >
                 {lang === 'en' ? 'Help' : 'Aide'}
               </Link>

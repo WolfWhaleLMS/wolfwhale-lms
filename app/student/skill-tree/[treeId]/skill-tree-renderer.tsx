@@ -40,7 +40,7 @@ interface Props {
 // ---------------------------------------------------------------------------
 
 const STATUS_COLORS: Record<string, string> = {
-  completed: '#0a4d68',
+  completed: '#812BFF',
   in_progress: '#7c3aed',
   available: '#64748b',
   locked: '#334155',
@@ -165,7 +165,7 @@ function BackgroundPattern({ width, height }: { width: number; height: number })
         {/* Glow filter for completed nodes */}
         <filter id="glow-completed" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="6" result="blur" />
-          <feFlood floodColor="#0a4d68" floodOpacity="0.6" result="color" />
+          <feFlood floodColor="#812BFF" floodOpacity="0.6" result="color" />
           <feComposite in="color" in2="blur" operator="in" result="shadow" />
           <feMerge>
             <feMergeNode in="shadow" />
@@ -209,7 +209,7 @@ function ConnectionLine({
     fromStatus === 'completed' &&
     (toStatus === 'in_progress' || toStatus === 'available')
   const strokeColor = isCompleted
-    ? '#0a4d68'
+    ? '#812BFF'
     : isActive
       ? '#64748b'
       : '#1e293b'

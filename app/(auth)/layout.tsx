@@ -52,14 +52,14 @@ export default function AuthLayout({
         <div
           className="absolute inset-0 opacity-40"
           style={{
-            background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(20,184,166,0.15) 0%, transparent 60%)',
+            background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(2,194,173,0.15) 0%, transparent 60%)',
             animation: 'ocean-pulse 8s ease-in-out infinite',
           }}
         />
         <div
           className="absolute inset-0 opacity-25"
           style={{
-            background: 'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(26,42,78,0.08) 0%, transparent 50%)',
+            background: 'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(0,60,153,0.08) 0%, transparent 50%)',
             animation: 'ocean-drift 12s ease-in-out infinite',
           }}
         />
@@ -72,7 +72,7 @@ export default function AuthLayout({
                 key={i}
                 className="absolute w-1.5 h-1.5 rounded-full animate-twinkle"
                 style={{
-                  background: 'rgba(26,42,78,0.12)',
+                  background: 'rgba(0,60,153,0.12)',
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
                   animationDelay: `${Math.random() * 5}s`,
@@ -89,10 +89,10 @@ export default function AuthLayout({
         <Link href="/" className="inline-flex items-center gap-3 group">
           <img src="/logo.png" alt="Wolf Whale" className="h-20 w-20 rounded-xl object-contain shadow-lg" />
           <div>
-            <span className="text-xl font-bold text-[#1a2a4e] group-hover:text-[#0a4d68] transition-colors block" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>
+            <span className="text-xl font-bold text-[#003C99] group-hover:text-[#812BFF] transition-colors block" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>
               Wolf Whale
             </span>
-            <span className="text-xs text-[#1a2a4e]/60 block font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 600 }}>
+            <span className="text-xs text-[#003C99]/60 block font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 600 }}>
               Learning Management System
             </span>
           </div>
@@ -108,7 +108,7 @@ export default function AuthLayout({
 
       {/* Footer */}
       <footer className="relative z-10 p-6 text-center">
-        <p className="text-sm text-[#1a2a4e]/50">
+        <p className="text-sm text-[#003C99]/50">
           &copy; {new Date().getFullYear()} Wolf Whale Inc. All rights reserved.
         </p>
       </footer>
@@ -120,9 +120,9 @@ export default function AuthLayout({
         title={isPlaying ? 'Mute music' : 'Play music'}
       >
         {isPlaying ? (
-          <Music className="h-5 w-5 text-[#0a4d68] animate-pulse" />
+          <Music className="h-5 w-5 text-[#812BFF] animate-pulse" />
         ) : (
-          <VolumeX className="h-5 w-5 text-[#1a2a4e]/50" />
+          <VolumeX className="h-5 w-5 text-[#003C99]/50" />
         )}
       </button>
 

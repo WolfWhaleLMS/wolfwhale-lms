@@ -162,7 +162,7 @@ export async function getUserTenants(userId: string): Promise<TenantWithRole[]> 
  * stores it as a raw JSONB value or when it is null.
  */
 function normalizeTenant(raw: Record<string, unknown>): Tenant {
-  const defaultBranding = { primary_color: '#1a2a4e', secondary_color: '#0a4d68' }
+  const defaultBranding = { primary_color: '#003C99', secondary_color: '#812BFF' }
   const branding = raw.branding && typeof raw.branding === 'object'
     ? { ...defaultBranding, ...(raw.branding as Record<string, string>) }
     : defaultBranding

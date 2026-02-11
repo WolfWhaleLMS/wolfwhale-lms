@@ -8,7 +8,7 @@ export const PDF_MAX_ROWS = 500
 const styles = StyleSheet.create({
   page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica' },
   header: { marginBottom: 20 },
-  title: { fontSize: 20, fontWeight: 'bold', color: '#1a2a4e', marginBottom: 4 },
+  title: { fontSize: 20, fontWeight: 'bold', color: '#003C99', marginBottom: 4 },
   subtitle: { fontSize: 12, color: '#6b7280', marginBottom: 2 },
   date: { fontSize: 9, color: '#9ca3af', marginBottom: 16 },
   table: { width: '100%', marginBottom: 16 },
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     borderColor: '#e2e8f0',
   },
   statLabel: { fontSize: 8, color: '#6b7280', marginBottom: 2 },
-  statValue: { fontSize: 16, fontWeight: 'bold', color: '#1a2a4e' },
+  statValue: { fontSize: 16, fontWeight: 'bold', color: '#003C99' },
   footer: {
     position: 'absolute',
     bottom: 20,
