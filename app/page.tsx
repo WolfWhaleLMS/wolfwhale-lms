@@ -89,7 +89,7 @@ export default function HomePage() {
                 Wolf Whale LMS
               </h1>
               <p className="text-xl md:text-2xl text-white/70 max-w-2xl mx-auto">
-                The Modern Learning Platform for K-12 Schools
+                The Modern Learning Platform for K-12 & Post-Secondary
               </p>
             </div>
 
@@ -118,9 +118,9 @@ export default function HomePage() {
               <div className="inline-flex p-3 rounded-xl bg-[oklch(0.70_0.12_180/0.20)] border border-[oklch(0.70_0.12_180/0.30)] mb-4 group-hover:bg-[oklch(0.70_0.12_180/0.30)] transition-colors">
                 <GraduationCap className="h-6 w-6 text-[oklch(0.74_0.13_180)]" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Built for K-12</h3>
+              <h3 className="text-xl font-bold text-white mb-2">Built for K-12 & Post-Secondary</h3>
               <p className="text-white/60 text-sm leading-relaxed">
-                Age-appropriate interfaces for elementary, middle, and high school students with adaptive UI that grows with learners.
+                Designed for elementary, middle, high school, and post-secondary students with adaptive UI that grows with learners.
               </p>
             </div>
 

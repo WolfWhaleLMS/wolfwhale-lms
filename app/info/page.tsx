@@ -72,7 +72,7 @@ export default function InfoPage() {
         <div className="max-w-6xl mx-auto px-6 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1a2a4e]/5 border border-[#1a2a4e]/10 mb-6">
             <Sparkles className="h-4 w-4 text-[#0a4d68]" />
-            <span className="text-sm text-[#1a2a4e]/80">The Modern K-12 Learning Platform</span>
+            <span className="text-sm text-[#1a2a4e]/80">The Modern K-12 & Post-Secondary Learning Platform</span>
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] bg-clip-text text-transparent leading-tight">
@@ -80,7 +80,7 @@ export default function InfoPage() {
           </h1>
 
           <p className="text-xl md:text-2xl text-[#1a2a4e]/70 mb-4 max-w-3xl mx-auto">
-            The comprehensive learning management system built for K-12 schools
+            The comprehensive learning management system built for K-12 and post-secondary institutions
           </p>
 
           <p className="text-base md:text-lg text-[#1a2a4e]/60 mb-6 max-w-2xl mx-auto">
@@ -120,7 +120,7 @@ export default function InfoPage() {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Everything You Need</h2>
             <p className="text-lg text-[#1a2a4e]/60 max-w-2xl mx-auto">
-              A complete suite of tools designed specifically for K-12 education
+              A complete suite of tools designed for K-12 and post-secondary education
             </p>
           </div>
 
@@ -641,11 +641,11 @@ export default function InfoPage() {
                 <img src="/logo.png" alt="Wolf Whale" className="h-14 w-14 rounded-xl object-contain shadow-lg" />
                 <div>
                   <h3 className="font-bold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>Wolf Whale LMS</h3>
-                  <p className="text-xs text-[#1a2a4e]/60 font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif" }}>Modern K-12 Learning Platform</p>
+                  <p className="text-xs text-[#1a2a4e]/60 font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif" }}>Modern K-12 & Post-Secondary Learning Platform</p>
                 </div>
               </div>
               <p className="text-sm text-[#1a2a4e]/60 max-w-md mb-3">
-                Empowering schools with a comprehensive learning management system designed specifically for K-12 education.
+                Empowering schools with a comprehensive learning management system designed for K-12 and post-secondary education.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 text-sm text-[#1a2a4e]/60">
                 <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1.5 hover:text-[#0a4d68] transition-colors">

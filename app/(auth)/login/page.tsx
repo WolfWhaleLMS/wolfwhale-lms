@@ -91,7 +91,7 @@ export default function LoginPage() {
         </div>
         <div className="rounded-xl p-4 text-center liquid-glass-subtle hover:border-[#0a4d68]/30 transition-all hover:scale-105">
           <Users className="h-5 w-5 text-[#0a4d68] mx-auto mb-2" />
-          <p className="text-xs font-medium text-[#1a2a4e]/60">K-12 Ready</p>
+          <p className="text-xs font-medium text-[#1a2a4e]/60">K-12 & Post-Sec</p>
         </div>
         <div className="rounded-xl p-4 text-center liquid-glass-subtle hover:border-[#0a4d68]/30 transition-all hover:scale-105">
           <Shield className="h-5 w-5 text-[#0a4d68] mx-auto mb-2" />
