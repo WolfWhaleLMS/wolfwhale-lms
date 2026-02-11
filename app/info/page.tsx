@@ -334,13 +334,13 @@ export default function InfoPage() {
       <section className="relative z-10 py-20 bg-white/30 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Five User Roles</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Four User Roles</h2>
             <p className="text-lg text-[#1a2a4e]/60 max-w-2xl mx-auto">
               Each role has specific capabilities designed for their needs
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Student */}
             <div className="rounded-xl p-5 liquid-glass liquid-glass-hover">
               <div className="p-2 rounded-lg bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-3">
@@ -461,35 +461,6 @@ export default function InfoPage() {
               </ul>
             </div>
 
-            {/* Platform Admin */}
-            <div className="rounded-xl p-5 liquid-glass liquid-glass-hover">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-[#1a2a4e]/10 to-[#0a4d68]/10 w-fit mb-3">
-                <Shield className="h-5 w-5 text-[#0a4d68]" />
-              </div>
-              <h3 className="font-semibold mb-3 text-sm">Platform Admin</h3>
-              <ul className="space-y-2 text-xs text-[#1a2a4e]/70">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
-                  <span>Manage all tenants</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
-                  <span>System monitoring</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
-                  <span>Global settings</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
-                  <span>Audit logs</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#0a4d68] mt-0.5 flex-shrink-0" />
-                  <span>Feature flags</span>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
       </section>
