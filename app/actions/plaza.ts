@@ -2,6 +2,7 @@
 
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { rateLimitAction } from '@/lib/rate-limit-action'
 import { AVATAR_DEFAULTS, TOKEN_DAILY_CAP, TOKEN_RATES } from '@/lib/plaza/constants'
@@ -15,7 +16,9 @@ import type {
 } from '@/lib/plaza/types'
 
 // ---------------------------------------------------------------------------
-// Context helper (matches existing pattern in gamification.ts, study-mode.ts)
+// Context helper — uses anon client for auth, admin client for DB writes
+// (RLS policies on plaza tables require auth.uid() which doesn't propagate
+// reliably through server-side anon client inserts/updates)
 // ---------------------------------------------------------------------------
 
 async function getContext() {
@@ -25,7 +28,8 @@ async function getContext() {
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
   if (!tenantId) throw new Error('No tenant context')
-  return { supabase, user, tenantId }
+  const admin = createAdminClient()
+  return { supabase, admin, user, tenantId }
 }
 
 // ---------------------------------------------------------------------------
@@ -37,10 +41,10 @@ export async function createAvatar(displayName: string): Promise<PlazaAvatar> {
   const rl = await rateLimitAction('createAvatar')
   if (!rl.success) throw new Error(rl.error)
 
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
   // Check if avatar already exists
-  const { data: existing } = await supabase
+  const { data: existing } = await admin
     .from('plaza_avatars')
     .select('*')
     .eq('tenant_id', tenantId)
@@ -61,7 +65,7 @@ export async function createAvatar(displayName: string): Promise<PlazaAvatar> {
     background_id: AVATAR_DEFAULTS.background_id,
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await admin
     .from('plaza_avatars')
     .insert({
       tenant_id: tenantId,
@@ -84,9 +88,9 @@ export async function createAvatar(displayName: string): Promise<PlazaAvatar> {
 
 /** Get avatar data for current user */
 export async function getMyAvatar(): Promise<PlazaAvatar | null> {
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
-  const { data } = await supabase
+  const { data } = await admin
     .from('plaza_avatars')
     .select('*')
     .eq('tenant_id', tenantId)
@@ -101,9 +105,9 @@ export async function updateAvatarConfig(config: AvatarConfig): Promise<PlazaAva
   const rl = await rateLimitAction('updateAvatarConfig')
   if (!rl.success) throw new Error(rl.error)
 
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
-  const { data, error } = await supabase
+  const { data, error } = await admin
     .from('plaza_avatars')
     .update({
       avatar_config: config,
@@ -126,9 +130,9 @@ export async function updateAvatarRoom(
   x: number,
   y: number
 ): Promise<void> {
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
-  const { error } = await supabase
+  const { error } = await admin
     .from('plaza_avatars')
     .update({
       current_room: roomSlug,
@@ -144,9 +148,9 @@ export async function updateAvatarRoom(
 
 /** Set avatar online/offline status */
 export async function setAvatarOnlineStatus(isOnline: boolean): Promise<void> {
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
-  const { error } = await supabase
+  const { error } = await admin
     .from('plaza_avatars')
     .update({
       is_online: isOnline,
@@ -160,9 +164,9 @@ export async function setAvatarOnlineStatus(isOnline: boolean): Promise<void> {
 
 /** Get all online avatars in a room */
 export async function getRoomAvatars(roomSlug: string): Promise<PlazaAvatar[]> {
-  const { supabase, tenantId } = await getContext()
+  const { admin, tenantId } = await getContext()
 
-  const { data, error } = await supabase
+  const { data, error } = await admin
     .from('plaza_avatars')
     .select('*')
     .eq('tenant_id', tenantId)
@@ -180,10 +184,10 @@ export async function getRoomAvatars(roomSlug: string): Promise<PlazaAvatar[]> {
 
 /** Get all available rooms with occupant counts */
 export async function getPlazaRooms(): Promise<RoomInfo[]> {
-  const { supabase, tenantId } = await getContext()
+  const { admin, tenantId } = await getContext()
 
   // Get rooms accessible to this tenant (global + tenant-specific)
-  const { data: rooms, error } = await supabase
+  const { data: rooms, error } = await admin
     .from('plaza_rooms')
     .select('id, slug, name, description, room_type, max_occupants, sort_order')
     .or(`is_global.eq.true,tenant_id.eq.${tenantId}`)
@@ -194,7 +198,7 @@ export async function getPlazaRooms(): Promise<RoomInfo[]> {
   if (!rooms || rooms.length === 0) return []
 
   // Get online avatar counts per room
-  const { data: counts } = await supabase
+  const { data: counts } = await admin
     .from('plaza_avatars')
     .select('current_room')
     .eq('tenant_id', tenantId)
@@ -220,9 +224,9 @@ export async function getPlazaRooms(): Promise<RoomInfo[]> {
 
 /** Get room data (map config, buildings, decorations) */
 export async function getRoomData(roomSlug: string): Promise<RoomData> {
-  const { supabase, tenantId } = await getContext()
+  const { admin, tenantId } = await getContext()
 
-  const { data, error } = await supabase
+  const { data, error } = await admin
     .from('plaza_rooms')
     .select('*')
     .or(`is_global.eq.true,tenant_id.eq.${tenantId}`)
@@ -241,9 +245,9 @@ export async function getRoomData(roomSlug: string): Promise<RoomData> {
 
 /** Get all available chat phrases */
 export async function getChatPhrases(): Promise<ChatPhrase[]> {
-  const { supabase, tenantId } = await getContext()
+  const { admin, tenantId } = await getContext()
 
-  const { data, error } = await supabase
+  const { data, error } = await admin
     .from('plaza_chat_phrases')
     .select('id, phrase, category, emoji_icon, is_global, sort_order')
     .or(`is_global.eq.true,tenant_id.eq.${tenantId}`)
@@ -264,10 +268,10 @@ export async function recordDailyLogin(): Promise<DailyLoginResult> {
   const rl = await rateLimitAction('recordDailyLogin')
   if (!rl.success) throw new Error(rl.error)
 
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
   // Get current avatar
-  const { data: avatar } = await supabase
+  const { data: avatar } = await admin
     .from('plaza_avatars')
     .select('id, last_daily_login, daily_login_streak, token_balance, tokens_earned_total')
     .eq('tenant_id', tenantId)
@@ -310,7 +314,7 @@ export async function recordDailyLogin(): Promise<DailyLoginResult> {
   // Check daily token cap
   const todayStart = `${today}T00:00:00`
   const todayEnd = `${today}T23:59:59`
-  const { data: todayTransactions } = await supabase
+  const { data: todayTransactions } = await admin
     .from('plaza_token_transactions')
     .select('amount')
     .eq('tenant_id', tenantId)
@@ -330,7 +334,7 @@ export async function recordDailyLogin(): Promise<DailyLoginResult> {
   const newBalance = avatar.token_balance + totalTokens
 
   // Update avatar
-  await supabase
+  await admin
     .from('plaza_avatars')
     .update({
       last_daily_login: today,
@@ -344,7 +348,7 @@ export async function recordDailyLogin(): Promise<DailyLoginResult> {
 
   // Record token transaction
   if (totalTokens > 0) {
-    await supabase.from('plaza_token_transactions').insert({
+    await admin.from('plaza_token_transactions').insert({
       tenant_id: tenantId,
       user_id: user.id,
       amount: totalTokens,

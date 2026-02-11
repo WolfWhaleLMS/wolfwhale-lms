@@ -2,6 +2,7 @@
 
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { rateLimitAction } from '@/lib/rate-limit-action'
 import { TOKEN_DAILY_CAP } from '@/lib/plaza/constants'
@@ -25,7 +26,8 @@ async function getContext() {
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
   if (!tenantId) throw new Error('No tenant context')
-  return { supabase, user, tenantId }
+  const admin = createAdminClient()
+  return { admin, user, tenantId }
 }
 
 // ---------------------------------------------------------------------------
@@ -33,12 +35,12 @@ async function getContext() {
 // ---------------------------------------------------------------------------
 
 async function getTokenCapRemaining(
-  supabase: any,
+  admin: any,
   tenantId: string,
   userId: string
 ): Promise<number> {
   const today = new Date().toISOString().split('T')[0]
-  const { data: todayTransactions } = await supabase
+  const { data: todayTransactions } = await admin
     .from('plaza_token_transactions')
     .select('amount')
     .eq('tenant_id', tenantId)
@@ -61,9 +63,9 @@ async function getTokenCapRemaining(
 
 /** Get all available mini games */
 export async function getMiniGames(): Promise<MiniGame[]> {
-  const { supabase, tenantId } = await getContext()
+  const { admin, tenantId } = await getContext()
 
-  const { data, error } = await supabase
+  const { data, error } = await admin
     .from('plaza_mini_games')
     .select('*')
     .or(`is_global.eq.true,tenant_id.eq.${tenantId}`)
@@ -88,10 +90,10 @@ export async function createGameSession(
   const rl = await rateLimitAction('createGameSession')
   if (!rl.success) throw new Error(rl.error)
 
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
   // Look up the game by slug
-  const { data: game, error: gameError } = await supabase
+  const { data: game, error: gameError } = await admin
     .from('plaza_mini_games')
     .select('id, duration_seconds, config')
     .or(`is_global.eq.true,tenant_id.eq.${tenantId}`)
@@ -101,7 +103,7 @@ export async function createGameSession(
 
   if (gameError || !game) throw new Error(`Game not found: ${gameSlug}`)
 
-  const { data: session, error } = await supabase
+  const { data: session, error } = await admin
     .from('plaza_game_sessions')
     .insert({
       tenant_id: tenantId,
@@ -131,10 +133,10 @@ export async function createGameSession(
 
 /** Join an existing multiplayer game session */
 export async function joinGameSession(sessionId: string): Promise<GameSession> {
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
   // Get the session
-  const { data: session, error: fetchError } = await supabase
+  const { data: session, error: fetchError } = await admin
     .from('plaza_game_sessions')
     .select('*, plaza_mini_games:game_id(max_players)')
     .eq('id', sessionId)
@@ -145,7 +147,7 @@ export async function joinGameSession(sessionId: string): Promise<GameSession> {
   if (session.status !== 'waiting') throw new Error('Game session is no longer accepting players.')
 
   // Check if user already has a score entry (already joined)
-  const { data: existingScore } = await supabase
+  const { data: existingScore } = await admin
     .from('plaza_game_scores')
     .select('id')
     .eq('session_id', sessionId)
@@ -158,7 +160,7 @@ export async function joinGameSession(sessionId: string): Promise<GameSession> {
   }
 
   // Check player count
-  const { count } = await supabase
+  const { count } = await admin
     .from('plaza_game_scores')
     .select('id', { count: 'exact', head: true })
     .eq('session_id', sessionId)
@@ -169,7 +171,7 @@ export async function joinGameSession(sessionId: string): Promise<GameSession> {
   }
 
   // Create a score entry to mark this user as a participant
-  await supabase.from('plaza_game_scores').insert({
+  await admin.from('plaza_game_scores').insert({
     tenant_id: tenantId,
     session_id: sessionId,
     game_id: session.game_id,
@@ -182,10 +184,10 @@ export async function joinGameSession(sessionId: string): Promise<GameSession> {
 
 /** Start a game session (host only, transitions waiting -> in_progress) */
 export async function startGameSession(sessionId: string): Promise<void> {
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
   // Verify ownership
-  const { data: session, error: fetchError } = await supabase
+  const { data: session, error: fetchError } = await admin
     .from('plaza_game_sessions')
     .select('id, host_user_id, status')
     .eq('id', sessionId)
@@ -196,7 +198,7 @@ export async function startGameSession(sessionId: string): Promise<void> {
   if (session.host_user_id !== user.id) throw new Error('Only the host can start the game.')
   if (session.status !== 'waiting') throw new Error('Game can only be started from waiting state.')
 
-  const { error } = await supabase
+  const { error } = await admin
     .from('plaza_game_sessions')
     .update({
       status: 'in_progress',
@@ -224,10 +226,10 @@ export async function submitGameScore(
   const rl = await rateLimitAction('submitGameScore')
   if (!rl.success) throw new Error(rl.error)
 
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
   // Validate session exists and is in progress
-  const { data: session, error: sessionError } = await supabase
+  const { data: session, error: sessionError } = await admin
     .from('plaza_game_sessions')
     .select('id, game_id, status, mode, started_at, max_duration_seconds')
     .eq('id', sessionId)
@@ -246,7 +248,7 @@ export async function submitGameScore(
   }
 
   // Get game details for rewards
-  const { data: game } = await supabase
+  const { data: game } = await admin
     .from('plaza_mini_games')
     .select('token_reward_base, token_reward_win, token_reward_perfect, xp_reward, slug, name')
     .eq('id', session.game_id)
@@ -255,7 +257,7 @@ export async function submitGameScore(
   if (!game) throw new Error('Game definition not found.')
 
   // Check for personal best
-  const { data: prevBest } = await supabase
+  const { data: prevBest } = await admin
     .from('plaza_game_scores')
     .select('score')
     .eq('game_id', session.game_id)
@@ -267,7 +269,7 @@ export async function submitGameScore(
   const isPersonalBest = !prevBest || score > prevBest.score
 
   // Check if this is the high score across all players for this game
-  const { data: globalBest } = await supabase
+  const { data: globalBest } = await admin
     .from('plaza_game_scores')
     .select('score')
     .eq('game_id', session.game_id)
@@ -284,13 +286,13 @@ export async function submitGameScore(
   if (isPersonalBest) tokensEarned += 10 // Personal best bonus
 
   // Check daily cap
-  const capRemaining = await getTokenCapRemaining(supabase, tenantId, user.id)
+  const capRemaining = await getTokenCapRemaining(admin, tenantId, user.id)
   tokensEarned = Math.min(tokensEarned, capRemaining)
 
   const xpEarned = game.xp_reward
 
   // Upsert score (insert or update if user already has a row for this session)
-  const { data: scoreRow, error: scoreError } = await supabase
+  const { data: scoreRow, error: scoreError } = await admin
     .from('plaza_game_scores')
     .upsert(
       {
@@ -319,7 +321,7 @@ export async function submitGameScore(
   // Award tokens
   let newTokenBalance = 0
   if (tokensEarned > 0) {
-    const { data: avatar } = await supabase
+    const { data: avatar } = await admin
       .from('plaza_avatars')
       .select('id, token_balance, tokens_earned_total, games_played, games_won')
       .eq('tenant_id', tenantId)
@@ -329,7 +331,7 @@ export async function submitGameScore(
     if (avatar) {
       newTokenBalance = avatar.token_balance + tokensEarned
 
-      await supabase
+      await admin
         .from('plaza_avatars')
         .update({
           token_balance: newTokenBalance,
@@ -339,7 +341,7 @@ export async function submitGameScore(
         .eq('id', avatar.id)
 
       // Record token transaction
-      await supabase.from('plaza_token_transactions').insert({
+      await admin.from('plaza_token_transactions').insert({
         tenant_id: tenantId,
         user_id: user.id,
         amount: tokensEarned,
@@ -354,7 +356,7 @@ export async function submitGameScore(
 
   // If solo mode, mark session as finished
   if (session.mode === 'solo') {
-    await supabase
+    await admin
       .from('plaza_game_sessions')
       .update({
         status: 'finished',
@@ -364,7 +366,7 @@ export async function submitGameScore(
   }
 
   // Calculate rank in session
-  const { data: sessionScores } = await supabase
+  const { data: sessionScores } = await admin
     .from('plaza_game_scores')
     .select('user_id, score')
     .eq('session_id', sessionId)
@@ -405,10 +407,10 @@ export async function getGameHighScores(
   completed_at: string
   rank: number
 }>> {
-  const { supabase, tenantId } = await getContext()
+  const { admin, tenantId } = await getContext()
 
   // Get game ID from slug
-  const { data: game } = await supabase
+  const { data: game } = await admin
     .from('plaza_mini_games')
     .select('id')
     .eq('slug', gameSlug)
@@ -416,7 +418,7 @@ export async function getGameHighScores(
 
   if (!game) throw new Error(`Game not found: ${gameSlug}`)
 
-  const { data: scores, error } = await supabase
+  const { data: scores, error } = await admin
     .from('plaza_game_scores')
     .select(`
       user_id,
@@ -444,10 +446,10 @@ export async function getGameHighScores(
 
 /** Get user's personal bests across all games */
 export async function getPersonalBests(): Promise<PersonalBest[]> {
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
   // Get all games
-  const { data: games } = await supabase
+  const { data: games } = await admin
     .from('plaza_mini_games')
     .select('id, slug, name')
     .or(`is_global.eq.true,tenant_id.eq.${tenantId}`)
@@ -456,7 +458,7 @@ export async function getPersonalBests(): Promise<PersonalBest[]> {
   if (!games || games.length === 0) return []
 
   // Get all scores for this user
-  const { data: scores } = await supabase
+  const { data: scores } = await admin
     .from('plaza_game_scores')
     .select('game_id, score, accuracy_percent, time_taken_seconds, completed_at')
     .eq('user_id', user.id)

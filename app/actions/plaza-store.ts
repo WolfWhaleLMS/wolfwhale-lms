@@ -2,6 +2,7 @@
 
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { rateLimitAction } from '@/lib/rate-limit-action'
 import { TOKEN_DAILY_CAP } from '@/lib/plaza/constants'
@@ -26,7 +27,8 @@ async function getContext() {
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
   if (!tenantId) throw new Error('No tenant context')
-  return { supabase, user, tenantId }
+  const admin = createAdminClient()
+  return { admin, user, tenantId }
 }
 
 // ---------------------------------------------------------------------------
@@ -35,10 +37,10 @@ async function getContext() {
 
 /** Get all available items in the store (with owned/equipped status) */
 export async function getStoreItems(category?: string): Promise<StoreItem[]> {
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
   // Get user's avatar for level check and balance
-  const { data: avatar } = await supabase
+  const { data: avatar } = await admin
     .from('plaza_avatars')
     .select('avatar_level, token_balance')
     .eq('tenant_id', tenantId)
@@ -49,7 +51,7 @@ export async function getStoreItems(category?: string): Promise<StoreItem[]> {
   const tokenBalance = avatar?.token_balance ?? 0
 
   // Build items query
-  let query = supabase
+  let query = admin
     .from('plaza_avatar_items')
     .select('*')
     .or(`is_global.eq.true,tenant_id.eq.${tenantId}`)
@@ -66,7 +68,7 @@ export async function getStoreItems(category?: string): Promise<StoreItem[]> {
   if (!items || items.length === 0) return []
 
   // Get user's inventory to check ownership
-  const { data: inventory } = await supabase
+  const { data: inventory } = await admin
     .from('plaza_avatar_inventory')
     .select('item_id, is_equipped')
     .eq('tenant_id', tenantId)
@@ -109,10 +111,10 @@ export async function purchaseItem(itemId: string): Promise<PurchaseResult> {
   const rl = await rateLimitAction('purchaseItem')
   if (!rl.success) return { success: false, error: rl.error }
 
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
   // Get item details
-  const { data: item, error: itemError } = await supabase
+  const { data: item, error: itemError } = await admin
     .from('plaza_avatar_items')
     .select('*')
     .eq('id', itemId)
@@ -122,7 +124,7 @@ export async function purchaseItem(itemId: string): Promise<PurchaseResult> {
   if (itemError || !item) return { success: false, error: 'Item not found or unavailable.' }
 
   // Get avatar
-  const { data: avatar, error: avatarError } = await supabase
+  const { data: avatar, error: avatarError } = await admin
     .from('plaza_avatars')
     .select('id, token_balance, tokens_spent_total, avatar_level')
     .eq('tenant_id', tenantId)
@@ -132,7 +134,7 @@ export async function purchaseItem(itemId: string): Promise<PurchaseResult> {
   if (avatarError || !avatar) return { success: false, error: 'Avatar not found.' }
 
   // Check if already owned
-  const { data: existing } = await supabase
+  const { data: existing } = await admin
     .from('plaza_avatar_inventory')
     .select('id')
     .eq('user_id', user.id)
@@ -170,7 +172,7 @@ export async function purchaseItem(itemId: string): Promise<PurchaseResult> {
   const newBalance = avatar.token_balance - price
 
   // Add to inventory
-  const { data: inventoryRow, error: insertError } = await supabase
+  const { data: inventoryRow, error: insertError } = await admin
     .from('plaza_avatar_inventory')
     .insert({
       tenant_id: tenantId,
@@ -186,7 +188,7 @@ export async function purchaseItem(itemId: string): Promise<PurchaseResult> {
 
   // Deduct tokens from avatar balance
   if (price > 0) {
-    await supabase
+    await admin
       .from('plaza_avatars')
       .update({
         token_balance: newBalance,
@@ -195,7 +197,7 @@ export async function purchaseItem(itemId: string): Promise<PurchaseResult> {
       .eq('id', avatar.id)
 
     // Record token transaction
-    await supabase.from('plaza_token_transactions').insert({
+    await admin.from('plaza_token_transactions').insert({
       tenant_id: tenantId,
       user_id: user.id,
       amount: -price,
@@ -209,7 +211,7 @@ export async function purchaseItem(itemId: string): Promise<PurchaseResult> {
 
   // Increment purchase counter for limited edition items
   if (item.is_limited_edition) {
-    await supabase
+    await admin
       .from('plaza_avatar_items')
       .update({ current_purchases: (item.current_purchases ?? 0) + 1 })
       .eq('id', itemId)
@@ -243,10 +245,10 @@ export async function purchaseItem(itemId: string): Promise<PurchaseResult> {
 
 /** Equip an owned item */
 export async function equipItem(itemId: string): Promise<void> {
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
   // Get the item from inventory
-  const { data: invItem, error: invError } = await supabase
+  const { data: invItem, error: invError } = await admin
     .from('plaza_avatar_inventory')
     .select('id, item_id')
     .eq('user_id', user.id)
@@ -256,7 +258,7 @@ export async function equipItem(itemId: string): Promise<void> {
   if (invError || !invItem) throw new Error('Item not in your inventory.')
 
   // Get item details for slot info
-  const { data: item } = await supabase
+  const { data: item } = await admin
     .from('plaza_avatar_items')
     .select('slot')
     .eq('id', itemId)
@@ -265,7 +267,7 @@ export async function equipItem(itemId: string): Promise<void> {
   if (!item) throw new Error('Item not found.')
 
   // Unequip any existing item in the same slot
-  const { data: equippedInSlot } = await supabase
+  const { data: equippedInSlot } = await admin
     .from('plaza_avatar_inventory')
     .select('id, item_id')
     .eq('user_id', user.id)
@@ -275,7 +277,7 @@ export async function equipItem(itemId: string): Promise<void> {
     // Check which of these share the same slot
     const equippedIds = equippedInSlot.map((e) => e.item_id)
     if (equippedIds.length > 0) {
-      const { data: equippedItems } = await supabase
+      const { data: equippedItems } = await admin
         .from('plaza_avatar_items')
         .select('id, slot')
         .in('id', equippedIds)
@@ -287,7 +289,7 @@ export async function equipItem(itemId: string): Promise<void> {
       if (sameSlotItemIds.length > 0) {
         // Unequip items in the same slot
         for (const slotItemId of sameSlotItemIds) {
-          await supabase
+          await admin
             .from('plaza_avatar_inventory')
             .update({ is_equipped: false })
             .eq('user_id', user.id)
@@ -298,7 +300,7 @@ export async function equipItem(itemId: string): Promise<void> {
   }
 
   // Equip the new item
-  const { error } = await supabase
+  const { error } = await admin
     .from('plaza_avatar_inventory')
     .update({ is_equipped: true })
     .eq('id', invItem.id)
@@ -310,10 +312,10 @@ export async function equipItem(itemId: string): Promise<void> {
 
 /** Unequip an item from a slot */
 export async function unequipItem(slot: string): Promise<void> {
-  const { supabase, user } = await getContext()
+  const { admin, user } = await getContext()
 
   // Get all equipped items in this slot
-  const { data: equippedItems } = await supabase
+  const { data: equippedItems } = await admin
     .from('plaza_avatar_inventory')
     .select('id, item_id')
     .eq('user_id', user.id)
@@ -323,7 +325,7 @@ export async function unequipItem(slot: string): Promise<void> {
 
   // Find items matching the slot
   const equippedIds = equippedItems.map((e) => e.item_id)
-  const { data: items } = await supabase
+  const { data: items } = await admin
     .from('plaza_avatar_items')
     .select('id, slot')
     .in('id', equippedIds)
@@ -336,7 +338,7 @@ export async function unequipItem(slot: string): Promise<void> {
 
   // Unequip
   for (const targetId of targetItemIds) {
-    await supabase
+    await admin
       .from('plaza_avatar_inventory')
       .update({ is_equipped: false })
       .eq('user_id', user.id)
@@ -352,9 +354,9 @@ export async function unequipItem(slot: string): Promise<void> {
 
 /** Get user's inventory */
 export async function getInventory(): Promise<InventoryItem[]> {
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
-  const { data, error } = await supabase
+  const { data, error } = await admin
     .from('plaza_avatar_inventory')
     .select(`
       id,
@@ -400,10 +402,10 @@ export async function getInventory(): Promise<InventoryItem[]> {
 
 /** Get token balance and recent transaction history */
 export async function getTokenInfo(): Promise<TokenInfo> {
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
   // Get avatar balance
-  const { data: avatar } = await supabase
+  const { data: avatar } = await admin
     .from('plaza_avatars')
     .select('token_balance, tokens_earned_total, tokens_spent_total')
     .eq('tenant_id', tenantId)
@@ -414,7 +416,7 @@ export async function getTokenInfo(): Promise<TokenInfo> {
 
   // Get today's earnings
   const today = new Date().toISOString().split('T')[0]
-  const { data: todayTransactions } = await supabase
+  const { data: todayTransactions } = await admin
     .from('plaza_token_transactions')
     .select('amount')
     .eq('tenant_id', tenantId)
@@ -426,7 +428,7 @@ export async function getTokenInfo(): Promise<TokenInfo> {
   const earnedToday = todayTransactions?.reduce((sum, t) => sum + t.amount, 0) ?? 0
 
   // Get recent transactions
-  const { data: recentTx } = await supabase
+  const { data: recentTx } = await admin
     .from('plaza_token_transactions')
     .select('*')
     .eq('tenant_id', tenantId)
@@ -460,12 +462,12 @@ export async function awardTokens(
   const rl = await rateLimitAction('awardTokens')
   if (!rl.success) throw new Error(rl.error)
 
-  const { supabase, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getContext()
 
   if (amount <= 0) throw new Error('Amount must be positive.')
 
   // Get avatar
-  const { data: avatar } = await supabase
+  const { data: avatar } = await admin
     .from('plaza_avatars')
     .select('id, token_balance, tokens_earned_total')
     .eq('tenant_id', tenantId)
@@ -476,7 +478,7 @@ export async function awardTokens(
 
   // Check daily cap
   const today = new Date().toISOString().split('T')[0]
-  const { data: todayTransactions } = await supabase
+  const { data: todayTransactions } = await admin
     .from('plaza_token_transactions')
     .select('amount')
     .eq('tenant_id', tenantId)
@@ -508,7 +510,7 @@ export async function awardTokens(
   const newBalance = avatar.token_balance + cappedAmount
 
   // Update avatar balance
-  await supabase
+  await admin
     .from('plaza_avatars')
     .update({
       token_balance: newBalance,
@@ -517,7 +519,7 @@ export async function awardTokens(
     .eq('id', avatar.id)
 
   // Record transaction
-  const { data: tx, error } = await supabase
+  const { data: tx, error } = await admin
     .from('plaza_token_transactions')
     .insert({
       tenant_id: tenantId,
@@ -546,11 +548,11 @@ export async function getTokenLeaderboard(
   period: 'weekly' | 'monthly' | 'all_time' = 'weekly',
   limit: number = 25
 ): Promise<LeaderboardEntry[]> {
-  const { supabase, tenantId } = await getContext()
+  const { admin, tenantId } = await getContext()
 
   if (period === 'all_time') {
     // Use total tokens earned on the avatar
-    const { data, error } = await supabase
+    const { data, error } = await admin
       .from('plaza_avatars')
       .select('user_id, display_name, avatar_config, tokens_earned_total')
       .eq('tenant_id', tenantId)
@@ -583,7 +585,7 @@ export async function getTokenLeaderboard(
   }
 
   // Get earning transactions in the period
-  const { data: transactions, error } = await supabase
+  const { data: transactions, error } = await admin
     .from('plaza_token_transactions')
     .select('user_id, amount')
     .eq('tenant_id', tenantId)
@@ -607,7 +609,7 @@ export async function getTokenLeaderboard(
 
   // Get avatar info for the top users
   const topUserIds = sorted.map(([uid]) => uid)
-  const { data: avatars } = await supabase
+  const { data: avatars } = await admin
     .from('plaza_avatars')
     .select('user_id, display_name, avatar_config')
     .eq('tenant_id', tenantId)
