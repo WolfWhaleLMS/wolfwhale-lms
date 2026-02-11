@@ -19,9 +19,9 @@ export default function LoginPage() {
   return (
     <div className="space-y-6">
       {/* EVA-style Title */}
-      <div className="text-center space-y-2 mb-2">
+      <div className="text-center space-y-2 mb-8">
         <h1
-          className="text-[2.6rem] sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#1a2a4e] leading-none whitespace-nowrap"
+          className="text-[2.6rem] sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#1a2a4e] leading-none whitespace-nowrap underline decoration-[#0a4d68]/30 underline-offset-8"
           style={{
             fontFamily: "'Shippori Mincho B1', Georgia, 'Times New Roman', serif",
             fontWeight: 800,
