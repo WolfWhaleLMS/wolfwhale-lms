@@ -3,22 +3,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { RotateCcw, Save } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import type { AvatarConfig } from '@/lib/plaza/types'
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
-export interface AvatarConfig {
-  body_color: string
-  body_shape: string
-  eye_style: string
-  hat: string | null
-  outfit: string | null
-  accessory: string | null
-  trail_effect: string | null
-  emote: string | null
-  background_id: string | null
-}
+export type { AvatarConfig }
 
 interface AvatarCustomizerProps {
   initialConfig?: AvatarConfig

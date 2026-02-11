@@ -15,7 +15,7 @@ export type FacingDirection = 'up' | 'down' | 'left' | 'right'
 /** Avatar appearance configuration stored as JSONB in plaza_avatars.avatar_config */
 export interface AvatarConfig {
   body_color: string
-  body_shape: 'circle' | 'square' | 'hexagon' | 'star'
+  body_shape: string
   eye_style: string
   hat: string | null
   outfit: string | null

@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Palette, User } from 'lucide-react'
-import { AvatarCustomizer, type AvatarConfig } from '@/components/plaza/AvatarCustomizer'
-import { createClient } from '@/lib/supabase/client'
+import { AvatarCustomizer } from '@/components/plaza/AvatarCustomizer'
+import type { AvatarConfig } from '@/lib/plaza/types'
+import { getMyAvatar, createAvatar, updateAvatarConfig } from '@/app/actions/plaza'
 
 export default function AvatarPage() {
   const router = useRouter()
@@ -23,33 +24,25 @@ export default function AvatarPage() {
   // Load existing avatar data
   useEffect(() => {
     async function loadAvatar() {
-      const supabase = createClient()
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-
-      if (!user) {
-        router.push('/login')
-        return
+      try {
+        const avatar = await getMyAvatar()
+        if (avatar) {
+          setExistingAvatar({
+            id: avatar.id,
+            display_name: avatar.display_name,
+            avatar_config: avatar.avatar_config as AvatarConfig,
+          })
+          setDisplayName(avatar.display_name)
+          setHasSaved(true)
+        }
+      } catch {
+        // No avatar yet, that's fine
       }
-
-      const { data: avatar } = await supabase
-        .from('plaza_avatars')
-        .select('id, display_name, avatar_config')
-        .eq('user_id', user.id)
-        .single()
-
-      if (avatar) {
-        setExistingAvatar(avatar as any)
-        setDisplayName(avatar.display_name)
-        setHasSaved(true)
-      }
-
       setIsLoading(false)
     }
 
     loadAvatar()
-  }, [router])
+  }, [])
 
   const handleSave = async (config: AvatarConfig) => {
     setError(null)
@@ -68,37 +61,14 @@ export default function AvatarPage() {
     setIsSaving(true)
 
     try {
-      const supabase = createClient()
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-
-      if (!user) {
-        router.push('/login')
-        return
-      }
-
       if (existingAvatar) {
-        // Update existing avatar
-        const { error: updateError } = await supabase
-          .from('plaza_avatars')
-          .update({
-            display_name: trimmedName,
-            avatar_config: config,
-            updated_at: new Date().toISOString(),
-          })
-          .eq('id', existingAvatar.id)
-
-        if (updateError) throw updateError
+        // Update existing avatar via server action
+        await updateAvatarConfig(config)
       } else {
-        // Create new avatar
-        const { error: insertError } = await supabase.from('plaza_avatars').insert({
-          user_id: user.id,
-          display_name: trimmedName,
-          avatar_config: config,
-        })
-
-        if (insertError) throw insertError
+        // Create new avatar via server action
+        await createAvatar(trimmedName)
+        // Then update the config
+        await updateAvatarConfig(config)
       }
 
       setHasSaved(true)
