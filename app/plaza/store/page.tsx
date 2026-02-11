@@ -1,13 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ShoppingBag, Search } from 'lucide-react'
 import { TokenDisplay } from '@/components/plaza/TokenDisplay'
 import { StoreItemCard, type StoreItem } from '@/components/plaza/StoreItemCard'
 import { StorePurchaseDialog } from '@/components/plaza/StorePurchaseDialog'
-import { createClient } from '@/lib/supabase/client'
+import { getMyAvatar } from '@/app/actions/plaza'
+import { getStoreItems, purchaseItem } from '@/app/actions/plaza-store'
 import { cn } from '@/lib/utils'
 
 // ---------------------------------------------------------------------------
@@ -29,7 +29,6 @@ const CATEGORIES = [
 // ---------------------------------------------------------------------------
 
 export default function StorePage() {
-  const router = useRouter()
   const [activeCategory, setActiveCategory] = useState('hat')
   const [items, setItems] = useState<StoreItem[]>([])
   const [ownedItemIds, setOwnedItemIds] = useState<Set<string>>(new Set())
@@ -43,57 +42,33 @@ export default function StorePage() {
   // Load store data
   useEffect(() => {
     async function loadStore() {
-      const supabase = createClient()
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
+      try {
+        const avatar = await getMyAvatar()
+        if (avatar) {
+          setTokenBalance(avatar.token_balance ?? 0)
+          setAvatarLevel(avatar.avatar_level ?? 1)
+        }
 
-      if (!user) {
-        router.push('/login')
-        return
+        const storeItems = await getStoreItems()
+        if (storeItems) {
+          const owned = new Set<string>()
+          const equipped = new Set<string>()
+          for (const item of storeItems) {
+            if ((item as any).is_owned) owned.add(item.id)
+            if ((item as any).is_equipped) equipped.add(item.id)
+          }
+          setItems(storeItems as StoreItem[])
+          setOwnedItemIds(owned)
+          setEquippedItemIds(equipped)
+        }
+      } catch {
+        // ignore
       }
-
-      // Fetch avatar data for token balance and level
-      const { data: avatar } = await supabase
-        .from('plaza_avatars')
-        .select('token_balance, avatar_level')
-        .eq('user_id', user.id)
-        .single()
-
-      if (avatar) {
-        setTokenBalance(avatar.token_balance ?? 0)
-        setAvatarLevel(avatar.avatar_level ?? 1)
-      }
-
-      // Fetch store items
-      const { data: storeItems } = await supabase
-        .from('plaza_avatar_items')
-        .select('id, name, description, category, slot, rarity, sprite_key, preview_url, color_hex, price_tokens, is_free, min_avatar_level')
-        .eq('is_active', true)
-        .order('sort_order', { ascending: true })
-
-      if (storeItems) {
-        setItems(storeItems as StoreItem[])
-      }
-
-      // Fetch user inventory
-      const { data: inventory } = await supabase
-        .from('plaza_avatar_inventory')
-        .select('item_id, is_equipped')
-        .eq('user_id', user.id)
-
-      if (inventory) {
-        setOwnedItemIds(new Set(inventory.map((i) => i.item_id)))
-        setEquippedItemIds(
-          new Set(inventory.filter((i) => i.is_equipped).map((i) => i.item_id))
-        )
-      }
-
       setIsLoading(false)
     }
 
     loadStore()
-  }, [router])
+  }, [])
 
   // Filter items by category and search
   const filteredItems = items.filter((item) => {
@@ -104,42 +79,15 @@ export default function StorePage() {
     return matchesCategory && matchesSearch
   })
 
-  // Handle purchase
+  // Handle purchase via server action
   const handlePurchase = async (itemId: string) => {
-    const supabase = createClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) return
-
-    const item = items.find((i) => i.id === itemId)
-    if (!item) return
-
-    // Insert into inventory
-    const { error: invError } = await supabase
-      .from('plaza_avatar_inventory')
-      .insert({
-        user_id: user.id,
-        item_id: itemId,
-        price_paid: item.price_tokens,
-      })
-
-    if (invError) throw invError
-
-    // Deduct tokens from avatar balance
-    const { error: balError } = await supabase
-      .from('plaza_avatars')
-      .update({
-        token_balance: tokenBalance - item.price_tokens,
-        tokens_spent_total: tokenBalance, // This is approximate; server action should handle atomically
-      })
-      .eq('user_id', user.id)
-
-    if (balError) throw balError
+    const result = await purchaseItem(itemId)
+    if (!result.success) {
+      throw new Error(result.error ?? 'Purchase failed')
+    }
 
     // Update local state
-    setTokenBalance((prev) => prev - item.price_tokens)
+    setTokenBalance(result.new_balance ?? tokenBalance)
     setOwnedItemIds((prev) => new Set([...prev, itemId]))
     setSelectedItem(null)
   }

@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import {
   Map,
   Gamepad2,
@@ -23,6 +24,7 @@ export default async function PlazaPage() {
 
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
+  const admin = createAdminClient()
 
   // Check if user has an avatar; if not, redirect to avatar creation
   let hasAvatar = false
@@ -30,7 +32,7 @@ export default async function PlazaPage() {
   let tokenBalance = 0
 
   if (tenantId) {
-    const { data: avatar } = await supabase
+    const { data: avatar } = await admin
       .from('plaza_avatars')
       .select('id, display_name, token_balance')
       .eq('tenant_id', tenantId)

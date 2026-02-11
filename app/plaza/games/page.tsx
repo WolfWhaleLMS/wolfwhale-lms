@@ -1,46 +1,31 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Gamepad2 } from 'lucide-react'
 import { TokenDisplay } from '@/components/plaza/TokenDisplay'
 import { GameSelector } from '@/components/plaza/GameSelector'
-import { createClient } from '@/lib/supabase/client'
+import { getMyAvatar } from '@/app/actions/plaza'
 
 export default function PlazaGamesPage() {
-  const router = useRouter()
   const [tokenBalance, setTokenBalance] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     async function loadData() {
-      const supabase = createClient()
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-
-      if (!user) {
-        router.push('/login')
-        return
+      try {
+        const avatar = await getMyAvatar()
+        if (avatar) {
+          setTokenBalance(avatar.token_balance ?? 0)
+        }
+      } catch {
+        // ignore
       }
-
-      // Fetch token balance
-      const { data: avatar } = await supabase
-        .from('plaza_avatars')
-        .select('token_balance')
-        .eq('user_id', user.id)
-        .single()
-
-      if (avatar) {
-        setTokenBalance(avatar.token_balance ?? 0)
-      }
-
       setIsLoading(false)
     }
 
     loadData()
-  }, [router])
+  }, [])
 
   if (isLoading) {
     return (
