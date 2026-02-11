@@ -1,0 +1,366 @@
+'use server'
+
+import { headers } from 'next/headers'
+import { createClient } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
+import { rateLimitAction } from '@/lib/rate-limit-action'
+import { AVATAR_DEFAULTS, TOKEN_DAILY_CAP, TOKEN_RATES } from '@/lib/plaza/constants'
+import type {
+  PlazaAvatar,
+  AvatarConfig,
+  RoomData,
+  RoomInfo,
+  ChatPhrase,
+  DailyLoginResult,
+} from '@/lib/plaza/types'
+
+// ---------------------------------------------------------------------------
+// Context helper (matches existing pattern in gamification.ts, study-mode.ts)
+// ---------------------------------------------------------------------------
+
+async function getContext() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+  const headersList = await headers()
+  const tenantId = headersList.get('x-tenant-id')
+  if (!tenantId) throw new Error('No tenant context')
+  return { supabase, user, tenantId }
+}
+
+// ---------------------------------------------------------------------------
+// Avatar CRUD
+// ---------------------------------------------------------------------------
+
+/** Create initial avatar for user (called on first plaza visit) */
+export async function createAvatar(displayName: string): Promise<PlazaAvatar> {
+  const rl = await rateLimitAction('createAvatar')
+  if (!rl.success) throw new Error(rl.error)
+
+  const { supabase, user, tenantId } = await getContext()
+
+  // Check if avatar already exists
+  const { data: existing } = await supabase
+    .from('plaza_avatars')
+    .select('*')
+    .eq('tenant_id', tenantId)
+    .eq('user_id', user.id)
+    .single()
+
+  if (existing) return existing as PlazaAvatar
+
+  const defaultConfig: AvatarConfig = {
+    body_color: AVATAR_DEFAULTS.body_color,
+    body_shape: AVATAR_DEFAULTS.body_shape,
+    eye_style: AVATAR_DEFAULTS.eye_style,
+    hat: AVATAR_DEFAULTS.hat,
+    outfit: AVATAR_DEFAULTS.outfit,
+    accessory: AVATAR_DEFAULTS.accessory,
+    trail_effect: AVATAR_DEFAULTS.trail_effect,
+    emote: AVATAR_DEFAULTS.emote,
+    background_id: AVATAR_DEFAULTS.background_id,
+  }
+
+  const { data, error } = await supabase
+    .from('plaza_avatars')
+    .insert({
+      tenant_id: tenantId,
+      user_id: user.id,
+      display_name: displayName.trim().slice(0, 50),
+      avatar_config: defaultConfig,
+      current_room: 'plaza_main',
+      pos_x: AVATAR_DEFAULTS.spawn_x,
+      pos_y: AVATAR_DEFAULTS.spawn_y,
+      facing_direction: AVATAR_DEFAULTS.facing_direction,
+    })
+    .select('*')
+    .single()
+
+  if (error) throw new Error(`Failed to create avatar: ${error.message}`)
+
+  revalidatePath('/student/plaza')
+  return data as PlazaAvatar
+}
+
+/** Get avatar data for current user */
+export async function getMyAvatar(): Promise<PlazaAvatar | null> {
+  const { supabase, user, tenantId } = await getContext()
+
+  const { data } = await supabase
+    .from('plaza_avatars')
+    .select('*')
+    .eq('tenant_id', tenantId)
+    .eq('user_id', user.id)
+    .single()
+
+  return (data as PlazaAvatar) ?? null
+}
+
+/** Update avatar appearance (equip/unequip items, change colors) */
+export async function updateAvatarConfig(config: AvatarConfig): Promise<PlazaAvatar> {
+  const rl = await rateLimitAction('updateAvatarConfig')
+  if (!rl.success) throw new Error(rl.error)
+
+  const { supabase, user, tenantId } = await getContext()
+
+  const { data, error } = await supabase
+    .from('plaza_avatars')
+    .update({
+      avatar_config: config,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('tenant_id', tenantId)
+    .eq('user_id', user.id)
+    .select('*')
+    .single()
+
+  if (error) throw new Error(`Failed to update avatar config: ${error.message}`)
+
+  revalidatePath('/student/plaza')
+  return data as PlazaAvatar
+}
+
+/** Update avatar position in DB (called on room change, not every frame) */
+export async function updateAvatarRoom(
+  roomSlug: string,
+  x: number,
+  y: number
+): Promise<void> {
+  const { supabase, user, tenantId } = await getContext()
+
+  const { error } = await supabase
+    .from('plaza_avatars')
+    .update({
+      current_room: roomSlug,
+      pos_x: x,
+      pos_y: y,
+      last_seen_at: new Date().toISOString(),
+    })
+    .eq('tenant_id', tenantId)
+    .eq('user_id', user.id)
+
+  if (error) throw new Error(`Failed to update avatar room: ${error.message}`)
+}
+
+/** Set avatar online/offline status */
+export async function setAvatarOnlineStatus(isOnline: boolean): Promise<void> {
+  const { supabase, user, tenantId } = await getContext()
+
+  const { error } = await supabase
+    .from('plaza_avatars')
+    .update({
+      is_online: isOnline,
+      last_seen_at: new Date().toISOString(),
+    })
+    .eq('tenant_id', tenantId)
+    .eq('user_id', user.id)
+
+  if (error) throw new Error(`Failed to update online status: ${error.message}`)
+}
+
+/** Get all online avatars in a room */
+export async function getRoomAvatars(roomSlug: string): Promise<PlazaAvatar[]> {
+  const { supabase, tenantId } = await getContext()
+
+  const { data, error } = await supabase
+    .from('plaza_avatars')
+    .select('*')
+    .eq('tenant_id', tenantId)
+    .eq('current_room', roomSlug)
+    .eq('is_online', true)
+
+  if (error) throw new Error(`Failed to get room avatars: ${error.message}`)
+
+  return (data ?? []) as PlazaAvatar[]
+}
+
+// ---------------------------------------------------------------------------
+// Rooms
+// ---------------------------------------------------------------------------
+
+/** Get all available rooms with occupant counts */
+export async function getPlazaRooms(): Promise<RoomInfo[]> {
+  const { supabase, tenantId } = await getContext()
+
+  // Get rooms accessible to this tenant (global + tenant-specific)
+  const { data: rooms, error } = await supabase
+    .from('plaza_rooms')
+    .select('id, slug, name, description, room_type, max_occupants, sort_order')
+    .or(`is_global.eq.true,tenant_id.eq.${tenantId}`)
+    .eq('is_active', true)
+    .order('sort_order', { ascending: true })
+
+  if (error) throw new Error(`Failed to get plaza rooms: ${error.message}`)
+  if (!rooms || rooms.length === 0) return []
+
+  // Get online avatar counts per room
+  const { data: counts } = await supabase
+    .from('plaza_avatars')
+    .select('current_room')
+    .eq('tenant_id', tenantId)
+    .eq('is_online', true)
+
+  const roomCounts = new Map<string, number>()
+  for (const row of counts ?? []) {
+    const slug = row.current_room
+    roomCounts.set(slug, (roomCounts.get(slug) ?? 0) + 1)
+  }
+
+  return rooms.map((room) => ({
+    id: room.id,
+    slug: room.slug,
+    name: room.name,
+    description: room.description,
+    room_type: room.room_type,
+    max_occupants: room.max_occupants,
+    current_occupants: roomCounts.get(room.slug) ?? 0,
+    sort_order: room.sort_order,
+  }))
+}
+
+/** Get room data (map config, buildings, decorations) */
+export async function getRoomData(roomSlug: string): Promise<RoomData> {
+  const { supabase, tenantId } = await getContext()
+
+  const { data, error } = await supabase
+    .from('plaza_rooms')
+    .select('*')
+    .or(`is_global.eq.true,tenant_id.eq.${tenantId}`)
+    .eq('slug', roomSlug)
+    .eq('is_active', true)
+    .single()
+
+  if (error || !data) throw new Error(`Room not found: ${roomSlug}`)
+
+  return data as RoomData
+}
+
+// ---------------------------------------------------------------------------
+// Chat Phrases
+// ---------------------------------------------------------------------------
+
+/** Get all available chat phrases */
+export async function getChatPhrases(): Promise<ChatPhrase[]> {
+  const { supabase, tenantId } = await getContext()
+
+  const { data, error } = await supabase
+    .from('plaza_chat_phrases')
+    .select('id, phrase, category, emoji_icon, is_global, sort_order')
+    .or(`is_global.eq.true,tenant_id.eq.${tenantId}`)
+    .eq('is_active', true)
+    .order('sort_order', { ascending: true })
+
+  if (error) throw new Error(`Failed to get chat phrases: ${error.message}`)
+
+  return (data ?? []) as ChatPhrase[]
+}
+
+// ---------------------------------------------------------------------------
+// Daily Login
+// ---------------------------------------------------------------------------
+
+/** Record daily plaza login (awards tokens if new day) */
+export async function recordDailyLogin(): Promise<DailyLoginResult> {
+  const rl = await rateLimitAction('recordDailyLogin')
+  if (!rl.success) throw new Error(rl.error)
+
+  const { supabase, user, tenantId } = await getContext()
+
+  // Get current avatar
+  const { data: avatar } = await supabase
+    .from('plaza_avatars')
+    .select('id, last_daily_login, daily_login_streak, token_balance, tokens_earned_total')
+    .eq('tenant_id', tenantId)
+    .eq('user_id', user.id)
+    .single()
+
+  if (!avatar) throw new Error('Avatar not found. Create an avatar first.')
+
+  const today = new Date().toISOString().split('T')[0]
+  const lastLogin = avatar.last_daily_login
+
+  // Check if already logged in today
+  if (lastLogin === today) {
+    return {
+      is_new_day: false,
+      tokens_awarded: 0,
+      streak: avatar.daily_login_streak,
+      streak_bonus: 0,
+      new_balance: avatar.token_balance,
+    }
+  }
+
+  // Calculate streak
+  let newStreak = 1
+  if (lastLogin) {
+    const yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1)
+    const yesterdayStr = yesterday.toISOString().split('T')[0]
+    if (lastLogin === yesterdayStr) {
+      newStreak = avatar.daily_login_streak + 1
+    }
+  }
+
+  // Calculate streak bonus
+  let streakBonus = 0
+  if (newStreak === 7) streakBonus = TOKEN_RATES.streak_7_day
+  else if (newStreak === 14) streakBonus = TOKEN_RATES.streak_14_day
+  else if (newStreak === 30) streakBonus = TOKEN_RATES.streak_30_day
+
+  // Check daily token cap
+  const todayStart = `${today}T00:00:00`
+  const todayEnd = `${today}T23:59:59`
+  const { data: todayTransactions } = await supabase
+    .from('plaza_token_transactions')
+    .select('amount')
+    .eq('tenant_id', tenantId)
+    .eq('user_id', user.id)
+    .gt('amount', 0)
+    .gte('created_at', todayStart)
+    .lte('created_at', todayEnd)
+
+  const earnedToday = todayTransactions?.reduce((sum, t) => sum + t.amount, 0) ?? 0
+  const capRemaining = Math.max(0, TOKEN_DAILY_CAP - earnedToday)
+
+  // Award tokens (respect daily cap)
+  const baseTokens = Math.min(TOKEN_RATES.daily_login, capRemaining)
+  const bonusTokens = Math.min(streakBonus, Math.max(0, capRemaining - baseTokens))
+  const totalTokens = baseTokens + bonusTokens
+
+  const newBalance = avatar.token_balance + totalTokens
+
+  // Update avatar
+  await supabase
+    .from('plaza_avatars')
+    .update({
+      last_daily_login: today,
+      daily_login_streak: newStreak,
+      token_balance: newBalance,
+      tokens_earned_total: avatar.tokens_earned_total + totalTokens,
+      is_online: true,
+      last_seen_at: new Date().toISOString(),
+    })
+    .eq('id', avatar.id)
+
+  // Record token transaction
+  if (totalTokens > 0) {
+    await supabase.from('plaza_token_transactions').insert({
+      tenant_id: tenantId,
+      user_id: user.id,
+      amount: totalTokens,
+      balance_after: newBalance,
+      transaction_type: 'earn_daily_login',
+      source_type: 'daily_login',
+      description: `Daily login (streak: ${newStreak})${streakBonus > 0 ? ` + streak bonus: ${bonusTokens}` : ''}`,
+    })
+  }
+
+  revalidatePath('/student/plaza')
+  return {
+    is_new_day: true,
+    tokens_awarded: totalTokens,
+    streak: newStreak,
+    streak_bonus: bonusTokens,
+    new_balance: newBalance,
+  }
+}

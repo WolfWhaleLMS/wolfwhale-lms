@@ -127,6 +127,13 @@ export const XP_CONFIG = {
     lesson_complete: 10,
     perfect_attendance_week: 25,
     perfect_attendance_month: 100,
+    // Plaza XP events
+    plaza_game_complete: 10,
+    plaza_game_win: 20,
+    plaza_study_round: 15,
+    plaza_study_session: 30,
+    plaza_documentary_watch: 20,
+    plaza_daily_login: 5,
   },
 
   // Level thresholds (XP needed per level)

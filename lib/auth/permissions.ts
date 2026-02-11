@@ -23,6 +23,7 @@ export type Resource =
   | 'audit_logs'
   | 'reports'
   | 'gamification'
+  | 'plaza'
 
 export type Action =
   | 'create'
@@ -62,6 +63,7 @@ const PERMISSION_MATRIX: Record<UserRole, Record<Resource, Action[]>> = {
     audit_logs:    [],
     reports:       [],
     gamification:  ['read'],
+    plaza:         ['read', 'create'],
   },
 
   teacher: {
@@ -79,6 +81,7 @@ const PERMISSION_MATRIX: Record<UserRole, Record<Resource, Action[]>> = {
     audit_logs:    [],
     reports:       ['read', 'export'],
     gamification:  ['create', 'read', 'update'],
+    plaza:         ['read', 'create', 'update'],
   },
 
   parent: {
@@ -96,6 +99,7 @@ const PERMISSION_MATRIX: Record<UserRole, Record<Resource, Action[]>> = {
     audit_logs:    [],
     reports:       [],
     gamification:  ['read'],
+    plaza:         ['read'],
   },
 
   admin: {
@@ -113,6 +117,7 @@ const PERMISSION_MATRIX: Record<UserRole, Record<Resource, Action[]>> = {
     audit_logs:    ['read', 'export'],
     reports:       ['create', 'read', 'export'],
     gamification:  ['create', 'read', 'update', 'delete'],
+    plaza:         ['create', 'read', 'update', 'delete'],
   },
 
   super_admin: {
@@ -130,6 +135,7 @@ const PERMISSION_MATRIX: Record<UserRole, Record<Resource, Action[]>> = {
     audit_logs:    ['create', 'read', 'update', 'delete', 'export'],
     reports:       ['create', 'read', 'update', 'delete', 'export'],
     gamification:  ['create', 'read', 'update', 'delete', 'export'],
+    plaza:         ['create', 'read', 'update', 'delete', 'export'],
   },
 }
 
@@ -201,15 +207,17 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
 
   const roleSpecific: Record<UserRole, MenuItem[]> = {
     student: [
-      { label: 'My Courses',    href: '/student/courses',        icon: 'BookOpen' },
-      { label: 'Assignments',   href: '/student/assignments',    icon: 'ClipboardList' },
-      { label: 'Grades',        href: '/student/grades',         icon: 'GraduationCap' },
-      { label: 'Attendance',    href: '/student/attendance',      icon: 'CalendarCheck' },
-      { label: 'Flashcards',    href: '/student/flashcards',     icon: 'Layers' },
-      { label: 'Study Mode',    href: '/student/study-mode',     icon: 'Brain' },
-      { label: 'Achievements',  href: '/student/achievements',   icon: 'Trophy' },
-      { label: 'Leaderboard',   href: '/student/leaderboard',    icon: 'Medal' },
-      { label: 'Tools Arcade',  href: '/student/tools',          icon: 'Gamepad2' },
+      { label: 'My Courses',    href: '/student/courses',             icon: 'BookOpen' },
+      { label: 'Assignments',   href: '/student/assignments',         icon: 'ClipboardList' },
+      { label: 'Grades',        href: '/student/grades',              icon: 'GraduationCap' },
+      { label: 'Attendance',    href: '/student/attendance',           icon: 'CalendarCheck' },
+      { label: 'Flashcards',    href: '/student/flashcards',          icon: 'Layers' },
+      { label: 'Study Mode',    href: '/student/study-mode',          icon: 'Brain' },
+      { label: 'Achievements',  href: '/student/achievements',        icon: 'Trophy' },
+      { label: 'Leaderboard',   href: '/student/leaderboard',         icon: 'Medal' },
+      { label: 'Tools Arcade',  href: '/student/tools',               icon: 'Gamepad2' },
+      { label: 'Mini Games',    href: '/student/tools/mini-games',    icon: 'Dices' },
+      { label: 'Virtual Plaza', href: '/plaza',                       icon: 'Map' },
     ],
 
     teacher: [
@@ -217,6 +225,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Assignments',   href: '/teacher/assignments',    icon: 'ClipboardList' },
       { label: 'Gradebook',     href: '/teacher/gradebook',      icon: 'GraduationCap' },
       { label: 'Students',      href: '/teacher/students',       icon: 'Users' },
+      { label: 'Virtual Plaza', href: '/plaza',                  icon: 'Map' },
     ],
 
     parent: [
@@ -225,13 +234,14 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
     ],
 
     admin: [
-      { label: 'Users',         href: '/admin/users',            icon: 'Users' },
-      { label: 'Classes',       href: '/admin/classes',          icon: 'BookOpen' },
-      { label: 'Reports',       href: '/admin/reports',          icon: 'BarChart3' },
-      { label: 'Attendance',    href: '/admin/attendance',        icon: 'CalendarCheck' },
-      { label: 'Settings',      href: '/admin/settings',         icon: 'Settings' },
-      { label: 'Compliance',    href: '/admin/compliance',       icon: 'Shield' },
-      { label: 'Audit Logs',    href: '/admin/audit-logs',       icon: 'FileText' },
+      { label: 'Users',          href: '/admin/users',            icon: 'Users' },
+      { label: 'Classes',        href: '/admin/classes',          icon: 'BookOpen' },
+      { label: 'Reports',        href: '/admin/reports',          icon: 'BarChart3' },
+      { label: 'Attendance',     href: '/admin/attendance',        icon: 'CalendarCheck' },
+      { label: 'Settings',       href: '/admin/settings',         icon: 'Settings' },
+      { label: 'Plaza Settings', href: '/admin/plaza',            icon: 'Map' },
+      { label: 'Compliance',     href: '/admin/compliance',       icon: 'Shield' },
+      { label: 'Audit Logs',     href: '/admin/audit-logs',       icon: 'FileText' },
     ],
 
     super_admin: [
