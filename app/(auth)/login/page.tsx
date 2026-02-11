@@ -20,27 +20,15 @@ export default function LoginPage() {
     <div className="space-y-6">
       {/* EVA-style Title */}
       <div className="text-center space-y-2 mb-2">
-        <h1 className="leading-none">
-          <span
-            className="block text-5xl sm:text-6xl font-extrabold tracking-tight text-[#1a2a4e]"
-            style={{
-              fontFamily: "'Shippori Mincho B1', Georgia, 'Times New Roman', serif",
-              fontWeight: 800,
-              letterSpacing: '0.15em',
-            }}
-          >
-            WOLF
-          </span>
-          <span
-            className="block text-5xl sm:text-6xl font-extrabold tracking-tight text-[#1a2a4e]"
-            style={{
-              fontFamily: "'Shippori Mincho B1', Georgia, 'Times New Roman', serif",
-              fontWeight: 800,
-              letterSpacing: '0.02em',
-            }}
-          >
-            WHALE
-          </span>
+        <h1
+          className="text-5xl sm:text-6xl font-extrabold tracking-tight text-[#1a2a4e] leading-none"
+          style={{
+            fontFamily: "'Shippori Mincho B1', Georgia, 'Times New Roman', serif",
+            fontWeight: 800,
+            letterSpacing: '0.04em',
+          }}
+        >
+          WOLF WHALE
         </h1>
         <p
           className="text-sm sm:text-base tracking-[0.2em] uppercase text-[#0a4d68] font-bold"
