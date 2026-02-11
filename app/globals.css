@@ -117,6 +117,21 @@
   --sidebar-border: oklch(0.91 0.01 240);
   --sidebar-ring: oklch(0.35 0.08 220);
 
+  /* Liquid Glass — Light mode surfaces */
+  --glass-bg:             oklch(1 0 0 / 0.60);
+  --glass-bg-elevated:    oklch(1 0 0 / 0.72);
+  --glass-bg-heavy:       oklch(1 0 0 / 0.82);
+  --glass-border:         oklch(1 0 0 / 0.35);
+  --glass-border-subtle:  oklch(1 0 0 / 0.20);
+  --glass-highlight:      oklch(1 0 0 / 0.60);
+  --glass-shadow:         oklch(0 0 0 / 0.06);
+  --glass-shadow-heavy:   oklch(0 0 0 / 0.12);
+  --glass-blur-sm:        8px;
+  --glass-blur-md:        16px;
+  --glass-blur-lg:        24px;
+  --glass-blur-xl:        40px;
+  --glass-saturate:       180%;
+
   /* Age Variant Defaults (age-68 balanced) */
   --font-size-base: 15px;
   --font-size-sm: 13px;
@@ -137,6 +152,21 @@
   --ww-deep-ocean: oklch(0.40 0.09 220);
   --ww-teal: oklch(0.74 0.13 180);
   --ww-ocean-foam: oklch(0.30 0.04 220);
+
+  /* Liquid Glass — Dark mode surfaces */
+  --glass-bg:             oklch(0.18 0.03 258 / 0.55);
+  --glass-bg-elevated:    oklch(0.22 0.04 258 / 0.65);
+  --glass-bg-heavy:       oklch(0.24 0.04 258 / 0.80);
+  --glass-border:         oklch(1 0 0 / 0.12);
+  --glass-border-subtle:  oklch(1 0 0 / 0.08);
+  --glass-highlight:      oklch(1 0 0 / 0.08);
+  --glass-shadow:         oklch(0 0 0 / 0.25);
+  --glass-shadow-heavy:   oklch(0 0 0 / 0.40);
+  --glass-blur-sm:        8px;
+  --glass-blur-md:        16px;
+  --glass-blur-lg:        24px;
+  --glass-blur-xl:        40px;
+  --glass-saturate:       200%;
 
   /* Base Theme — Arctic Moonlight */
   --background: oklch(0.20 0.04 258);          /* Softer midnight */
@@ -505,44 +535,31 @@
     );
   }
 
-  /* Ocean Card — subtle ocean-tinted card */
+  /* Ocean Card — liquid glass treatment (auto-applies to all 62+ pages) */
   .ocean-card {
-    background: linear-gradient(
-      180deg,
-      oklch(1 0 0) 0%,
-      oklch(0.98 0.005 210) 100%
-    );
-    border: 1px solid oklch(0.92 0.01 210);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border);
     box-shadow:
-      0 2px 8px oklch(0.35 0.08 220 / 0.05),
-      0 1px 3px oklch(0 0 0 / 0.03);
-    transition: all 0.3s ease;
+      0 4px 16px var(--glass-shadow),
+      inset 0 1px 0 var(--glass-highlight);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .ocean-card:hover {
-    box-shadow:
-      0 4px 16px oklch(0.35 0.08 220 / 0.08),
-      0 2px 6px oklch(0 0 0 / 0.04);
     transform: translateY(-2px);
-  }
-
-  /* Dark mode ocean card */
-  .dark .ocean-card {
-    background: linear-gradient(
-      180deg,
-      oklch(0.24 0.04 258 / 0.95) 0%,
-      oklch(0.22 0.05 240 / 0.90) 100%
-    );
-    border-color: oklch(0.32 0.04 255);
     box-shadow:
-      0 4px 16px oklch(0 0 0 / 0.30),
-      0 1px 3px oklch(0 0 0 / 0.20);
+      0 12px 40px var(--glass-shadow-heavy),
+      inset 0 1px 0 var(--glass-highlight);
+    border-color: oklch(1 0 0 / 0.30);
   }
 
   .dark .ocean-card:hover {
     box-shadow:
-      0 8px 30px oklch(0.74 0.13 180 / 0.10),
-      0 2px 6px oklch(0 0 0 / 0.25);
+      0 12px 40px var(--glass-shadow-heavy),
+      0 0 16px oklch(0.70 0.12 180 / 0.06),
+      inset 0 1px 0 var(--glass-highlight);
   }
 }
 
@@ -678,6 +695,178 @@
       0 8px 20px oklch(0 0 0 / 0.05),
       inset 0 1px 0 oklch(1 0 0 / 0.98);
     border-color: oklch(0.70 0.12 180 / 0.15);
+  }
+}
+
+/* ============================================
+   LIQUID GLASS — Unified Surface System
+   ============================================ */
+
+@layer utilities {
+  /* Base liquid glass surface — use for cards, panels */
+  .liquid-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      0 8px 32px var(--glass-shadow),
+      inset 0 1px 0 var(--glass-highlight);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Elevated glass — for floating elements (dropdowns, tooltips, notifications) */
+  .liquid-glass-elevated {
+    background: var(--glass-bg-elevated);
+    backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      0 16px 48px var(--glass-shadow-heavy),
+      0 4px 12px var(--glass-shadow),
+      inset 0 1px 0 var(--glass-highlight);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Heavy / opaque glass — for sidebar, modals (needs higher readability) */
+  .liquid-glass-heavy {
+    background: var(--glass-bg-heavy);
+    backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      0 8px 32px var(--glass-shadow-heavy),
+      inset 0 1px 0 var(--glass-highlight);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Subtle glass — for inline card sections, stat boxes inside other glass */
+  .liquid-glass-subtle {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur-sm));
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+    border: 1px solid var(--glass-border-subtle);
+    box-shadow: inset 0 1px 0 var(--glass-highlight);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Interactive hover lift for glass cards */
+  .liquid-glass-hover:hover {
+    transform: translateY(-3px) scale(1.005);
+    box-shadow:
+      0 20px 60px var(--glass-shadow-heavy),
+      0 8px 24px var(--glass-shadow),
+      inset 0 1px 0 var(--glass-highlight);
+    border-color: oklch(1 0 0 / 0.30);
+  }
+
+  .dark .liquid-glass-hover:hover {
+    border-color: oklch(1 0 0 / 0.18);
+    box-shadow:
+      0 20px 60px var(--glass-shadow-heavy),
+      0 0 20px oklch(0.70 0.12 180 / 0.06),
+      inset 0 1px 0 var(--glass-highlight);
+  }
+
+  /* Standard glass transition for interactive surfaces */
+  .transition-glass {
+    transition:
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Hover lift — subtle translateY + scale for card interactions */
+  .hover-lift:hover {
+    transform: translateY(-3px) scale(1.005);
+  }
+
+  /* Active press — feedback for buttons on glass surfaces */
+  .active-press:active {
+    transform: translateY(0) scale(0.98);
+    transition-duration: 0.1s;
+  }
+
+  /* Button glow on hover for liquid glass buttons */
+  .btn-glow {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-glow::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      oklch(0.70 0.12 180 / 0.0) 0%,
+      oklch(0.70 0.12 180 / 0.3) 50%,
+      oklch(0.35 0.08 220 / 0.0) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    filter: blur(8px);
+  }
+
+  .btn-glow:hover::after {
+    opacity: 1;
+  }
+}
+
+/* Spring-like entrance for glass panels */
+@keyframes glass-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Soft scale-in for dropdowns and tooltips */
+@keyframes glass-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Background blob slow drift */
+@keyframes blob-drift {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(30px, -20px) scale(1.05);
+  }
+  50% {
+    transform: translate(-20px, 15px) scale(0.95);
+  }
+  75% {
+    transform: translate(15px, 25px) scale(1.02);
+  }
+}
+
+@layer utilities {
+  .animate-glass-slide-up {
+    animation: glass-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .animate-glass-pop-in {
+    animation: glass-pop-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .animate-blob-drift {
+    animation: blob-drift 20s ease-in-out infinite;
   }
 }
 
@@ -964,6 +1153,12 @@ button.whale-gradient:active {
 /* Glow for ocean-themed elements */
 .ocean-glow:active {
   box-shadow: 0 0 15px oklch(0.35 0.08 220 / 0.5), 0 0 30px oklch(0.35 0.08 220 / 0.2);
+}
+
+/* General button hover glow */
+button:not(:disabled):hover,
+a[role="button"]:hover {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 /* General button glow on click */

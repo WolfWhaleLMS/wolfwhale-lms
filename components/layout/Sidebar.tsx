@@ -92,14 +92,14 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
   }
 
   return (
-    <div className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
+    <div className="relative z-10 flex h-full flex-col text-sidebar-foreground">
       {/* ----------------------------------------------------------------- */}
       {/* Header: tenant branding + mobile close button                     */}
       {/* ----------------------------------------------------------------- */}
       <div className="flex items-center justify-between border-b border-sidebar-border px-4 py-5">
         <Link href="/" className="group flex items-center gap-3 min-w-0">
           {/* Wolf Whale logo */}
-          <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-full shadow-lg shadow-ocean-500/20 transition-shadow group-hover:shadow-ocean-500/40">
+          <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-full shadow-lg shadow-ocean-500/20 transition-shadow group-hover:shadow-ocean-500/40">
             <Image
               src={tenantLogo || '/logo.png'}
               alt={tenantName}

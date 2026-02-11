@@ -46,14 +46,14 @@ export default function LoginPage() {
       {/* Learn More — BIG button near the top */}
       <Link
         href="/info"
-        className="flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] text-white font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all group"
+        className="flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] text-white font-semibold text-lg shadow-lg hover:shadow-[0_0_30px_oklch(0.70_0.12_180/0.4)] hover:scale-[1.02] transition-all group btn-glow"
       >
         <span>Learn More About Wolf Whale LMS</span>
         <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
       </Link>
 
       {/* Glass Card */}
-      <div className="rounded-2xl border border-[#1a2a4e]/10 overflow-hidden bg-white/70 backdrop-blur-xl shadow-xl">
+      <div className="rounded-2xl overflow-hidden liquid-glass shadow-xl">
         {/* Header */}
         <div className="relative px-8 py-5 bg-gradient-to-r from-[#1a2a4e]/5 via-[#0a4d68]/5 to-[#1a2a4e]/5 border-b border-[#1a2a4e]/10">
           <div className="text-center space-y-1">
@@ -87,22 +87,22 @@ export default function LoginPage() {
 
       {/* Feature Highlights */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-xl p-4 text-center bg-white/60 backdrop-blur-sm border border-[#1a2a4e]/8 hover:border-[#0a4d68]/30 transition-colors shadow-sm">
+        <div className="rounded-xl p-4 text-center liquid-glass-subtle hover:border-[#0a4d68]/30 transition-all hover:scale-105">
           <GraduationCap className="h-5 w-5 text-[#0a4d68] mx-auto mb-2" />
           <p className="text-xs font-medium text-[#1a2a4e]/60">100+ Tools</p>
         </div>
-        <div className="rounded-xl p-4 text-center bg-white/60 backdrop-blur-sm border border-[#1a2a4e]/8 hover:border-[#0a4d68]/30 transition-colors shadow-sm">
+        <div className="rounded-xl p-4 text-center liquid-glass-subtle hover:border-[#0a4d68]/30 transition-all hover:scale-105">
           <Users className="h-5 w-5 text-[#0a4d68] mx-auto mb-2" />
           <p className="text-xs font-medium text-[#1a2a4e]/60">K-12 Ready</p>
         </div>
-        <div className="rounded-xl p-4 text-center bg-white/60 backdrop-blur-sm border border-[#1a2a4e]/8 hover:border-[#0a4d68]/30 transition-colors shadow-sm">
+        <div className="rounded-xl p-4 text-center liquid-glass-subtle hover:border-[#0a4d68]/30 transition-all hover:scale-105">
           <Shield className="h-5 w-5 text-[#0a4d68] mx-auto mb-2" />
           <p className="text-xs font-medium text-[#1a2a4e]/60">FERPA Secure</p>
         </div>
       </div>
 
       {/* School Access Info */}
-      <div className="rounded-xl p-4 bg-white/50 backdrop-blur-sm border border-[#0a4d68]/15 shadow-sm">
+      <div className="rounded-xl p-4 liquid-glass-subtle">
         <p className="text-xs text-center text-[#1a2a4e]/50">
           <span className="text-[#0a4d68] font-medium">School Access:</span>{' '}
           Contact your school administrator or{' '}

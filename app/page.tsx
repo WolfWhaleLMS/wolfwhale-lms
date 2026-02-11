@@ -66,7 +66,7 @@ export default function HomePage() {
       {/* Header */}
       <header className="relative z-10 p-6">
         <Link href="/" className="inline-flex items-center gap-3 group">
-          <img src="/logo.png" alt="Wolf Whale" className="h-14 w-14 rounded-full object-cover shadow-lg" />
+          <img src="/logo.png" alt="Wolf Whale" className="h-16 w-16 rounded-full object-cover shadow-lg" />
           <span className="text-xl font-bold text-white group-hover:text-[oklch(0.74_0.13_180)] transition-colors">
             Wolf Whale
           </span>
@@ -80,7 +80,7 @@ export default function HomePage() {
           <section className="text-center space-y-8 animate-fade-in-up">
             {/* Logo */}
             <div className="inline-flex rounded-full shadow-2xl overflow-hidden">
-              <img src="/logo.png" alt="Wolf Whale" className="h-36 w-36 rounded-full object-cover" />
+              <img src="/logo.png" alt="Wolf Whale" className="h-48 w-48 rounded-full object-cover" />
             </div>
 
             {/* Heading */}
@@ -97,7 +97,7 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
               <Link
                 href="/login"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[oklch(0.35_0.08_220)] to-[oklch(0.70_0.12_180)] text-white font-semibold hover:shadow-2xl hover:shadow-[oklch(0.70_0.12_180/0.30)] transition-all hover:scale-105"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[oklch(0.35_0.08_220)] to-[oklch(0.70_0.12_180)] text-white font-semibold hover:shadow-[0_0_40px_oklch(0.70_0.12_180/0.5)] transition-all hover:scale-105 btn-glow"
               >
                 Sign In
                 <ArrowRight className="h-5 w-5" />
@@ -114,7 +114,7 @@ export default function HomePage() {
           {/* Feature Highlights */}
           <section className="grid md:grid-cols-3 gap-6 pt-8">
             {/* Feature 1 */}
-            <div className="glass-panel rounded-2xl p-6 border border-white/10 hover:border-[oklch(0.70_0.12_180/0.30)] transition-all hover:scale-105 group">
+            <div className="liquid-glass rounded-2xl p-6 liquid-glass-hover group">
               <div className="inline-flex p-3 rounded-xl bg-[oklch(0.70_0.12_180/0.20)] border border-[oklch(0.70_0.12_180/0.30)] mb-4 group-hover:bg-[oklch(0.70_0.12_180/0.30)] transition-colors">
                 <GraduationCap className="h-6 w-6 text-[oklch(0.74_0.13_180)]" />
               </div>
@@ -125,7 +125,7 @@ export default function HomePage() {
             </div>
 
             {/* Feature 2 */}
-            <div className="glass-panel rounded-2xl p-6 border border-white/10 hover:border-[oklch(0.70_0.12_180/0.30)] transition-all hover:scale-105 group">
+            <div className="liquid-glass rounded-2xl p-6 liquid-glass-hover group">
               <div className="inline-flex p-3 rounded-xl bg-[oklch(0.70_0.12_180/0.20)] border border-[oklch(0.70_0.12_180/0.30)] mb-4 group-hover:bg-[oklch(0.70_0.12_180/0.30)] transition-colors">
                 <Zap className="h-6 w-6 text-[oklch(0.74_0.13_180)]" />
               </div>
@@ -136,7 +136,7 @@ export default function HomePage() {
             </div>
 
             {/* Feature 3 */}
-            <div className="glass-panel rounded-2xl p-6 border border-white/10 hover:border-[oklch(0.70_0.12_180/0.30)] transition-all hover:scale-105 group">
+            <div className="liquid-glass rounded-2xl p-6 liquid-glass-hover group">
               <div className="inline-flex p-3 rounded-xl bg-[oklch(0.70_0.12_180/0.20)] border border-[oklch(0.70_0.12_180/0.30)] mb-4 group-hover:bg-[oklch(0.70_0.12_180/0.30)] transition-colors">
                 <Shield className="h-6 w-6 text-[oklch(0.74_0.13_180)]" />
               </div>

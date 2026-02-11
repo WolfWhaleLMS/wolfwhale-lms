@@ -5,10 +5,10 @@ import { cn } from '@/lib/utils';
 const cardVariants = cva('rounded-2xl transition-all duration-200', {
   variants: {
     variant: {
-      default: 'glass backdrop-blur-xl bg-white/70 dark:bg-slate-800/50 border border-white/30',
+      default: 'liquid-glass liquid-glass-hover',
       solid: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700',
-      fun: 'bg-gradient-to-br from-indigo-300/40 via-purple-300/40 to-pink-300/40 dark:from-indigo-900/30 dark:via-purple-900/30 dark:to-pink-900/30 backdrop-blur-lg border-2 border-white/50 dark:border-slate-600/50 rounded-3xl animate-shimmer',
-      pet: 'relative bg-gradient-to-br from-amber-200/40 to-orange-200/40 dark:from-amber-900/30 dark:to-orange-900/30 backdrop-blur-lg border-2 border-white/50 dark:border-slate-600/50 rounded-3xl overflow-hidden',
+      fun: 'liquid-glass bg-gradient-to-br from-indigo-300/20 via-purple-300/20 to-pink-300/20 dark:from-indigo-900/15 dark:via-purple-900/15 dark:to-pink-900/15 border-2 border-white/40 dark:border-slate-600/30 rounded-3xl',
+      pet: 'liquid-glass relative bg-gradient-to-br from-amber-200/20 to-orange-200/20 dark:from-amber-900/15 dark:to-orange-900/15 border-2 border-white/40 dark:border-slate-600/30 rounded-3xl overflow-hidden',
     },
   },
   defaultVariants: {

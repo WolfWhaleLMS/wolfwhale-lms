@@ -65,10 +65,15 @@ export default function AuthLayout({
       {/* Header */}
       <header className="relative z-10 p-6">
         <Link href="/" className="inline-flex items-center gap-3 group">
-          <img src="/logo.png" alt="Wolf Whale" className="h-14 w-14 rounded-full object-cover shadow-lg" />
-          <span className="text-xl font-bold text-[#1a2a4e] group-hover:text-[#0a4d68] transition-colors">
-            WolfWhale
-          </span>
+          <img src="/logo.png" alt="Wolf Whale" className="h-20 w-20 rounded-full object-cover shadow-lg" />
+          <div>
+            <span className="text-xl font-bold text-[#1a2a4e] group-hover:text-[#0a4d68] transition-colors block">
+              Wolf Whale
+            </span>
+            <span className="text-xs text-[#1a2a4e]/60 block">
+              Learning Management System
+            </span>
+          </div>
         </Link>
       </header>
 

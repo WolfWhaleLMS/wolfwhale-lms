@@ -13,7 +13,7 @@ export function Toast() {
       visibleToasts={3}
       toastOptions={{
         className:
-          'glass backdrop-blur-lg bg-white/90 dark:bg-slate-900/90 border border-white/40 dark:border-slate-700/40 rounded-xl shadow-lg',
+          'liquid-glass-elevated rounded-xl',
       }}
     />
   );

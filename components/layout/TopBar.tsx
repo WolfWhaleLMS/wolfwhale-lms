@@ -57,7 +57,7 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
   const sounds = useSound()
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-4 border-b border-border/50 bg-background/80 px-4 backdrop-blur-sm md:px-6">
+    <header className="flex h-16 shrink-0 items-center gap-4 liquid-glass-heavy border-b border-border/30 px-4 md:px-6">
       {/* --------------------------------------------------------------- */}
       {/* Mobile hamburger                                                 */}
       {/* --------------------------------------------------------------- */}
@@ -81,7 +81,7 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
           type="text"
           placeholder="Search courses, assignments..."
           className={cn(
-            'h-9 w-full rounded-xl border border-border/60 bg-muted/40 pl-9 pr-4 text-sm',
+            'h-9 w-full rounded-xl border border-white/20 bg-white/30 dark:bg-white/5 backdrop-blur-sm pl-9 pr-4 text-sm',
             'placeholder:text-muted-foreground/60',
             'focus:border-ocean-500/50 focus:outline-none focus:ring-2 focus:ring-ocean-500/20',
             'transition-colors'

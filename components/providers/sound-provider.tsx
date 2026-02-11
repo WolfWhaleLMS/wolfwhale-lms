@@ -14,26 +14,33 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       const target = e.target as HTMLElement
-
-      // Find the closest interactive element
       const interactive = target.closest('button, a[href], [role="button"]')
 
       if (interactive) {
-        // Skip if the element has a data-no-sound attribute
-        if (interactive.hasAttribute('data-no-sound')) {
-          return
-        }
-
-        // Play click sound for all interactive elements
+        if (interactive.hasAttribute('data-no-sound')) return
         sounds.playClick()
       }
     }
 
-    // Add listener to document
+    // Hover sound for buttons (throttled)
+    let lastHover = 0
+    function handleHover(e: MouseEvent) {
+      const now = Date.now()
+      if (now - lastHover < 100) return // throttle hover sounds
+      const target = e.target as HTMLElement
+      const interactive = target.closest('button, a[href], [role="button"]')
+      if (interactive && !interactive.hasAttribute('data-no-sound')) {
+        lastHover = now
+        sounds.playHover()
+      }
+    }
+
     document.addEventListener('click', handleClick, { capture: true })
+    document.addEventListener('mouseenter', handleHover, { capture: true })
 
     return () => {
       document.removeEventListener('click', handleClick, { capture: true })
+      document.removeEventListener('mouseenter', handleHover, { capture: true })
     }
   }, [sounds])
 

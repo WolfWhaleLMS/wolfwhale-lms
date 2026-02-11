@@ -10,14 +10,14 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-indigo-600 text-white hover:bg-indigo-700 active:bg-indigo-800 shadow-lg hover:shadow-xl',
+          'bg-gradient-to-r from-[oklch(0.35_0.08_220)] to-[oklch(0.70_0.12_180)] text-white shadow-lg hover:shadow-[0_0_25px_oklch(0.70_0.12_180/0.4)] btn-glow',
         secondary:
-          'glass border border-white/30 text-slate-900 dark:text-white hover:bg-white/20 active:bg-white/30',
-        destructive: 'bg-red-500 text-white hover:bg-red-600 active:bg-red-700 shadow-lg',
-        outline: 'border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-slate-800/50',
+          'liquid-glass-subtle text-slate-900 dark:text-white hover:bg-white/20 active:bg-white/30',
+        destructive: 'bg-red-500 text-white hover:bg-red-600 active:bg-red-700 shadow-lg hover:shadow-[0_0_20px_oklch(0.63_0.24_25/0.4)]',
+        outline: 'border-2 border-[oklch(0.35_0.08_220)] text-[oklch(0.35_0.08_220)] hover:bg-[oklch(0.35_0.08_220/0.05)] dark:border-[oklch(0.70_0.12_180)] dark:text-[oklch(0.70_0.12_180)]',
         ghost: 'text-slate-900 dark:text-slate-100 hover:bg-white/10 active:bg-white/20',
-        link: 'text-indigo-600 underline-offset-4 hover:underline dark:text-indigo-400',
-        fun: 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 shadow-lg hover:shadow-xl hover:animate-bounce-gentle',
+        link: 'text-[oklch(0.35_0.08_220)] underline-offset-4 hover:underline dark:text-[oklch(0.70_0.12_180)]',
+        fun: 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 shadow-lg hover:shadow-[0_0_30px_oklch(0.55_0.22_285/0.4)] btn-glow',
       },
       size: {
         sm: 'h-8 px-3 text-xs',
