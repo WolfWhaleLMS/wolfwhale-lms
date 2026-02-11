@@ -39,6 +39,10 @@
 - Add strategic logging to understand runtime behavior
 - Try different AI models when one gets stuck
 
+### Design Philosophy
+
+- For each proposed change, examine the existing system and redesign it into the most elegant solution that would have emerged if the change had been a foundational assumption from the start
+
 ### Code Quality
 
 - Keep files small and modular - easier for both humans and AI
