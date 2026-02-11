@@ -1,0 +1,19 @@
+{
+  "name": "Wolf Whale LMS",
+  "short_name": "WolfWhale",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#1a2a4e",
+  "background_color": "#f8fafc",
+  "display": "standalone"
+}

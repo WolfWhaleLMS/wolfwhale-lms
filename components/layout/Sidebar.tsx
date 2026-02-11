@@ -98,20 +98,14 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
       {/* ----------------------------------------------------------------- */}
       <div className="flex items-center justify-between border-b border-sidebar-border px-4 py-5">
         <Link href="/" className="group flex items-center gap-3 min-w-0">
-          {/* Tenant logo or "W" fallback */}
-          <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-xl whale-gradient shadow-lg shadow-ocean-500/20 transition-shadow group-hover:shadow-ocean-500/40">
-            {tenantLogo ? (
-              <Image
-                src={tenantLogo}
-                alt={tenantName}
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <span className="flex h-full w-full items-center justify-center text-lg font-bold text-white">
-                W
-              </span>
-            )}
+          {/* Wolf Whale logo */}
+          <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-full shadow-lg shadow-ocean-500/20 transition-shadow group-hover:shadow-ocean-500/40">
+            <Image
+              src={tenantLogo || '/logo.png'}
+              alt={tenantName}
+              fill
+              className="object-cover"
+            />
           </div>
 
           <span className="truncate text-lg font-bold tracking-tight">

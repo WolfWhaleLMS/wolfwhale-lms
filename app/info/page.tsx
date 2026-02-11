@@ -36,9 +36,7 @@ export default function InfoPage() {
       <header className="relative z-10 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-gradient-to-br from-[oklch(0.35_0.08_220)] to-[oklch(0.70_0.12_180)]">
-              <GraduationCap className="h-6 w-6 text-white" />
-            </div>
+            <img src="/logo.png" alt="Wolf Whale" className="h-10 w-10 rounded-full object-cover shadow-lg" />
             <div>
               <h1 className="text-xl font-bold">Wolf Whale LMS</h1>
               <p className="text-xs text-white/60">Learning Management System</p>
@@ -667,9 +665,7 @@ export default function InfoPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[oklch(0.35_0.08_220)] to-[oklch(0.70_0.12_180)]">
-                  <GraduationCap className="h-5 w-5 text-white" />
-                </div>
+                <img src="/logo.png" alt="Wolf Whale" className="h-10 w-10 rounded-full object-cover shadow-lg" />
                 <div>
                   <h3 className="font-bold">Wolf Whale LMS</h3>
                   <p className="text-xs text-white/60">Modern K-12 Learning Platform</p>
