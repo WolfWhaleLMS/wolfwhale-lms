@@ -19,7 +19,7 @@ export default function LoginPage() {
   return (
     <div className="space-y-6">
       {/* EVA-style Title */}
-      <div className="text-center space-y-2 mb-8">
+      <div className="text-center space-y-2">
         <h1
           className="text-[2.6rem] sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#1a2a4e] leading-none whitespace-nowrap underline decoration-[#0a4d68]/30 underline-offset-8"
           style={{
@@ -44,7 +44,7 @@ export default function LoginPage() {
       {/* Learn More — BIG button near the top */}
       <Link
         href="/info"
-        className="flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] text-white font-semibold text-lg shadow-lg hover:shadow-[0_0_30px_oklch(0.70_0.12_180/0.4)] hover:scale-[1.02] transition-all group btn-glow"
+        className="!mt-10 flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl bg-gradient-to-r from-[#1a2a4e] to-[#0a4d68] text-white font-semibold text-lg shadow-lg hover:shadow-[0_0_30px_oklch(0.70_0.12_180/0.4)] hover:scale-[1.02] transition-all group btn-glow"
       >
         <span>Learn More About Wolf Whale LMS</span>
         <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
