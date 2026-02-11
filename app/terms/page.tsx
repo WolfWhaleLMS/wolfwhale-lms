@@ -99,7 +99,7 @@ By uploading or creating content on Wolf Whale LMS, you grant Wolf Whale a limit
         id: 'payment-terms',
         heading: '6. Payment Terms',
         body: `**Pricing**
-Wolf Whale LMS is offered at a rate of **$7 CAD per user account per year**. This pricing includes full access to all platform features with no additional fees for modules or add-ons.
+Wolf Whale LMS is offered at a rate of **$12 CAD per user account per month**. This pricing includes full access to all platform features with no additional fees for modules or add-ons.
 
 **Contract Term**
 A minimum contract term of **2 years** is required. The contract automatically renews for successive one-year periods unless either party provides written notice of non-renewal at least 90 days before the end of the current term.
