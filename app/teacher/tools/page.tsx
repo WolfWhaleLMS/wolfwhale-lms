@@ -32,7 +32,7 @@ export default function TeacherToolsPage() {
   const comingSoon = filtered.filter((t) => t.status === 'coming_soon')
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       <Link
         href="/teacher/dashboard"
         className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -42,15 +42,15 @@ export default function TeacherToolsPage() {
       </Link>
 
       {/* Gradient Header Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#00BFFF]/20 via-[#33FF33]/10 to-[#00BFFF]/5 p-8">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#00BFFF]/20 via-[#33FF33]/10 to-[#00BFFF]/5 p-4 sm:p-8">
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#00BFFF]/15">
-              <Gamepad2 className="h-6 w-6 text-[#00BFFF]" />
+            <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl bg-[#00BFFF]/15">
+              <Gamepad2 className="h-5 w-5 sm:h-6 sm:w-6 text-[#00BFFF]" />
             </div>
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight text-foreground">Tools Library</h1>
-              <p className="text-muted-foreground">Browse educational tools to embed in your lessons</p>
+            <div className="min-w-0">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">Tools Library</h1>
+              <p className="text-sm sm:text-base text-muted-foreground">Browse educational tools to embed in your lessons</p>
             </div>
           </div>
         </div>

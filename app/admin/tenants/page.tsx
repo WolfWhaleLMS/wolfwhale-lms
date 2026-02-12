@@ -46,7 +46,7 @@ export default async function AdminTenantsPage() {
 
   if (role !== 'super_admin') {
     return (
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6 overflow-x-hidden max-w-full">
         <Link
           href="/admin/dashboard"
           className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -54,7 +54,7 @@ export default async function AdminTenantsPage() {
           <ArrowLeft className="h-4 w-4" />
           Back to Dashboard
         </Link>
-        <div className="ocean-card rounded-2xl p-12 text-center">
+        <div className="ocean-card rounded-2xl p-8 sm:p-12 text-center">
           <Shield className="mx-auto mb-4 h-12 w-12 text-muted-foreground/40" />
           <h2 className="text-lg font-semibold text-foreground">
             Access Denied
@@ -99,7 +99,7 @@ export default async function AdminTenantsPage() {
   const tenantList = tenants ?? []
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Back Button */}
       <Link
         href="/admin/dashboard"
@@ -110,9 +110,9 @@ export default async function AdminTenantsPage() {
       </Link>
 
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Tenant Management
           </h1>
           <p className="mt-1 text-muted-foreground">
@@ -145,7 +145,7 @@ export default async function AdminTenantsPage() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 xl:grid-cols-3">
           {tenantList.map((tenant: any) => {
             const status = tenant.status ?? 'active'
             const plan = tenant.subscription_plan ?? 'free'
@@ -159,7 +159,7 @@ export default async function AdminTenantsPage() {
             return (
               <div
                 key={tenant.id}
-                className="ocean-card rounded-2xl p-6 transition-shadow hover:shadow-lg"
+                className="ocean-card rounded-2xl p-4 sm:p-6 transition-shadow hover:shadow-lg"
               >
                 {/* Tenant Name & Status */}
                 <div className="mb-4 flex items-start justify-between">

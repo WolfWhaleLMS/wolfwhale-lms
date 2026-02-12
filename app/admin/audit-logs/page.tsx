@@ -45,7 +45,7 @@ export default async function AuditLogsPage({ searchParams }: AuditLogsPageProps
   }).length
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 overflow-x-hidden max-w-full">
       {/* Back Button */}
       <Link
         href="/admin/dashboard"
@@ -57,7 +57,7 @@ export default async function AuditLogsPage({ searchParams }: AuditLogsPageProps
 
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           Audit Logs
         </h1>
         <p className="mt-1 text-muted-foreground">
@@ -76,32 +76,32 @@ export default async function AuditLogsPage({ searchParams }: AuditLogsPageProps
       )}
 
       {/* Quick stats */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="ocean-card flex items-center gap-4 rounded-2xl p-5">
-          <div className="rounded-xl bg-primary/10 p-3">
-            <Shield className="size-5 text-primary" />
+      <div className="grid grid-cols-2 gap-2 sm:gap-4 sm:grid-cols-3">
+        <div className="ocean-card flex items-center gap-2 sm:gap-4 rounded-2xl p-3 sm:p-5">
+          <div className="rounded-xl bg-primary/10 p-2 sm:p-3 shrink-0">
+            <Shield className="h-4 w-4 sm:size-5 text-primary" />
           </div>
-          <div>
-            <p className="text-sm text-muted-foreground">Total Events</p>
-            <p className="text-2xl font-bold text-foreground">{logs.length}</p>
-          </div>
-        </div>
-        <div className="ocean-card flex items-center gap-4 rounded-2xl p-5">
-          <div className="rounded-xl bg-primary/10 p-3">
-            <Eye className="size-5 text-primary" />
-          </div>
-          <div>
-            <p className="text-sm text-muted-foreground">Unique Users</p>
-            <p className="text-2xl font-bold text-foreground">{uniqueUsers}</p>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-muted-foreground">Total Events</p>
+            <p className="text-xl sm:text-2xl font-bold text-foreground">{logs.length}</p>
           </div>
         </div>
-        <div className="ocean-card flex items-center gap-4 rounded-2xl p-5">
-          <div className="rounded-xl bg-primary/10 p-3">
-            <Clock className="size-5 text-primary" />
+        <div className="ocean-card flex items-center gap-2 sm:gap-4 rounded-2xl p-3 sm:p-5">
+          <div className="rounded-xl bg-primary/10 p-2 sm:p-3 shrink-0">
+            <Eye className="h-4 w-4 sm:size-5 text-primary" />
           </div>
-          <div>
-            <p className="text-sm text-muted-foreground">Today</p>
-            <p className="text-2xl font-bold text-foreground">{todayCount}</p>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-muted-foreground">Unique Users</p>
+            <p className="text-xl sm:text-2xl font-bold text-foreground">{uniqueUsers}</p>
+          </div>
+        </div>
+        <div className="ocean-card flex items-center gap-2 sm:gap-4 rounded-2xl p-3 sm:p-5 col-span-2 sm:col-span-1">
+          <div className="rounded-xl bg-primary/10 p-2 sm:p-3 shrink-0">
+            <Clock className="h-4 w-4 sm:size-5 text-primary" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-muted-foreground">Today</p>
+            <p className="text-xl sm:text-2xl font-bold text-foreground">{todayCount}</p>
           </div>
         </div>
       </div>

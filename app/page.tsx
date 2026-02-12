@@ -5,40 +5,40 @@ import { GlowingLogo } from '@/components/ui/glowing-logo'
 
 export default function EdTechHubPage() {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-background">
-      {/* Aqua Neon Dark Background */}
+    <div className="min-h-screen relative overflow-hidden" style={{ background: '#E8F8FF' }}>
+      {/* Bright Ocean Background */}
       <div className="fixed inset-0 z-0">
-        {/* Chrome texture base */}
+        {/* Chrome texture base — very light */}
         <div className="absolute inset-0">
-          <Image src="/chrome-bg-2.jpg" alt="" fill className="object-cover opacity-30" priority />
+          <Image src="/chrome-bg-2.jpg" alt="" fill className="object-cover opacity-10" priority />
         </div>
-        {/* Base gradient — Deep dark aqua */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#041428]/90 via-[#0A2040]/85 to-[#041428]/90" />
+        {/* Base gradient — Bright airy ocean */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#E8F8FF] via-[#F0FAFF] to-[#E0F4FF]" />
 
-        {/* Ambient neon glow layers */}
+        {/* Ambient soft glow layers */}
         <div
-          className="absolute inset-0 opacity-30"
+          className="absolute inset-0 opacity-40"
           style={{
-            background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(0,191,255,0.25) 0%, transparent 60%)',
+            background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(0,191,255,0.15) 0%, transparent 60%)',
             animation: 'ocean-pulse 8s ease-in-out infinite',
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-25"
+          style={{
+            background: 'radial-gradient(ellipse 120% 60% at 30% 30%, rgba(51,255,51,0.08) 0%, transparent 50%)',
+            animation: 'ocean-drift 12s ease-in-out infinite',
           }}
         />
         <div
           className="absolute inset-0 opacity-20"
           style={{
-            background: 'radial-gradient(ellipse 120% 60% at 30% 30%, rgba(51,255,51,0.15) 0%, transparent 50%)',
-            animation: 'ocean-drift 12s ease-in-out infinite',
-          }}
-        />
-        <div
-          className="absolute inset-0 opacity-15"
-          style={{
-            background: 'radial-gradient(ellipse 100% 50% at 70% 25%, rgba(0,255,255,0.15) 0%, transparent 45%)',
+            background: 'radial-gradient(ellipse 100% 50% at 70% 25%, rgba(0,191,255,0.10) 0%, transparent 45%)',
             animation: 'ocean-wave-slow 15s ease-in-out infinite reverse',
           }}
         />
 
-        {/* Underwater sunbeam light rays */}
+        {/* Bright sunbeam light rays — white/cyan on light bg */}
         <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
           {/* Beam 1 — Wide diffuse beam, center-left */}
           <div
@@ -48,7 +48,7 @@ export default function EdTechHubPage() {
               left: '15%',
               width: '180px',
               height: '120%',
-              background: 'linear-gradient(180deg, rgba(255,255,255,0.07) 0%, rgba(0,191,255,0.03) 40%, transparent 85%)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(0,191,255,0.08) 40%, transparent 85%)',
               transform: 'rotate(8deg)',
               transformOrigin: 'top center',
               animation: 'sunbeam-sway-1 18s ease-in-out infinite',
@@ -63,7 +63,7 @@ export default function EdTechHubPage() {
               left: '40%',
               width: '90px',
               height: '110%',
-              background: 'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(0,255,255,0.04) 35%, transparent 75%)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(0,191,255,0.10) 35%, transparent 75%)',
               transform: 'rotate(-3deg)',
               transformOrigin: 'top center',
               animation: 'sunbeam-sway-2 22s ease-in-out infinite',
@@ -78,7 +78,7 @@ export default function EdTechHubPage() {
               left: '58%',
               width: '140px',
               height: '115%',
-              background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(0,191,255,0.025) 45%, transparent 80%)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(0,191,255,0.06) 45%, transparent 80%)',
               transform: 'rotate(5deg)',
               transformOrigin: 'top center',
               animation: 'sunbeam-sway-3 25s ease-in-out infinite',
@@ -93,7 +93,7 @@ export default function EdTechHubPage() {
               left: '5%',
               width: '60px',
               height: '100%',
-              background: 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,255,255,0.02) 30%, transparent 65%)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(0,191,255,0.05) 30%, transparent 65%)',
               transform: 'rotate(12deg)',
               transformOrigin: 'top center',
               animation: 'sunbeam-sway-4 20s ease-in-out infinite',
@@ -108,7 +108,7 @@ export default function EdTechHubPage() {
               left: '78%',
               width: '200px',
               height: '120%',
-              background: 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,191,255,0.02) 50%, transparent 90%)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(0,191,255,0.05) 50%, transparent 90%)',
               transform: 'rotate(-6deg)',
               transformOrigin: 'top center',
               animation: 'sunbeam-sway-5 28s ease-in-out infinite',
@@ -123,7 +123,7 @@ export default function EdTechHubPage() {
               left: '30%',
               width: '45px',
               height: '95%',
-              background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(0,255,255,0.03) 25%, transparent 60%)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(0,191,255,0.06) 25%, transparent 60%)',
               transform: 'rotate(-8deg)',
               transformOrigin: 'top center',
               animation: 'sunbeam-sway-6 15s ease-in-out infinite',
@@ -139,9 +139,9 @@ export default function EdTechHubPage() {
               background: `
                 repeating-conic-gradient(
                   from 0deg at 50% 0%,
-                  rgba(0,255,255,0.03) 0deg,
+                  rgba(0,191,255,0.06) 0deg,
                   transparent 15deg,
-                  rgba(255,255,255,0.04) 30deg,
+                  rgba(255,255,255,0.08) 30deg,
                   transparent 45deg
                 )
               `,
@@ -151,33 +151,32 @@ export default function EdTechHubPage() {
               filter: 'blur(6px)',
             }}
           />
-          {/* Secondary caustic layer for more realism */}
+          {/* Secondary caustic layer */}
           <div
             className="absolute top-0 left-0 right-0 pointer-events-none"
             style={{
               height: '80px',
               background: `
-                radial-gradient(ellipse 30% 50% at 20% 0%, rgba(0,191,255,0.06) 0%, transparent 70%),
-                radial-gradient(ellipse 25% 40% at 50% 0%, rgba(255,255,255,0.05) 0%, transparent 70%),
-                radial-gradient(ellipse 35% 45% at 80% 0%, rgba(0,255,255,0.04) 0%, transparent 70%)
+                radial-gradient(ellipse 30% 50% at 20% 0%, rgba(0,191,255,0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 25% 40% at 50% 0%, rgba(255,255,255,0.10) 0%, transparent 70%),
+                radial-gradient(ellipse 35% 45% at 80% 0%, rgba(0,191,255,0.06) 0%, transparent 70%)
               `,
               animation: 'caustic-drift 12s ease-in-out infinite',
             }}
           />
         </div>
 
-        {/* Floating bubble particles */}
+        {/* Floating sparkle particles — light blue on bright bg */}
         <div className="absolute inset-0" style={{ zIndex: 2 }}>
           {[...Array(40)].map((_, i) => {
-            // Determine if this bubble is near a sunbeam path for illumination effect
             const leftPos = (i * 2.5) % 100;
             const isNearBeam = (
-              (leftPos > 12 && leftPos < 22) ||  // near beam 1
-              (leftPos > 38 && leftPos < 45) ||  // near beam 2
-              (leftPos > 55 && leftPos < 65) ||  // near beam 3
-              (leftPos > 28 && leftPos < 34)     // near beam 6
+              (leftPos > 12 && leftPos < 22) ||
+              (leftPos > 38 && leftPos < 45) ||
+              (leftPos > 55 && leftPos < 65) ||
+              (leftPos > 28 && leftPos < 34)
             );
-            const baseOpacity = (i % 4) * 0.1 + 0.1;
+            const baseOpacity = (i % 4) * 0.08 + 0.08;
             return (
               <div
                 key={i}
@@ -185,20 +184,20 @@ export default function EdTechHubPage() {
                 style={{
                   left: `${leftPos}%`,
                   top: `${(i * 1.25) % 50}%`,
-                  width: isNearBeam ? '2px' : '4px',
-                  height: isNearBeam ? '2px' : '4px',
-                  backgroundColor: isNearBeam ? '#00FFFF' : '#00BFFF',
-                  boxShadow: isNearBeam ? '0 0 6px 2px rgba(0,255,255,0.4)' : 'none',
+                  width: isNearBeam ? '3px' : '4px',
+                  height: isNearBeam ? '3px' : '4px',
+                  backgroundColor: isNearBeam ? '#0099CC' : '#00BFFF',
+                  boxShadow: isNearBeam ? '0 0 8px 2px rgba(0,153,204,0.3)' : '0 0 4px 1px rgba(0,191,255,0.15)',
                   animationDelay: `${(i * 0.125) % 5}s`,
-                  opacity: isNearBeam ? baseOpacity + 0.2 : baseOpacity,
+                  opacity: isNearBeam ? baseOpacity + 0.15 : baseOpacity,
                 }}
               />
             );
           })}
         </div>
 
-        {/* Depth overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#041428] via-transparent to-transparent opacity-60" />
+        {/* Soft bottom fade — very subtle */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#D6F0FF]/40 via-transparent to-transparent" />
       </div>
 
       {/* Header / Nav */}
@@ -206,20 +205,19 @@ export default function EdTechHubPage() {
         <nav className="max-w-6xl mx-auto flex items-center justify-between">
           <Link href="/" className="inline-flex items-center gap-2 sm:gap-3 group shrink-0">
             <GlowingLogo size={40} className="hidden sm:inline-flex" />
-            <GlowingLogo size={36} className="sm:hidden" />
-            <span className="text-sm sm:text-lg font-display font-bold text-white group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase">
+            <span className="text-sm sm:text-lg font-display font-bold text-[#0A2040] group-hover:text-[#0077B6] transition-colors tracking-wider uppercase">
               WolfWhale EdTech
             </span>
           </Link>
 
           <div className="hidden sm:flex items-center gap-6">
-            <a href="#products" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            <a href="#products" className="text-sm text-[#0A2040]/70 hover:text-[#0077B6] transition-colors font-medium">
               Products
             </a>
-            <a href="#about" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            <a href="#about" className="text-sm text-[#0A2040]/70 hover:text-[#0077B6] transition-colors font-medium">
               About
             </a>
-            <a href="#contact" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            <a href="#contact" className="text-sm text-[#0A2040]/70 hover:text-[#0077B6] transition-colors font-medium">
               Contact
             </a>
             <Link
@@ -241,13 +239,13 @@ export default function EdTechHubPage() {
 
         {/* Mobile nav links */}
         <div className="flex sm:hidden items-center justify-center gap-4 mt-3">
-          <a href="#products" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+          <a href="#products" className="text-xs text-[#0A2040]/70 hover:text-[#0077B6] transition-colors font-medium">
             Products
           </a>
-          <a href="#about" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+          <a href="#about" className="text-xs text-[#0A2040]/70 hover:text-[#0077B6] transition-colors font-medium">
             About
           </a>
-          <a href="#contact" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+          <a href="#contact" className="text-xs text-[#0A2040]/70 hover:text-[#0077B6] transition-colors font-medium">
             Contact
           </a>
         </div>
@@ -263,10 +261,10 @@ export default function EdTechHubPage() {
 
             {/* Heading */}
             <div className="space-y-3 sm:space-y-4">
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-[#00BFFF] via-[#00FFFF] to-[#33FF33] bg-clip-text text-transparent text-glow-blue tracking-wide sm:tracking-wider">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-[#0077B6] via-[#0096C7] to-[#00B4D8] bg-clip-text text-transparent tracking-wide sm:tracking-wider drop-shadow-sm">
                 WOLFWHALE EDTECH
               </h1>
-              <p className="text-base sm:text-xl md:text-2xl text-white/90 text-white-outlined max-w-2xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-xl md:text-2xl text-[#0A2040]/80 max-w-2xl mx-auto leading-relaxed font-medium">
                 Building the future of education technology
               </p>
             </div>
@@ -282,7 +280,7 @@ export default function EdTechHubPage() {
               </a>
               <Link
                 href="/login"
-                className="inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl border-2 border-[#00BFFF]/30 text-white text-sm sm:text-base font-semibold hover:border-[#00BFFF] hover:bg-[#00BFFF]/5 transition-all w-full sm:w-auto justify-center"
+                className="inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl border-2 border-[#0077B6]/30 text-[#0A2040] text-sm sm:text-base font-semibold hover:border-[#0077B6] hover:bg-[#0077B6]/5 transition-all w-full sm:w-auto justify-center"
               >
                 Sign In to LMS
               </Link>
@@ -294,29 +292,29 @@ export default function EdTechHubPage() {
         <section id="products" className="px-4 py-12 sm:py-20">
           <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white text-glow-blue tracking-wider">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-[#0A2040] tracking-wider">
                 OUR PRODUCTS
               </h2>
-              <p className="text-sm sm:text-base text-white/80 max-w-xl mx-auto">
+              <p className="text-sm sm:text-base text-[#0A2040]/70 max-w-xl mx-auto">
                 Education technology solutions designed to transform how students learn and educators teach.
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
               {/* Product 1: WolfWhale LMS */}
-              <div className="bg-white/10 backdrop-blur-xl border border-[#00BFFF]/25 shadow-xl shadow-[#00BFFF]/5 rounded-2xl p-5 sm:p-8 group hover:neon-border-blue hover:bg-white/15 transition-all flex flex-col">
+              <div className="bg-white/92 backdrop-blur-xl border border-[#00BFFF]/20 shadow-lg shadow-[#00BFFF]/8 rounded-2xl p-5 sm:p-8 group hover:border-[#00BFFF]/40 hover:shadow-xl hover:shadow-[#00BFFF]/12 transition-all flex flex-col">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-6">
-                  <div className="inline-flex p-3 rounded-xl bg-[#00BFFF]/15 border border-[#00BFFF]/25 group-hover:bg-[#00BFFF]/25 transition-colors">
-                    <GraduationCap className="h-7 w-7 text-[#00BFFF]" />
+                  <div className="inline-flex p-3 rounded-xl bg-[#00BFFF]/10 border border-[#00BFFF]/20 group-hover:bg-[#00BFFF]/15 transition-colors">
+                    <GraduationCap className="h-7 w-7 text-[#0077B6]" />
                   </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#33FF33]/20 text-[#33FF33] border border-[#33FF33]/30 neon-glow-green">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#22C55E]/15 text-[#16A34A] border border-[#22C55E]/25">
                     Live
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-3">WolfWhale LMS</h3>
-                <p className="text-white/80 text-sm leading-relaxed mb-5">
+                <h3 className="text-xl font-bold text-[#0A2040] mb-3">WolfWhale LMS</h3>
+                <p className="text-[#0A2040]/70 text-sm leading-relaxed mb-5">
                   Canada&apos;s modern learning management system with built-in spaced repetition flashcards. Designed for K-12 and post-secondary education.
                 </p>
 
@@ -329,8 +327,8 @@ export default function EdTechHubPage() {
                     { icon: BarChart3, text: 'Analytics & grade tracking' },
                     { icon: Shield, text: 'FERPA & PIPEDA compliant' },
                   ].map(({ icon: Icon, text }) => (
-                    <li key={text} className="flex items-center gap-2 text-white/75 text-sm">
-                      <Icon className="h-4 w-4 text-[#00BFFF] shrink-0" />
+                    <li key={text} className="flex items-center gap-2 text-[#0A2040]/65 text-sm">
+                      <Icon className="h-4 w-4 text-[#0077B6] shrink-0" />
                       {text}
                     </li>
                   ))}
@@ -354,19 +352,19 @@ export default function EdTechHubPage() {
               </div>
 
               {/* Product 2: AI Consulting — Live */}
-              <div className="bg-white/10 backdrop-blur-xl border border-[#A78BFA]/25 shadow-xl shadow-[#A78BFA]/5 rounded-2xl p-5 sm:p-8 group hover:neon-border-purple hover:bg-white/15 transition-all flex flex-col">
+              <div className="bg-white/92 backdrop-blur-xl border border-[#A78BFA]/20 shadow-lg shadow-[#A78BFA]/8 rounded-2xl p-5 sm:p-8 group hover:border-[#A78BFA]/40 hover:shadow-xl hover:shadow-[#A78BFA]/12 transition-all flex flex-col">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-6">
-                  <div className="inline-flex p-3 rounded-xl bg-[#A78BFA]/15 border border-[#A78BFA]/25 group-hover:bg-[#A78BFA]/25 transition-colors">
-                    <Brain className="h-7 w-7 text-[#A78BFA]" />
+                  <div className="inline-flex p-3 rounded-xl bg-[#A78BFA]/10 border border-[#A78BFA]/20 group-hover:bg-[#A78BFA]/15 transition-colors">
+                    <Brain className="h-7 w-7 text-[#7C3AED]" />
                   </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#33FF33]/20 text-[#33FF33] border border-[#33FF33]/30 neon-glow-green">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#22C55E]/15 text-[#16A34A] border border-[#22C55E]/25">
                     Live
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-3">AI Consulting</h3>
-                <p className="text-white/80 text-sm leading-relaxed mb-5">
+                <h3 className="text-xl font-bold text-[#0A2040] mb-3">AI Consulting</h3>
+                <p className="text-[#0A2040]/70 text-sm leading-relaxed mb-5">
                   Custom AI solutions for education institutions. From intelligent tutoring systems to automated assessment and curriculum optimization.
                 </p>
 
@@ -378,8 +376,8 @@ export default function EdTechHubPage() {
                     'Curriculum optimization',
                     'Custom integrations',
                   ].map((text) => (
-                    <li key={text} className="flex items-center gap-2 text-white/75 text-sm">
-                      <div className="h-1.5 w-1.5 rounded-full bg-[#A78BFA]/50 shrink-0" />
+                    <li key={text} className="flex items-center gap-2 text-[#0A2040]/65 text-sm">
+                      <div className="h-1.5 w-1.5 rounded-full bg-[#A78BFA]/60 shrink-0" />
                       {text}
                     </li>
                   ))}
@@ -403,19 +401,19 @@ export default function EdTechHubPage() {
               </div>
 
               {/* Product 3: Cerebus — Coming Soon */}
-              <div className="bg-white/10 backdrop-blur-xl border border-[#FF4444]/25 shadow-xl shadow-[#FF4444]/5 rounded-2xl p-5 sm:p-8 group transition-all opacity-70 flex flex-col">
+              <div className="bg-white/88 backdrop-blur-xl border border-[#FF4444]/15 shadow-lg shadow-[#FF4444]/5 rounded-2xl p-5 sm:p-8 group transition-all opacity-80 flex flex-col">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-6">
-                  <div className="inline-flex p-3 rounded-xl bg-[#FF4444]/15 border border-[#FF4444]/25">
-                    <ShieldAlert className="h-7 w-7 text-[#FF4444]" />
+                  <div className="inline-flex p-3 rounded-xl bg-[#FF4444]/8 border border-[#FF4444]/15">
+                    <ShieldAlert className="h-7 w-7 text-[#DC2626]" />
                   </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#FF4444]/20 text-[#FF4444] border border-[#FF4444]/30">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#FF4444]/10 text-[#DC2626] border border-[#FF4444]/20">
                     Coming Soon
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-3">Cerebus</h3>
-                <p className="text-white/80 text-sm leading-relaxed mb-5">
+                <h3 className="text-xl font-bold text-[#0A2040] mb-3">Cerebus</h3>
+                <p className="text-[#0A2040]/70 text-sm leading-relaxed mb-5">
                   AI-powered surveillance and data security platform designed for First Nations reserves and bands. Combines intelligent monitoring with powerful data collection and visualization tools to protect community infrastructure and sovereignty.
                 </p>
 
@@ -428,8 +426,8 @@ export default function EdTechHubPage() {
                     { icon: Radio, text: 'Secure infrastructure monitoring' },
                     { icon: BarChart3, text: 'Band council analytics & reporting' },
                   ].map(({ icon: Icon, text }) => (
-                    <li key={text} className="flex items-center gap-2 text-white/75 text-sm">
-                      <Icon className="h-4 w-4 text-[#FF4444] shrink-0" />
+                    <li key={text} className="flex items-center gap-2 text-[#0A2040]/60 text-sm">
+                      <Icon className="h-4 w-4 text-[#DC2626] shrink-0" />
                       {text}
                     </li>
                   ))}
@@ -439,7 +437,7 @@ export default function EdTechHubPage() {
                 <div className="flex gap-3">
                   <Link
                     href="/cerebus"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#FF4444]/10 border border-[#FF4444]/25 text-[#FF4444] text-sm font-semibold hover:bg-[#FF4444]/20 transition-all hover:scale-105"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#FF4444]/8 border border-[#FF4444]/20 text-[#DC2626] text-sm font-semibold hover:bg-[#FF4444]/15 transition-all hover:scale-105"
                   >
                     Learn More
                   </Link>
@@ -447,33 +445,33 @@ export default function EdTechHubPage() {
               </div>
 
               {/* Product 4: School Uniforms — Coming Soon */}
-              <div className="bg-white/10 backdrop-blur-xl border border-[#14B8A6]/25 shadow-xl shadow-[#14B8A6]/5 rounded-2xl p-5 sm:p-8 group transition-all opacity-70 flex flex-col">
+              <div className="bg-white/88 backdrop-blur-xl border border-[#14B8A6]/15 shadow-lg shadow-[#14B8A6]/5 rounded-2xl p-5 sm:p-8 group transition-all opacity-80 flex flex-col">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-6">
-                  <div className="inline-flex p-3 rounded-xl bg-[#14B8A6]/15 border border-[#14B8A6]/25">
-                    <Shirt className="h-7 w-7 text-[#14B8A6]" />
+                  <div className="inline-flex p-3 rounded-xl bg-[#14B8A6]/8 border border-[#14B8A6]/15">
+                    <Shirt className="h-7 w-7 text-[#0D9488]" />
                   </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#14B8A6]/20 text-[#14B8A6] border border-[#14B8A6]/30">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#14B8A6]/10 text-[#0D9488] border border-[#14B8A6]/20">
                     Coming Soon
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-3">School Uniforms</h3>
-                <p className="text-white/80 text-sm leading-relaxed mb-5">
-                  Premium athletic wear bundled with your WolfWhale LMS subscription. Every student receives 3 tracksuits and running shoes &mdash; standard WolfWhale design across all schools.
+                <h3 className="text-xl font-bold text-[#0A2040] mb-3">School Blazer</h3>
+                <p className="text-[#0A2040]/70 text-sm leading-relaxed mb-5">
+                  A premium grey school blazer with gold buttons and blue gingham lining &mdash; included with every student&apos;s WolfWhale LMS account. Manufactured by Eton Kidds.
                 </p>
 
                 {/* Feature bullets */}
                 <ul className="space-y-2 mb-6 flex-1">
                   {[
-                    { icon: Shirt, text: '3 hockey-style tracksuit sets included' },
-                    { icon: Equal, text: 'Equal playing field for all students' },
-                    { icon: Layers, text: 'Durable athletic-grade materials' },
-                    { icon: CloudSun, text: 'All-season Canadian weather design' },
-                    { icon: Rocket, text: 'Bundled with LMS subscription' },
+                    { icon: Shirt, text: 'Grey twill fabric blazer' },
+                    { icon: Equal, text: 'Gold buttons with embossed detailing' },
+                    { icon: Layers, text: 'Blue gingham checkered lining' },
+                    { icon: Rocket, text: 'Included with every LMS account' },
+                    { icon: CloudSun, text: 'Manufactured by Eton Kidds' },
                   ].map(({ icon: Icon, text }) => (
-                    <li key={text} className="flex items-center gap-2 text-white/75 text-sm">
-                      <Icon className="h-4 w-4 text-[#14B8A6] shrink-0" />
+                    <li key={text} className="flex items-center gap-2 text-[#0A2040]/60 text-sm">
+                      <Icon className="h-4 w-4 text-[#0D9488] shrink-0" />
                       {text}
                     </li>
                   ))}
@@ -483,7 +481,7 @@ export default function EdTechHubPage() {
                 <div className="flex gap-3">
                   <Link
                     href="/uniforms"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#14B8A6]/10 border border-[#14B8A6]/25 text-[#14B8A6] text-sm font-semibold hover:bg-[#14B8A6]/20 transition-all hover:scale-105"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#14B8A6]/8 border border-[#14B8A6]/20 text-[#0D9488] text-sm font-semibold hover:bg-[#14B8A6]/15 transition-all hover:scale-105"
                   >
                     Learn More
                   </Link>
@@ -491,19 +489,19 @@ export default function EdTechHubPage() {
               </div>
 
               {/* Product 5: Pemmican Bars — Coming Soon */}
-              <div className="bg-white/10 backdrop-blur-xl border border-[#D97706]/25 shadow-xl shadow-[#D97706]/5 rounded-2xl p-5 sm:p-8 group transition-all opacity-70 flex flex-col">
+              <div className="bg-white/88 backdrop-blur-xl border border-[#D97706]/15 shadow-lg shadow-[#D97706]/5 rounded-2xl p-5 sm:p-8 group transition-all opacity-80 flex flex-col">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-6">
-                  <div className="inline-flex p-3 rounded-xl bg-[#D97706]/15 border border-[#D97706]/25">
-                    <Wheat className="h-7 w-7 text-[#D97706]" />
+                  <div className="inline-flex p-3 rounded-xl bg-[#D97706]/8 border border-[#D97706]/15">
+                    <Wheat className="h-7 w-7 text-[#B45309]" />
                   </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#D97706]/20 text-[#D97706] border border-[#D97706]/30">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#D97706]/10 text-[#B45309] border border-[#D97706]/20">
                     Coming Soon
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-3">Pemmican Bars</h3>
-                <p className="text-white/80 text-sm leading-relaxed mb-5">
+                <h3 className="text-xl font-bold text-[#0A2040] mb-3">Pemmican Bars</h3>
+                <p className="text-[#0A2040]/70 text-sm leading-relaxed mb-5">
                   Healthy vending machines for schools, stocked with locally-sourced Indigenous-inspired foods. Dried berries, pemmican, jerky, and all-natural snacks from Saskatchewan and Canadian producers.
                 </p>
 
@@ -516,8 +514,8 @@ export default function EdTechHubPage() {
                     { icon: Users, text: 'Supports local farmers & Indigenous producers' },
                     { icon: Sparkles, text: 'Part of the complete WolfWhale ecosystem' },
                   ].map(({ icon: Icon, text }) => (
-                    <li key={text} className="flex items-center gap-2 text-white/75 text-sm">
-                      <Icon className="h-4 w-4 text-[#D97706] shrink-0" />
+                    <li key={text} className="flex items-center gap-2 text-[#0A2040]/60 text-sm">
+                      <Icon className="h-4 w-4 text-[#B45309] shrink-0" />
                       {text}
                     </li>
                   ))}
@@ -527,7 +525,7 @@ export default function EdTechHubPage() {
                 <div className="flex gap-3">
                   <Link
                     href="/pemmican-bars"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#D97706]/10 border border-[#D97706]/25 text-[#D97706] text-sm font-semibold hover:bg-[#D97706]/20 transition-all hover:scale-105"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#D97706]/8 border border-[#D97706]/20 text-[#B45309] text-sm font-semibold hover:bg-[#D97706]/15 transition-all hover:scale-105"
                   >
                     Learn More
                   </Link>
@@ -540,11 +538,11 @@ export default function EdTechHubPage() {
         {/* About Section */}
         <section id="about" className="px-4 py-12 sm:py-20">
           <div className="max-w-3xl mx-auto">
-            <div className="bg-white/10 backdrop-blur-xl border border-[#00BFFF]/25 shadow-xl shadow-[#00BFFF]/5 rounded-2xl p-5 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white text-glow-blue tracking-wider">
+            <div className="bg-white/92 backdrop-blur-xl border border-[#00BFFF]/20 shadow-lg shadow-[#00BFFF]/8 rounded-2xl p-5 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-[#0A2040] tracking-wider">
                 ABOUT WOLFWHALE EDTECH
               </h2>
-              <div className="space-y-3 sm:space-y-4 text-sm sm:text-base text-white/80 leading-relaxed">
+              <div className="space-y-3 sm:space-y-4 text-sm sm:text-base text-[#0A2040]/75 leading-relaxed">
                 <p>
                   WolfWhale EdTech is a Canadian education technology company on a mission to make powerful, accessible learning tools available to every student and educator.
                 </p>
@@ -562,10 +560,10 @@ export default function EdTechHubPage() {
         {/* Contact CTA */}
         <section id="contact" className="px-4 py-12 sm:py-16">
           <div className="max-w-3xl mx-auto text-center space-y-4 sm:space-y-6">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white text-glow-blue tracking-wider">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-[#0A2040] tracking-wider">
               GET IN TOUCH
             </h2>
-            <p className="text-sm sm:text-base text-white/80 max-w-lg mx-auto">
+            <p className="text-sm sm:text-base text-[#0A2040]/70 max-w-lg mx-auto">
               Interested in WolfWhale for your school or institution? We&apos;d love to hear from you.
             </p>
             <a
@@ -581,19 +579,19 @@ export default function EdTechHubPage() {
       {/* Footer */}
       <footer className="relative z-10 p-6">
         <div className="max-w-6xl mx-auto">
-          <div className="h-px bg-[#00BFFF]/15 mb-6" />
+          <div className="h-px bg-[#0077B6]/15 mb-6" />
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-white/65">
+            <p className="text-sm text-[#0A2040]/55">
               &copy; 2026 WolfWhale EdTech. All rights reserved.
             </p>
             <div className="flex gap-6">
-              <Link href="/privacy" className="text-sm text-white/65 hover:text-[#00BFFF] transition-colors">
+              <Link href="/privacy" className="text-sm text-[#0A2040]/55 hover:text-[#0077B6] transition-colors">
                 Privacy
               </Link>
-              <Link href="/terms" className="text-sm text-white/65 hover:text-[#00BFFF] transition-colors">
+              <Link href="/terms" className="text-sm text-[#0A2040]/55 hover:text-[#0077B6] transition-colors">
                 Terms
               </Link>
-              <Link href="/help" className="text-sm text-white/65 hover:text-[#00BFFF] transition-colors">
+              <Link href="/help" className="text-sm text-[#0A2040]/55 hover:text-[#0077B6] transition-colors">
                 Help
               </Link>
             </div>
@@ -604,8 +602,8 @@ export default function EdTechHubPage() {
       {/* Animation keyframes */}
       <style>{`
         @keyframes ocean-pulse {
-          0%, 100% { transform: scale(1) translateY(0); opacity: 0.3; }
-          50% { transform: scale(1.1) translateY(-5%); opacity: 0.4; }
+          0%, 100% { transform: scale(1) translateY(0); opacity: 0.4; }
+          50% { transform: scale(1.1) translateY(-5%); opacity: 0.55; }
         }
         @keyframes ocean-drift {
           0%, 100% { transform: translateX(0) scale(1); }
@@ -617,15 +615,15 @@ export default function EdTechHubPage() {
           66% { transform: translateX(5%) translateY(-3%); }
         }
         @keyframes twinkle {
-          0%, 100% { opacity: 0.1; transform: scale(1); }
-          50% { opacity: 0.6; transform: scale(1.2); }
+          0%, 100% { opacity: 0.08; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(1.2); }
         }
         .animate-twinkle {
           animation: twinkle 3s ease-in-out infinite;
         }
         @keyframes twinkle-bright {
-          0%, 100% { opacity: 0.15; transform: scale(1); }
-          50% { opacity: 0.85; transform: scale(1.5); }
+          0%, 100% { opacity: 0.1; transform: scale(1); }
+          50% { opacity: 0.6; transform: scale(1.5); }
         }
         .animate-twinkle-bright {
           animation: twinkle-bright 2.5s ease-in-out infinite;

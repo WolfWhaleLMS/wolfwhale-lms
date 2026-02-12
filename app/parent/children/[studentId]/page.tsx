@@ -78,7 +78,7 @@ export default async function ChildDetailPage({ params }: PageProps) {
     .slice(0, 8)
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Back Button */}
       <Link
         href="/parent/children"
@@ -90,21 +90,21 @@ export default async function ChildDetailPage({ params }: PageProps) {
 
       {/* Student Header */}
       <div className="ocean-card rounded-2xl overflow-hidden">
-        <div className="child-card-header p-8">
-          <div className="flex flex-col sm:flex-row items-center gap-6">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-3xl font-bold text-primary dark:text-white shadow-xl">
+        <div className="child-card-header p-4 sm:p-8">
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
+            <div className="flex h-14 w-14 sm:h-20 sm:w-20 shrink-0 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-xl sm:text-3xl font-bold text-primary dark:text-white shadow-xl">
               {progress.student.avatarUrl ? (
                 <img
                   src={progress.student.avatarUrl}
                   alt={progress.student.fullName}
-                  className="h-20 w-20 rounded-full object-cover"
+                  className="h-14 w-14 sm:h-20 sm:w-20 rounded-full object-cover"
                 />
               ) : (
                 progress.student.fullName.charAt(0).toUpperCase()
               )}
             </div>
-            <div className="text-center sm:text-left">
-              <h1 className="text-3xl font-bold text-foreground dark:text-white">
+            <div className="text-center sm:text-left min-w-0">
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white truncate">
                 {progress.student.fullName}
               </h1>
               <p className="mt-1 text-muted-foreground dark:text-white/70">
@@ -117,11 +117,11 @@ export default async function ChildDetailPage({ params }: PageProps) {
         </div>
 
         {/* Summary Stats Grid */}
-        <div className="grid grid-cols-2 gap-4 p-6 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 p-3 sm:p-6 md:grid-cols-4">
           {/* Overall GPA */}
-          <div className="rounded-xl bg-muted/50 p-4 text-center">
-            <GraduationCap className="mx-auto mb-2 h-6 w-6 text-primary" />
-            <p className="text-2xl font-bold text-foreground">
+          <div className="rounded-xl bg-muted/50 p-3 sm:p-4 text-center">
+            <GraduationCap className="mx-auto mb-1 sm:mb-2 h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+            <p className="text-xl sm:text-2xl font-bold text-foreground">
               {progress.academics.overallGPA != null
                 ? `${progress.academics.overallGPA}%`
                 : '--'}
@@ -134,9 +134,9 @@ export default async function ChildDetailPage({ params }: PageProps) {
           </div>
 
           {/* Attendance Rate */}
-          <div className="rounded-xl bg-muted/50 p-4 text-center">
-            <Calendar className="mx-auto mb-2 h-6 w-6 text-green-500" />
-            <p className="text-2xl font-bold text-foreground">
+          <div className="rounded-xl bg-muted/50 p-3 sm:p-4 text-center">
+            <Calendar className="mx-auto mb-1 sm:mb-2 h-5 w-5 sm:h-6 sm:w-6 text-green-500" />
+            <p className="text-xl sm:text-2xl font-bold text-foreground">
               {attendanceSummary
                 ? `${attendanceSummary.rate}%`
                 : `${progress.attendance.attendanceRate}%`}
@@ -145,21 +145,21 @@ export default async function ChildDetailPage({ params }: PageProps) {
           </div>
 
           {/* Current Courses */}
-          <div className="rounded-xl bg-muted/50 p-4 text-center">
-            <BookOpen className="mx-auto mb-2 h-6 w-6 text-blue-500" />
-            <p className="text-2xl font-bold text-foreground">
+          <div className="rounded-xl bg-muted/50 p-3 sm:p-4 text-center">
+            <BookOpen className="mx-auto mb-1 sm:mb-2 h-5 w-5 sm:h-6 sm:w-6 text-blue-500" />
+            <p className="text-xl sm:text-2xl font-bold text-foreground">
               {progress.academics.activeCourses}
             </p>
             <p className="text-xs text-muted-foreground">Active Courses</p>
           </div>
 
           {/* Missing Assignments */}
-          <div className="rounded-xl bg-muted/50 p-4 text-center">
+          <div className="rounded-xl bg-muted/50 p-3 sm:p-4 text-center">
             <AlertCircle
-              className={`mx-auto mb-2 h-6 w-6 ${missingAssignments.length > 0 ? 'text-red-500' : 'text-muted-foreground'}`}
+              className={`mx-auto mb-1 sm:mb-2 h-5 w-5 sm:h-6 sm:w-6 ${missingAssignments.length > 0 ? 'text-red-500' : 'text-muted-foreground'}`}
             />
             <p
-              className={`text-2xl font-bold ${missingAssignments.length > 0 ? 'text-red-500' : 'text-foreground'}`}
+              className={`text-xl sm:text-2xl font-bold ${missingAssignments.length > 0 ? 'text-red-500' : 'text-foreground'}`}
             >
               {missingAssignments.length}
             </p>
@@ -169,65 +169,65 @@ export default async function ChildDetailPage({ params }: PageProps) {
       </div>
 
       {/* Quick Links */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-3">
         <Link
           href={`/parent/children/${studentId}/grades`}
-          className="group ocean-card rounded-2xl p-5 flex items-center gap-4 transition-all hover:scale-[1.02]"
+          className="group ocean-card rounded-2xl p-4 sm:p-5 flex items-center gap-3 sm:gap-4 transition-all hover:scale-[1.02]"
         >
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-            <GraduationCap className="h-6 w-6 text-primary" />
+          <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+            <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
           </div>
-          <div className="flex-1">
-            <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-sm sm:text-base text-foreground group-hover:text-primary transition-colors">
               View All Grades
             </h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Detailed grade breakdown
             </p>
           </div>
-          <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-all group-hover:translate-x-1" />
+          <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-muted-foreground group-hover:text-primary transition-all group-hover:translate-x-1" />
         </Link>
 
         <Link
           href={`/parent/children/${studentId}/assignments`}
-          className="group ocean-card rounded-2xl p-5 flex items-center gap-4 transition-all hover:scale-[1.02]"
+          className="group ocean-card rounded-2xl p-4 sm:p-5 flex items-center gap-3 sm:gap-4 transition-all hover:scale-[1.02]"
         >
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10">
-            <BookOpen className="h-6 w-6 text-blue-500" />
+          <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-blue-500/10">
+            <BookOpen className="h-5 w-5 sm:h-6 sm:w-6 text-blue-500" />
           </div>
-          <div className="flex-1">
-            <h3 className="font-semibold text-foreground group-hover:text-blue-500 transition-colors">
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-sm sm:text-base text-foreground group-hover:text-blue-500 transition-colors">
               View Assignments
             </h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Upcoming and past work
             </p>
           </div>
-          <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-blue-500 transition-all group-hover:translate-x-1" />
+          <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-muted-foreground group-hover:text-blue-500 transition-all group-hover:translate-x-1" />
         </Link>
 
         <Link
           href={`/parent/progress`}
-          className="group ocean-card rounded-2xl p-5 flex items-center gap-4 transition-all hover:scale-[1.02]"
+          className="group ocean-card rounded-2xl p-4 sm:p-5 flex items-center gap-3 sm:gap-4 transition-all hover:scale-[1.02]"
         >
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-500/10">
-            <TrendingUp className="h-6 w-6 text-green-500" />
+          <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-green-500/10">
+            <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-green-500" />
           </div>
-          <div className="flex-1">
-            <h3 className="font-semibold text-foreground group-hover:text-green-500 transition-colors">
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-sm sm:text-base text-foreground group-hover:text-green-500 transition-colors">
               Progress Overview
             </h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Trends and analytics
             </p>
           </div>
-          <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-green-500 transition-all group-hover:translate-x-1" />
+          <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-muted-foreground group-hover:text-green-500 transition-all group-hover:translate-x-1" />
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2">
         {/* Recent Grades */}
-        <div className="ocean-card rounded-2xl p-6">
+        <div className="ocean-card rounded-2xl p-4 sm:p-6">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <GraduationCap className="h-5 w-5 text-primary" />
@@ -313,7 +313,7 @@ export default async function ChildDetailPage({ params }: PageProps) {
         </div>
 
         {/* Upcoming Assignments */}
-        <div className="ocean-card rounded-2xl p-6">
+        <div className="ocean-card rounded-2xl p-4 sm:p-6">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <BookOpen className="h-5 w-5 text-blue-500" />
@@ -348,7 +348,7 @@ export default async function ChildDetailPage({ params }: PageProps) {
                 return (
                   <div
                     key={assignment.id}
-                    className="flex items-center justify-between rounded-xl bg-muted/50 p-4"
+                    className="flex items-center justify-between gap-2 rounded-xl bg-muted/50 p-3 sm:p-4"
                   >
                     <div className="min-w-0 flex-1">
                       <p className="font-medium text-foreground truncate">
@@ -415,9 +415,9 @@ export default async function ChildDetailPage({ params }: PageProps) {
       </div>
 
       {/* Courses and Attendance Row */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2">
         {/* Current Courses */}
-        <div className="ocean-card rounded-2xl p-6">
+        <div className="ocean-card rounded-2xl p-4 sm:p-6">
           <div className="mb-4 flex items-center gap-3">
             <BookOpen className="h-5 w-5 text-blue-500" />
             <h3 className="text-lg font-semibold text-foreground">
@@ -440,7 +440,7 @@ export default async function ChildDetailPage({ params }: PageProps) {
                 .map((course) => (
                   <div
                     key={course.enrollmentId}
-                    className="flex items-center justify-between rounded-xl bg-muted/50 p-4"
+                    className="flex items-center justify-between gap-2 rounded-xl bg-muted/50 p-3 sm:p-4"
                   >
                     <div>
                       <p className="font-medium text-foreground">
@@ -473,7 +473,7 @@ export default async function ChildDetailPage({ params }: PageProps) {
         </div>
 
         {/* Attendance Summary */}
-        <div className="ocean-card rounded-2xl p-6">
+        <div className="ocean-card rounded-2xl p-4 sm:p-6">
           <div className="mb-4 flex items-center gap-3">
             <Calendar className="h-5 w-5 text-green-500" />
             <h3 className="text-lg font-semibold text-foreground">
@@ -482,25 +482,25 @@ export default async function ChildDetailPage({ params }: PageProps) {
           </div>
 
           <div className="space-y-4">
-            <div className="grid grid-cols-3 gap-3 text-center">
-              <div className="rounded-lg bg-green-50 p-4 dark:bg-green-950/30">
-                <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 text-center">
+              <div className="rounded-lg bg-green-50 p-2 sm:p-4 dark:bg-green-950/30">
+                <p className="text-xl sm:text-2xl font-bold text-green-600 dark:text-green-400">
                   {progress.attendance.presentDays}
                 </p>
                 <p className="text-xs text-green-600/70 dark:text-green-400/70">
                   Present
                 </p>
               </div>
-              <div className="rounded-lg bg-amber-50 p-4 dark:bg-amber-950/30">
-                <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+              <div className="rounded-lg bg-amber-50 p-2 sm:p-4 dark:bg-amber-950/30">
+                <p className="text-xl sm:text-2xl font-bold text-amber-600 dark:text-amber-400">
                   {progress.attendance.tardyDays}
                 </p>
                 <p className="text-xs text-amber-600/70 dark:text-amber-400/70">
                   Tardy
                 </p>
               </div>
-              <div className="rounded-lg bg-red-50 p-4 dark:bg-red-950/30">
-                <p className="text-2xl font-bold text-red-600 dark:text-red-400">
+              <div className="rounded-lg bg-red-50 p-2 sm:p-4 dark:bg-red-950/30">
+                <p className="text-xl sm:text-2xl font-bold text-red-600 dark:text-red-400">
                   {progress.attendance.absentDays}
                 </p>
                 <p className="text-xs text-red-600/70 dark:text-red-400/70">
@@ -542,36 +542,36 @@ export default async function ChildDetailPage({ params }: PageProps) {
       </div>
 
       {/* Gamification Stats */}
-      <div className="ocean-card rounded-2xl p-6">
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-3">
           <Award className="h-5 w-5 text-amber-500" />
           <h3 className="text-lg font-semibold text-foreground">
             Gamification Progress
           </h3>
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <div className="rounded-xl bg-muted/50 p-4 text-center">
-            <p className="text-2xl font-bold text-primary">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 sm:grid-cols-4">
+          <div className="rounded-xl bg-muted/50 p-2 sm:p-4 text-center">
+            <p className="text-xl sm:text-2xl font-bold text-primary">
               {progress.gamification.totalXP.toLocaleString()}
             </p>
             <p className="text-xs text-muted-foreground">Total XP</p>
           </div>
-          <div className="rounded-xl bg-muted/50 p-4 text-center">
-            <p className="text-2xl font-bold text-foreground">
+          <div className="rounded-xl bg-muted/50 p-2 sm:p-4 text-center">
+            <p className="text-xl sm:text-2xl font-bold text-foreground">
               Level {progress.gamification.currentLevel}
             </p>
             <p className="text-xs text-muted-foreground capitalize">
               {progress.gamification.currentTier}
             </p>
           </div>
-          <div className="rounded-xl bg-muted/50 p-4 text-center">
-            <p className="text-2xl font-bold text-amber-500">
+          <div className="rounded-xl bg-muted/50 p-2 sm:p-4 text-center">
+            <p className="text-xl sm:text-2xl font-bold text-amber-500">
               {progress.gamification.streakDays}
             </p>
             <p className="text-xs text-muted-foreground">Day Streak</p>
           </div>
-          <div className="rounded-xl bg-muted/50 p-4 text-center">
-            <p className="text-2xl font-bold text-foreground">
+          <div className="rounded-xl bg-muted/50 p-2 sm:p-4 text-center">
+            <p className="text-xl sm:text-2xl font-bold text-foreground">
               {progress.gamification.coins}
             </p>
             <p className="text-xs text-muted-foreground">Coins Earned</p>

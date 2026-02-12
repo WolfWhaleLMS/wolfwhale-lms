@@ -21,7 +21,7 @@ export default async function ChildrenListPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Back Button */}
       <Link
         href="/parent/dashboard"
@@ -33,7 +33,7 @@ export default async function ChildrenListPage() {
 
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           My Children
         </h1>
         <p className="mt-1 text-muted-foreground">
@@ -68,7 +68,7 @@ export default async function ChildrenListPage() {
 
       {/* Children Grid */}
       {children.length > 0 && (
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
           {children.map((child) => (
             <Link
               key={child.studentId}
@@ -77,22 +77,22 @@ export default async function ChildrenListPage() {
             >
               <div className="ocean-card rounded-2xl overflow-hidden transition-all group-hover:scale-[1.02] group-hover:shadow-lg">
                 {/* Child Header */}
-                <div className="child-card-header p-6">
-                  <div className="flex items-center gap-4">
+                <div className="child-card-header p-4 sm:p-6">
+                  <div className="flex items-center gap-3 sm:gap-4">
                     {/* Avatar */}
-                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-4xl font-bold text-primary dark:text-white shadow-lg">
+                    <div className="flex h-12 w-12 sm:h-16 sm:w-16 shrink-0 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-2xl sm:text-4xl font-bold text-primary dark:text-white shadow-lg">
                       {child.avatarUrl ? (
                         <img
                           src={child.avatarUrl}
                           alt={child.fullName}
-                          className="h-16 w-16 rounded-full object-cover"
+                          className="h-12 w-12 sm:h-16 sm:w-16 rounded-full object-cover"
                         />
                       ) : (
                         child.fullName.charAt(0).toUpperCase()
                       )}
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-3xl font-bold text-foreground dark:text-white group-hover:underline">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl sm:text-3xl font-bold text-foreground dark:text-white group-hover:underline truncate">
                         {child.fullName}
                       </h3>
                       <p className="text-muted-foreground dark:text-white/70">
@@ -111,47 +111,47 @@ export default async function ChildrenListPage() {
                 </div>
 
                 {/* Quick Stats */}
-                <div className="p-6">
-                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                <div className="p-3 sm:p-6">
+                  <div className="grid grid-cols-2 gap-2 sm:gap-4 sm:grid-cols-4">
                     {/* GPA */}
-                    <div className="rounded-xl bg-muted/50 p-3 text-center">
+                    <div className="rounded-xl bg-muted/50 p-2 sm:p-3 text-center">
                       <div className="flex items-center justify-center gap-1 mb-1">
                         <GraduationCap className="h-4 w-4 text-primary" />
                       </div>
-                      <p className="text-2xl font-bold text-foreground">
+                      <p className="text-xl sm:text-2xl font-bold text-foreground">
                         {child.gpa > 0 ? `${child.gpa}%` : '--'}
                       </p>
-                      <p className="text-base text-muted-foreground">GPA</p>
+                      <p className="text-xs sm:text-base text-muted-foreground">GPA</p>
                     </div>
 
                     {/* Attendance */}
-                    <div className="rounded-xl bg-muted/50 p-3 text-center">
+                    <div className="rounded-xl bg-muted/50 p-2 sm:p-3 text-center">
                       <div className="flex items-center justify-center gap-1 mb-1">
                         <Calendar className="h-4 w-4 text-green-500" />
                       </div>
-                      <p className="text-2xl font-bold text-foreground">
+                      <p className="text-xl sm:text-2xl font-bold text-foreground">
                         {child.attendanceRate > 0
                           ? `${child.attendanceRate}%`
                           : '--'}
                       </p>
-                      <p className="text-base text-muted-foreground">
+                      <p className="text-xs sm:text-base text-muted-foreground">
                         Attendance
                       </p>
                     </div>
 
                     {/* Courses */}
-                    <div className="rounded-xl bg-muted/50 p-3 text-center">
+                    <div className="rounded-xl bg-muted/50 p-2 sm:p-3 text-center">
                       <div className="flex items-center justify-center gap-1 mb-1">
                         <TrendingUp className="h-4 w-4 text-blue-500" />
                       </div>
-                      <p className="text-2xl font-bold text-foreground">
+                      <p className="text-xl sm:text-2xl font-bold text-foreground">
                         {child.courseCount}
                       </p>
-                      <p className="text-base text-muted-foreground">Courses</p>
+                      <p className="text-xs sm:text-base text-muted-foreground">Courses</p>
                     </div>
 
                     {/* Missing */}
-                    <div className="rounded-xl bg-muted/50 p-3 text-center">
+                    <div className="rounded-xl bg-muted/50 p-2 sm:p-3 text-center">
                       <div className="flex items-center justify-center gap-1 mb-1">
                         <AlertCircle
                           className={`h-4 w-4 ${child.missingAssignments > 0 ? 'text-red-500' : 'text-muted-foreground'}`}
@@ -162,7 +162,7 @@ export default async function ChildrenListPage() {
                       >
                         {child.missingAssignments}
                       </p>
-                      <p className="text-base text-muted-foreground">Missing</p>
+                      <p className="text-xs sm:text-base text-muted-foreground">Missing</p>
                     </div>
                   </div>
                 </div>

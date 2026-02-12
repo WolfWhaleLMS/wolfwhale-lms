@@ -55,7 +55,7 @@ export function DashboardLayout({
   }, [sidebarOpen])
 
   return (
-    <div className="relative flex h-screen overflow-hidden bg-background" data-role={role}>
+    <div className="relative flex h-screen overflow-hidden bg-background max-w-[100vw]" data-role={role}>
       {/* Chrome texture background */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
@@ -126,7 +126,7 @@ export function DashboardLayout({
 
         <OfflineStatusBar />
 
-        <main className="relative flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+        <main className="relative flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-4 md:p-6 lg:p-8">
           {/* Subtle glass reflection gradient overlay */}
           <div className="glass-reflection pointer-events-none absolute inset-0 z-0" aria-hidden="true" />
           <div className="relative z-10">

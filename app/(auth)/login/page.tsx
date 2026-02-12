@@ -1,9 +1,9 @@
 'use client'
 
-import { Suspense, useEffect } from 'react'
+import { Suspense } from 'react'
 import Link from 'next/link'
 import { LoginForm } from '@/components/auth/LoginForm'
-import { GraduationCap, Shield, Users, ArrowRight, ArrowLeft } from 'lucide-react'
+import { GraduationCap, Shield, Users, ArrowRight } from 'lucide-react'
 
 function LoginFormSkeleton() {
   return (
@@ -16,38 +16,36 @@ function LoginFormSkeleton() {
 }
 
 export default function LoginPage() {
-  // Scroll to top on mount — prevents browser from jumping to the login form
-  // due to the vertical centering layout + large spacer div
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
   return (
     <div className="space-y-6">
-      {/* Back to Hub Button — pinned top-left under the logo */}
-      <div className="fixed top-[108px] left-6 z-20 sm:top-[112px]">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl btn-chrome-3d-silver font-semibold text-sm tracking-wide transition-all hover:scale-105 neon-glow-blue group shadow-lg"
-        >
-          <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-          <span>WolfWhale EdTech Hub</span>
-        </Link>
-      </div>
-
       {/* Aqua Neon Title */}
       <div className="text-center space-y-3">
         <h1
           className="text-5xl sm:text-6xl md:text-7xl font-display font-extrabold tracking-wider leading-none whitespace-nowrap"
           style={{
-            background: 'linear-gradient(to right, #00BFFF, #33FF33)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            WebkitTextStroke: '3px rgba(0,0,0,0.6)',
             filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.3))',
           }}
         >
-          WOLFWHALE
+          {/* Letters W-O-L-F-W-H-A-L get the blue-to-green gradient */}
+          <span
+            style={{
+              background: 'linear-gradient(to right, #00BFFF, #33FF33)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              WebkitTextStroke: '3px rgba(0,0,0,0.6)',
+            }}
+          >
+            WOLFWHAL
+          </span>
+          {/* The "E" is fully lime green */}
+          <span
+            style={{
+              WebkitTextFillColor: '#33FF33',
+              WebkitTextStroke: '3px rgba(0,0,0,0.6)',
+            }}
+          >
+            E
+          </span>
         </h1>
         <p
           className="text-sm sm:text-base tracking-[0.2em] uppercase font-display font-bold"

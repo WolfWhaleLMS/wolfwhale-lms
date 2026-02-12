@@ -28,10 +28,17 @@ export function CircularGauge({
   valueDisplay,
   colorThresholds = defaultThresholds,
 }: CircularGaugeProps) {
+  // Use a smaller size on mobile to avoid layout overflow in 2-col grids
+  const mobileSize = Math.round(size * 0.64)
+  const mobileStrokeWidth = Math.round(strokeWidth * 0.75)
+
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
+  const mobileRadius = (mobileSize - mobileStrokeWidth) / 2
+  const mobileCircumference = 2 * Math.PI * mobileRadius
   const percentage = max > 0 ? Math.min((value / max) * 100, 100) : 0
   const offset = circumference - (percentage / 100) * circumference
+  const mobileOffset = mobileCircumference - (percentage / 100) * mobileCircumference
 
   const threshold =
     colorThresholds.find((t) => percentage >= t.value) ||
@@ -48,7 +55,47 @@ export function CircularGauge({
       aria-valuemax={max}
       aria-label={`${label}: ${display}`}
     >
-      <div className="relative rounded-full scale-[0.7] sm:scale-100 origin-center" style={{ width: size, height: size }}>
+      {/* Mobile gauge (shown below sm breakpoint) */}
+      <div className="relative rounded-full sm:hidden" style={{ width: mobileSize, height: mobileSize }}>
+        <svg
+          width={mobileSize}
+          height={mobileSize}
+          className="-rotate-90"
+          aria-hidden="true"
+        >
+          <circle
+            cx={mobileSize / 2}
+            cy={mobileSize / 2}
+            r={mobileRadius}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={mobileStrokeWidth}
+            className="text-[#00BFFF]/10 dark:text-[#00BFFF]/15"
+          />
+          <circle
+            cx={mobileSize / 2}
+            cy={mobileSize / 2}
+            r={mobileRadius}
+            fill="none"
+            stroke={threshold.color}
+            strokeWidth={mobileStrokeWidth}
+            strokeLinecap="round"
+            strokeDasharray={mobileCircumference}
+            strokeDashoffset={value > 0 ? mobileOffset : mobileCircumference}
+            style={{ transition: 'stroke-dashoffset 0.8s ease-in-out' }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span
+            className="text-base font-extrabold leading-none font-data"
+            style={{ color: value > 0 ? threshold.color : undefined }}
+          >
+            {display}
+          </span>
+        </div>
+      </div>
+      {/* Desktop gauge (shown at sm and above) */}
+      <div className="relative rounded-full hidden sm:block" style={{ width: size, height: size }}>
         <svg
           width={size}
           height={size}
@@ -82,7 +129,7 @@ export function CircularGauge({
         {/* Center text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span
-            className="text-xl sm:text-2xl font-extrabold leading-none font-data"
+            className="text-2xl font-extrabold leading-none font-data"
             style={{ color: value > 0 ? threshold.color : undefined }}
           >
             {display}
@@ -90,9 +137,9 @@ export function CircularGauge({
         </div>
       </div>
       <div className="text-center">
-        <p className="text-sm font-semibold text-[#0A2540] dark:text-[#E8F8FF]">{label}</p>
+        <p className="text-xs sm:text-sm font-semibold text-[#0A2540] dark:text-[#E8F8FF]">{label}</p>
         {sublabel && (
-          <p className="text-xs text-muted-foreground">{sublabel}</p>
+          <p className="text-[10px] sm:text-xs text-muted-foreground">{sublabel}</p>
         )}
       </div>
       {/* Screen reader description */}

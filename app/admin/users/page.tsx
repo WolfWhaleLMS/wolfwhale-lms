@@ -143,7 +143,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 overflow-x-hidden max-w-full">
       {/* Back Button */}
       <Link
         href="/admin/dashboard"
@@ -154,12 +154,12 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
       </Link>
 
       {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             User Management
           </h1>
-          <p className="mt-1 text-muted-foreground">
+          <p className="mt-1 text-sm sm:text-base text-muted-foreground">
             View and manage all users across your institution.
           </p>
         </div>

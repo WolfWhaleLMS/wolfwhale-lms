@@ -66,7 +66,7 @@ export default async function TeacherAttendanceOverviewPage() {
   }))
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Back Link */}
       <Link
         href="/teacher/dashboard"
@@ -78,7 +78,7 @@ export default async function TeacherAttendanceOverviewPage() {
 
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           Attendance
         </h1>
         <p className="mt-1 text-muted-foreground">
@@ -105,11 +105,11 @@ export default async function TeacherAttendanceOverviewPage() {
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {coursesWithCounts.map((course) => (
             <div
               key={course.id}
-              className="ocean-card group rounded-2xl p-6 transition-all hover:shadow-lg"
+              className="ocean-card group rounded-2xl p-4 sm:p-6 transition-all hover:shadow-lg"
             >
               <div className="mb-4 flex items-start justify-between">
                 <div className="flex-1 min-w-0">

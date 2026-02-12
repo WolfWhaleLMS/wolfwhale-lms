@@ -1,11 +1,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Shirt, Package, Footprints, Palette, Equal, Users, Brain, CloudSun, Layers, Rocket, ArrowLeft, Mail, Phone } from 'lucide-react'
+import { Equal, Users, Brain, Layers, Sparkles, Rocket, ArrowLeft, Mail, Phone } from 'lucide-react'
+import { GlowingBlazer } from '@/components/ui/glowing-blazer'
 
 export const metadata = {
-  title: 'School Uniforms - WolfWhale Uniform Package',
+  title: 'School Blazer - WolfWhale School Uniform',
   description:
-    'WolfWhale School Uniform Package: Premium athletic wear for every student — 3 tracksuits and running shoes included with your WolfWhale LMS subscription.',
+    'The WolfWhale School Blazer: A premium grey blazer with gold buttons and blue gingham lining, included with every student\'s WolfWhale LMS account. Manufactured by Eton Kidds.',
 }
 
 export default function UniformsPage() {
@@ -111,34 +112,22 @@ export default function UniformsPage() {
         {/* Hero Section */}
         <section className="flex items-center justify-center min-h-[50vh] sm:min-h-[60vh] px-4 py-12 sm:py-20">
           <div className="w-full max-w-4xl text-center space-y-6 sm:space-y-8 animate-fade-in-up">
-            {/* Icon with teal glow */}
+            {/* Blazer hero visual */}
             <div className="inline-flex items-center justify-center">
-              <div
-                className="relative p-4 sm:p-6 rounded-2xl bg-[#0A1628]/80 border border-[#14B8A6]/30"
-                style={{
-                  boxShadow: '0 0 40px rgba(20,184,166,0.25), 0 0 80px rgba(20,184,166,0.10)',
-                }}
-              >
-                <Shirt className="h-10 w-10 sm:h-16 sm:w-16 text-[#14B8A6]" />
-                <div
-                  className="absolute inset-0 rounded-2xl"
-                  style={{
-                    background: 'radial-gradient(circle at center, rgba(20,184,166,0.15) 0%, transparent 70%)',
-                  }}
-                />
-              </div>
+              <GlowingBlazer size={280} className="sm:hidden" />
+              <GlowingBlazer size={400} className="hidden sm:inline-flex" />
             </div>
 
             {/* Title */}
             <div className="space-y-3 sm:space-y-4">
               <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-bold bg-gradient-to-r from-[#14B8A6] via-[#2DD4BF] to-[#14B8A6] bg-clip-text text-transparent tracking-wide sm:tracking-wider">
-                SCHOOL UNIFORMS
+                SCHOOL BLAZER
               </h1>
               <p className="text-lg sm:text-2xl text-white/90 text-white-outlined font-semibold">
-                WolfWhale School Uniform Package
+                The WolfWhale School Blazer
               </p>
               <p className="text-sm sm:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
-                Premium athletic wear for every student &mdash; included with your WolfWhale LMS subscription
+                A premium school blazer included with every student&apos;s WolfWhale LMS account
               </p>
             </div>
 
@@ -152,48 +141,49 @@ export default function UniformsPage() {
           </div>
         </section>
 
-        {/* What's Included Section */}
+        {/* The Blazer Section */}
         <section className="px-4 py-10 sm:py-16">
           <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
-                WHAT&apos;S INCLUDED
+                THE WOLFWHALE BLAZER
               </h2>
               <p className="text-sm sm:text-base text-white/65 max-w-xl mx-auto">
-                Every student receives a complete athletic wear package.
+                A classic school blazer manufactured by Eton Kidds, included with every student account.
               </p>
             </div>
 
+            {/* Hero product shot */}
+            <div className="flex justify-center">
+              <GlowingBlazer size={280} className="sm:hidden" />
+              <GlowingBlazer size={400} className="hidden sm:inline-flex" />
+            </div>
+
+            {/* Detail cards */}
             <div className="grid sm:grid-cols-3 gap-4 sm:gap-6">
               {[
                 {
                   emoji: '\uD83E\uDDE5',
-                  icon: Package,
-                  title: '3 Tracksuits',
-                  desc: 'Hockey-style windbreaker jackets and matching pants. Durable, comfortable, built for active students.',
+                  title: 'Grey Twill Fabric',
+                  desc: 'Classic grey blazer with refined texture. Durable, breathable, and professional.',
                 },
                 {
-                  emoji: '\uD83D\uDC5F',
-                  icon: Footprints,
-                  title: 'Running Shoes',
-                  desc: 'Quality athletic shoes included with every package. One pair per student.',
+                  emoji: '\u2728',
+                  title: 'Gold Buttons',
+                  desc: 'Polished gold buttons with embossed detailing. A touch of distinction for every student.',
                 },
                 {
-                  emoji: '\uD83C\uDF92',
-                  icon: Palette,
-                  title: 'Standard Design',
-                  desc: 'Unified WolfWhale design across all schools. Professional, modern, and built to last.',
+                  emoji: '\uD83D\uDD35',
+                  title: 'Gingham Lining',
+                  desc: 'Blue checkered gingham interior lining. Attention to detail inside and out.',
                 },
-              ].map(({ emoji, icon: Icon, title, desc }) => (
+              ].map(({ emoji, title, desc }) => (
                 <div
                   key={title}
                   className="bg-[#0A1628]/80 backdrop-blur-xl border border-[#14B8A6]/15 shadow-xl rounded-2xl p-4 sm:p-6 group hover:border-[#14B8A6]/40 transition-all"
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <span className="text-2xl">{emoji}</span>
-                    <div className="inline-flex p-2.5 rounded-xl bg-[#14B8A6]/10 border border-[#14B8A6]/20 group-hover:bg-[#14B8A6]/20 transition-colors">
-                      <Icon className="h-5 w-5 text-[#14B8A6]" />
-                    </div>
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
                   <p className="text-sm text-white/70 leading-relaxed">{desc}</p>
@@ -203,15 +193,15 @@ export default function UniformsPage() {
           </div>
         </section>
 
-        {/* Why School Uniforms Section */}
+        {/* Why a School Blazer Section */}
         <section className="px-4 py-10 sm:py-16">
           <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
-                WHY SCHOOL UNIFORMS?
+                WHY A SCHOOL BLAZER?
               </h2>
               <p className="text-sm sm:text-base text-white/65 max-w-xl mx-auto">
-                Uniforms create equity, build identity, and remove barriers to learning.
+                A school blazer creates equity, builds identity, and removes barriers to learning.
               </p>
             </div>
 
@@ -225,7 +215,7 @@ export default function UniformsPage() {
                 {
                   icon: Users,
                   title: 'School Identity',
-                  desc: 'Builds community pride and belonging. Students feel part of something bigger than themselves.',
+                  desc: 'The WolfWhale blazer creates a shared identity across all partner schools. Students feel part of something bigger than themselves.',
                 },
                 {
                   icon: Brain,
@@ -234,18 +224,18 @@ export default function UniformsPage() {
                 },
                 {
                   icon: Layers,
-                  title: 'Durable & Comfortable',
-                  desc: 'Athletic-grade materials for active students. Built to withstand daily wear and frequent washing.',
+                  title: 'Premium Quality',
+                  desc: 'Manufactured by Eton Kidds, a leading school uniform brand. Built to last.',
                 },
                 {
-                  icon: CloudSun,
-                  title: 'All-Season Wear',
-                  desc: 'Windbreaker design works for Canadian weather. Layerable for cold winters and breathable for warm days.',
+                  icon: Sparkles,
+                  title: 'Classic Style',
+                  desc: 'Timeless blazer design with gold buttons and gingham lining. Professional and polished.',
                 },
                 {
                   icon: Rocket,
                   title: 'Included with LMS',
-                  desc: 'No separate purchase needed, bundled with your LMS subscription. One package, one provider, zero hassle.',
+                  desc: 'Every student account comes with their own blazer. No separate purchase required.',
                 },
               ].map(({ icon: Icon, title, desc }) => (
                 <div
@@ -306,13 +296,13 @@ export default function UniformsPage() {
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-sm sm:text-base font-bold text-white">School Uniforms</h3>
+                      <h3 className="text-sm sm:text-base font-bold text-white">School Blazer</h3>
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#14B8A6]/20 text-[#14B8A6] border border-[#14B8A6]/30">
                         Coming Soon
                       </span>
                     </div>
                     <p className="text-xs sm:text-sm text-white/65 leading-relaxed">
-                      Equipping every student. Premium athletic tracksuits and running shoes bundled with the LMS.
+                      A premium school blazer for every student, included with the LMS.
                     </p>
                   </div>
                 </div>
@@ -346,15 +336,15 @@ export default function UniformsPage() {
           <div className="max-w-3xl mx-auto">
             <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#14B8A6]/20 shadow-xl rounded-2xl p-5 sm:p-8 md:p-12 text-center space-y-4 sm:space-y-6">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white tracking-wider">
-                INTERESTED IN THE UNIFORM PACKAGE?
+                INTERESTED IN THE SCHOOL BLAZER?
               </h2>
               <div className="space-y-3 text-sm sm:text-base text-white/80 max-w-lg mx-auto leading-relaxed">
                 <p>
-                  The WolfWhale School Uniform Package is coming soon as part of Phase 2.
+                  The WolfWhale School Blazer is coming soon as part of Phase 2.
                   Schools using WolfWhale LMS will be first to access this program.
                 </p>
                 <p>
-                  Get in touch to express interest or learn more about bundling uniforms with your LMS subscription.
+                  Get in touch to express interest or learn more about including blazers with your LMS subscription.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 justify-center items-center pt-2">

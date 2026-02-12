@@ -26,7 +26,7 @@ export default async function AdminReportsPage() {
   const maxTrend = Math.max(...Object.values(trends), 1)
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Back Button */}
       <Link
         href="/admin/dashboard"
@@ -36,10 +36,10 @@ export default async function AdminReportsPage() {
         Back to Dashboard
       </Link>
 
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">Reports & Analytics</h1>
-          <p className="mt-1 text-muted-foreground">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">Reports & Analytics</h1>
+          <p className="mt-1 text-sm sm:text-base text-muted-foreground">
             Overview of school performance and engagement metrics.
           </p>
         </div>
@@ -51,57 +51,57 @@ export default async function AdminReportsPage() {
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="ocean-card rounded-2xl p-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-              <Users className="h-5 w-5 text-primary" />
+      <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-4">
+        <div className="ocean-card rounded-2xl p-3 sm:p-5">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+              <Users className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{stats.totalUsers}</p>
-              <p className="text-sm text-muted-foreground">Total Users</p>
-            </div>
-          </div>
-        </div>
-        <div className="ocean-card rounded-2xl p-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-500/10">
-              <GraduationCap className="h-5 w-5 text-teal-500" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{stats.totalStudents}</p>
-              <p className="text-sm text-muted-foreground">Students</p>
+            <div className="min-w-0">
+              <p className="text-xl sm:text-2xl font-bold text-foreground">{stats.totalUsers}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Total Users</p>
             </div>
           </div>
         </div>
-        <div className="ocean-card rounded-2xl p-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/10">
-              <BookOpen className="h-5 w-5 text-purple-500" />
+        <div className="ocean-card rounded-2xl p-3 sm:p-5">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-teal-500/10">
+              <GraduationCap className="h-4 w-4 sm:h-5 sm:w-5 text-teal-500" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{stats.totalCourses}</p>
-              <p className="text-sm text-muted-foreground">Courses</p>
+            <div className="min-w-0">
+              <p className="text-xl sm:text-2xl font-bold text-foreground">{stats.totalStudents}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Students</p>
             </div>
           </div>
         </div>
-        <div className="ocean-card rounded-2xl p-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10">
-              <LogIn className="h-5 w-5 text-amber-500" />
+        <div className="ocean-card rounded-2xl p-3 sm:p-5">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-purple-500/10">
+              <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-purple-500" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{stats.weeklyLogins}</p>
-              <p className="text-sm text-muted-foreground">Logins (7 days)</p>
+            <div className="min-w-0">
+              <p className="text-xl sm:text-2xl font-bold text-foreground">{stats.totalCourses}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Courses</p>
+            </div>
+          </div>
+        </div>
+        <div className="ocean-card rounded-2xl p-3 sm:p-5">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10">
+              <LogIn className="h-4 w-4 sm:h-5 sm:w-5 text-amber-500" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-xl sm:text-2xl font-bold text-foreground">{stats.weeklyLogins}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Logins (7 days)</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Role Breakdown & Attendance */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2">
         {/* Role Breakdown */}
-        <div className="ocean-card rounded-2xl p-6">
+        <div className="ocean-card rounded-2xl p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-foreground mb-4">User Distribution</h2>
           <div className="space-y-3">
             {Object.entries(stats.roleCounts).map(([role, count]) => (
@@ -131,7 +131,7 @@ export default async function AdminReportsPage() {
         </div>
 
         {/* Attendance Summary */}
-        <div className="ocean-card rounded-2xl p-6">
+        <div className="ocean-card rounded-2xl p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-foreground mb-4">
             <Calendar className="mr-2 inline h-5 w-5" />
             Attendance (Last 7 Days)
@@ -140,20 +140,20 @@ export default async function AdminReportsPage() {
             <p className="text-4xl font-bold text-primary">{attendance.attendanceRate}%</p>
             <p className="text-sm text-muted-foreground">Overall Attendance Rate</p>
           </div>
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div className="rounded-xl bg-green-50 p-3 dark:bg-green-950/30">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
+            <div className="rounded-xl bg-green-50 p-2 sm:p-3 dark:bg-green-950/30">
               <p className="text-lg font-bold text-green-600 dark:text-green-400">
                 {attendance.present}
               </p>
               <p className="text-xs text-muted-foreground">Present</p>
             </div>
-            <div className="rounded-xl bg-red-50 p-3 dark:bg-red-950/30">
+            <div className="rounded-xl bg-red-50 p-2 sm:p-3 dark:bg-red-950/30">
               <p className="text-lg font-bold text-red-600 dark:text-red-400">
                 {attendance.absent}
               </p>
               <p className="text-xs text-muted-foreground">Absent</p>
             </div>
-            <div className="rounded-xl bg-amber-50 p-3 dark:bg-amber-950/30">
+            <div className="rounded-xl bg-amber-50 p-2 sm:p-3 dark:bg-amber-950/30">
               <p className="text-lg font-bold text-amber-600 dark:text-amber-400">
                 {attendance.tardy}
               </p>
@@ -164,7 +164,7 @@ export default async function AdminReportsPage() {
       </div>
 
       {/* Enrollment Trends */}
-      <div className="ocean-card rounded-2xl p-6">
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
         <h2 className="text-lg font-semibold text-foreground mb-4">
           <TrendingUp className="mr-2 inline h-5 w-5" />
           Enrollment Trend (Last 30 Days)

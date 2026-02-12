@@ -18,7 +18,7 @@ export default async function AdminSettingsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Back Button */}
       <Link
         href="/admin/dashboard"
@@ -29,14 +29,14 @@ export default async function AdminSettingsPage() {
       </Link>
 
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">School Settings</h1>
-        <p className="mt-1 text-muted-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">School Settings</h1>
+        <p className="mt-1 text-sm sm:text-base text-muted-foreground">
           Manage your school&apos;s profile, branding, and policies.
         </p>
       </div>
 
       {/* School Profile */}
-      <div className="ocean-card rounded-2xl p-6">
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">
           <Building2 className="h-5 w-5 text-primary" />
           <h2 className="text-lg font-semibold text-foreground">School Profile</h2>
@@ -68,7 +68,7 @@ export default async function AdminSettingsPage() {
       </div>
 
       {/* Branding */}
-      <div className="ocean-card rounded-2xl p-6">
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">
           <Palette className="h-5 w-5 text-primary" />
           <h2 className="text-lg font-semibold text-foreground">Branding</h2>
@@ -99,13 +99,13 @@ export default async function AdminSettingsPage() {
       </div>
 
       {/* Privacy & Compliance */}
-      <div className="ocean-card rounded-2xl p-6">
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">
           <Shield className="h-5 w-5 text-primary" />
           <h2 className="text-lg font-semibold text-foreground">Privacy & Compliance</h2>
         </div>
         <div className="space-y-3">
-          <div className="flex items-center justify-between rounded-xl bg-muted/30 p-4">
+          <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/30 p-3 sm:p-4">
             <div>
               <p className="text-sm font-medium text-foreground">FERPA Compliance</p>
               <p className="text-xs text-muted-foreground">Student education record protection</p>
@@ -114,7 +114,7 @@ export default async function AdminSettingsPage() {
               Active
             </span>
           </div>
-          <div className="flex items-center justify-between rounded-xl bg-muted/30 p-4">
+          <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/30 p-3 sm:p-4">
             <div>
               <p className="text-sm font-medium text-foreground">COPPA Compliance</p>
               <p className="text-xs text-muted-foreground">Children&apos;s online privacy protection</p>
@@ -123,7 +123,7 @@ export default async function AdminSettingsPage() {
               Active
             </span>
           </div>
-          <div className="flex items-center justify-between rounded-xl bg-muted/30 p-4">
+          <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/30 p-3 sm:p-4">
             <div>
               <p className="text-sm font-medium text-foreground">Audit Logging</p>
               <p className="text-xs text-muted-foreground">All sensitive actions are recorded</p>
@@ -136,7 +136,7 @@ export default async function AdminSettingsPage() {
       </div>
 
       {/* Notification Policies */}
-      <div className="ocean-card rounded-2xl p-6">
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">
           <Bell className="h-5 w-5 text-primary" />
           <h2 className="text-lg font-semibold text-foreground">Notification Policies</h2>

@@ -145,7 +145,7 @@ export default async function TeacherAllAssignmentsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Back Link */}
       <Link
         href="/teacher/dashboard"
@@ -158,7 +158,7 @@ export default async function TeacherAllAssignmentsPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             All Assignments
           </h1>
           <p className="mt-1 text-muted-foreground">
@@ -178,29 +178,29 @@ export default async function TeacherAllAssignmentsPage() {
 
       {/* Summary Stats */}
       {assignments.length > 0 && (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <div className="ocean-card rounded-2xl p-4 text-center">
-            <ClipboardList className="mx-auto mb-1 h-5 w-5 text-primary" />
-            <p className="text-2xl font-bold text-primary">{assignments.length}</p>
-            <p className="mt-1 text-xs text-muted-foreground">Total Assignments</p>
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-4">
+          <div className="ocean-card rounded-2xl p-3 sm:p-4 text-center">
+            <ClipboardList className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+            <p className="text-xl sm:text-2xl font-bold text-primary">{assignments.length}</p>
+            <p className="mt-1 text-xs text-muted-foreground">Total</p>
           </div>
-          <div className="ocean-card rounded-2xl p-4 text-center">
-            <CheckCircle2 className="mx-auto mb-1 h-5 w-5 text-[#059669]" />
-            <p className="text-2xl font-bold text-[#059669] dark:text-[#059669]">
+          <div className="ocean-card rounded-2xl p-3 sm:p-4 text-center">
+            <CheckCircle2 className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-[#059669]" />
+            <p className="text-xl sm:text-2xl font-bold text-[#059669] dark:text-[#059669]">
               {assignments.filter((a) => getAssignmentStatus(a) === 'published').length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Active</p>
           </div>
-          <div className="ocean-card rounded-2xl p-4 text-center">
-            <AlertTriangle className="mx-auto mb-1 h-5 w-5 text-[#D97706]" />
-            <p className="text-2xl font-bold text-[#D97706] dark:text-[#D97706]">
+          <div className="ocean-card rounded-2xl p-3 sm:p-4 text-center">
+            <AlertTriangle className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-[#D97706]" />
+            <p className="text-xl sm:text-2xl font-bold text-[#D97706] dark:text-[#D97706]">
               {assignments.filter((a) => getAssignmentStatus(a) === 'due_soon').length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Due Soon</p>
           </div>
-          <div className="ocean-card rounded-2xl p-4 text-center">
-            <Clock className="mx-auto mb-1 h-5 w-5 text-red-500" />
-            <p className="text-2xl font-bold text-red-600 dark:text-red-400">
+          <div className="ocean-card rounded-2xl p-3 sm:p-4 text-center">
+            <Clock className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
+            <p className="text-xl sm:text-2xl font-bold text-red-600 dark:text-red-400">
               {assignments.filter((a) => getAssignmentStatus(a) === 'past_due').length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Past Due</p>

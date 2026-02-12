@@ -167,116 +167,116 @@ export default async function TeacherDashboardPage() {
   })
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 overflow-x-hidden max-w-full">
       {/* Pinned Announcements */}
       <AnnouncementBanner />
 
       {/* Welcome Header */}
-      <div className="ocean-card rounded-2xl p-6">
-        <div className="mb-4">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground text-outlined">
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
+        <div className="mb-3 sm:mb-4">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground text-outlined break-words">
             Welcome back, {teacherName}
           </h1>
-          <p className="mt-1 text-muted-foreground">
+          <p className="mt-1 text-sm sm:text-base text-muted-foreground">
             {currentDate} &mdash; You&apos;re making a difference today.
           </p>
         </div>
 
         {/* Quick Stats Row */}
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <div className="rounded-xl border border-border bg-muted/30 p-4 text-center">
-            <BookOpen className="mx-auto mb-1 h-5 w-5 text-primary" />
-            <p className="text-3xl font-bold text-primary">{courses.length}</p>
-            <p className="mt-1 text-sm text-muted-foreground">Courses</p>
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-4">
+          <div className="rounded-xl border border-border bg-muted/30 p-3 sm:p-4 text-center">
+            <BookOpen className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+            <p className="text-2xl sm:text-3xl font-bold text-primary">{courses.length}</p>
+            <p className="mt-1 text-xs sm:text-sm text-muted-foreground">Courses</p>
           </div>
-          <div className="rounded-xl border border-border bg-muted/30 p-4 text-center">
-            <Users className="mx-auto mb-1 h-5 w-5 text-[#00BFFF]" />
-            <p className="text-3xl font-bold text-[#00BFFF] dark:text-[#00BFFF]">
+          <div className="rounded-xl border border-border bg-muted/30 p-3 sm:p-4 text-center">
+            <Users className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-[#00BFFF]" />
+            <p className="text-2xl sm:text-3xl font-bold text-[#00BFFF] dark:text-[#00BFFF]">
               {totalStudents}
             </p>
-            <p className="mt-1 text-sm text-muted-foreground">Students</p>
+            <p className="mt-1 text-xs sm:text-sm text-muted-foreground">Students</p>
           </div>
-          <div className="rounded-xl border border-border bg-muted/30 p-4 text-center">
-            <ClipboardList className="mx-auto mb-1 h-5 w-5 text-[#D97706]" />
-            <p className="text-3xl font-bold text-[#D97706] dark:text-[#D97706]">
+          <div className="rounded-xl border border-border bg-muted/30 p-3 sm:p-4 text-center">
+            <ClipboardList className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-[#D97706]" />
+            <p className="text-2xl sm:text-3xl font-bold text-[#D97706] dark:text-[#D97706]">
               {pendingGrading}
             </p>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
               Pending Grading
             </p>
           </div>
-          <div className="rounded-xl border border-border bg-muted/30 p-4 text-center">
-            <Clock className="mx-auto mb-1 h-5 w-5 text-[#059669]" />
-            <p className="text-3xl font-bold text-[#059669] dark:text-[#059669]">
+          <div className="rounded-xl border border-border bg-muted/30 p-3 sm:p-4 text-center">
+            <Clock className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-[#059669]" />
+            <p className="text-2xl sm:text-3xl font-bold text-[#059669] dark:text-[#059669]">
               {courses.reduce((s: number, c: any) => s + (c.lessonCount || 0), 0)}
             </p>
-            <p className="mt-1 text-sm text-muted-foreground">Total Lessons</p>
+            <p className="mt-1 text-xs sm:text-sm text-muted-foreground">Total Lessons</p>
           </div>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="ocean-card rounded-2xl p-6">
-        <h2 className="mb-4 text-xl font-bold text-foreground text-outlined">
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
+        <h2 className="mb-3 sm:mb-4 text-lg sm:text-xl font-bold text-foreground text-outlined">
           Quick Actions
         </h2>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-5">
           <Link
             href="/teacher/courses/new"
-            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-primary/10 to-primary/5 p-6 transition-all hover:shadow-lg hover:scale-105"
+            className="group flex flex-col items-center gap-1.5 sm:gap-2 rounded-xl border border-border bg-gradient-to-br from-primary/10 to-primary/5 p-3 sm:p-6 transition-all hover:shadow-lg hover:scale-105"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20">
-              <Plus className="h-6 w-6 text-primary" />
+            <div className="flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-primary/20">
+              <Plus className="h-4 w-4 sm:h-6 sm:w-6 text-primary" />
             </div>
-            <span className="text-sm font-semibold text-foreground">
+            <span className="text-xs sm:text-sm font-semibold text-foreground text-center">
               Create Course
             </span>
           </Link>
 
           <Link
             href="/teacher/courses"
-            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-[#00BFFF]/10 to-[#00BFFF]/5 p-6 transition-all hover:shadow-lg hover:scale-105"
+            className="group flex flex-col items-center gap-1.5 sm:gap-2 rounded-xl border border-border bg-gradient-to-br from-[#00BFFF]/10 to-[#00BFFF]/5 p-3 sm:p-6 transition-all hover:shadow-lg hover:scale-105"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00BFFF]/20">
-              <BookOpen className="h-6 w-6 text-[#00BFFF]" />
+            <div className="flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#00BFFF]/20">
+              <BookOpen className="h-4 w-4 sm:h-6 sm:w-6 text-[#00BFFF]" />
             </div>
-            <span className="text-sm font-semibold text-foreground">
+            <span className="text-xs sm:text-sm font-semibold text-foreground text-center">
               My Courses
             </span>
           </Link>
 
           <Link
             href="/teacher/gradebook"
-            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-[#33FF33]/10 to-[#33FF33]/5 p-6 transition-all hover:shadow-lg hover:scale-105"
+            className="group flex flex-col items-center gap-1.5 sm:gap-2 rounded-xl border border-border bg-gradient-to-br from-[#33FF33]/10 to-[#33FF33]/5 p-3 sm:p-6 transition-all hover:shadow-lg hover:scale-105"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#33FF33]/20">
-              <GraduationCap className="h-6 w-6 text-[#059669]" />
+            <div className="flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#33FF33]/20">
+              <GraduationCap className="h-4 w-4 sm:h-6 sm:w-6 text-[#059669]" />
             </div>
-            <span className="text-sm font-semibold text-foreground">
+            <span className="text-xs sm:text-sm font-semibold text-foreground text-center">
               Gradebook
             </span>
           </Link>
 
           <Link
             href="/messaging"
-            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-[#00BFFF]/10 to-[#00BFFF]/5 p-6 transition-all hover:shadow-lg hover:scale-105"
+            className="group flex flex-col items-center gap-1.5 sm:gap-2 rounded-xl border border-border bg-gradient-to-br from-[#00BFFF]/10 to-[#00BFFF]/5 p-3 sm:p-6 transition-all hover:shadow-lg hover:scale-105"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00BFFF]/20">
-              <MessageSquare className="h-6 w-6 text-[#00BFFF]" />
+            <div className="flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#00BFFF]/20">
+              <MessageSquare className="h-4 w-4 sm:h-6 sm:w-6 text-[#00BFFF]" />
             </div>
-            <span className="text-sm font-semibold text-foreground">
+            <span className="text-xs sm:text-sm font-semibold text-foreground text-center">
               Messages
             </span>
           </Link>
 
           <Link
             href="/calendar"
-            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-[#00FFFF]/10 to-[#00FFFF]/5 p-6 transition-all hover:shadow-lg hover:scale-105"
+            className="group flex flex-col items-center gap-1.5 sm:gap-2 rounded-xl border border-border bg-gradient-to-br from-[#00FFFF]/10 to-[#00FFFF]/5 p-3 sm:p-6 transition-all hover:shadow-lg hover:scale-105"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00FFFF]/20">
-              <Calendar className="h-6 w-6 text-[#00FFFF]" />
+            <div className="flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#00FFFF]/20">
+              <Calendar className="h-4 w-4 sm:h-6 sm:w-6 text-[#00FFFF]" />
             </div>
-            <span className="text-sm font-semibold text-foreground">
+            <span className="text-xs sm:text-sm font-semibold text-foreground text-center">
               Calendar
             </span>
           </Link>
@@ -284,9 +284,9 @@ export default async function TeacherDashboardPage() {
       </div>
 
       {/* My Courses */}
-      <div className="ocean-card rounded-2xl p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-foreground text-outlined">My Courses</h2>
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
+        <div className="mb-3 sm:mb-4 flex items-center justify-between">
+          <h2 className="text-lg sm:text-xl font-bold text-foreground text-outlined">My Courses</h2>
           <Link
             href="/teacher/courses"
             className="text-sm text-primary hover:underline"
@@ -314,15 +314,15 @@ export default async function TeacherDashboardPage() {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-3">
             {courses.slice(0, 6).map((course: any) => (
               <Link
                 key={course.id}
                 href={`/teacher/courses/${course.id}`}
-                className="group rounded-xl border border-border p-4 transition-all hover:shadow-md hover:border-primary/30"
+                className="group rounded-xl border border-border p-3 sm:p-4 transition-all hover:shadow-md hover:border-primary/30"
               >
-                <div className="mb-2 flex items-start justify-between">
-                  <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                <div className="mb-2 flex items-start justify-between gap-2 min-w-0">
+                  <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-1 min-w-0">
                     {course.name}
                   </h3>
                   <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary shrink-0" />
@@ -350,67 +350,100 @@ export default async function TeacherDashboardPage() {
 
       {/* Recent Submissions */}
       {recentSubmissions.length > 0 && (
-        <div className="ocean-card rounded-2xl p-6">
-          <h2 className="mb-4 text-xl font-bold text-foreground text-outlined">
+        <div className="ocean-card rounded-2xl p-4 sm:p-6">
+          <h2 className="mb-3 sm:mb-4 text-lg sm:text-xl font-bold text-foreground text-outlined">
             Recent Submissions
           </h2>
-          <div className="overflow-hidden rounded-xl border border-border">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border bg-muted/50">
-                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
-                    Student
-                  </th>
-                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
-                    Assignment
-                  </th>
-                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
-                    Course
-                  </th>
-                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
-                    Time
-                  </th>
-                  <th className="px-4 py-3 text-right font-semibold text-muted-foreground">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {recentSubmissions.map((sub: any) => (
-                  <tr
-                    key={sub.id}
-                    className="transition-colors hover:bg-muted/30"
-                  >
-                    <td className="px-4 py-3 font-medium text-foreground">
-                      {sub.studentName}
-                    </td>
-                    <td className="px-4 py-3 text-muted-foreground">
-                      {sub.assignmentTitle}
-                    </td>
-                    <td className="px-4 py-3 text-sm text-muted-foreground">
-                      {sub.courseName}
-                    </td>
-                    <td className="px-4 py-3 text-sm text-muted-foreground">
-                      {formatTimeAgo(sub.submittedAt)}
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      {sub.status === 'submitted' ? (
-                        <Link
-                          href={`/teacher/courses/${sub.courseId}/assignments/${sub.assignmentId}/submissions`}
-                          className="rounded-lg bg-primary px-3 py-1 text-xs font-medium text-white transition-colors hover:bg-primary/90"
-                        >
-                          Grade
-                        </Link>
-                      ) : (
-                        <span className="text-xs text-[#059669] dark:text-[#059669]">
-                          Graded
-                        </span>
-                      )}
-                    </td>
+          {/* Mobile card view */}
+          <div className="space-y-3 sm:hidden">
+            {recentSubmissions.map((sub: any) => (
+              <div
+                key={sub.id}
+                className="rounded-xl border border-border p-3"
+              >
+                <div className="flex items-start justify-between gap-2 mb-1">
+                  <p className="font-medium text-foreground text-sm truncate">{sub.studentName}</p>
+                  {sub.status === 'submitted' ? (
+                    <Link
+                      href={`/teacher/courses/${sub.courseId}/assignments/${sub.assignmentId}/submissions`}
+                      className="rounded-lg bg-primary px-2.5 py-0.5 text-xs font-medium text-white transition-colors hover:bg-primary/90 shrink-0"
+                    >
+                      Grade
+                    </Link>
+                  ) : (
+                    <span className="text-xs text-[#059669] dark:text-[#059669] shrink-0">
+                      Graded
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground truncate">{sub.assignmentTitle}</p>
+                <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
+                  <span className="truncate">{sub.courseName}</span>
+                  <span className="shrink-0">{formatTimeAgo(sub.submittedAt)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Desktop table view */}
+          <div className="hidden sm:block overflow-hidden rounded-xl border border-border">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-muted/50">
+                    <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
+                      Student
+                    </th>
+                    <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
+                      Assignment
+                    </th>
+                    <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
+                      Course
+                    </th>
+                    <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
+                      Time
+                    </th>
+                    <th className="px-4 py-3 text-right font-semibold text-muted-foreground">
+                      Status
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {recentSubmissions.map((sub: any) => (
+                    <tr
+                      key={sub.id}
+                      className="transition-colors hover:bg-muted/30"
+                    >
+                      <td className="px-4 py-3 font-medium text-foreground">
+                        {sub.studentName}
+                      </td>
+                      <td className="px-4 py-3 text-muted-foreground">
+                        {sub.assignmentTitle}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-muted-foreground">
+                        {sub.courseName}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-muted-foreground">
+                        {formatTimeAgo(sub.submittedAt)}
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        {sub.status === 'submitted' ? (
+                          <Link
+                            href={`/teacher/courses/${sub.courseId}/assignments/${sub.assignmentId}/submissions`}
+                            className="rounded-lg bg-primary px-3 py-1 text-xs font-medium text-white transition-colors hover:bg-primary/90"
+                          >
+                            Grade
+                          </Link>
+                        ) : (
+                          <span className="text-xs text-[#059669] dark:text-[#059669]">
+                            Graded
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}

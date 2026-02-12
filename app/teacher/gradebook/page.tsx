@@ -111,7 +111,7 @@ export default function TeacherGradebookPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Back Button */}
       <Link
         href="/teacher/dashboard"
@@ -122,10 +122,10 @@ export default function TeacherGradebookPage() {
       </Link>
 
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">Gradebook</h1>
-          <p className="mt-1 text-muted-foreground">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">Gradebook</h1>
+          <p className="mt-1 text-sm sm:text-base text-muted-foreground">
             View and manage grades for all students across assignments.
           </p>
         </div>
@@ -138,7 +138,7 @@ export default function TeacherGradebookPage() {
       </div>
 
       {/* Course Selector */}
-      <div className="ocean-card rounded-2xl p-4">
+      <div className="ocean-card rounded-2xl p-3 sm:p-4">
         <label htmlFor="course-select" className="block text-sm font-medium text-foreground">
           Select Course
         </label>

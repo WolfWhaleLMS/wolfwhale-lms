@@ -96,7 +96,7 @@ export default async function TeacherAllStudentsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Back Link */}
       <Link
         href="/teacher/dashboard"
@@ -109,7 +109,7 @@ export default async function TeacherAllStudentsPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             All Students
           </h1>
           <p className="mt-1 text-muted-foreground">
@@ -120,24 +120,24 @@ export default async function TeacherAllStudentsPage() {
 
       {/* Summary Stats */}
       {studentProfiles.length > 0 && (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-          <div className="ocean-card rounded-2xl p-4 text-center">
-            <Users className="mx-auto mb-1 h-5 w-5 text-primary" />
-            <p className="text-2xl font-bold text-primary">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-3">
+          <div className="ocean-card rounded-2xl p-3 sm:p-4 text-center">
+            <Users className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+            <p className="text-xl sm:text-2xl font-bold text-primary">
               {studentProfiles.length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Unique Students</p>
           </div>
-          <div className="ocean-card rounded-2xl p-4 text-center">
-            <BookOpen className="mx-auto mb-1 h-5 w-5 text-[#00BFFF]" />
-            <p className="text-2xl font-bold text-[#00BFFF] dark:text-[#00BFFF]">
+          <div className="ocean-card rounded-2xl p-3 sm:p-4 text-center">
+            <BookOpen className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-[#00BFFF]" />
+            <p className="text-xl sm:text-2xl font-bold text-[#00BFFF] dark:text-[#00BFFF]">
               {courseList.length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Active Courses</p>
           </div>
-          <div className="ocean-card rounded-2xl p-4 text-center">
-            <GraduationCap className="mx-auto mb-1 h-5 w-5 text-[#059669]" />
-            <p className="text-2xl font-bold text-[#059669] dark:text-[#059669]">
+          <div className="ocean-card rounded-2xl p-3 sm:p-4 text-center col-span-2 md:col-span-1">
+            <GraduationCap className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-[#059669]" />
+            <p className="text-xl sm:text-2xl font-bold text-[#059669] dark:text-[#059669]">
               {enrollments.length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Total Enrollments</p>
@@ -164,11 +164,11 @@ export default async function TeacherAllStudentsPage() {
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {studentProfiles.map((student) => (
             <div
               key={student.id}
-              className="ocean-card group rounded-2xl p-5 transition-all hover:shadow-lg"
+              className="ocean-card group rounded-2xl p-4 sm:p-5 transition-all hover:shadow-lg"
             >
               {/* Student header */}
               <div className="mb-4 flex items-center gap-3">

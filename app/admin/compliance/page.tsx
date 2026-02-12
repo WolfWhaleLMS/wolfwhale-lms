@@ -84,7 +84,7 @@ export default async function CompliancePage() {
   ).length
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 overflow-x-hidden max-w-full">
       {/* Back Button */}
       <Link
         href="/admin/dashboard"
@@ -95,17 +95,17 @@ export default async function CompliancePage() {
       </Link>
 
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Compliance Dashboard
           </h1>
-          <p className="mt-1 text-muted-foreground">
+          <p className="mt-1 text-sm sm:text-base text-muted-foreground">
             FERPA, COPPA, PIPEDA, and Canadian privacy law compliance status.
           </p>
         </div>
         {compliance?.lastAuditDate && (
-          <div className="text-right text-sm text-muted-foreground">
+          <div className="sm:text-right text-sm text-muted-foreground shrink-0">
             <p>Last audit activity</p>
             <p className="font-medium text-foreground">
               {new Date(compliance.lastAuditDate).toLocaleDateString('en-US', {
@@ -134,13 +134,13 @@ export default async function CompliancePage() {
       )}
 
       {/* Overall status summary */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="ocean-card flex items-center gap-4 rounded-2xl p-5">
-          <div className="rounded-xl bg-primary/10 p-3">
-            <Shield className="size-5 text-primary" />
+      <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-4">
+        <div className="ocean-card flex items-center gap-2 sm:gap-4 rounded-2xl p-3 sm:p-5">
+          <div className="rounded-xl bg-primary/10 p-2 sm:p-3 shrink-0">
+            <Shield className="h-4 w-4 sm:size-5 text-primary" />
           </div>
-          <div>
-            <p className="text-sm text-muted-foreground">FERPA</p>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-muted-foreground">FERPA</p>
             <span
               className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusBadgeClass(ferpaStatus)}`}
             >
@@ -148,12 +148,12 @@ export default async function CompliancePage() {
             </span>
           </div>
         </div>
-        <div className="ocean-card flex items-center gap-4 rounded-2xl p-5">
-          <div className="rounded-xl bg-primary/10 p-3">
-            <Lock className="size-5 text-primary" />
+        <div className="ocean-card flex items-center gap-2 sm:gap-4 rounded-2xl p-3 sm:p-5">
+          <div className="rounded-xl bg-primary/10 p-2 sm:p-3 shrink-0">
+            <Lock className="h-4 w-4 sm:size-5 text-primary" />
           </div>
-          <div>
-            <p className="text-sm text-muted-foreground">COPPA</p>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-muted-foreground">COPPA</p>
             <span
               className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusBadgeClass(coppaStatus)}`}
             >
@@ -161,12 +161,12 @@ export default async function CompliancePage() {
             </span>
           </div>
         </div>
-        <div className="ocean-card flex items-center gap-4 rounded-2xl p-5">
-          <div className="rounded-xl bg-primary/10 p-3">
-            <MapPin className="size-5 text-primary" />
+        <div className="ocean-card flex items-center gap-2 sm:gap-4 rounded-2xl p-3 sm:p-5">
+          <div className="rounded-xl bg-primary/10 p-2 sm:p-3 shrink-0">
+            <MapPin className="h-4 w-4 sm:size-5 text-primary" />
           </div>
-          <div>
-            <p className="text-sm text-muted-foreground">PIPEDA</p>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-muted-foreground">PIPEDA</p>
             <span
               className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusBadgeClass(pipedaStatus)}`}
             >
@@ -174,13 +174,13 @@ export default async function CompliancePage() {
             </span>
           </div>
         </div>
-        <div className="ocean-card flex items-center gap-4 rounded-2xl p-5">
-          <div className="rounded-xl bg-primary/10 p-3">
-            <Users className="size-5 text-primary" />
+        <div className="ocean-card flex items-center gap-2 sm:gap-4 rounded-2xl p-3 sm:p-5">
+          <div className="rounded-xl bg-primary/10 p-2 sm:p-3 shrink-0">
+            <Users className="h-4 w-4 sm:size-5 text-primary" />
           </div>
-          <div>
-            <p className="text-sm text-muted-foreground">Consent Records</p>
-            <p className="text-2xl font-bold text-foreground">
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm text-muted-foreground">Consent Records</p>
+            <p className="text-xl sm:text-2xl font-bold text-foreground">
               {consentRecords.length}
             </p>
           </div>
@@ -188,15 +188,15 @@ export default async function CompliancePage() {
       </div>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2">
         {/* PIPEDA / Canadian Compliance Card */}
-        <div className="ocean-card rounded-2xl p-6 lg:col-span-2">
+        <div className="ocean-card rounded-2xl p-4 sm:p-6 lg:col-span-2">
           <div className="mb-5 flex items-center gap-3">
             <MapPin className="size-5 text-red-600" />
             <h2 className="text-lg font-semibold text-foreground">
               Canadian Privacy Law (PIPEDA & Provincial)
             </h2>
-            <span className="ml-auto text-xs text-muted-foreground">
+            <span className="ml-auto text-xs text-muted-foreground hidden sm:inline">
               PIPEDA, FIPPA (BC), MFIPPA (ON), Law 25 (QC), FOIP (AB)
             </span>
           </div>
@@ -235,7 +235,7 @@ export default async function CompliancePage() {
         </div>
 
         {/* FERPA Compliance Card */}
-        <div className="ocean-card rounded-2xl p-6">
+        <div className="ocean-card rounded-2xl p-4 sm:p-6">
           <div className="mb-5 flex items-center gap-3">
             <Shield className="size-5 text-primary" />
             <h2 className="text-lg font-semibold text-foreground">
@@ -274,7 +274,7 @@ export default async function CompliancePage() {
         </div>
 
         {/* COPPA Compliance Card */}
-        <div className="ocean-card rounded-2xl p-6">
+        <div className="ocean-card rounded-2xl p-4 sm:p-6">
           <div className="mb-5 flex items-center gap-3">
             <Lock className="size-5 text-primary" />
             <h2 className="text-lg font-semibold text-foreground">
@@ -313,7 +313,7 @@ export default async function CompliancePage() {
         </div>
 
         {/* Consent Tracking Summary */}
-        <div className="ocean-card rounded-2xl p-6">
+        <div className="ocean-card rounded-2xl p-4 sm:p-6">
           <div className="mb-5 flex items-center gap-3">
             <ClipboardList className="size-5 text-primary" />
             <h2 className="text-lg font-semibold text-foreground">
@@ -390,7 +390,7 @@ export default async function CompliancePage() {
         </div>
 
         {/* Data Requests (PIPEDA) */}
-        <div className="ocean-card rounded-2xl p-6">
+        <div className="ocean-card rounded-2xl p-4 sm:p-6">
           <div className="mb-5 flex items-center gap-3">
             <FileCheck className="size-5 text-primary" />
             <h2 className="text-lg font-semibold text-foreground">
@@ -458,7 +458,7 @@ export default async function CompliancePage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="ocean-card rounded-2xl p-6 lg:col-span-2">
+        <div className="ocean-card rounded-2xl p-4 sm:p-6 lg:col-span-2">
           <div className="mb-5 flex items-center gap-3">
             <FileCheck className="size-5 text-primary" />
             <h2 className="text-lg font-semibold text-foreground">

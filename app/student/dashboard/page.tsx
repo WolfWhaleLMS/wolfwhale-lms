@@ -477,30 +477,30 @@ export default async function StudentDashboardPage() {
           : 'Start a streak today!'
 
   return (
-    <div className="space-y-4 sm:space-y-8 pb-8 sm:pb-16">
+    <div className="space-y-4 sm:space-y-8 pb-8 sm:pb-16 overflow-x-hidden max-w-full">
       {/* ===== BIG FRIENDLY GREETING ===== */}
-      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#00BFFF] via-[#00FFFF] to-[#33FF33] p-5 sm:p-8 text-white text-white-outlined shadow-2xl sm:p-10">
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#00BFFF] via-[#00FFFF] to-[#33FF33] p-4 sm:p-8 md:p-10 text-white text-white-outlined shadow-2xl">
         {/* Decorative background circles */}
         <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/10" />
         <div className="pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/10" />
-        <div className="pointer-events-none absolute right-1/4 top-1/2 h-20 w-20 rounded-full bg-white/5" />
+        <div className="pointer-events-none absolute right-1/4 top-1/2 h-20 w-20 rounded-full bg-white/5 hidden sm:block" />
 
         <div className="relative z-10">
           <div className="flex items-center gap-2 sm:gap-3">
-            <Sparkles className="h-7 w-7 sm:h-10 sm:w-10 text-[#D97706]" />
-            <p className="text-lg sm:text-2xl font-medium text-white text-white-outlined">{greeting}</p>
+            <Sparkles className="h-6 w-6 sm:h-10 sm:w-10 text-[#D97706] shrink-0" />
+            <p className="text-base sm:text-2xl font-medium text-white text-white-outlined">{greeting}</p>
           </div>
-          <h1 className="mt-1 sm:mt-2 text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white-outlined">
+          <h1 className="mt-1 sm:mt-2 text-2xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white-outlined break-words">
             Hey {studentName}!
           </h1>
-          <p className="mt-1 sm:mt-2 text-lg sm:text-3xl text-white/90 text-white-outlined">
+          <p className="mt-1 sm:mt-2 text-base sm:text-3xl text-white/90 text-white-outlined">
             Ready to learn something awesome today?
           </p>
 
           {/* Streak badge */}
           {streak > 0 && (
-            <div className="mt-3 sm:mt-4 inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-2 sm:px-5 sm:py-2.5 text-sm sm:text-xl font-semibold text-white-outlined backdrop-blur-sm">
-              <Flame className="h-4 w-4 sm:h-6 sm:w-6 text-[#D97706]" />
+            <div className="mt-3 sm:mt-4 inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/20 px-2.5 py-1.5 sm:px-5 sm:py-2.5 text-xs sm:text-xl font-semibold text-white-outlined backdrop-blur-sm">
+              <Flame className="h-3.5 w-3.5 sm:h-6 sm:w-6 text-[#D97706] shrink-0" />
               {streak}-day streak &mdash; {streakMessage}
             </div>
           )}
@@ -513,11 +513,11 @@ export default async function StudentDashboardPage() {
 
       {/* ===== PERFORMANCE GAUGES ===== */}
       <section>
-        <div className="ocean-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8">
-          <h2 className="mb-4 sm:mb-6 text-center text-xl sm:text-3xl font-bold text-foreground text-outlined">
+        <div className="ocean-card rounded-2xl sm:rounded-3xl p-3 sm:p-6 md:p-8">
+          <h2 className="mb-3 sm:mb-6 text-center text-lg sm:text-3xl font-bold text-foreground text-outlined">
             Your Performance at a Glance
           </h2>
-          <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2 sm:gap-6 sm:grid-cols-4">
             <CircularGauge
               value={currentGPA !== '--' ? parseFloat(currentGPA) : 0}
               max={4}
@@ -542,24 +542,24 @@ export default async function StudentDashboardPage() {
               ]}
             />
             <div className="flex flex-col items-center gap-1 sm:gap-2" role="status" aria-label={`${stats.coursesEnrolled} courses enrolled`}>
-              <div className="flex h-[100px] w-[100px] sm:h-[140px] sm:w-[140px] items-center justify-center rounded-full bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10">
+              <div className="flex h-[80px] w-[80px] sm:h-[140px] sm:w-[140px] items-center justify-center rounded-full bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10">
                 <div className="text-center">
-                  <BookOpen className="mx-auto mb-1 h-5 w-5 sm:h-7 sm:w-7 text-[#00BFFF]" />
-                  <p className="text-2xl sm:text-4xl font-extrabold text-foreground">{stats.coursesEnrolled}</p>
+                  <BookOpen className="mx-auto mb-1 h-4 w-4 sm:h-7 sm:w-7 text-[#00BFFF]" />
+                  <p className="text-xl sm:text-4xl font-extrabold text-foreground">{stats.coursesEnrolled}</p>
                 </div>
               </div>
-              <p className="text-sm sm:text-lg font-semibold text-foreground">Courses</p>
-              <p className="text-xs sm:text-lg text-muted-foreground">Enrolled</p>
+              <p className="text-xs sm:text-lg font-semibold text-foreground">Courses</p>
+              <p className="text-[10px] sm:text-lg text-muted-foreground">Enrolled</p>
             </div>
             <div className="flex flex-col items-center gap-1 sm:gap-2" role="status" aria-label={`${stats.assignmentsDue} assignments due this week`}>
-              <div className={`flex h-[100px] w-[100px] sm:h-[140px] sm:w-[140px] items-center justify-center rounded-full ${stats.assignmentsDue > 0 ? 'bg-[#FFAA00]/5 dark:bg-[#FFAA00]/10' : 'bg-muted/30'}`}>
+              <div className={`flex h-[80px] w-[80px] sm:h-[140px] sm:w-[140px] items-center justify-center rounded-full ${stats.assignmentsDue > 0 ? 'bg-[#FFAA00]/5 dark:bg-[#FFAA00]/10' : 'bg-muted/30'}`}>
                 <div className="text-center">
-                  <Calendar className={`mx-auto mb-1 h-5 w-5 sm:h-7 sm:w-7 ${stats.assignmentsDue > 0 ? 'text-[#D97706]' : 'text-muted-foreground'}`} />
-                  <p className={`text-2xl sm:text-4xl font-extrabold ${stats.assignmentsDue > 0 ? 'text-[#D97706] dark:text-[#FFD700]' : 'text-foreground'}`}>{stats.assignmentsDue}</p>
+                  <Calendar className={`mx-auto mb-1 h-4 w-4 sm:h-7 sm:w-7 ${stats.assignmentsDue > 0 ? 'text-[#D97706]' : 'text-muted-foreground'}`} />
+                  <p className={`text-xl sm:text-4xl font-extrabold ${stats.assignmentsDue > 0 ? 'text-[#D97706] dark:text-[#FFD700]' : 'text-foreground'}`}>{stats.assignmentsDue}</p>
                 </div>
               </div>
-              <p className="text-sm sm:text-lg font-semibold text-foreground">Due Soon</p>
-              <p className="text-xs sm:text-lg text-muted-foreground">This Week</p>
+              <p className="text-xs sm:text-lg font-semibold text-foreground">Due Soon</p>
+              <p className="text-[10px] sm:text-lg text-muted-foreground">This Week</p>
             </div>
           </div>
         </div>
@@ -567,25 +567,25 @@ export default async function StudentDashboardPage() {
 
       {/* ===== TODAY'S TASKS ===== */}
       <section>
-        <div className="mb-3 sm:mb-5 flex items-center justify-between">
+        <div className="mb-3 sm:mb-5 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#00BFFF] to-[#00FFFF] shadow-md">
-              <Target className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+            <div className="flex h-7 w-7 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-br from-[#00BFFF] to-[#00FFFF] shadow-md">
+              <Target className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-white" />
             </div>
-            <h2 className="text-xl sm:text-4xl font-bold text-foreground text-outlined truncate">
+            <h2 className="text-lg sm:text-4xl font-bold text-foreground text-outlined truncate">
               Today&apos;s Tasks
             </h2>
           </div>
           <Link
             href="/student/assignments"
-            className="flex shrink-0 items-center gap-1 rounded-full bg-[#00BFFF]/5 px-2.5 py-1 sm:px-5 sm:py-2.5 text-xs sm:text-lg font-semibold text-[#00BFFF] transition-all hover:bg-[#00BFFF]/10 hover:scale-105 dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]"
+            className="flex shrink-0 items-center gap-1 rounded-full bg-[#00BFFF]/5 px-2 py-1 sm:px-5 sm:py-2.5 text-[11px] sm:text-lg font-semibold text-[#00BFFF] transition-all hover:bg-[#00BFFF]/10 hover:scale-105 dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]"
           >
             See All <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
           </Link>
         </div>
 
         {upcomingAssignments.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {upcomingAssignments.slice(0, 5).map((assignment, idx) => {
               const gradient = taskGradients[idx % taskGradients.length]
               const isUrgent =
@@ -594,7 +594,7 @@ export default async function StudentDashboardPage() {
               return (
                 <div
                   key={assignment.id}
-                  className="group relative overflow-hidden rounded-2xl p-5 text-white text-white-outlined shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                  className="group relative overflow-hidden rounded-2xl p-4 sm:p-5 text-white text-white-outlined shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 >
                   {/* Gradient background */}
                   <div
@@ -610,17 +610,17 @@ export default async function StudentDashboardPage() {
                           : 'Due Today'}
                       </span>
                     )}
-                    <h3 className="mt-1 text-lg sm:text-2xl font-bold leading-snug text-white-outlined">
+                    <h3 className="mt-1 text-base sm:text-2xl font-bold leading-snug text-white-outlined">
                       {assignment.name}
                     </h3>
-                    <p className="mt-1 text-sm sm:text-lg text-white text-white-outlined">
+                    <p className="mt-1 text-xs sm:text-lg text-white text-white-outlined">
                       {assignment.course}
                     </p>
-                    <div className="mt-3 sm:mt-4 flex items-center justify-between">
-                      <span className="flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 sm:px-3 sm:py-1 text-sm sm:text-lg font-semibold text-white-outlined backdrop-blur-sm">
+                    <div className="mt-2 sm:mt-4 flex items-center justify-between">
+                      <span className="flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 sm:px-3 sm:py-1 text-xs sm:text-lg font-semibold text-white-outlined backdrop-blur-sm">
                         <Zap className="h-3 w-3 sm:h-4 sm:w-4" /> {assignment.points} pts
                       </span>
-                      <span className="text-sm sm:text-lg font-medium text-white/90 text-white-outlined">
+                      <span className="text-xs sm:text-lg font-medium text-white/90 text-white-outlined">
                         {assignment.dueDate}
                       </span>
                     </div>
@@ -630,12 +630,12 @@ export default async function StudentDashboardPage() {
             })}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl border-2 border-dashed border-[#00BFFF]/20 bg-[#00BFFF]/5 py-8 sm:py-16 px-4 text-center dark:border-[#00BFFF]/20 dark:bg-[#00BFFF]/5">
-            <Rocket className="mb-3 sm:mb-4 h-10 w-10 sm:h-16 sm:w-16 text-[#00BFFF]/50" />
-            <p className="text-xl sm:text-3xl font-bold text-foreground">
+          <div className="flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl border-2 border-dashed border-[#00BFFF]/20 bg-[#00BFFF]/5 py-6 sm:py-16 px-3 sm:px-4 text-center dark:border-[#00BFFF]/20 dark:bg-[#00BFFF]/5">
+            <Rocket className="mb-2 sm:mb-4 h-8 w-8 sm:h-16 sm:w-16 text-[#00BFFF]/50" />
+            <p className="text-lg sm:text-3xl font-bold text-foreground">
               All clear! Nothing due soon.
             </p>
-            <p className="mt-1 sm:mt-2 text-sm sm:text-xl text-muted-foreground">
+            <p className="mt-1 sm:mt-2 text-xs sm:text-xl text-muted-foreground">
               You&apos;re all caught up &mdash; nice work!
             </p>
           </div>
@@ -644,23 +644,23 @@ export default async function StudentDashboardPage() {
 
       {/* ===== MY CLASSES ===== */}
       <section>
-        <div className="mb-3 sm:mb-5 flex items-center justify-between">
+        <div className="mb-3 sm:mb-5 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#33FF33] to-[#00FFFF] text-white-outlined shadow-md">
-              <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+            <div className="flex h-7 w-7 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-br from-[#33FF33] to-[#00FFFF] text-white-outlined shadow-md">
+              <BookOpen className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-white" />
             </div>
-            <h2 className="text-xl sm:text-4xl font-bold text-foreground text-outlined truncate">My Classes</h2>
+            <h2 className="text-lg sm:text-4xl font-bold text-foreground text-outlined truncate">My Classes</h2>
           </div>
           <Link
             href="/student/courses"
-            className="flex shrink-0 items-center gap-1 rounded-full bg-[#33FF33]/5 px-2.5 py-1 sm:px-5 sm:py-2.5 text-xs sm:text-lg font-semibold text-[#059669] transition-all hover:bg-[#33FF33]/10 hover:scale-105 dark:bg-[#33FF33]/10 dark:text-[#059669]"
+            className="flex shrink-0 items-center gap-1 rounded-full bg-[#33FF33]/5 px-2 py-1 sm:px-5 sm:py-2.5 text-[11px] sm:text-lg font-semibold text-[#059669] transition-all hover:bg-[#33FF33]/10 hover:scale-105 dark:bg-[#33FF33]/10 dark:text-[#059669]"
           >
             See All <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
           </Link>
         </div>
 
         {enrolledCourses.length > 0 ? (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {enrolledCourses.map((course, idx) => {
               const gradient = courseGradients[idx % courseGradients.length]
               return (
@@ -671,14 +671,14 @@ export default async function StudentDashboardPage() {
                 >
                   {/* Top colored band */}
                   <div
-                    className={`h-28 bg-gradient-to-br ${gradient} flex items-end p-5 transition-all duration-300 group-hover:h-32`}
+                    className={`h-24 sm:h-28 bg-gradient-to-br ${gradient} flex items-end p-3 sm:p-5 transition-all duration-300 group-hover:h-28 sm:group-hover:h-32`}
                   >
-                    <div className="relative z-10">
-                      <h3 className="text-lg sm:text-2xl font-bold text-white text-white-outlined">
+                    <div className="relative z-10 min-w-0">
+                      <h3 className="text-base sm:text-2xl font-bold text-white text-white-outlined truncate">
                         {course.name}
                       </h3>
-                      <p className="flex items-center gap-1 text-sm sm:text-lg text-white text-white-outlined">
-                        <GraduationCap className="h-3.5 w-3.5 sm:h-4 sm:w-4" />{' '}
+                      <p className="flex items-center gap-1 text-xs sm:text-lg text-white text-white-outlined truncate">
+                        <GraduationCap className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />{' '}
                         {course.teacher}
                       </p>
                     </div>
@@ -687,9 +687,9 @@ export default async function StudentDashboardPage() {
                   </div>
 
                   {/* Bottom info section */}
-                  <div className="rounded-b-2xl bg-card p-5">
+                  <div className="rounded-b-2xl bg-card p-3 sm:p-5">
                     {/* Progress bar */}
-                    <div className="mb-1 flex items-center justify-between text-sm sm:text-lg">
+                    <div className="mb-1 flex items-center justify-between text-xs sm:text-lg">
                       <span className="font-medium text-muted-foreground">
                         Progress
                       </span>
@@ -697,16 +697,16 @@ export default async function StudentDashboardPage() {
                         {course.progress}%
                       </span>
                     </div>
-                    <div className="h-3 w-full overflow-hidden rounded-full bg-muted">
+                    <div className="h-2.5 sm:h-3 w-full overflow-hidden rounded-full bg-muted">
                       <div
                         className={`h-full rounded-full bg-gradient-to-r ${gradient} transition-all duration-500`}
                         style={{ width: `${course.progress}%` }}
                       />
                     </div>
-                    <p className="mt-3 text-lg text-muted-foreground">
+                    <p className="mt-2 sm:mt-3 text-sm sm:text-lg text-muted-foreground truncate">
                       {course.progress === 100 ? (
                         <span className="flex items-center gap-1 font-semibold text-[#059669] dark:text-[#059669]">
-                          <PartyPopper className="h-5 w-5" /> All caught up!
+                          <PartyPopper className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /> All caught up!
                         </span>
                       ) : (
                         <>
@@ -725,10 +725,10 @@ export default async function StudentDashboardPage() {
             })}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl border-2 border-dashed border-[#33FF33]/20 bg-[#33FF33]/5 py-8 sm:py-16 px-4 text-center dark:border-[#33FF33]/20 dark:bg-[#33FF33]/5">
-            <BookOpen className="mb-3 sm:mb-4 h-10 w-10 sm:h-16 sm:w-16 text-[#059669]/50" />
-            <p className="text-xl sm:text-3xl font-bold text-foreground">No classes yet</p>
-            <p className="mt-1 sm:mt-2 text-sm sm:text-xl text-muted-foreground">
+          <div className="flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl border-2 border-dashed border-[#33FF33]/20 bg-[#33FF33]/5 py-6 sm:py-16 px-3 sm:px-4 text-center dark:border-[#33FF33]/20 dark:bg-[#33FF33]/5">
+            <BookOpen className="mb-2 sm:mb-4 h-8 w-8 sm:h-16 sm:w-16 text-[#059669]/50" />
+            <p className="text-lg sm:text-3xl font-bold text-foreground">No classes yet</p>
+            <p className="mt-1 sm:mt-2 text-xs sm:text-xl text-muted-foreground">
               Ask your teacher to enroll you in a class to get started!
             </p>
           </div>
@@ -737,52 +737,52 @@ export default async function StudentDashboardPage() {
 
       {/* ===== ACHIEVEMENTS ===== */}
       <section>
-        <div className="mb-3 sm:mb-5 flex items-center justify-between">
+        <div className="mb-3 sm:mb-5 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#FFAA00] to-[#FFD700] shadow-md">
-              <Trophy className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+            <div className="flex h-7 w-7 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-br from-[#FFAA00] to-[#FFD700] shadow-md">
+              <Trophy className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-white" />
             </div>
-            <h2 className="text-xl sm:text-4xl font-bold text-foreground text-outlined truncate">
+            <h2 className="text-lg sm:text-4xl font-bold text-foreground text-outlined truncate">
               Achievements
             </h2>
           </div>
           <Link
             href="/student/achievements"
-            className="flex shrink-0 items-center gap-1 rounded-full bg-[#FFAA00]/5 px-2.5 py-1 sm:px-5 sm:py-2.5 text-xs sm:text-lg font-semibold text-[#D97706] transition-all hover:bg-[#FFAA00]/10 hover:scale-105 dark:bg-[#FFAA00]/10 dark:text-[#FFD700]"
+            className="flex shrink-0 items-center gap-1 rounded-full bg-[#FFAA00]/5 px-2 py-1 sm:px-5 sm:py-2.5 text-[11px] sm:text-lg font-semibold text-[#D97706] transition-all hover:bg-[#FFAA00]/10 hover:scale-105 dark:bg-[#FFAA00]/10 dark:text-[#FFD700]"
           >
             See All <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
           </Link>
         </div>
 
         {achievements.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {achievements.slice(0, 3).map((achievement) => (
               <div
                 key={achievement.id}
-                className="group flex items-center gap-4 rounded-2xl border border-[#FFAA00]/20 bg-gradient-to-br from-[#FFAA00]/5 to-[#FFD700]/5 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-[#FFAA00]/20 dark:from-[#FFAA00]/10 dark:to-[#FFD700]/10"
+                className="group flex items-center gap-3 sm:gap-4 rounded-2xl border border-[#FFAA00]/20 bg-gradient-to-br from-[#FFAA00]/5 to-[#FFD700]/5 p-3 sm:p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-[#FFAA00]/20 dark:from-[#FFAA00]/10 dark:to-[#FFD700]/10"
               >
-                <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#FFAA00] to-[#FFD700] text-4xl shadow-md transition-transform duration-300 group-hover:scale-110">
+                <span className="flex h-12 w-12 sm:h-16 sm:w-16 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#FFAA00] to-[#FFD700] text-2xl sm:text-4xl shadow-md transition-transform duration-300 group-hover:scale-110">
                   {achievement.icon}
                 </span>
-                <div className="flex-1">
-                  <p className="text-xl font-bold text-foreground">
+                <div className="flex-1 min-w-0">
+                  <p className="text-base sm:text-xl font-bold text-foreground truncate">
                     {achievement.name}
                   </p>
-                  <p className="text-lg text-muted-foreground">
+                  <p className="text-sm sm:text-lg text-muted-foreground">
                     {achievement.earnedAt}
                   </p>
                 </div>
-                <Crown className="h-5 w-5 text-[#D97706]" />
+                <Crown className="h-4 w-4 sm:h-5 sm:w-5 text-[#D97706] shrink-0" />
               </div>
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl border-2 border-dashed border-[#FFAA00]/20 bg-[#FFAA00]/5 py-8 sm:py-12 px-4 text-center dark:border-[#FFAA00]/20 dark:bg-[#FFAA00]/5">
-            <Trophy className="mb-3 sm:mb-4 h-10 w-10 sm:h-14 sm:w-14 text-[#D97706]/50" />
-            <p className="text-lg sm:text-2xl font-bold text-foreground">
+          <div className="flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl border-2 border-dashed border-[#FFAA00]/20 bg-[#FFAA00]/5 py-6 sm:py-12 px-3 sm:px-4 text-center dark:border-[#FFAA00]/20 dark:bg-[#FFAA00]/5">
+            <Trophy className="mb-2 sm:mb-4 h-8 w-8 sm:h-14 sm:w-14 text-[#D97706]/50" />
+            <p className="text-base sm:text-2xl font-bold text-foreground">
               Your trophy case is waiting!
             </p>
-            <p className="mt-1 sm:mt-2 text-sm sm:text-xl text-muted-foreground">
+            <p className="mt-1 sm:mt-2 text-xs sm:text-xl text-muted-foreground">
               Complete tasks and lessons to earn awesome achievements.
             </p>
           </div>
@@ -791,33 +791,33 @@ export default async function StudentDashboardPage() {
 
       {/* ===== QUICK ACTIONS ===== */}
       <section>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-4 sm:grid-cols-4">
           {[
             {
               href: '/student/study-mode',
               label: 'Study Mode',
-              icon: <Rocket className="h-7 w-7" />,
+              icon: <Rocket className="h-5 w-5 sm:h-7 sm:w-7" />,
               gradient: 'from-[#00BFFF] to-[#00FFFF]',
               bg: 'bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10',
             },
             {
               href: '/messaging',
               label: 'Messages',
-              icon: <MessageCircle className="h-7 w-7" />,
+              icon: <MessageCircle className="h-5 w-5 sm:h-7 sm:w-7" />,
               gradient: 'from-[#00BFFF] to-[#33FF33]',
               bg: 'bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10',
             },
             {
               href: '/calendar',
               label: 'Calendar',
-              icon: <CalendarDays className="h-7 w-7" />,
+              icon: <CalendarDays className="h-5 w-5 sm:h-7 sm:w-7" />,
               gradient: 'from-[#33FF33] to-[#00FFFF]',
               bg: 'bg-[#33FF33]/5 dark:bg-[#33FF33]/10',
             },
             {
               href: '/student/leaderboard',
               label: 'Leaderboard',
-              icon: <Crown className="h-7 w-7" />,
+              icon: <Crown className="h-5 w-5 sm:h-7 sm:w-7" />,
               gradient: 'from-[#FFAA00] to-[#FFD700]',
               bg: 'bg-[#FFAA00]/5 dark:bg-[#FFAA00]/10',
             },
@@ -825,14 +825,14 @@ export default async function StudentDashboardPage() {
             <Link
               key={action.href}
               href={action.href}
-              className={`group flex flex-col items-center gap-2 sm:gap-3 rounded-2xl ${action.bg} border border-transparent p-3 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-gray-200 dark:hover:border-gray-700`}
+              className={`group flex flex-col items-center gap-1.5 sm:gap-3 rounded-xl sm:rounded-2xl ${action.bg} border border-transparent p-2.5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-gray-200 dark:hover:border-gray-700`}
             >
               <div
-                className={`flex h-10 w-10 sm:h-14 sm:w-14 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br ${action.gradient} text-white text-white-outlined shadow-md transition-transform duration-300 group-hover:scale-110`}
+                className={`flex h-9 w-9 sm:h-14 sm:w-14 items-center justify-center rounded-lg sm:rounded-2xl bg-gradient-to-br ${action.gradient} text-white text-white-outlined shadow-md transition-transform duration-300 group-hover:scale-110`}
               >
                 {action.icon}
               </div>
-              <span className="text-sm sm:text-lg font-bold text-foreground text-center">
+              <span className="text-xs sm:text-lg font-bold text-foreground text-center">
                 {action.label}
               </span>
             </Link>

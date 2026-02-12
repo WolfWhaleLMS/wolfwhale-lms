@@ -44,8 +44,8 @@ function ToggleRow({
   onToggle: () => void
 }) {
   return (
-    <div className="flex items-center justify-between rounded-xl bg-muted/30 p-4">
-      <div>
+    <div className="flex items-center justify-between gap-3 rounded-xl bg-muted/30 p-3 sm:p-4">
+      <div className="min-w-0">
         <p className="text-sm font-medium text-foreground">{label}</p>
         <p className="text-xs text-muted-foreground">{description}</p>
       </div>
@@ -113,7 +113,7 @@ export default function AdminPlazaSettingsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Back Button */}
       <Link
         href="/admin/dashboard"
@@ -125,7 +125,7 @@ export default function AdminPlazaSettingsPage() {
 
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           Plaza Settings
         </h1>
         <p className="mt-1 text-muted-foreground">
@@ -135,13 +135,13 @@ export default function AdminPlazaSettingsPage() {
       </div>
 
       {/* Plaza Status Banner */}
-      <div className="ocean-card rounded-2xl p-5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="rounded-xl bg-primary/10 p-3">
-              <Map className="h-6 w-6 text-primary" />
+      <div className="ocean-card rounded-2xl p-4 sm:p-5">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="rounded-xl bg-primary/10 p-2 sm:p-3 shrink-0">
+              <Map className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
             </div>
-            <div>
+            <div className="min-w-0">
               <p className="text-sm font-medium text-foreground">
                 Virtual Plaza Status
               </p>
@@ -173,7 +173,7 @@ export default function AdminPlazaSettingsPage() {
       </div>
 
       {/* Rooms Configuration */}
-      <div className="ocean-card rounded-2xl p-6">
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">
           <Map className="h-5 w-5 text-primary" />
           <h2 className="text-lg font-semibold text-foreground">
@@ -185,8 +185,8 @@ export default function AdminPlazaSettingsPage() {
           independently.
         </p>
         <div className="space-y-3">
-          <div className="flex items-center justify-between rounded-xl bg-muted/30 p-4">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/30 p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
               <Map className="h-4 w-4 text-blue-500" />
               <div>
                 <p className="text-sm font-medium text-foreground">
@@ -201,8 +201,8 @@ export default function AdminPlazaSettingsPage() {
               Always Active
             </span>
           </div>
-          <div className="flex items-center justify-between rounded-xl bg-muted/30 p-4">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/30 p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
               <Gamepad2 className="h-4 w-4 text-red-500" />
               <div>
                 <p className="text-sm font-medium text-foreground">
@@ -227,8 +227,8 @@ export default function AdminPlazaSettingsPage() {
               )}
             </button>
           </div>
-          <div className="flex items-center justify-between rounded-xl bg-muted/30 p-4">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/30 p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
               <Store className="h-4 w-4 text-purple-500" />
               <div>
                 <p className="text-sm font-medium text-foreground">
@@ -254,8 +254,8 @@ export default function AdminPlazaSettingsPage() {
               )}
             </button>
           </div>
-          <div className="flex items-center justify-between rounded-xl bg-muted/30 p-4">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/30 p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
               <BookOpen className="h-4 w-4 text-teal-500" />
               <div>
                 <p className="text-sm font-medium text-foreground">
@@ -280,8 +280,8 @@ export default function AdminPlazaSettingsPage() {
               )}
             </button>
           </div>
-          <div className="flex items-center justify-between rounded-xl bg-muted/30 p-4">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/30 p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
               <Film className="h-4 w-4 text-amber-500" />
               <div>
                 <p className="text-sm font-medium text-foreground">
@@ -319,7 +319,7 @@ export default function AdminPlazaSettingsPage() {
       </div>
 
       {/* Feature Toggles */}
-      <div className="ocean-card rounded-2xl p-6">
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">
           <Zap className="h-5 w-5 text-primary" />
           <h2 className="text-lg font-semibold text-foreground">
@@ -361,7 +361,7 @@ export default function AdminPlazaSettingsPage() {
       </div>
 
       {/* Token Economy Settings */}
-      <div className="ocean-card rounded-2xl p-6">
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">
           <Coins className="h-5 w-5 text-primary" />
           <h2 className="text-lg font-semibold text-foreground">
@@ -488,7 +488,7 @@ export default function AdminPlazaSettingsPage() {
       </div>
 
       {/* Chat & Moderation */}
-      <div className="ocean-card rounded-2xl p-6">
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">
           <Shield className="h-5 w-5 text-primary" />
           <h2 className="text-lg font-semibold text-foreground">
@@ -551,7 +551,7 @@ export default function AdminPlazaSettingsPage() {
       </div>
 
       {/* Plaza Technical Configuration */}
-      <div className="ocean-card rounded-2xl p-6">
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">
           <Settings className="h-5 w-5 text-primary" />
           <h2 className="text-lg font-semibold text-foreground">
@@ -651,7 +651,7 @@ export default function AdminPlazaSettingsPage() {
       </div>
 
       {/* Mini Games Reference */}
-      <div className="ocean-card rounded-2xl p-6">
+      <div className="ocean-card rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">
           <Gamepad2 className="h-5 w-5 text-primary" />
           <h2 className="text-lg font-semibold text-foreground">
@@ -700,7 +700,7 @@ export default function AdminPlazaSettingsPage() {
           ].map((game) => (
             <div
               key={game.name}
-              className="flex items-center gap-3 rounded-xl bg-muted/30 p-4"
+              className="flex items-center gap-2 sm:gap-3 rounded-xl bg-muted/30 p-3 sm:p-4"
             >
               <div className={`rounded-lg p-2 ${game.color}`}>
                 <Gamepad2 className="h-4 w-4" />

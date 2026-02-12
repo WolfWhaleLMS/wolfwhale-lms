@@ -61,7 +61,7 @@ export default function TutorWidget({ role }: TutorWidgetProps) {
         id={toggleBtnId}
         type="button"
         onClick={handleToggle}
-        className={`fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full text-white transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00BFFF] focus-visible:ring-offset-2 ${
+        className={`fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-40 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full text-white transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00BFFF] focus-visible:ring-offset-2 ${
           isWidgetOpen
             ? 'btn-chrome-3d-silver !text-[#0A2540] rotate-0'
             : 'btn-chrome-3d-blue neon-pulse-blue'

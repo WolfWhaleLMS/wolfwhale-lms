@@ -52,7 +52,7 @@ export default async function ProgressOverviewPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Back Button */}
       <Link
         href="/parent/dashboard"
@@ -64,7 +64,7 @@ export default async function ProgressOverviewPage() {
 
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           Progress Overview
         </h1>
         <p className="mt-1 text-muted-foreground">
@@ -104,22 +104,22 @@ export default async function ProgressOverviewPage() {
           className="ocean-card rounded-2xl overflow-hidden"
         >
           {/* Child Header */}
-          <div className="child-card-header p-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-3xl font-bold text-primary dark:text-white">
+          <div className="child-card-header p-4 sm:p-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                <div className="flex h-10 w-10 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-xl sm:text-3xl font-bold text-primary dark:text-white">
                   {child.avatarUrl ? (
                     <img
                       src={child.avatarUrl}
                       alt={child.fullName}
-                      className="h-14 w-14 rounded-full object-cover"
+                      className="h-10 w-10 sm:h-14 sm:w-14 rounded-full object-cover"
                     />
                   ) : (
                     child.fullName.charAt(0).toUpperCase()
                   )}
                 </div>
-                <div>
-                  <h2 className="text-3xl font-bold text-foreground dark:text-white">
+                <div className="min-w-0">
+                  <h2 className="text-xl sm:text-3xl font-bold text-foreground dark:text-white truncate">
                     {child.fullName}
                   </h2>
                   <p className="text-muted-foreground dark:text-white/70">
@@ -145,13 +145,13 @@ export default async function ProgressOverviewPage() {
           </div>
 
           {progress ? (
-            <div className="p-6 space-y-6">
+            <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
               {/* Quick Stats Row */}
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <div className="rounded-xl bg-muted/50 p-4 text-center">
-                  <GraduationCap className="mx-auto mb-2 h-5 w-5 text-primary" />
+              <div className="grid grid-cols-2 gap-2 sm:gap-4 sm:grid-cols-4">
+                <div className="rounded-xl bg-muted/50 p-3 sm:p-4 text-center">
+                  <GraduationCap className="mx-auto mb-1 sm:mb-2 h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                   <p
-                    className={`text-3xl font-bold ${
+                    className={`text-2xl sm:text-3xl font-bold ${
                       progress.academics.overallGPA != null
                         ? progress.academics.overallGPA >= 90
                           ? 'text-green-600 dark:text-green-400'
@@ -174,10 +174,10 @@ export default async function ProgressOverviewPage() {
                   </p>
                 </div>
 
-                <div className="rounded-xl bg-muted/50 p-4 text-center">
-                  <Calendar className="mx-auto mb-2 h-5 w-5 text-green-500" />
+                <div className="rounded-xl bg-muted/50 p-3 sm:p-4 text-center">
+                  <Calendar className="mx-auto mb-1 sm:mb-2 h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
                   <p
-                    className={`text-3xl font-bold ${
+                    className={`text-2xl sm:text-3xl font-bold ${
                       progress.attendance.attendanceRate >= 95
                         ? 'text-green-600 dark:text-green-400'
                         : progress.attendance.attendanceRate >= 85
@@ -190,27 +190,27 @@ export default async function ProgressOverviewPage() {
                   <p className="text-base text-muted-foreground">Attendance</p>
                 </div>
 
-                <div className="rounded-xl bg-muted/50 p-4 text-center">
-                  <BookOpen className="mx-auto mb-2 h-5 w-5 text-blue-500" />
-                  <p className="text-3xl font-bold text-foreground">
+                <div className="rounded-xl bg-muted/50 p-3 sm:p-4 text-center">
+                  <BookOpen className="mx-auto mb-1 sm:mb-2 h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
+                  <p className="text-2xl sm:text-3xl font-bold text-foreground">
                     {progress.academics.activeCourses}
                   </p>
-                  <p className="text-base text-muted-foreground">
+                  <p className="text-xs sm:text-base text-muted-foreground">
                     Active Courses
                   </p>
                 </div>
 
-                <div className="rounded-xl bg-muted/50 p-4 text-center">
-                  <Award className="mx-auto mb-2 h-5 w-5 text-amber-500" />
-                  <p className="text-3xl font-bold text-amber-500">
+                <div className="rounded-xl bg-muted/50 p-3 sm:p-4 text-center">
+                  <Award className="mx-auto mb-1 sm:mb-2 h-4 w-4 sm:h-5 sm:w-5 text-amber-500" />
+                  <p className="text-2xl sm:text-3xl font-bold text-amber-500">
                     {progress.gamification.totalXP.toLocaleString()}
                   </p>
-                  <p className="text-base text-muted-foreground">XP Earned</p>
+                  <p className="text-xs sm:text-base text-muted-foreground">XP Earned</p>
                 </div>
               </div>
 
               {/* Grade Trend (placeholder chart area) */}
-              <div className="glass-panel rounded-2xl p-6">
+              <div className="glass-panel rounded-2xl p-4 sm:p-6">
                 <div className="mb-4 flex items-center gap-3">
                   <TrendingUp className="h-5 w-5 text-primary" />
                   <h3 className="font-semibold text-foreground">
@@ -267,7 +267,7 @@ export default async function ProgressOverviewPage() {
               </div>
 
               {/* Attendance Breakdown */}
-              <div className="glass-panel rounded-2xl p-6">
+              <div className="glass-panel rounded-2xl p-4 sm:p-6">
                 <div className="mb-4 flex items-center gap-3">
                   <Calendar className="h-5 w-5 text-green-500" />
                   <h3 className="font-semibold text-foreground">
@@ -356,7 +356,7 @@ export default async function ProgressOverviewPage() {
               </div>
 
               {/* XP / Gamification Progress */}
-              <div className="glass-panel rounded-2xl p-6">
+              <div className="glass-panel rounded-2xl p-4 sm:p-6">
                 <div className="mb-4 flex items-center gap-3">
                   <Award className="h-5 w-5 text-amber-500" />
                   <h3 className="font-semibold text-foreground">
@@ -364,28 +364,28 @@ export default async function ProgressOverviewPage() {
                   </h3>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                  <div className="rounded-xl bg-muted/50 p-4 text-center">
-                    <p className="text-2xl font-bold text-amber-500">
+                <div className="grid grid-cols-2 gap-2 sm:gap-4 sm:grid-cols-3">
+                  <div className="rounded-xl bg-muted/50 p-3 sm:p-4 text-center">
+                    <p className="text-xl sm:text-2xl font-bold text-amber-500">
                       Level {progress.gamification.currentLevel}
                     </p>
-                    <p className="text-base text-muted-foreground capitalize">
+                    <p className="text-xs sm:text-base text-muted-foreground capitalize">
                       {progress.gamification.currentTier} Tier
                     </p>
                   </div>
-                  <div className="rounded-xl bg-muted/50 p-4 text-center">
-                    <p className="text-2xl font-bold text-primary">
+                  <div className="rounded-xl bg-muted/50 p-3 sm:p-4 text-center">
+                    <p className="text-xl sm:text-2xl font-bold text-primary truncate">
                       {progress.gamification.totalXP.toLocaleString()} XP
                     </p>
-                    <p className="text-base text-muted-foreground">
+                    <p className="text-xs sm:text-base text-muted-foreground">
                       Total Experience
                     </p>
                   </div>
-                  <div className="rounded-xl bg-muted/50 p-4 text-center">
-                    <p className="text-2xl font-bold text-foreground">
+                  <div className="rounded-xl bg-muted/50 p-3 sm:p-4 text-center col-span-2 sm:col-span-1">
+                    <p className="text-xl sm:text-2xl font-bold text-foreground">
                       {progress.gamification.streakDays} days
                     </p>
-                    <p className="text-base text-muted-foreground">
+                    <p className="text-xs sm:text-base text-muted-foreground">
                       Current Streak (Best:{' '}
                       {progress.gamification.longestStreak})
                     </p>

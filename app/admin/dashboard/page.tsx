@@ -28,10 +28,10 @@ function DashboardCard({
   className?: string
 }) {
   return (
-    <div className={`ocean-card rounded-2xl p-6 ${className}`}>
-      <div className="mb-4 flex items-center gap-3">
+    <div className={`ocean-card rounded-2xl p-4 sm:p-6 ${className}`}>
+      <div className="mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
         {icon}
-        <h3 className="text-lg font-semibold text-foreground text-outlined">{title}</h3>
+        <h3 className="text-base sm:text-lg font-semibold text-foreground text-outlined min-w-0 truncate">{title}</h3>
       </div>
       {children}
     </div>
@@ -202,13 +202,13 @@ export default async function AdminDashboardPage() {
   const attendanceRate = attendance?.attendanceRate ?? 0
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground text-outlined">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground text-outlined">
           Admin Dashboard
         </h1>
-        <p className="mt-1 text-muted-foreground">
+        <p className="mt-1 text-sm sm:text-base text-muted-foreground">
           School overview, enrollment data, and system health at a glance.
         </p>
       </div>
@@ -217,21 +217,21 @@ export default async function AdminDashboardPage() {
       <AnnouncementBanner />
 
       {/* Seat Usage Banner */}
-      <div className="ocean-card rounded-2xl p-5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="rounded-xl bg-indigo-500/10 p-3">
-              <Users className="h-6 w-6 text-indigo-500" />
+      <div className="ocean-card rounded-2xl p-3 sm:p-5">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="rounded-xl bg-indigo-500/10 p-2 sm:p-3 shrink-0">
+              <Users className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-500" />
             </div>
-            <div>
+            <div className="min-w-0">
               <p className="text-sm font-medium text-foreground">Seat Usage</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground truncate">
                 {seatUsage.currentUsers} of {seatUsage.maxUsers} seats used
               </p>
             </div>
           </div>
-          <div className="text-right">
-            <p className={`text-2xl font-bold ${seatUsage.currentUsers >= seatUsage.maxUsers ? 'text-red-600 dark:text-red-400' : 'text-foreground'}`}>
+          <div className="text-right shrink-0">
+            <p className={`text-xl sm:text-2xl font-bold ${seatUsage.currentUsers >= seatUsage.maxUsers ? 'text-red-600 dark:text-red-400' : 'text-foreground'}`}>
               {seatUsage.currentUsers}/{seatUsage.maxUsers}
             </p>
             {seatUsage.currentUsers >= seatUsage.maxUsers && (
@@ -262,83 +262,83 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="ocean-card rounded-2xl p-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">Total Students</p>
-              <p className="text-3xl font-bold text-foreground">
+      <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-4">
+        <div className="ocean-card rounded-2xl p-3 sm:p-5">
+          <div className="flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-muted-foreground">Total Students</p>
+              <p className="text-2xl sm:text-3xl font-bold text-foreground">
                 {studentCount}
               </p>
             </div>
-            <div className="rounded-xl bg-primary/10 p-3">
-              <GraduationCap className="h-6 w-6 text-primary" />
+            <div className="rounded-xl bg-primary/10 p-2 sm:p-3 shrink-0">
+              <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
             </div>
           </div>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted-foreground">
             {stats?.totalUsers ?? 0} total users
           </p>
         </div>
-        <div className="ocean-card rounded-2xl p-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">Total Teachers</p>
-              <p className="text-3xl font-bold text-foreground">
+        <div className="ocean-card rounded-2xl p-3 sm:p-5">
+          <div className="flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-muted-foreground">Total Teachers</p>
+              <p className="text-2xl sm:text-3xl font-bold text-foreground">
                 {teacherCount}
               </p>
             </div>
-            <div className="rounded-xl bg-purple-500/10 p-3">
-              <Users className="h-6 w-6 text-purple-500" />
+            <div className="rounded-xl bg-purple-500/10 p-2 sm:p-3 shrink-0">
+              <Users className="h-5 w-5 sm:h-6 sm:w-6 text-purple-500" />
             </div>
           </div>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted-foreground">
             {activeCourses} active courses
           </p>
         </div>
-        <div className="ocean-card rounded-2xl p-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">Active Courses</p>
-              <p className="text-3xl font-bold text-foreground">
+        <div className="ocean-card rounded-2xl p-3 sm:p-5">
+          <div className="flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-muted-foreground">Active Courses</p>
+              <p className="text-2xl sm:text-3xl font-bold text-foreground">
                 {activeCourses}
               </p>
             </div>
-            <div className="rounded-xl bg-teal-500/10 p-3">
-              <BookOpen className="h-6 w-6 text-teal-500" />
+            <div className="rounded-xl bg-teal-500/10 p-2 sm:p-3 shrink-0">
+              <BookOpen className="h-5 w-5 sm:h-6 sm:w-6 text-teal-500" />
             </div>
           </div>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted-foreground">
             {stats?.weeklyLogins ?? 0} logins this week
           </p>
         </div>
-        <div className="ocean-card rounded-2xl p-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">Attendance Rate</p>
-              <p className="text-3xl font-bold text-foreground">
+        <div className="ocean-card rounded-2xl p-3 sm:p-5">
+          <div className="flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-muted-foreground">Attendance Rate</p>
+              <p className="text-2xl sm:text-3xl font-bold text-foreground">
                 {attendance ? `${attendanceRate}%` : '--%'}
               </p>
             </div>
-            <div className="rounded-xl bg-amber-500/10 p-3">
-              <BarChart3 className="h-6 w-6 text-amber-500" />
+            <div className="rounded-xl bg-amber-500/10 p-2 sm:p-3 shrink-0">
+              <BarChart3 className="h-5 w-5 sm:h-6 sm:w-6 text-amber-500" />
             </div>
           </div>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted-foreground">
             School-wide average (7 days)
           </p>
         </div>
       </div>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2">
         {/* School Health */}
         <DashboardCard
           title="School Health"
           icon={<Building2 className="h-6 w-6 text-primary" />}
         >
           <div className="space-y-3">
-            <div className="flex items-center justify-between rounded-xl bg-muted/50 p-4">
-              <span className="text-sm font-medium text-foreground">
+            <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/50 p-3 sm:p-4">
+              <span className="text-xs sm:text-sm font-medium text-foreground min-w-0">
                 Overall Status
               </span>
               <StatusBadge
@@ -346,8 +346,8 @@ export default async function AdminDashboardPage() {
                 label={stats ? 'Active' : 'No Data'}
               />
             </div>
-            <div className="flex items-center justify-between rounded-xl bg-muted/50 p-4">
-              <span className="text-sm font-medium text-foreground">
+            <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/50 p-3 sm:p-4">
+              <span className="text-xs sm:text-sm font-medium text-foreground min-w-0">
                 Student Engagement
               </span>
               <StatusBadge
@@ -365,14 +365,14 @@ export default async function AdminDashboardPage() {
                 }
               />
             </div>
-            <div className="flex items-center justify-between rounded-xl bg-muted/50 p-4">
-              <span className="text-sm font-medium text-foreground">
+            <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/50 p-3 sm:p-4">
+              <span className="text-xs sm:text-sm font-medium text-foreground min-w-0">
                 Assignment Completion
               </span>
               <StatusBadge status="neutral" label="No Data" />
             </div>
-            <div className="flex items-center justify-between rounded-xl bg-muted/50 p-4">
-              <span className="text-sm font-medium text-foreground">
+            <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/50 p-3 sm:p-4">
+              <span className="text-xs sm:text-sm font-medium text-foreground min-w-0">
                 Teacher Activity
               </span>
               <StatusBadge
@@ -466,8 +466,8 @@ export default async function AdminDashboardPage() {
           icon={<Activity className="h-6 w-6 text-primary" />}
         >
           <div className="space-y-3">
-            <div className="flex items-center justify-between rounded-xl bg-muted/50 p-4">
-              <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/50 p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                 <div className="h-2.5 w-2.5 rounded-full bg-green-500" />
                 <span className="text-sm font-medium text-foreground">
                   Authentication
@@ -475,8 +475,8 @@ export default async function AdminDashboardPage() {
               </div>
               <StatusBadge status="healthy" label="Operational" />
             </div>
-            <div className="flex items-center justify-between rounded-xl bg-muted/50 p-4">
-              <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/50 p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                 <div className="h-2.5 w-2.5 rounded-full bg-green-500" />
                 <span className="text-sm font-medium text-foreground">
                   Database
@@ -484,8 +484,8 @@ export default async function AdminDashboardPage() {
               </div>
               <StatusBadge status="healthy" label="Operational" />
             </div>
-            <div className="flex items-center justify-between rounded-xl bg-muted/50 p-4">
-              <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/50 p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                 <div className="h-2.5 w-2.5 rounded-full bg-green-500" />
                 <span className="text-sm font-medium text-foreground">
                   File Storage
@@ -493,8 +493,8 @@ export default async function AdminDashboardPage() {
               </div>
               <StatusBadge status="healthy" label="Operational" />
             </div>
-            <div className="flex items-center justify-between rounded-xl bg-muted/50 p-4">
-              <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between gap-2 rounded-xl bg-muted/50 p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                 <div className="h-2.5 w-2.5 rounded-full bg-green-500" />
                 <span className="text-sm font-medium text-foreground">
                   Realtime
@@ -672,74 +672,110 @@ export default async function AdminDashboardPage() {
       {/* Recent Activity */}
       <DashboardCard
         title="Recent Activity"
-        icon={<Activity className="h-6 w-6 text-primary" />}
+        icon={<Activity className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />}
         className="w-full"
       >
-        <div className="overflow-hidden rounded-xl border border-border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
-                  Event
-                </th>
-                <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
-                  User
-                </th>
-                <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
-                  Type
-                </th>
-                <th className="px-4 py-3 text-right font-semibold text-muted-foreground">
-                  Time
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {auditLogs.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={4}
-                    className="px-4 py-8 text-center text-muted-foreground"
-                  >
-                    No recent activity to display.
-                  </td>
-                </tr>
-              ) : (
-                auditLogs.map((log: any) => {
-                  const actionLabel = (log.action ?? '')
-                    .replace(/\./g, ' ')
-                    .replace(/_/g, ' ')
-                  const userName =
-                    (log.profiles as any)?.full_name ?? 'Unknown User'
-                  const actionType = (log.action ?? '').split('.')[0] ?? 'system'
-                  const timeAgo = formatTimeAgo(log.created_at)
+        {/* Mobile card view */}
+        <div className="space-y-2 sm:hidden">
+          {auditLogs.length === 0 ? (
+            <p className="py-8 text-center text-sm text-muted-foreground">
+              No recent activity to display.
+            </p>
+          ) : (
+            auditLogs.map((log: any) => {
+              const actionLabel = (log.action ?? '')
+                .replace(/\./g, ' ')
+                .replace(/_/g, ' ')
+              const userName =
+                (log.profiles as any)?.full_name ?? 'Unknown User'
+              const actionType = (log.action ?? '').split('.')[0] ?? 'system'
+              const timeAgo = formatTimeAgo(log.created_at)
 
-                  return (
-                    <tr
-                      key={log.id}
-                      className="transition-colors hover:bg-muted/30"
+              return (
+                <div key={log.id} className="rounded-xl border border-border p-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="text-sm font-medium capitalize text-foreground truncate">{actionLabel}</span>
+                    <span className="text-xs text-muted-foreground shrink-0">{timeAgo}</span>
+                  </div>
+                  <div className="mt-1 flex items-center gap-2">
+                    <span className="text-xs text-muted-foreground truncate">{userName}</span>
+                    <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium capitalize text-muted-foreground shrink-0">
+                      {actionType}
+                    </span>
+                  </div>
+                </div>
+              )
+            })
+          )}
+        </div>
+        {/* Desktop table view */}
+        <div className="hidden sm:block overflow-hidden rounded-xl border border-border">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border bg-muted/50">
+                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
+                    Event
+                  </th>
+                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
+                    User
+                  </th>
+                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
+                    Type
+                  </th>
+                  <th className="px-4 py-3 text-right font-semibold text-muted-foreground">
+                    Time
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {auditLogs.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={4}
+                      className="px-4 py-8 text-center text-muted-foreground"
                     >
-                      <td className="px-4 py-3">
-                        <span className="font-medium capitalize text-foreground">
-                          {actionLabel}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-muted-foreground">
-                        {userName}
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium capitalize text-muted-foreground">
-                          {actionType}
-                        </span>
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-right text-sm text-muted-foreground">
-                        {timeAgo}
-                      </td>
-                    </tr>
-                  )
-                })
-              )}
-            </tbody>
-          </table>
+                      No recent activity to display.
+                    </td>
+                  </tr>
+                ) : (
+                  auditLogs.map((log: any) => {
+                    const actionLabel = (log.action ?? '')
+                      .replace(/\./g, ' ')
+                      .replace(/_/g, ' ')
+                    const userName =
+                      (log.profiles as any)?.full_name ?? 'Unknown User'
+                    const actionType = (log.action ?? '').split('.')[0] ?? 'system'
+                    const timeAgo = formatTimeAgo(log.created_at)
+
+                    return (
+                      <tr
+                        key={log.id}
+                        className="transition-colors hover:bg-muted/30"
+                      >
+                        <td className="px-4 py-3">
+                          <span className="font-medium capitalize text-foreground">
+                            {actionLabel}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">
+                          {userName}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium capitalize text-muted-foreground">
+                            {actionType}
+                          </span>
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 text-right text-sm text-muted-foreground">
+                          {timeAgo}
+                        </td>
+                      </tr>
+                    )
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
         {auditLogs.length > 0 && (
           <div className="mt-3 text-right">

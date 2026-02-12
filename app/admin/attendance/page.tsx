@@ -76,7 +76,7 @@ export default async function AdminAttendancePage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Back Button */}
       <Link
         href="/admin/dashboard"
@@ -88,78 +88,78 @@ export default async function AdminAttendancePage() {
 
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           Attendance Overview
         </h1>
-        <p className="mt-1 text-muted-foreground">
+        <p className="mt-1 text-sm sm:text-base text-muted-foreground">
           School-wide attendance data and recent records for the last 7 days.
         </p>
       </div>
 
       {/* Overview Stats */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        <div className="ocean-card rounded-2xl p-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-              <ClipboardCheck className="h-5 w-5 text-primary" />
+      <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-5">
+        <div className="ocean-card rounded-2xl p-3 sm:p-5">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+              <ClipboardCheck className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">
+            <div className="min-w-0">
+              <p className="text-xl sm:text-2xl font-bold text-foreground">
                 {report?.total ?? 0}
               </p>
-              <p className="text-sm text-muted-foreground">Total Records</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Total</p>
             </div>
           </div>
         </div>
-        <div className="ocean-card rounded-2xl p-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-500/10">
-              <UserCheck className="h-5 w-5 text-green-500" />
+        <div className="ocean-card rounded-2xl p-3 sm:p-5">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-green-500/10">
+              <UserCheck className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">
+            <div className="min-w-0">
+              <p className="text-xl sm:text-2xl font-bold text-foreground">
                 {report?.present ?? 0}
               </p>
-              <p className="text-sm text-muted-foreground">Present</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Present</p>
             </div>
           </div>
         </div>
-        <div className="ocean-card rounded-2xl p-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10">
-              <UserX className="h-5 w-5 text-red-500" />
+        <div className="ocean-card rounded-2xl p-3 sm:p-5">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/10">
+              <UserX className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">
+            <div className="min-w-0">
+              <p className="text-xl sm:text-2xl font-bold text-foreground">
                 {report?.absent ?? 0}
               </p>
-              <p className="text-sm text-muted-foreground">Absent</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Absent</p>
             </div>
           </div>
         </div>
-        <div className="ocean-card rounded-2xl p-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10">
-              <Clock className="h-5 w-5 text-amber-500" />
+        <div className="ocean-card rounded-2xl p-3 sm:p-5">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10">
+              <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-amber-500" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">
+            <div className="min-w-0">
+              <p className="text-xl sm:text-2xl font-bold text-foreground">
                 {report?.tardy ?? 0}
               </p>
-              <p className="text-sm text-muted-foreground">Tardy</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Tardy</p>
             </div>
           </div>
         </div>
-        <div className="ocean-card rounded-2xl p-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-500/10">
-              <BarChart3 className="h-5 w-5 text-teal-500" />
+        <div className="ocean-card rounded-2xl p-3 sm:p-5 col-span-2 lg:col-span-1">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-teal-500/10">
+              <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 text-teal-500" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">
+            <div className="min-w-0">
+              <p className="text-xl sm:text-2xl font-bold text-foreground">
                 {report ? `${report.attendanceRate}%` : '--%'}
               </p>
-              <p className="text-sm text-muted-foreground">Attendance Rate</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Rate</p>
             </div>
           </div>
         </div>
@@ -167,7 +167,7 @@ export default async function AdminAttendancePage() {
 
       {/* Attendance Rate Visual */}
       {report && report.total > 0 && (
-        <div className="ocean-card rounded-2xl p-6">
+        <div className="ocean-card rounded-2xl p-4 sm:p-6">
           <h2 className="mb-4 text-lg font-semibold text-foreground">
             Attendance Breakdown
           </h2>
@@ -227,11 +227,11 @@ export default async function AdminAttendancePage() {
 
       {/* Recent Attendance Records Table */}
       <div className="ocean-card overflow-hidden rounded-2xl">
-        <div className="border-b border-border px-6 py-4">
-          <h2 className="text-lg font-semibold text-foreground">
+        <div className="border-b border-border px-4 sm:px-6 py-3 sm:py-4">
+          <h2 className="text-base sm:text-lg font-semibold text-foreground">
             Recent Attendance Records
           </h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Last 7 days of attendance data across all courses.
           </p>
         </div>

@@ -343,7 +343,7 @@ export function NutritionPage() {
   }
 
   return (
-    <div className="space-y-10 sm:space-y-12 pb-12">
+    <div className="space-y-10 sm:space-y-12 pb-12 overflow-x-hidden max-w-full">
       {/* ============================================================ */}
       {/*  Hero Header                                                  */}
       {/* ============================================================ */}

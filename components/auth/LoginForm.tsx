@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { TurnstileWidget } from '@/components/auth/TurnstileWidget'
+import { usePianoMusic } from '@/hooks/usePianoMusic'
 
 const loginSchema = z.object({
   email: z.string().min(1, 'Please enter your username'),
@@ -34,6 +35,7 @@ export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [demoLoading, setDemoLoading] = useState<string | null>(null)
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const { destroy: destroyPianoMusic } = usePianoMusic()
 
   const turnstileEnabled = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
@@ -88,6 +90,9 @@ export function LoginForm() {
       return
     }
 
+    // Stop piano music before navigating to the dashboard so it doesn't
+    // overlap with the dashboard's study-music radio.
+    destroyPianoMusic()
     router.push(redirectTo)
     router.refresh()
   }
@@ -110,6 +115,8 @@ export function LoginForm() {
         setError(result.error)
         return
       }
+      // Stop piano music before navigating to the dashboard
+      destroyPianoMusic()
       router.push(redirectTo)
     } catch {
       setError('Demo login failed. Please try again.')

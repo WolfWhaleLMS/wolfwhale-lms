@@ -83,14 +83,14 @@ export default async function TeacherCoursesPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+      <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             My Courses
           </h1>
-          <p className="mt-1 text-muted-foreground">
+          <p className="mt-1 text-sm sm:text-base text-muted-foreground">
             Create and manage your courses, lessons, and students.
           </p>
         </div>
@@ -125,12 +125,12 @@ export default async function TeacherCoursesPage() {
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {coursesWithMeta.map((course) => (
             <Link
               key={course.id}
               href={`/teacher/courses/${course.id}`}
-              className="ocean-card group rounded-2xl p-6 transition-all hover:shadow-lg"
+              className="ocean-card group rounded-2xl p-4 sm:p-6 transition-all hover:shadow-lg"
             >
               <div className="mb-3 flex items-start justify-between">
                 <div className="flex-1">

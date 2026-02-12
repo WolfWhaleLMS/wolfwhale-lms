@@ -3,9 +3,10 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Music, VolumeX } from 'lucide-react'
+import { Music, VolumeX, ArrowLeft } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 import { usePianoMusic } from '@/hooks/usePianoMusic'
+import UnderwaterSunbeams from '@/components/effects/UnderwaterSunbeams'
 
 export default function AuthLayout({
   children,
@@ -13,17 +14,11 @@ export default function AuthLayout({
   children: React.ReactNode
 }) {
   const [mounted, setMounted] = useState(false)
-  const { isPlaying, toggle, start, destroy } = usePianoMusic()
+  const { isPlaying, toggle, start } = usePianoMusic()
 
   useEffect(() => {
     setMounted(true)
-
-    // When the auth layout unmounts (user navigates away from login/signup),
-    // destroy the piano music so it doesn't overlap with the dashboard radio.
-    return () => {
-      destroy()
-    }
-  }, [destroy])
+  }, [])
 
   // Start music on first user interaction only (no eager autoplay)
   useEffect(() => {
@@ -71,112 +66,7 @@ export default function AuthLayout({
         />
 
         {/* Underwater sunbeam light rays */}
-        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
-          {/* Beam 1 — Wide diffuse beam, center-left */}
-          <div
-            className="absolute"
-            style={{
-              top: '-5%',
-              left: '12%',
-              width: '160px',
-              height: '120%',
-              background: 'linear-gradient(180deg, rgba(0,191,255,0.12) 0%, rgba(0,191,255,0.04) 40%, transparent 80%)',
-              transform: 'rotate(8deg)',
-              transformOrigin: 'top center',
-              animation: 'login-beam-1 18s ease-in-out infinite',
-              filter: 'blur(18px)',
-            }}
-          />
-          {/* Beam 2 — Narrow bright beam, center */}
-          <div
-            className="absolute"
-            style={{
-              top: '-5%',
-              left: '42%',
-              width: '80px',
-              height: '110%',
-              background: 'linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(0,191,255,0.06) 35%, transparent 70%)',
-              transform: 'rotate(-3deg)',
-              transformOrigin: 'top center',
-              animation: 'login-beam-2 22s ease-in-out infinite',
-              filter: 'blur(12px)',
-            }}
-          />
-          {/* Beam 3 — Medium beam, right of center */}
-          <div
-            className="absolute"
-            style={{
-              top: '-5%',
-              left: '62%',
-              width: '130px',
-              height: '115%',
-              background: 'linear-gradient(180deg, rgba(0,191,255,0.10) 0%, rgba(0,255,255,0.04) 45%, transparent 80%)',
-              transform: 'rotate(5deg)',
-              transformOrigin: 'top center',
-              animation: 'login-beam-3 25s ease-in-out infinite',
-              filter: 'blur(16px)',
-            }}
-          />
-          {/* Beam 4 — Thin accent beam, far left */}
-          <div
-            className="absolute"
-            style={{
-              top: '-5%',
-              left: '3%',
-              width: '50px',
-              height: '100%',
-              background: 'linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(0,255,255,0.03) 30%, transparent 60%)',
-              transform: 'rotate(12deg)',
-              transformOrigin: 'top center',
-              animation: 'login-beam-4 20s ease-in-out infinite',
-              filter: 'blur(10px)',
-            }}
-          />
-          {/* Beam 5 — Wide soft beam, far right */}
-          <div
-            className="absolute"
-            style={{
-              top: '-5%',
-              left: '80%',
-              width: '180px',
-              height: '120%',
-              background: 'linear-gradient(180deg, rgba(0,191,255,0.08) 0%, rgba(0,191,255,0.03) 50%, transparent 85%)',
-              transform: 'rotate(-6deg)',
-              transformOrigin: 'top center',
-              animation: 'login-beam-5 28s ease-in-out infinite',
-              filter: 'blur(22px)',
-            }}
-          />
-          {/* Beam 6 — Very narrow accent */}
-          <div
-            className="absolute"
-            style={{
-              top: '-5%',
-              left: '32%',
-              width: '40px',
-              height: '95%',
-              background: 'linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(0,255,255,0.04) 25%, transparent 55%)',
-              transform: 'rotate(-8deg)',
-              transformOrigin: 'top center',
-              animation: 'login-beam-6 15s ease-in-out infinite',
-              filter: 'blur(8px)',
-            }}
-          />
-
-          {/* Water surface caustic shimmer at top */}
-          <div
-            className="absolute top-0 left-0 right-0 pointer-events-none"
-            style={{
-              height: '100px',
-              background: `
-                radial-gradient(ellipse 30% 50% at 20% 0%, rgba(0,191,255,0.08) 0%, transparent 70%),
-                radial-gradient(ellipse 25% 40% at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 70%),
-                radial-gradient(ellipse 35% 45% at 80% 0%, rgba(0,255,255,0.06) 0%, transparent 70%)
-              `,
-              animation: 'login-caustic 12s ease-in-out infinite',
-            }}
-          />
-        </div>
+        <UnderwaterSunbeams />
 
         {/* Blob backgrounds */}
         <div className="blob-ocean absolute top-[-10%] right-[-5%] w-[500px] h-[500px] opacity-30" />
@@ -200,7 +90,7 @@ export default function AuthLayout({
       </div>
 
       {/* Header */}
-      <header className="relative z-10 p-6">
+      <header className="relative z-10 p-6 mb-8 sm:mb-6">
         <Link href="/" className="inline-flex items-center gap-3 group">
           <GlowingLogo size={80} />
           <div>
@@ -212,6 +102,16 @@ export default function AuthLayout({
             </span>
           </div>
         </Link>
+        {/* EdTech Hub Button — static, below the logo */}
+        <div className="mt-3">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 sm:gap-2.5 px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-xl btn-chrome-3d-silver font-semibold text-xs sm:text-sm tracking-wide transition-all hover:scale-105 neon-glow-blue group shadow-lg"
+          >
+            <ArrowLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4 group-hover:-translate-x-1 transition-transform" />
+            <span>WolfWhale EdTech Hub</span>
+          </Link>
+        </div>
       </header>
 
       {/* Main Content */}
@@ -250,43 +150,6 @@ export default function AuthLayout({
         @keyframes ocean-drift {
           0%, 100% { transform: translateX(0) scale(1); }
           50% { transform: translateX(10%) scale(1.05); }
-        }
-        @keyframes login-beam-1 {
-          0%, 100% { transform: rotate(8deg) scaleX(1); opacity: 1; }
-          25% { transform: rotate(5deg) scaleX(1.1); opacity: 0.8; }
-          50% { transform: rotate(10deg) scaleX(0.9); opacity: 1; }
-          75% { transform: rotate(6deg) scaleX(1.05); opacity: 0.85; }
-        }
-        @keyframes login-beam-2 {
-          0%, 100% { transform: rotate(-3deg) scaleX(1); opacity: 1; }
-          30% { transform: rotate(-6deg) scaleX(1.15); opacity: 0.9; }
-          60% { transform: rotate(0deg) scaleX(0.85); opacity: 1; }
-          80% { transform: rotate(-4deg) scaleX(1.05); opacity: 0.95; }
-        }
-        @keyframes login-beam-3 {
-          0%, 100% { transform: rotate(5deg) scaleX(1); opacity: 1; }
-          35% { transform: rotate(8deg) scaleX(0.9); opacity: 0.85; }
-          65% { transform: rotate(3deg) scaleX(1.1); opacity: 1; }
-        }
-        @keyframes login-beam-4 {
-          0%, 100% { transform: rotate(12deg) scaleX(1); opacity: 1; }
-          40% { transform: rotate(9deg) scaleX(1.2); opacity: 0.7; }
-          70% { transform: rotate(14deg) scaleX(0.85); opacity: 1; }
-        }
-        @keyframes login-beam-5 {
-          0%, 100% { transform: rotate(-6deg) scaleX(1); opacity: 1; }
-          20% { transform: rotate(-3deg) scaleX(1.08); opacity: 0.85; }
-          50% { transform: rotate(-8deg) scaleX(0.92); opacity: 1; }
-          80% { transform: rotate(-5deg) scaleX(1.05); opacity: 0.9; }
-        }
-        @keyframes login-beam-6 {
-          0%, 100% { transform: rotate(-8deg) scaleX(1); opacity: 1; }
-          50% { transform: rotate(-5deg) scaleX(1.3); opacity: 0.7; }
-        }
-        @keyframes login-caustic {
-          0%, 100% { transform: translateX(0); opacity: 0.7; }
-          33% { transform: translateX(3%); opacity: 0.9; }
-          66% { transform: translateX(-2%); opacity: 0.6; }
         }
       `}</style>
 
