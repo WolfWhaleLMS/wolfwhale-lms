@@ -70,9 +70,9 @@ export default function HomePage() {
       {/* Header */}
       <header className="relative z-10 p-6">
         <Link href="/" className="inline-flex items-center gap-3 group">
-          <img src="/logo.png" alt="Wolf Whale" className="h-16 w-16 rounded-xl object-contain shadow-lg" />
+          <img src="/logo.png" alt="WolfWhale" className="h-16 w-16 rounded-xl object-contain shadow-lg" />
           <span className="text-xl font-display font-bold text-white group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase">
-            Wolf Whale
+            WolfWhale
           </span>
         </Link>
       </header>
@@ -84,7 +84,7 @@ export default function HomePage() {
           <section className="text-center space-y-8 animate-fade-in-up">
             {/* Logo */}
             <div className="inline-flex rounded-2xl shadow-2xl overflow-hidden chrome-shine">
-              <img src="/logo.png" alt="Wolf Whale" className="h-48 w-48 rounded-2xl object-contain" />
+              <img src="/logo.png" alt="WolfWhale" className="h-48 w-48 rounded-2xl object-contain" />
             </div>
 
             {/* Heading */}
@@ -161,7 +161,7 @@ export default function HomePage() {
 
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-sm text-white/50">
-              &copy; 2026 Wolf Whale LMS. All rights reserved.
+              &copy; 2026 WolfWhale LMS. All rights reserved.
             </p>
             <div className="flex gap-6">
               <Link

@@ -54,7 +54,7 @@ export default function InfoPage() {
           <div className="flex items-center gap-3">
             <img src="/logo.png" alt="Wolf Whale" className="h-14 w-14 rounded-xl object-contain shadow-lg" />
             <div>
-              <h1 className="text-xl font-display font-bold text-[#0A2540] tracking-wider uppercase">Wolf Whale LMS</h1>
+              <h1 className="text-xl font-display font-bold text-[#0A2540] tracking-wider uppercase">WolfWhale</h1>
               <p className="text-xs text-[#6B8FA3] font-display font-semibold tracking-widest uppercase">Learning Management System</p>
             </div>
           </div>
@@ -76,11 +76,23 @@ export default function InfoPage() {
           </div>
 
           <h1
-            className="text-5xl md:text-7xl font-display font-extrabold mb-6 tracking-wider bg-gradient-to-r from-[#00BFFF] to-[#33FF33] bg-clip-text text-transparent text-glow-blue leading-tight"
+            className="text-5xl md:text-7xl font-display font-extrabold mb-6 tracking-wider leading-tight"
+            style={{
+              background: 'linear-gradient(to right, #00BFFF, #33FF33)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              WebkitTextStroke: '1.5px rgba(0,0,0,0.35)',
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
+            }}
           >
-            WOLF WHALE LMS
+            WOLFWHALE
           </h1>
 
+          <p className="text-lg md:text-xl text-[#6B8FA3] mb-2 tracking-[0.15em] uppercase font-display font-bold"
+            style={{ textShadow: '0 1px 2px rgba(0,0,0,0.10)' }}
+          >
+            Learning Management System
+          </p>
           <p className="text-xl md:text-2xl text-[#6B8FA3] mb-4 max-w-3xl mx-auto">
             The comprehensive learning management system built for K-12 and post-secondary institutions
           </p>
@@ -546,7 +558,7 @@ export default function InfoPage() {
               {/* Price */}
               <div>
                 <div className="flex items-baseline justify-center gap-1">
-                  <span className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#00BFFF] to-[#33FF33] bg-clip-text text-transparent">$12</span>
+                  <span className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#00BFFF] to-[#33FF33] bg-clip-text text-transparent">$20</span>
                   <span className="text-lg text-[#6B8FA3]">CAD</span>
                 </div>
                 <p className="text-[#6B8FA3] mt-2">per user account, per month</p>
@@ -642,7 +654,7 @@ export default function InfoPage() {
               <div className="flex items-center gap-3 mb-4">
                 <img src="/logo.png" alt="Wolf Whale" className="h-14 w-14 rounded-xl object-contain shadow-lg" />
                 <div>
-                  <h3 className="font-display font-bold tracking-wider uppercase">Wolf Whale LMS</h3>
+                  <h3 className="font-display font-bold tracking-wider uppercase">WolfWhale</h3>
                   <p className="text-xs text-[#6B8FA3] font-display tracking-widest uppercase">Modern K-12 & Post-Secondary Learning Platform</p>
                 </div>
               </div>
@@ -680,7 +692,7 @@ export default function InfoPage() {
           </div>
 
           <div className="pt-8 border-t border-[#00BFFF]/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#6B8FA3]">
-            <p>&copy; 2026 Wolf Whale LMS. All rights reserved.</p>
+            <p>&copy; 2026 WolfWhale Learning Management System. All rights reserved.</p>
             <div className="flex items-center gap-2">
               <img src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" className="h-12 w-auto object-contain" />
               <span className="text-xs font-semibold text-[#6B8FA3]">100% Canadian Owned &amp; Built</span>

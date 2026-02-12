@@ -93,7 +93,7 @@ export default function AuthLayout({
           <img src="/logo.png" alt="Wolf Whale" className="h-20 w-20 rounded-xl object-contain shadow-lg" />
           <div>
             <span className="text-xl font-display font-bold text-[#0A2540] group-hover:text-[#00BFFF] transition-colors block tracking-wider uppercase">
-              Wolf Whale
+              WolfWhale
             </span>
             <span className="text-xs text-[#0A2540]/60 block font-display font-semibold tracking-widest uppercase">
               Learning Management System

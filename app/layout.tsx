@@ -39,8 +39,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wolfwhale.ca";
 
 export const metadata: Metadata = {
   title: {
-    default: "Wolf Whale - Canadian Learning Management System for K-12 & Post-Secondary",
-    template: "%s | Wolf Whale LMS",
+    default: "WolfWhale - Canadian Learning Management System for K-12 & Post-Secondary",
+    template: "%s | WolfWhale LMS",
   },
   description:
     "Wolf Whale is Canada's modern LMS with built-in spaced repetition flashcards, interactive courses, quizzes, and certificates. FERPA & PIPEDA compliant. The only learning platform with spaced repetition technology built in.",

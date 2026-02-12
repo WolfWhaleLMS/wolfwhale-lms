@@ -30,7 +30,7 @@ export default function LoginPage() {
             filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
           }}
         >
-          WOLF WHALE
+          WOLFWHALE
         </h1>
         <p
           className="text-sm sm:text-base tracking-[0.2em] uppercase font-display font-bold"
@@ -51,7 +51,7 @@ export default function LoginPage() {
         href="/info"
         className="!mt-0 flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl bg-[#00BFFF] text-white font-semibold text-lg shadow-lg hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] hover:scale-[1.02] transition-all group neon-glow-blue"
       >
-        <span>Learn More About Wolf Whale LMS</span>
+        <span>Learn More About WolfWhale LMS</span>
         <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
       </Link>
 
