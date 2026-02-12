@@ -4,9 +4,15 @@ import { useEffect, useRef } from 'react'
 
 export function LogoSpinner({ size = 80 }: { size?: number }) {
   const strokeWidth = 3
-  const radius = size / 2 + 8
-  const circumference = 2 * Math.PI * radius
-  const svgSize = (radius + strokeWidth) * 2
+  const padding = 8
+  const svgSize = size + (padding + strokeWidth) * 2
+  const rectSize = size + padding * 2
+  const rectOffset = (svgSize - rectSize) / 2
+  const borderRadius = 16
+  // Perimeter of rounded rect: 4 sides minus 8 corner radii + 4 quarter-circle arcs
+  const straightSides = (rectSize - 2 * borderRadius) * 4
+  const cornerArcs = 2 * Math.PI * borderRadius
+  const perimeter = straightSides + cornerArcs
   const audioRef = useRef<AudioContext | null>(null)
   const nodesRef = useRef<OscillatorNode[]>([])
 
@@ -86,34 +92,41 @@ export function LogoSpinner({ size = 80 }: { size?: number }) {
 
   return (
     <div className="relative inline-flex items-center justify-center">
-      {/* Spinning circle */}
+      {/* Spinning rounded square */}
       <svg
         width={svgSize}
         height={svgSize}
-        className="absolute animate-spin"
-        style={{ animationDuration: '1.2s' }}
+        className="absolute"
+        style={{ animation: 'spin 1.2s linear infinite' }}
       >
-        <circle
-          cx={svgSize / 2}
-          cy={svgSize / 2}
-          r={radius}
+        {/* Background track */}
+        <rect
+          x={rectOffset}
+          y={rectOffset}
+          width={rectSize}
+          height={rectSize}
+          rx={borderRadius}
+          ry={borderRadius}
           fill="none"
-          stroke="currentColor"
+          stroke="#33FF33"
           strokeWidth={strokeWidth}
-          strokeLinecap="round"
-          className="text-[#00BFFF]/20"
+          opacity={0.2}
         />
-        <circle
-          cx={svgSize / 2}
-          cy={svgSize / 2}
-          r={radius}
+        {/* Animated arc segment */}
+        <rect
+          x={rectOffset}
+          y={rectOffset}
+          width={rectSize}
+          height={rectSize}
+          rx={borderRadius}
+          ry={borderRadius}
           fill="none"
-          stroke="currentColor"
+          stroke="#33FF33"
           strokeWidth={strokeWidth}
           strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={circumference * 0.7}
-          className="text-[#00BFFF]"
+          strokeDasharray={perimeter}
+          strokeDashoffset={perimeter * 0.7}
+          style={{ filter: 'drop-shadow(0 0 6px #33FF33)' }}
         />
       </svg>
       {/* Logo — rounded square clip */}
