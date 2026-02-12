@@ -10,10 +10,8 @@ import {
   CalendarCheck,
   Users,
   Trophy,
-  Clock,
   Shield,
   Building2,
-  Calendar,
   LayoutDashboard,
   GraduationCap,
   Sparkles,
@@ -21,9 +19,143 @@ import {
   Mail,
   Phone,
   ChevronRight,
-  CheckCircle2
+  CheckCircle2,
+  Brain,
+  WifiOff,
+  Gamepad2,
+  Music,
+  Moon,
+  Bell,
+  Dog,
+  Monitor,
+  Repeat,
+  Bot,
+  Wifi,
+  type LucideIcon
 } from 'lucide-react'
 
+/* ============================================
+   Feature Card Component
+   ============================================ */
+function FeatureCard({
+  icon: Icon,
+  title,
+  description,
+  highlight = false,
+}: {
+  icon: LucideIcon
+  title: string
+  description: string
+  highlight?: boolean
+}) {
+  return (
+    <div
+      className={`rounded-2xl p-6 ocean-card group hover:neon-border-blue transition-all ${
+        highlight ? 'md:col-span-2 lg:col-span-3 neon-border-blue' : ''
+      }`}
+    >
+      <div
+        className={`p-3 rounded-xl bg-gradient-to-br w-fit mb-4 group-hover:scale-110 transition-transform ${
+          highlight
+            ? 'from-[#00BFFF]/20 to-[#33FF33]/20'
+            : 'from-[#00BFFF]/10 to-[#33FF33]/10'
+        }`}
+      >
+        <Icon className={`h-6 w-6 ${highlight ? 'text-[#33FF33]' : 'text-[#00BFFF]'}`} />
+      </div>
+      <h3 className={`font-semibold mb-3 ${highlight ? 'text-2xl' : 'text-xl'}`}>
+        {title}
+        {highlight && (
+          <span className="ml-3 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#33FF33]/15 text-[#0A8020] text-xs font-bold uppercase tracking-wider border border-[#33FF33]/30">
+            <Sparkles className="h-3 w-3" />
+            Only on WolfWhale
+          </span>
+        )}
+      </h3>
+      <p className={`text-[#0A2540]/80 leading-relaxed ${highlight ? 'text-base max-w-3xl' : 'text-sm'}`}>
+        {description}
+      </p>
+    </div>
+  )
+}
+
+/* ============================================
+   Screenshot Placeholder Card Component
+   ============================================ */
+function ScreenshotCard({
+  icon: Icon,
+  title,
+  subtitle,
+  description,
+  gradientFrom,
+  gradientTo,
+}: {
+  icon: LucideIcon
+  title: string
+  subtitle: string
+  description: string
+  gradientFrom: string
+  gradientTo: string
+}) {
+  return (
+    <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
+      <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
+        <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33] text-white">
+          <Icon className="h-5 w-5 text-white" />
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold">{title}</h3>
+          <p className="text-xs text-[#0A2540]/80">{subtitle}</p>
+        </div>
+      </div>
+      {/* Glass placeholder with gradient + icon where screenshot will go */}
+      <div
+        className="relative h-56 md:h-64 flex flex-col items-center justify-center gap-4 p-6"
+        style={{
+          background: `linear-gradient(135deg, ${gradientFrom}18, ${gradientTo}12, ${gradientFrom}08)`,
+        }}
+      >
+        {/* Decorative grid dots */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle, #0A2540 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+          }}
+        />
+        <div
+          className="relative p-5 rounded-2xl backdrop-blur-sm border border-white/30 shadow-lg"
+          style={{
+            background: `linear-gradient(135deg, ${gradientFrom}25, ${gradientTo}15)`,
+          }}
+        >
+          <Icon className="h-10 w-10 text-white drop-shadow-lg" />
+        </div>
+        <div className="relative text-center">
+          <p className="text-sm font-semibold text-[#0A2540]/70">{description}</p>
+          <p className="text-xs text-[#0A2540]/50 mt-1">Screenshot coming soon</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ============================================
+   Role Capability Item
+   ============================================ */
+function RoleItem({ text }: { text: string }) {
+  return (
+    <li className="flex items-start gap-2">
+      <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
+      <span>{text}</span>
+    </li>
+  )
+}
+
+/* ============================================
+   Main Info Page
+   ============================================ */
 export default function InfoPage() {
   return (
     <div className="min-h-screen text-[#0A2540]">
@@ -104,7 +236,7 @@ export default function InfoPage() {
           </p>
 
           <p className="text-base md:text-lg text-[#0A2540]/80 mb-6 max-w-2xl mx-auto">
-            Empower teachers, engage students, and connect parents with a unified platform that combines course management, real-time messaging, gamification, and compliance—all in one place.
+            Spaced repetition flashcards, AI tutoring, offline learning, gamification, and complete course management -- all in one platform. Empower teachers, engage students, and connect parents.
           </p>
 
           {/* Canadian Badge */}
@@ -134,6 +266,52 @@ export default function InfoPage() {
         </div>
       </section>
 
+      {/* USP Highlight — Spaced Repetition Flashcards */}
+      <section className="relative z-10 py-16 bg-white/20 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#33FF33]/10 border border-[#33FF33]/25 mb-4">
+              <Brain className="h-4 w-4 text-[#33FF33]" />
+              <span className="text-sm font-semibold text-[#0A2540]/80">What Sets Us Apart</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Spaced Repetition Flashcards</h2>
+            <p className="text-lg text-[#0A2540]/80 max-w-3xl mx-auto">
+              The only LMS with a built-in SM-2 spaced repetition system. Students retain more, study smarter, and see measurable improvements in long-term memory -- a feature no competitor offers.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div className="rounded-2xl p-6 ocean-card text-center">
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#33FF33]/15 to-[#00BFFF]/10 w-fit mx-auto mb-4">
+                <Repeat className="h-7 w-7 text-[#33FF33]" />
+              </div>
+              <h3 className="font-semibold mb-2">SM-2 Algorithm</h3>
+              <p className="text-sm text-[#0A2540]/80">
+                Scientifically proven spaced repetition scheduling adjusts review intervals based on how well each student knows the material.
+              </p>
+            </div>
+            <div className="rounded-2xl p-6 ocean-card text-center">
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#33FF33]/15 to-[#00BFFF]/10 w-fit mx-auto mb-4">
+                <Brain className="h-7 w-7 text-[#33FF33]" />
+              </div>
+              <h3 className="font-semibold mb-2">Long-Term Retention</h3>
+              <p className="text-sm text-[#0A2540]/80">
+                Students review at optimal intervals so knowledge moves from short-term to long-term memory. Less cramming, better results.
+              </p>
+            </div>
+            <div className="rounded-2xl p-6 ocean-card text-center">
+              <div className="p-3 rounded-xl bg-gradient-to-br from-[#33FF33]/15 to-[#00BFFF]/10 w-fit mx-auto mb-4">
+                <Sparkles className="h-7 w-7 text-[#33FF33]" />
+              </div>
+              <h3 className="font-semibold mb-2">XP Integration</h3>
+              <p className="text-sm text-[#0A2540]/80">
+                Flashcard reviews earn XP, feeding into the gamification system. Students stay motivated as studying directly levels up their profile.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Grid */}
       <section className="relative z-10 py-20 bg-white/30 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6">
@@ -145,137 +323,131 @@ export default function InfoPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Course Management */}
-            <div className="rounded-2xl p-6 ocean-card group hover:neon-border-blue transition-all">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <BookOpen className="h-6 w-6 text-[#00BFFF]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Course Management</h3>
-              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
-                Teachers create courses with modules and lessons using our intuitive block-based content builder. Support for videos, documents, quizzes, and interactive content.
-              </p>
-            </div>
+            {/* Interactive Courses */}
+            <FeatureCard
+              icon={BookOpen}
+              title="Interactive Courses"
+              description="Create courses with modules and lessons using our rich lesson builder. Content blocks for text, headings, images, and video make building engaging lessons intuitive and fast."
+            />
 
-            {/* Assignment & Testing */}
-            <div className="rounded-2xl p-6 ocean-card group hover:neon-border-blue transition-all">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <ClipboardCheck className="h-6 w-6 text-[#00BFFF]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Assignment & Testing</h3>
-              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
-                Rich quiz builder with multiple choice, true/false, short answer, and essay questions. Auto-grading support and detailed analytics for student performance.
-              </p>
-            </div>
+            {/* Quiz Builder */}
+            <FeatureCard
+              icon={ClipboardCheck}
+              title="Quiz Builder"
+              description="Build quizzes with multiple question types: multiple choice, true/false, short answer, and essay. Auto-grading support and detailed analytics for student performance."
+            />
 
             {/* Gradebook */}
-            <div className="rounded-2xl p-6 ocean-card group hover:neon-border-blue transition-all">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <BarChart3 className="h-6 w-6 text-[#00BFFF]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Gradebook</h3>
-              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
-                Traditional weighted gradebook with A-F grading, category weighting, grade statistics, and CSV/PDF export. Full control over grading policies and late work.
-              </p>
-            </div>
+            <FeatureCard
+              icon={BarChart3}
+              title="Gradebook & Grade Tracking"
+              description="Traditional weighted gradebook with A-F grading, category weighting, grade statistics, and CSV/PDF export. Full control over grading policies and late work handling."
+            />
 
-            {/* Real-Time Messaging */}
-            <div className="rounded-2xl p-6 ocean-card group hover:neon-border-blue transition-all">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <MessageSquare className="h-6 w-6 text-[#00BFFF]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Real-Time Messaging</h3>
-              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
-                Direct messages, group conversations, and class discussions with real-time delivery. File sharing, typing indicators, read receipts, and message search.
-              </p>
-            </div>
+            {/* AI Tutor */}
+            <FeatureCard
+              icon={Bot}
+              title="AI Tutor (WebLLM)"
+              description="Intelligent tutoring powered by WebLLM that runs entirely in the browser. Zero API costs, full student privacy, and instant help whenever students need it -- no data leaves the device."
+            />
 
-            {/* Attendance Tracking */}
-            <div className="rounded-2xl p-6 ocean-card group hover:neon-border-blue transition-all">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <CalendarCheck className="h-6 w-6 text-[#00BFFF]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Attendance Tracking</h3>
-              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
-                Daily attendance with present/absent/tardy/excused statuses. Pattern detection alerts teachers and parents to potential issues before they escalate.
-              </p>
-            </div>
-
-            {/* Parent Portal */}
-            <div className="rounded-2xl p-6 ocean-card group hover:neon-border-blue transition-all">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <Users className="h-6 w-6 text-[#00BFFF]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Parent Portal</h3>
-              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
-                At-a-glance visual dashboard with grade dials, attendance gauges, upcoming assignments, and easy teacher messaging. Keep parents engaged and informed.
-              </p>
-            </div>
+            {/* Offline Mode */}
+            <FeatureCard
+              icon={WifiOff}
+              title="Full Offline Mode"
+              description="Study anywhere with complete offline support powered by IndexedDB storage. Lessons, flashcards, and progress sync automatically when connectivity returns."
+            />
 
             {/* Gamification */}
-            <div className="rounded-2xl p-6 ocean-card group hover:neon-border-blue transition-all">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <Trophy className="h-6 w-6 text-[#00BFFF]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Gamification</h3>
-              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
-                XP system with 40 levels, 4 tiers, achievements, badges, and age-appropriate leaderboards. Motivate students through friendly competition and recognition.
-              </p>
-            </div>
+            <FeatureCard
+              icon={Trophy}
+              title="Gamification"
+              description="XP system with levels, achievements, badges, leaderboards, and streak tracking. Motivate students through friendly competition and recognition of consistent effort."
+            />
 
-            {/* Study Mode */}
-            <div className="rounded-2xl p-6 ocean-card group hover:neon-border-blue transition-all">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <Clock className="h-6 w-6 text-[#00BFFF]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Study Mode</h3>
-              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
-                Focus timer with ambient music, DND mode, and XP rewards for completion. Helps students build healthy study habits and stay focused on their work.
-              </p>
-            </div>
+            {/* Virtual Pet Companions */}
+            <FeatureCard
+              icon={Dog}
+              title="Virtual Pet Companions"
+              description="Students adopt virtual pets that evolve and grow as they learn. Pets level up through study activity, creating a fun, nurturing motivation loop alongside academic progress."
+            />
+
+            {/* Attendance Tracking */}
+            <FeatureCard
+              icon={CalendarCheck}
+              title="Attendance Tracking"
+              description="Daily attendance with present, absent, tardy, and excused statuses. Pattern detection alerts teachers and parents to potential issues before they escalate."
+            />
+
+            {/* Parent Dashboard */}
+            <FeatureCard
+              icon={Users}
+              title="Parent Dashboard"
+              description="At-a-glance visual dashboard with grade dials, attendance gauges, upcoming assignments, and easy teacher messaging. Keep parents engaged and informed about their child's progress."
+            />
+
+            {/* Student Tools */}
+            <FeatureCard
+              icon={Gamepad2}
+              title="Student Tools"
+              description="Chess, mini-games, and a dedicated study mode with focus timers and DND. Students earn XP for study sessions, building healthy habits while having fun."
+            />
+
+            {/* Study Music Radio */}
+            <FeatureCard
+              icon={Music}
+              title="Study Music Radio"
+              description="Built-in ambient music radio player to help students stay focused during study sessions. Lo-fi beats, nature sounds, and focus tracks available at the click of a button."
+            />
+
+            {/* Real-Time Notifications */}
+            <FeatureCard
+              icon={Bell}
+              title="Real-Time Notifications"
+              description="Instant notifications for assignments, grades, messages, and school announcements. Students, teachers, and parents stay in the loop with real-time updates."
+            />
+
+            {/* Role-Based Dashboards */}
+            <FeatureCard
+              icon={LayoutDashboard}
+              title="Role-Based Dashboards"
+              description="Tailored experiences for students, teachers, parents, and administrators. Each role sees exactly the tools and information most relevant to their needs."
+            />
+
+            {/* Dark/Light Mode */}
+            <FeatureCard
+              icon={Moon}
+              title="Dark & Light Mode"
+              description="Full dark and light theme support with smooth transitions. Comfortable viewing in any environment -- classrooms, libraries, or late-night study sessions."
+            />
 
             {/* Compliance */}
-            <div className="rounded-2xl p-6 ocean-card group hover:neon-border-blue transition-all">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <Shield className="h-6 w-6 text-[#00BFFF]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Compliance</h3>
-              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
-                FERPA, COPPA, and PIPEDA compliant with full audit logging and data export. Built from the ground up with student privacy and security in mind.
-              </p>
-            </div>
+            <FeatureCard
+              icon={Shield}
+              title="FERPA & PIPEDA Compliant"
+              description="Built from the ground up with student privacy and security in mind. Full audit logging, data export, and compliance with FERPA, COPPA, and PIPEDA regulations."
+            />
 
             {/* Multi-Tenant */}
-            <div className="rounded-2xl p-6 ocean-card group hover:neon-border-blue transition-all">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <Building2 className="h-6 w-6 text-[#00BFFF]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Multi-Tenant</h3>
-              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
-                Each school gets their own subdomain with isolated data, custom branding, and independent settings. Secure, scalable, and fully customizable.
-              </p>
-            </div>
+            <FeatureCard
+              icon={Building2}
+              title="Multi-Tenant Architecture"
+              description="Each school gets their own subdomain with isolated data, custom branding, and independent settings. Secure, scalable, and fully customizable per institution."
+            />
 
-            {/* Calendar */}
-            <div className="rounded-2xl p-6 ocean-card group hover:neon-border-blue transition-all">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <Calendar className="h-6 w-6 text-[#00BFFF]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Calendar</h3>
-              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
-                Auto-populated with assignments, events, and school calendar items. .ics export for external calendar apps. Never miss a deadline or school event.
-              </p>
-            </div>
+            {/* Real-Time Messaging */}
+            <FeatureCard
+              icon={MessageSquare}
+              title="Real-Time Messaging"
+              description="Direct messages, group conversations, and class discussions with real-time delivery. File sharing, typing indicators, read receipts, and message search built in."
+            />
 
-            {/* Admin Dashboard */}
-            <div className="rounded-2xl p-6 ocean-card group hover:neon-border-blue transition-all">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                <LayoutDashboard className="h-6 w-6 text-[#00BFFF]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Admin Dashboard</h3>
-              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
-                School health overview, user management, enrollment stats, and system monitoring. Comprehensive tools for school administrators to manage their LMS.
-              </p>
-            </div>
+            {/* Mobile Responsive */}
+            <FeatureCard
+              icon={Monitor}
+              title="Mobile Responsive"
+              description="Fully responsive design that works beautifully on desktops, tablets, and phones. Students and teachers can access everything from any device, anywhere."
+            />
           </div>
         </div>
       </section>
@@ -292,60 +464,44 @@ export default function InfoPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Student Dashboard */}
-            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33] text-white-outlined">
-                  <GraduationCap className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">Student Dashboard</h3>
-                  <p className="text-xs text-[#0A2540]/80">Your learning command center</p>
-                </div>
-              </div>
-              <Image src="/screenshot-student.png" alt="Student Dashboard" width={800} height={500} className="w-full h-auto" />
-            </div>
+            <ScreenshotCard
+              icon={GraduationCap}
+              title="Student Dashboard"
+              subtitle="Your learning command center"
+              description="Performance gauges, upcoming tasks, enrolled classes, XP progress, and virtual pet status"
+              gradientFrom="#00BFFF"
+              gradientTo="#33FF33"
+            />
 
             {/* Teacher Dashboard */}
-            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33] text-white-outlined">
-                  <BookOpen className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">Teacher Dashboard</h3>
-                  <p className="text-xs text-[#0A2540]/80">Manage courses and students</p>
-                </div>
-              </div>
-              <Image src="/screenshot-teacher.png" alt="Teacher Dashboard" width={800} height={500} className="w-full h-auto" />
-            </div>
+            <ScreenshotCard
+              icon={BookOpen}
+              title="Teacher Dashboard"
+              subtitle="Manage courses and students"
+              description="Course management, gradebook overview, student analytics, and attendance tracking"
+              gradientFrom="#00BFFF"
+              gradientTo="#8B5CF6"
+            />
 
-            {/* Parent Dashboard */}
-            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33] text-white-outlined">
-                  <Users className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">Parent Dashboard</h3>
-                  <p className="text-xs text-[#0A2540]/80">Monitor child progress</p>
-                </div>
-              </div>
-              <Image src="/screenshot-parent.png" alt="Parent Dashboard" width={800} height={500} className="w-full h-auto" />
-            </div>
+            {/* AI Tutor */}
+            <ScreenshotCard
+              icon={Bot}
+              title="AI Tutor"
+              subtitle="Browser-based intelligent tutoring"
+              description="WebLLM-powered AI tutor running entirely in the browser -- zero API cost, full privacy"
+              gradientFrom="#33FF33"
+              gradientTo="#00BFFF"
+            />
 
-            {/* Admin Dashboard */}
-            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33] text-white-outlined">
-                  <LayoutDashboard className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">Admin Dashboard</h3>
-                  <p className="text-xs text-[#0A2540]/80">School-wide insights</p>
-                </div>
-              </div>
-              <Image src="/screenshot-admin.png" alt="Admin Dashboard" width={800} height={500} className="w-full h-auto" />
-            </div>
+            {/* Offline Mode */}
+            <ScreenshotCard
+              icon={Wifi}
+              title="Offline Mode"
+              subtitle="Study anywhere, anytime"
+              description="Full offline support with IndexedDB storage and automatic sync when back online"
+              gradientFrom="#FFAA00"
+              gradientTo="#00BFFF"
+            />
           </div>
         </div>
       </section>
@@ -368,26 +524,15 @@ export default function InfoPage() {
               </div>
               <h3 className="font-semibold mb-3 text-sm">Student</h3>
               <ul className="space-y-2 text-xs text-[#0A2540]/80">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>View courses & lessons</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Submit assignments</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Take quizzes</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Earn XP & badges</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Message teachers</span>
-                </li>
+                <RoleItem text="View courses & lessons" />
+                <RoleItem text="Spaced repetition flashcards" />
+                <RoleItem text="Take quizzes & submit work" />
+                <RoleItem text="Earn XP, badges & streaks" />
+                <RoleItem text="AI Tutor for instant help" />
+                <RoleItem text="Virtual pet companion" />
+                <RoleItem text="Chess, mini-games & study tools" />
+                <RoleItem text="Study music radio" />
+                <RoleItem text="Full offline study mode" />
               </ul>
             </div>
 
@@ -398,26 +543,14 @@ export default function InfoPage() {
               </div>
               <h3 className="font-semibold mb-3 text-sm">Teacher</h3>
               <ul className="space-y-2 text-xs text-[#0A2540]/80">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Create courses</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Build lessons & quizzes</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Grade assignments</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Track attendance</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Message students/parents</span>
-                </li>
+                <RoleItem text="Create courses & modules" />
+                <RoleItem text="Rich lesson builder with content blocks" />
+                <RoleItem text="Build quizzes (multiple types)" />
+                <RoleItem text="Create flashcard decks" />
+                <RoleItem text="Gradebook & grade management" />
+                <RoleItem text="Track attendance" />
+                <RoleItem text="Student analytics" />
+                <RoleItem text="Message students & parents" />
               </ul>
             </div>
 
@@ -428,26 +561,13 @@ export default function InfoPage() {
               </div>
               <h3 className="font-semibold mb-3 text-sm">Parent</h3>
               <ul className="space-y-2 text-xs text-[#0A2540]/80">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>View child grades</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Monitor attendance</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>See upcoming work</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Message teachers</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Receive alerts</span>
-                </li>
+                <RoleItem text="Monitor child grades & progress" />
+                <RoleItem text="View attendance patterns" />
+                <RoleItem text="See upcoming assignments" />
+                <RoleItem text="Track XP & achievements" />
+                <RoleItem text="Message teachers directly" />
+                <RoleItem text="Receive real-time alerts" />
+                <RoleItem text="Visual performance dashboards" />
               </ul>
             </div>
 
@@ -458,26 +578,13 @@ export default function InfoPage() {
               </div>
               <h3 className="font-semibold mb-3 text-sm">School Admin</h3>
               <ul className="space-y-2 text-xs text-[#0A2540]/80">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Manage users</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Configure school</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>View reports</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Bulk enrollment</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-                  <span>Custom branding</span>
-                </li>
+                <RoleItem text="Manage all users & roles" />
+                <RoleItem text="Configure school settings" />
+                <RoleItem text="View school-wide reports" />
+                <RoleItem text="Bulk enrollment" />
+                <RoleItem text="Custom branding & subdomain" />
+                <RoleItem text="Audit logs & compliance" />
+                <RoleItem text="System monitoring" />
               </ul>
             </div>
 
@@ -519,6 +626,14 @@ export default function InfoPage() {
                     <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
                     TypeScript throughout
                   </li>
+                  <li className="flex items-center gap-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
+                    WebLLM for on-device AI
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
+                    IndexedDB for offline storage
+                  </li>
                 </ul>
               </div>
 
@@ -543,6 +658,14 @@ export default function InfoPage() {
                   <li className="flex items-center gap-2">
                     <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
                     PostgreSQL with Row Level Security
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
+                    Multi-tenant data isolation
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
+                    FERPA & PIPEDA audit logging
                   </li>
                 </ul>
               </div>
@@ -587,14 +710,22 @@ export default function InfoPage() {
               </div>
 
               {/* What's included */}
-              <div className="grid grid-cols-2 gap-3 text-left text-sm max-w-md mx-auto">
+              <div className="grid grid-cols-2 gap-3 text-left text-sm max-w-lg mx-auto">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">Unlimited courses</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-[#0A2540]/80">Real-time messaging</span>
+                  <span className="text-[#0A2540]/80">Spaced repetition flashcards</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <span className="text-[#0A2540]/80">AI Tutor (zero API cost)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <span className="text-[#0A2540]/80">Full offline mode</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
@@ -606,6 +737,10 @@ export default function InfoPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <span className="text-[#0A2540]/80">Virtual pet companions</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">Parent portal</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -614,11 +749,15 @@ export default function InfoPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <span className="text-[#0A2540]/80">Real-time messaging</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">Custom branding</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-[#0A2540]/80">FERPA & COPPA compliant</span>
+                  <span className="text-[#0A2540]/80">FERPA & PIPEDA compliant</span>
                 </div>
               </div>
 
@@ -665,7 +804,7 @@ export default function InfoPage() {
                 </div>
               </div>
               <p className="text-sm text-[#0A2540]/80 max-w-md mb-3">
-                Empowering schools with a comprehensive learning management system designed for K-12 and post-secondary education.
+                Empowering schools with a comprehensive learning management system designed for K-12 and post-secondary education. Featuring the only built-in spaced repetition system and browser-based AI tutoring.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 text-sm text-[#0A2540]/80">
                 <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1.5 hover:text-[#00BFFF] transition-colors">

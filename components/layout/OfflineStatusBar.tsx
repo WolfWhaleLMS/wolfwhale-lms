@@ -84,7 +84,12 @@ export function OfflineStatusBar() {
         {mode === 'error' && <AlertTriangle className="h-3.5 w-3.5 shrink-0" />}
 
         {/* Text */}
-        {mode === 'offline-active' && <span>Offline Mode Active</span>}
+        {mode === 'offline-active' && (
+          <span>
+            Offline Mode Active{' '}
+            <span className="opacity-60">— content available without internet</span>
+          </span>
+        )}
         {mode === 'downloading' && (
           <span>
             Downloading...{' '}

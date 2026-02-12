@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Music, VolumeX } from 'lucide-react'
+import { GlowingLogo } from '@/components/ui/glowing-logo'
 import { usePianoMusic } from '@/hooks/usePianoMusic'
 
 export default function AuthLayout({
@@ -12,11 +13,17 @@ export default function AuthLayout({
   children: React.ReactNode
 }) {
   const [mounted, setMounted] = useState(false)
-  const { isPlaying, toggle, start } = usePianoMusic()
+  const { isPlaying, toggle, start, destroy } = usePianoMusic()
 
   useEffect(() => {
     setMounted(true)
-  }, [])
+
+    // When the auth layout unmounts (user navigates away from login/signup),
+    // destroy the piano music so it doesn't overlap with the dashboard radio.
+    return () => {
+      destroy()
+    }
+  }, [destroy])
 
   // Start music on first user interaction only (no eager autoplay)
   useEffect(() => {
@@ -87,7 +94,7 @@ export default function AuthLayout({
       {/* Header */}
       <header className="relative z-10 p-6">
         <Link href="/" className="inline-flex items-center gap-3 group">
-          <Image src="/logo.png" alt="WolfWhale" width={80} height={80} className="rounded-xl object-contain shadow-lg border-2 border-black" />
+          <GlowingLogo size={80} />
           <div>
             <span className="text-xl font-display font-bold text-[#0A2540] group-hover:text-[#00BFFF] transition-colors block tracking-wider uppercase">
               WolfWhale

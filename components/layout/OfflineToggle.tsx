@@ -25,11 +25,6 @@ export function OfflineToggle({
 }: OfflineToggleProps) {
   return (
     <div className="flex items-center gap-1.5">
-      {/* Label */}
-      <span className="select-none text-xs font-medium text-muted-foreground">
-        Offline
-      </span>
-
       {/* Toggle switch */}
       <button
         type="button"
@@ -150,6 +145,18 @@ export function OfflineToggle({
           }
         `}</style>
       </button>
+
+      {/* State label — hidden on very small screens */}
+      <span
+        className={[
+          'hidden select-none text-xs font-semibold tracking-wide transition-all duration-300 sm:inline-block',
+          isOffline
+            ? 'text-[#33FF33] drop-shadow-[0_0_6px_rgba(51,255,51,0.5)]'
+            : 'text-muted-foreground/70',
+        ].join(' ')}
+      >
+        {isOffline ? 'Offline' : 'Online'}
+      </span>
     </div>
   )
 }

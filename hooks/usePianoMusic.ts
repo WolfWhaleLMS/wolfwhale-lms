@@ -34,6 +34,16 @@ function getGlobalAudio(): HTMLAudioElement {
   return audio
 }
 
+/** Stop and fully destroy the global audio element so it cannot keep playing. */
+function destroyGlobalAudio() {
+  if (!globalAudio) return
+  globalAudio.pause()
+  globalAudio.removeAttribute('src')
+  globalAudio.load() // release network resources
+  globalAudio = null
+  globalIsPlaying = false
+}
+
 export function usePianoMusic() {
   const [isPlaying, setIsPlaying] = useState(globalIsPlaying)
 
@@ -88,6 +98,11 @@ export function usePianoMusic() {
     }
   }, [start, stop])
 
-  // Do NOT clean up globalAudio on unmount — that's the whole point
-  return { isPlaying, toggle, start, stop }
+  /** Stop playback and tear down the audio element entirely. */
+  const destroy = useCallback(() => {
+    destroyGlobalAudio()
+    setIsPlaying(false)
+  }, [])
+
+  return { isPlaying, toggle, start, stop, destroy }
 }
