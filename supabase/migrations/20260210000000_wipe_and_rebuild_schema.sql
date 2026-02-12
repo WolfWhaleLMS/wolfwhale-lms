@@ -706,4 +706,4 @@ EXECUTE FUNCTION create_grade_notification();
 
 -- 23. SAMPLE TENANT
 INSERT INTO tenants (slug, name, subscription_plan)
-VALUES ('wolf-whale-demo', 'Wolf Whale Demo School', 'growth');
+VALUES ('wolf-whale-demo', 'Wolf Whale LMS', 'growth');

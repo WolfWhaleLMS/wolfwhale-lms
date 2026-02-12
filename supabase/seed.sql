@@ -1,6 +1,6 @@
 -- ============================================================================
 -- Wolf Whale LMS - Comprehensive Seed Data
--- Demo School: Wolf Whale Demo School (K-5 Elementary)
+-- Demo School: Wolf Whale LMS (K-5 Elementary)
 -- ============================================================================
 --
 -- IMPORTANT: This seed file assumes auth.users have already been created
@@ -123,7 +123,7 @@ BEGIN;
 -- ============================================================================
 UPDATE tenants
 SET
-  name = 'Wolf Whale Demo School',
+  name = 'Wolf Whale LMS',
   description = 'A vibrant K-5 elementary school committed to nurturing curious minds through innovative, technology-enhanced learning. Our school blends traditional teaching with modern digital tools to create an engaging educational experience.',
   logo_url = 'https://ui-avatars.com/api/?name=Wolf+Whale&background=1E40AF&color=fff&size=256',
   website_url = 'https://wolfwhale.demo',
@@ -149,7 +149,7 @@ VALUES (
   'Michael', 'Thompson',
   'https://ui-avatars.com/api/?name=Michael+Thompson&background=6366F1&color=fff',
   '(310) 555-0100',
-  'Principal of Wolf Whale Demo School with 20 years of experience in elementary education. Ed.D. in Educational Leadership from UCLA.',
+  'Principal of Wolf Whale LMS with 20 years of experience in elementary education. Ed.D. in Educational Leadership from UCLA.',
   'America/Los_Angeles'
 );
 
@@ -823,7 +823,7 @@ FROM tenants t, (VALUES
    'Dear Wolf Whale families, welcome back to an exciting spring semester! We have many wonderful activities planned, including our annual Science Fair on March 20th, a school-wide Reading Challenge, and Field Day in May. Please check the school calendar for all important dates. We look forward to a great semester of learning together!',
    'a0000000-0000-0000-0000-000000000001'::uuid, (NOW() - INTERVAL '30 days')::timestamptz),
   ('Science Fair 2026 - Registration Open',
-   'Registration for the Wolf Whale Demo School Annual Science Fair is now open! Students in grades 3-5 are encouraged to participate. Projects must relate to one of the following categories: Life Science, Physical Science, Earth Science, or Engineering. Registration deadline is February 28th. See Mr. Chen for project ideas and guidelines.',
+   'Registration for the Wolf Whale LMS Annual Science Fair is now open! Students in grades 3-5 are encouraged to participate. Projects must relate to one of the following categories: Life Science, Physical Science, Earth Science, or Engineering. Registration deadline is February 28th. See Mr. Chen for project ideas and guidelines.',
    'a0000000-0000-0000-0000-000000000001'::uuid, (NOW() - INTERVAL '7 days')::timestamptz),
   ('Early Dismissal - February 14th',
    'Please be advised that school will dismiss at 12:30 PM on Friday, February 14th for a teacher professional development day. After-school care will still be available until 5:00 PM. Please make arrangements for early pickup if needed.',
@@ -932,7 +932,7 @@ FROM tenants t, (VALUES
 
   -- Admin notification
   ('a0000000-0000-0000-0000-000000000001'::uuid, 'system_alert', 'Weekly Usage Report',
-   'Wolf Whale Demo School: 15 active students, 3 active teachers, 6 active courses this week.',
+   'Wolf Whale LMS: 15 active students, 3 active teachers, 6 active courses this week.',
    '/admin/reports',
    NULL, NULL,
    false, (NOW() - INTERVAL '12 hours')::timestamptz)
@@ -1164,7 +1164,7 @@ COMMIT;
 
 -- ============================================================================
 -- END OF SEED DATA
--- Wolf Whale Demo School - K-5 Elementary
+-- Wolf Whale LMS - K-5 Elementary
 -- 1 Admin, 3 Teachers, 15 Students, 5 Parents
 -- 6 Courses, 27 Lessons, 17 Assignments
 -- Submissions, Grades, Attendance, Announcements, Notifications

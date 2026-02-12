@@ -823,7 +823,7 @@ async function main() {
   const announcementsList = [
     {
       title: 'Welcome to Spring Semester 2026',
-      content: 'Welcome back, everyone! We are excited to kick off the Spring 2026 semester at Wolf Whale Demo School. Please review your course schedules and make sure you have all required materials. Parent-teacher conferences will be held on February 20th. Contact the office if you have any questions. Let\'s make this a great semester!',
+      content: 'Welcome back, everyone! We are excited to kick off the Spring 2026 semester at Wolf Whale LMS. Please review your course schedules and make sure you have all required materials. Parent-teacher conferences will be held on February 20th. Contact the office if you have any questions. Let\'s make this a great semester!',
       course_id: null,
       created_by: adminId,
     },

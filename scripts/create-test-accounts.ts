@@ -213,7 +213,7 @@ async function main() {
     .upsert(
       {
         slug: 'demo',
-        name: 'Wolf Whale Demo School',
+        name: 'Wolf Whale LMS',
         subscription_plan: 'enterprise',
         max_users: 100,
         status: 'active',
@@ -235,7 +235,7 @@ async function main() {
   }
 
   const tenantId = tenantData.id
-  console.log(`  [OK] Demo tenant: ${tenantId} (Wolf Whale Demo School)`)
+  console.log(`  [OK] Demo tenant: ${tenantId} (Wolf Whale LMS)`)
   console.log('')
 
   // =========================================================================
@@ -470,7 +470,7 @@ async function main() {
   console.log('TEST ACCOUNTS READY')
   console.log('====================================================================')
   console.log('')
-  console.log('  Tenant:  Wolf Whale Demo School (slug: demo)')
+  console.log('  Tenant:  Wolf Whale LMS (slug: demo)')
   console.log(`  ID:      ${tenantId}`)
   console.log('')
   console.log('  Email                       Password                   Role')
