@@ -110,7 +110,7 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
   const handleSignOut = async () => {
     const supabase = createClient()
     await supabase.auth.signOut()
-    router.push('/')
+    router.push('/login')
     router.refresh()
   }
 

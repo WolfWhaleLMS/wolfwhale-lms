@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import {
   ArrowLeft,
@@ -37,11 +37,11 @@ export function StudentTutorClient({
   const setSystemPrompt = useTutorStore((s) => s.setSystemPrompt)
 
   // Set course context as system prompt on mount
-  useState(() => {
+  useEffect(() => {
     if (initialCourseContext) {
       setSystemPrompt(initialCourseContext)
     }
-  })
+  }, [initialCourseContext, setSystemPrompt])
 
   const statusColor =
     status === 'ready' || status === 'generating'

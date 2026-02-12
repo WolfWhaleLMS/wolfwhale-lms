@@ -49,9 +49,10 @@ export default function TutorWidget({ role }: TutorWidgetProps) {
   }, [isWidgetOpen, setWidgetOpen])
 
   const handleExpandToFullPage = useCallback(() => {
-    // Navigate to the dedicated tutor page
-    window.location.href = '/dashboard/tutor'
-  }, [])
+    // Navigate to the dedicated tutor page based on role
+    const tutorPath = isStudent ? '/student/tutor' : '/teacher/tutor'
+    window.location.href = tutorPath
+  }, [isStudent])
 
   return (
     <>

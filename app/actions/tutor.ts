@@ -26,23 +26,31 @@ export async function saveConversation(data: {
   const rl = await rateLimitAction('saveConversation')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user, tenantId } = await getActionContext()
+  try {
+    const { supabase, user, tenantId } = await getActionContext()
 
-  const { data: conversation, error } = await supabase
-    .from('tutor_conversations')
-    .insert({
-      tenant_id: tenantId,
-      user_id: user.id,
-      user_role: parsed.data!.userRole,
-      title: parsed.data!.title ? sanitizeText(parsed.data!.title) : 'New Conversation',
-      course_id: parsed.data!.courseId || null,
-      lesson_id: parsed.data!.lessonId || null,
-    })
-    .select('id')
-    .single()
+    const { data: conversation, error } = await supabase
+      .from('tutor_conversations')
+      .insert({
+        tenant_id: tenantId,
+        user_id: user.id,
+        user_role: parsed.data!.userRole,
+        title: parsed.data!.title ? sanitizeText(parsed.data!.title) : 'New Conversation',
+        course_id: parsed.data!.courseId || null,
+        lesson_id: parsed.data!.lessonId || null,
+      })
+      .select('id')
+      .single()
 
-  if (error) throw error
-  return conversation
+    if (error) {
+      console.warn('[tutor] saveConversation failed:', error.message)
+      return null
+    }
+    return conversation
+  } catch (err) {
+    console.warn('[tutor] saveConversation error:', err instanceof Error ? err.message : err)
+    return null
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -66,50 +74,63 @@ export async function saveMessage(data: {
   const rl = await rateLimitAction('saveMessage')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user } = await getActionContext()
+  try {
+    const { supabase, user } = await getActionContext()
 
-  // Verify conversation ownership
-  const { data: conversation } = await supabase
-    .from('tutor_conversations')
-    .select('id')
-    .eq('id', parsed.data!.conversationId)
-    .eq('user_id', user.id)
-    .single()
+    // Verify conversation ownership
+    const { data: conversation } = await supabase
+      .from('tutor_conversations')
+      .select('id')
+      .eq('id', parsed.data!.conversationId)
+      .eq('user_id', user.id)
+      .single()
 
-  if (!conversation) throw new Error('Conversation not found or not authorized')
+    if (!conversation) {
+      console.warn('[tutor] saveMessage: conversation not found or not authorized')
+      return null
+    }
 
-  // Insert the message
-  const { data: message, error: msgError } = await supabase
-    .from('tutor_messages')
-    .insert({
-      conversation_id: parsed.data!.conversationId,
-      role: parsed.data!.role,
-      content: parsed.data!.role === 'user' ? sanitizeText(parsed.data!.content) : parsed.data!.content,
-      token_count: parsed.data!.tokenCount || null,
-    })
-    .select('id')
-    .single()
+    // Insert the message
+    const { data: message, error: msgError } = await supabase
+      .from('tutor_messages')
+      .insert({
+        conversation_id: parsed.data!.conversationId,
+        role: parsed.data!.role,
+        content: parsed.data!.role === 'user' ? sanitizeText(parsed.data!.content) : parsed.data!.content,
+        token_count: parsed.data!.tokenCount || null,
+      })
+      .select('id')
+      .single()
 
-  if (msgError) throw msgError
+    if (msgError) {
+      console.warn('[tutor] saveMessage insert failed:', msgError.message)
+      return null
+    }
 
-  // Update conversation message_count and last_message_at
-  const { error: updateError } = await supabase
-    .from('tutor_conversations')
-    .update({
-      message_count: (await supabase
-        .from('tutor_messages')
-        .select('id', { count: 'exact', head: true })
-        .eq('conversation_id', parsed.data!.conversationId)
-      ).count || 0,
-      last_message_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    })
-    .eq('id', parsed.data!.conversationId)
-    .eq('user_id', user.id)
+    // Update conversation message_count and last_message_at
+    const { error: updateError } = await supabase
+      .from('tutor_conversations')
+      .update({
+        message_count: (await supabase
+          .from('tutor_messages')
+          .select('id', { count: 'exact', head: true })
+          .eq('conversation_id', parsed.data!.conversationId)
+        ).count || 0,
+        last_message_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', parsed.data!.conversationId)
+      .eq('user_id', user.id)
 
-  if (updateError) throw updateError
+    if (updateError) {
+      console.warn('[tutor] saveMessage update count failed:', updateError.message)
+    }
 
-  return message
+    return message
+  } catch (err) {
+    console.warn('[tutor] saveMessage error:', err instanceof Error ? err.message : err)
+    return null
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -117,17 +138,27 @@ export async function saveMessage(data: {
 // ---------------------------------------------------------------------------
 
 export async function getConversations() {
-  const { supabase, user, tenantId } = await getActionContext()
+  try {
+    const { supabase, user, tenantId } = await getActionContext()
 
-  const { data, error } = await supabase
-    .from('tutor_conversations')
-    .select('*')
-    .eq('user_id', user.id)
-    .eq('tenant_id', tenantId)
-    .order('updated_at', { ascending: false })
+    const { data, error } = await supabase
+      .from('tutor_conversations')
+      .select('*')
+      .eq('user_id', user.id)
+      .eq('tenant_id', tenantId)
+      .order('updated_at', { ascending: false })
 
-  if (error) throw error
-  return data ?? []
+    if (error) {
+      // If table doesn't exist or permission denied, return empty gracefully
+      console.warn('[tutor] getConversations failed:', error.message)
+      return []
+    }
+    return data ?? []
+  } catch (err) {
+    // Gracefully handle missing auth context, missing tenant, or missing tables
+    console.warn('[tutor] getConversations error:', err instanceof Error ? err.message : err)
+    return []
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -139,26 +170,37 @@ export async function getConversationMessages(conversationId: string) {
     return []
   }
 
-  const { supabase, user } = await getActionContext()
+  try {
+    const { supabase, user } = await getActionContext()
 
-  // Verify conversation ownership
-  const { data: conversation } = await supabase
-    .from('tutor_conversations')
-    .select('id')
-    .eq('id', conversationId)
-    .eq('user_id', user.id)
-    .single()
+    // Verify conversation ownership
+    const { data: conversation } = await supabase
+      .from('tutor_conversations')
+      .select('id')
+      .eq('id', conversationId)
+      .eq('user_id', user.id)
+      .single()
 
-  if (!conversation) throw new Error('Conversation not found or not authorized')
+    if (!conversation) {
+      console.warn('[tutor] getConversationMessages: conversation not found')
+      return []
+    }
 
-  const { data, error } = await supabase
-    .from('tutor_messages')
-    .select('*')
-    .eq('conversation_id', conversationId)
-    .order('created_at', { ascending: true })
+    const { data, error } = await supabase
+      .from('tutor_messages')
+      .select('*')
+      .eq('conversation_id', conversationId)
+      .order('created_at', { ascending: true })
 
-  if (error) throw error
-  return data ?? []
+    if (error) {
+      console.warn('[tutor] getConversationMessages failed:', error.message)
+      return []
+    }
+    return data ?? []
+  } catch (err) {
+    console.warn('[tutor] getConversationMessages error:', err instanceof Error ? err.message : err)
+    return []
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -173,15 +215,21 @@ export async function deleteConversation(conversationId: string) {
   const rl = await rateLimitAction('deleteConversation')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user } = await getActionContext()
+  try {
+    const { supabase, user } = await getActionContext()
 
-  const { error } = await supabase
-    .from('tutor_conversations')
-    .delete()
-    .eq('id', conversationId)
-    .eq('user_id', user.id)
+    const { error } = await supabase
+      .from('tutor_conversations')
+      .delete()
+      .eq('id', conversationId)
+      .eq('user_id', user.id)
 
-  if (error) throw error
+    if (error) {
+      console.warn('[tutor] deleteConversation failed:', error.message)
+    }
+  } catch (err) {
+    console.warn('[tutor] deleteConversation error:', err instanceof Error ? err.message : err)
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -198,16 +246,22 @@ export async function updateConversationTitle(conversationId: string, title: str
   const rl = await rateLimitAction('updateConversationTitle')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user } = await getActionContext()
+  try {
+    const { supabase, user } = await getActionContext()
 
-  const { error } = await supabase
-    .from('tutor_conversations')
-    .update({
-      title: sanitizeText(title),
-      updated_at: new Date().toISOString(),
-    })
-    .eq('id', conversationId)
-    .eq('user_id', user.id)
+    const { error } = await supabase
+      .from('tutor_conversations')
+      .update({
+        title: sanitizeText(title),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', conversationId)
+      .eq('user_id', user.id)
 
-  if (error) throw error
+    if (error) {
+      console.warn('[tutor] updateConversationTitle failed:', error.message)
+    }
+  } catch (err) {
+    console.warn('[tutor] updateConversationTitle error:', err instanceof Error ? err.message : err)
+  }
 }

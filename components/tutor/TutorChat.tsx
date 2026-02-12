@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
-import { Send, Loader2 } from 'lucide-react'
+import { Send, Loader2, AlertTriangle, X } from 'lucide-react'
 import { useTutorStore } from '@/lib/tutor/engine'
 import TutorMessageBubble from './TutorMessageBubble'
 import TutorModelManager from './TutorModelManager'
@@ -14,8 +14,10 @@ export default function TutorChat({ compact = false }: TutorChatProps) {
   const status = useTutorStore((s) => s.status)
   const activeConversation = useTutorStore((s) => s.activeConversation)
   const sendMessage = useTutorStore((s) => s.sendMessage)
+  const engineError = useTutorStore((s) => s.error)
 
   const [inputValue, setInputValue] = useState('')
+  const [dismissedError, setDismissedError] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -133,6 +135,22 @@ export default function TutorChat({ compact = false }: TutorChatProps) {
                 <span className="h-2 w-2 rounded-full bg-[#00BFFF] animate-bounce [animation-delay:300ms]" />
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Generation error banner */}
+        {engineError && engineError !== dismissedError && isReady && (
+          <div className="mx-1 flex items-start gap-2 rounded-xl border border-[#FF3366]/20 bg-[#FF3366]/5 px-3 py-2" role="alert">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-[#FF3366]" aria-hidden="true" />
+            <p className="flex-1 text-xs text-[#FF3366] leading-relaxed">{engineError}</p>
+            <button
+              type="button"
+              onClick={() => setDismissedError(engineError)}
+              className="shrink-0 rounded-md p-0.5 text-[#FF3366]/60 hover:text-[#FF3366] transition-colors"
+              aria-label="Dismiss error"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
           </div>
         )}
 

@@ -172,13 +172,29 @@ export const useTutorStore = create<TutorStore>((set, get) => ({
         error: null,
       })
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to initialize AI engine'
-      console.error('[TutorEngine] Init failed:', message)
+      const rawMessage = err instanceof Error ? err.message : String(err)
+      console.error('[TutorEngine] Init failed:', rawMessage)
+
+      // Map raw WebLLM errors to user-friendly messages
+      let userMessage: string
+      const lower = rawMessage.toLowerCase()
+
+      if (lower.includes('webgpu') || lower.includes('gpu adapter') || lower.includes('requestadapter')) {
+        userMessage = 'Your browser or device does not support WebGPU. Please try Chrome 113+ or Edge 113+ on a device with a compatible GPU.'
+      } else if (lower.includes('out of memory') || lower.includes('oom') || lower.includes('allocation')) {
+        userMessage = 'Not enough GPU memory to load the AI model. Please close other tabs or applications and try again.'
+      } else if (lower.includes('network') || lower.includes('fetch') || lower.includes('failed to load') || lower.includes('typeerror')) {
+        userMessage = 'Failed to download the AI model. Please check your internet connection and try again.'
+      } else if (lower.includes('aborted') || lower.includes('abort')) {
+        userMessage = 'Model download was interrupted. Please try again.'
+      } else {
+        userMessage = `Failed to load the AI model: ${rawMessage.length > 150 ? rawMessage.slice(0, 150) + '...' : rawMessage}`
+      }
 
       engineInstance = null
       set({
         status: 'error',
-        error: message,
+        error: userMessage,
         progress: null,
       })
     }
@@ -323,12 +339,23 @@ export const useTutorStore = create<TutorStore>((set, get) => ({
         }
       })
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Generation failed'
-      console.error('[TutorEngine] Generation error:', message)
+      const rawMessage = err instanceof Error ? err.message : String(err)
+      console.error('[TutorEngine] Generation error:', rawMessage)
+
+      // Provide a user-friendly error message
+      const lower = rawMessage.toLowerCase()
+      let userMessage: string
+      if (lower.includes('memory') || lower.includes('oom')) {
+        userMessage = 'The AI ran out of memory. Try starting a new conversation or refreshing the page.'
+      } else if (lower.includes('context') || lower.includes('token')) {
+        userMessage = 'The conversation is too long. Please start a new conversation to continue.'
+      } else {
+        userMessage = 'Failed to generate a response. Please try again.'
+      }
 
       set({
         status: 'ready',
-        error: message,
+        error: userMessage,
       })
     }
   },

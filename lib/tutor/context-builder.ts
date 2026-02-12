@@ -21,6 +21,18 @@ export async function buildCourseContext(
   studentId: string,
   courseId?: string,
 ): Promise<string> {
+  try {
+    return await _buildCourseContextInner(studentId, courseId)
+  } catch (err) {
+    console.warn('[tutor] buildCourseContext error:', err instanceof Error ? err.message : err)
+    return ''
+  }
+}
+
+async function _buildCourseContextInner(
+  studentId: string,
+  courseId?: string,
+): Promise<string> {
   const supabase = await createClient()
 
   // 1. Get the student's active enrollments
@@ -34,7 +46,12 @@ export async function buildCourseContext(
     enrollmentQuery = enrollmentQuery.eq('course_id', courseId)
   }
 
-  const { data: enrollments } = await enrollmentQuery
+  const { data: enrollments, error: enrollError } = await enrollmentQuery
+
+  if (enrollError) {
+    console.warn('[tutor] Failed to fetch enrollments:', enrollError.message)
+    return ''
+  }
 
   if (!enrollments || enrollments.length === 0) {
     return 'The student is not currently enrolled in any courses.'
@@ -232,6 +249,17 @@ export async function buildCourseContext(
  * teacher grading prompt.
  */
 export async function buildGradingContext(
+  submissionId: string,
+): Promise<string> {
+  try {
+    return await _buildGradingContextInner(submissionId)
+  } catch (err) {
+    console.warn('[tutor] buildGradingContext error:', err instanceof Error ? err.message : err)
+    return 'Unable to load grading context.'
+  }
+}
+
+async function _buildGradingContextInner(
   submissionId: string,
 ): Promise<string> {
   const supabase = await createClient()

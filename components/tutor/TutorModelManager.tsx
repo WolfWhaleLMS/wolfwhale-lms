@@ -1,8 +1,34 @@
 'use client'
 
-import { Bot, Check, Loader2, Download } from 'lucide-react'
+import { Bot, Check, Loader2, Download, AlertTriangle, WifiOff, HardDrive } from 'lucide-react'
 import { useTutorStore } from '@/lib/tutor/engine'
 import TutorUnsupported from './TutorUnsupported'
+
+/** Determine the error category from the error message to show the right icon/heading */
+function classifyError(message: string | null): {
+  icon: typeof Bot
+  heading: string
+  color: string
+  bgColor: string
+} {
+  if (!message) {
+    return { icon: AlertTriangle, heading: 'Something Went Wrong', color: 'text-[#FF3366]', bgColor: 'bg-[#FF3366]/10' }
+  }
+
+  const lower = message.toLowerCase()
+
+  if (lower.includes('internet') || lower.includes('download') || lower.includes('network')) {
+    return { icon: WifiOff, heading: 'Connection Error', color: 'text-[#FFAA00]', bgColor: 'bg-[#FFAA00]/10' }
+  }
+  if (lower.includes('memory') || lower.includes('gpu')) {
+    return { icon: HardDrive, heading: 'Device Limitation', color: 'text-[#FFAA00]', bgColor: 'bg-[#FFAA00]/10' }
+  }
+  if (lower.includes('webgpu') || lower.includes('browser')) {
+    return { icon: AlertTriangle, heading: 'Browser Not Supported', color: 'text-[#FFAA00]', bgColor: 'bg-[#FFAA00]/10' }
+  }
+
+  return { icon: AlertTriangle, heading: 'Failed to Load AI Model', color: 'text-[#FF3366]', bgColor: 'bg-[#FF3366]/10' }
+}
 
 export default function TutorModelManager() {
   const status = useTutorStore((s) => s.status)
@@ -37,7 +63,8 @@ export default function TutorModelManager() {
                 </h2>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   Wally AI runs locally on your device. Approximately 1.6 GB
-                  download on first use.
+                  download on first use. Requires a browser with WebGPU support
+                  (Chrome 113+, Edge 113+, or Safari 18+).
                 </p>
               </div>
               <button
@@ -97,6 +124,10 @@ export default function TutorModelManager() {
                     {Math.round(downloadProgress)}%
                   </span>
                 </div>
+
+                <p className="text-xs text-muted-foreground/70">
+                  Please keep this tab open. The model is cached after first download.
+                </p>
               </div>
             </>
           )}
@@ -129,32 +160,36 @@ export default function TutorModelManager() {
           )}
 
           {/* ---- Error ---- */}
-          {status === 'error' && (
-            <>
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#FF3366]/10">
-                <Bot className="h-8 w-8 text-[#FF3366]" aria-hidden="true" />
-              </div>
-              <div className="space-y-2">
-                <h2 className="font-display text-lg text-foreground">
-                  Something Went Wrong
-                </h2>
-                <p className="text-sm text-[#FF3366] leading-relaxed" role="alert">
-                  {errorMessage || 'An unexpected error occurred while loading the AI model.'}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  resetEngine()
-                  initEngine()
-                }}
-                className="btn-chrome-3d-blue flex items-center gap-2 rounded-2xl px-6 py-2.5 text-sm font-bold text-white transition-all hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00BFFF] focus-visible:ring-offset-2 active:scale-[0.98]"
-                aria-label="Retry loading the AI model"
-              >
-                Try Again
-              </button>
-            </>
-          )}
+          {status === 'error' && (() => {
+            const errInfo = classifyError(errorMessage)
+            const ErrIcon = errInfo.icon
+            return (
+              <>
+                <div className={`flex h-16 w-16 items-center justify-center rounded-full ${errInfo.bgColor}`}>
+                  <ErrIcon className={`h-8 w-8 ${errInfo.color}`} aria-hidden="true" />
+                </div>
+                <div className="space-y-2">
+                  <h2 className="font-display text-lg text-foreground">
+                    {errInfo.heading}
+                  </h2>
+                  <p className={`text-sm ${errInfo.color} leading-relaxed`} role="alert">
+                    {errorMessage || 'An unexpected error occurred while loading the AI model.'}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    resetEngine()
+                    initEngine()
+                  }}
+                  className="btn-chrome-3d-blue flex items-center gap-2 rounded-2xl px-6 py-2.5 text-sm font-bold text-white transition-all hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00BFFF] focus-visible:ring-offset-2 active:scale-[0.98]"
+                  aria-label="Retry loading the AI model"
+                >
+                  Try Again
+                </button>
+              </>
+            )
+          })()}
         </div>
       </div>
     </div>
