@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { GraduationCap, Brain, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield, ShieldAlert, Eye, Radio, LineChart } from 'lucide-react'
+import { GraduationCap, Brain, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield, ShieldAlert, Eye, Radio, LineChart, Shirt, Equal, Layers, CloudSun, Rocket, Wheat, Leaf, Heart, MapPin } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 
 export default function EdTechHubPage() {
@@ -440,6 +440,94 @@ export default function EdTechHubPage() {
                   <Link
                     href="/cerebus"
                     className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#FF4444]/10 border border-[#FF4444]/25 text-[#FF4444] text-sm font-semibold hover:bg-[#FF4444]/20 transition-all hover:scale-105"
+                  >
+                    Learn More
+                  </Link>
+                </div>
+              </div>
+
+              {/* Product 4: School Uniforms — Coming Soon */}
+              <div className="bg-white/10 backdrop-blur-xl border border-[#14B8A6]/25 shadow-xl shadow-[#14B8A6]/5 rounded-2xl p-5 sm:p-8 group transition-all opacity-70 flex flex-col">
+                {/* Status Badge */}
+                <div className="flex items-center justify-between mb-6">
+                  <div className="inline-flex p-3 rounded-xl bg-[#14B8A6]/15 border border-[#14B8A6]/25">
+                    <Shirt className="h-7 w-7 text-[#14B8A6]" />
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#14B8A6]/20 text-[#14B8A6] border border-[#14B8A6]/30">
+                    Coming Soon
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-bold text-white mb-3">School Uniforms</h3>
+                <p className="text-white/80 text-sm leading-relaxed mb-5">
+                  Premium athletic wear bundled with your WolfWhale LMS subscription. Every student receives 3 tracksuits and running shoes &mdash; standard WolfWhale design across all schools.
+                </p>
+
+                {/* Feature bullets */}
+                <ul className="space-y-2 mb-6 flex-1">
+                  {[
+                    { icon: Shirt, text: '3 hockey-style tracksuit sets included' },
+                    { icon: Equal, text: 'Equal playing field for all students' },
+                    { icon: Layers, text: 'Durable athletic-grade materials' },
+                    { icon: CloudSun, text: 'All-season Canadian weather design' },
+                    { icon: Rocket, text: 'Bundled with LMS subscription' },
+                  ].map(({ icon: Icon, text }) => (
+                    <li key={text} className="flex items-center gap-2 text-white/75 text-sm">
+                      <Icon className="h-4 w-4 text-[#14B8A6] shrink-0" />
+                      {text}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Button */}
+                <div className="flex gap-3">
+                  <Link
+                    href="/uniforms"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#14B8A6]/10 border border-[#14B8A6]/25 text-[#14B8A6] text-sm font-semibold hover:bg-[#14B8A6]/20 transition-all hover:scale-105"
+                  >
+                    Learn More
+                  </Link>
+                </div>
+              </div>
+
+              {/* Product 5: Pemmican Bars — Coming Soon */}
+              <div className="bg-white/10 backdrop-blur-xl border border-[#D97706]/25 shadow-xl shadow-[#D97706]/5 rounded-2xl p-5 sm:p-8 group transition-all opacity-70 flex flex-col">
+                {/* Status Badge */}
+                <div className="flex items-center justify-between mb-6">
+                  <div className="inline-flex p-3 rounded-xl bg-[#D97706]/15 border border-[#D97706]/25">
+                    <Wheat className="h-7 w-7 text-[#D97706]" />
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#D97706]/20 text-[#D97706] border border-[#D97706]/30">
+                    Coming Soon
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-bold text-white mb-3">Pemmican Bars</h3>
+                <p className="text-white/80 text-sm leading-relaxed mb-5">
+                  Healthy vending machines for schools, stocked with locally-sourced Indigenous-inspired foods. Dried berries, pemmican, jerky, and all-natural snacks from Saskatchewan and Canadian producers.
+                </p>
+
+                {/* Feature bullets */}
+                <ul className="space-y-2 mb-6 flex-1">
+                  {[
+                    { icon: MapPin, text: 'Locally sourced from Saskatchewan & Canada' },
+                    { icon: Leaf, text: 'Traditional Indigenous-inspired nutrition' },
+                    { icon: Heart, text: 'Healthy alternative to junk food vending' },
+                    { icon: Users, text: 'Supports local farmers & Indigenous producers' },
+                    { icon: Sparkles, text: 'Part of the complete WolfWhale ecosystem' },
+                  ].map(({ icon: Icon, text }) => (
+                    <li key={text} className="flex items-center gap-2 text-white/75 text-sm">
+                      <Icon className="h-4 w-4 text-[#D97706] shrink-0" />
+                      {text}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Button */}
+                <div className="flex gap-3">
+                  <Link
+                    href="/pemmican-bars"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#D97706]/10 border border-[#D97706]/25 text-[#D97706] text-sm font-semibold hover:bg-[#D97706]/20 transition-all hover:scale-105"
                   >
                     Learn More
                   </Link>
