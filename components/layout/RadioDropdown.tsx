@@ -147,7 +147,7 @@ export function RadioDropdown() {
         className={cn(
           'relative flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200',
           isPlaying
-            ? 'bg-[#33FF33]/15 text-[#33FF33] border border-[#33FF33]/30'
+            ? 'bg-[#059669]/15 text-[#059669] dark:bg-[#33FF33]/15 dark:text-[#33FF33] border border-[#059669]/30 dark:border-[#33FF33]/30'
             : 'text-foreground/60 hover:text-foreground hover:bg-foreground/5 border border-transparent',
         )}
         aria-label="Radio player"

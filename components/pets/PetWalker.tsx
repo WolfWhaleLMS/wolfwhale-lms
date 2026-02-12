@@ -12,7 +12,7 @@ export interface PetData {
 
 // Placeholder emojis — will be replaced with pixel art sprites
 const CREATURE_EMOJI: Record<number, string> = {
-  1: '🦖', 2: '🦖', 3: '🦖', 4: '🦖', 5: '🦖', 6: '🦖', 7: '🦖',
+  1: '🦖', 2: '🐙', 3: '🦊', 4: '🐢', 5: '🦋', 6: '🐳', 7: '🦜',
 }
 
 export interface PetState {
