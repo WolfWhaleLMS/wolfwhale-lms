@@ -64,12 +64,12 @@ export function RadioDropdown() {
   const panel = open ? createPortal(
     <div
       ref={panelRef}
-      className="fixed w-72 rounded-2xl border border-[#00BFFF]/25 bg-[hsl(210,40%,12%)] dark:bg-[hsl(210,40%,8%)] backdrop-blur-xl p-4 shadow-2xl animate-glass-pop-in"
+      className="fixed w-72 rounded-2xl border border-[#00BFFF]/25 bg-white dark:bg-[hsl(210,40%,10%)] backdrop-blur-xl p-4 shadow-2xl animate-glass-pop-in"
       style={{ top: pos.top, right: pos.right, zIndex: 99999 }}
     >
       {/* Header + controls */}
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-bold text-white">WolfWhale Radio</h3>
+        <h3 className="text-sm font-bold text-foreground">WolfWhale Radio</h3>
         <div className="flex items-center gap-1">
           <button
             onClick={toggle}
@@ -102,14 +102,14 @@ export function RadioDropdown() {
               'w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-all duration-200',
               i === trackIndex
                 ? 'bg-[#00BFFF]/15 border border-[#00BFFF]/30'
-                : 'hover:bg-white/5 border border-transparent',
+                : 'hover:bg-foreground/5 border border-transparent',
             )}
           >
             <span className="text-lg">{track.icon}</span>
             <span
               className={cn(
                 'text-sm font-medium',
-                i === trackIndex ? 'text-[#00BFFF]' : 'text-white/70',
+                i === trackIndex ? 'text-[#00BFFF]' : 'text-foreground/70',
               )}
             >
               {track.name}
@@ -123,7 +123,7 @@ export function RadioDropdown() {
 
       {/* Volume slider */}
       <div className="mt-3 flex items-center gap-2 px-1">
-        <Volume2 className="h-3.5 w-3.5 text-white/40 flex-shrink-0" />
+        <Volume2 className="h-3.5 w-3.5 text-foreground/40 flex-shrink-0" />
         <input
           type="range"
           min={0}
