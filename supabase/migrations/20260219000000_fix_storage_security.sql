@@ -22,7 +22,7 @@ CREATE POLICY "course_materials_teacher_insert"
       SELECT 1 FROM tenant_memberships
       WHERE tenant_memberships.user_id = auth.uid()
       AND tenant_memberships.role IN ('teacher', 'admin', 'super_admin')
-      AND tenant_memberships.is_active = true
+      AND tenant_memberships.status = 'active'
     )
   );
 

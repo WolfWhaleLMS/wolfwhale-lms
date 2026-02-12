@@ -22,9 +22,8 @@ CREATE INDEX IF NOT EXISTS idx_xp_tx_dedup ON xp_transactions(tenant_id, student
 -- This IF NOT EXISTS will be a no-op since the index name already exists.
 CREATE UNIQUE INDEX IF NOT EXISTS idx_cc_code ON class_codes(code);
 
--- lesson_progress: queried by (lesson_id, user_id) and (course_id, user_id)
+-- lesson_progress: queried by (lesson_id, user_id)
 CREATE INDEX IF NOT EXISTS idx_lp_lesson_user ON lesson_progress(lesson_id, user_id);
-CREATE INDEX IF NOT EXISTS idx_lp_course_user ON lesson_progress(course_id, user_id);
 
 -- conversation_members: queried by conversation_id in RLS policies and messaging
 CREATE INDEX IF NOT EXISTS idx_cm_conversation ON conversation_members(conversation_id);
