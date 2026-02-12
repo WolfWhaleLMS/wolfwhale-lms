@@ -303,7 +303,7 @@ export default function EdTechHubPage() {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
               {/* Product 1: WolfWhale LMS */}
-              <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#00BFFF]/20 shadow-xl rounded-2xl p-5 sm:p-8 group hover:neon-border-blue transition-all flex flex-col">
+              <div className="bg-white/10 backdrop-blur-xl border border-[#00BFFF]/25 shadow-xl shadow-[#00BFFF]/5 rounded-2xl p-5 sm:p-8 group hover:neon-border-blue hover:bg-white/15 transition-all flex flex-col">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="inline-flex p-3 rounded-xl bg-[#00BFFF]/15 border border-[#00BFFF]/25 group-hover:bg-[#00BFFF]/25 transition-colors">
@@ -353,7 +353,7 @@ export default function EdTechHubPage() {
               </div>
 
               {/* Product 2: AI Consulting — Live */}
-              <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#A78BFA]/20 shadow-xl rounded-2xl p-5 sm:p-8 group hover:neon-border-purple transition-all flex flex-col">
+              <div className="bg-white/10 backdrop-blur-xl border border-[#A78BFA]/25 shadow-xl shadow-[#A78BFA]/5 rounded-2xl p-5 sm:p-8 group hover:neon-border-purple hover:bg-white/15 transition-all flex flex-col">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="inline-flex p-3 rounded-xl bg-[#A78BFA]/15 border border-[#A78BFA]/25 group-hover:bg-[#A78BFA]/25 transition-colors">
@@ -402,7 +402,7 @@ export default function EdTechHubPage() {
               </div>
 
               {/* Product 3: Cerebus — Coming Soon */}
-              <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#FF4444]/20 shadow-xl rounded-2xl p-5 sm:p-8 group transition-all opacity-70 flex flex-col">
+              <div className="bg-white/10 backdrop-blur-xl border border-[#FF4444]/25 shadow-xl shadow-[#FF4444]/5 rounded-2xl p-5 sm:p-8 group transition-all opacity-70 flex flex-col">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="inline-flex p-3 rounded-xl bg-[#FF4444]/15 border border-[#FF4444]/25">
@@ -451,7 +451,7 @@ export default function EdTechHubPage() {
         {/* About Section */}
         <section id="about" className="px-4 py-12 sm:py-20">
           <div className="max-w-3xl mx-auto">
-            <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#00BFFF]/20 shadow-xl rounded-2xl p-5 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
+            <div className="bg-white/10 backdrop-blur-xl border border-[#00BFFF]/25 shadow-xl shadow-[#00BFFF]/5 rounded-2xl p-5 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white text-glow-blue tracking-wider">
                 ABOUT WOLFWHALE EDTECH
               </h2>
