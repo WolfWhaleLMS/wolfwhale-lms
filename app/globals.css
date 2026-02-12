@@ -2180,6 +2180,7 @@ body::before {
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
+  /* ── Global: kill all animations and transitions ── */
   *,
   *::before,
   *::after {
@@ -2187,6 +2188,118 @@ body::before {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* ── Liquid glass surfaces: replace blur with solid semi-transparent bg ── */
+  .liquid-glass,
+  .liquid-glass-elevated,
+  .liquid-glass-heavy,
+  .liquid-glass-subtle {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .liquid-glass {
+    background: rgba(255, 255, 255, 0.92) !important;
+  }
+
+  .liquid-glass-elevated {
+    background: rgba(255, 255, 255, 0.96) !important;
+  }
+
+  .liquid-glass-heavy {
+    background: rgba(255, 255, 255, 0.94) !important;
+  }
+
+  .liquid-glass-subtle {
+    background: rgba(255, 255, 255, 0.88) !important;
+  }
+
+  .dark .liquid-glass {
+    background: rgba(0, 40, 80, 0.92) !important;
+  }
+
+  .dark .liquid-glass-elevated {
+    background: rgba(0, 50, 100, 0.96) !important;
+  }
+
+  .dark .liquid-glass-heavy {
+    background: rgba(0, 35, 70, 0.94) !important;
+  }
+
+  .dark .liquid-glass-subtle {
+    background: rgba(0, 40, 80, 0.88) !important;
+  }
+
+  /* ── Glass panels: replace blur with solid backgrounds ── */
+  .glass-panel,
+  .glass-panel-strong,
+  .glass-panel-ocean,
+  .glass-panel-light,
+  .glass-card,
+  .glass-card-light {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.94) !important;
+  }
+
+  .glass-panel-strong {
+    background: rgba(255, 255, 255, 0.96) !important;
+  }
+
+  .glass-panel-light {
+    background: rgba(255, 255, 255, 0.88) !important;
+  }
+
+  .dark .glass-panel {
+    background: rgba(0, 40, 80, 0.94) !important;
+  }
+
+  .dark .glass-panel-strong {
+    background: rgba(0, 30, 60, 0.96) !important;
+  }
+
+  /* ── Ocean cards: remove blur ── */
+  .ocean-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+  }
+
+  .dark .ocean-card {
+    background: rgba(0, 40, 80, 0.92) !important;
+  }
+
+  /* ── Stop infinite animations explicitly ── */
+  .neon-pulse-blue,
+  .neon-pulse-green,
+  .neon-pulse-cyan,
+  .neon-pulse,
+  .animate-blob-drift,
+  .animate-float,
+  .animate-shimmer,
+  .animate-pulse-soft,
+  .animate-ocean-wave,
+  .bubble-float,
+  .orb-float,
+  .glass-reflection,
+  .chrome-shine::after,
+  .chrome-surface::after,
+  .sidebar-chrome-tab-active::before,
+  .glow-animate {
+    animation: none !important;
+  }
+
+  /* ── Remove hover transforms that cause motion ── */
+  .ocean-card:hover,
+  .glass-card:hover,
+  .glass-card-light:hover,
+  .liquid-glass-hover:hover,
+  .hover-lift:hover {
+    transform: none !important;
   }
 }
 

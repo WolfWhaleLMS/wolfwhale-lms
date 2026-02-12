@@ -1,11 +1,9 @@
 'use server'
 
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
-import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { rateLimitAction } from '@/lib/rate-limit-action'
 import { TOKEN_DAILY_CAP } from '@/lib/plaza/constants'
+import { getAdminActionContext } from '@/lib/actions/context'
 import type {
   StoreItem,
   InventoryItem,
@@ -17,27 +15,12 @@ import type {
 } from '@/lib/plaza/types'
 
 // ---------------------------------------------------------------------------
-// Context helper
-// ---------------------------------------------------------------------------
-
-async function getContext() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-  const admin = createAdminClient()
-  return { admin, user, tenantId }
-}
-
-// ---------------------------------------------------------------------------
 // Store Items
 // ---------------------------------------------------------------------------
 
 /** Get all available items in the store (with owned/equipped status) */
 export async function getStoreItems(category?: string): Promise<StoreItem[]> {
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getAdminActionContext()
 
   // Get user's avatar for level check and balance
   const { data: avatar } = await admin
@@ -114,7 +97,7 @@ export async function purchaseItem(itemId: string): Promise<PurchaseResult> {
   const rl = await rateLimitAction('purchaseItem')
   if (!rl.success) return { success: false, error: rl.error }
 
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getAdminActionContext()
 
   // Get item details
   const { data: item, error: itemError } = await admin
@@ -276,7 +259,7 @@ export async function purchaseItem(itemId: string): Promise<PurchaseResult> {
 
 /** Equip an owned item */
 export async function equipItem(itemId: string): Promise<void> {
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getAdminActionContext()
 
   // Get the item from inventory
   const { data: invItem, error: invError } = await admin
@@ -344,7 +327,7 @@ export async function equipItem(itemId: string): Promise<void> {
 
 /** Unequip an item from a slot */
 export async function unequipItem(slot: string): Promise<void> {
-  const { admin, user } = await getContext()
+  const { admin, user } = await getAdminActionContext()
 
   // Get all equipped items in this slot
   const { data: equippedItems } = await admin
@@ -384,7 +367,7 @@ export async function unequipItem(slot: string): Promise<void> {
 
 /** Get user's inventory */
 export async function getInventory(): Promise<InventoryItem[]> {
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getAdminActionContext()
 
   const { data, error } = await admin
     .from('plaza_avatar_inventory')
@@ -435,7 +418,7 @@ export async function getInventory(): Promise<InventoryItem[]> {
 
 /** Get token balance and recent transaction history */
 export async function getTokenInfo(): Promise<TokenInfo> {
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getAdminActionContext()
 
   // Get avatar balance
   const { data: avatar } = await admin
@@ -495,7 +478,7 @@ export async function awardTokens(
   const rl = await rateLimitAction('awardTokens')
   if (!rl.success) throw new Error(rl.error)
 
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getAdminActionContext()
 
   if (amount <= 0) throw new Error('Amount must be positive.')
 
@@ -584,7 +567,7 @@ export async function getTokenLeaderboard(
   period: 'weekly' | 'monthly' | 'all_time' = 'weekly',
   limit: number = 25
 ): Promise<LeaderboardEntry[]> {
-  const { admin, tenantId } = await getContext()
+  const { admin, tenantId } = await getAdminActionContext()
   const safeLimit = Math.min(Math.max(1, limit), 100)
 
   if (period === 'all_time') {

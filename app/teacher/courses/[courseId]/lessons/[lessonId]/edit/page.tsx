@@ -699,7 +699,7 @@ function QuizBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (
         <Label>Answer Options</Label>
         <div className="mt-2 space-y-2">
           {options.map((option: string, index: number) => (
-            <div key={index} className="flex gap-2 items-center">
+            <div key={`${block.id}-opt-${index}`} className="flex gap-2 items-center">
               <div className="flex-1 flex gap-2 items-center">
                 <Button
                   type="button"
@@ -1570,7 +1570,7 @@ export default function LessonEditorPage() {
               </div>
               <div className="space-y-2">
                 {learningObjectives.map((objective, index) => (
-                  <div key={index} className="flex gap-2">
+                  <div key={`lo-${index}`} className="flex gap-2">
                     <Input
                       value={objective}
                       onChange={(e) => updateLearningObjective(index, e.target.value)}

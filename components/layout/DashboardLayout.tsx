@@ -6,7 +6,12 @@ import { TopBar } from './TopBar'
 import type { UserRole } from '@/lib/auth/permissions'
 import { PixelPetBar } from '@/components/pets/PixelPetBar'
 import type { PetData } from '@/components/pets/PetWalker'
-import TutorWidget from '@/components/tutor/TutorWidget'
+import dynamic from 'next/dynamic'
+
+const TutorWidget = dynamic(() => import('@/components/tutor/TutorWidget'), {
+  ssr: false,
+  loading: () => null,
+})
 import { OfflineStatusBar } from './OfflineStatusBar'
 import { useAutoSync } from '@/lib/offline/hooks'
 

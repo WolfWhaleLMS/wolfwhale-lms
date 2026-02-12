@@ -535,13 +535,13 @@ function renderMarkdown(text: string) {
       const items = lines.filter((l) => l.startsWith('\u2022'))
 
       return (
-        <div key={pIdx} className="mb-4">
+        <div key={`p-${pIdx}`} className="mb-4">
           {intro && (
             <p className="mb-2 text-[#0A2540]/70" dangerouslySetInnerHTML={{ __html: formatInline(intro) }} />
           )}
           <ul className="space-y-1.5 ml-1">
             {items.map((item, iIdx) => (
-              <li key={iIdx} className="flex items-start gap-2 text-[#0A2540]/70">
+              <li key={`p-${pIdx}-li-${iIdx}`} className="flex items-start gap-2 text-[#0A2540]/70">
                 <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#00BFFF] flex-shrink-0" />
                 <span dangerouslySetInnerHTML={{ __html: formatInline(item.slice(2)) }} />
               </li>
@@ -555,9 +555,9 @@ function renderMarkdown(text: string) {
     if (paragraph.startsWith('\u2022')) {
       const items = paragraph.split('\n').filter(Boolean)
       return (
-        <ul key={pIdx} className="space-y-1.5 ml-1 mb-4">
+        <ul key={`p-${pIdx}`} className="space-y-1.5 ml-1 mb-4">
           {items.map((item, iIdx) => (
-            <li key={iIdx} className="flex items-start gap-2 text-[#0A2540]/70">
+            <li key={`p-${pIdx}-li-${iIdx}`} className="flex items-start gap-2 text-[#0A2540]/70">
               <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#00BFFF] flex-shrink-0" />
               <span dangerouslySetInnerHTML={{ __html: formatInline(item.slice(2)) }} />
             </li>
@@ -569,7 +569,7 @@ function renderMarkdown(text: string) {
     // Regular paragraph
     return (
       <p
-        key={pIdx}
+        key={`p-${pIdx}`}
         className="mb-4 text-[#0A2540]/70 leading-relaxed"
         dangerouslySetInnerHTML={{ __html: formatInline(paragraph) }}
       />
@@ -691,8 +691,8 @@ export default function TermsOfServicePage() {
             {lang === 'en' ? 'Table of Contents' : 'Table des mati\u00e8res'}
           </h2>
           <ol className="space-y-1.5">
-            {t.sections.map((section, idx) => (
-              <li key={idx}>
+            {t.sections.map((section) => (
+              <li key={`toc-${section.id}`}>
                 <a
                   href={`#${section.id}`}
                   className="text-sm text-[#0A2540]/70 hover:text-[#00BFFF] transition-colors block py-0.5"
@@ -706,8 +706,8 @@ export default function TermsOfServicePage() {
 
         {/* Sections */}
         <div className="space-y-10 sm:space-y-12">
-          {t.sections.map((section, idx) => (
-            <section key={idx} id={section.id} className="scroll-mt-24">
+          {t.sections.map((section) => (
+            <section key={section.id} id={section.id} className="scroll-mt-24">
               <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5 text-[#0A2540] border-b border-[#0A2540]/10 pb-3">
                 {section.heading}
               </h2>

@@ -1,19 +1,8 @@
 'use server'
 
 import { z } from 'zod'
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { rateLimitAction } from '@/lib/rate-limit-action'
-
-async function getContext() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-  return { supabase, user, tenantId }
-}
+import { getActionContext } from '@/lib/actions/context'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -58,7 +47,7 @@ export interface SkillConnection {
 // ---------------------------------------------------------------------------
 
 export async function getStudentSkillTrees(): Promise<SkillTree[]> {
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Get all published skill trees for this tenant
   const { data: trees, error } = await supabase
@@ -113,7 +102,7 @@ export async function getSkillTreeDetail(treeId: string) {
   const parsed = z.object({ treeId: z.string().uuid() }).safeParse({ treeId })
   if (!parsed.success) throw new Error('Invalid input')
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Fetch tree, nodes, connections, and progress in parallel
   const [treeResult, nodesResult, connectionsResult, progressResult] = await Promise.all([

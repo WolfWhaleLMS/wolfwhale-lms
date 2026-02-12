@@ -1,27 +1,16 @@
 'use server'
 
 import { z } from 'zod'
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { sanitizeText, sanitizeRichText } from '@/lib/sanitize'
 import { rateLimitAction } from '@/lib/rate-limit-action'
-
-async function getContext() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-  return { supabase, user, tenantId }
-}
+import { getActionContext } from '@/lib/actions/context'
 
 export async function getAnnouncements(courseId?: string) {
   const parsed = z.object({ courseId: z.string().uuid().optional() }).safeParse({ courseId })
   if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
 
-  const { supabase, tenantId } = await getContext()
+  const { supabase, tenantId } = await getActionContext()
 
   let query = supabase
     .from('announcements')
@@ -63,7 +52,7 @@ export async function createAnnouncement(formData: {
   const sanitizedTitle = sanitizeText(parsed.data.title)
   const sanitizedContent = sanitizeRichText(parsed.data.content)
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Only teachers, admins, and super_admins can create announcements
   const { data: membership } = await supabase
@@ -100,7 +89,7 @@ export async function deleteAnnouncement(announcementId: string) {
   const parsed = z.object({ announcementId: z.string().uuid() }).safeParse({ announcementId })
   if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
 
-  const { supabase, user } = await getContext()
+  const { supabase, user } = await getActionContext()
 
   const { error } = await supabase
     .from('announcements')
@@ -119,7 +108,7 @@ export async function togglePinAnnouncement(announcementId: string, pinned: bool
   }).safeParse({ announcementId, pinned })
   if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Fetch the announcement to check ownership and tenant
   const { data: announcement } = await supabase

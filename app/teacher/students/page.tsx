@@ -11,13 +11,13 @@ import {
 
 export default async function TeacherAllStudentsPage() {
   const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const [{ data: { user } }, headersList] = await Promise.all([
+    supabase.auth.getUser(),
+    headers(),
+  ])
 
   if (!user) redirect('/login')
 
-  const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
 
   if (!tenantId) {

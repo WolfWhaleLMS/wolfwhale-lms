@@ -221,7 +221,7 @@ function GradingPanel({
               <div className="space-y-2">
                 {submission.file_urls.map((url, i) => (
                   <a
-                    key={i}
+                    key={`${submission.id}-file-${i}`}
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -494,7 +494,7 @@ export default function TeacherSubmissionsPage() {
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="ocean-card animate-pulse rounded-2xl p-5 text-center">
+            <div key={`stat-skeleton-${i}`} className="ocean-card animate-pulse rounded-2xl p-5 text-center">
               <div className="mx-auto h-8 w-12 rounded bg-muted" />
               <div className="mx-auto mt-2 h-3 w-20 rounded bg-muted" />
             </div>
@@ -502,7 +502,7 @@ export default function TeacherSubmissionsPage() {
         </div>
         <div className="ocean-card animate-pulse rounded-2xl p-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="flex items-center gap-4 py-4">
+            <div key={`row-skeleton-${i}`} className="flex items-center gap-4 py-4">
               <div className="h-10 w-10 rounded-full bg-muted" />
               <div className="flex-1">
                 <div className="h-4 w-32 rounded bg-muted" />

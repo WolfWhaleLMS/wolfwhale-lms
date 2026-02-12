@@ -198,10 +198,12 @@ export default function StudentLessonViewerPage({
       return (
         <div className="space-y-4">
           {content.map((block: any, index: number) => {
+            const blockKey = block.id || `block-${index}`
+
             if (typeof block === 'string') {
               return (
                 <div
-                  key={index}
+                  key={blockKey}
                   className="prose prose-slate dark:prose-invert max-w-none"
                   dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(block) }}
                 />
@@ -216,7 +218,7 @@ export default function StudentLessonViewerPage({
                 const sizeClass = level === 3 ? 'text-lg' : level === 4 ? 'text-base' : 'text-xl'
                 return (
                   <Tag
-                    key={index}
+                    key={blockKey}
                     className={`${sizeClass} font-bold text-foreground`}
                   >
                     {text}
@@ -227,7 +229,7 @@ export default function StudentLessonViewerPage({
               case 'text':
                 return (
                   <div
-                    key={index}
+                    key={blockKey}
                     className="prose prose-slate dark:prose-invert max-w-none"
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(d(block, 'text') || d(block, 'content') || ''),
@@ -239,7 +241,7 @@ export default function StudentLessonViewerPage({
                 const alt = d(block, 'alt') || d(block, 'caption') || 'Lesson image'
                 const caption = d(block, 'caption')
                 return (
-                  <figure key={index} className="my-4">
+                  <figure key={blockKey} className="my-4">
                     <img
                       src={url}
                       alt={alt}
@@ -272,7 +274,7 @@ export default function StudentLessonViewerPage({
                 const isYouTube = videoSource === 'youtube' || ytVideoId
 
                 return (
-                  <div key={index} className="my-4">
+                  <div key={blockKey} className="my-4">
                     {videoTitle && d(block, 'title') && (
                       <p className="mb-2 text-sm font-medium text-foreground">{videoTitle}</p>
                     )}
@@ -312,7 +314,7 @@ export default function StudentLessonViewerPage({
                 const size = d(block, 'size')
                 return (
                   <a
-                    key={index}
+                    key={blockKey}
                     href={fileUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -336,19 +338,19 @@ export default function StudentLessonViewerPage({
               case 'divider':
                 return (
                   <hr
-                    key={index}
+                    key={blockKey}
                     className="my-6 border-t-2 border-border"
                   />
                 )
               case 'list':
                 return (
                   <ul
-                    key={index}
+                    key={blockKey}
                     className="list-disc space-y-1 pl-6 text-foreground"
                   >
                     {(block.items || []).map(
                       (item: string, i: number) => (
-                        <li key={i}>{item}</li>
+                        <li key={`${blockKey}-item-${i}`}>{item}</li>
                       )
                     )}
                   </ul>
@@ -367,7 +369,7 @@ export default function StudentLessonViewerPage({
                     : 'border-primary bg-primary/5'
                 return (
                   <div
-                    key={index}
+                    key={blockKey}
                     className={`rounded-lg border-l-4 p-4 ${variantStyles}`}
                   >
                     <div
@@ -382,14 +384,14 @@ export default function StudentLessonViewerPage({
                 const options = d(block, 'options') || []
                 return (
                   <div
-                    key={index}
+                    key={blockKey}
                     className="rounded-lg border border-border p-4 space-y-3"
                   >
                     <p className="font-medium text-foreground">{question}</p>
                     <div className="space-y-2">
                       {options.map((option: string, i: number) => (
                         <div
-                          key={i}
+                          key={`${blockKey}-opt-${i}`}
                           className="flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm"
                         >
                           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium">
@@ -408,7 +410,7 @@ export default function StudentLessonViewerPage({
                 const linkDesc = d(block, 'description')
                 return (
                   <a
-                    key={index}
+                    key={blockKey}
                     href={linkUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -440,7 +442,7 @@ export default function StudentLessonViewerPage({
                 const pageCount = d(block, 'pageCount')
                 return (
                   <div
-                    key={index}
+                    key={blockKey}
                     className="rounded-lg border border-border overflow-hidden"
                   >
                     <div className="bg-muted/50 px-4 py-3 flex items-center justify-between border-b border-border">
@@ -494,7 +496,7 @@ export default function StudentLessonViewerPage({
                 const docType = d(block, 'fileType')
                 return (
                   <a
-                    key={index}
+                    key={blockKey}
                     href={docUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -526,7 +528,7 @@ export default function StudentLessonViewerPage({
                 const toolSlug = d(block, 'toolSlug')
                 if (!toolSlug) {
                   return (
-                    <div key={index} className="rounded-lg border border-border p-4 text-center text-sm text-muted-foreground">
+                    <div key={blockKey} className="rounded-lg border border-border p-4 text-center text-sm text-muted-foreground">
                       <Gamepad2 className="mx-auto mb-2 h-6 w-6 opacity-40" />
                       No tool selected
                     </div>
@@ -535,19 +537,19 @@ export default function StudentLessonViewerPage({
                 const tool = getToolBySlug(toolSlug)
                 if (!tool) {
                   return (
-                    <div key={index} className="rounded-lg border border-border p-4 text-center text-sm text-muted-foreground">
+                    <div key={blockKey} className="rounded-lg border border-border p-4 text-center text-sm text-muted-foreground">
                       <Gamepad2 className="mx-auto mb-2 h-6 w-6 opacity-40" />
                       Tool not found
                     </div>
                   )
                 }
-                return <ToolCard key={index} tool={tool} variant="lesson-embed" />
+                return <ToolCard key={blockKey} tool={tool} variant="lesson-embed" />
               }
               default:
                 if (d(block, 'text') || d(block, 'content')) {
                   return (
                     <div
-                      key={index}
+                      key={blockKey}
                       className="prose prose-slate dark:prose-invert max-w-none"
                       dangerouslySetInnerHTML={{
                         __html: DOMPurify.sanitize(d(block, 'text') || d(block, 'content') || ''),
@@ -674,7 +676,7 @@ export default function StudentLessonViewerPage({
               {lessonData.learning_objectives.map(
                 (objective: string, index: number) => (
                   <li
-                    key={index}
+                    key={`objective-${index}`}
                     className="flex items-start gap-2 text-sm text-foreground"
                   >
                     <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">

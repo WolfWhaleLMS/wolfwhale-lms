@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Loader2, AlertCircle, User, Lock, GraduationCap, BookOpen, Users, Shield } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
+import { loginUser } from '@/app/actions/auth'
 import { demoLogin } from '@/app/actions/demo-auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -77,15 +77,15 @@ export function LoginForm() {
       return
     }
 
-    const supabase = createClient()
     const email = data.email.includes('@') ? data.email : `${data.email}@wolfwhale.ca`
-    const { error } = await supabase.auth.signInWithPassword({
+    const result = await loginUser({
       email,
       password: data.password,
+      turnstileToken: turnstileToken ?? undefined,
     })
 
-    if (error) {
-      setError(error.message)
+    if (result.error) {
+      setError(result.error)
       setIsLoading(false)
       return
     }

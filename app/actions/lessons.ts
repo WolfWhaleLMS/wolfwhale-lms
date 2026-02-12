@@ -107,20 +107,20 @@ export async function getLesson(lessonId: string) {
     return null
   }
 
-  // Get attachments
-  const { data: attachments } = await supabase
-    .from('lesson_attachments')
-    .select('*')
-    .eq('lesson_id', lessonId)
-    .order('order_index', { ascending: true })
-
-  // Get progress for this user
-  const { data: progress } = await supabase
-    .from('lesson_progress')
-    .select('*')
-    .eq('lesson_id', lessonId)
-    .eq('user_id', user.id)
-    .maybeSingle()
+  // Get attachments and progress in parallel (both independent)
+  const [{ data: attachments }, { data: progress }] = await Promise.all([
+    supabase
+      .from('lesson_attachments')
+      .select('*')
+      .eq('lesson_id', lessonId)
+      .order('order_index', { ascending: true }),
+    supabase
+      .from('lesson_progress')
+      .select('*')
+      .eq('lesson_id', lessonId)
+      .eq('user_id', user.id)
+      .maybeSingle(),
+  ])
 
   return {
     ...lesson,
@@ -153,30 +153,29 @@ export async function getLessonWithNavigation(lessonId: string, courseId: string
     return null
   }
 
-  const { data: allLessons } = await supabase
-    .from('lessons')
-    .select('id, title, order_index, status')
-    .eq('course_id', courseId)
-    .eq('tenant_id', tenantId)
-    .order('order_index', { ascending: true })
+  // Fetch navigation list, attachments, and progress in parallel (all independent)
+  const [{ data: allLessons }, { data: attachments }, { data: progress }] = await Promise.all([
+    supabase
+      .from('lessons')
+      .select('id, title, order_index, status')
+      .eq('course_id', courseId)
+      .eq('tenant_id', tenantId)
+      .order('order_index', { ascending: true }),
+    supabase
+      .from('lesson_attachments')
+      .select('*')
+      .eq('lesson_id', lessonId)
+      .order('order_index', { ascending: true }),
+    supabase
+      .from('lesson_progress')
+      .select('*')
+      .eq('lesson_id', lessonId)
+      .eq('user_id', user.id)
+      .maybeSingle(),
+  ])
 
   const lessonList = allLessons || []
   const currentIndex = lessonList.findIndex((l) => l.id === lessonId)
-
-  // Get attachments
-  const { data: attachments } = await supabase
-    .from('lesson_attachments')
-    .select('*')
-    .eq('lesson_id', lessonId)
-    .order('order_index', { ascending: true })
-
-  // Get progress
-  const { data: progress } = await supabase
-    .from('lesson_progress')
-    .select('*')
-    .eq('lesson_id', lessonId)
-    .eq('user_id', user.id)
-    .maybeSingle()
 
   return {
     ...lesson,

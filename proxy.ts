@@ -215,7 +215,7 @@ export async function proxy(request: NextRequest) {
         getAll() {
           return request.cookies.getAll()
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) {
           // Always write to the *current* response reference. This is
           // critical because we may swap `response` after the Supabase
           // client is created (see step 6 below).

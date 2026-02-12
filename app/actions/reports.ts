@@ -1,17 +1,13 @@
 'use server'
 
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { getLetterGrade } from '@/lib/config/constants'
 import { rateLimitAction } from '@/lib/rate-limit-action'
+import { getActionContext } from '@/lib/actions/context'
 
-async function getContext() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
+/** Extends base context with DB-verified membership role for reports authorization. */
+async function getReportsContext() {
+  const ctx = await getActionContext()
+  const { supabase, user, tenantId } = ctx
 
   const { data: membership } = await supabase
     .from('tenant_memberships')
@@ -21,14 +17,14 @@ async function getContext() {
     .eq('status', 'active')
     .single()
 
-  return { supabase, user, tenantId, role: membership?.role ?? 'student' }
+  return { ...ctx, role: membership?.role ?? 'student' }
 }
 
 // ---------------------------------------------------------------------------
 // Teacher: Class report for a course
 // ---------------------------------------------------------------------------
 export async function getTeacherClassReport(courseId: string) {
-  const { supabase, user, tenantId, role } = await getContext()
+  const { supabase, user, tenantId, role } = await getReportsContext()
 
   if (!['teacher', 'admin', 'super_admin'].includes(role)) {
     throw new Error('Not authorized')
@@ -115,7 +111,7 @@ export async function getTeacherClassReport(courseId: string) {
 // Admin: School-wide report
 // ---------------------------------------------------------------------------
 export async function getAdminSchoolReport() {
-  const { supabase, tenantId, role } = await getContext()
+  const { supabase, tenantId, role } = await getReportsContext()
 
   if (!['admin', 'super_admin'].includes(role)) {
     throw new Error('Not authorized')
@@ -199,7 +195,7 @@ export async function getAdminSchoolReport() {
 // Parent: Progress report for their child
 // ---------------------------------------------------------------------------
 export async function getParentProgressReport(studentId: string) {
-  const { supabase, user, tenantId, role } = await getContext()
+  const { supabase, user, tenantId, role } = await getReportsContext()
 
   if (role !== 'parent' && !['admin', 'super_admin'].includes(role)) {
     throw new Error('Not authorized')

@@ -197,7 +197,7 @@ export default function StudyPage({ params }: { params: Promise<{ deckId: string
         <div className="grid grid-cols-4 gap-2">
           {qualityLabels.map((q, i) => (
             <button
-              key={i}
+              key={q.label}
               onClick={() => handleRate(i)}
               className={`${q.color} rounded-xl px-3 py-3 text-white text-sm font-medium transition-all hover:-translate-y-0.5`}
             >

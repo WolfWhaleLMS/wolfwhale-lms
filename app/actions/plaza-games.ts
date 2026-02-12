@@ -1,11 +1,9 @@
 'use server'
 
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
-import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { rateLimitAction } from '@/lib/rate-limit-action'
 import { TOKEN_DAILY_CAP } from '@/lib/plaza/constants'
+import { getAdminActionContext } from '@/lib/actions/context'
 import type {
   MiniGame,
   GameSession,
@@ -14,21 +12,6 @@ import type {
   GameDifficulty,
   GameMode,
 } from '@/lib/plaza/types'
-
-// ---------------------------------------------------------------------------
-// Context helper
-// ---------------------------------------------------------------------------
-
-async function getContext() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-  const admin = createAdminClient()
-  return { admin, user, tenantId }
-}
 
 // ---------------------------------------------------------------------------
 // Helper: check daily token cap
@@ -63,7 +46,7 @@ async function getTokenCapRemaining(
 
 /** Get all available mini games */
 export async function getMiniGames(): Promise<MiniGame[]> {
-  const { admin, tenantId } = await getContext()
+  const { admin, tenantId } = await getAdminActionContext()
 
   const { data, error } = await admin
     .from('plaza_mini_games')
@@ -93,7 +76,7 @@ export async function createGameSession(
   const rl = await rateLimitAction('createGameSession')
   if (!rl.success) throw new Error(rl.error)
 
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getAdminActionContext()
 
   // Look up the game by slug
   const { data: game, error: gameError } = await admin
@@ -139,7 +122,7 @@ export async function createGameSession(
 
 /** Join an existing multiplayer game session */
 export async function joinGameSession(sessionId: string): Promise<GameSession> {
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getAdminActionContext()
 
   // Get the session
   const { data: session, error: fetchError } = await admin
@@ -190,7 +173,7 @@ export async function joinGameSession(sessionId: string): Promise<GameSession> {
 
 /** Start a game session (host only, transitions waiting -> in_progress) */
 export async function startGameSession(sessionId: string): Promise<void> {
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getAdminActionContext()
 
   // Verify ownership
   const { data: session, error: fetchError } = await admin
@@ -243,7 +226,7 @@ export async function submitGameScore(
   totalQuestions = Math.max(0, Math.floor(totalQuestions))
   if (correctAnswers > totalQuestions) correctAnswers = totalQuestions
 
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getAdminActionContext()
 
   // Validate session exists and is in progress
   const { data: session, error: sessionError } = await admin
@@ -460,7 +443,7 @@ export async function getGameHighScores(
   rank: number
 }>> {
   const safeLimit = Math.min(Math.max(1, limit), 100)
-  const { admin, tenantId } = await getContext()
+  const { admin, tenantId } = await getAdminActionContext()
 
   // Get game ID from slug
   const { data: game } = await admin
@@ -502,7 +485,7 @@ export async function getGameHighScores(
 
 /** Get user's personal bests across all games */
 export async function getPersonalBests(): Promise<PersonalBest[]> {
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getAdminActionContext()
 
   // Get all games
   const { data: games } = await admin

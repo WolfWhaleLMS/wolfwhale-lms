@@ -244,7 +244,10 @@ export async function createUser(formData: {
     first_name: z.string().min(1).max(100),
     last_name: z.string().min(1).max(100),
     email: z.string().email().max(255),
-    password: z.string().min(8).max(128),
+    password: z.string().min(10).max(128)
+      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+      .regex(/[0-9]/, 'Password must contain at least one digit'),
     role: z.enum(['student', 'teacher', 'parent', 'admin']),
     grade_level: z.string().max(50).optional(),
   })

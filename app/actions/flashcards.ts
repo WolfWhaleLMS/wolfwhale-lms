@@ -308,22 +308,22 @@ export async function getStudyCards(deckId: string) {
 
   const { supabase, user, tenantId } = await getActionContext()
 
-  // Get all cards in deck
-  const { data: cards } = await supabase
-    .from('flashcards')
-    .select('*')
-    .eq('deck_id', deckId)
-    .order('order_index', { ascending: true })
+  // Get cards and student progress in parallel (both independent)
+  const [{ data: cards }, { data: progress }] = await Promise.all([
+    supabase
+      .from('flashcards')
+      .select('*')
+      .eq('deck_id', deckId)
+      .order('order_index', { ascending: true }),
+    supabase
+      .from('flashcard_progress')
+      .select('*')
+      .eq('student_id', user.id)
+      .eq('deck_id', deckId)
+      .eq('tenant_id', tenantId),
+  ])
 
   if (!cards || cards.length === 0) return { cards: [], progress: {} }
-
-  // Get student progress
-  const { data: progress } = await supabase
-    .from('flashcard_progress')
-    .select('*')
-    .eq('student_id', user.id)
-    .eq('deck_id', deckId)
-    .eq('tenant_id', tenantId)
 
   const progressMap: Record<string, any> = {}
   for (const p of progress || []) {

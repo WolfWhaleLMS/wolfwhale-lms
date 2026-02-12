@@ -49,7 +49,14 @@ export function ExportButton({ pdfUrl, csvUrl, label = 'Export' }: ExportButtonP
 
       {open && (
         <>
-          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+          <button
+            type="button"
+            className="fixed inset-0 z-40 cursor-default bg-transparent border-none p-0 m-0"
+            onClick={() => setOpen(false)}
+            onKeyDown={(e) => { if (e.key === 'Escape') setOpen(false) }}
+            aria-label="Close export menu"
+            tabIndex={-1}
+          />
           <div className="absolute right-0 z-50 mt-1 w-44 rounded-lg border border-border bg-background shadow-lg">
             <button
               onClick={() => handleDownload(pdfUrl, 'pdf')}

@@ -1,13 +1,11 @@
 'use server'
 
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
-import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { rateLimitAction } from '@/lib/rate-limit-action'
 import { sanitizeText } from '@/lib/sanitize'
 import { AVATAR_DEFAULTS, TOKEN_DAILY_CAP, TOKEN_RATES } from '@/lib/plaza/constants'
+import { getFullActionContext } from '@/lib/actions/context'
 import type {
   PlazaAvatar,
   AvatarConfig,
@@ -44,23 +42,6 @@ const updateAvatarRoomSchema = z.object({
 })
 
 // ---------------------------------------------------------------------------
-// Context helper — uses anon client for auth, admin client for DB writes
-// (RLS policies on plaza tables require auth.uid() which doesn't propagate
-// reliably through server-side anon client inserts/updates)
-// ---------------------------------------------------------------------------
-
-async function getContext() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-  const admin = createAdminClient()
-  return { supabase, admin, user, tenantId }
-}
-
-// ---------------------------------------------------------------------------
 // Avatar CRUD
 // ---------------------------------------------------------------------------
 
@@ -74,7 +55,7 @@ export async function createAvatar(displayName: string): Promise<PlazaAvatar> {
   const safeName = sanitizeText(parsed.data.displayName).slice(0, 50)
   if (!safeName) throw new Error('Display name cannot be empty')
 
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getFullActionContext()
 
   // Check if avatar already exists
   const { data: existing } = await admin
@@ -124,7 +105,7 @@ export async function createAvatar(displayName: string): Promise<PlazaAvatar> {
 
 /** Get avatar data for current user */
 export async function getMyAvatar(): Promise<PlazaAvatar | null> {
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getFullActionContext()
 
   const { data } = await admin
     .from('plaza_avatars')
@@ -144,7 +125,7 @@ export async function updateAvatarConfig(config: AvatarConfig): Promise<PlazaAva
   const parsed = avatarConfigSchema.safeParse(config)
   if (!parsed.success) throw new Error('Invalid avatar configuration')
 
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getFullActionContext()
 
   const { data, error } = await admin
     .from('plaza_avatars')
@@ -175,7 +156,7 @@ export async function updateAvatarRoom(
   const parsed = updateAvatarRoomSchema.safeParse({ roomSlug, x, y })
   if (!parsed.success) throw new Error('Invalid room or position data')
 
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getFullActionContext()
 
   const { error } = await admin
     .from('plaza_avatars')
@@ -196,7 +177,7 @@ export async function updateAvatarRoom(
 
 /** Set avatar online/offline status */
 export async function setAvatarOnlineStatus(isOnline: boolean): Promise<void> {
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getFullActionContext()
 
   const { error } = await admin
     .from('plaza_avatars')
@@ -215,7 +196,7 @@ export async function setAvatarOnlineStatus(isOnline: boolean): Promise<void> {
 
 /** Get all online avatars in a room */
 export async function getRoomAvatars(roomSlug: string): Promise<PlazaAvatar[]> {
-  const { admin, tenantId } = await getContext()
+  const { admin, tenantId } = await getFullActionContext()
 
   const { data, error } = await admin
     .from('plaza_avatars')
@@ -238,7 +219,7 @@ export async function getRoomAvatars(roomSlug: string): Promise<PlazaAvatar[]> {
 
 /** Get all available rooms with occupant counts */
 export async function getPlazaRooms(): Promise<RoomInfo[]> {
-  const { admin, tenantId } = await getContext()
+  const { admin, tenantId } = await getFullActionContext()
 
   // Get rooms accessible to this tenant (global + tenant-specific)
   const { data: rooms, error } = await admin
@@ -281,7 +262,7 @@ export async function getPlazaRooms(): Promise<RoomInfo[]> {
 
 /** Get room data (map config, buildings, decorations) */
 export async function getRoomData(roomSlug: string): Promise<RoomData> {
-  const { admin, tenantId } = await getContext()
+  const { admin, tenantId } = await getFullActionContext()
 
   const { data, error } = await admin
     .from('plaza_rooms')
@@ -302,7 +283,7 @@ export async function getRoomData(roomSlug: string): Promise<RoomData> {
 
 /** Get all available chat phrases */
 export async function getChatPhrases(): Promise<ChatPhrase[]> {
-  const { admin, tenantId } = await getContext()
+  const { admin, tenantId } = await getFullActionContext()
 
   const { data, error } = await admin
     .from('plaza_chat_phrases')
@@ -328,7 +309,7 @@ export async function recordDailyLogin(): Promise<DailyLoginResult> {
   const rl = await rateLimitAction('recordDailyLogin')
   if (!rl.success) throw new Error(rl.error)
 
-  const { admin, user, tenantId } = await getContext()
+  const { admin, user, tenantId } = await getFullActionContext()
 
   // Get current avatar
   const { data: avatar } = await admin

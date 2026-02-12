@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 
 // ---------------------------------------------------------------------------
 // All rays fan outward from a single source point at top-center (50%, 0%)
@@ -75,6 +75,18 @@ function getGradientColors(tone: BeamConfig['tone'], opacity: number) {
 }
 
 export default function UnderwaterSunbeams() {
+  // Respect prefers-reduced-motion: show static beams (no animation) or nothing
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+
+  useEffect(() => {
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setPrefersReducedMotion(mql.matches)
+
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
+    mql.addEventListener('change', handler)
+    return () => mql.removeEventListener('change', handler)
+  }, [])
+
   const keyframes = useMemo(() => {
     return BEAM_CONFIGS.map((beam) => {
       const a = beam.angle
@@ -125,6 +137,35 @@ export default function UnderwaterSunbeams() {
       66%      { opacity: 0.4; transform: scale(0.98); }
     }
   `
+
+  // Reduced motion: render a static warm glow instead of animated beams
+  if (prefersReducedMotion) {
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+          zIndex: 1,
+          overflow: 'hidden',
+        }}
+        aria-hidden="true"
+      >
+        {/* Static warm glow at top center — the sun source without animation */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '30%',
+            background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255,220,50,0.15) 0%, rgba(255,200,30,0.05) 50%, transparent 80%)',
+            pointerEvents: 'none',
+          }}
+        />
+      </div>
+    )
+  }
 
   return (
     <div

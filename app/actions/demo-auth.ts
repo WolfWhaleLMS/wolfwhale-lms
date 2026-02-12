@@ -2,8 +2,6 @@
 
 import { createClient } from '@/lib/supabase/server'
 
-const DEMO_PASSWORD = process.env.DEMO_ACCOUNT_PASSWORD || 'demo123'
-
 const DEMO_ACCOUNTS: Record<string, string> = {
   student: 'student@wolfwhale.ca',
   teacher: 'teacher@wolfwhale.ca',
@@ -12,6 +10,11 @@ const DEMO_ACCOUNTS: Record<string, string> = {
 }
 
 export async function demoLogin(role: string): Promise<{ error?: string }> {
+  const DEMO_PASSWORD = process.env.DEMO_ACCOUNT_PASSWORD
+  if (!DEMO_PASSWORD) {
+    return { error: 'Demo accounts are not configured.' }
+  }
+
   const email = DEMO_ACCOUNTS[role]
   if (!email) return { error: 'Invalid demo role' }
 

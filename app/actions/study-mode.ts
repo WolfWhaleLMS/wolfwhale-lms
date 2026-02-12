@@ -1,24 +1,13 @@
 'use server'
 
 import { z } from 'zod'
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import {
   processXPAward,
   type XPEventType,
 } from '@/lib/gamification/xp-engine'
 import { rateLimitAction } from '@/lib/rate-limit-action'
-
-async function getContext() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-  return { supabase, user, tenantId }
-}
+import { getActionContext } from '@/lib/actions/context'
 
 /**
  * Record a completed study session and award XP.
@@ -35,7 +24,7 @@ export async function recordStudySession(durationMinutes: number, musicType: str
   const rl = await rateLimitAction('recordStudySession')
   if (!rl.success) return { xpAwarded: 0, error: rl.error }
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Get current user level for XP calculation
   const { data: userLevel } = await supabase
@@ -117,7 +106,7 @@ export async function recordStudySession(durationMinutes: number, musicType: str
  * Get aggregated study statistics for the current user.
  */
 export async function getStudyStats() {
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Get all study session XP events
   const { data: sessions } = await supabase
@@ -198,7 +187,7 @@ export async function getStudyStats() {
  */
 export async function getStudyHistory(limit = 20) {
   const safeLimit = Math.min(Math.max(1, limit), 100)
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   const { data } = await supabase
     .from('xp_transactions')

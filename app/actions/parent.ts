@@ -1,29 +1,14 @@
 'use server'
 
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { rateLimitAction } from '@/lib/rate-limit-action'
-
-// ---------------------------------------------------------------------------
-// Context helper (tenant-scoped, matches attendance.ts pattern)
-// ---------------------------------------------------------------------------
-
-async function getContext() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-  return { supabase, user, tenantId }
-}
+import { getActionContext } from '@/lib/actions/context'
 
 // ---------------------------------------------------------------------------
 // Helper: Verify parent-student relationship
 // ---------------------------------------------------------------------------
 
 async function verifyParentAccess(studentId: string) {
-  const ctx = await getContext()
+  const ctx = await getActionContext()
   const { supabase, user, tenantId } = ctx
 
   const { data: relationship } = await supabase
@@ -47,7 +32,7 @@ async function verifyParentAccess(studentId: string) {
 // ---------------------------------------------------------------------------
 
 export async function getChildren() {
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   const { data: relationships, error } = await supabase
     .from('student_parents')
