@@ -105,8 +105,8 @@ export default function AuthLayout({
       </header>
 
       {/* Main Content */}
-      <main className="relative z-10 flex items-center justify-center min-h-[calc(100vh-120px)] px-4">
-        <div className="w-full max-w-md">
+      <main className="relative z-10 flex items-center justify-center min-h-[calc(100vh-120px)] px-6 sm:px-10 lg:px-16">
+        <div className="w-full max-w-2xl">
           {children}
         </div>
       </main>

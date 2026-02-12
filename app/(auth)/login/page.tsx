@@ -19,23 +19,37 @@ export default function LoginPage() {
   return (
     <div className="space-y-6">
       {/* Aqua Neon Title */}
-      <div className="text-center space-y-2">
+      <div className="text-center space-y-3">
         <h1
-          className="text-[2.6rem] sm:text-5xl md:text-6xl font-display font-extrabold tracking-wider text-glow-blue leading-none whitespace-nowrap bg-gradient-to-r from-[#00BFFF] to-[#33FF33] bg-clip-text text-transparent"
+          className="text-5xl sm:text-6xl md:text-7xl font-display font-extrabold tracking-wider leading-none whitespace-nowrap"
+          style={{
+            background: 'linear-gradient(to right, #00BFFF, #33FF33)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            WebkitTextStroke: '1.5px rgba(0,0,0,0.35)',
+            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
+          }}
         >
           WOLF WHALE
         </h1>
         <p
-          className="text-sm sm:text-base tracking-[0.2em] uppercase text-[#00BFFF] font-display font-bold"
+          className="text-sm sm:text-base tracking-[0.2em] uppercase font-display font-bold"
+          style={{
+            color: '#00BFFF',
+            textShadow: '0 1px 2px rgba(0,0,0,0.15)',
+          }}
         >
           Learning Management System
         </p>
       </div>
 
-      {/* Learn More — BIG button near the top */}
+      {/* Spacer between title and Learn More */}
+      <div className="!mt-32 sm:!mt-40" />
+
+      {/* Learn More — BIG button */}
       <Link
         href="/info"
-        className="!mt-16 flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl bg-[#00BFFF] text-white font-semibold text-lg shadow-lg hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] hover:scale-[1.02] transition-all group neon-glow-blue"
+        className="!mt-0 flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl bg-[#00BFFF] text-white font-semibold text-lg shadow-lg hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] hover:scale-[1.02] transition-all group neon-glow-blue"
       >
         <span>Learn More About Wolf Whale LMS</span>
         <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
