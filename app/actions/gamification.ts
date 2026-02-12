@@ -156,11 +156,32 @@ export async function getLeaderboard(period: 'weekly' | 'monthly' | 'all_time' =
 
   const { data } = await supabase
     .from('leaderboard_entries')
-    .select('*, profiles:user_id(full_name, avatar_url)')
+    .select('*')
     .eq('tenant_id', tenantId)
     .eq('period', period)
     .order('xp_total', { ascending: false })
     .limit(safeLimit)
 
-  return data ?? []
+  const entries = data ?? []
+
+  // Fetch profiles separately (PostgREST cannot follow leaderboard_entries.user_id -> profiles
+  // because the FK points to auth.users, not profiles)
+  const userIds = [...new Set(entries.map((e: any) => e.user_id).filter(Boolean))]
+  const profilesMap: Record<string, any> = {}
+
+  if (userIds.length > 0) {
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, full_name, avatar_url')
+      .in('id', userIds)
+
+    for (const p of profiles ?? []) {
+      profilesMap[p.id] = p
+    }
+  }
+
+  return entries.map((e: any) => ({
+    ...e,
+    profiles: profilesMap[e.user_id] ?? null,
+  }))
 }

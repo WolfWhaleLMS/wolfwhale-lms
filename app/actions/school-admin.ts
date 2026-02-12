@@ -46,31 +46,58 @@ export async function getTenantUsers(filters?: {
 }) {
   const { supabase, tenantId } = await getAdminContext()
 
+  // Query tenant_memberships and profiles separately, then merge in JS.
+  // PostgREST cannot follow tenant_memberships.user_id -> profiles because
+  // the FK points to auth.users, not profiles.
+  const limit = filters?.limit ?? 50
+
   let query = supabase
     .from('tenant_memberships')
-    .select('*, profiles:user_id(id, full_name, email, avatar_url, created_at)')
+    .select('*')
     .eq('tenant_id', tenantId)
-    .order('created_at', { ascending: false })
-    .limit(filters?.limit ?? 50)
+    .order('joined_at', { ascending: false })
+    .limit(limit)
 
   if (filters?.role) {
     query = query.eq('role', filters.role)
   }
 
-  // Search at the database level instead of fetching all rows and filtering in JS
-  if (filters?.search) {
-    const search = `%${filters.search}%`
-    query = query.or(`full_name.ilike.${search},email.ilike.${search}`, { referencedTable: 'profiles' })
-  }
-
   if (filters?.offset) {
-    query = query.range(filters.offset, filters.offset + (filters?.limit ?? 50) - 1)
+    query = query.range(filters.offset, filters.offset + limit - 1)
   }
 
-  const { data, error } = await query
+  const { data: memberships, error } = await query
   if (error) throw error
 
-  return data ?? []
+  if (!memberships || memberships.length === 0) return []
+
+  // Fetch profiles for the user_ids we got
+  const userIds = memberships.map((m: any) => m.user_id).filter(Boolean)
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('id, full_name, first_name, last_name, avatar_url, grade_level')
+    .in('id', userIds)
+
+  const profilesMap: Record<string, any> = {}
+  for (const p of profiles ?? []) {
+    profilesMap[p.id] = p
+  }
+
+  // Merge and apply search filter (search is done in JS since it spans two tables)
+  let results = memberships.map((m: any) => ({
+    ...m,
+    profiles: profilesMap[m.user_id] ?? null,
+  }))
+
+  if (filters?.search) {
+    const search = filters.search.toLowerCase()
+    results = results.filter((r: any) => {
+      const name = (r.profiles?.full_name || '').toLowerCase()
+      return name.includes(search)
+    })
+  }
+
+  return results
 }
 
 export async function getUserDetail(userId: string) {

@@ -50,15 +50,25 @@ function overallStatus(items: { status: 'pass' | 'warning' | 'fail' }[]) {
 }
 
 export default async function CompliancePage() {
-  const [complianceResult, consentResult, dataRequestsResult] = await Promise.all([
-    getComplianceStatus(),
-    getConsentRecords(),
-    getDataRequests(),
-  ])
+  let complianceResult: Awaited<ReturnType<typeof getComplianceStatus>> = { data: null, error: null }
+  let consentResult: Awaited<ReturnType<typeof getConsentRecords>> = { data: null, error: null }
+  let dataRequestsResult: Awaited<ReturnType<typeof getDataRequests>> = { data: null, error: null }
+
+  try {
+    ;[complianceResult, consentResult, dataRequestsResult] = await Promise.all([
+      getComplianceStatus(),
+      getConsentRecords(),
+      getDataRequests(),
+    ])
+  } catch {
+    // If the entire fetch fails (e.g. no tenant context), show the page
+    // with empty data and an error banner rather than crashing.
+  }
 
   const compliance = complianceResult.data
   const consentRecords = consentResult.data ?? []
   const dataRequests = dataRequestsResult.data ?? []
+  const hasError = complianceResult.error || consentResult.error || dataRequestsResult.error
 
   const ferpaStatus = compliance ? overallStatus(compliance.ferpa) : 'warning'
   const coppaStatus = compliance ? overallStatus(compliance.coppa) : 'warning'
@@ -107,6 +117,21 @@ export default async function CompliancePage() {
           </div>
         )}
       </div>
+
+      {/* Error Banner */}
+      {hasError && (
+        <div className="flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/30">
+          <AlertTriangle className="size-5 shrink-0 text-amber-600 dark:text-amber-400" />
+          <div>
+            <p className="text-sm font-medium text-amber-800 dark:text-amber-300">
+              Some compliance data could not be loaded
+            </p>
+            <p className="text-xs text-amber-600 dark:text-amber-400">
+              {complianceResult.error || consentResult.error || dataRequestsResult.error}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Overall status summary */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

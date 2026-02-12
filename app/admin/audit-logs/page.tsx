@@ -1,8 +1,7 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
-import { Shield, Eye, Clock, ArrowLeft } from 'lucide-react'
+import { Shield, Eye, Clock, ArrowLeft, AlertTriangle } from 'lucide-react'
 import { getAuditLogs } from '@/lib/compliance/audit-logger'
-import { AuditFilters } from './audit-filters'
 import { AuditLogTable } from './audit-log-table'
 
 interface AuditLogsPageProps {
@@ -24,7 +23,14 @@ export default async function AuditLogsPage({ searchParams }: AuditLogsPageProps
     limit: 50,
   }
 
-  const logs = await getAuditLogs(filters)
+  let logs: any[] = []
+  let fetchError = false
+
+  try {
+    logs = await getAuditLogs(filters)
+  } catch {
+    fetchError = true
+  }
 
   // Aggregate quick stats from returned data
   const uniqueUsers = new Set(logs.map((l: any) => l.user_id)).size
@@ -59,6 +65,16 @@ export default async function AuditLogsPage({ searchParams }: AuditLogsPageProps
         </p>
       </div>
 
+      {/* Error banner */}
+      {fetchError && (
+        <div className="ocean-card flex items-center gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4">
+          <AlertTriangle className="size-5 flex-shrink-0 text-amber-500" />
+          <p className="text-sm text-foreground">
+            Unable to load audit logs. The audit log table may not be set up yet, or there was a temporary database issue. Please try refreshing the page.
+          </p>
+        </div>
+      )}
+
       {/* Quick stats */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="ocean-card flex items-center gap-4 rounded-2xl p-5">
@@ -90,7 +106,7 @@ export default async function AuditLogsPage({ searchParams }: AuditLogsPageProps
         </div>
       </div>
 
-      {/* Filters (client component) */}
+      {/* Table with filters */}
       <Suspense fallback={<div className="ocean-card h-24 animate-pulse rounded-2xl" />}>
         <AuditLogTable initialLogs={logs} />
       </Suspense>

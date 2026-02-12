@@ -285,8 +285,14 @@ export async function runCanadianComplianceCheck(): Promise<CanadianComplianceCh
 
   let adminEmailExists = false
   if (admins && admins.length > 0) {
-    const { data: userData } = await supabase.auth.admin.getUserById(admins[0].user_id)
-    adminEmailExists = !!userData?.user?.email
+    // Check profiles table for admin contact info instead of auth.admin API
+    // (auth.admin requires the service role key which is not available here)
+    const { data: adminProfile } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', admins[0].user_id)
+      .single()
+    adminEmailExists = !!adminProfile
   }
 
   checks.push({
@@ -387,7 +393,7 @@ export async function runCanadianComplianceCheck(): Promise<CanadianComplianceCh
     .select('user_id, profiles!inner(bio, phone)', { count: 'exact', head: true })
     .eq('tenant_id', tenantId)
     .eq('role', 'student')
-    .or('bio.neq.,phone.neq.', { referencedTable: 'profiles' })
+    .or('bio.not.is.null,phone.not.is.null', { referencedTable: 'profiles' })
 
   checks.push({
     id: 'ca-data-minimization',

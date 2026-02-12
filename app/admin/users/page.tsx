@@ -58,50 +58,77 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
 
-  // Query tenant_memberships joined with profiles (email/role/is_active don't live on profiles)
-  let query = supabase
+  // Query tenant_memberships and profiles separately, then join in JS.
+  // PostgREST cannot follow tenant_memberships.user_id -> profiles because the FK
+  // points to auth.users, not profiles. So we fetch both and merge by user_id.
+  let membershipQuery = supabase
     .from('tenant_memberships')
-    .select('user_id, role, status, created_at, profiles:user_id(id, full_name, avatar_url, grade_level)')
-    .order('created_at', { ascending: false })
+    .select('user_id, role, status, joined_at')
+    .order('joined_at', { ascending: false })
 
   if (tenantId) {
-    query = query.eq('tenant_id', tenantId)
+    membershipQuery = membershipQuery.eq('tenant_id', tenantId)
   }
 
-  query = query.limit(100)
+  membershipQuery = membershipQuery.limit(100)
 
-  const { data: memberships, error } = await query
+  const [membershipResult, seatResults] = await Promise.all([
+    membershipQuery,
+    // Fetch seat usage for Add User dialog (only when tenantId exists)
+    tenantId
+      ? Promise.all([
+          supabase
+            .from('tenants')
+            .select('max_users')
+            .eq('id', tenantId)
+            .single(),
+          supabase
+            .from('tenant_memberships')
+            .select('id', { count: 'exact', head: true })
+            .eq('tenant_id', tenantId),
+        ])
+      : Promise.resolve(null),
+  ])
 
-  // Fetch seat usage for Add User dialog
+  const { data: memberships, error } = membershipResult
+
   let maxUsers = 50
   let currentUserCount = 0
-  if (tenantId) {
-    const [tenantResult, countResult] = await Promise.all([
-      supabase
-        .from('tenants')
-        .select('max_users')
-        .eq('id', tenantId)
-        .single(),
-      supabase
-        .from('tenant_memberships')
-        .select('id', { count: 'exact', head: true })
-        .eq('tenant_id', tenantId),
-    ])
+  if (seatResults) {
+    const [tenantResult, countResult] = seatResults
     maxUsers = tenantResult.data?.max_users ?? 50
     currentUserCount = countResult.count ?? 0
   }
 
-  // Flatten memberships into a user-like shape for the template
+  // Fetch profiles for the user_ids we got from memberships
+  const userIds = (memberships ?? []).map((m: any) => m.user_id).filter(Boolean)
+  let profilesMap: Record<string, any> = {}
+
+  if (userIds.length > 0) {
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, full_name, avatar_url, grade_level')
+      .in('id', userIds)
+
+    for (const p of profiles ?? []) {
+      profilesMap[p.id] = p
+    }
+  }
+
+  // Merge memberships with profile data
   const users = (memberships ?? [])
-    .map((m: any) => ({
-      id: m.user_id,
-      full_name: m.profiles?.full_name ?? null,
-      avatar_url: m.profiles?.avatar_url ?? null,
-      grade_level: m.profiles?.grade_level ?? null,
-      role: m.role ?? 'student',
-      is_active: m.status === 'active',
-      created_at: m.created_at,
-    }))
+    .map((m: any) => {
+      const profile = profilesMap[m.user_id]
+      return {
+        id: m.user_id,
+        full_name: profile?.full_name ?? null,
+        avatar_url: profile?.avatar_url ?? null,
+        grade_level: profile?.grade_level ?? null,
+        role: m.role ?? 'student',
+        is_active: m.status === 'active',
+        created_at: m.joined_at,
+      }
+    })
     .filter((u: any) => {
       if (!search) return true
       const name = (u.full_name || '').toLowerCase()

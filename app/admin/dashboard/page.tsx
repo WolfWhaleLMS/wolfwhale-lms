@@ -107,14 +107,30 @@ export default async function AdminDashboardPage() {
   // Fetch recent audit logs directly
   if (tenantId) {
     try {
-      const { data } = await supabase
+      const { data: rawLogs } = await supabase
         .from('audit_logs')
-        .select('id, action, details, created_at, user_id, profiles:user_id(full_name)')
+        .select('id, action, details, created_at, user_id')
         .eq('tenant_id', tenantId)
         .order('created_at', { ascending: false })
         .limit(10)
 
-      auditLogs = data ?? []
+      // Fetch profiles separately (PostgREST cannot follow audit_logs.user_id -> profiles)
+      const logUserIds = [...new Set((rawLogs ?? []).map((l: any) => l.user_id).filter(Boolean))]
+      const logProfilesMap: Record<string, any> = {}
+      if (logUserIds.length > 0) {
+        const { data: logProfiles } = await supabase
+          .from('profiles')
+          .select('id, full_name')
+          .in('id', logUserIds)
+        for (const p of logProfiles ?? []) {
+          logProfilesMap[p.id] = p
+        }
+      }
+
+      auditLogs = (rawLogs ?? []).map((l: any) => ({
+        ...l,
+        profiles: logProfilesMap[l.user_id] ?? null,
+      }))
     } catch {
       // Audit logs may not be available
     }

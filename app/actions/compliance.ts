@@ -279,20 +279,12 @@ export async function getConsentRecords(): Promise<{ data: ConsentRecord[] | nul
   try {
     const { supabase, tenantId: resolvedTenantId } = await requireAdmin()
 
+    // Query consent records without FK joins to auth.users
+    // (consent_records.student_id -> auth.users, not profiles, so PostgREST
+    //  can't resolve profile fields through that FK)
     const { data, error } = await supabase
       .from('consent_records')
-      .select(
-        `
-        id,
-        student_id,
-        parent_id,
-        consent_given,
-        consent_date,
-        updated_at,
-        student:student_id(full_name),
-        parent:parent_id(full_name)
-      `
-      )
+      .select('id, student_id, parent_id, consent_given, consent_date, updated_at')
       .eq('tenant_id', resolvedTenantId)
       .order('consent_date', { ascending: false })
 
@@ -300,29 +292,34 @@ export async function getConsentRecords(): Promise<{ data: ConsentRecord[] | nul
       return { data: null, error: error.message }
     }
 
-    type ConsentRow = {
-      id: string
-      student_id: string
-      parent_id: string | null
-      consent_given: boolean
-      consent_date: string | null
-      updated_at: string | null
-      student: { full_name: string | null } | null
-      parent: { full_name: string | null } | null
+    // Resolve student/parent names from profiles in a second query
+    const userIds = new Set<string>()
+    for (const r of data ?? []) {
+      if (r.student_id) userIds.add(r.student_id)
+      if (r.parent_id) userIds.add(r.parent_id)
     }
-    const records: ConsentRecord[] = (data ?? []).map((r) => {
-      const row = r as unknown as ConsentRow
-      return {
-        id: row.id,
-        student_id: row.student_id,
-        student_name: row.student?.full_name ?? null,
-        parent_id: row.parent_id,
-        parent_name: row.parent?.full_name ?? null,
-        consent_given: row.consent_given,
-        consent_date: row.consent_date,
-        updated_at: row.updated_at,
+
+    let nameMap = new Map<string, string>()
+    if (userIds.size > 0) {
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, full_name')
+        .in('id', Array.from(userIds))
+      for (const p of profiles ?? []) {
+        if (p.full_name) nameMap.set(p.id, p.full_name)
       }
-    })
+    }
+
+    const records: ConsentRecord[] = (data ?? []).map((r) => ({
+      id: r.id,
+      student_id: r.student_id,
+      student_name: nameMap.get(r.student_id) ?? null,
+      parent_id: r.parent_id,
+      parent_name: r.parent_id ? nameMap.get(r.parent_id) ?? null : null,
+      consent_given: r.consent_given,
+      consent_date: r.consent_date,
+      updated_at: r.updated_at,
+    }))
 
     return { data: records, error: null }
   } catch (error) {
