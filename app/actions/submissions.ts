@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getLetterGrade } from '@/lib/config/constants'
 import { sanitizeText, sanitizeRichText } from '@/lib/sanitize'
 import { logAuditEvent } from '@/lib/compliance/audit-logger'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 // ============================================
 // TEACHER: Get all submissions for an assignment
@@ -161,6 +162,9 @@ export async function submitWork(
   const parsed = submitWorkSchema.safeParse({ assignmentId, ...formData })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
+  const rl = await rateLimitAction('submitWork')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -283,6 +287,9 @@ export async function gradeSubmission(
   })
   const parsed = gradeSubmissionSchema.safeParse({ submissionId, score, feedback, rubricScores })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
+  const rl = await rateLimitAction('gradeSubmission')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
   const supabase = await createClient()
   const headersList = await headers()
@@ -415,6 +422,9 @@ export async function returnSubmission(submissionId: string, feedback: string) {
     feedback: z.string().min(1).max(5000),
   }).safeParse({ submissionId, feedback })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
+  const rl = await rateLimitAction('returnSubmission')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
   const supabase = await createClient()
   const headersList = await headers()

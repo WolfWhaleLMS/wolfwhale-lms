@@ -1,5 +1,6 @@
 'use server'
 
+import { z } from 'zod'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
@@ -26,6 +27,11 @@ async function getContext() {
 // ---------------------------------------------------------------------------
 
 export async function awardXP(eventType: XPEventType, sourceType?: string, sourceId?: string) {
+  // Validate sourceId as UUID if provided
+  if (sourceId && !z.string().uuid().safeParse(sourceId).success) {
+    return { xpAwarded: 0, error: 'Invalid ID' }
+  }
+
   const rl = await rateLimitAction('awardXP')
   if (!rl.success) return { xpAwarded: 0, error: rl.error }
 

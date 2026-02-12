@@ -1,6 +1,7 @@
 'use server'
 
 import { z } from 'zod'
+import { randomBytes } from 'crypto'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
@@ -611,10 +612,7 @@ export async function generateClassCode(courseId: string) {
 // ---------------------------------------------------------------------------
 
 function generateRandomCode(): string {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-  let code = ''
-  for (let i = 0; i < 6; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length))
-  }
-  return code
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ2345679'
+  const bytes = randomBytes(6)
+  return Array.from(bytes).map(b => chars[b % chars.length]).join('')
 }

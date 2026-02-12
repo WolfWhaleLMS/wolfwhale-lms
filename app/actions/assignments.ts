@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { sanitizeText, sanitizeRichText } from '@/lib/sanitize'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 // ============================================
 // TEACHER: Get assignments for a course
@@ -150,6 +151,9 @@ export async function createAssignment(formData: {
   const parsed = createAssignmentSchema.safeParse(formData)
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
+  const rl = await rateLimitAction('createAssignment')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   // Sanitize user-generated text content
   const sanitizedTitle = sanitizeText(parsed.data.title)
   const sanitizedDescription = parsed.data.description ? sanitizeRichText(parsed.data.description) : null
@@ -250,6 +254,9 @@ export async function updateAssignment(
   const parsed = updateAssignmentSchema.safeParse({ assignmentId, ...formData })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
+  const rl = await rateLimitAction('updateAssignment')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -308,6 +315,9 @@ export async function updateAssignment(
 export async function deleteAssignment(assignmentId: string) {
   const parsed = z.object({ assignmentId: z.string().uuid() }).safeParse({ assignmentId })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
+  const rl = await rateLimitAction('deleteAssignment')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
   const supabase = await createClient()
   const headersList = await headers()

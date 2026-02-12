@@ -25,11 +25,6 @@ export const env = {
   appUrl: getOptionalEnv('NEXT_PUBLIC_SITE_URL', 'http://localhost:3000'),
   nodeEnv: getOptionalEnv('NODE_ENV', 'development'),
 
-  // Stripe (optional for now)
-  stripePublishableKey: getOptionalEnv('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY'),
-  stripeSecretKey: getOptionalEnv('STRIPE_SECRET_KEY'),
-  stripeWebhookSecret: getOptionalEnv('STRIPE_WEBHOOK_SECRET'),
-
   // Feature flags
   isProduction: process.env.NODE_ENV === 'production',
   isDevelopment: process.env.NODE_ENV !== 'production',

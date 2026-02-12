@@ -10,6 +10,7 @@ import {
   generateFilePath,
   formatFileSize,
 } from '@/lib/supabase/storage'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 // ============================================
 // Types
@@ -30,6 +31,9 @@ export interface FileUploadResult {
 export async function uploadFileAction(
   formData: FormData
 ): Promise<{ data?: FileUploadResult; error?: string }> {
+  const rl = await rateLimitAction('uploadFileAction')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   const supabase = await createClient()
 
   // Authenticate user
@@ -132,6 +136,9 @@ export async function deleteFileAction(
   bucket: string,
   path: string
 ): Promise<{ success?: boolean; error?: string }> {
+  const rl = await rateLimitAction('deleteFileAction')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   // Allowed storage buckets
   const ALLOWED_BUCKETS = ['course-materials', 'submissions', 'avatars']
 

@@ -5,6 +5,7 @@ import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { sanitizeText } from '@/lib/sanitize'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 async function getContext() {
   const supabase = await createClient()
@@ -52,6 +53,9 @@ export async function getUnreadCount() {
 }
 
 export async function markAsRead(notificationId: string) {
+  const rl = await rateLimitAction('markAsRead')
+  if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
+
   const { supabase, user } = await getContext()
 
   const { error } = await supabase
@@ -65,6 +69,9 @@ export async function markAsRead(notificationId: string) {
 }
 
 export async function markAllAsRead() {
+  const rl = await rateLimitAction('markAllAsRead')
+  if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
+
   const { supabase, user, tenantId } = await getContext()
 
   const { error } = await supabase
@@ -95,6 +102,9 @@ export async function createNotification(
   })
   const parsed = createNotificationSchema.safeParse({ userId, type, title, body, link })
   if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
+
+  const rl = await rateLimitAction('createNotification')
+  if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
   const { supabase, user, tenantId } = await getContext()
 

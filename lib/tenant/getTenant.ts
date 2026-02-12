@@ -24,7 +24,6 @@ export interface Tenant {
   phone: string | null
   status: string
   subscription_plan: string
-  stripe_customer_id: string | null
   settings: Record<string, unknown>
   branding: { primary_color: string; secondary_color: string }
   created_at: string
@@ -182,7 +181,6 @@ function normalizeTenant(raw: Record<string, unknown>): Tenant {
     phone: (raw.phone as string) ?? null,
     status: (raw.status as string) ?? 'active',
     subscription_plan: (raw.subscription_plan as string) ?? 'starter',
-    stripe_customer_id: (raw.stripe_customer_id as string) ?? null,
     settings: (raw.settings as Record<string, unknown>) ?? {},
     branding,
     created_at: raw.created_at as string,

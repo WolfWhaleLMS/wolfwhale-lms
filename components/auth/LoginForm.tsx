@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Loader2, AlertCircle, User, Lock, GraduationCap, BookOpen, Users, Shield } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { demoLogin } from '@/app/actions/demo-auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -45,7 +46,16 @@ export function LoginForm() {
   }, [])
 
   const rawRedirect = searchParams.get('redirectTo') || '/dashboard'
-  const redirectTo = rawRedirect.startsWith('/') && !rawRedirect.startsWith('//') ? rawRedirect : '/dashboard'
+  const redirectTo = (() => {
+    if (!rawRedirect.startsWith('/') || rawRedirect.startsWith('//') || rawRedirect.includes('\\')) return '/dashboard'
+    try {
+      const url = new URL(rawRedirect, 'https://wolfwhale.ca')
+      if (url.hostname !== 'wolfwhale.ca') return '/dashboard'
+      return rawRedirect
+    } catch {
+      return '/dashboard'
+    }
+  })()
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -90,23 +100,23 @@ export function LoginForm() {
   ]
 
   async function handleDemoLogin(username: string) {
+    if (isLoading) return
     setDemoLoading(username)
+    setIsLoading(true)
     setError(null)
-
-    const supabase = createClient()
-    const { error } = await supabase.auth.signInWithPassword({
-      email: `${username}@wolfwhale.ca`,
-      password: 'demo123',
-    })
-
-    if (error) {
-      setError(error.message)
+    try {
+      const result = await demoLogin(username)
+      if (result.error) {
+        setError(result.error)
+        return
+      }
+      router.push(redirectTo)
+    } catch {
+      setError('Demo login failed. Please try again.')
+    } finally {
+      setIsLoading(false)
       setDemoLoading(null)
-      return
     }
-
-    router.push(redirectTo)
-    router.refresh()
   }
 
   return (

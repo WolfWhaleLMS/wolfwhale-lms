@@ -4,6 +4,35 @@ import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis'
 
 // ---------------------------------------------------------------------------
+// In-memory fallback rate limiter (for when Redis is not available)
+// ---------------------------------------------------------------------------
+
+const memoryStore = new Map<string, { count: number; resetAt: number }>()
+
+function memoryRateLimit(key: string, limit: number, windowMs: number): { success: boolean; remaining: number } {
+  const now = Date.now()
+  const entry = memoryStore.get(key)
+
+  // Clean expired entries periodically
+  if (memoryStore.size > 10000) {
+    for (const [k, v] of memoryStore) {
+      if (v.resetAt < now) memoryStore.delete(k)
+    }
+  }
+
+  if (!entry || entry.resetAt < now) {
+    memoryStore.set(key, { count: 1, resetAt: now + windowMs })
+    return { success: true, remaining: limit - 1 }
+  }
+
+  entry.count++
+  if (entry.count > limit) {
+    return { success: false, remaining: 0 }
+  }
+  return { success: true, remaining: limit - entry.count }
+}
+
+// ---------------------------------------------------------------------------
 // Rate Limit Tiers
 // ---------------------------------------------------------------------------
 
@@ -84,17 +113,20 @@ export async function rateLimit(
 
   if (!limiter) {
     if (process.env.NODE_ENV === 'production') {
-      console.warn(
-        `[rate-limit] Upstash not configured — rate limiting disabled for tier "${tier}". ` +
-        'Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN in production.'
-      )
+      console.warn('[rate-limit] Redis not available, using in-memory fallback')
     }
     const config = TIER_CONFIG[tier]
+    const windowSeconds = parseInt(config.window, 10)
+    const result = memoryRateLimit(
+      `wolfwhale:ratelimit:${tier}:${identifier}`,
+      config.requests,
+      windowSeconds * 1000
+    )
     return {
-      success: true,
+      success: result.success,
       limit: config.requests,
-      remaining: config.requests,
-      reset: Date.now() + 60_000,
+      remaining: result.remaining,
+      reset: Date.now() + windowSeconds * 1000,
     }
   }
 

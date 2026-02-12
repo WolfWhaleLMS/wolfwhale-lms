@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { calculateNextReview, type SM2State } from '@/lib/flashcards/sm2'
 import { sanitizeText } from '@/lib/sanitize'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 async function getContext() {
   const supabase = await createClient()
@@ -22,6 +23,10 @@ async function getContext() {
 // ---------------------------------------------------------------------------
 
 export async function getDecks(courseId: string) {
+  if (!z.string().uuid().safeParse(courseId).success) {
+    return []
+  }
+
   const { supabase, tenantId } = await getContext()
 
   const { data, error } = await supabase
@@ -42,6 +47,9 @@ export async function createDeck(courseId: string, title: string, description?: 
     description: z.string().max(2000).optional(),
   }).safeParse({ courseId, title, description })
   if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
+
+  const rl = await rateLimitAction('createDeck')
+  if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
   const { supabase, user, tenantId } = await getContext()
 
@@ -64,6 +72,9 @@ export async function createDeck(courseId: string, title: string, description?: 
 }
 
 export async function updateDeck(deckId: string, updates: { title?: string; description?: string; status?: string }) {
+  const rl = await rateLimitAction('updateDeck')
+  if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
+
   const { supabase, user } = await getContext()
 
   const updateData: Record<string, unknown> = { updated_at: new Date().toISOString() }
@@ -81,6 +92,9 @@ export async function updateDeck(deckId: string, updates: { title?: string; desc
 }
 
 export async function deleteDeck(deckId: string) {
+  const rl = await rateLimitAction('deleteDeck')
+  if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
+
   const { supabase, user } = await getContext()
 
   const { error } = await supabase
@@ -97,6 +111,10 @@ export async function deleteDeck(deckId: string) {
 // ---------------------------------------------------------------------------
 
 export async function getCards(deckId: string) {
+  if (!z.string().uuid().safeParse(deckId).success) {
+    return []
+  }
+
   const { supabase } = await getContext()
 
   const { data, error } = await supabase
@@ -117,6 +135,9 @@ export async function addCard(deckId: string, frontText: string, backText: strin
     hint: z.string().max(500).optional(),
   }).safeParse({ deckId, frontText, backText, hint })
   if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
+
+  const rl = await rateLimitAction('addCard')
+  if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
   const { supabase } = await getContext()
 
@@ -167,6 +188,9 @@ export async function updateCard(cardId: string, updates: { frontText?: string; 
   }).safeParse({ cardId, ...updates })
   if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
 
+  const rl = await rateLimitAction('updateCard')
+  if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
+
   const { supabase, user } = await getContext()
 
   // Verify ownership via card -> deck -> created_by
@@ -199,6 +223,9 @@ export async function deleteCard(cardId: string, deckId: string) {
     deckId: z.string().uuid(),
   }).safeParse({ cardId, deckId })
   if (!parsed.success) throw new Error('Invalid input')
+
+  const rl = await rateLimitAction('deleteCard')
+  if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
   const { supabase, user } = await getContext()
 
@@ -286,6 +313,10 @@ export async function getStudentDecks() {
 }
 
 export async function getStudyCards(deckId: string) {
+  if (!z.string().uuid().safeParse(deckId).success) {
+    return { cards: [], progress: {} }
+  }
+
   const { supabase, user, tenantId } = await getContext()
 
   // Get all cards in deck
@@ -332,6 +363,9 @@ export async function reviewCard(deckId: string, cardId: string, quality: number
     quality: z.number().int().min(0).max(3),
   }).safeParse({ deckId, cardId, quality })
   if (!parsed.success) throw new Error('Invalid input')
+
+  const rl = await rateLimitAction('reviewCard')
+  if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
   const { supabase, user, tenantId } = await getContext()
 

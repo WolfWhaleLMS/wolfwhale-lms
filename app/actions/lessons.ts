@@ -5,10 +5,49 @@ import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { sanitizeText } from '@/lib/sanitize'
+import DOMPurify from 'isomorphic-dompurify'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
+
+function sanitizeLessonContent(content: unknown[]): unknown[] {
+  if (!Array.isArray(content)) return []
+  return content.map((block: any) => {
+    if (!block || typeof block !== 'object') return block
+    const sanitized = { ...block }
+    // Sanitize any HTML content
+    if (typeof sanitized.content === 'string') {
+      sanitized.content = DOMPurify.sanitize(sanitized.content, {
+        ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'pre', 'span', 'div', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'img', 'hr', 'sup', 'sub', 'mark'],
+        ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'target', 'rel', 'width', 'height', 'style'],
+        ALLOW_DATA_ATTR: false,
+      })
+    }
+    // Sanitize URLs
+    if (typeof sanitized.url === 'string') {
+      sanitized.url = sanitizeUrl(sanitized.url)
+    }
+    if (typeof sanitized.src === 'string') {
+      sanitized.src = sanitizeUrl(sanitized.src)
+    }
+    if (typeof sanitized.href === 'string') {
+      sanitized.href = sanitizeUrl(sanitized.href)
+    }
+    return sanitized
+  })
+}
+
+function sanitizeUrl(url: string): string {
+  try {
+    const parsed = new URL(url, 'https://wolfwhale.ca')
+    if (!['http:', 'https:'].includes(parsed.protocol)) return ''
+    return url
+  } catch {
+    return ''
+  }
+}
 
 async function getAuthUser() {
   const supabase = await createClient()
@@ -219,6 +258,9 @@ export async function createLesson(courseId: string, input: CreateLessonInput) {
   const parsed = createLessonSchema.safeParse({ courseId, ...input })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
+  const rl = await rateLimitAction('createLesson')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify course ownership
@@ -254,7 +296,7 @@ export async function createLesson(courseId: string, input: CreateLessonInput) {
       created_by: user.id,
       title: sanitizeText(input.title),
       description: input.description ? sanitizeText(input.description) : null,
-      content: input.content || [],
+      content: sanitizeLessonContent(input.content || []),
       learning_objectives: input.learning_objectives || [],
       duration_minutes: input.duration_minutes || null,
       order_index: nextOrderIndex,
@@ -292,6 +334,9 @@ export async function updateLesson(
   const parsed = updateLessonSchema.safeParse({ lessonId, ...input })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
+  const rl = await rateLimitAction('updateLesson')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify lesson ownership
@@ -309,7 +354,7 @@ export async function updateLesson(
   const updateData: Record<string, unknown> = {}
   if (input.title !== undefined) updateData.title = sanitizeText(input.title)
   if (input.description !== undefined) updateData.description = input.description ? sanitizeText(input.description) : null
-  if (input.content !== undefined) updateData.content = input.content
+  if (input.content !== undefined) updateData.content = sanitizeLessonContent(input.content as unknown[])
   if (input.learning_objectives !== undefined)
     updateData.learning_objectives = input.learning_objectives
   if (input.duration_minutes !== undefined)
@@ -342,6 +387,9 @@ export async function updateLesson(
 export async function deleteLesson(lessonId: string) {
   const parsed = z.object({ lessonId: z.string().uuid() }).safeParse({ lessonId })
   if (!parsed.success) return { error: 'Invalid input' }
+
+  const rl = await rateLimitAction('deleteLesson')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
   const { supabase, user, tenantId } = await requireTeacher()
 
@@ -377,6 +425,9 @@ export async function reorderLessons(courseId: string, lessonIds: string[]) {
     lessonIds: z.array(z.string().uuid()).max(500),
   }).safeParse({ courseId, lessonIds })
   if (!parsed.success) return { error: 'Invalid input' }
+
+  const rl = await rateLimitAction('reorderLessons')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
   const { supabase, user, tenantId } = await requireTeacher()
 
@@ -431,6 +482,9 @@ export async function addLessonAttachment(
   }).safeParse({ lessonId, ...attachment })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
+  const rl = await rateLimitAction('addLessonAttachment')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify lesson ownership
@@ -483,6 +537,9 @@ export async function addLessonAttachment(
 export async function deleteLessonAttachment(attachmentId: string) {
   const parsed = z.object({ attachmentId: z.string().uuid() }).safeParse({ attachmentId })
   if (!parsed.success) return { error: 'Invalid input' }
+
+  const rl = await rateLimitAction('deleteLessonAttachment')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
   const { supabase, user, tenantId } = await requireTeacher()
 
@@ -559,6 +616,9 @@ export async function trackProgress(
     timeSpentSeconds: z.number().min(0).max(86400).optional(),
   }).safeParse({ lessonId, status, timeSpentSeconds })
   if (!parsed.success) return { error: 'Invalid input' }
+
+  const rl = await rateLimitAction('trackProgress')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
   const { supabase, user } = await getAuthUser()
   const tenantId = await getTenantId()

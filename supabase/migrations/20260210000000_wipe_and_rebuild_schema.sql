@@ -73,7 +73,6 @@ CREATE TABLE tenants (
   country VARCHAR(100),
   phone VARCHAR(20),
   subscription_plan VARCHAR(50) DEFAULT 'starter',
-  stripe_customer_id VARCHAR(255),
   status VARCHAR(50) DEFAULT 'active',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
@@ -482,8 +481,6 @@ CREATE INDEX idx_audit_logs_created_at ON audit_logs(created_at DESC);
 CREATE TABLE invoices (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
-  stripe_invoice_id VARCHAR(255) UNIQUE,
-  stripe_payment_intent_id VARCHAR(255),
   amount NUMERIC(10, 2) NOT NULL,
   amount_paid NUMERIC(10, 2) DEFAULT 0,
   status VARCHAR(50),
@@ -495,7 +492,6 @@ CREATE TABLE invoices (
 );
 
 CREATE INDEX idx_invoices_tenant ON invoices(tenant_id);
-CREATE INDEX idx_invoices_stripe_id ON invoices(stripe_invoice_id);
 CREATE INDEX idx_invoices_status ON invoices(status);
 
 CREATE TABLE subscription_usage (

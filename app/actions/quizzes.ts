@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { sanitizeText, sanitizeRichText } from '@/lib/sanitize'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 // ============================================
 // TEACHER: Create a quiz
@@ -35,6 +36,9 @@ export async function createQuiz(formData: {
   })
   const parsed = createQuizSchema.safeParse(formData)
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
+  const rl = await rateLimitAction('createQuiz')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
   // Sanitize user-generated text content
   const sanitizedTitle = sanitizeText(parsed.data.title)
@@ -248,6 +252,9 @@ export async function updateQuiz(quizId: string, formData: {
   const parsed = updateQuizSchema.safeParse({ quizId, ...formData })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
+  const rl = await rateLimitAction('updateQuiz')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   const supabase = await createClient()
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
@@ -305,6 +312,9 @@ export async function updateQuiz(quizId: string, formData: {
 export async function deleteQuiz(quizId: string) {
   const parsed = z.object({ quizId: z.string().uuid() }).safeParse({ quizId })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
+  const rl = await rateLimitAction('deleteQuiz')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
   const supabase = await createClient()
   const headersList = await headers()
@@ -371,6 +381,9 @@ export async function addQuestion(quizId: string, questionData: {
   })
   const parsed = addQuestionSchema.safeParse({ quizId, ...questionData })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
+  const rl = await rateLimitAction('addQuestion')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
   const supabase = await createClient()
 
@@ -476,6 +489,9 @@ export async function updateQuestion(questionId: string, questionData: {
   const parsed = updateQuestionSchema.safeParse({ questionId, ...questionData })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
+  const rl = await rateLimitAction('updateQuestion')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -552,6 +568,9 @@ export async function deleteQuestion(questionId: string) {
   const parsed = z.object({ questionId: z.string().uuid() }).safeParse({ questionId })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
+  const rl = await rateLimitAction('deleteQuestion')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -591,6 +610,9 @@ export async function deleteQuestion(questionId: string) {
 export async function startAttempt(quizId: string) {
   const parsed = z.object({ quizId: z.string().uuid() }).safeParse({ quizId })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
+  const rl = await rateLimitAction('startAttempt')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
   const supabase = await createClient()
   const headersList = await headers()
@@ -680,6 +702,9 @@ export async function submitAttempt(attemptId: string, answers: {
   })
   const parsed = submitAttemptSchema.safeParse({ attemptId, answers })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
+
+  const rl = await rateLimitAction('submitAttempt')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
   const supabase = await createClient()
 

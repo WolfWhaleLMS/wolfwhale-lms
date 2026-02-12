@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import DOMPurify from 'isomorphic-dompurify'
 import { getLessonWithNavigation } from '@/app/actions/lessons'
 import { trackProgress } from '@/app/actions/lessons'
 import { Button } from '@/components/ui/button'
@@ -155,6 +156,17 @@ export default function StudentLessonViewerPage({
     return block.data?.[field] ?? block[field]
   }
 
+  // Validate URLs from lesson content to prevent javascript: and other dangerous protocols
+  function safeUrl(url: string): string {
+    try {
+      const parsed = new URL(url, window.location.origin)
+      if (!['http:', 'https:'].includes(parsed.protocol)) return ''
+      return url
+    } catch {
+      return ''
+    }
+  }
+
   // Render content blocks from JSONB content
   function renderContent(content: any) {
     if (!content) return null
@@ -164,7 +176,7 @@ export default function StudentLessonViewerPage({
       return (
         <div
           className="prose prose-slate dark:prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ __html: content }}
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}
         />
       )
     }
@@ -188,7 +200,7 @@ export default function StudentLessonViewerPage({
                 <div
                   key={index}
                   className="prose prose-slate dark:prose-invert max-w-none"
-                  dangerouslySetInnerHTML={{ __html: block }}
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(block) }}
                 />
               )
             }
@@ -215,12 +227,12 @@ export default function StudentLessonViewerPage({
                     key={index}
                     className="prose prose-slate dark:prose-invert max-w-none"
                     dangerouslySetInnerHTML={{
-                      __html: d(block, 'text') || d(block, 'content') || '',
+                      __html: DOMPurify.sanitize(d(block, 'text') || d(block, 'content') || ''),
                     }}
                   />
                 )
               case 'image': {
-                const url = d(block, 'url') || d(block, 'src')
+                const url = safeUrl(d(block, 'url') || d(block, 'src') || '')
                 const alt = d(block, 'alt') || d(block, 'caption') || 'Lesson image'
                 const caption = d(block, 'caption')
                 return (
@@ -239,7 +251,7 @@ export default function StudentLessonViewerPage({
                 )
               }
               case 'video': {
-                const videoUrl = d(block, 'url') || d(block, 'src') || ''
+                const videoUrl = safeUrl(d(block, 'url') || d(block, 'src') || '')
                 const videoTitle = d(block, 'title') || 'Lesson video'
                 const videoSource = d(block, 'source') // 'youtube' | 'url' | undefined
                 let ytVideoId = d(block, 'videoId') || null
@@ -292,7 +304,7 @@ export default function StudentLessonViewerPage({
                 )
               }
               case 'file': {
-                const fileUrl = d(block, 'url')
+                const fileUrl = safeUrl(d(block, 'url') || '')
                 const filename = d(block, 'filename') || 'Download file'
                 const size = d(block, 'size')
                 return (
@@ -357,7 +369,7 @@ export default function StudentLessonViewerPage({
                   >
                     <div
                       className="prose prose-slate dark:prose-invert max-w-none"
-                      dangerouslySetInnerHTML={{ __html: calloutText }}
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(calloutText) }}
                     />
                   </div>
                 )
@@ -388,7 +400,7 @@ export default function StudentLessonViewerPage({
                 )
               }
               case 'link': {
-                const linkUrl = d(block, 'url')
+                const linkUrl = safeUrl(d(block, 'url') || '')
                 const linkTitle = d(block, 'title')
                 const linkDesc = d(block, 'description')
                 return (
@@ -420,7 +432,7 @@ export default function StudentLessonViewerPage({
                 )
               }
               case 'pdf': {
-                const pdfUrl = d(block, 'url')
+                const pdfUrl = safeUrl(d(block, 'url') || '')
                 const pdfTitle = d(block, 'title') || 'PDF Document'
                 const pageCount = d(block, 'pageCount')
                 return (
@@ -473,7 +485,7 @@ export default function StudentLessonViewerPage({
                 )
               }
               case 'document': {
-                const docUrl = d(block, 'url')
+                const docUrl = safeUrl(d(block, 'url') || '')
                 const docName = d(block, 'fileName') || 'Document'
                 const docSize = d(block, 'fileSize')
                 const docType = d(block, 'fileType')
@@ -514,7 +526,7 @@ export default function StudentLessonViewerPage({
                       key={index}
                       className="prose prose-slate dark:prose-invert max-w-none"
                       dangerouslySetInnerHTML={{
-                        __html: d(block, 'text') || d(block, 'content') || '',
+                        __html: DOMPurify.sanitize(d(block, 'text') || d(block, 'content') || ''),
                       }}
                     />
                   )
@@ -532,7 +544,7 @@ export default function StudentLessonViewerPage({
         <div
           className="prose prose-slate dark:prose-invert max-w-none"
           dangerouslySetInnerHTML={{
-            __html: content.text || content.content,
+            __html: DOMPurify.sanitize(content.text || content.content),
           }}
         />
       )

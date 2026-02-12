@@ -19,9 +19,20 @@ export default async function AdminLayout({
 
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
-  const headerRole = headersList.get('x-user-role') as UserRole | null
-  const role: UserRole =
-    headerRole === 'super_admin' ? 'super_admin' : 'admin'
+
+  // Verify admin role from database, not from headers (which can be spoofed)
+  const { data: membership } = await supabase
+    .from('tenant_memberships')
+    .select('role')
+    .eq('user_id', user.id)
+    .eq('is_active', true)
+    .single()
+
+  if (!membership || !['admin', 'super_admin'].includes(membership.role)) {
+    redirect('/login')
+  }
+
+  const role: UserRole = membership.role === 'super_admin' ? 'super_admin' : 'admin'
 
   const [profileResult, tenantResult] = await Promise.all([
     supabase

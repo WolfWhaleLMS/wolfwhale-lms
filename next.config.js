@@ -5,6 +5,7 @@ const isDev = process.env.NODE_ENV === 'development'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  productionBrowserSourceMaps: false,
   images: {
     remotePatterns: [
       {
@@ -87,6 +88,7 @@ module.exports = withSentryConfig(nextConfig, {
   project: process.env.SENTRY_PROJECT,
   silent: !process.env.CI,
   widenClientFileUpload: true,
+  hideSourceMaps: true,
   disableLogger: true,
   automaticVercelMonitors: true,
 });

@@ -109,7 +109,6 @@ export interface Tenant {
   country: string
   phone: string | null
   subscription_plan: SubscriptionPlan
-  stripe_customer_id: string | null
   status: TenantStatus
   settings: Record<string, unknown>
   branding: TenantBranding
@@ -531,8 +530,6 @@ export interface AuditLog {
 export interface Invoice {
   id: string
   tenant_id: string
-  stripe_invoice_id: string | null
-  stripe_payment_intent_id: string | null
   amount: number
   amount_paid: number
   status: InvoiceStatus

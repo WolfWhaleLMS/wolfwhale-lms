@@ -2,6 +2,7 @@
 
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 export interface CalendarEvent {
   id: string

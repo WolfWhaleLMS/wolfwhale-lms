@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-- **Stack**: Next.js 16 (Turbopack), Supabase, Tailwind CSS, Sentry, Stripe
+- **Stack**: Next.js 16 (Turbopack), Supabase, Tailwind CSS, Sentry
 - **Repo**: `WolfWhaleLMS/wolfwhale-lms` on GitHub
 - **Deploy**: Push to `main` triggers production deployment
 

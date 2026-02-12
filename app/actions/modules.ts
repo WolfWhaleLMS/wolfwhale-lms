@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { sanitizeText } from '@/lib/sanitize'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -166,6 +167,9 @@ export async function createModule(courseId: string, input: CreateModuleInput) {
   const parsed = createModuleSchema.safeParse({ courseId, ...input })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
+  const rl = await rateLimitAction('createModule')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify course ownership
@@ -233,6 +237,9 @@ export async function updateModule(
   const parsed = updateModuleSchema.safeParse({ moduleId, ...input })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
+  const rl = await rateLimitAction('updateModule')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   // Verify module ownership
@@ -274,6 +281,9 @@ export async function deleteModule(moduleId: string) {
   const parsed = z.object({ moduleId: z.string().uuid() }).safeParse({ moduleId })
   if (!parsed.success) return { error: 'Invalid input' }
 
+  const rl = await rateLimitAction('deleteModule')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
+
   const { supabase, user, tenantId } = await requireTeacher()
 
   const { data: module } = await supabase
@@ -309,6 +319,9 @@ export async function reorderModules(courseId: string, moduleIds: string[]) {
     moduleIds: z.array(z.string().uuid()).max(500),
   }).safeParse({ courseId, moduleIds })
   if (!parsed.success) return { error: 'Invalid input' }
+
+  const rl = await rateLimitAction('reorderModules')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
   const { supabase, user, tenantId } = await requireTeacher()
 
@@ -352,6 +365,9 @@ export async function assignLessonToModule(
     moduleId: z.string().uuid().nullable(),
   }).safeParse({ lessonId, moduleId })
   if (!parsed.success) return { error: 'Invalid input' }
+
+  const rl = await rateLimitAction('assignLessonToModule')
+  if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
   const { supabase, user, tenantId } = await requireTeacher()
 

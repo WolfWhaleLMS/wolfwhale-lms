@@ -1,9 +1,11 @@
 'use server'
 
+import { z } from 'zod'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { logAuditEvent } from '@/lib/compliance/audit-logger'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 async function getContext() {
   const supabase = await createClient()
@@ -37,6 +39,13 @@ export async function recordAttendance(
   date: string,
   records: { studentId: string; status: AttendanceStatus; notes?: string }[]
 ) {
+  if (!z.string().uuid().safeParse(courseId).success) {
+    throw new Error('Invalid ID')
+  }
+
+  const rl = await rateLimitAction('recordAttendance')
+  if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
+
   const { supabase, user, tenantId } = await getContext()
 
   // Verify caller is the course teacher or an admin/super_admin
@@ -91,6 +100,10 @@ export async function recordAttendance(
 // ---------------------------------------------------------------------------
 
 export async function getAttendanceForCourse(courseId: string, date?: string) {
+  if (!z.string().uuid().safeParse(courseId).success) {
+    return []
+  }
+
   const { supabase, user, tenantId } = await getContext()
 
   // Verify caller is the course teacher or an admin/super_admin
@@ -127,6 +140,10 @@ export async function getAttendanceForCourse(courseId: string, date?: string) {
 }
 
 export async function getAttendanceHistory(courseId: string, startDate: string, endDate: string) {
+  if (!z.string().uuid().safeParse(courseId).success) {
+    return []
+  }
+
   const { supabase, user, tenantId } = await getContext()
 
   // Verify caller is the course teacher or an admin/super_admin
@@ -164,6 +181,10 @@ export async function getAttendanceHistory(courseId: string, startDate: string, 
 // ---------------------------------------------------------------------------
 
 export async function getStudentAttendance(studentId?: string) {
+  if (studentId && !z.string().uuid().safeParse(studentId).success) {
+    return []
+  }
+
   const { supabase, user, tenantId } = await getContext()
 
   const targetId = studentId || user.id
@@ -216,6 +237,10 @@ export async function getStudentAttendance(studentId?: string) {
 }
 
 export async function getAttendanceSummary(studentId?: string) {
+  if (studentId && !z.string().uuid().safeParse(studentId).success) {
+    return { total: 0, present: 0, absent: 0, tardy: 0, excused: 0, rate: 0 }
+  }
+
   const { supabase, user, tenantId } = await getContext()
 
   const targetId = studentId || user.id

@@ -7,6 +7,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { rateLimitAction } from '@/lib/rate-limit-action'
 import { logAuditEvent } from '@/lib/compliance/audit-logger'
+import { sanitizeText } from '@/lib/sanitize'
 
 async function getAdminContext() {
   const supabase = await createClient()
@@ -500,7 +501,7 @@ export async function updateTenantSettings(settings: {
 }) {
   const updateSettingsSchema = z.object({
     name: z.string().min(1).max(255).optional(),
-    logo_url: z.string().max(2000).optional(),
+    logo_url: z.string().url().max(2000).optional(),
     settings: z.record(z.unknown()).optional(),
   })
   const parsed = updateSettingsSchema.safeParse(settings)
@@ -508,9 +509,15 @@ export async function updateTenantSettings(settings: {
 
   const { supabase, tenantId } = await getAdminContext()
 
+  // Sanitize the name field if present
+  const sanitizedData = { ...parsed.data }
+  if (sanitizedData.name) {
+    sanitizedData.name = sanitizeText(sanitizedData.name)
+  }
+
   const { error } = await supabase
     .from('tenants')
-    .update(settings)
+    .update(sanitizedData)
     .eq('id', tenantId)
 
   if (error) throw error
@@ -519,7 +526,7 @@ export async function updateTenantSettings(settings: {
     action: 'settings.update',
     resourceType: 'tenant',
     resourceId: tenantId,
-    details: { updatedFields: Object.keys(settings) },
+    details: { updatedFields: Object.keys(parsed.data) },
   })
 
   revalidatePath('/admin/settings')

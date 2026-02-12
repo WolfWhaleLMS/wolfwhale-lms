@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { getLetterGrade } from '@/lib/config/constants'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 // ============================================
 // Get grades for a course (optionally for a specific student)

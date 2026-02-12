@@ -43,6 +43,10 @@ export async function getConversations() {
 }
 
 export async function getConversation(conversationId: string) {
+  if (!z.string().uuid().safeParse(conversationId).success) {
+    throw new Error('Invalid ID')
+  }
+
   const { supabase, user, tenantId } = await getContext()
 
   // Verify the user is a member of this conversation
@@ -136,6 +140,20 @@ export async function createGroupConversation(title: string, memberIds: string[]
   const sanitizedTitle = sanitizeText(parsed.data.title)
 
   const { supabase, user, tenantId } = await getContext()
+
+  // Verify all members are in the same tenant
+  const { data: validMembers } = await supabase
+    .from('tenant_memberships')
+    .select('user_id')
+    .eq('tenant_id', tenantId)
+    .eq('is_active', true)
+    .in('user_id', memberIds)
+
+  const validMemberIds = validMembers?.map(m => m.user_id) || []
+  const invalidMembers = memberIds.filter(id => !validMemberIds.includes(id))
+  if (invalidMembers.length > 0) {
+    return { error: 'Some members are not in your organization' }
+  }
 
   const { data: conversation, error } = await supabase
     .from('conversations')

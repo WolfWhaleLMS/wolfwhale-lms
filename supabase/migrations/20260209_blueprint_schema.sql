@@ -124,7 +124,6 @@ CREATE TABLE tenants (
   country VARCHAR(100) DEFAULT 'CA',
   phone VARCHAR(20),
   subscription_plan VARCHAR(50) DEFAULT 'starter',
-  stripe_customer_id VARCHAR(255),
   status VARCHAR(50) DEFAULT 'active',
   settings JSONB DEFAULT '{}'::jsonb,
   branding JSONB DEFAULT '{"primary_color": "#1a2a4e", "secondary_color": "#0a4d68"}'::jsonb,
@@ -693,8 +692,6 @@ CREATE INDEX idx_al_severity ON audit_logs(severity) WHERE severity != 'info';
 CREATE TABLE invoices (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
-  stripe_invoice_id VARCHAR(255) UNIQUE,
-  stripe_payment_intent_id VARCHAR(255),
   amount NUMERIC(10, 2) NOT NULL,
   amount_paid NUMERIC(10, 2) DEFAULT 0,
   status VARCHAR(50) DEFAULT 'draft',
@@ -706,7 +703,6 @@ CREATE TABLE invoices (
 );
 
 CREATE INDEX idx_inv_tenant ON invoices(tenant_id);
-CREATE INDEX idx_inv_stripe ON invoices(stripe_invoice_id);
 CREATE INDEX idx_inv_status ON invoices(status);
 
 -- ===================================================================
