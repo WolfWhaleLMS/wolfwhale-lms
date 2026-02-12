@@ -1,7 +1,7 @@
 /**
  * seed-saskatchewan.ts
  *
- * Populates the Wolf Whale LMS with real Saskatchewan Grade 7 curriculum data
+ * Populates the WolfWhale LMS with real Saskatchewan Grade 7 curriculum data
  * for testing purposes. Creates one school, five user accounts, four courses
  * with full lessons, assignments, grades, attendance, gamification, and more.
  *

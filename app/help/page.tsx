@@ -21,7 +21,7 @@ interface FAQSection {
 const content = {
   en: {
     title: 'Help Center',
-    subtitle: 'Find answers, get support, and make the most of Wolf Whale LMS.',
+    subtitle: 'Find answers, get support, and make the most of WolfWhale LMS.',
     backToHome: 'Back to Home',
     quickContactTitle: 'Quick Contact',
     emailLabel: 'Email',
@@ -44,11 +44,11 @@ const content = {
           },
           {
             q: 'What roles are available?',
-            a: 'Wolf Whale LMS supports four user roles: Student, Teacher, Parent, and Admin. Each role has a customized dashboard with relevant tools and features.',
+            a: 'WolfWhale LMS supports four user roles: Student, Teacher, Parent, and Admin. Each role has a customized dashboard with relevant tools and features.',
           },
           {
-            q: 'Is Wolf Whale available on mobile?',
-            a: 'Yes! Wolf Whale LMS is fully responsive and works on smartphones, tablets, and desktop computers through any modern web browser.',
+            q: 'Is WolfWhale available on mobile?',
+            a: 'Yes! WolfWhale LMS is fully responsive and works on smartphones, tablets, and desktop computers through any modern web browser.',
           },
         ],
       },
@@ -130,7 +130,7 @@ const content = {
         items: [
           {
             q: 'What browsers are supported?',
-            a: 'Wolf Whale LMS works best on the latest versions of Chrome, Firefox, Safari, and Edge. We recommend keeping your browser up to date.',
+            a: 'WolfWhale LMS works best on the latest versions of Chrome, Firefox, Safari, and Edge. We recommend keeping your browser up to date.',
           },
           {
             q: 'I\'m experiencing a technical issue. What should I do?',
@@ -138,7 +138,7 @@ const content = {
           },
           {
             q: 'Is my data secure?',
-            a: 'Yes. Wolf Whale uses enterprise-grade encryption, row-level security, and multi-tenant architecture to protect all data. See our Privacy Policy for full details.',
+            a: 'Yes. WolfWhale uses enterprise-grade encryption, row-level security, and multi-tenant architecture to protect all data. See our Privacy Policy for full details.',
           },
         ],
       },
@@ -146,7 +146,7 @@ const content = {
   },
   fr: {
     title: 'Centre d\'aide',
-    subtitle: 'Trouvez des r\u00e9ponses, obtenez de l\'aide et tirez le meilleur parti de Wolf Whale LMS.',
+    subtitle: 'Trouvez des r\u00e9ponses, obtenez de l\'aide et tirez le meilleur parti de WolfWhale LMS.',
     backToHome: 'Retour \u00e0 l\u2019accueil',
     quickContactTitle: 'Contact rapide',
     emailLabel: 'Courriel',
@@ -169,11 +169,11 @@ const content = {
           },
           {
             q: 'Quels r\u00f4les sont disponibles\u00a0?',
-            a: 'Wolf Whale LMS prend en charge quatre r\u00f4les d\'utilisateur\u00a0: \u00c9l\u00e8ve, Enseignant, Parent et Administrateur. Chaque r\u00f4le dispose d\'un tableau de bord personnalis\u00e9 avec des outils et fonctionnalit\u00e9s pertinents.',
+            a: 'WolfWhale LMS prend en charge quatre r\u00f4les d\'utilisateur\u00a0: \u00c9l\u00e8ve, Enseignant, Parent et Administrateur. Chaque r\u00f4le dispose d\'un tableau de bord personnalis\u00e9 avec des outils et fonctionnalit\u00e9s pertinents.',
           },
           {
-            q: 'Wolf Whale est-il disponible sur mobile\u00a0?',
-            a: 'Oui\u00a0! Wolf Whale LMS est enti\u00e8rement adaptatif et fonctionne sur les t\u00e9l\u00e9phones intelligents, les tablettes et les ordinateurs de bureau via tout navigateur Web moderne.',
+            q: 'WolfWhale est-il disponible sur mobile\u00a0?',
+            a: 'Oui\u00a0! WolfWhale LMS est enti\u00e8rement adaptatif et fonctionne sur les t\u00e9l\u00e9phones intelligents, les tablettes et les ordinateurs de bureau via tout navigateur Web moderne.',
           },
         ],
       },
@@ -255,7 +255,7 @@ const content = {
         items: [
           {
             q: 'Quels navigateurs sont pris en charge\u00a0?',
-            a: 'Wolf Whale LMS fonctionne de mani\u00e8re optimale avec les derni\u00e8res versions de Chrome, Firefox, Safari et Edge. Nous recommandons de garder votre navigateur \u00e0 jour.',
+            a: 'WolfWhale LMS fonctionne de mani\u00e8re optimale avec les derni\u00e8res versions de Chrome, Firefox, Safari et Edge. Nous recommandons de garder votre navigateur \u00e0 jour.',
           },
           {
             q: 'J\'ai un probl\u00e8me technique. Que dois-je faire\u00a0?',
@@ -263,7 +263,7 @@ const content = {
           },
           {
             q: 'Mes donn\u00e9es sont-elles s\u00e9curis\u00e9es\u00a0?',
-            a: 'Oui. Wolf Whale utilise un chiffrement de niveau entreprise, la s\u00e9curit\u00e9 au niveau des lignes et une architecture multi-locataire pour prot\u00e9ger toutes les donn\u00e9es. Consultez notre Politique de confidentialit\u00e9 pour tous les d\u00e9tails.',
+            a: 'Oui. WolfWhale utilise un chiffrement de niveau entreprise, la s\u00e9curit\u00e9 au niveau des lignes et une architecture multi-locataire pour prot\u00e9ger toutes les donn\u00e9es. Consultez notre Politique de confidentialit\u00e9 pour tous les d\u00e9tails.',
           },
         ],
       },
@@ -370,14 +370,14 @@ export default function HelpCenterPage() {
           <Link href="/" className="flex items-center gap-3 group">
             <Image
               src="/logo.png"
-              alt="Wolf Whale"
+              alt="WolfWhale"
               width={48}
               height={48}
               className="rounded-xl object-contain shadow-lg border-2 border-black"
             />
             <div>
               <span className="text-lg sm:text-xl font-display font-bold text-[#0A2540] group-hover:text-[#00BFFF] transition-colors block tracking-wider uppercase">
-                Wolf Whale
+                WolfWhale
               </span>
               <span className="text-xs text-[#0A2540]/60 block font-display font-semibold tracking-widest uppercase">
                 Learning Management System
@@ -529,7 +529,7 @@ export default function HelpCenterPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-sm text-[#0A2540]/40">
-              &copy; 2026 Wolf Whale LMS.{' '}
+              &copy; 2026 WolfWhale LMS.{' '}
               {lang === 'en' ? 'All rights reserved.' : 'Tous droits r\u00e9serv\u00e9s.'}
             </p>
             <div className="flex gap-6">

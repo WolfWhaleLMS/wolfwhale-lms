@@ -128,7 +128,7 @@ export function LoginForm() {
             Try It Now — No Sign-Up Required
           </h3>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            Tap any role below to instantly explore Wolf Whale as a student, teacher, parent, or admin.
+            Tap any role below to instantly explore WolfWhale as a student, teacher, parent, or admin.
           </p>
         </div>
         <div className="grid grid-cols-2 gap-3">

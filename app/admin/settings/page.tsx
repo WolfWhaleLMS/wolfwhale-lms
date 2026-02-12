@@ -90,7 +90,7 @@ export default async function AdminSettingsPage() {
           </div>
           <div>
             <label className="block text-sm font-medium text-muted-foreground">Theme</label>
-            <p className="mt-1 text-foreground">Wolf Whale Default</p>
+            <p className="mt-1 text-foreground">WolfWhale Default</p>
             <p className="mt-0.5 text-xs text-muted-foreground">
               Midnight Blue + Ocean Teal
             </p>

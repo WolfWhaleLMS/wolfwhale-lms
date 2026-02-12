@@ -1,4 +1,4 @@
-# Wolf Whale LMS - Claude Code Guidelines
+# WolfWhale LMS - Claude Code Guidelines
 
 ## Project Overview
 

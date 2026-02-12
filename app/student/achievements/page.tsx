@@ -11,7 +11,7 @@ import { AchievementFilters } from './filters'
 import { Trophy, Star, Zap } from 'lucide-react'
 
 export const metadata = {
-  title: 'Achievements | Wolf Whale LMS',
+  title: 'Achievements | WolfWhale LMS',
 }
 
 export default async function AchievementsPage({

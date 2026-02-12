@@ -19,7 +19,7 @@ import {
 import type { LucideIcon } from 'lucide-react'
 
 export const metadata = {
-  title: 'Skill Trees | Wolf Whale LMS',
+  title: 'Skill Trees | WolfWhale LMS',
 }
 
 const SUBJECT_ICON_MAP: Record<string, LucideIcon> = {

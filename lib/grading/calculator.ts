@@ -1,4 +1,4 @@
-// Wolf Whale LMS - Grading Calculator Utilities
+// WolfWhale LMS - Grading Calculator Utilities
 
 import { getLetterGrade } from '@/lib/config/constants'
 

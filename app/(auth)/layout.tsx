@@ -87,7 +87,7 @@ export default function AuthLayout({
       {/* Header */}
       <header className="relative z-10 p-6">
         <Link href="/" className="inline-flex items-center gap-3 group">
-          <Image src="/logo.png" alt="Wolf Whale" width={80} height={80} className="rounded-xl object-contain shadow-lg border-2 border-black" />
+          <Image src="/logo.png" alt="WolfWhale" width={80} height={80} className="rounded-xl object-contain shadow-lg border-2 border-black" />
           <div>
             <span className="text-xl font-display font-bold text-[#0A2540] group-hover:text-[#00BFFF] transition-colors block tracking-wider uppercase">
               WolfWhale
@@ -109,7 +109,7 @@ export default function AuthLayout({
       {/* Footer */}
       <footer className="relative z-10 p-6 text-center">
         <p className="text-sm text-[#0A2540]/50">
-          &copy; {new Date().getFullYear()} Wolf Whale Inc. All rights reserved.
+          &copy; {new Date().getFullYear()} WolfWhale Inc. All rights reserved.
         </p>
       </footer>
 

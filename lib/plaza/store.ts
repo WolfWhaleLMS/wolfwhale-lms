@@ -1,4 +1,4 @@
-// Wolf Whale LMS - Virtual Plaza Zustand Store
+// WolfWhale LMS - Virtual Plaza Zustand Store
 // Client-side state management for the plaza system
 
 import { create } from 'zustand'

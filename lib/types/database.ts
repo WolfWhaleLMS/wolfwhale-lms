@@ -1,4 +1,4 @@
-// Wolf Whale LMS - Database Types
+// WolfWhale LMS - Database Types
 // Phase C: TypeScript types matching the blueprint schema
 // Auto-derived from supabase/migrations/20260209_blueprint_schema.sql
 //

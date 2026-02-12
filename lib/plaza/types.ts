@@ -1,4 +1,4 @@
-// Wolf Whale LMS - Virtual Plaza Type Definitions
+// WolfWhale LMS - Virtual Plaza Type Definitions
 // Complete types for the plaza system: avatars, rooms, chat, store, tokens,
 // mini games, study sessions, documentaries, and the Zustand store interface.
 

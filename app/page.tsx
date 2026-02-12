@@ -80,7 +80,7 @@ export default function HomePage() {
             {/* Heading */}
             <div className="space-y-4">
               <h1 className="text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-[#00BFFF] to-[#33FF33] bg-clip-text text-transparent text-glow-blue tracking-wider">
-                WOLF WHALE LMS
+                WOLFWHALE LMS
               </h1>
               <p className="text-xl md:text-2xl text-white/90 text-white-outlined max-w-2xl mx-auto">
                 The Modern Learning Platform for K-12 & Post-Secondary

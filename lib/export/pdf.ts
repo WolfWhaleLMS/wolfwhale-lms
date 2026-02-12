@@ -85,7 +85,7 @@ export function ReportDocument({ title, subtitle, generatedBy, children }: Repor
       React.createElement(
         View,
         { style: styles.footer, fixed: true },
-        React.createElement(Text, null, 'Wolf Whale LMS'),
+        React.createElement(Text, null, 'WolfWhale LMS'),
         React.createElement(Text, { render: ({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}` })
       )
     )

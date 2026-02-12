@@ -1,5 +1,5 @@
 /**
- * Wolf Whale LMS - Seed Skill Tree Data
+ * WolfWhale LMS - Seed Skill Tree Data
  *
  * Populates 3 demo skill trees (Mathematics, Science, English Language Arts)
  * with nodes arranged in a tree/branch layout, connections between parent-child
@@ -255,7 +255,7 @@ const treeDefs: TreeDef[] = [
 
 async function main() {
   console.log('====================================================================')
-  console.log('Wolf Whale LMS - Seed Skill Tree Data')
+  console.log('WolfWhale LMS - Seed Skill Tree Data')
   console.log('====================================================================')
   console.log(`Supabase URL: ${SUPABASE_URL}`)
   console.log('')

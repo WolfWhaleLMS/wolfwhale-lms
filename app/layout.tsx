@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     template: "%s | WolfWhale LMS",
   },
   description:
-    "Wolf Whale is Canada's modern LMS with built-in spaced repetition flashcards, interactive courses, quizzes, and certificates. FERPA & PIPEDA compliant. The only learning platform with spaced repetition technology built in.",
+    "WolfWhale is Canada's modern LMS with built-in spaced repetition flashcards, interactive courses, quizzes, and certificates. FERPA & PIPEDA compliant. The only learning platform with spaced repetition technology built in.",
   keywords: [
     "LMS",
     "learning management system",
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "WolfWhale LMS",
-    title: "Wolf Whale - Canadian Learning Management System for K-12 & Post-Secondary",
+    title: "WolfWhale - Canadian Learning Management System for K-12 & Post-Secondary",
     description:
       "Canada's modern LMS with built-in spaced repetition flashcards, interactive courses, quizzes, and certificates. FERPA & PIPEDA compliant.",
     images: [
@@ -88,13 +88,13 @@ export const metadata: Metadata = {
         url: "/ww-card.png",
         width: 1200,
         height: 630,
-        alt: "Wolf Whale LMS - Canadian Learning Management System",
+        alt: "WolfWhale LMS - Canadian Learning Management System",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Wolf Whale - Canadian Learning Management System for K-12 & Post-Secondary",
+    title: "WolfWhale - Canadian Learning Management System for K-12 & Post-Secondary",
     description:
       "Canada's modern LMS with built-in spaced repetition flashcards, interactive courses, quizzes, and certificates. FERPA & PIPEDA compliant.",
     images: ["/ww-card.png"],
@@ -145,7 +145,7 @@ export default function RootLayout({
           data={{
             "@context": "https://schema.org",
             "@type": "Organization",
-            name: "Wolf Whale Inc.",
+            name: "WolfWhale Inc.",
             url: "https://wolfwhale.ca",
             logo: "https://wolfwhale.ca/logo.png",
             description:
@@ -157,11 +157,11 @@ export default function RootLayout({
           data={{
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            name: "Wolf Whale LMS",
+            name: "WolfWhale LMS",
             applicationCategory: "EducationalApplication",
             operatingSystem: "Web",
             description:
-              "Wolf Whale LMS is a Canadian LMS built for K-12 and post-secondary education. Features include interactive courses, quizzes, spaced repetition flashcards, certificates, and FERPA compliant data handling.",
+              "WolfWhale LMS is a Canadian LMS built for K-12 and post-secondary education. Features include interactive courses, quizzes, spaced repetition flashcards, certificates, and FERPA compliant data handling.",
             offers: {
               "@type": "Offer",
               price: "0",

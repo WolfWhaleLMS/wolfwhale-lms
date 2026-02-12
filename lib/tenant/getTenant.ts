@@ -1,4 +1,4 @@
-// Wolf Whale LMS - Tenant Resolution Utilities
+// WolfWhale LMS - Tenant Resolution Utilities
 // Phase C: Multi-tenant resolution from slug, ID, or user membership
 // Uses the Supabase server client pattern from lib/supabase/server.ts
 

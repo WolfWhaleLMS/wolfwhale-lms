@@ -1,5 +1,5 @@
 /**
- * Wolf Whale LMS - Database Seed Script
+ * WolfWhale LMS - Database Seed Script
  *
  * This script:
  * 1. Creates auth users in Supabase via the Admin API
@@ -413,7 +413,7 @@ async function executeSqlViaManagementApi(sql: string): Promise<void> {
 
 async function main() {
   console.log("====================================================================");
-  console.log("Wolf Whale LMS - Database Seed Script");
+  console.log("WolfWhale LMS - Database Seed Script");
   console.log("====================================================================");
   console.log(`Supabase URL: ${SUPABASE_URL}`);
   console.log("");

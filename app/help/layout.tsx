@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Help Center - Wolf Whale LMS Support',
+  title: 'Help Center - WolfWhale LMS Support',
   description:
-    'Get help with Wolf Whale LMS. Support resources for teachers, students, parents, and administrators.',
+    'Get help with WolfWhale LMS. Support resources for teachers, students, parents, and administrators.',
   alternates: { canonical: 'https://wolfwhale.ca/help' },
 }
 

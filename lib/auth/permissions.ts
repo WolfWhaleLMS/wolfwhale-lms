@@ -1,4 +1,4 @@
-// Wolf Whale LMS - Role-Permission Matrix
+// WolfWhale LMS - Role-Permission Matrix
 // Phase C: Auth & permissions system
 // Based on blueprint 07_Config_Examples.ts
 

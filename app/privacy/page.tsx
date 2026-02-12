@@ -12,18 +12,18 @@ const LAST_UPDATED = '2026-02-10'
 const content = {
   en: {
     title: 'Privacy Policy',
-    subtitle: 'Wolf Whale LMS',
+    subtitle: 'WolfWhale LMS',
     lastUpdated: `Last updated: ${LAST_UPDATED}`,
     backToHome: 'Back to Home',
     sections: [
       {
         id: 'introduction',
         heading: '1. Introduction',
-        body: `Wolf Whale LMS ("Wolf Whale," "we," "us," or "our") is a Canadian learning management system designed for K\u201312 schools. We are committed to protecting the privacy and security of all personal information entrusted to us by students, parents, guardians, teachers, school administrators, and other users.
+        body: `WolfWhale LMS ("WolfWhale," "we," "us," or "our") is a Canadian learning management system designed for K\u201312 schools. We are committed to protecting the privacy and security of all personal information entrusted to us by students, parents, guardians, teachers, school administrators, and other users.
 
-This Privacy Policy explains what information we collect, how we use it, how we protect it, and your rights regarding your personal information. Wolf Whale is headquartered in Canada and is subject to Canadian federal and provincial privacy legislation.
+This Privacy Policy explains what information we collect, how we use it, how we protect it, and your rights regarding your personal information. WolfWhale is headquartered in Canada and is subject to Canadian federal and provincial privacy legislation.
 
-By using Wolf Whale LMS, you agree to the collection and use of information in accordance with this policy. If you do not agree with the terms of this policy, please do not access or use the platform.`,
+By using WolfWhale LMS, you agree to the collection and use of information in accordance with this policy. If you do not agree with the terms of this policy, please do not access or use the platform.`,
       },
       {
         id: 'information-we-collect',
@@ -78,7 +78,7 @@ We do **not** collect social insurance numbers, financial information, biometric
 Where required by law, we obtain informed consent before collecting, using, or disclosing personal information. For students under the age of majority in their province, consent is obtained from a parent or legal guardian. Consent may be withdrawn at any time by contacting us or the school administrator.
 
 **Legitimate Educational Interest**
-We process personal information when it is necessary for the provision of educational services as contracted between Wolf Whale and the educational institution. Schools act as the data controllers and direct our processing activities in accordance with their educational mandates.
+We process personal information when it is necessary for the provision of educational services as contracted between WolfWhale and the educational institution. Schools act as the data controllers and direct our processing activities in accordance with their educational mandates.
 
 **Contractual Necessity**
 We process data as necessary to fulfil our contractual obligations to the educational institutions we serve, including the provision of learning management services, technical support, and platform maintenance.
@@ -89,7 +89,7 @@ We may process or retain personal information when required to do so by applicab
       {
         id: 'pipeda',
         heading: '5. PIPEDA Compliance',
-        body: `Wolf Whale complies with the Personal Information Protection and Electronic Documents Act (PIPEDA) and adheres to its ten fair information principles:
+        body: `WolfWhale complies with the Personal Information Protection and Electronic Documents Act (PIPEDA) and adheres to its ten fair information principles:
 
 **1. Accountability** \u2014 We have designated a Privacy Officer responsible for our compliance with privacy legislation. Our team is trained on privacy obligations and data handling procedures.
 
@@ -107,14 +107,14 @@ We may process or retain personal information when required to do so by applicab
 
 **8. Openness** \u2014 We make information about our privacy policies and practices readily available through this Privacy Policy and upon request.
 
-**9. Individual Access** \u2014 Upon request and subject to verification, individuals have the right to access their personal information held by Wolf Whale and to challenge its accuracy.
+**9. Individual Access** \u2014 Upon request and subject to verification, individuals have the right to access their personal information held by WolfWhale and to challenge its accuracy.
 
 **10. Challenging Compliance** \u2014 Individuals may direct complaints or inquiries about our compliance with privacy legislation to our Privacy Officer at privacy@wolfwhale.ca.`,
       },
       {
         id: 'provincial-compliance',
         heading: '6. Provincial Law Compliance',
-        body: `In addition to PIPEDA, Wolf Whale complies with applicable provincial privacy legislation across Canada:
+        body: `In addition to PIPEDA, WolfWhale complies with applicable provincial privacy legislation across Canada:
 
 **British Columbia \u2014 Freedom of Information and Protection of Privacy Act (FIPPA)**
 When providing services to public bodies in British Columbia, we ensure that personal information is stored and accessed only in Canada, unless disclosure outside Canada is authorized. We cooperate with public bodies to meet their obligations under FIPPA, including responding to access requests and ensuring appropriate data handling.
@@ -123,7 +123,7 @@ When providing services to public bodies in British Columbia, we ensure that per
 For Ontario school boards, we comply with MFIPPA requirements regarding the collection, use, retention, and disclosure of personal information. We support school boards in meeting their notice and access obligations and maintain appropriate data handling agreements.
 
 **Quebec \u2014 Act Respecting the Protection of Personal Information in the Private Sector (Law 25)**
-Wolf Whale complies with Quebec's Law 25 (\u00ab Loi 25 \u00bb), including:
+WolfWhale complies with Quebec's Law 25 (\u00ab Loi 25 \u00bb), including:
 \u2022 Conducting privacy impact assessments (PIA) for any project involving the collection, use, or disclosure of personal information
 \u2022 Appointing a person responsible for the protection of personal information
 \u2022 Implementing a framework for the governance of personal information
@@ -152,7 +152,7 @@ Parents and guardians have the right to:
 **Right to Consent and Withdraw**
 Parents and guardians may:
 \u2022 Provide or withhold consent for the collection and use of their child's information
-\u2022 Withdraw previously given consent by contacting the school or Wolf Whale directly
+\u2022 Withdraw previously given consent by contacting the school or WolfWhale directly
 \u2022 Request that we cease collecting or using their child's information going forward
 
 **Right to Deletion**
@@ -199,7 +199,7 @@ Data may be stored and processed in Canada and/or the United States through our 
 While a student is actively enrolled and using the platform, we retain all educational records necessary for the school's ongoing educational activities, including grades, attendance records, assignment submissions, and course progress.
 
 **Post-Enrollment**
-After a student's enrollment ends or the school's contract with Wolf Whale concludes:
+After a student's enrollment ends or the school's contract with WolfWhale concludes:
 \u2022 Educational records are retained for a reasonable period (typically the remainder of the academic year plus one additional year) to allow for transcript requests, administrative follow-up, and dispute resolution
 \u2022 Schools may request earlier deletion or extended retention based on their institutional policies and legal requirements
 \u2022 Account access is deactivated promptly upon notification from the school
@@ -237,7 +237,7 @@ Data exports are provided in standard formats such as CSV, JSON, or PDF, dependi
 **How to Request Deletion**
 \u2022 Contact us at privacy@wolfwhale.ca with a deletion request
 \u2022 School administrators can initiate deletion through the Admin Dashboard
-\u2022 Parents may request deletion of their child's data by contacting the school or Wolf Whale directly
+\u2022 Parents may request deletion of their child's data by contacting the school or WolfWhale directly
 
 **Processing Timeline**
 \u2022 Deletion requests are acknowledged within 5 business days
@@ -285,7 +285,7 @@ Upon discovering a breach, we immediately take steps to contain the incident, as
       {
         id: 'third-party-services',
         heading: '13. Third-Party Services',
-        body: `Wolf Whale uses a limited number of third-party service providers to deliver and host the platform. We carefully vet each provider for privacy and security compliance.
+        body: `WolfWhale uses a limited number of third-party service providers to deliver and host the platform. We carefully vet each provider for privacy and security compliance.
 
 **Supabase** (Database and Authentication)
 \u2022 Provides PostgreSQL database hosting, user authentication, and real-time functionality
@@ -294,7 +294,7 @@ Upon discovering a breach, we immediately take steps to contain the incident, as
 \u2022 Learn more: https://supabase.com/privacy
 
 **Vercel** (Application Hosting)
-\u2022 Hosts the Wolf Whale web application and provides edge computing, CDN, and SSL
+\u2022 Hosts the WolfWhale web application and provides edge computing, CDN, and SSL
 \u2022 SOC 2 Type II compliant
 \u2022 Learn more: https://vercel.com/legal/privacy-policy
 
@@ -312,7 +312,7 @@ All third-party providers are contractually bound to handle personal information
         body: `If you have questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:
 
 **Privacy Officer**
-Wolf Whale LMS
+WolfWhale LMS
 Email: privacy@wolfwhale.ca
 Phone: +1 (306) 981-5926
 
@@ -339,7 +339,7 @@ If you are not satisfied with our response, you have the right to file a complai
 \u2022 For significant changes affecting student data, we will provide at least 30 days\u2019 advance notice
 
 **Continued Use**
-Continued use of Wolf Whale LMS after changes to this Privacy Policy constitutes acceptance of the revised terms. If you disagree with the changes, you should discontinue use and contact us to discuss your concerns.
+Continued use of WolfWhale LMS after changes to this Privacy Policy constitutes acceptance of the revised terms. If you disagree with the changes, you should discontinue use and contact us to discuss your concerns.
 
 **Previous Versions**
 Previous versions of this Privacy Policy are available upon request by contacting privacy@wolfwhale.ca.`,
@@ -348,18 +348,18 @@ Previous versions of this Privacy Policy are available upon request by contactin
   },
   fr: {
     title: 'Politique de confidentialit\u00e9',
-    subtitle: 'Wolf Whale LMS',
+    subtitle: 'WolfWhale LMS',
     lastUpdated: `Derni\u00e8re mise \u00e0 jour\u00a0: ${LAST_UPDATED}`,
     backToHome: 'Retour \u00e0 l\u2019accueil',
     sections: [
       {
         id: 'introduction',
         heading: '1. Introduction',
-        body: `Wolf Whale LMS (\u00ab\u00a0Wolf Whale\u00a0\u00bb, \u00ab\u00a0nous\u00a0\u00bb ou \u00ab\u00a0notre\u00a0\u00bb) est un syst\u00e8me de gestion de l\u2019apprentissage canadien con\u00e7u pour les \u00e9coles de la maternelle \u00e0 la 12e ann\u00e9e. Nous nous engageons \u00e0 prot\u00e9ger la vie priv\u00e9e et la s\u00e9curit\u00e9 de tous les renseignements personnels qui nous sont confi\u00e9s par les \u00e9l\u00e8ves, les parents, les tuteurs, les enseignants, les administrateurs scolaires et les autres utilisateurs.
+        body: `WolfWhale LMS (\u00ab\u00a0WolfWhale\u00a0\u00bb, \u00ab\u00a0nous\u00a0\u00bb ou \u00ab\u00a0notre\u00a0\u00bb) est un syst\u00e8me de gestion de l\u2019apprentissage canadien con\u00e7u pour les \u00e9coles de la maternelle \u00e0 la 12e ann\u00e9e. Nous nous engageons \u00e0 prot\u00e9ger la vie priv\u00e9e et la s\u00e9curit\u00e9 de tous les renseignements personnels qui nous sont confi\u00e9s par les \u00e9l\u00e8ves, les parents, les tuteurs, les enseignants, les administrateurs scolaires et les autres utilisateurs.
 
-La pr\u00e9sente Politique de confidentialit\u00e9 explique les renseignements que nous recueillons, la fa\u00e7on dont nous les utilisons, les mesures que nous prenons pour les prot\u00e9ger et vos droits en ce qui concerne vos renseignements personnels. Wolf Whale a son si\u00e8ge social au Canada et est assujetti aux lois f\u00e9d\u00e9rales et provinciales canadiennes en mati\u00e8re de protection de la vie priv\u00e9e.
+La pr\u00e9sente Politique de confidentialit\u00e9 explique les renseignements que nous recueillons, la fa\u00e7on dont nous les utilisons, les mesures que nous prenons pour les prot\u00e9ger et vos droits en ce qui concerne vos renseignements personnels. WolfWhale a son si\u00e8ge social au Canada et est assujetti aux lois f\u00e9d\u00e9rales et provinciales canadiennes en mati\u00e8re de protection de la vie priv\u00e9e.
 
-En utilisant Wolf Whale LMS, vous acceptez la collecte et l\u2019utilisation des renseignements conform\u00e9ment \u00e0 la pr\u00e9sente politique. Si vous n\u2019\u00eates pas d\u2019accord avec les modalit\u00e9s de cette politique, veuillez ne pas acc\u00e9der \u00e0 la plateforme ni l\u2019utiliser.`,
+En utilisant WolfWhale LMS, vous acceptez la collecte et l\u2019utilisation des renseignements conform\u00e9ment \u00e0 la pr\u00e9sente politique. Si vous n\u2019\u00eates pas d\u2019accord avec les modalit\u00e9s de cette politique, veuillez ne pas acc\u00e9der \u00e0 la plateforme ni l\u2019utiliser.`,
       },
       {
         id: 'information-we-collect',
@@ -414,7 +414,7 @@ Nous ne recueillons **pas** de num\u00e9ros d\u2019assurance sociale, de renseig
 Lorsque la loi l\u2019exige, nous obtenons un consentement \u00e9clair\u00e9 avant de recueillir, d\u2019utiliser ou de communiquer des renseignements personnels. Pour les \u00e9l\u00e8ves n\u2019ayant pas atteint l\u2019\u00e2ge de la majorit\u00e9 dans leur province, le consentement est obtenu aupr\u00e8s d\u2019un parent ou d\u2019un tuteur l\u00e9gal. Le consentement peut \u00eatre retir\u00e9 en tout temps en communiquant avec nous ou avec l\u2019administrateur scolaire.
 
 **Int\u00e9r\u00eat \u00e9ducatif l\u00e9gitime**
-Nous traitons des renseignements personnels lorsque cela est n\u00e9cessaire \u00e0 la prestation des services \u00e9ducatifs, conform\u00e9ment au contrat conclu entre Wolf Whale et l\u2019\u00e9tablissement d\u2019enseignement. Les \u00e9coles agissent \u00e0 titre de responsables du traitement des donn\u00e9es et orientent nos activit\u00e9s de traitement conform\u00e9ment \u00e0 leurs mandats \u00e9ducatifs.
+Nous traitons des renseignements personnels lorsque cela est n\u00e9cessaire \u00e0 la prestation des services \u00e9ducatifs, conform\u00e9ment au contrat conclu entre WolfWhale et l\u2019\u00e9tablissement d\u2019enseignement. Les \u00e9coles agissent \u00e0 titre de responsables du traitement des donn\u00e9es et orientent nos activit\u00e9s de traitement conform\u00e9ment \u00e0 leurs mandats \u00e9ducatifs.
 
 **N\u00e9cessit\u00e9 contractuelle**
 Nous traitons les donn\u00e9es selon les n\u00e9cessit\u00e9s li\u00e9es \u00e0 l\u2019ex\u00e9cution de nos obligations contractuelles envers les \u00e9tablissements d\u2019enseignement que nous desservons, y compris la prestation de services de gestion de l\u2019apprentissage, le soutien technique et la maintenance de la plateforme.
@@ -425,7 +425,7 @@ Nous pouvons traiter ou conserver des renseignements personnels lorsque la loi, 
       {
         id: 'pipeda',
         heading: '5. Conformit\u00e9 \u00e0 la LPRPDE',
-        body: `Wolf Whale se conforme \u00e0 la Loi sur la protection des renseignements personnels et les documents \u00e9lectroniques (LPRPDE) et respecte ses dix principes relatifs \u00e0 l\u2019\u00e9quit\u00e9 dans le traitement de l\u2019information\u00a0:
+        body: `WolfWhale se conforme \u00e0 la Loi sur la protection des renseignements personnels et les documents \u00e9lectroniques (LPRPDE) et respecte ses dix principes relatifs \u00e0 l\u2019\u00e9quit\u00e9 dans le traitement de l\u2019information\u00a0:
 
 **1. Responsabilit\u00e9** \u2014 Nous avons d\u00e9sign\u00e9 un responsable de la protection de la vie priv\u00e9e charg\u00e9 de veiller \u00e0 notre conformit\u00e9 aux lois sur la protection des renseignements personnels. Notre \u00e9quipe est form\u00e9e sur les obligations en mati\u00e8re de vie priv\u00e9e et les proc\u00e9dures de traitement des donn\u00e9es.
 
@@ -443,14 +443,14 @@ Nous pouvons traiter ou conserver des renseignements personnels lorsque la loi, 
 
 **8. Transparence** \u2014 Nous rendons facilement accessibles les renseignements sur nos politiques et pratiques en mati\u00e8re de vie priv\u00e9e par l\u2019interm\u00e9diaire de la pr\u00e9sente Politique de confidentialit\u00e9 et sur demande.
 
-**9. Acc\u00e8s aux renseignements personnels** \u2014 Sur demande et sous r\u00e9serve de v\u00e9rification, les personnes ont le droit d\u2019acc\u00e9der aux renseignements personnels que Wolf Whale d\u00e9tient \u00e0 leur sujet et d\u2019en contester l\u2019exactitude.
+**9. Acc\u00e8s aux renseignements personnels** \u2014 Sur demande et sous r\u00e9serve de v\u00e9rification, les personnes ont le droit d\u2019acc\u00e9der aux renseignements personnels que WolfWhale d\u00e9tient \u00e0 leur sujet et d\u2019en contester l\u2019exactitude.
 
 **10. Possibilit\u00e9 de porter plainte** \u2014 Toute personne peut adresser ses plaintes ou ses demandes de renseignements au sujet de notre conformit\u00e9 aux lois sur la protection des renseignements personnels \u00e0 notre responsable de la protection de la vie priv\u00e9e \u00e0 l\u2019adresse privacy@wolfwhale.ca.`,
       },
       {
         id: 'provincial-compliance',
         heading: '6. Conformit\u00e9 aux lois provinciales',
-        body: `En plus de la LPRPDE, Wolf Whale se conforme aux lois provinciales applicables en mati\u00e8re de protection des renseignements personnels \u00e0 travers le Canada\u00a0:
+        body: `En plus de la LPRPDE, WolfWhale se conforme aux lois provinciales applicables en mati\u00e8re de protection des renseignements personnels \u00e0 travers le Canada\u00a0:
 
 **Colombie-Britannique \u2014 Freedom of Information and Protection of Privacy Act (FIPPA)**
 Lorsque nous fournissons des services \u00e0 des organismes publics en Colombie-Britannique, nous veillons \u00e0 ce que les renseignements personnels soient stock\u00e9s et consult\u00e9s uniquement au Canada, sauf si la communication \u00e0 l\u2019ext\u00e9rieur du Canada est autoris\u00e9e. Nous collaborons avec les organismes publics pour les aider \u00e0 remplir leurs obligations en vertu de la FIPPA, y compris en r\u00e9pondant aux demandes d\u2019acc\u00e8s et en assurant un traitement ad\u00e9quat des donn\u00e9es.
@@ -459,7 +459,7 @@ Lorsque nous fournissons des services \u00e0 des organismes publics en Colombie-
 Pour les conseils scolaires de l\u2019Ontario, nous respectons les exigences de la LAIMPVP concernant la collecte, l\u2019utilisation, la conservation et la communication des renseignements personnels. Nous aidons les conseils scolaires \u00e0 remplir leurs obligations en mati\u00e8re d\u2019avis et d\u2019acc\u00e8s et nous maintenons des ententes de traitement des donn\u00e9es ad\u00e9quates.
 
 **Qu\u00e9bec \u2014 Loi sur la protection des renseignements personnels dans le secteur priv\u00e9 (Loi\u00a025)**
-Wolf Whale se conforme \u00e0 la Loi\u00a025 du Qu\u00e9bec, notamment\u00a0:
+WolfWhale se conforme \u00e0 la Loi\u00a025 du Qu\u00e9bec, notamment\u00a0:
 \u2022 R\u00e9alisation d\u2019\u00e9valuations des facteurs relatifs \u00e0 la vie priv\u00e9e (\u00c9FVP) pour tout projet impliquant la collecte, l\u2019utilisation ou la communication de renseignements personnels
 \u2022 D\u00e9signation d\u2019un responsable de la protection des renseignements personnels
 \u2022 Mise en \u0153uvre d\u2019un cadre de gouvernance des renseignements personnels
@@ -488,7 +488,7 @@ Les parents et tuteurs ont le droit de\u00a0:
 **Droit au consentement et au retrait**
 Les parents et tuteurs peuvent\u00a0:
 \u2022 Accorder ou refuser le consentement \u00e0 la collecte et \u00e0 l\u2019utilisation des renseignements de leur enfant
-\u2022 Retirer un consentement pr\u00e9c\u00e9demment donn\u00e9 en communiquant avec l\u2019\u00e9cole ou Wolf Whale directement
+\u2022 Retirer un consentement pr\u00e9c\u00e9demment donn\u00e9 en communiquant avec l\u2019\u00e9cole ou WolfWhale directement
 \u2022 Demander que nous cessions de recueillir ou d\u2019utiliser les renseignements de leur enfant \u00e0 l\u2019avenir
 
 **Droit \u00e0 la suppression**
@@ -535,7 +535,7 @@ Les donn\u00e9es peuvent \u00eatre stock\u00e9es et trait\u00e9es au Canada et/o
 Pendant qu\u2019un \u00e9l\u00e8ve est activement inscrit et utilise la plateforme, nous conservons tous les dossiers scolaires n\u00e9cessaires aux activit\u00e9s \u00e9ducatives en cours de l\u2019\u00e9cole, y compris les notes, les registres de pr\u00e9sence, les travaux remis et la progression dans les cours.
 
 **Apr\u00e8s l\u2019inscription**
-Apr\u00e8s la fin de l\u2019inscription d\u2019un \u00e9l\u00e8ve ou la conclusion du contrat de l\u2019\u00e9cole avec Wolf Whale\u00a0:
+Apr\u00e8s la fin de l\u2019inscription d\u2019un \u00e9l\u00e8ve ou la conclusion du contrat de l\u2019\u00e9cole avec WolfWhale\u00a0:
 \u2022 Les dossiers scolaires sont conserv\u00e9s pendant une p\u00e9riode raisonnable (g\u00e9n\u00e9ralement la fin de l\u2019ann\u00e9e scolaire en cours plus une ann\u00e9e suppl\u00e9mentaire) pour permettre les demandes de relev\u00e9s de notes, le suivi administratif et la r\u00e9solution de litiges
 \u2022 Les \u00e9coles peuvent demander une suppression anticip\u00e9e ou une conservation prolong\u00e9e en fonction de leurs politiques institutionnelles et exigences l\u00e9gales
 \u2022 L\u2019acc\u00e8s au compte est d\u00e9sactiv\u00e9 rapidement sur notification de l\u2019\u00e9cole
@@ -573,7 +573,7 @@ Les exportations de donn\u00e9es sont fournies dans des formats standards tels q
 **Comment demander une suppression**
 \u2022 Communiquez avec nous \u00e0 privacy@wolfwhale.ca pour soumettre une demande de suppression
 \u2022 Les administrateurs scolaires peuvent initier la suppression par le biais du tableau de bord administratif
-\u2022 Les parents peuvent demander la suppression des donn\u00e9es de leur enfant en communiquant avec l\u2019\u00e9cole ou Wolf Whale directement
+\u2022 Les parents peuvent demander la suppression des donn\u00e9es de leur enfant en communiquant avec l\u2019\u00e9cole ou WolfWhale directement
 
 **D\u00e9lai de traitement**
 \u2022 Les demandes de suppression font l\u2019objet d\u2019un accus\u00e9 de r\u00e9ception dans les 5 jours ouvrables
@@ -621,7 +621,7 @@ D\u00e8s la d\u00e9couverte d\u2019une atteinte, nous prenons imm\u00e9diatement
       {
         id: 'third-party-services',
         heading: '13. Services tiers',
-        body: `Wolf Whale fait appel \u00e0 un nombre limit\u00e9 de fournisseurs de services tiers pour la prestation et l\u2019h\u00e9bergement de la plateforme. Nous \u00e9valuons rigoureusement chaque fournisseur en mati\u00e8re de conformit\u00e9 \u00e0 la vie priv\u00e9e et \u00e0 la s\u00e9curit\u00e9.
+        body: `WolfWhale fait appel \u00e0 un nombre limit\u00e9 de fournisseurs de services tiers pour la prestation et l\u2019h\u00e9bergement de la plateforme. Nous \u00e9valuons rigoureusement chaque fournisseur en mati\u00e8re de conformit\u00e9 \u00e0 la vie priv\u00e9e et \u00e0 la s\u00e9curit\u00e9.
 
 **Supabase** (Base de donn\u00e9es et authentification)
 \u2022 Fournit l\u2019h\u00e9bergement de la base de donn\u00e9es PostgreSQL, l\u2019authentification des utilisateurs et les fonctionnalit\u00e9s en temps r\u00e9el
@@ -630,7 +630,7 @@ D\u00e8s la d\u00e9couverte d\u2019une atteinte, nous prenons imm\u00e9diatement
 \u2022 En savoir plus\u00a0: https://supabase.com/privacy
 
 **Vercel** (H\u00e9bergement de l\u2019application)
-\u2022 H\u00e9berge l\u2019application Web Wolf Whale et fournit l\u2019informatique p\u00e9riph\u00e9rique, le CDN et le SSL
+\u2022 H\u00e9berge l\u2019application Web WolfWhale et fournit l\u2019informatique p\u00e9riph\u00e9rique, le CDN et le SSL
 \u2022 Conforme SOC 2 Type II
 \u2022 En savoir plus\u00a0: https://vercel.com/legal/privacy-policy
 
@@ -648,7 +648,7 @@ Tous les fournisseurs tiers sont contractuellement tenus de traiter les renseign
         body: `Si vous avez des questions, des pr\u00e9occupations ou des demandes concernant la pr\u00e9sente Politique de confidentialit\u00e9 ou nos pratiques en mati\u00e8re de donn\u00e9es, veuillez communiquer avec nous\u00a0:
 
 **Responsable de la protection de la vie priv\u00e9e**
-Wolf Whale LMS
+WolfWhale LMS
 Courriel\u00a0: privacy@wolfwhale.ca
 T\u00e9l\u00e9phone\u00a0: +1 (306) 981-5926
 
@@ -675,7 +675,7 @@ Si vous n\u2019\u00eates pas satisfait de notre r\u00e9ponse, vous avez le droit
 \u2022 Pour les modifications importantes touchant les donn\u00e9es des \u00e9l\u00e8ves, nous donnerons un pr\u00e9avis d\u2019au moins 30 jours
 
 **Utilisation continue**
-L\u2019utilisation continue de Wolf Whale LMS apr\u00e8s les modifications apport\u00e9es \u00e0 la pr\u00e9sente Politique de confidentialit\u00e9 vaut acceptation des modalit\u00e9s r\u00e9vis\u00e9es. Si vous n\u2019\u00eates pas d\u2019accord avec les modifications, vous devriez cesser l\u2019utilisation de la plateforme et communiquer avec nous pour discuter de vos pr\u00e9occupations.
+L\u2019utilisation continue de WolfWhale LMS apr\u00e8s les modifications apport\u00e9es \u00e0 la pr\u00e9sente Politique de confidentialit\u00e9 vaut acceptation des modalit\u00e9s r\u00e9vis\u00e9es. Si vous n\u2019\u00eates pas d\u2019accord avec les modifications, vous devriez cesser l\u2019utilisation de la plateforme et communiquer avec nous pour discuter de vos pr\u00e9occupations.
 
 **Versions ant\u00e9rieures**
 Les versions ant\u00e9rieures de la pr\u00e9sente Politique de confidentialit\u00e9 sont disponibles sur demande en communiquant avec privacy@wolfwhale.ca.`,
@@ -795,10 +795,10 @@ export default function PrivacyPolicyPage() {
       <header className="relative z-10 border-b border-[#0A2540]/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <Image src="/logo.png" alt="Wolf Whale" width={48} height={48} className="rounded-xl object-contain shadow-lg border-2 border-black" />
+            <Image src="/logo.png" alt="WolfWhale" width={48} height={48} className="rounded-xl object-contain shadow-lg border-2 border-black" />
             <div>
               <h1 className="text-lg sm:text-xl font-display font-bold text-[#0A2540] group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase">
-                Wolf Whale
+                WolfWhale
               </h1>
               <p className="text-[10px] sm:text-xs text-[#0A2540]/60 font-display font-semibold tracking-widest uppercase">Learning Management System</p>
             </div>
@@ -893,7 +893,7 @@ export default function PrivacyPolicyPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-sm text-[#0A2540]/40">
-              &copy; 2026 Wolf Whale LMS. {lang === 'en' ? 'All rights reserved.' : 'Tous droits r\u00e9serv\u00e9s.'}
+              &copy; 2026 WolfWhale LMS. {lang === 'en' ? 'All rights reserved.' : 'Tous droits r\u00e9serv\u00e9s.'}
             </p>
             <div className="flex gap-6">
               <Link

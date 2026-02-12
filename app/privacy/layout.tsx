@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description:
-    'Wolf Whale LMS privacy policy. Learn how we protect student data with FERPA and PIPEDA compliance. Canadian data sovereignty guaranteed.',
+    'WolfWhale LMS privacy policy. Learn how we protect student data with FERPA and PIPEDA compliance. Canadian data sovereignty guaranteed.',
   alternates: { canonical: 'https://wolfwhale.ca/privacy' },
 }
 

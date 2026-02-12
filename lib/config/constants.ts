@@ -1,7 +1,7 @@
-// Wolf Whale LMS - Application Constants
+// WolfWhale LMS - Application Constants
 
 export const APP = {
-  name: 'Wolf Whale LMS',
+  name: 'WolfWhale LMS',
   version: '2.0.0',
   supportEmail: 'support@wolfwhale.ca',
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://wolfwhale.ca',

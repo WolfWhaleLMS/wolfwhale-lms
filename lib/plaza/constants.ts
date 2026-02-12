@@ -1,4 +1,4 @@
-// Wolf Whale LMS - Virtual Plaza Constants
+// WolfWhale LMS - Virtual Plaza Constants
 
 // ---------------------------------------------------------------------------
 // Plaza Configuration

@@ -6,7 +6,7 @@ import { LeaderboardPeriodTabs } from './period-tabs'
 import { Trophy, Shield, Medal, Crown } from 'lucide-react'
 
 export const metadata = {
-  title: 'Leaderboard | Wolf Whale LMS',
+  title: 'Leaderboard | WolfWhale LMS',
 }
 
 export default async function LeaderboardPage({

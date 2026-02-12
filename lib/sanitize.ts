@@ -1,5 +1,5 @@
 /**
- * Input sanitization utilities for Wolf Whale LMS.
+ * Input sanitization utilities for WolfWhale LMS.
  * Strips HTML tags and dangerous content from user input.
  */
 

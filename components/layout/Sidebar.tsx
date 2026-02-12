@@ -129,9 +129,14 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
             />
           </div>
 
-          <span className="font-display text-xs font-bold tracking-widest uppercase leading-tight line-clamp-2">
-            {tenantName}
-          </span>
+          <div className="flex flex-col items-start">
+            <span className="font-display text-sm font-extrabold tracking-widest uppercase leading-tight">
+              WolfWhale
+            </span>
+            <span className="font-display text-[10px] font-bold tracking-[0.3em] uppercase text-sidebar-foreground/70 self-center">
+              LMS
+            </span>
+          </div>
         </Link>
 
         {/* Mobile close button */}

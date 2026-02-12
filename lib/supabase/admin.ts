@@ -1,6 +1,6 @@
 import 'server-only'
 
-// Wolf Whale LMS - Supabase Admin (Service Role) Client
+// WolfWhale LMS - Supabase Admin (Service Role) Client
 // Phase C: Server-only client for privileged operations
 //
 // IMPORTANT: This client uses the SUPABASE_SERVICE_ROLE_KEY and bypasses
