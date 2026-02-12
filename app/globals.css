@@ -96,9 +96,9 @@ body::before {
   /* Base Theme — Bright Aqua Futuristic */
   --background: #E8F8FF;
   --foreground: #0A2540;
-  --card: rgba(255, 255, 255, 0.65);
+  --card: rgba(255, 255, 255, 0.88);
   --card-foreground: #0A2540;
-  --popover: rgba(255, 255, 255, 0.85);
+  --popover: rgba(255, 255, 255, 0.95);
   --popover-foreground: #0A2540;
   --primary: #00BFFF;
   --primary-foreground: #ffffff;
@@ -127,9 +127,9 @@ body::before {
   --sidebar-ring: #00BFFF;
 
   /* Liquid Glass — Light mode surfaces */
-  --glass-bg:             rgba(255, 255, 255, 0.78);
-  --glass-bg-elevated:    rgba(255, 255, 255, 0.88);
-  --glass-bg-heavy:       rgba(255, 255, 255, 0.82);
+  --glass-bg:             rgba(255, 255, 255, 0.88);
+  --glass-bg-elevated:    rgba(255, 255, 255, 0.95);
+  --glass-bg-heavy:       rgba(255, 255, 255, 0.92);
   --glass-border:         rgba(0, 191, 255, 0.22);
   --glass-border-subtle:  rgba(0, 191, 255, 0.12);
   --glass-highlight:      rgba(255, 255, 255, 0.70);
@@ -166,9 +166,9 @@ body::before {
 
 .dark {
   /* Liquid Glass — Dark mode surfaces */
-  --glass-bg:             rgba(0, 40, 80, 0.72);
-  --glass-bg-elevated:    rgba(0, 50, 100, 0.85);
-  --glass-bg-heavy:       rgba(0, 35, 70, 0.82);
+  --glass-bg:             rgba(0, 40, 80, 0.85);
+  --glass-bg-elevated:    rgba(0, 50, 100, 0.95);
+  --glass-bg-heavy:       rgba(0, 35, 70, 0.92);
   --glass-border:         rgba(0, 191, 255, 0.25);
   --glass-border-subtle:  rgba(0, 191, 255, 0.12);
   --glass-highlight:      rgba(0, 191, 255, 0.08);
@@ -193,9 +193,9 @@ body::before {
   /* Base Theme — Deep Ocean Neon */
   --background: #041428;
   --foreground: #E8F8FF;
-  --card: rgba(0, 40, 80, 0.70);
+  --card: rgba(0, 40, 80, 0.85);
   --card-foreground: #E8F8FF;
-  --popover: rgba(0, 35, 70, 0.90);
+  --popover: rgba(0, 35, 70, 0.95);
   --popover-foreground: #E8F8FF;
   --primary: #00BFFF;
   --primary-foreground: #041428;
@@ -1220,32 +1220,30 @@ body::before {
   .sidebar-chrome-tab:hover {
     background: linear-gradient(
       180deg,
-      rgba(20, 50, 40, 0.45) 0%,
-      rgba(15, 45, 35, 0.35) 30%,
-      rgba(20, 55, 40, 0.40) 50%,
-      rgba(15, 40, 30, 0.35) 70%,
-      rgba(20, 50, 40, 0.38) 100%
+      rgba(20, 45, 75, 0.50) 0%,
+      rgba(15, 38, 65, 0.40) 50%,
+      rgba(20, 45, 75, 0.45) 100%
     );
-    border-color: rgba(51, 255, 51, 0.15);
+    border-color: rgba(192, 216, 232, 0.30);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.10),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.10);
+      inset 0 1px 0 rgba(255, 255, 255, 0.15),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.08);
   }
   .sidebar-chrome-tab-active {
     background: linear-gradient(
       180deg,
-      rgba(0, 80, 20, 0.85) 0%,
-      rgba(5, 70, 25, 0.80) 30%,
-      rgba(10, 60, 30, 0.80) 50%,
-      rgba(5, 65, 20, 0.82) 70%,
-      rgba(0, 55, 15, 0.78) 100%
+      rgba(18, 48, 78, 0.92) 0%,
+      rgba(12, 38, 65, 0.88) 25%,
+      rgba(8, 32, 56, 0.90) 50%,
+      rgba(12, 38, 65, 0.88) 75%,
+      rgba(18, 48, 78, 0.85) 100%
     );
-    border: 1px solid rgba(51, 255, 51, 0.35);
+    border: 1px solid rgba(192, 216, 232, 0.45);
     box-shadow:
-      0 0 12px rgba(51, 255, 51, 0.20),
-      0 0 25px rgba(51, 255, 51, 0.08),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+      0 2px 10px rgba(0, 0, 0, 0.25),
+      0 0 20px rgba(51, 255, 51, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.18);
   }
   .sidebar-chrome-tab-active::before {
     content: '';
@@ -1269,14 +1267,181 @@ body::before {
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
+    height: 2px;
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(51, 255, 51, 0.40) 50%,
+      rgba(51, 255, 51, 0.60) 50%,
       transparent 100%
     );
     pointer-events: none;
+  }
+
+  /* ── Chrome 3D Button Effects ── */
+  .btn-chrome-3d-blue {
+    background: linear-gradient(
+      180deg,
+      #4DD6FF 0%,
+      #00BFFF 30%,
+      #009EDD 65%,
+      #007BB5 100%
+    );
+    border: 1px solid #006A9E;
+    box-shadow:
+      0 4px 12px rgba(0, 100, 180, 0.30),
+      0 2px 4px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  }
+  .btn-chrome-3d-blue:hover {
+    background: linear-gradient(
+      180deg,
+      #66E0FF 0%,
+      #1ECBFF 30%,
+      #00AAEE 65%,
+      #008ACC 100%
+    );
+    box-shadow:
+      0 6px 20px rgba(0, 100, 180, 0.40),
+      0 3px 6px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.40);
+  }
+  .btn-chrome-3d-blue:active {
+    background: linear-gradient(
+      180deg,
+      #007BB5 0%,
+      #009EDD 50%,
+      #00BFFF 100%
+    );
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.20),
+      inset 0 2px 4px rgba(0, 0, 0, 0.15);
+    transform: translateY(1px);
+  }
+
+  .btn-chrome-3d-red {
+    background: linear-gradient(
+      180deg,
+      #FF6688 0%,
+      #FF3366 30%,
+      #E6204D 65%,
+      #CC1040 100%
+    );
+    border: 1px solid #AA0033;
+    box-shadow:
+      0 4px 12px rgba(200, 0, 50, 0.30),
+      0 2px 4px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.30);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  }
+  .btn-chrome-3d-red:hover {
+    background: linear-gradient(
+      180deg,
+      #FF88AA 0%,
+      #FF4477 30%,
+      #F0305E 65%,
+      #DD1848 100%
+    );
+    box-shadow:
+      0 6px 20px rgba(200, 0, 50, 0.40),
+      0 3px 6px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
+  .btn-chrome-3d-red:active {
+    background: linear-gradient(
+      180deg,
+      #CC1040 0%,
+      #E6204D 50%,
+      #FF3366 100%
+    );
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.20),
+      inset 0 2px 4px rgba(0, 0, 0, 0.15);
+    transform: translateY(1px);
+  }
+
+  .btn-chrome-3d-green {
+    background: linear-gradient(
+      180deg,
+      #66FF66 0%,
+      #33FF33 30%,
+      #22DD22 65%,
+      #11BB11 100%
+    );
+    border: 1px solid #0A9E0A;
+    color: #0A2540;
+    box-shadow:
+      0 4px 12px rgba(0, 180, 0, 0.30),
+      0 2px 4px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.30);
+  }
+  .btn-chrome-3d-green:hover {
+    background: linear-gradient(
+      180deg,
+      #88FF88 0%,
+      #44FF44 30%,
+      #33EE33 65%,
+      #22CC22 100%
+    );
+    box-shadow:
+      0 6px 20px rgba(0, 180, 0, 0.40),
+      0 3px 6px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.40);
+  }
+  .btn-chrome-3d-green:active {
+    background: linear-gradient(
+      180deg,
+      #11BB11 0%,
+      #22DD22 50%,
+      #33FF33 100%
+    );
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.20),
+      inset 0 2px 4px rgba(0, 0, 0, 0.15);
+    transform: translateY(1px);
+  }
+
+  .btn-chrome-3d-silver {
+    background: linear-gradient(
+      180deg,
+      #F0F8FF 0%,
+      #D0E4F0 35%,
+      #B8D4E8 65%,
+      #A0C4DC 100%
+    );
+    border: 1px solid rgba(140, 175, 200, 0.70);
+    color: #0A2540;
+    box-shadow:
+      0 4px 12px rgba(0, 60, 120, 0.20),
+      0 2px 4px rgba(0, 0, 0, 0.10),
+      inset 0 1px 0 rgba(255, 255, 255, 0.70);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.50);
+  }
+  .btn-chrome-3d-silver:hover {
+    background: linear-gradient(
+      180deg,
+      #FFFFFF 0%,
+      #E0ECF4 35%,
+      #C8DCF0 65%,
+      #B0D0E8 100%
+    );
+    box-shadow:
+      0 6px 16px rgba(0, 60, 120, 0.25),
+      0 3px 6px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.80);
+  }
+  .btn-chrome-3d-silver:active {
+    background: linear-gradient(
+      180deg,
+      #A0C4DC 0%,
+      #B8D4E8 50%,
+      #D0E4F0 100%
+    );
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.15),
+      inset 0 2px 4px rgba(0, 0, 0, 0.10);
+    transform: translateY(1px);
   }
 }
 

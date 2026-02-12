@@ -171,16 +171,16 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
                       onClose?.()
                     }}
                     className={cn(
-                      'sidebar-chrome-tab flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-300 relative overflow-hidden',
+                      'sidebar-chrome-tab flex items-center gap-3 rounded-lg px-3 py-2.5 text-base font-medium transition-all duration-300 relative overflow-hidden',
                       isActive
-                        ? 'sidebar-chrome-tab-active text-white [text-shadow:_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_1px_1px_0_#000,_0_0_8px_rgba(0,0,0,0.5)]'
+                        ? 'sidebar-chrome-tab-active text-[#33FF33] [text-shadow:_0_0_12px_rgba(51,255,51,0.7),_0_0_24px_rgba(51,255,51,0.35),_-1px_-1px_0_rgba(0,0,0,0.8),_1px_-1px_0_rgba(0,0,0,0.8),_-1px_1px_0_rgba(0,0,0,0.8),_1px_1px_0_rgba(0,0,0,0.8)]'
                         : 'text-sidebar-foreground/70 hover:text-sidebar-foreground'
                     )}
                   >
                     <Icon
                       className={cn(
                         'h-5 w-5 flex-shrink-0 relative z-10',
-                        isActive ? 'text-white drop-shadow-[0_0_6px_rgba(51,255,51,0.6)]' : 'text-sidebar-foreground/50'
+                        isActive ? 'text-[#33FF33] drop-shadow-[0_0_8px_rgba(51,255,51,0.7)]' : 'text-sidebar-foreground/50'
                       )}
                     />
                     <span className="truncate relative z-10">{item.label}</span>

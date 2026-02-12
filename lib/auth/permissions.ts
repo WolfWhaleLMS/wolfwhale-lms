@@ -207,22 +207,16 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
   const common: MenuItem[] = [
     { label: 'Dashboard',     href: getRouteForRole(role), icon: 'LayoutDashboard' },
     { label: 'Messages',      href: '/messaging',           icon: 'MessageSquare' },
-    { label: 'Calendar',      href: '/calendar',             icon: 'Calendar' },
-    { label: 'Announcements', href: '/announcements',        icon: 'Megaphone' },
   ]
 
   const roleSpecific: Record<UserRole, MenuItem[]> = {
     student: [
-      { label: 'My Courses',    href: '/student/courses',             icon: 'BookOpen' },
-      { label: 'Assignments',   href: '/student/assignments',         icon: 'ClipboardList' },
-      { label: 'Grades',        href: '/student/grades',              icon: 'GraduationCap' },
-      { label: 'Attendance',    href: '/student/attendance',           icon: 'CalendarCheck' },
-      { label: 'Study Mode',    href: '/student/study-mode',          icon: 'Brain' },
-      { label: 'Achievements',  href: '/student/achievements',        icon: 'Trophy' },
-      { label: 'Skill Tree',    href: '/student/skill-tree',          icon: 'GitFork' },
-      { label: 'Leaderboard',   href: '/student/leaderboard',         icon: 'Medal' },
-      { label: 'Mini Games',    href: '/student/tools',               icon: 'Gamepad2' },
-      { label: 'Virtual Plaza', href: '/plaza',                       icon: 'Map' },
+      { label: 'Courses',        href: '/student/courses',         icon: 'BookOpen' },
+      { label: 'Assignments',    href: '/student/assignments',     icon: 'ClipboardList' },
+      { label: 'Grades',         href: '/student/grades',          icon: 'GraduationCap' },
+      { label: 'Study Mode',     href: '/student/study-mode',      icon: 'Brain' },
+      { label: 'Achievements',   href: '/student/achievements',    icon: 'Trophy' },
+      { label: 'Plaza',          href: '/plaza',                   icon: 'Map' },
     ],
 
     teacher: [
@@ -231,6 +225,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Gradebook',     href: '/teacher/gradebook',      icon: 'GraduationCap' },
       { label: 'Students',      href: '/teacher/students',       icon: 'Users' },
       { label: 'Virtual Plaza', href: '/plaza',                  icon: 'Map' },
+      { label: 'Calendar',      href: '/calendar',               icon: 'Calendar' },
     ],
 
     parent: [
@@ -247,6 +242,8 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Plaza Settings', href: '/admin/plaza',            icon: 'Map' },
       { label: 'Compliance',     href: '/admin/compliance',       icon: 'Shield' },
       { label: 'Audit Logs',     href: '/admin/audit-logs',       icon: 'FileText' },
+      { label: 'Calendar',       href: '/calendar',               icon: 'Calendar' },
+      { label: 'Announcements',  href: '/announcements',          icon: 'Megaphone' },
     ],
 
     super_admin: [
@@ -261,6 +258,8 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Settings',      href: '/admin/settings',         icon: 'Settings' },
       { label: 'Compliance',    href: '/admin/compliance',       icon: 'Shield' },
       { label: 'Audit Logs',    href: '/admin/audit-logs',       icon: 'FileText' },
+      { label: 'Calendar',      href: '/calendar',               icon: 'Calendar' },
+      { label: 'Announcements', href: '/announcements',          icon: 'Megaphone' },
     ],
   }
 
