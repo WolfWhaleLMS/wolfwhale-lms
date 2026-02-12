@@ -55,15 +55,6 @@ export function CircularGauge({
           className="-rotate-90"
           aria-hidden="true"
         >
-          <defs>
-            <filter id="gaugeGlow">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
           {/* Background circle */}
           <circle
             cx={size / 2}
@@ -85,11 +76,7 @@ export function CircularGauge({
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={value > 0 ? offset : circumference}
-            filter="url(#gaugeGlow)"
-            style={{
-              transition: 'stroke-dashoffset 0.8s ease-in-out',
-              filter: `drop-shadow(0 0 8px ${threshold.color})`,
-            }}
+            style={{ transition: 'stroke-dashoffset 0.8s ease-in-out' }}
           />
         </svg>
         {/* Center text */}
