@@ -25,7 +25,7 @@ export default async function AdminLayout({
     .from('tenant_memberships')
     .select('role')
     .eq('user_id', user.id)
-    .eq('is_active', true)
+    .eq('status', 'active')
     .single()
 
   if (!membership || !['admin', 'super_admin'].includes(membership.role)) {

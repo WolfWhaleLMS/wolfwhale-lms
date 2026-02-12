@@ -215,6 +215,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Assignments',    href: '/student/assignments',     icon: 'ClipboardList' },
       { label: 'Grades',         href: '/student/grades',          icon: 'GraduationCap' },
       { label: 'Achievements',   href: '/student/achievements',    icon: 'Trophy' },
+      { label: 'Tools',           href: '/student/tools',           icon: 'Gamepad2' },
       { label: 'Plaza',          href: '/plaza',                   icon: 'Map' },
     ],
 
@@ -223,6 +224,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Assignments',   href: '/teacher/assignments',    icon: 'ClipboardList' },
       { label: 'Gradebook',     href: '/teacher/gradebook',      icon: 'GraduationCap' },
       { label: 'Students',      href: '/teacher/students',       icon: 'Users' },
+      { label: 'Tools',          href: '/teacher/tools',          icon: 'Gamepad2' },
       { label: 'Virtual Plaza', href: '/plaza',                  icon: 'Map' },
       { label: 'Calendar',      href: '/calendar',               icon: 'Calendar' },
     ],

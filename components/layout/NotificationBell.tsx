@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { Bell, X, Check, CheckCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { getNotifications, getUnreadCount, markAsRead, markAllAsRead } from '@/app/actions/notifications'
@@ -11,7 +12,9 @@ export function NotificationBell() {
   const [userId, setUserId] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
   const [initialLoaded, setInitialLoaded] = useState(false)
+  const btnRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+  const [pos, setPos] = useState({ top: 0, right: 0 })
   const sounds = useSound()
 
   const { notifications, setNotifications, unreadCount, setUnreadCount } =
@@ -44,16 +47,51 @@ export function NotificationBell() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unreadCount])
 
+  // Position the panel below the button
+  const updatePos = useCallback(() => {
+    if (!btnRef.current) return
+    const rect = btnRef.current.getBoundingClientRect()
+    setPos({
+      top: rect.bottom + 8,
+      right: window.innerWidth - rect.right,
+    })
+  }, [])
+
+  // Recalculate on open and on scroll/resize
+  useEffect(() => {
+    if (!open) return
+    updatePos()
+    window.addEventListener('scroll', updatePos, true)
+    window.addEventListener('resize', updatePos)
+    return () => {
+      window.removeEventListener('scroll', updatePos, true)
+      window.removeEventListener('resize', updatePos)
+    }
+  }, [open, updatePos])
+
   // Close on outside click
   useEffect(() => {
     if (!open) return
     const handler = (e: MouseEvent) => {
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
-        setOpen(false)
-      }
+      const target = e.target as Node
+      if (
+        btnRef.current?.contains(target) ||
+        panelRef.current?.contains(target)
+      ) return
+      setOpen(false)
     }
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
+  }, [open])
+
+  // Close on Escape
+  useEffect(() => {
+    if (!open) return
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
   }, [open])
 
   const handleMarkRead = async (id: string) => {
@@ -79,9 +117,81 @@ export function NotificationBell() {
     return `${days}d ago`
   }
 
+  const panel = open ? createPortal(
+    <div
+      ref={panelRef}
+      className="fixed w-80 rounded-2xl liquid-glass-elevated animate-glass-pop-in border border-[#00BFFF]/25 neon-glow-blue"
+      style={{ top: pos.top, right: pos.right, zIndex: 99999 }}
+    >
+      <div className="flex items-center justify-between border-b border-border px-4 py-3">
+        <h3 className="text-sm font-semibold">Notifications</h3>
+        {unreadCount > 0 && (
+          <button
+            type="button"
+            onClick={handleMarkAllRead}
+            className="flex items-center gap-1 text-xs text-[#00BFFF] hover:text-[#00FFFF]"
+          >
+            <CheckCheck className="h-3 w-3" />
+            Mark all read
+          </button>
+        )}
+      </div>
+
+      <div className="max-h-80 overflow-y-auto">
+        {notifications.length === 0 ? (
+          <div className="px-4 py-8 text-center text-sm text-muted-foreground">
+            No notifications yet
+          </div>
+        ) : (
+          notifications.map((n) => (
+            <div
+              key={n.id}
+              className={`flex items-start gap-3 border-b border-border/50 px-4 py-3 transition-colors hover:bg-muted/50 ${
+                !n.read ? 'bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10' : ''
+              }`}
+            >
+              <div className="flex-1 min-w-0">
+                <p className={`text-sm ${!n.read ? 'font-medium' : 'text-muted-foreground'}`}>
+                  {n.title}
+                </p>
+                {n.body && (
+                  <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">
+                    {n.body}
+                  </p>
+                )}
+                <p className="mt-1 text-xs text-muted-foreground/70">
+                  {timeAgo(n.created_at)}
+                </p>
+              </div>
+              {!n.read && (
+                <button
+                  type="button"
+                  onClick={() => handleMarkRead(n.id)}
+                  className="mt-1 rounded p-1 text-muted-foreground hover:bg-muted"
+                  aria-label="Mark as read"
+                >
+                  <Check className="h-3 w-3" />
+                </button>
+              )}
+            </div>
+          ))
+        )}
+      </div>
+
+      <a
+        href="/notifications"
+        className="block border-t border-border px-4 py-2.5 text-center text-xs font-medium text-primary hover:bg-muted/50 transition-colors"
+      >
+        View all notifications
+      </a>
+    </div>,
+    document.body,
+  ) : null
+
   return (
-    <div className="relative" ref={panelRef}>
+    <div>
       <button
+        ref={btnRef}
         type="button"
         onClick={() => {
           sounds.playClick()
@@ -98,71 +208,7 @@ export function NotificationBell() {
         )}
       </button>
 
-      {open && (
-        <div className="absolute right-0 z-50 mt-2 w-80 rounded-2xl liquid-glass-elevated animate-glass-pop-in border border-[#00BFFF]/25 neon-glow-blue">
-          <div className="flex items-center justify-between border-b border-border px-4 py-3">
-            <h3 className="text-sm font-semibold">Notifications</h3>
-            {unreadCount > 0 && (
-              <button
-                type="button"
-                onClick={handleMarkAllRead}
-                className="flex items-center gap-1 text-xs text-[#00BFFF] hover:text-[#00FFFF]"
-              >
-                <CheckCheck className="h-3 w-3" />
-                Mark all read
-              </button>
-            )}
-          </div>
-
-          <div className="max-h-80 overflow-y-auto">
-            {notifications.length === 0 ? (
-              <div className="px-4 py-8 text-center text-sm text-muted-foreground">
-                No notifications yet
-              </div>
-            ) : (
-              notifications.map((n) => (
-                <div
-                  key={n.id}
-                  className={`flex items-start gap-3 border-b border-border/50 px-4 py-3 transition-colors hover:bg-muted/50 ${
-                    !n.read ? 'bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10' : ''
-                  }`}
-                >
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-sm ${!n.read ? 'font-medium' : 'text-muted-foreground'}`}>
-                      {n.title}
-                    </p>
-                    {n.body && (
-                      <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">
-                        {n.body}
-                      </p>
-                    )}
-                    <p className="mt-1 text-xs text-muted-foreground/70">
-                      {timeAgo(n.created_at)}
-                    </p>
-                  </div>
-                  {!n.read && (
-                    <button
-                      type="button"
-                      onClick={() => handleMarkRead(n.id)}
-                      className="mt-1 rounded p-1 text-muted-foreground hover:bg-muted"
-                      aria-label="Mark as read"
-                    >
-                      <Check className="h-3 w-3" />
-                    </button>
-                  )}
-                </div>
-              ))
-            )}
-          </div>
-
-          <a
-            href="/notifications"
-            className="block border-t border-border px-4 py-2.5 text-center text-xs font-medium text-primary hover:bg-muted/50 transition-colors"
-          >
-            View all notifications
-          </a>
-        </div>
-      )}
+      {panel}
     </div>
   )
 }

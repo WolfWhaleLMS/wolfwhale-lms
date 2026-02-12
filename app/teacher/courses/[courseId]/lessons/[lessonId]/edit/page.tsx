@@ -32,6 +32,7 @@ import {
   File,
   Loader2,
   Paperclip,
+  Gamepad2,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -54,6 +55,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { getLesson, updateLesson, addLessonAttachment, deleteLessonAttachment, getLessonAttachments } from '@/app/actions/lessons'
 import { createClient } from '@/lib/supabase/client'
+import { TOOLS_REGISTRY, getToolBySlug } from '@/lib/tools/registry'
+import { ToolCard } from '@/components/tools/ToolCard'
 
 // ---------------------------------------------------------------------------
 // Type Definitions
@@ -61,7 +64,7 @@ import { createClient } from '@/lib/supabase/client'
 
 type ContentBlock = {
   id: string
-  type: 'heading' | 'text' | 'image' | 'video' | 'file' | 'divider' | 'callout' | 'quiz' | 'link' | 'pdf' | 'document'
+  type: 'heading' | 'text' | 'image' | 'video' | 'file' | 'divider' | 'callout' | 'quiz' | 'link' | 'pdf' | 'document' | 'tool'
   data: Record<string, any>
 }
 
@@ -236,6 +239,7 @@ const blockTypes = [
   { type: 'divider', icon: Minus, label: 'Divider' },
   { type: 'callout', icon: AlertCircle, label: 'Callout' },
   { type: 'quiz', icon: HelpCircle, label: 'Quiz' },
+  { type: 'tool', icon: Gamepad2, label: 'Tool / Game' },
 ] as const
 
 // ---------------------------------------------------------------------------
@@ -1021,6 +1025,36 @@ function DocumentBlockEditor({
   )
 }
 
+function ToolBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: any) => void }) {
+  const availableTools = TOOLS_REGISTRY.filter((t) => t.status === 'available')
+  const selectedTool = block.data.toolSlug ? getToolBySlug(block.data.toolSlug) : null
+
+  return (
+    <div className="space-y-3">
+      <div>
+        <Label>Select Tool</Label>
+        <select
+          value={block.data.toolSlug || ''}
+          onChange={(e) => onChange({ ...block.data, toolSlug: e.target.value })}
+          className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+        >
+          <option value="">Choose a tool...</option>
+          {availableTools.map((tool) => (
+            <option key={tool.slug} value={tool.slug}>
+              {tool.name} — {tool.description}
+            </option>
+          ))}
+        </select>
+      </div>
+      {selectedTool && (
+        <div className="mt-3">
+          <ToolCard tool={selectedTool} variant="editor-preview" />
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ---------------------------------------------------------------------------
 // Block Renderer Component
 // ---------------------------------------------------------------------------
@@ -1076,6 +1110,7 @@ function BlockEditor({
           {block.type === 'link' && <LinkBlockEditor block={block} onChange={onUpdate} />}
           {block.type === 'pdf' && <PdfBlockEditor block={block} onChange={onUpdate} lessonId={lessonId} />}
           {block.type === 'document' && <DocumentBlockEditor block={block} onChange={onUpdate} lessonId={lessonId} />}
+          {block.type === 'tool' && <ToolBlockEditor block={block} onChange={onUpdate} />}
         </div>
 
         {/* Actions */}

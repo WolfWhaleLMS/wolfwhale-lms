@@ -149,7 +149,7 @@ export async function proxy(request: NextRequest) {
   // ------------------------------------------------------------------
   // 1b. Rate limiting for auth routes (login, signup, forgot-password)
   // ------------------------------------------------------------------
-  if (AUTH_RATE_LIMIT_PATHS.has(pathname)) {
+  if (AUTH_RATE_LIMIT_PATHS.has(pathname) && request.method === 'POST') {
     const ip =
       request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
       request.headers.get('x-real-ip') ||

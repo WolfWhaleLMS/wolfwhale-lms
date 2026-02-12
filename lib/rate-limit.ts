@@ -39,8 +39,8 @@ export function memoryRateLimit(key: string, limit: number, windowMs: number): {
 export type RateLimitTier = 'auth' | 'api' | 'general' | 'report'
 
 const TIER_CONFIG: Record<RateLimitTier, { requests: number; window: `${number} s` }> = {
-  /** Auth endpoints (login, signup, forgot-password): 10 requests per 60 seconds */
-  auth: { requests: 10, window: '60 s' },
+  /** Auth endpoints (login, signup, forgot-password): 30 requests per 60 seconds */
+  auth: { requests: 30, window: '60 s' },
   /** API / server actions: 200 requests per 60 seconds */
   api: { requests: 200, window: '60 s' },
   /** General page loads: 300 requests per 60 seconds */

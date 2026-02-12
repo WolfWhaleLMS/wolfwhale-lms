@@ -7,7 +7,7 @@ import { TOOLS_REGISTRY, type ToolCategory } from '@/lib/tools/registry'
 import { ToolCard } from '@/components/tools/ToolCard'
 import { ToolCategoryFilter } from '@/components/tools/ToolCategoryFilter'
 
-export default function StudentToolsPage() {
+export default function TeacherToolsPage() {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState<ToolCategory | 'all'>('all')
 
@@ -34,7 +34,7 @@ export default function StudentToolsPage() {
   return (
     <div className="space-y-8">
       <Link
-        href="/student/dashboard"
+        href="/teacher/dashboard"
         className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
@@ -50,7 +50,7 @@ export default function StudentToolsPage() {
             </div>
             <div>
               <h1 className="text-3xl font-bold tracking-tight text-foreground">Tools Library</h1>
-              <p className="text-muted-foreground">Flashcards, brain games, and educational tools</p>
+              <p className="text-muted-foreground">Browse educational tools to embed in your lessons</p>
             </div>
           </div>
         </div>
