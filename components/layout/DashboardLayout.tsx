@@ -7,6 +7,8 @@ import type { UserRole } from '@/lib/auth/permissions'
 import { PixelPetBar } from '@/components/pets/PixelPetBar'
 import type { PetData } from '@/components/pets/PetWalker'
 import TutorWidget from '@/components/tutor/TutorWidget'
+import { OfflineStatusBar } from './OfflineStatusBar'
+import { useAutoSync } from '@/lib/offline/hooks'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -27,6 +29,9 @@ export function DashboardLayout({
   tenantLogo,
 }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  // Auto-sync pending offline actions when connectivity returns
+  useAutoSync()
 
   // Demo pets for students (will be replaced with Supabase data)
   const demoPets: PetData[] = role === 'student' ? [
@@ -118,6 +123,8 @@ export function DashboardLayout({
           role={role}
           onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
         />
+
+        <OfflineStatusBar />
 
         <main className="relative flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
           {/* Subtle glass reflection gradient overlay */}

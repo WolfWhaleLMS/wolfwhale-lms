@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { Menu, Search, Sun, Moon } from 'lucide-react'
 import { NotificationBell } from '@/components/layout/NotificationBell'
+import { OfflineToggleConnected } from '@/components/layout/OfflineToggle'
 import { RadioDropdown } from '@/components/layout/RadioDropdown'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
@@ -118,6 +119,9 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
             <Moon className="h-5 w-5" />
           )}
         </button>
+
+        {/* Offline mode toggle */}
+        <OfflineToggleConnected />
 
         {/* Notification bell */}
         <NotificationBell />
