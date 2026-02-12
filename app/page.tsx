@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { GraduationCap, Brain, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield, ShieldAlert, Eye, Radio, LineChart } from 'lucide-react'
+import { GlowingLogo } from '@/components/ui/glowing-logo'
 
 export default function EdTechHubPage() {
   return (
@@ -204,7 +205,8 @@ export default function EdTechHubPage() {
       <header className="relative z-10 px-4 py-4 sm:p-6">
         <nav className="max-w-6xl mx-auto flex items-center justify-between">
           <Link href="/" className="inline-flex items-center gap-2 sm:gap-3 group shrink-0">
-            <Image src="/logo.png" alt="WolfWhale" width={40} height={40} className="rounded-xl object-contain shadow-lg border-2 border-black sm:w-12 sm:h-12" />
+            <GlowingLogo size={40} className="hidden sm:inline-flex" />
+            <GlowingLogo size={36} className="sm:hidden" />
             <span className="text-sm sm:text-lg font-display font-bold text-white group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase">
               WolfWhale EdTech
             </span>
@@ -255,10 +257,9 @@ export default function EdTechHubPage() {
       <main className="relative z-10">
         <section className="flex items-center justify-center min-h-[60vh] sm:min-h-[calc(100vh-200px)] px-4 py-10 sm:py-16">
           <div className="w-full max-w-5xl text-center space-y-6 sm:space-y-8 animate-fade-in-up">
-            {/* Logo */}
-            <div className="inline-flex rounded-2xl shadow-2xl overflow-hidden chrome-shine">
-              <Image src="/logo.png" alt="WolfWhale EdTech" width={160} height={160} className="rounded-2xl object-contain border-2 border-black w-24 h-24 sm:w-40 sm:h-40" />
-            </div>
+            {/* Logo with green edge-tracing glow */}
+            <GlowingLogo size={96} className="sm:hidden" />
+            <GlowingLogo size={160} className="hidden sm:inline-flex" />
 
             {/* Heading */}
             <div className="space-y-3 sm:space-y-4">

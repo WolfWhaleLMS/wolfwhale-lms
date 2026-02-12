@@ -198,22 +198,34 @@ export default function AuthLayout({
             bottom: -15%;
             border-radius: 50% 45% 55% 48%;
             transform: scale(1) translateX(0);
+            opacity: 0.55;
           }
           15% {
             border-radius: 45% 55% 48% 52%;
             transform: scale(1.08) translateX(15px);
+            opacity: 0.55;
           }
           30% {
             border-radius: 52% 48% 45% 55%;
             transform: scale(0.95) translateX(-10px);
+            opacity: 0.55;
           }
-          50% {
-            bottom: 105%;
+          46% {
+            bottom: 100%;
             border-radius: 48% 52% 55% 45%;
             transform: scale(1.12) translateX(20px);
+            opacity: 0.55;
           }
-          51% {
+          /* POP — rapid scale up + fade out */
+          49% {
+            bottom: 102%;
+            transform: scale(1.8) translateX(20px);
+            opacity: 0;
+            border-radius: 50%;
+          }
+          50% {
             bottom: -15%;
+            transform: scale(0) translateX(0);
             opacity: 0;
           }
           55% {
@@ -224,15 +236,30 @@ export default function AuthLayout({
           70% {
             border-radius: 45% 52% 48% 55%;
             transform: scale(1.05) translateX(-15px);
+            opacity: 0.55;
           }
           85% {
             border-radius: 50% 48% 55% 45%;
             transform: scale(0.98) translateX(10px);
+            opacity: 0.55;
+          }
+          96% {
+            bottom: 100%;
+            border-radius: 50% 45% 55% 48%;
+            transform: scale(1.1) translateX(0);
+            opacity: 0.55;
+          }
+          /* POP again at second rise */
+          99% {
+            bottom: 102%;
+            transform: scale(1.8) translateX(0);
+            opacity: 0;
+            border-radius: 50%;
           }
           100% {
-            bottom: 105%;
-            border-radius: 50% 45% 55% 48%;
-            transform: scale(1) translateX(0);
+            bottom: -15%;
+            transform: scale(0) translateX(0);
+            opacity: 0;
           }
         }
       `}</style>
