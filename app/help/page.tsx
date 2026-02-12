@@ -370,7 +370,7 @@ export default function HelpCenterPage() {
             <img
               src="/logo.png"
               alt="Wolf Whale"
-              className="h-12 w-12 rounded-xl object-contain shadow-lg"
+              className="h-12 w-12 rounded-xl object-contain shadow-lg border-2 border-black"
             />
             <div>
               <span className="text-lg sm:text-xl font-display font-bold text-[#0A2540] group-hover:text-[#00BFFF] transition-colors block tracking-wider uppercase">

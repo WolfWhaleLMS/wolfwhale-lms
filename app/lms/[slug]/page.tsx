@@ -767,7 +767,7 @@ export default async function LandingPage({
             <img
               src="/logo.png"
               alt="Wolf Whale"
-              className="h-14 w-14 rounded-xl object-contain shadow-lg"
+              className="h-14 w-14 rounded-xl object-contain shadow-lg border-2 border-black"
             />
             <div>
               <span className="text-xl font-display font-bold text-[#0A2540] block tracking-wider uppercase">
@@ -1109,7 +1109,7 @@ export default async function LandingPage({
                 <img
                   src="/logo.png"
                   alt="Wolf Whale"
-                  className="h-14 w-14 rounded-xl object-contain shadow-lg"
+                  className="h-14 w-14 rounded-xl object-contain shadow-lg border-2 border-black"
                 />
                 <div>
                   <span className="font-display font-bold block tracking-wider uppercase">

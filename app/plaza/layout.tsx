@@ -44,7 +44,7 @@ export default async function PlazaLayout({
       {/* Minimal plaza header */}
       <header className="flex items-center justify-between border-b border-border/30 liquid-glass-heavy px-4 py-2">
         <div className="flex items-center gap-3">
-          <img src="/logo.png" alt="Wolf Whale" className="h-12 w-12 rounded-xl object-contain" />
+          <img src="/logo.png" alt="Wolf Whale" className="h-12 w-12 rounded-xl object-contain border-2 border-black" />
           <span className="text-sm font-semibold text-foreground">
             {tenant?.name ?? 'Wolf Whale'} Plaza
           </span>
