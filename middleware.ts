@@ -184,7 +184,20 @@ export async function middleware(request: NextRequest) {
   }
 
   // ------------------------------------------------------------------
-  // 3. Supabase session refresh (runs on every request)
+  // 3. Early return for public routes (skip expensive auth for most visitors)
+  //
+  //    Public routes that are NOT auth pages (/login, /signup) need no
+  //    authentication at all. Auth pages need a getUser() check only to
+  //    redirect already-authenticated users to their dashboard.
+  // ------------------------------------------------------------------
+  if (isPublicRoute(pathname) && !isAuthPage(pathname)) {
+    return NextResponse.next({
+      request: { headers: requestHeaders },
+    })
+  }
+
+  // ------------------------------------------------------------------
+  // 4. Supabase session refresh (protected routes + auth pages only)
   //
   //    We use a mutable `response` variable so the Supabase cookie
   //    callback always writes to the *current* response object, even
@@ -220,12 +233,11 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   // ------------------------------------------------------------------
-  // 4. Public route -- no further checks needed (skip DB queries)
+  // 4b. Auth page redirect: authenticated users on /login or /signup
+  //     should be sent to their role-appropriate dashboard.
   // ------------------------------------------------------------------
-  if (isPublicRoute(pathname)) {
-    // Special case: authenticated users visiting /login or /signup
-    // should be redirected to their role-appropriate dashboard.
-    if (user && isAuthPage(pathname)) {
+  if (isAuthPage(pathname)) {
+    if (user) {
       if (tenantSlug) {
         const { data: membership } = await supabase
           .from('tenant_memberships')
@@ -252,7 +264,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // ------------------------------------------------------------------
-  // 5. Protected route -- require authentication
+  // 5. Protected route -- require authentication (user is null here)
   // ------------------------------------------------------------------
   if (isProtectedRoute(pathname) && !user) {
     const loginUrl = new URL('/login', request.url)

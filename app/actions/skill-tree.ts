@@ -71,31 +71,38 @@ export async function getStudentSkillTrees(): Promise<SkillTree[]> {
   if (error) throw error
   if (!trees || trees.length === 0) return []
 
-  // Get node counts and student progress for each tree
-  const treesWithProgress = await Promise.all(
-    trees.map(async (tree) => {
-      const [nodesResult, progressResult] = await Promise.all([
-        supabase
-          .from('skill_nodes')
-          .select('id', { count: 'exact' })
-          .eq('skill_tree_id', tree.id),
-        supabase
-          .from('student_skill_progress')
-          .select('id', { count: 'exact' })
-          .eq('skill_tree_id', tree.id)
-          .eq('student_id', user.id)
-          .eq('status', 'completed'),
-      ])
+  // Batch fetch all node counts and progress in two queries instead of N+1
+  const treeIds = trees.map((t) => t.id)
 
-      return {
-        ...tree,
-        totalNodes: nodesResult.count ?? 0,
-        completedCount: progressResult.count ?? 0,
-      }
-    })
-  )
+  const [nodesResult, progressResult] = await Promise.all([
+    supabase
+      .from('skill_nodes')
+      .select('skill_tree_id, id')
+      .in('skill_tree_id', treeIds),
+    supabase
+      .from('student_skill_progress')
+      .select('skill_tree_id, id')
+      .eq('student_id', user.id)
+      .eq('status', 'completed')
+      .in('skill_tree_id', treeIds),
+  ])
 
-  return treesWithProgress
+  // Build count maps
+  const nodeCountMap = new Map<string, number>()
+  for (const n of nodesResult.data ?? []) {
+    nodeCountMap.set(n.skill_tree_id, (nodeCountMap.get(n.skill_tree_id) ?? 0) + 1)
+  }
+
+  const progressCountMap = new Map<string, number>()
+  for (const p of progressResult.data ?? []) {
+    progressCountMap.set(p.skill_tree_id, (progressCountMap.get(p.skill_tree_id) ?? 0) + 1)
+  }
+
+  return trees.map((tree) => ({
+    ...tree,
+    totalNodes: nodeCountMap.get(tree.id) ?? 0,
+    completedCount: progressCountMap.get(tree.id) ?? 0,
+  }))
 }
 
 // ---------------------------------------------------------------------------

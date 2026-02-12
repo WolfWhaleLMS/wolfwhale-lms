@@ -81,22 +81,25 @@ export async function getChildren() {
     .in('student_id', studentIds)
     .eq('status', 'active')
 
-  // Get attendance summaries per student
+  // Get attendance summaries per student (with safety cap)
   const { data: attendanceRecords } = await supabase
     .from('attendance_records')
     .select('student_id, status')
     .eq('tenant_id', tenantId)
     .in('student_id', studentIds)
+    .limit(500)
 
-  // Get grades per student for GPA calculation
+  // Get grades per student for GPA calculation (with safety cap)
   const { data: grades } = await supabase
     .from('grades')
     .select('student_id, percentage')
     .eq('tenant_id', tenantId)
     .in('student_id', studentIds)
+    .limit(200)
 
-  // Get missing assignments (past due, no submission)
+  // Get missing assignments (past due, no submission) — filter by child's courses
   const now = new Date().toISOString()
+  const childCourseIds = (enrollments ?? []).map(e => e.course_id)
   const { data: pastDueAssignments } = await supabase
     .from('assignments')
     .select(`
@@ -107,6 +110,8 @@ export async function getChildren() {
     .eq('tenant_id', tenantId)
     .eq('status', 'assigned')
     .lt('due_date', now)
+    .in('course_id', childCourseIds.length > 0 ? childCourseIds : ['00000000-0000-0000-0000-000000000000'])
+    .limit(100)
 
   // Get submissions for these students
   const { data: submissions } = await supabase
@@ -206,6 +211,7 @@ export async function getChildGrades(studentId: string) {
     .eq('tenant_id', tenantId)
     .eq('student_id', studentId)
     .order('graded_at', { ascending: false })
+    .limit(200)
 
   if (error) throw error
 

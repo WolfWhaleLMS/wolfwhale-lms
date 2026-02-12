@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 /**
  * Plays a copyright-free recording of Mozart's Piano Sonata No. 16 in C Major,
@@ -22,7 +22,7 @@ function getGlobalAudio(): HTMLAudioElement {
   const audio = new Audio('/mozart-piano.mp3')
   audio.loop = true
   audio.volume = 0.15
-  audio.preload = 'auto'
+  audio.preload = 'none'
 
   // Fallback loop
   audio.addEventListener('ended', () => {
@@ -36,16 +36,26 @@ function getGlobalAudio(): HTMLAudioElement {
 
 export function usePianoMusic() {
   const [isPlaying, setIsPlaying] = useState(globalIsPlaying)
-  const syncRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  // Sync local state with global state periodically
+  // Sync local state with global state on mount and when globalAudio fires events
   useEffect(() => {
     setIsPlaying(globalIsPlaying)
-    syncRef.current = setInterval(() => {
-      setIsPlaying(globalIsPlaying)
-    }, 500)
+
+    const audio = globalAudio
+    if (!audio) return
+
+    const syncState = () => {
+      const playing = !audio.paused
+      globalIsPlaying = playing
+      setIsPlaying(playing)
+    }
+
+    audio.addEventListener('play', syncState)
+    audio.addEventListener('pause', syncState)
+
     return () => {
-      if (syncRef.current) clearInterval(syncRef.current)
+      audio.removeEventListener('play', syncState)
+      audio.removeEventListener('pause', syncState)
     }
   }, [])
 

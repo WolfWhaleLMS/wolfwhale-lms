@@ -7,9 +7,9 @@ import { Redis } from '@upstash/redis'
 // In-memory fallback rate limiter (for when Redis is not available)
 // ---------------------------------------------------------------------------
 
-const memoryStore = new Map<string, { count: number; resetAt: number }>()
+export const memoryStore = new Map<string, { count: number; resetAt: number }>()
 
-function memoryRateLimit(key: string, limit: number, windowMs: number): { success: boolean; remaining: number } {
+export function memoryRateLimit(key: string, limit: number, windowMs: number): { success: boolean; remaining: number } {
   const now = Date.now()
   const entry = memoryStore.get(key)
 

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   BookOpen,
   ClipboardCheck,
@@ -30,7 +31,7 @@ export default function InfoPage() {
       <div className="fixed inset-0 z-0">
         {/* Chrome texture base */}
         <div className="absolute inset-0">
-          <img src="/chrome-bg-2.jpg" alt="" className="absolute inset-0 w-full h-full object-cover opacity-20" />
+          <Image src="/chrome-bg-2.jpg" alt="" fill className="object-cover opacity-20" priority />
         </div>
         <div
           className="absolute inset-0 bg-gradient-to-br from-[#E8F8FF]/85 via-[#D0F0FF]/80 to-[#B0E8FF]/85"
@@ -57,7 +58,7 @@ export default function InfoPage() {
       <header className="relative z-10 border-b border-[#00BFFF]/10 backdrop-blur-md bg-white/40">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="Wolf Whale" className="h-14 w-14 rounded-xl object-contain shadow-lg border-2 border-black" />
+            <Image src="/logo.png" alt="Wolf Whale" width={56} height={56} className="rounded-xl object-contain shadow-lg border-2 border-black" />
             <div>
               <h1 className="text-xl font-display font-bold text-[#0A2540] tracking-wider uppercase">WolfWhale</h1>
               <p className="text-xs text-[#0A2540]/80 font-display font-semibold tracking-widest uppercase">Learning Management System</p>
@@ -108,7 +109,7 @@ export default function InfoPage() {
 
           {/* Canadian Badge */}
           <div className="flex items-center justify-center gap-3 mb-10 px-6 py-3 rounded-xl ocean-card w-fit mx-auto shadow-sm">
-            <img src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" className="h-20 w-auto object-contain" />
+            <Image src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" width={40} height={80} className="h-20 w-auto object-contain" />
             <div className="text-left">
               <p className="text-sm font-bold text-[#0A2540]">100% Canadian Owned &amp; Built</p>
               <p className="text-xs text-[#0A2540]/80">Proudly designed and developed in Canada</p>
@@ -301,7 +302,7 @@ export default function InfoPage() {
                   <p className="text-xs text-[#0A2540]/80">Your learning command center</p>
                 </div>
               </div>
-              <img src="/screenshot-student.png" alt="Student Dashboard" className="w-full h-auto" />
+              <Image src="/screenshot-student.png" alt="Student Dashboard" width={800} height={500} className="w-full h-auto" />
             </div>
 
             {/* Teacher Dashboard */}
@@ -315,7 +316,7 @@ export default function InfoPage() {
                   <p className="text-xs text-[#0A2540]/80">Manage courses and students</p>
                 </div>
               </div>
-              <img src="/screenshot-teacher.png" alt="Teacher Dashboard" className="w-full h-auto" />
+              <Image src="/screenshot-teacher.png" alt="Teacher Dashboard" width={800} height={500} className="w-full h-auto" />
             </div>
 
             {/* Parent Dashboard */}
@@ -329,7 +330,7 @@ export default function InfoPage() {
                   <p className="text-xs text-[#0A2540]/80">Monitor child progress</p>
                 </div>
               </div>
-              <img src="/screenshot-parent.png" alt="Parent Dashboard" className="w-full h-auto" />
+              <Image src="/screenshot-parent.png" alt="Parent Dashboard" width={800} height={500} className="w-full h-auto" />
             </div>
 
             {/* Admin Dashboard */}
@@ -343,7 +344,7 @@ export default function InfoPage() {
                   <p className="text-xs text-[#0A2540]/80">School-wide insights</p>
                 </div>
               </div>
-              <img src="/screenshot-admin.png" alt="Admin Dashboard" className="w-full h-auto" />
+              <Image src="/screenshot-admin.png" alt="Admin Dashboard" width={800} height={500} className="w-full h-auto" />
             </div>
           </div>
         </div>
@@ -657,7 +658,7 @@ export default function InfoPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <img src="/logo.png" alt="Wolf Whale" className="h-14 w-14 rounded-xl object-contain shadow-lg border-2 border-black" />
+                <Image src="/logo.png" alt="Wolf Whale" width={56} height={56} className="rounded-xl object-contain shadow-lg border-2 border-black" />
                 <div>
                   <h3 className="font-display font-bold tracking-wider uppercase">WolfWhale</h3>
                   <p className="text-xs text-[#0A2540]/80 font-display tracking-widest uppercase">Modern K-12 & Post-Secondary Learning Platform</p>
@@ -699,7 +700,7 @@ export default function InfoPage() {
           <div className="pt-8 border-t border-[#00BFFF]/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#0A2540]/80">
             <p>&copy; 2026 WolfWhale Learning Management System. All rights reserved.</p>
             <div className="flex items-center gap-2">
-              <img src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" className="h-12 w-auto object-contain" />
+              <Image src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" width={24} height={48} className="h-12 w-auto object-contain" />
               <span className="text-xs font-semibold text-[#0A2540]/80">100% Canadian Owned &amp; Built</span>
             </div>
           </div>

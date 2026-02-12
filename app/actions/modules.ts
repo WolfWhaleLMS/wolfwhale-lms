@@ -56,7 +56,7 @@ export async function getModules(courseId: string) {
 
   const { supabase } = await getAuthUser()
 
-  // Get modules with lesson count
+  // Get modules with lesson count in a single query
   const { data: modules, error } = await supabase
     .from('modules')
     .select(`
@@ -67,7 +67,8 @@ export async function getModules(courseId: string) {
       order_index,
       status,
       created_at,
-      updated_at
+      updated_at,
+      lessons(count)
     `)
     .eq('course_id', courseId)
     .order('order_index', { ascending: true })
@@ -77,22 +78,11 @@ export async function getModules(courseId: string) {
     return []
   }
 
-  // Get lesson count for each module
-  const modulesWithCount = await Promise.all(
-    (modules || []).map(async (module) => {
-      const { count } = await supabase
-        .from('lessons')
-        .select('id', { count: 'exact', head: true })
-        .eq('module_id', module.id)
-
-      return {
-        ...module,
-        lesson_count: count || 0,
-      }
-    })
-  )
-
-  return modulesWithCount
+  return (modules || []).map((m) => ({
+    ...m,
+    lesson_count: (m.lessons as unknown as { count: number }[])?.[0]?.count || 0,
+    lessons: undefined,
+  }))
 }
 
 // ---------------------------------------------------------------------------

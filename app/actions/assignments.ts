@@ -2,10 +2,9 @@
 
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { sanitizeText, sanitizeRichText } from '@/lib/sanitize'
 import { rateLimitAction } from '@/lib/rate-limit-action'
+import { getActionContext } from '@/lib/actions/context'
 
 // ============================================
 // TEACHER: Get assignments for a course
@@ -14,13 +13,7 @@ export async function getAssignments(courseId: string) {
   const parsed = z.object({ courseId: z.string().uuid() }).safeParse({ courseId })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
-  const supabase = await createClient()
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) return { error: 'No tenant context' }
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  const { supabase, user, tenantId } = await getActionContext()
 
   let query = supabase
     .from('assignments')
@@ -30,8 +23,7 @@ export async function getAssignments(courseId: string) {
     `)
     .eq('course_id', courseId)
     .order('due_date', { ascending: true })
-
-  query = query.eq('tenant_id', tenantId)
+    .eq('tenant_id', tenantId)
 
   const { data, error } = await query
 
@@ -83,13 +75,7 @@ export async function getAssignment(assignmentId: string) {
   const parsed = z.object({ assignmentId: z.string().uuid() }).safeParse({ assignmentId })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
-  const supabase = await createClient()
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) return { error: 'No tenant context' }
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  const { supabase, user, tenantId } = await getActionContext()
 
   let query = supabase
     .from('assignments')
@@ -98,8 +84,7 @@ export async function getAssignment(assignmentId: string) {
       courses:courses(id, name, created_by)
     `)
     .eq('id', assignmentId)
-
-  query = query.eq('tenant_id', tenantId)
+    .eq('tenant_id', tenantId)
 
   const { data, error } = await query.single()
 
@@ -158,13 +143,7 @@ export async function createAssignment(formData: {
   const sanitizedTitle = sanitizeText(parsed.data.title)
   const sanitizedDescription = parsed.data.description ? sanitizeRichText(parsed.data.description) : null
 
-  const supabase = await createClient()
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) return { error: 'No tenant context' }
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Verify the user is the course teacher
   const { data: course } = await supabase
@@ -257,21 +236,13 @@ export async function updateAssignment(
   const rl = await rateLimitAction('updateAssignment')
   if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
-  const supabase = await createClient()
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  const { supabase, user, tenantId } = await getActionContext()
 
   let assignmentLookup = supabase
     .from('assignments')
     .select('course_id, courses:courses(created_by)')
     .eq('id', assignmentId)
-
-  if (tenantId) {
-    assignmentLookup = assignmentLookup.eq('tenant_id', tenantId)
-  }
+    .eq('tenant_id', tenantId)
 
   const { data: assignment } = await assignmentLookup.single()
 
@@ -319,21 +290,13 @@ export async function deleteAssignment(assignmentId: string) {
   const rl = await rateLimitAction('deleteAssignment')
   if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
-  const supabase = await createClient()
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  const { supabase, user, tenantId } = await getActionContext()
 
   let deleteAssignmentQuery = supabase
     .from('assignments')
     .select('course_id, courses:courses(created_by)')
     .eq('id', assignmentId)
-
-  if (tenantId) {
-    deleteAssignmentQuery = deleteAssignmentQuery.eq('tenant_id', tenantId)
-  }
+    .eq('tenant_id', tenantId)
 
   const { data: assignment } = await deleteAssignmentQuery.single()
 
@@ -363,13 +326,7 @@ export async function deleteAssignment(assignmentId: string) {
 // STUDENT: Get all assignments across enrolled courses
 // ============================================
 export async function getStudentAssignments() {
-  const supabase = await createClient()
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) return { error: 'Not authenticated' }
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Get enrolled courses
   const { data: enrollments } = await supabase

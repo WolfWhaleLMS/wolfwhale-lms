@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowLeft, Globe, ChevronDown, Mail, Phone, Clock } from 'lucide-react'
 
 type Lang = 'en' | 'fr'
@@ -367,10 +368,12 @@ export default function HelpCenterPage() {
       <header className="relative z-10 border-b border-[#0A2540]/10 bg-white/30 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <img
+            <Image
               src="/logo.png"
               alt="Wolf Whale"
-              className="h-12 w-12 rounded-xl object-contain shadow-lg border-2 border-black"
+              width={48}
+              height={48}
+              className="rounded-xl object-contain shadow-lg border-2 border-black"
             />
             <div>
               <span className="text-lg sm:text-xl font-display font-bold text-[#0A2540] group-hover:text-[#00BFFF] transition-colors block tracking-wider uppercase">

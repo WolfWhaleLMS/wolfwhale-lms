@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Music, VolumeX } from 'lucide-react'
 import { usePianoMusic } from '@/hooks/usePianoMusic'
 
@@ -17,18 +18,14 @@ export default function AuthLayout({
     setMounted(true)
   }, [])
 
-  // Try to auto-start music immediately, then on any interaction
+  // Start music on first user interaction only (no eager autoplay)
   useEffect(() => {
-    // Attempt immediate autoplay
-    start()
-
-    // Also try on every user interaction until it works
     function handleInteraction() {
       start()
     }
-    document.addEventListener('click', handleInteraction)
-    document.addEventListener('keydown', handleInteraction)
-    document.addEventListener('touchstart', handleInteraction)
+    document.addEventListener('click', handleInteraction, { once: true })
+    document.addEventListener('keydown', handleInteraction, { once: true })
+    document.addEventListener('touchstart', handleInteraction, { once: true })
     return () => {
       document.removeEventListener('click', handleInteraction)
       document.removeEventListener('keydown', handleInteraction)
@@ -42,7 +39,7 @@ export default function AuthLayout({
       <div className="fixed inset-0 z-0">
         {/* Chrome texture base */}
         <div className="absolute inset-0">
-          <img src="/chrome-bg.jpg" alt="" className="absolute inset-0 w-full h-full object-cover opacity-20" />
+          <Image src="/chrome-bg.jpg" alt="" fill className="object-cover opacity-20" priority />
         </div>
         {/* Base gradient — bright aqua-futuristic */}
         <div
@@ -90,7 +87,7 @@ export default function AuthLayout({
       {/* Header */}
       <header className="relative z-10 p-6">
         <Link href="/" className="inline-flex items-center gap-3 group">
-          <img src="/logo.png" alt="Wolf Whale" className="h-20 w-20 rounded-xl object-contain shadow-lg border-2 border-black" />
+          <Image src="/logo.png" alt="Wolf Whale" width={80} height={80} className="rounded-xl object-contain shadow-lg border-2 border-black" />
           <div>
             <span className="text-xl font-display font-bold text-[#0A2540] group-hover:text-[#00BFFF] transition-colors block tracking-wider uppercase">
               WolfWhale

@@ -1,8 +1,7 @@
 'use server'
 
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { rateLimitAction } from '@/lib/rate-limit-action'
+import { getActionContext } from '@/lib/actions/context'
 
 export interface CalendarEvent {
   id: string
@@ -14,30 +13,13 @@ export interface CalendarEvent {
   link?: string
 }
 
-async function getContext() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-
-  const { data: membership } = await supabase
-    .from('tenant_memberships')
-    .select('role')
-    .eq('user_id', user.id)
-    .eq('tenant_id', tenantId)
-    .eq('status', 'active')
-    .single()
-
-  return { supabase, user, tenantId, role: membership?.role ?? 'student' }
-}
-
 export async function getCalendarEvents(
   startDate: string,
   endDate: string
 ): Promise<CalendarEvent[]> {
-  const { supabase, user, tenantId, role } = await getContext()
+  const ctx = await getActionContext()
+  const { supabase, user, tenantId } = ctx
+  const role = ctx.role ?? 'student'
   const events: CalendarEvent[] = []
 
   // Get courses the user is involved with

@@ -34,6 +34,8 @@ export async function getAnnouncements(courseId?: string) {
     query = query.eq('course_id', courseId)
   }
 
+  query = query.limit(100)
+
   const { data, error } = await query
   if (error) throw error
   return data ?? []

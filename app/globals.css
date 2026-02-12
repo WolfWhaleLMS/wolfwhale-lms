@@ -135,10 +135,10 @@ body::before {
   --glass-highlight:      rgba(255, 255, 255, 0.70);
   --glass-shadow:         rgba(0, 191, 255, 0.08);
   --glass-shadow-heavy:   rgba(0, 60, 120, 0.12);
-  --glass-blur-sm:        10px;
-  --glass-blur-md:        18px;
-  --glass-blur-lg:        28px;
-  --glass-blur-xl:        44px;
+  --glass-blur-sm:        6px;
+  --glass-blur-md:        8px;
+  --glass-blur-lg:        12px;
+  --glass-blur-xl:        20px;
   --glass-saturate:       200%;
 
   /* Neon glow tokens */
@@ -174,10 +174,10 @@ body::before {
   --glass-highlight:      rgba(0, 191, 255, 0.08);
   --glass-shadow:         rgba(0, 0, 0, 0.30);
   --glass-shadow-heavy:   rgba(0, 0, 0, 0.50);
-  --glass-blur-sm:        10px;
-  --glass-blur-md:        18px;
-  --glass-blur-lg:        28px;
-  --glass-blur-xl:        44px;
+  --glass-blur-sm:        6px;
+  --glass-blur-md:        8px;
+  --glass-blur-lg:        12px;
+  --glass-blur-xl:        20px;
   --glass-saturate:       220%;
 
   /* Neon glow tokens — more vivid in dark */
@@ -627,8 +627,8 @@ body::before {
      ------------------------------------------------ */
   .ocean-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
-    -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur-lg));
+    -webkit-backdrop-filter: blur(var(--glass-blur-lg));
     border: 1px solid rgba(0, 191, 255, 0.22);
     border-radius: 20px;
     box-shadow:
@@ -638,6 +638,7 @@ body::before {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    will-change: transform;
   }
 
   /* Chrome reflection overlay */
@@ -830,8 +831,8 @@ body::before {
 @layer utilities {
   .liquid-glass {
     background: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
-    -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur-lg));
+    -webkit-backdrop-filter: blur(var(--glass-blur-lg));
     border: 1px solid var(--glass-border);
     box-shadow:
       0 8px 32px var(--glass-shadow),
@@ -842,8 +843,8 @@ body::before {
 
   .liquid-glass-elevated {
     background: var(--glass-bg-elevated);
-    backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate));
-    -webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur-xl));
+    -webkit-backdrop-filter: blur(var(--glass-blur-xl));
     border: 1px solid var(--glass-border);
     box-shadow:
       0 16px 48px var(--glass-shadow-heavy),
@@ -855,8 +856,8 @@ body::before {
 
   .liquid-glass-heavy {
     background: var(--glass-bg-heavy);
-    backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate));
-    -webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur-xl));
+    -webkit-backdrop-filter: blur(var(--glass-blur-xl));
     border: 1px solid var(--glass-border);
     box-shadow:
       0 8px 32px var(--glass-shadow-heavy),

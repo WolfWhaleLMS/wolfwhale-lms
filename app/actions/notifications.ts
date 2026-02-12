@@ -1,25 +1,14 @@
 'use server'
 
 import { z } from 'zod'
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { sanitizeText } from '@/lib/sanitize'
 import { rateLimitAction } from '@/lib/rate-limit-action'
-
-async function getContext() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-  return { supabase, user, tenantId }
-}
+import { getActionContext } from '@/lib/actions/context'
 
 export async function getNotifications(limit = 20, unreadOnly = false) {
   const safeLimit = Math.min(Math.max(1, limit), 100)
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   let query = supabase
     .from('notifications')
@@ -39,7 +28,7 @@ export async function getNotifications(limit = 20, unreadOnly = false) {
 }
 
 export async function getUnreadCount() {
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   const { count, error } = await supabase
     .from('notifications')
@@ -56,7 +45,7 @@ export async function markAsRead(notificationId: string) {
   const rl = await rateLimitAction('markAsRead')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user } = await getContext()
+  const { supabase, user } = await getActionContext()
 
   const { error } = await supabase
     .from('notifications')
@@ -72,7 +61,7 @@ export async function markAllAsRead() {
   const rl = await rateLimitAction('markAllAsRead')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   const { error } = await supabase
     .from('notifications')
@@ -106,7 +95,7 @@ export async function createNotification(
   const rl = await rateLimitAction('createNotification')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Only teachers, admins, and super_admins can create notifications for others
   const { data: membership } = await supabase

@@ -57,6 +57,12 @@ export async function getTenantUsers(filters?: {
     query = query.eq('role', filters.role)
   }
 
+  // Search at the database level instead of fetching all rows and filtering in JS
+  if (filters?.search) {
+    const search = `%${filters.search}%`
+    query = query.or(`full_name.ilike.${search},email.ilike.${search}`, { referencedTable: 'profiles' })
+  }
+
   if (filters?.offset) {
     query = query.range(filters.offset, filters.offset + (filters?.limit ?? 50) - 1)
   }
@@ -64,20 +70,7 @@ export async function getTenantUsers(filters?: {
   const { data, error } = await query
   if (error) throw error
 
-  let users = data ?? []
-
-  // Client-side filter by search (name or email)
-  if (filters?.search) {
-    const search = filters.search.toLowerCase()
-    users = users.filter((u) => {
-      const profile = u.profiles as { full_name?: string; email?: string } | null
-      const name = (profile?.full_name || '').toLowerCase()
-      const email = (profile?.email || '').toLowerCase()
-      return name.includes(search) || email.includes(search)
-    })
-  }
-
-  return users
+  return data ?? []
 }
 
 export async function getUserDetail(userId: string) {
@@ -382,27 +375,46 @@ export async function getDashboardStats() {
   const { supabase, tenantId } = await getAdminContext()
 
   const [
-    userCountResult,
+    studentCount,
+    teacherCount,
+    parentCount,
+    adminCount,
+    totalUserCount,
     courseCountResult,
-    activeStudentsResult,
     recentLoginsResult,
   ] = await Promise.all([
     supabase
       .from('tenant_memberships')
-      .select('role', { count: 'exact' })
-      .eq('tenant_id', tenantId),
-
-    supabase
-      .from('courses')
       .select('id', { count: 'exact', head: true })
-      .eq('tenant_id', tenantId),
-
+      .eq('tenant_id', tenantId)
+      .eq('role', 'student')
+      .eq('status', 'active'),
     supabase
       .from('tenant_memberships')
       .select('id', { count: 'exact', head: true })
       .eq('tenant_id', tenantId)
-      .eq('role', 'student'),
-
+      .eq('role', 'teacher')
+      .eq('status', 'active'),
+    supabase
+      .from('tenant_memberships')
+      .select('id', { count: 'exact', head: true })
+      .eq('tenant_id', tenantId)
+      .eq('role', 'parent')
+      .eq('status', 'active'),
+    supabase
+      .from('tenant_memberships')
+      .select('id', { count: 'exact', head: true })
+      .eq('tenant_id', tenantId)
+      .in('role', ['admin', 'super_admin'])
+      .eq('status', 'active'),
+    supabase
+      .from('tenant_memberships')
+      .select('id', { count: 'exact', head: true })
+      .eq('tenant_id', tenantId),
+    supabase
+      .from('courses')
+      .select('id', { count: 'exact', head: true })
+      .eq('tenant_id', tenantId),
     supabase
       .from('audit_logs')
       .select('id', { count: 'exact', head: true })
@@ -411,19 +423,19 @@ export async function getDashboardStats() {
       .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
   ])
 
-  // Count by role
-  const memberships = userCountResult.data ?? []
-  const roleCounts: Record<string, number> = {}
-  for (const m of memberships) {
-    const role = m.role || 'unknown'
-    roleCounts[role] = (roleCounts[role] || 0) + 1
+  // Build role counts from individual count queries (no unbounded fetch)
+  const roleCounts: Record<string, number> = {
+    student: studentCount.count ?? 0,
+    teacher: teacherCount.count ?? 0,
+    parent: parentCount.count ?? 0,
+    admin: adminCount.count ?? 0,
   }
 
   return {
-    totalUsers: memberships.length,
+    totalUsers: totalUserCount.count ?? 0,
     roleCounts,
     totalCourses: courseCountResult.count ?? 0,
-    totalStudents: activeStudentsResult.count ?? 0,
+    totalStudents: studentCount.count ?? 0,
     weeklyLogins: recentLoginsResult.count ?? 0,
   }
 }

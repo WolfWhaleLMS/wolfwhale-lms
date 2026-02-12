@@ -1,8 +1,6 @@
 'use server'
 
 import { z } from 'zod'
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import {
   processXPAward,
@@ -11,16 +9,7 @@ import {
   type XPEventType,
 } from '@/lib/gamification/xp-engine'
 import { rateLimitAction } from '@/lib/rate-limit-action'
-
-async function getContext() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-  return { supabase, user, tenantId }
-}
+import { getActionContext } from '@/lib/actions/context'
 
 // ---------------------------------------------------------------------------
 // XP
@@ -35,7 +24,7 @@ export async function awardXP(eventType: XPEventType, sourceType?: string, sourc
   const rl = await rateLimitAction('awardXP')
   if (!rl.success) return { xpAwarded: 0, error: rl.error }
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Prevent duplicate XP for the same source event
   if (sourceId) {
@@ -113,7 +102,7 @@ export async function awardXP(eventType: XPEventType, sourceType?: string, sourc
 }
 
 export async function getUserLevel() {
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   const { data } = await supabase
     .from('student_xp')
@@ -127,7 +116,7 @@ export async function getUserLevel() {
 
 export async function getXPHistory(limit = 20) {
   const safeLimit = Math.min(Math.max(1, limit), 100)
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   const { data } = await supabase
     .from('xp_transactions')
@@ -145,7 +134,7 @@ export async function getXPHistory(limit = 20) {
 // ---------------------------------------------------------------------------
 
 export async function getUserAchievements() {
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   const { data } = await supabase
     .from('student_achievements')
@@ -163,7 +152,7 @@ export async function getUserAchievements() {
 
 export async function getLeaderboard(period: 'weekly' | 'monthly' | 'all_time' = 'weekly', limit = 25) {
   const safeLimit = Math.min(Math.max(1, limit), 100)
-  const { supabase, tenantId } = await getContext()
+  const { supabase, tenantId } = await getActionContext()
 
   const { data } = await supabase
     .from('leaderboard_entries')

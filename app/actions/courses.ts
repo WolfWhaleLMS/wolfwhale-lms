@@ -3,57 +3,16 @@
 import { z } from 'zod'
 import { randomBytes } from 'crypto'
 import { revalidatePath } from 'next/cache'
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { sanitizeText } from '@/lib/sanitize'
 import { rateLimitAction } from '@/lib/rate-limit-action'
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-async function getAuthUser() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
-  return { supabase, user }
-}
-
-async function getTenantId(): Promise<string> {
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-  return tenantId
-}
-
-async function requireTeacher() {
-  const { supabase, user } = await getAuthUser()
-  const tenantId = await getTenantId()
-
-  const { data: membership } = await supabase
-    .from('tenant_memberships')
-    .select('role')
-    .eq('user_id', user.id)
-    .eq('tenant_id', tenantId)
-    .eq('status', 'active')
-    .single()
-
-  if (!membership || !['teacher', 'admin', 'super_admin'].includes(membership.role)) {
-    throw new Error('Not authorized - teacher role required')
-  }
-
-  return { supabase, user, tenantId, role: membership.role }
-}
+import { getActionContext, requireTeacher } from '@/lib/actions/context'
 
 // ---------------------------------------------------------------------------
 // getCourses - teacher sees their own, student sees enrolled
 // ---------------------------------------------------------------------------
 
 export async function getCourses() {
-  const { supabase, user } = await getAuthUser()
-  const tenantId = await getTenantId()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Verify role from DB, not from headers
   const { data: membership } = await supabase
@@ -214,8 +173,7 @@ export async function getCourse(courseId: string) {
   const parsed = z.object({ courseId: z.string().uuid() }).safeParse({ courseId })
   if (!parsed.success) return null
 
-  const { supabase, user } = await getAuthUser()
-  const tenantId = await getTenantId()
+  const { supabase, user, tenantId } = await getActionContext()
 
   const { data: course, error } = await supabase
     .from('courses')
@@ -460,8 +418,7 @@ export async function enrollWithCode(code: string) {
   const parsed = z.object({ code: z.string().min(1).max(20) }).safeParse({ code })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
-  const { supabase, user } = await getAuthUser()
-  const tenantId = await getTenantId()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Look up the class code — must belong to the user's tenant
   const { data: classCode, error: codeError } = await supabase

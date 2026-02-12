@@ -121,11 +121,12 @@ export async function getAdminSchoolReport() {
     throw new Error('Not authorized')
   }
 
-  // User counts by role
+  // User counts by role (with safety limit instead of unbounded fetch)
   const { data: memberships } = await supabase
     .from('tenant_memberships')
     .select('role, status')
     .eq('tenant_id', tenantId)
+    .limit(100000)
 
   const roleCounts: Record<string, number> = {}
   let activeCount = 0
@@ -146,7 +147,7 @@ export async function getAdminSchoolReport() {
     .select('id', { count: 'exact', head: true })
     .eq('tenant_id', tenantId)
 
-  // Attendance (last 30 days)
+  // Attendance (last 30 days) — safety cap to prevent unbounded fetch
   const thirtyDaysAgo = new Date()
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
   const { data: attendance } = await supabase
@@ -154,6 +155,7 @@ export async function getAdminSchoolReport() {
     .select('status')
     .eq('tenant_id', tenantId)
     .gte('date', thirtyDaysAgo.toISOString().split('T')[0])
+    .limit(50000)
 
   const attendanceCounts: Record<string, number> = {}
   for (const a of attendance || []) {
@@ -163,28 +165,21 @@ export async function getAdminSchoolReport() {
   const presentCount = (attendanceCounts['present'] || 0) + (attendanceCounts['tardy'] || 0)
   const attendanceRate = totalAttendance > 0 ? Math.round((presentCount / totalAttendance) * 1000) / 10 : 0
 
-  // Course list with enrollment counts
+  // Course list with enrollment counts — single query with embedded count
   const { data: courses } = await supabase
     .from('courses')
-    .select('id, name, status, created_at, profiles:created_by(full_name)')
+    .select('id, name, status, created_at, profiles:created_by(full_name), course_enrollments(count)')
     .eq('tenant_id', tenantId)
     .order('created_at', { ascending: false })
+    .limit(500)
 
-  const courseDetails = await Promise.all(
-    (courses || []).map(async (c) => {
-      const { count } = await supabase
-        .from('course_enrollments')
-        .select('id', { count: 'exact', head: true })
-        .eq('course_id', c.id)
-      return {
-        name: c.name,
-        teacher: (c.profiles as { full_name?: string } | null)?.full_name || 'Unknown',
-        status: c.status,
-        students: count || 0,
-        createdAt: new Date(c.created_at).toLocaleDateString('en-CA'),
-      }
-    })
-  )
+  const courseDetails = (courses || []).map((c) => ({
+    name: c.name,
+    teacher: (c.profiles as { full_name?: string } | null)?.full_name || 'Unknown',
+    status: c.status,
+    students: (c.course_enrollments as unknown as { count: number }[])?.[0]?.count || 0,
+    createdAt: new Date(c.created_at).toLocaleDateString('en-CA'),
+  }))
 
   return {
     summary: {

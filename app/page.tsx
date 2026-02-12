@@ -1,23 +1,15 @@
-'use client'
-
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { GraduationCap, Shield, Zap, ArrowRight } from 'lucide-react'
 
 export default function HomePage() {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
   return (
     <div className="min-h-screen relative overflow-hidden bg-background">
       {/* Aqua Neon Dark Background */}
       <div className="fixed inset-0 z-0">
         {/* Chrome texture base */}
         <div className="absolute inset-0">
-          <img src="/chrome-bg-2.jpg" alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+          <Image src="/chrome-bg-2.jpg" alt="" fill className="object-cover opacity-30" priority />
         </div>
         {/* Base gradient — Deep dark aqua */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#041428]/90 via-[#0A2040]/85 to-[#041428]/90" />
@@ -45,23 +37,21 @@ export default function HomePage() {
           }}
         />
 
-        {/* Floating bubble particles */}
-        {mounted && (
-          <div className="absolute inset-0">
-            {[...Array(40)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 bg-[#00BFFF] rounded-full animate-twinkle"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 50}%`,
-                  animationDelay: `${Math.random() * 5}s`,
-                  opacity: Math.random() * 0.4 + 0.1,
-                }}
-              />
-            ))}
-          </div>
-        )}
+        {/* Floating bubble particles — decorative CSS, always rendered */}
+        <div className="absolute inset-0">
+          {[...Array(40)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-[#00BFFF] rounded-full animate-twinkle"
+              style={{
+                left: `${(i * 2.5) % 100}%`,
+                top: `${(i * 1.25) % 50}%`,
+                animationDelay: `${(i * 0.125) % 5}s`,
+                opacity: (i % 4) * 0.1 + 0.1,
+              }}
+            />
+          ))}
+        </div>
 
         {/* Depth overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#041428] via-transparent to-transparent opacity-60" />
@@ -70,7 +60,7 @@ export default function HomePage() {
       {/* Header */}
       <header className="relative z-10 p-6">
         <Link href="/" className="inline-flex items-center gap-3 group">
-          <img src="/logo.png" alt="WolfWhale" className="h-16 w-16 rounded-xl object-contain shadow-lg border-2 border-black" />
+          <Image src="/logo.png" alt="WolfWhale" width={64} height={64} className="rounded-xl object-contain shadow-lg border-2 border-black" />
           <span className="text-xl font-display font-bold text-white group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase">
             WolfWhale
           </span>
@@ -84,7 +74,7 @@ export default function HomePage() {
           <section className="text-center space-y-8 animate-fade-in-up">
             {/* Logo */}
             <div className="inline-flex rounded-2xl shadow-2xl overflow-hidden chrome-shine">
-              <img src="/logo.png" alt="WolfWhale" className="h-48 w-48 rounded-2xl object-contain border-2 border-black" />
+              <Image src="/logo.png" alt="WolfWhale" width={192} height={192} className="rounded-2xl object-contain border-2 border-black" />
             </div>
 
             {/* Heading */}
@@ -188,7 +178,7 @@ export default function HomePage() {
       </footer>
 
       {/* Animation keyframes */}
-      <style jsx>{`
+      <style>{`
         @keyframes ocean-pulse {
           0%, 100% { transform: scale(1) translateY(0); opacity: 0.3; }
           50% { transform: scale(1.1) translateY(-5%); opacity: 0.4; }

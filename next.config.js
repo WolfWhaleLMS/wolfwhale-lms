@@ -21,6 +21,22 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: '/privacy',
+        headers: [{ key: 'Cache-Control', value: 'public, s-maxage=3600, stale-while-revalidate=86400' }],
+      },
+      {
+        source: '/terms',
+        headers: [{ key: 'Cache-Control', value: 'public, s-maxage=3600, stale-while-revalidate=86400' }],
+      },
+      {
+        source: '/help',
+        headers: [{ key: 'Cache-Control', value: 'public, s-maxage=3600, stale-while-revalidate=86400' }],
+      },
+      {
+        source: '/info',
+        headers: [{ key: 'Cache-Control', value: 'public, s-maxage=3600, stale-while-revalidate=86400' }],
+      },
+      {
         source: '/:path*',
         headers: [
           {

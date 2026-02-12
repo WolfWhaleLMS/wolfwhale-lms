@@ -12,18 +12,27 @@ import 'server-only'
 //   const admin = createAdminClient()
 //   const { data } = await admin.from('tenants').select('*')
 
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
 /**
- * Creates a Supabase client authenticated with the service-role key.
- * This client bypasses RLS and should only be used in:
+ * Module-level singleton for the admin client.
+ * The admin client uses the service-role key and has no per-request state
+ * (no cookies, no session persistence), so it is safe to reuse across requests.
+ */
+let _adminClient: SupabaseClient | null = null
+
+/**
+ * Creates (or returns the cached) Supabase client authenticated with the
+ * service-role key. This client bypasses RLS and should only be used in:
  *   - Server Actions
  *   - API Routes / Route Handlers
  *   - Background jobs / cron functions
  *
  * Never import this file from a Client Component or pass the client to one.
  */
-export function createAdminClient() {
+export function createAdminClient(): SupabaseClient {
+  if (_adminClient) return _adminClient
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
@@ -40,10 +49,12 @@ export function createAdminClient() {
     )
   }
 
-  return createClient(supabaseUrl, serviceRoleKey, {
+  _adminClient = createClient(supabaseUrl, serviceRoleKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
     },
   })
+
+  return _adminClient
 }

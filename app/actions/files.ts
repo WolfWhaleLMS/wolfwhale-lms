@@ -1,7 +1,5 @@
 'use server'
 
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import {
   ALL_ALLOWED_TYPES,
   ALLOWED_EXTENSIONS,
@@ -11,6 +9,7 @@ import {
   formatFileSize,
 } from '@/lib/supabase/storage'
 import { rateLimitAction } from '@/lib/rate-limit-action'
+import { getActionContext } from '@/lib/actions/context'
 
 // ============================================
 // Types
@@ -34,13 +33,7 @@ export async function uploadFileAction(
   const rl = await rateLimitAction('uploadFileAction')
   if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
-  const supabase = await createClient()
-
-  // Authenticate user
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) {
-    return { error: 'Not authenticated' }
-  }
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Allowed storage buckets
   const ALLOWED_BUCKETS = ['course-materials', 'submissions', 'avatars']
@@ -77,8 +70,6 @@ export async function uploadFileAction(
   }
 
   // Generate scoped path — always server-generated, never user-supplied
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
   const filePath = generateFilePath(user.id, file.name, tenantId)
 
   // Upload to Supabase Storage
@@ -146,19 +137,7 @@ export async function deleteFileAction(
     return { error: 'Invalid storage bucket' }
   }
 
-  const supabase = await createClient()
-
-  // Authenticate user
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) {
-    return { error: 'Not authenticated' }
-  }
-
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) {
-    return { error: 'No tenant context' }
-  }
+  const { supabase, user, tenantId } = await getActionContext()
 
   if (path.includes('..') || path.startsWith('/') || path.includes('\0')) {
     return { error: 'Invalid file path' }

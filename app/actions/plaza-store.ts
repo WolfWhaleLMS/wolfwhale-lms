@@ -318,14 +318,12 @@ export async function equipItem(itemId: string): Promise<void> {
         .map((e) => e.id)
 
       if (sameSlotItemIds.length > 0) {
-        // Unequip items in the same slot
-        for (const slotItemId of sameSlotItemIds) {
-          await admin
-            .from('plaza_avatar_inventory')
-            .update({ is_equipped: false })
-            .eq('user_id', user.id)
-            .eq('item_id', slotItemId)
-        }
+        // Unequip items in the same slot — single batch update instead of loop
+        await admin
+          .from('plaza_avatar_inventory')
+          .update({ is_equipped: false })
+          .eq('user_id', user.id)
+          .in('item_id', sameSlotItemIds)
       }
     }
   }
@@ -370,14 +368,12 @@ export async function unequipItem(slot: string): Promise<void> {
 
   if (targetItemIds.length === 0) return
 
-  // Unequip
-  for (const targetId of targetItemIds) {
-    await admin
-      .from('plaza_avatar_inventory')
-      .update({ is_equipped: false })
-      .eq('user_id', user.id)
-      .eq('item_id', targetId)
-  }
+  // Unequip — single batch update instead of loop
+  await admin
+    .from('plaza_avatar_inventory')
+    .update({ is_equipped: false })
+    .eq('user_id', user.id)
+    .in('item_id', targetItemIds)
 
   revalidatePath('/student/plaza')
 }
@@ -628,13 +624,14 @@ export async function getTokenLeaderboard(
     startDate = monthAgo.toISOString()
   }
 
-  // Get earning transactions in the period
+  // Get earning transactions in the period (with safety cap)
   const { data: transactions, error } = await admin
     .from('plaza_token_transactions')
     .select('user_id, amount')
     .eq('tenant_id', tenantId)
     .gt('amount', 0)
     .gte('created_at', startDate)
+    .limit(10000)
 
   if (error) {
     console.error('[plaza-store] getTokenLeaderboard:', error)

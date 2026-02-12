@@ -2,12 +2,11 @@
 
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { getLetterGrade } from '@/lib/config/constants'
 import { sanitizeText, sanitizeRichText } from '@/lib/sanitize'
 import { logAuditEvent } from '@/lib/compliance/audit-logger'
 import { rateLimitAction } from '@/lib/rate-limit-action'
+import { getActionContext } from '@/lib/actions/context'
 
 // ============================================
 // TEACHER: Get all submissions for an assignment
@@ -16,14 +15,7 @@ export async function getSubmissions(assignmentId: string) {
   const parsed = z.object({ assignmentId: z.string().uuid() }).safeParse({ assignmentId })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
-  const supabase = await createClient()
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
-
-  if (!tenantId) return { error: 'No tenant context' }
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Get the assignment and verify teacher ownership
   const { data: assignment } = await supabase
@@ -111,21 +103,14 @@ export async function getMySubmission(assignmentId: string) {
   const parsed = z.object({ assignmentId: z.string().uuid() }).safeParse({ assignmentId })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
 
-  const supabase = await createClient()
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) return { error: 'No tenant context' }
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  const { supabase, user, tenantId } = await getActionContext()
 
   let query = supabase
     .from('submissions')
     .select('*')
     .eq('assignment_id', assignmentId)
     .eq('student_id', user.id)
-
-  query = query.eq('tenant_id', tenantId)
+    .eq('tenant_id', tenantId)
 
   const { data: submission } = await query.maybeSingle()
 
@@ -165,13 +150,7 @@ export async function submitWork(
   const rl = await rateLimitAction('submitWork')
   if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
-  const supabase = await createClient()
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) return { error: 'No tenant context' }
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Get assignment details
   const { data: assignment } = await supabase
@@ -291,13 +270,7 @@ export async function gradeSubmission(
   const rl = await rateLimitAction('gradeSubmission')
   if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
-  const supabase = await createClient()
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) return { error: 'No tenant context' }
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Get submission details
   const { data: submission } = await supabase
@@ -426,13 +399,7 @@ export async function returnSubmission(submissionId: string, feedback: string) {
   const rl = await rateLimitAction('returnSubmission')
   if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
-  const supabase = await createClient()
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) return { error: 'No tenant context' }
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Get submission details and verify teacher ownership
   const { data: submission } = await supabase

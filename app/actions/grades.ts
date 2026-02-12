@@ -78,6 +78,7 @@ export async function getGrades(courseId: string, studentId?: string) {
 
   const assignmentIds = courseAssignments.map((a) => a.id)
   query = query.in('assignment_id', assignmentIds)
+  query = query.limit(500)
 
   const { data, error } = await query
 
@@ -112,6 +113,7 @@ export async function getStudentGrades() {
     .order('graded_at', { ascending: false })
 
   query = query.eq('tenant_id', tenantId)
+  query = query.limit(500)
 
   const { data: grades, error } = await query
 

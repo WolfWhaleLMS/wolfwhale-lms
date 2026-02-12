@@ -1,29 +1,18 @@
 'use server'
 
 import { z } from 'zod'
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { rateLimitAction } from '@/lib/rate-limit-action'
 import { sanitizeText } from '@/lib/sanitize'
 import { logAuditEvent } from '@/lib/compliance/audit-logger'
-
-async function getContext() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-  return { supabase, user, tenantId }
-}
+import { getActionContext } from '@/lib/actions/context'
 
 // ---------------------------------------------------------------------------
 // Conversations
 // ---------------------------------------------------------------------------
 
 export async function getConversations() {
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   const { data, error } = await supabase
     .from('conversation_members')
@@ -47,7 +36,7 @@ export async function getConversation(conversationId: string) {
     throw new Error('Invalid ID')
   }
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Verify the user is a member of this conversation
   const { data: membership } = await supabase
@@ -86,7 +75,7 @@ export async function createDirectMessage(recipientId: string) {
   const rl = await rateLimitAction('createDirectMessage')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Check for existing DM
   const { data: existing } = await supabase
@@ -139,7 +128,7 @@ export async function createGroupConversation(title: string, memberIds: string[]
 
   const sanitizedTitle = sanitizeText(parsed.data.title)
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Verify all members are in the same tenant
   const { data: validMembers } = await supabase
@@ -195,7 +184,7 @@ export async function sendMessage(conversationId: string, content: string) {
   const rl = await rateLimitAction('sendMessage')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Verify the user is a member of the conversation
   const { data: membership } = await supabase
@@ -245,7 +234,7 @@ export async function getMessages(conversationId: string, limit = 50, before?: s
   const parsed = z.object({ conversationId: z.string().uuid() }).safeParse({ conversationId })
   if (!parsed.success) throw new Error('Invalid input')
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Verify the user is a member of this conversation
   const { data: membership } = await supabase
@@ -293,7 +282,7 @@ export async function deleteMessage(messageId: string) {
   const parsed = z.object({ messageId: z.string().uuid() }).safeParse({ messageId })
   if (!parsed.success) throw new Error('Invalid input')
 
-  const { supabase, user } = await getContext()
+  const { supabase, user } = await getActionContext()
 
   const { error } = await supabase
     .from('messages')

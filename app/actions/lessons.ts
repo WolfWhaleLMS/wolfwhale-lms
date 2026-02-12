@@ -2,11 +2,10 @@
 
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { sanitizeText } from '@/lib/sanitize'
 import DOMPurify from 'isomorphic-dompurify'
 import { rateLimitAction } from '@/lib/rate-limit-action'
+import { getActionContext, requireTeacher } from '@/lib/actions/context'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -49,41 +48,6 @@ function sanitizeUrl(url: string): string {
   }
 }
 
-async function getAuthUser() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
-  return { supabase, user }
-}
-
-async function getTenantId(): Promise<string> {
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-  return tenantId
-}
-
-async function requireTeacher() {
-  const { supabase, user } = await getAuthUser()
-  const tenantId = await getTenantId()
-
-  const { data: membership } = await supabase
-    .from('tenant_memberships')
-    .select('role')
-    .eq('user_id', user.id)
-    .eq('tenant_id', tenantId)
-    .eq('status', 'active')
-    .single()
-
-  if (!membership || !['teacher', 'admin', 'super_admin'].includes(membership.role)) {
-    throw new Error('Not authorized - teacher role required')
-  }
-
-  return { supabase, user, tenantId, role: membership.role }
-}
-
 // ---------------------------------------------------------------------------
 // getLessons - get all lessons for a course, ordered by order_index
 // ---------------------------------------------------------------------------
@@ -92,8 +56,7 @@ export async function getLessons(courseId: string) {
   const parsed = z.object({ courseId: z.string().uuid() }).safeParse({ courseId })
   if (!parsed.success) return []
 
-  const { supabase } = await getAuthUser()
-  const tenantId = await getTenantId()
+  const { supabase, tenantId } = await getActionContext()
 
   const { data: lessons, error } = await supabase
     .from('lessons')
@@ -130,8 +93,7 @@ export async function getLesson(lessonId: string) {
   const parsed = z.object({ lessonId: z.string().uuid() }).safeParse({ lessonId })
   if (!parsed.success) return null
 
-  const { supabase, user } = await getAuthUser()
-  const tenantId = await getTenantId()
+  const { supabase, user, tenantId } = await getActionContext()
 
   const { data: lesson, error } = await supabase
     .from('lessons')
@@ -178,8 +140,7 @@ export async function getLessonWithNavigation(lessonId: string, courseId: string
   }).safeParse({ lessonId, courseId })
   if (!parsed.success) return null
 
-  const { supabase, user } = await getAuthUser()
-  const tenantId = await getTenantId()
+  const { supabase, user, tenantId } = await getActionContext()
 
   const { data: lesson, error } = await supabase
     .from('lessons')
@@ -583,8 +544,7 @@ export async function getLessonAttachments(lessonId: string) {
   const parsed = z.object({ lessonId: z.string().uuid() }).safeParse({ lessonId })
   if (!parsed.success) return []
 
-  const { supabase } = await getAuthUser()
-  const tenantId = await getTenantId()
+  const { supabase, tenantId } = await getActionContext()
 
   const { data: attachments, error } = await supabase
     .from('lesson_attachments')
@@ -620,8 +580,7 @@ export async function trackProgress(
   const rl = await rateLimitAction('trackProgress')
   if (!rl.success) return { error: rl.error ?? 'Too many requests' }
 
-  const { supabase, user } = await getAuthUser()
-  const tenantId = await getTenantId()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Check if progress record exists
   const { data: existing } = await supabase

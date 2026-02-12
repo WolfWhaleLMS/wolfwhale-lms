@@ -1,21 +1,11 @@
 'use server'
 
 import { z } from 'zod'
-import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { logAuditEvent } from '@/lib/compliance/audit-logger'
 import { rateLimitAction } from '@/lib/rate-limit-action'
-
-async function getContext() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-  return { supabase, user, tenantId }
-}
+import { getActionContext } from '@/lib/actions/context'
 
 async function getUserRole(supabase: ReturnType<typeof createClient> extends Promise<infer T> ? T : never, userId: string, tenantId: string) {
   const { data: membership } = await supabase
@@ -46,7 +36,7 @@ export async function recordAttendance(
   const rl = await rateLimitAction('recordAttendance')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Verify caller is the course teacher or an admin/super_admin
   const role = await getUserRole(supabase, user.id, tenantId)
@@ -104,7 +94,7 @@ export async function getAttendanceForCourse(courseId: string, date?: string) {
     return []
   }
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Verify caller is the course teacher or an admin/super_admin
   const role = await getUserRole(supabase, user.id, tenantId)
@@ -144,7 +134,7 @@ export async function getAttendanceHistory(courseId: string, startDate: string, 
     return []
   }
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Verify caller is the course teacher or an admin/super_admin
   const role = await getUserRole(supabase, user.id, tenantId)
@@ -185,7 +175,7 @@ export async function getStudentAttendance(studentId?: string) {
     return []
   }
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   const targetId = studentId || user.id
 
@@ -241,7 +231,7 @@ export async function getAttendanceSummary(studentId?: string) {
     return { total: 0, present: 0, absent: 0, tardy: 0, excused: 0, rate: 0 }
   }
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   const targetId = studentId || user.id
 

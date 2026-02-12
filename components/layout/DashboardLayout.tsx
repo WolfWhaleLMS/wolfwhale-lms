@@ -38,9 +38,17 @@ export function DashboardLayout({
   return (
     <div className="relative flex h-screen overflow-hidden bg-background" data-role={role}>
       {/* Chrome texture background */}
-      <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
-        <img src="/chrome-bg-3.jpg" alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.12]" />
-      </div>
+      <div
+        className="pointer-events-none fixed inset-0 z-0"
+        aria-hidden="true"
+        style={{
+          backgroundImage: 'url(/chrome-bg-3.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.10,
+        }}
+      />
 
       {/* Ambient blobs for glass depth effect — LARGER & more vivid */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">

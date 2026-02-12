@@ -1,22 +1,11 @@
 'use server'
 
 import { z } from 'zod'
-import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { calculateNextReview, type SM2State } from '@/lib/flashcards/sm2'
 import { sanitizeText } from '@/lib/sanitize'
 import { rateLimitAction } from '@/lib/rate-limit-action'
-
-async function getContext() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-  if (!tenantId) throw new Error('No tenant context')
-  return { supabase, user, tenantId }
-}
+import { getActionContext } from '@/lib/actions/context'
 
 // ---------------------------------------------------------------------------
 // TEACHER: Deck CRUD
@@ -27,7 +16,7 @@ export async function getDecks(courseId: string) {
     return []
   }
 
-  const { supabase, tenantId } = await getContext()
+  const { supabase, tenantId } = await getActionContext()
 
   const { data, error } = await supabase
     .from('flashcard_decks')
@@ -51,7 +40,7 @@ export async function createDeck(courseId: string, title: string, description?: 
   const rl = await rateLimitAction('createDeck')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   const { data, error } = await supabase
     .from('flashcard_decks')
@@ -75,7 +64,7 @@ export async function updateDeck(deckId: string, updates: { title?: string; desc
   const rl = await rateLimitAction('updateDeck')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user } = await getContext()
+  const { supabase, user } = await getActionContext()
 
   const updateData: Record<string, unknown> = { updated_at: new Date().toISOString() }
   if (updates.title) updateData.title = sanitizeText(updates.title)
@@ -95,7 +84,7 @@ export async function deleteDeck(deckId: string) {
   const rl = await rateLimitAction('deleteDeck')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user } = await getContext()
+  const { supabase, user } = await getActionContext()
 
   const { error } = await supabase
     .from('flashcard_decks')
@@ -115,7 +104,7 @@ export async function getCards(deckId: string) {
     return []
   }
 
-  const { supabase } = await getContext()
+  const { supabase } = await getActionContext()
 
   const { data, error } = await supabase
     .from('flashcards')
@@ -139,7 +128,7 @@ export async function addCard(deckId: string, frontText: string, backText: strin
   const rl = await rateLimitAction('addCard')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase } = await getContext()
+  const { supabase } = await getActionContext()
 
   // Get current max order
   const { data: existing } = await supabase
@@ -191,7 +180,7 @@ export async function updateCard(cardId: string, updates: { frontText?: string; 
   const rl = await rateLimitAction('updateCard')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user } = await getContext()
+  const { supabase, user } = await getActionContext()
 
   // Verify ownership via card -> deck -> created_by
   const { data: card } = await supabase
@@ -227,7 +216,7 @@ export async function deleteCard(cardId: string, deckId: string) {
   const rl = await rateLimitAction('deleteCard')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user } = await getContext()
+  const { supabase, user } = await getActionContext()
 
   // Verify ownership via deck -> created_by
   const { data: deck } = await supabase
@@ -263,7 +252,7 @@ export async function deleteCard(cardId: string, deckId: string) {
 // ---------------------------------------------------------------------------
 
 export async function getStudentDecks() {
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Get enrolled courses
   const { data: enrollments } = await supabase
@@ -317,7 +306,7 @@ export async function getStudyCards(deckId: string) {
     return { cards: [], progress: {} }
   }
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Get all cards in deck
   const { data: cards } = await supabase
@@ -367,7 +356,7 @@ export async function reviewCard(deckId: string, cardId: string, quality: number
   const rl = await rateLimitAction('reviewCard')
   if (!rl.success) throw new Error(rl.error ?? 'Too many requests')
 
-  const { supabase, user, tenantId } = await getContext()
+  const { supabase, user, tenantId } = await getActionContext()
 
   // Get existing progress
   const { data: existing } = await supabase

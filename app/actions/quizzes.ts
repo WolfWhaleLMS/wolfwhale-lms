@@ -893,6 +893,7 @@ export async function getAttempts(quizId: string) {
     `)
     .eq('quiz_id', quizId)
     .order('started_at', { ascending: false })
+    .limit(100)
 
   if (error) {
     console.error('Error fetching attempts:', error)
