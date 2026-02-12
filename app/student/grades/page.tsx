@@ -46,7 +46,7 @@ function gradeBarColor(percentage: number): string {
 function TypeBadge({ type }: { type: string }) {
   const typeConfig = ASSIGNMENT_TYPES.find((t) => t.value === type)
   return (
-    <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+    <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-sm font-medium text-muted-foreground">
       {typeConfig?.label || type}
     </span>
   )
@@ -128,7 +128,7 @@ export default function StudentGradesPage() {
       </div>
 
       {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-300">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-base text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-300">
           {error}
         </div>
       )}
@@ -138,7 +138,7 @@ export default function StudentGradesPage() {
         <div className="ocean-card rounded-2xl p-6">
           <div className="mb-4 flex items-center gap-2">
             <Award className="h-6 w-6 text-primary" />
-            <h2 className="text-lg font-semibold text-foreground">Overall Performance</h2>
+            <h2 className="text-xl font-semibold text-foreground">Overall Performance</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
             {/* Circular GPA Gauge */}
@@ -185,8 +185,8 @@ export default function StudentGradesPage() {
                   }`}>
                     {gpa.toFixed(2)}
                   </p>
-                  <p className="text-sm font-medium text-muted-foreground">GPA</p>
-                  <p className="text-xs text-muted-foreground">out of 4.0</p>
+                  <p className="text-base font-medium text-muted-foreground">GPA</p>
+                  <p className="text-sm text-muted-foreground">out of 4.0</p>
                 </div>
               </div>
             </div>
@@ -196,26 +196,26 @@ export default function StudentGradesPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 p-4 text-center">
                   <p className="text-3xl font-bold text-foreground">{courseGrades.length}</p>
-                  <p className="text-xs font-medium text-muted-foreground">Courses</p>
+                  <p className="text-sm font-medium text-muted-foreground">Courses</p>
                 </div>
                 <div className="rounded-xl bg-gradient-to-br from-[#00BFFF]/10 to-[#00BFFF]/5 p-4 text-center">
                   <p className="text-3xl font-bold text-foreground">{recentGrades.length}</p>
-                  <p className="text-xs font-medium text-muted-foreground">Graded</p>
+                  <p className="text-sm font-medium text-muted-foreground">Graded</p>
                 </div>
                 <div className="rounded-xl bg-gradient-to-br from-[#059669]/10 to-[#059669]/5 p-4 text-center">
                   <div className="flex items-center justify-center gap-1">
                     <p className="text-3xl font-bold text-[#059669] dark:text-[#34D399]">
                       {recentGrades.filter((g) => (g.points_earned / g.percentage) * 100 >= 90).length}
                     </p>
-                    <span className="text-lg">🏆</span>
+                    <span className="text-xl">🏆</span>
                   </div>
-                  <p className="text-xs font-medium text-muted-foreground">A Grades</p>
+                  <p className="text-sm font-medium text-muted-foreground">A Grades</p>
                 </div>
                 <div className="rounded-xl bg-gradient-to-br from-[#00BFFF]/10 to-[#00BFFF]/5 p-4 text-center">
                   <p className={`text-3xl font-bold ${gradeColorClass(Math.round(overallPercentage))}`}>
                     {Math.round(overallPercentage)}%
                   </p>
-                  <p className="text-xs font-medium text-muted-foreground">Average</p>
+                  <p className="text-sm font-medium text-muted-foreground">Average</p>
                 </div>
               </div>
             </div>
@@ -229,16 +229,16 @@ export default function StudentGradesPage() {
           <div className="blob-teal absolute right-1/4 top-0 h-56 w-56 opacity-20" />
           <div className="relative z-10 flex flex-col items-center justify-center">
             <div className="mb-4 text-6xl">📊</div>
-            <p className="text-xl font-bold text-foreground">No grades yet</p>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="text-2xl font-bold text-foreground">No grades yet</p>
+            <p className="mt-2 text-base text-muted-foreground">
               Your grades will appear here once your teachers have graded your work.
             </p>
-            <p className="mt-4 text-lg">Keep learning! 🚀</p>
+            <p className="mt-4 text-xl">Keep learning! 🚀</p>
           </div>
         </div>
       ) : (
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-foreground">Course Grades</h2>
+          <h2 className="text-xl font-semibold text-foreground">Course Grades</h2>
           {courseGrades.map((course, index) => {
             // Calculate trend (simplified - comparing to previous grade)
             const previousPercentage = index > 0 ? courseGrades[index - 1].percentage : course.percentage
@@ -276,7 +276,7 @@ export default function StudentGradesPage() {
                           />
                         </div>
                       </div>
-                      <span className={`text-sm font-bold ${gradeColorClass(course.percentage)}`}>
+                      <span className={`text-base font-bold ${gradeColorClass(course.percentage)}`}>
                         {course.percentage}%
                       </span>
                     </div>
@@ -288,7 +288,7 @@ export default function StudentGradesPage() {
                       course.percentage >= 70 ? 'bg-gradient-to-br from-[#D97706]/20 to-[#D97706]/10' :
                       'bg-gradient-to-br from-red-500/20 to-red-500/10'
                     }`}>
-                      <span className={`text-2xl font-bold ${gradeColorClass(course.percentage)}`}>
+                      <span className={`text-3xl font-bold ${gradeColorClass(course.percentage)}`}>
                         {course.letterGrade}
                       </span>
                     </div>
@@ -321,10 +321,10 @@ export default function StudentGradesPage() {
                               <div className="flex items-center gap-3">
                                 <TypeBadge type={grade.assignmentType} />
                                 <div>
-                                  <p className="text-sm font-medium text-foreground">
+                                  <p className="text-base font-medium text-foreground">
                                     {grade.assignmentTitle}
                                   </p>
-                                  <p className="text-xs text-muted-foreground">
+                                  <p className="text-sm text-muted-foreground">
                                     Graded{' '}
                                     {new Date(grade.graded_at).toLocaleDateString('en-US', {
                                       month: 'short',
@@ -337,7 +337,7 @@ export default function StudentGradesPage() {
                                 <p className={`font-medium ${gradeColorClass(pct)}`}>
                                   {grade.points_earned}/{grade.percentage}
                                 </p>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-sm text-muted-foreground">
                                   {Math.round(pct)}% - {grade.letter_grade}
                                 </p>
                               </div>
@@ -348,7 +348,7 @@ export default function StudentGradesPage() {
 
                     {/* Category summary */}
                     <div className="border-t border-border bg-muted/20 px-5 py-3">
-                      <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center justify-between text-base">
                         <span className="font-medium text-foreground">Course Total</span>
                         <span className={`font-bold ${gradeColorClass(course.percentage)}`}>
                           {course.totalPointsEarned}/{course.totalPercentage} ({course.percentage}%)
@@ -366,9 +366,9 @@ export default function StudentGradesPage() {
       {/* Recent Grades */}
       {recentGrades.length > 0 && (
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-foreground">Recent Grades</h2>
+          <h2 className="text-xl font-semibold text-foreground">Recent Grades</h2>
           <div className="ocean-card overflow-hidden rounded-2xl">
-            <table className="w-full text-sm">
+            <table className="w-full text-base">
               <thead>
                 <tr className="border-b border-border bg-muted/50">
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">

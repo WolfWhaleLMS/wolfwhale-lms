@@ -48,7 +48,7 @@ export function CircularGauge({
       aria-valuemax={max}
       aria-label={`${label}: ${display}`}
     >
-      <div className="relative chrome-ring rounded-full" style={{ width: size, height: size }}>
+      <div className="relative rounded-full" style={{ width: size, height: size }}>
         <svg
           width={size}
           height={size}

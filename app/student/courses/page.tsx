@@ -125,8 +125,8 @@ export default async function StudentCoursesPage() {
               View your enrolled courses and track your learning progress.
             </p>
             {coursesWithMeta.length > 0 && (
-              <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-semibold backdrop-blur-sm">
-                <span className="text-2xl">{coursesWithMeta.length}</span>
+              <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-base font-semibold backdrop-blur-sm">
+                <span className="text-3xl">{coursesWithMeta.length}</span>
                 <span>Active Course{coursesWithMeta.length !== 1 ? 's' : ''}</span>
               </div>
             )}
@@ -143,10 +143,10 @@ export default async function StudentCoursesPage() {
           <div className="relative z-10 flex flex-col items-center justify-center">
             <div className="mb-4 text-6xl">🐋</div>
             <GraduationCap className="mb-4 h-16 w-16 text-primary/40" />
-            <h3 className="text-xl font-bold text-foreground">
+            <h3 className="text-2xl font-bold text-foreground">
               Ready to Dive In?
             </h3>
-            <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+            <p className="mt-2 max-w-sm text-base text-muted-foreground">
               Join a course using a class code from your teacher to start your learning adventure!
             </p>
             <div className="mt-6">
@@ -179,21 +179,21 @@ export default async function StudentCoursesPage() {
 
                 <div className="mb-3 flex items-start justify-between gap-2">
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                    <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-1">
                       {course.name}
                     </h3>
-                    <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="mt-1 flex items-center gap-2 text-base text-muted-foreground">
                       <Users className="h-3.5 w-3.5" />
                       <span>{course.teacher_name}</span>
                     </div>
                   </div>
                   {course.progress_percentage === 100 && (
-                    <div className="text-2xl animate-float">🏆</div>
+                    <div className="text-3xl animate-float">🏆</div>
                   )}
                 </div>
 
                 {course.subject && (
-                  <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
+                  <div className="mb-3 flex flex-wrap items-center gap-2 text-sm">
                     <span className="rounded-full bg-gradient-to-r from-primary/20 to-primary/10 px-3 py-1 font-medium text-primary">
                       {course.subject}
                     </span>
@@ -206,7 +206,7 @@ export default async function StudentCoursesPage() {
                 )}
 
                 {course.description && (
-                  <p className="mb-4 text-sm text-muted-foreground line-clamp-2">
+                  <p className="mb-4 text-base text-muted-foreground line-clamp-2">
                     {course.description}
                   </p>
                 )}
@@ -214,11 +214,11 @@ export default async function StudentCoursesPage() {
                 {/* Enhanced Progress Section */}
                 <div className="mt-auto space-y-3 border-t border-border pt-4">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 text-base text-muted-foreground">
                       <BookOpen className="h-4 w-4" />
                       <span>{course.completed_lessons} / {course.lesson_count} lessons</span>
                     </div>
-                    <span className={`text-lg font-bold ${
+                    <span className={`text-xl font-bold ${
                       course.progress_percentage === 100 ? 'text-[#059669] dark:text-[#059669]' :
                       course.progress_percentage >= 70 ? 'text-[#00BFFF] dark:text-[#00BFFF]' :
                       course.progress_percentage >= 40 ? 'text-[#D97706] dark:text-[#FFD700]' :

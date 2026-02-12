@@ -87,7 +87,7 @@ export default async function ParentDashboardPage() {
       {!error && children.length === 0 && (
         <div className="ocean-card rounded-2xl p-12 text-center">
           <Users className="mx-auto h-16 w-16 text-muted-foreground/30" />
-          <h3 className="mt-4 text-lg font-semibold text-foreground text-outlined">
+          <h3 className="mt-4 text-2xl font-semibold text-foreground text-outlined">
             No Children Linked
           </h3>
           <p className="mt-2 max-w-md mx-auto text-muted-foreground">
@@ -110,7 +110,7 @@ export default async function ParentDashboardPage() {
                     {children.length}
                   </p>
                 </div>
-                <p className="mt-2 text-sm font-semibold text-foreground">
+                <p className="mt-2 text-lg font-semibold text-foreground">
                   {children.length === 1 ? 'Child' : 'Children'}
                 </p>
               </div>
@@ -136,15 +136,15 @@ export default async function ParentDashboardPage() {
                     {totalMissing}
                   </p>
                 </div>
-                <p className="mt-2 text-sm font-semibold text-foreground">Missing</p>
-                <p className="text-sm text-muted-foreground">Assignments</p>
+                <p className="mt-2 text-lg font-semibold text-foreground">Missing</p>
+                <p className="text-lg text-muted-foreground">Assignments</p>
               </div>
             </div>
           </div>
 
           {/* Children Cards */}
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground text-outlined">
+            <h2 className="text-2xl font-semibold text-foreground text-outlined">
               Your Children
             </h2>
             <div className="grid gap-6 md:grid-cols-2">
@@ -158,7 +158,7 @@ export default async function ParentDashboardPage() {
                     {/* Child Header */}
                     <div className="child-card-header p-5">
                       <div className="flex items-center gap-4">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-xl font-bold text-primary dark:text-white shadow-lg">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-3xl font-bold text-primary dark:text-white shadow-lg">
                           {child.avatarUrl ? (
                             <img
                               src={child.avatarUrl}
@@ -170,7 +170,7 @@ export default async function ParentDashboardPage() {
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-xl font-bold text-foreground dark:text-white truncate group-hover:underline">
+                          <h3 className="text-3xl font-bold text-foreground dark:text-white truncate group-hover:underline">
                             {child.fullName}
                           </h3>
                           <p className="text-muted-foreground dark:text-white/70">
@@ -212,19 +212,19 @@ export default async function ParentDashboardPage() {
                           <div className="flex h-[90px] w-[90px] items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/20">
                             <div className="text-center">
                               <BookOpen className="mx-auto mb-0.5 h-4 w-4 text-blue-500" />
-                              <p className="text-lg font-extrabold text-foreground">{child.courseCount}</p>
+                              <p className="text-2xl font-extrabold text-foreground">{child.courseCount}</p>
                             </div>
                           </div>
-                          <p className="text-sm font-semibold text-foreground">Courses</p>
+                          <p className="text-lg font-semibold text-foreground">Courses</p>
                         </div>
                         <div className="flex flex-col items-center gap-2" role="status" aria-label={`Missing assignments: ${child.missingAssignments}`}>
                           <div className={`flex h-[90px] w-[90px] items-center justify-center rounded-full ${child.missingAssignments > 0 ? 'bg-red-50 dark:bg-red-950/20' : 'bg-muted/30'}`}>
                             <div className="text-center">
                               <AlertCircle className={`mx-auto mb-0.5 h-4 w-4 ${child.missingAssignments > 0 ? 'text-red-500' : 'text-muted-foreground'}`} />
-                              <p className={`text-lg font-extrabold ${child.missingAssignments > 0 ? 'text-red-500' : 'text-foreground'}`}>{child.missingAssignments}</p>
+                              <p className={`text-2xl font-extrabold ${child.missingAssignments > 0 ? 'text-red-500' : 'text-foreground'}`}>{child.missingAssignments}</p>
                             </div>
                           </div>
-                          <p className="text-sm font-semibold text-foreground">Missing</p>
+                          <p className="text-lg font-semibold text-foreground">Missing</p>
                         </div>
                       </div>
                     </div>
@@ -236,7 +236,7 @@ export default async function ParentDashboardPage() {
 
           {/* Quick Actions */}
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground text-outlined">
+            <h2 className="text-2xl font-semibold text-foreground text-outlined">
               Quick Actions
             </h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -249,7 +249,7 @@ export default async function ParentDashboardPage() {
                 </div>
                 <div>
                   <p className="font-semibold text-foreground">View Children</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-lg text-muted-foreground">
                     Detailed profiles & grades
                   </p>
                 </div>
@@ -265,7 +265,7 @@ export default async function ParentDashboardPage() {
                   <p className="font-semibold text-foreground">
                     Progress Overview
                   </p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-lg text-muted-foreground">
                     Trends & analytics
                   </p>
                 </div>
@@ -281,7 +281,7 @@ export default async function ParentDashboardPage() {
                   <p className="font-semibold text-foreground">
                     Message Teacher
                   </p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-lg text-muted-foreground">
                     Contact teachers directly
                   </p>
                 </div>

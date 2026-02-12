@@ -25,7 +25,7 @@ export default async function ChildrenListPage() {
       {/* Back Button */}
       <Link
         href="/parent/dashboard"
-        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        className="mb-4 inline-flex items-center gap-1.5 text-lg text-muted-foreground hover:text-foreground transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Dashboard
@@ -55,7 +55,7 @@ export default async function ChildrenListPage() {
       {!error && children.length === 0 && (
         <div className="ocean-card rounded-2xl p-12 text-center">
           <Users className="mx-auto h-16 w-16 text-muted-foreground/30" />
-          <h3 className="mt-4 text-lg font-semibold text-foreground">
+          <h3 className="mt-4 text-2xl font-semibold text-foreground">
             No Children Linked
           </h3>
           <p className="mt-2 max-w-md mx-auto text-muted-foreground">
@@ -80,7 +80,7 @@ export default async function ChildrenListPage() {
                 <div className="child-card-header p-6">
                   <div className="flex items-center gap-4">
                     {/* Avatar */}
-                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-2xl font-bold text-primary dark:text-white shadow-lg">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-4xl font-bold text-primary dark:text-white shadow-lg">
                       {child.avatarUrl ? (
                         <img
                           src={child.avatarUrl}
@@ -92,7 +92,7 @@ export default async function ChildrenListPage() {
                       )}
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-foreground dark:text-white group-hover:underline">
+                      <h3 className="text-3xl font-bold text-foreground dark:text-white group-hover:underline">
                         {child.fullName}
                       </h3>
                       <p className="text-muted-foreground dark:text-white/70">
@@ -118,10 +118,10 @@ export default async function ChildrenListPage() {
                       <div className="flex items-center justify-center gap-1 mb-1">
                         <GraduationCap className="h-4 w-4 text-primary" />
                       </div>
-                      <p className="text-lg font-bold text-foreground">
+                      <p className="text-2xl font-bold text-foreground">
                         {child.gpa > 0 ? `${child.gpa}%` : '--'}
                       </p>
-                      <p className="text-xs text-muted-foreground">GPA</p>
+                      <p className="text-base text-muted-foreground">GPA</p>
                     </div>
 
                     {/* Attendance */}
@@ -129,12 +129,12 @@ export default async function ChildrenListPage() {
                       <div className="flex items-center justify-center gap-1 mb-1">
                         <Calendar className="h-4 w-4 text-green-500" />
                       </div>
-                      <p className="text-lg font-bold text-foreground">
+                      <p className="text-2xl font-bold text-foreground">
                         {child.attendanceRate > 0
                           ? `${child.attendanceRate}%`
                           : '--'}
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-base text-muted-foreground">
                         Attendance
                       </p>
                     </div>
@@ -144,10 +144,10 @@ export default async function ChildrenListPage() {
                       <div className="flex items-center justify-center gap-1 mb-1">
                         <TrendingUp className="h-4 w-4 text-blue-500" />
                       </div>
-                      <p className="text-lg font-bold text-foreground">
+                      <p className="text-2xl font-bold text-foreground">
                         {child.courseCount}
                       </p>
-                      <p className="text-xs text-muted-foreground">Courses</p>
+                      <p className="text-base text-muted-foreground">Courses</p>
                     </div>
 
                     {/* Missing */}
@@ -158,11 +158,11 @@ export default async function ChildrenListPage() {
                         />
                       </div>
                       <p
-                        className={`text-lg font-bold ${child.missingAssignments > 0 ? 'text-red-500' : 'text-foreground'}`}
+                        className={`text-2xl font-bold ${child.missingAssignments > 0 ? 'text-red-500' : 'text-foreground'}`}
                       >
                         {child.missingAssignments}
                       </p>
-                      <p className="text-xs text-muted-foreground">Missing</p>
+                      <p className="text-base text-muted-foreground">Missing</p>
                     </div>
                   </div>
                 </div>
@@ -181,7 +181,7 @@ export default async function ChildrenListPage() {
               <h3 className="font-semibold text-foreground">
                 About Parent Accounts
               </h3>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="mt-1 text-lg text-muted-foreground">
                 Click on any child to view their detailed grades, assignments,
                 attendance, and academic progress. If you need to link additional
                 children, contact your school administrator.

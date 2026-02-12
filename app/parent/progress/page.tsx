@@ -56,7 +56,7 @@ export default async function ProgressOverviewPage() {
       {/* Back Button */}
       <Link
         href="/parent/dashboard"
-        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        className="mb-4 inline-flex items-center gap-1.5 text-lg text-muted-foreground hover:text-foreground transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Dashboard
@@ -87,7 +87,7 @@ export default async function ProgressOverviewPage() {
       {!error && children.length === 0 && (
         <div className="ocean-card rounded-2xl p-12 text-center">
           <Users className="mx-auto h-16 w-16 text-muted-foreground/30" />
-          <h3 className="mt-4 text-lg font-semibold text-foreground">
+          <h3 className="mt-4 text-2xl font-semibold text-foreground">
             No Children Linked
           </h3>
           <p className="mt-2 max-w-md mx-auto text-muted-foreground">
@@ -107,7 +107,7 @@ export default async function ProgressOverviewPage() {
           <div className="child-card-header p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-xl font-bold text-primary dark:text-white">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/15 dark:bg-white/20 text-3xl font-bold text-primary dark:text-white">
                   {child.avatarUrl ? (
                     <img
                       src={child.avatarUrl}
@@ -119,7 +119,7 @@ export default async function ProgressOverviewPage() {
                   )}
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-foreground dark:text-white">
+                  <h2 className="text-3xl font-bold text-foreground dark:text-white">
                     {child.fullName}
                   </h2>
                   <p className="text-muted-foreground dark:text-white/70">
@@ -136,7 +136,7 @@ export default async function ProgressOverviewPage() {
               />
               <Link
                 href={`/parent/children/${child.studentId}`}
-                className="hidden sm:flex items-center gap-1 rounded-xl bg-primary/10 dark:bg-white/10 px-4 py-2 text-sm text-primary dark:text-white hover:bg-primary/20 dark:hover:bg-white/20 transition-colors"
+                className="hidden sm:flex items-center gap-1 rounded-xl bg-primary/10 dark:bg-white/10 px-4 py-2 text-lg text-primary dark:text-white hover:bg-primary/20 dark:hover:bg-white/20 transition-colors"
               >
                 View Details
                 <ChevronRight className="h-4 w-4" />
@@ -151,7 +151,7 @@ export default async function ProgressOverviewPage() {
                 <div className="rounded-xl bg-muted/50 p-4 text-center">
                   <GraduationCap className="mx-auto mb-2 h-5 w-5 text-primary" />
                   <p
-                    className={`text-xl font-bold ${
+                    className={`text-3xl font-bold ${
                       progress.academics.overallGPA != null
                         ? progress.academics.overallGPA >= 90
                           ? 'text-green-600 dark:text-green-400'
@@ -167,7 +167,7 @@ export default async function ProgressOverviewPage() {
                       ? `${progress.academics.overallGPA}%`
                       : '--'}
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-base text-muted-foreground">
                     Overall Grade
                     {progress.academics.overallLetterGrade &&
                       ` (${progress.academics.overallLetterGrade})`}
@@ -177,7 +177,7 @@ export default async function ProgressOverviewPage() {
                 <div className="rounded-xl bg-muted/50 p-4 text-center">
                   <Calendar className="mx-auto mb-2 h-5 w-5 text-green-500" />
                   <p
-                    className={`text-xl font-bold ${
+                    className={`text-3xl font-bold ${
                       progress.attendance.attendanceRate >= 95
                         ? 'text-green-600 dark:text-green-400'
                         : progress.attendance.attendanceRate >= 85
@@ -187,25 +187,25 @@ export default async function ProgressOverviewPage() {
                   >
                     {progress.attendance.attendanceRate}%
                   </p>
-                  <p className="text-xs text-muted-foreground">Attendance</p>
+                  <p className="text-base text-muted-foreground">Attendance</p>
                 </div>
 
                 <div className="rounded-xl bg-muted/50 p-4 text-center">
                   <BookOpen className="mx-auto mb-2 h-5 w-5 text-blue-500" />
-                  <p className="text-xl font-bold text-foreground">
+                  <p className="text-3xl font-bold text-foreground">
                     {progress.academics.activeCourses}
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-base text-muted-foreground">
                     Active Courses
                   </p>
                 </div>
 
                 <div className="rounded-xl bg-muted/50 p-4 text-center">
                   <Award className="mx-auto mb-2 h-5 w-5 text-amber-500" />
-                  <p className="text-xl font-bold text-amber-500">
+                  <p className="text-3xl font-bold text-amber-500">
                     {progress.gamification.totalXP.toLocaleString()}
                   </p>
-                  <p className="text-xs text-muted-foreground">XP Earned</p>
+                  <p className="text-base text-muted-foreground">XP Earned</p>
                 </div>
               </div>
 
@@ -232,7 +232,7 @@ export default async function ProgressOverviewPage() {
                             key={i}
                             className="flex-1 flex flex-col items-center justify-end"
                           >
-                            <span className="text-xs text-muted-foreground mb-1">
+                            <span className="text-base text-muted-foreground mb-1">
                               {Math.round(grade.percentage)}%
                             </span>
                             <div
@@ -251,7 +251,7 @@ export default async function ProgressOverviewPage() {
                         )
                       })}
                     </div>
-                    <p className="text-center text-xs text-muted-foreground">
+                    <p className="text-center text-base text-muted-foreground">
                       Last {progress.academics.recentGrades.length} graded
                       assignments
                     </p>
@@ -259,7 +259,7 @@ export default async function ProgressOverviewPage() {
                 ) : (
                   <div className="py-8 text-center">
                     <TrendingUp className="mx-auto h-10 w-10 text-muted-foreground/30" />
-                    <p className="mt-2 text-sm text-muted-foreground">
+                    <p className="mt-2 text-lg text-muted-foreground">
                       Grade trend data will appear as assignments are graded.
                     </p>
                   </div>
@@ -318,7 +318,7 @@ export default async function ProgressOverviewPage() {
                     </div>
 
                     {/* Legend */}
-                    <div className="flex flex-wrap gap-4 text-sm">
+                    <div className="flex flex-wrap gap-4 text-lg">
                       <div className="flex items-center gap-2">
                         <div className="h-3 w-3 rounded-full bg-green-500" />
                         <span className="text-muted-foreground">
@@ -348,7 +348,7 @@ export default async function ProgressOverviewPage() {
                 ) : (
                   <div className="py-8 text-center">
                     <Calendar className="mx-auto h-10 w-10 text-muted-foreground/30" />
-                    <p className="mt-2 text-sm text-muted-foreground">
+                    <p className="mt-2 text-lg text-muted-foreground">
                       No attendance records yet.
                     </p>
                   </div>
@@ -366,26 +366,26 @@ export default async function ProgressOverviewPage() {
 
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                   <div className="rounded-xl bg-muted/50 p-4 text-center">
-                    <p className="text-lg font-bold text-amber-500">
+                    <p className="text-2xl font-bold text-amber-500">
                       Level {progress.gamification.currentLevel}
                     </p>
-                    <p className="text-xs text-muted-foreground capitalize">
+                    <p className="text-base text-muted-foreground capitalize">
                       {progress.gamification.currentTier} Tier
                     </p>
                   </div>
                   <div className="rounded-xl bg-muted/50 p-4 text-center">
-                    <p className="text-lg font-bold text-primary">
+                    <p className="text-2xl font-bold text-primary">
                       {progress.gamification.totalXP.toLocaleString()} XP
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-base text-muted-foreground">
                       Total Experience
                     </p>
                   </div>
                   <div className="rounded-xl bg-muted/50 p-4 text-center">
-                    <p className="text-lg font-bold text-foreground">
+                    <p className="text-2xl font-bold text-foreground">
                       {progress.gamification.streakDays} days
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-base text-muted-foreground">
                       Current Streak (Best:{' '}
                       {progress.gamification.longestStreak})
                     </p>
@@ -394,7 +394,7 @@ export default async function ProgressOverviewPage() {
 
                 {/* XP Progress Bar */}
                 <div className="mt-4">
-                  <div className="mb-2 flex items-center justify-between text-sm">
+                  <div className="mb-2 flex items-center justify-between text-lg">
                     <span className="text-muted-foreground">
                       Level {progress.gamification.currentLevel}
                     </span>
@@ -413,7 +413,7 @@ export default async function ProgressOverviewPage() {
                       }}
                     />
                   </div>
-                  <p className="mt-1 text-xs text-muted-foreground">
+                  <p className="mt-1 text-base text-muted-foreground">
                     {1000 - (progress.gamification.totalXP % 1000)} XP to next
                     level
                   </p>

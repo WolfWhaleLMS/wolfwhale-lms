@@ -57,7 +57,7 @@ function StatusBadge({ status }: { status: string }) {
 
   const c = config[status] || config.pending
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${c.className}`}>
+    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-sm font-medium ${c.className}`}>
       {c.label}
     </span>
   )
@@ -66,7 +66,7 @@ function StatusBadge({ status }: { status: string }) {
 function TypeBadge({ type }: { type: string }) {
   const typeConfig = ASSIGNMENT_TYPES.find((t) => t.value === type)
   return (
-    <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+    <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-sm font-medium text-muted-foreground">
       {typeConfig?.label || type}
     </span>
   )
@@ -191,7 +191,7 @@ export default function StudentAssignmentsPage() {
       </div>
 
       {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-300">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-base text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-300">
           {error}
         </div>
       )}
@@ -203,21 +203,21 @@ export default function StudentAssignmentsPage() {
             <ListTodo className="h-6 w-6 text-primary" />
           </div>
           <p className="text-3xl font-bold text-primary">{totalAssignments}</p>
-          <p className="mt-1 text-xs font-medium text-muted-foreground">Total Assignments</p>
+          <p className="mt-1 text-sm font-medium text-muted-foreground">Total Assignments</p>
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-lg">
           <div className="mb-2 flex items-center justify-center">
             <CheckCircle className="h-6 w-6 text-[#059669] dark:text-[#059669]" />
           </div>
           <p className="text-3xl font-bold text-[#059669] dark:text-[#059669]">{completedCount}</p>
-          <p className="mt-1 text-xs font-medium text-muted-foreground">Completed</p>
+          <p className="mt-1 text-sm font-medium text-muted-foreground">Completed</p>
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-lg">
           <div className="mb-2 flex items-center justify-center">
             <Clock className="h-6 w-6 text-[#00BFFF] dark:text-[#00BFFF]" />
           </div>
           <p className="text-3xl font-bold text-[#00BFFF] dark:text-[#00BFFF]">{pendingCount}</p>
-          <p className="mt-1 text-xs font-medium text-muted-foreground">Pending</p>
+          <p className="mt-1 text-sm font-medium text-muted-foreground">Pending</p>
         </div>
         <div className={`ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 ${
           overdueCount > 0 ? 'ring-2 ring-red-500/50 glow-animate' : ''
@@ -226,19 +226,19 @@ export default function StudentAssignmentsPage() {
             <AlertCircle className={`h-6 w-6 ${overdueCount > 0 ? 'text-red-600 dark:text-red-400 animate-pulse' : 'text-red-600/50 dark:text-red-400/50'}`} />
           </div>
           <p className={`text-3xl font-bold ${overdueCount > 0 ? 'text-red-600 dark:text-red-400' : 'text-red-600/50 dark:text-red-400/50'}`}>{overdueCount}</p>
-          <p className="mt-1 text-xs font-medium text-muted-foreground">Overdue</p>
+          <p className="mt-1 text-sm font-medium text-muted-foreground">Overdue</p>
         </div>
       </div>
 
       {/* Filters & Sort */}
       <div className="flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-muted-foreground">Filter:</span>
+          <span className="text-base font-medium text-muted-foreground">Filter:</span>
           {(['all', 'pending', 'submitted', 'graded', 'returned', 'overdue'] as const).map((status) => (
             <button
               key={status}
               onClick={() => setFilterStatus(status)}
-              className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+              className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
                 filterStatus === status
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-muted text-muted-foreground hover:bg-muted/80'
@@ -249,11 +249,11 @@ export default function StudentAssignmentsPage() {
           ))}
         </div>
         <div className="ml-auto flex items-center gap-2">
-          <span className="text-sm font-medium text-muted-foreground">Sort:</span>
+          <span className="text-base font-medium text-muted-foreground">Sort:</span>
           <select
             value={sortKey}
             onChange={(e) => setSortKey(e.target.value as SortKey)}
-            className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs focus:border-primary focus:outline-none"
+            className="rounded-lg border border-border bg-background px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
           >
             <option value="due_date">Due Date</option>
             <option value="title">Title</option>
@@ -269,10 +269,10 @@ export default function StudentAssignmentsPage() {
           <div className="blob-ocean absolute left-1/3 top-0 h-48 w-48 opacity-20" />
           <div className="relative z-10 flex flex-col items-center justify-center">
             <div className="mb-3 text-6xl">📝</div>
-            <p className="text-xl font-bold text-foreground">
+            <p className="text-2xl font-bold text-foreground">
               {assignments.length === 0 ? 'All Clear!' : 'No matching assignments'}
             </p>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="mt-2 text-base text-muted-foreground">
               {assignments.length === 0
                 ? 'Assignments from your enrolled courses will appear here.'
                 : 'Try changing the filter to see more assignments.'}
@@ -321,10 +321,10 @@ export default function StudentAssignmentsPage() {
                       <TypeBadge type={assignment.type} />
                       <StatusBadge status={assignment.submissionStatus} />
                     </div>
-                    <p className="mt-1 text-sm text-muted-foreground">
+                    <p className="mt-1 text-base text-muted-foreground">
                       {assignment.courseName}
                     </p>
-                    <div className="mt-2 flex items-center gap-4 text-xs">
+                    <div className="mt-2 flex items-center gap-4 text-sm">
                       <span className={`flex items-center gap-1 ${
                         isOverdue ? 'font-bold text-red-600 dark:text-red-400' :
                         isDueToday ? 'font-bold text-[#D97706] dark:text-[#FFD700]' :
@@ -335,7 +335,7 @@ export default function StudentAssignmentsPage() {
                         {formatDate(assignment.due_date)}
                       </span>
                       <span className="flex items-center gap-1 text-muted-foreground">
-                        <span className="text-lg">⭐</span>
+                        <span className="text-xl">⭐</span>
                         {assignment.max_points} points
                       </span>
                     </div>
@@ -343,10 +343,10 @@ export default function StudentAssignmentsPage() {
                   <div className="text-right">
                     {assignment.grade ? (
                       <div className="rounded-lg bg-gradient-to-br from-[#33FF33]/10 to-[#00FFFF]/10 px-3 py-2">
-                        <p className="text-lg font-bold text-[#059669] dark:text-[#059669]">
+                        <p className="text-xl font-bold text-[#059669] dark:text-[#059669]">
                           {assignment.grade.points_earned}/{assignment.grade.percentage}
                         </p>
-                        <p className="text-xs font-semibold text-[#059669]/80 dark:text-[#059669]/80">
+                        <p className="text-sm font-semibold text-[#059669]/80 dark:text-[#059669]/80">
                           {Math.round((assignment.grade.points_earned / assignment.grade.percentage) * 100)}%
                         </p>
                       </div>

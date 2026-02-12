@@ -92,10 +92,10 @@ export default async function AchievementsPage({
             <Zap className="size-6 text-primary" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-foreground">
+            <h2 className="text-2xl font-bold text-foreground">
               {levelName}
             </h2>
-            <p className="text-sm font-medium text-muted-foreground">
+            <p className="text-base font-medium text-muted-foreground">
               Level {currentLevel} - {currentTier} Tier
             </p>
           </div>
@@ -116,14 +116,14 @@ export default async function AchievementsPage({
             <Trophy className="size-8 text-[#D97706] group-hover:animate-float" />
           </div>
           <p className="text-4xl font-bold text-[#D97706] dark:text-[#FFD700]">{totalEarned}</p>
-          <p className="text-sm font-medium text-muted-foreground">Earned</p>
+          <p className="text-base font-medium text-muted-foreground">Earned</p>
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-xl ring-2 ring-primary/30">
           <div className="mb-2 flex items-center justify-center">
             <Star className="size-8 text-primary group-hover:animate-pulse" />
           </div>
           <p className="text-4xl font-bold text-foreground">{totalAvailable}</p>
-          <p className="text-sm font-medium text-muted-foreground">Total Available</p>
+          <p className="text-base font-medium text-muted-foreground">Total Available</p>
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-xl ring-2 ring-[#33FF33]/30">
           <div className="mb-2 flex items-center justify-center">
@@ -135,7 +135,7 @@ export default async function AchievementsPage({
               : 0}
             %
           </p>
-          <p className="text-sm font-medium text-muted-foreground">Completion</p>
+          <p className="text-base font-medium text-muted-foreground">Completion</p>
         </div>
       </div>
 
@@ -148,7 +148,7 @@ export default async function AchievementsPage({
       {/* Earned Achievements */}
       {earnedAchievements.length > 0 && (
         <section>
-          <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-foreground">
+          <h2 className="mb-4 flex items-center gap-2 text-2xl font-semibold text-foreground">
             <Trophy className="size-5 text-[#D97706] animate-pulse" />
             Earned ({earnedAchievements.length})
           </h2>
@@ -168,7 +168,7 @@ export default async function AchievementsPage({
       {/* Locked Achievements */}
       {lockedAchievements.length > 0 && (
         <section>
-          <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-muted-foreground">
+          <h2 className="mb-4 flex items-center gap-2 text-2xl font-semibold text-muted-foreground">
             <Star className="size-5" />
             Locked ({lockedAchievements.length})
           </h2>
@@ -190,10 +190,10 @@ export default async function AchievementsPage({
           <div className="blob-ocean absolute left-1/3 top-0 h-64 w-64 opacity-20" />
           <div className="relative z-10 flex flex-col items-center justify-center">
             <div className="mb-4 text-6xl animate-float">🏆</div>
-            <p className="text-xl font-bold text-foreground">
+            <p className="text-2xl font-bold text-foreground">
               No achievements in this category yet
             </p>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="mt-2 text-base text-muted-foreground">
               Keep learning to unlock amazing achievements!
             </p>
           </div>

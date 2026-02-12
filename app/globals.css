@@ -152,9 +152,9 @@ body::before {
   --chrome-gradient-horizontal: linear-gradient(90deg, #E0F0FF 0%, #A0C8E8 25%, #E8F4FF 50%, #A0C8E8 75%, #E0F0FF 100%);
 
   /* Age Variant Defaults (age-68 balanced) */
-  --font-size-base: 15px;
-  --font-size-sm: 13px;
-  --font-size-lg: 18px;
+  --font-size-base: 17px;
+  --font-size-sm: 15px;
+  --font-size-lg: 22px;
   --button-height: 40px;
   --spacing-unit: 1rem;
 }
@@ -231,9 +231,9 @@ body::before {
 
 .age-k5 {
   --radius: 1.25rem;
-  --font-size-base: 17px;
-  --font-size-sm: 15px;
-  --font-size-lg: 22px;
+  --font-size-base: 20px;
+  --font-size-sm: 17px;
+  --font-size-lg: 26px;
   --button-height: 48px;
   --spacing-unit: 1.25rem;
 }
@@ -282,9 +282,9 @@ body::before {
 
 .age-68 {
   --radius: 0.75rem;
-  --font-size-base: 15px;
-  --font-size-sm: 13px;
-  --font-size-lg: 18px;
+  --font-size-base: 17px;
+  --font-size-sm: 15px;
+  --font-size-lg: 22px;
   --button-height: 40px;
   --spacing-unit: 1rem;
 }
@@ -477,6 +477,62 @@ body::before {
   background: linear-gradient(135deg, #00FFFF 0%, #00BFFF 100%);
 }
 
+/* ── Role-Based Accessibility Font Scaling ──
+   Parent and student roles get larger fonts automatically.
+   This is a built-in accessibility feature. */
+
+[data-role="parent"] {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+[data-role="parent"] h1 { font-size: 2.5rem; }
+[data-role="parent"] h2 { font-size: 2rem; }
+[data-role="parent"] h3 { font-size: 1.5rem; }
+[data-role="parent"] h4 { font-size: 1.25rem; }
+[data-role="parent"] p,
+[data-role="parent"] span,
+[data-role="parent"] label,
+[data-role="parent"] td,
+[data-role="parent"] th,
+[data-role="parent"] li,
+[data-role="parent"] a {
+  font-size: inherit;
+}
+[data-role="parent"] button,
+[data-role="parent"] [role="button"] {
+  font-size: 1.1rem;
+  min-height: 48px;
+  padding: 0.625rem 1.5rem;
+}
+[data-role="parent"] input,
+[data-role="parent"] select,
+[data-role="parent"] textarea {
+  font-size: 1.1rem;
+  min-height: 48px;
+}
+
+[data-role="student"] {
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+[data-role="student"] h1 { font-size: 2.25rem; }
+[data-role="student"] h2 { font-size: 1.75rem; }
+[data-role="student"] h3 { font-size: 1.375rem; }
+[data-role="student"] h4 { font-size: 1.125rem; }
+[data-role="student"] button,
+[data-role="student"] [role="button"] {
+  font-size: 1rem;
+  min-height: 44px;
+}
+[data-role="student"] input,
+[data-role="student"] select,
+[data-role="student"] textarea {
+  font-size: 1rem;
+  min-height: 44px;
+}
+
 /* ============================================
    BASE LAYER
    ============================================ */
@@ -567,10 +623,14 @@ body::before {
 
   .text-outlined-bold {
     text-shadow:
-      -1px -1px 0 rgba(0, 0, 0, 0.3),
-       1px -1px 0 rgba(0, 0, 0, 0.3),
-      -1px  1px 0 rgba(0, 0, 0, 0.3),
-       1px  1px 0 rgba(0, 0, 0, 0.3);
+      -2px -2px 0 rgba(0, 0, 0, 0.5),
+       2px -2px 0 rgba(0, 0, 0, 0.5),
+      -2px  2px 0 rgba(0, 0, 0, 0.5),
+       2px  2px 0 rgba(0, 0, 0, 0.5),
+       0   -2px 0 rgba(0, 0, 0, 0.5),
+       0    2px 0 rgba(0, 0, 0, 0.5),
+      -2px  0   0 rgba(0, 0, 0, 0.5),
+       2px  0   0 rgba(0, 0, 0, 0.5);
   }
 
   .dark .text-outlined {
@@ -579,20 +639,29 @@ body::before {
 
   .dark .text-outlined-bold {
     text-shadow:
-      -1px -1px 0 rgba(0, 0, 0, 0.6),
-       1px -1px 0 rgba(0, 0, 0, 0.6),
-      -1px  1px 0 rgba(0, 0, 0, 0.6),
-       1px  1px 0 rgba(0, 0, 0, 0.6);
+      -2px -2px 0 rgba(0, 0, 0, 0.8),
+       2px -2px 0 rgba(0, 0, 0, 0.8),
+      -2px  2px 0 rgba(0, 0, 0, 0.8),
+       2px  2px 0 rgba(0, 0, 0, 0.8),
+       0   -2px 0 rgba(0, 0, 0, 0.8),
+       0    2px 0 rgba(0, 0, 0, 0.8),
+      -2px  0   0 rgba(0, 0, 0, 0.8),
+       2px  0   0 rgba(0, 0, 0, 0.8);
   }
 
   /* White text with strong black outline — for colored/gradient backgrounds */
   .text-white-outlined {
     color: #ffffff;
     text-shadow:
-      -1px -1px 0 #000,
-       1px -1px 0 #000,
-      -1px  1px 0 #000,
-       1px  1px 0 #000;
+      -2px -2px 0 #000,
+       2px -2px 0 #000,
+      -2px  2px 0 #000,
+       2px  2px 0 #000,
+       0   -2px 0 #000,
+       0    2px 0 #000,
+      -2px  0   0 #000,
+       2px  0   0 #000,
+       0    0   4px rgba(0,0,0,0.5);
   }
 }
 
@@ -627,10 +696,15 @@ body::before {
   .wolf-gradient .text-white,
   .wolf-gradient .text-white\/90 {
     text-shadow:
-      -1px -1px 0 #000,
-       1px -1px 0 #000,
-      -1px  1px 0 #000,
-       1px  1px 0 #000;
+      -2px -2px 0 #000,
+       2px -2px 0 #000,
+      -2px  2px 0 #000,
+       2px  2px 0 #000,
+       0   -2px 0 #000,
+       0    2px 0 #000,
+      -2px  0   0 #000,
+       2px  0   0 #000,
+       0    0   4px rgba(0,0,0,0.5);
   }
 
   /* Child Card Header — for parent dashboard */
