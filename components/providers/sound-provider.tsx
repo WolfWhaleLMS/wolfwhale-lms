@@ -46,15 +46,24 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
   return <SoundContext.Provider value={sounds}>{children}</SoundContext.Provider>
 }
 
+const noop = () => {}
+
 export function useSound() {
   const context = useContext(SoundContext)
   if (!context) {
     // Return no-ops if outside provider
     return {
-      playClick: () => {},
-      playSuccess: () => {},
-      playNavigate: () => {},
-      playHover: () => {},
+      playClick: noop,
+      playSuccess: noop,
+      playError: noop,
+      playToggle: noop,
+      playNotification: noop,
+      playNavigate: noop,
+      playHover: noop,
+      volume: 1,
+      muted: false,
+      setMasterVolume: noop as (v: number) => void,
+      toggleMute: noop,
     }
   }
   return context

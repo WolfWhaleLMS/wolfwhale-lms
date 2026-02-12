@@ -27,6 +27,7 @@ import {
   Dices,
   GitFork,
   Bot,
+  Apple,
   LogOut,
   X,
   type LucideIcon,
@@ -66,6 +67,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Dices,
   GitFork,
   Bot,
+  Apple,
 }
 
 // ---------------------------------------------------------------------------

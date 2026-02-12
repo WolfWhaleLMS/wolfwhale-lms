@@ -42,7 +42,7 @@ export function NotificationBell() {
   // Play sound on new notification
   useEffect(() => {
     if (unreadCount > 0 && initialLoaded) {
-      sounds.playClick()
+      sounds.playNotification()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unreadCount])

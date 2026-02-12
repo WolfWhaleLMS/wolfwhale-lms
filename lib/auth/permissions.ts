@@ -217,6 +217,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Achievements',   href: '/student/achievements',    icon: 'Trophy' },
       { label: 'AI Tutor',       href: '/student/tutor',           icon: 'Bot' },
       { label: 'Tools',           href: '/student/tools',           icon: 'Gamepad2' },
+      { label: 'Nutrition',      href: '/student/nutrition',       icon: 'Apple' },
       { label: 'Plaza',          href: '/plaza',                   icon: 'Map' },
     ],
 
@@ -227,6 +228,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Students',      href: '/teacher/students',       icon: 'Users' },
       { label: 'AI Assistant',  href: '/teacher/tutor',          icon: 'Bot' },
       { label: 'Tools',          href: '/teacher/tools',          icon: 'Gamepad2' },
+      { label: 'Nutrition',     href: '/teacher/nutrition',      icon: 'Apple' },
       { label: 'Virtual Plaza', href: '/plaza',                  icon: 'Map' },
       { label: 'Calendar',      href: '/calendar',               icon: 'Calendar' },
     ],
@@ -234,6 +236,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
     parent: [
       { label: 'My Children',   href: '/parent/children',        icon: 'Users' },
       { label: 'Progress',      href: '/parent/progress',        icon: 'BarChart3' },
+      { label: 'Nutrition',     href: '/parent/nutrition',       icon: 'Apple' },
     ],
 
     admin: [
@@ -241,6 +244,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Classes',        href: '/admin/classes',          icon: 'BookOpen' },
       { label: 'Reports',        href: '/admin/reports',          icon: 'BarChart3' },
       { label: 'Attendance',     href: '/admin/attendance',        icon: 'CalendarCheck' },
+      { label: 'Nutrition',      href: '/admin/nutrition',        icon: 'Apple' },
       { label: 'Settings',       href: '/admin/settings',         icon: 'Settings' },
       { label: 'Plaza Settings', href: '/admin/plaza',            icon: 'Map' },
       { label: 'Compliance',     href: '/admin/compliance',       icon: 'Shield' },
@@ -258,6 +262,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Classes',       href: '/admin/classes',          icon: 'BookOpen' },
       { label: 'Reports',       href: '/admin/reports',          icon: 'BarChart3' },
       { label: 'Attendance',    href: '/admin/attendance',        icon: 'CalendarCheck' },
+      { label: 'Nutrition',     href: '/admin/nutrition',        icon: 'Apple' },
       { label: 'Settings',      href: '/admin/settings',         icon: 'Settings' },
       { label: 'Compliance',    href: '/admin/compliance',       icon: 'Shield' },
       { label: 'Audit Logs',    href: '/admin/audit-logs',       icon: 'FileText' },
