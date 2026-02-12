@@ -1,4 +1,4 @@
--- Wolf Whale LMS - Wipe old schema and apply new blueprint schema
+-- Wolf Whale Learning Management System - Wipe old schema and apply new blueprint schema
 -- This drops ALL old Codebase 2 tables and applies the blueprint's 04_Database_Schema.sql
 
 -- ===================================================================
@@ -706,4 +706,4 @@ EXECUTE FUNCTION create_grade_notification();
 
 -- 23. SAMPLE TENANT
 INSERT INTO tenants (slug, name, subscription_plan)
-VALUES ('wolf-whale-demo', 'Wolf Whale LMS', 'growth');
+VALUES ('wolf-whale-demo', 'Wolf Whale Learning Management System', 'growth');

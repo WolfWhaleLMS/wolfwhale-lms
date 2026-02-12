@@ -1,5 +1,5 @@
 /**
- * Wolf Whale LMS - Seed Demo Data
+ * Wolf Whale Learning Management System - Seed Demo Data
  *
  * Populates ALL 4 demo accounts (student, teacher, parent, admin) with rich,
  * realistic data so dashboards look full and impressive.
@@ -110,7 +110,7 @@ function randomPick<T>(arr: T[]): T {
 
 async function main() {
   console.log('====================================================================')
-  console.log('Wolf Whale LMS - Seed Demo Data')
+  console.log('Wolf Whale Learning Management System - Seed Demo Data')
   console.log('====================================================================')
   console.log(`Supabase URL: ${SUPABASE_URL}`)
   console.log('')
@@ -823,7 +823,7 @@ async function main() {
   const announcementsList = [
     {
       title: 'Welcome to Spring Semester 2026',
-      content: 'Welcome back, everyone! We are excited to kick off the Spring 2026 semester at Wolf Whale LMS. Please review your course schedules and make sure you have all required materials. Parent-teacher conferences will be held on February 20th. Contact the office if you have any questions. Let\'s make this a great semester!',
+      content: 'Welcome back, everyone! We are excited to kick off the Spring 2026 semester at Wolf Whale Learning Management System. Please review your course schedules and make sure you have all required materials. Parent-teacher conferences will be held on February 20th. Contact the office if you have any questions. Let\'s make this a great semester!',
       course_id: null,
       created_by: adminId,
     },
