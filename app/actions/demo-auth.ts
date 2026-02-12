@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { rateLimitAction } from '@/lib/rate-limit-action'
 
 const DEMO_ACCOUNTS: Record<string, string> = {
   student: 'student@wolfwhale.ca',
@@ -10,6 +11,12 @@ const DEMO_ACCOUNTS: Record<string, string> = {
 }
 
 export async function demoLogin(role: string): Promise<{ error?: string }> {
+  // Rate limit demo logins to prevent abuse
+  const rl = await rateLimitAction('demo-login')
+  if (!rl.success) {
+    return { error: rl.error ?? 'Too many demo login attempts. Please try again later.' }
+  }
+
   const DEMO_PASSWORD = process.env.DEMO_ACCOUNT_PASSWORD
   if (!DEMO_PASSWORD) {
     return { error: 'Demo accounts are not configured.' }
