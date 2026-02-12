@@ -97,13 +97,13 @@ export function DashboardLayout({
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar — fixed overlay on mobile, static flex-child on lg+ */}
       <aside
         className={`
           fixed inset-y-0 left-0 z-50 w-64 transform
           liquid-glass-heavy chrome-texture-sidebar border-r border-sidebar-border/50
           transition-transform duration-300 ease-in-out
-          lg:relative lg:translate-x-0
+          lg:static lg:z-auto lg:translate-x-0 lg:flex-shrink-0
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
@@ -115,8 +115,8 @@ export function DashboardLayout({
         />
       </aside>
 
-      {/* Main content */}
-      <div className="chrome-overlay relative z-10 flex flex-1 flex-col overflow-hidden">
+      {/* Main content — full width on mobile, fills remaining space on lg+ */}
+      <div className="chrome-overlay relative z-10 flex min-w-0 w-full flex-1 flex-col overflow-hidden lg:w-auto">
         <TopBar
           userName={userName}
           userAvatar={userAvatar}
