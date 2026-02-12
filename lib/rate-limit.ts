@@ -54,6 +54,7 @@ const TIER_CONFIG: Record<RateLimitTier, { requests: number; window: `${number} 
 // ---------------------------------------------------------------------------
 
 let redis: Redis | null = null
+let redisUnavailableWarned = false
 const limiters = new Map<RateLimitTier, Ratelimit>()
 
 function getRedis(): Redis | null {
@@ -63,6 +64,17 @@ function getRedis(): Redis | null {
   const token = process.env.UPSTASH_REDIS_REST_TOKEN
 
   if (!url || !token) {
+    if (!redisUnavailableWarned) {
+      redisUnavailableWarned = true
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(
+          '[rate-limit] Upstash Redis not configured — using in-memory fallback.\n' +
+          '  Run: npm run setup:redis\n' +
+          '  Or visit: https://console.upstash.com to create a free Redis database.\n' +
+          '  Then set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN in .env.local'
+        )
+      }
+    }
     return null
   }
 
