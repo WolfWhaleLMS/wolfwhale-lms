@@ -1065,13 +1065,13 @@ body::before {
 /* TopBar chrome texture — uses chrome-bg-3.jpg for horizontal bars */
 .chrome-texture-topbar {
   position: relative;
-  overflow: hidden;
 }
 
 .chrome-texture-topbar::before {
   content: '';
   position: absolute;
   inset: 0;
+  overflow: hidden;
   background-image: url('/chrome-bg-3.jpg');
   background-size: cover;
   background-position: center top;
