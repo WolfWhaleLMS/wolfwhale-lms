@@ -3,7 +3,7 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
 import { LoginForm } from '@/components/auth/LoginForm'
-import { GraduationCap, Shield, Users, ArrowRight } from 'lucide-react'
+import { GraduationCap, Shield, Users, ArrowRight, ArrowLeft } from 'lucide-react'
 
 function LoginFormSkeleton() {
   return (
@@ -18,6 +18,15 @@ function LoginFormSkeleton() {
 export default function LoginPage() {
   return (
     <div className="space-y-6">
+      {/* Back to Hub Link */}
+      <Link
+        href="/"
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-[#0A2540]/60 hover:text-[#00BFFF] transition-colors group"
+      >
+        <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
+        <span>WolfWhale EdTech Hub</span>
+      </Link>
+
       {/* Aqua Neon Title */}
       <div className="text-center space-y-3">
         <h1
@@ -26,8 +35,8 @@ export default function LoginPage() {
             background: 'linear-gradient(to right, #00BFFF, #33FF33)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            WebkitTextStroke: '1.5px rgba(0,0,0,0.35)',
-            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
+            WebkitTextStroke: '3px rgba(0,0,0,0.6)',
+            filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.3))',
           }}
         >
           WOLFWHALE

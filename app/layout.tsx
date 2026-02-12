@@ -39,11 +39,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wolfwhale.ca";
 
 export const metadata: Metadata = {
   title: {
-    default: "WolfWhale - Canadian Learning Management System for K-12 & Post-Secondary",
-    template: "%s | WolfWhale LMS",
+    default: "WolfWhale EdTech - Education Technology Solutions",
+    template: "%s | WolfWhale",
   },
   description:
-    "WolfWhale is Canada's modern LMS with built-in spaced repetition flashcards, interactive courses, quizzes, and certificates. FERPA & PIPEDA compliant. The only learning platform with spaced repetition technology built in.",
+    "WolfWhale EdTech is a Canadian education technology company building modern tools for learning. Our flagship LMS features built-in spaced repetition, interactive courses, and FERPA & PIPEDA compliance.",
   keywords: [
     "LMS",
     "learning management system",
@@ -79,10 +79,10 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "WolfWhale LMS",
-    title: "WolfWhale - Canadian Learning Management System for K-12 & Post-Secondary",
+    siteName: "WolfWhale EdTech",
+    title: "WolfWhale EdTech - Education Technology Solutions",
     description:
-      "Canada's modern LMS with built-in spaced repetition flashcards, interactive courses, quizzes, and certificates. FERPA & PIPEDA compliant.",
+      "Canadian education technology company building modern tools for learning. Flagship LMS with spaced repetition, interactive courses, and full compliance.",
     images: [
       {
         url: "/ww-card.png",
@@ -94,9 +94,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "WolfWhale - Canadian Learning Management System for K-12 & Post-Secondary",
+    title: "WolfWhale EdTech - Education Technology Solutions",
     description:
-      "Canada's modern LMS with built-in spaced repetition flashcards, interactive courses, quizzes, and certificates. FERPA & PIPEDA compliant.",
+      "Canadian education technology company building modern tools for learning. Flagship LMS with spaced repetition, interactive courses, and full compliance.",
     images: ["/ww-card.png"],
     creator: "@wolfwhale",
   },
