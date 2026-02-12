@@ -352,15 +352,15 @@ export default function EdTechHubPage() {
                 </div>
               </div>
 
-              {/* Product 2: AI Consulting — Coming Soon */}
-              <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#00BFFF]/20 shadow-xl rounded-2xl p-5 sm:p-8 group transition-all opacity-70 flex flex-col">
+              {/* Product 2: AI Consulting — Live */}
+              <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#A78BFA]/20 shadow-xl rounded-2xl p-5 sm:p-8 group hover:neon-border-purple transition-all flex flex-col">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-6">
-                  <div className="inline-flex p-3 rounded-xl bg-[#A78BFA]/15 border border-[#A78BFA]/25">
+                  <div className="inline-flex p-3 rounded-xl bg-[#A78BFA]/15 border border-[#A78BFA]/25 group-hover:bg-[#A78BFA]/25 transition-colors">
                     <Brain className="h-7 w-7 text-[#A78BFA]" />
                   </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#A78BFA]/20 text-[#A78BFA] border border-[#A78BFA]/30">
-                    Coming Soon
+                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#33FF33]/20 text-[#33FF33] border border-[#33FF33]/30 neon-glow-green">
+                    Live
                   </span>
                 </div>
 
@@ -384,14 +384,20 @@ export default function EdTechHubPage() {
                   ))}
                 </ul>
 
-                {/* Disabled button */}
+                {/* Buttons */}
                 <div className="flex gap-3">
-                  <button
-                    disabled
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white/30 text-sm font-semibold cursor-not-allowed"
+                  <Link
+                    href="/ai-consulting"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-silver text-sm font-semibold transition-all hover:scale-105"
                   >
-                    Coming Soon
-                  </button>
+                    Learn More
+                  </Link>
+                  <a
+                    href="mailto:info@wolfwhale.ca"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-blue text-white text-sm font-semibold transition-all hover:scale-105"
+                  >
+                    Contact Us
+                  </a>
                 </div>
               </div>
 
@@ -474,10 +480,10 @@ export default function EdTechHubPage() {
               Interested in WolfWhale for your school or institution? We&apos;d love to hear from you.
             </p>
             <a
-              href="mailto:contact@wolfwhale.ca"
+              href="mailto:info@wolfwhale.ca"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-xl btn-chrome-3d-blue text-white font-semibold transition-all hover:scale-105"
             >
-              contact@wolfwhale.ca
+              info@wolfwhale.ca
             </a>
           </div>
         </section>

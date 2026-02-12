@@ -20,6 +20,8 @@ import {
   Repeat,
   Building2,
   Lock,
+  Mail,
+  Phone,
 } from 'lucide-react'
 import { JsonLd } from '@/components/seo/JsonLd'
 
@@ -1120,10 +1122,18 @@ export default async function LandingPage({
                   </span>
                 </div>
               </div>
-              <p className="text-sm text-[#0A2540]/60 max-w-md">
+              <p className="text-sm text-[#0A2540]/60 max-w-md mb-3">
                 Canadian-built learning management system with built-in spaced
                 repetition flashcards. FERPA, COPPA, and PIPEDA compliant.
               </p>
+              <div className="flex flex-col sm:flex-row gap-3 text-sm text-[#0A2540]/60">
+                <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1.5 hover:text-[#00BFFF] transition-colors">
+                  <Mail className="h-3.5 w-3.5" /> info@wolfwhale.ca
+                </a>
+                <a href="tel:+13069815926" className="flex items-center gap-1.5 hover:text-[#00BFFF] transition-colors">
+                  <Phone className="h-3.5 w-3.5" /> +1 (306) 981-5926
+                </a>
+              </div>
             </div>
 
             <div>
