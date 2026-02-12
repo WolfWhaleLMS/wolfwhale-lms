@@ -60,54 +60,6 @@ export function DashboardLayout({
         <div className="bubble-float absolute left-[50%] top-[50%] h-5 w-5 rounded-full bg-[#00BFFF]/10" style={{ animationDelay: '-4s' }} />
         <div className="bubble-float absolute left-[35%] top-[30%] h-3 w-3 rounded-full bg-[#00FFFF]/8" style={{ animationDelay: '-13s' }} />
 
-        {/* Chrome orb decorations */}
-        <div className="chrome-orb orb-float absolute left-[20%] top-[25%] h-5 w-5" style={{ animationDelay: '-2s' }} />
-        <div className="chrome-orb orb-float absolute left-[75%] top-[65%] h-7 w-7" style={{ animationDelay: '-7s' }} />
-        <div className="chrome-orb orb-float absolute left-[45%] top-[80%] h-4 w-4" style={{ animationDelay: '-12s' }} />
-
-        {/* Frutiger Aero fish — subtle background decorations */}
-        <img
-          src="/fish/clownfish-mid-right.png"
-          alt=""
-          className="absolute pointer-events-none select-none opacity-[0.07]"
-          style={{ right: '5%', top: '15%', width: '140px', animation: 'gentle-float 20s ease-in-out infinite' }}
-        />
-        <img
-          src="/fish/clownfish-bot-left.png"
-          alt=""
-          className="absolute pointer-events-none select-none opacity-[0.06]"
-          style={{ left: '30%', bottom: '10%', width: '110px', animation: 'gentle-float 18s ease-in-out infinite', animationDelay: '-5s', transform: 'scaleX(-1)' }}
-        />
-        <img
-          src="/fish/clownfish-small-front.png"
-          alt=""
-          className="absolute pointer-events-none select-none opacity-[0.05]"
-          style={{ right: '35%', top: '55%', width: '70px', animation: 'gentle-float 15s ease-in-out infinite', animationDelay: '-10s' }}
-        />
-
-        {/* Frutiger Aero orca — subtle background */}
-        <img
-          src="/orcas/orca-1.png"
-          alt=""
-          className="absolute pointer-events-none select-none opacity-[0.06]"
-          style={{ left: '8%', top: '20%', width: '130px', animation: 'orca-glide 24s ease-in-out infinite', animationDelay: '-8s' }}
-        />
-
-        {/* Frutiger Aero parrot — subtle background */}
-        <img
-          src="/parrots/parrot-4.png"
-          alt=""
-          className="absolute pointer-events-none select-none opacity-[0.05]"
-          style={{ right: '12%', bottom: '20%', width: '100px', animation: 'parrot-soar 22s ease-in-out infinite', animationDelay: '-12s' }}
-        />
-
-        {/* Frutiger Aero chameleon — subtle background */}
-        <img
-          src="/chameleons/chameleon-5.png"
-          alt=""
-          className="absolute pointer-events-none select-none opacity-[0.05]"
-          style={{ left: '55%', top: '75%', width: '80px', animation: 'chameleon-sway 20s ease-in-out infinite', animationDelay: '-6s' }}
-        />
       </div>
 
       {/* Mobile sidebar overlay */}

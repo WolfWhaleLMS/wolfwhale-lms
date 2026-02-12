@@ -83,60 +83,6 @@ export default function AuthLayout({
             <div className="lava-blob" style={{ width: '60px', height: '60px', right: '15%', animationDuration: '17s', animationDelay: '3s' }} />
             <div className="lava-blob" style={{ width: '110px', height: '110px', left: '80%', animationDuration: '19s', animationDelay: '5s' }} />
 
-            {/* Small chrome orbs for sparkle */}
-            <div className="absolute chrome-orb orb-float w-5 h-5" style={{ left: '10%', top: '30%', animationDelay: '0s' }} />
-            <div className="absolute chrome-orb orb-float w-7 h-7" style={{ right: '12%', top: '65%', animationDelay: '1.5s' }} />
-            <div className="absolute chrome-orb orb-float w-4 h-4" style={{ left: '55%', top: '8%', animationDelay: '3s' }} />
-
-            {/* Frutiger Aero clownfish decorations */}
-            <img
-              src="/fish/clownfish-hero.png"
-              alt=""
-              className="absolute pointer-events-none select-none opacity-60"
-              style={{ right: '3%', top: '12%', width: '180px', animation: 'fish-swim-right 20s ease-in-out infinite', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))' }}
-            />
-            <img
-              src="/fish/clownfish-mid-left.png"
-              alt=""
-              className="absolute pointer-events-none select-none opacity-50"
-              style={{ left: '2%', bottom: '18%', width: '100px', animation: 'fish-swim-left 16s ease-in-out infinite', animationDelay: '3s', filter: 'drop-shadow(0 3px 8px rgba(0,0,0,0.08))' }}
-            />
-            <img
-              src="/fish/clownfish-small-front.png"
-              alt=""
-              className="absolute pointer-events-none select-none opacity-40"
-              style={{ left: '15%', top: '60%', width: '60px', animation: 'fish-bob 8s ease-in-out infinite', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.08))' }}
-            />
-            <img
-              src="/fish/clownfish-bot-right.png"
-              alt=""
-              className="absolute pointer-events-none select-none opacity-45"
-              style={{ right: '8%', bottom: '25%', width: '85px', animation: 'fish-swim-right 18s ease-in-out infinite', animationDelay: '5s', filter: 'drop-shadow(0 3px 8px rgba(0,0,0,0.08))' }}
-            />
-
-            {/* Frutiger Aero orca decoration */}
-            <img
-              src="/orcas/orca-5.png"
-              alt=""
-              className="absolute pointer-events-none select-none opacity-35"
-              style={{ left: '5%', top: '8%', width: '150px', animation: 'orca-glide 22s ease-in-out infinite', animationDelay: '-4s', filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.08))' }}
-            />
-
-            {/* Frutiger Aero parrot decoration */}
-            <img
-              src="/parrots/parrot-3.png"
-              alt=""
-              className="absolute pointer-events-none select-none opacity-40"
-              style={{ right: '5%', top: '55%', width: '110px', animation: 'parrot-soar 20s ease-in-out infinite', animationDelay: '-7s', filter: 'drop-shadow(0 3px 8px rgba(0,0,0,0.08))' }}
-            />
-
-            {/* Frutiger Aero chameleon decoration */}
-            <img
-              src="/chameleons/chameleon-2.png"
-              alt=""
-              className="absolute pointer-events-none select-none opacity-30"
-              style={{ right: '20%', bottom: '8%', width: '90px', animation: 'chameleon-sway 16s ease-in-out infinite', animationDelay: '-2s', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.06))' }}
-            />
           </div>
         )}
       </div>
