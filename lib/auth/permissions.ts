@@ -214,7 +214,6 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Courses',        href: '/student/courses',         icon: 'BookOpen' },
       { label: 'Assignments',    href: '/student/assignments',     icon: 'ClipboardList' },
       { label: 'Grades',         href: '/student/grades',          icon: 'GraduationCap' },
-      { label: 'Study Mode',     href: '/student/study-mode',      icon: 'Brain' },
       { label: 'Achievements',   href: '/student/achievements',    icon: 'Trophy' },
       { label: 'Plaza',          href: '/plaza',                   icon: 'Map' },
     ],

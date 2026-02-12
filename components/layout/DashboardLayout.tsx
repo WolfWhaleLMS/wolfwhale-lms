@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from 'react'
 import { Sidebar } from './Sidebar'
 import { TopBar } from './TopBar'
 import type { UserRole } from '@/lib/auth/permissions'
+import { PixelPetBar } from '@/components/pets/PixelPetBar'
+import type { PetData } from '@/components/pets/PetWalker'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -24,6 +26,12 @@ export function DashboardLayout({
   tenantLogo,
 }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  // Demo pets for students (will be replaced with Supabase data)
+  const demoPets: PetData[] = role === 'student' ? [
+    { id: 'demo-1', creatureType: 1, name: 'Rex', walkSpeed: 18, startOffset: 10 },
+    { id: 'demo-2', creatureType: 2, name: 'Buddy', walkSpeed: 24, startOffset: 60 },
+  ] : []
 
   // Close sidebar on Escape key
   useEffect(() => {
@@ -113,6 +121,8 @@ export function DashboardLayout({
           </div>
         </main>
       </div>
+
+      {role === 'student' && demoPets.length > 0 && <PixelPetBar pets={demoPets} />}
     </div>
   )
 }

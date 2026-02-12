@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { Menu, Search, Sun, Moon } from 'lucide-react'
 import { NotificationBell } from '@/components/layout/NotificationBell'
+import { RadioDropdown } from '@/components/layout/RadioDropdown'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
 import { getRoleLabel, type UserRole } from '@/lib/auth/permissions'
@@ -98,6 +99,9 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
       {/* Right side: notifications, avatar, name, role badge              */}
       {/* --------------------------------------------------------------- */}
       <div className="flex items-center gap-3">
+        {/* Radio player */}
+        <RadioDropdown />
+
         {/* Theme toggle */}
         <button
           type="button"
