@@ -494,7 +494,7 @@ export default async function StudentDashboardPage() {
   return (
     <div className="min-h-screen space-y-8 pb-16">
       {/* ===== BIG FRIENDLY GREETING ===== */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#00BFFF] via-[#00FFFF] to-[#33FF33] p-8 text-white shadow-2xl sm:p-10">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#00BFFF] via-[#00FFFF] to-[#33FF33] p-8 text-white text-white-outlined shadow-2xl sm:p-10">
         {/* Decorative background circles */}
         <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/10" />
         <div className="pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/10" />
@@ -505,7 +505,7 @@ export default async function StudentDashboardPage() {
             <Sparkles className="h-8 w-8 text-[#D97706]" />
             <p className="text-lg font-medium text-white text-white-outlined">{greeting}</p>
           </div>
-          <h1 className="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">
+          <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-white-outlined sm:text-5xl">
             Hey {studentName}!
           </h1>
           <p className="mt-2 text-xl text-white/90 text-white-outlined">
@@ -514,7 +514,7 @@ export default async function StudentDashboardPage() {
 
           {/* Streak badge */}
           {streak > 0 && (
-            <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2.5 text-base font-semibold backdrop-blur-sm">
+            <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2.5 text-base font-semibold text-white-outlined backdrop-blur-sm">
               <Flame className="h-5 w-5 text-[#D97706]" />
               {streak}-day streak &mdash; {streakMessage}
             </div>
@@ -526,16 +526,16 @@ export default async function StudentDashboardPage() {
       <AnnouncementBanner />
 
       {/* ===== XP / LEVEL PROGRESS BAR ===== */}
-      <div className="rounded-3xl bg-gradient-to-r from-[#FFAA00] via-[#FFD700] to-[#FFAA00] p-6 shadow-lg sm:p-8">
+      <div className="rounded-3xl bg-gradient-to-r from-[#FFAA00] via-[#FFD700] to-[#FFAA00] p-6 text-white-outlined shadow-lg sm:p-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/30 text-3xl font-black text-white shadow-inner backdrop-blur-sm">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/30 text-3xl font-black text-white text-white-outlined shadow-inner backdrop-blur-sm">
               {xpData.level}
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <Star className="h-5 w-5 text-white" />
-                <h2 className="text-xl font-bold text-white sm:text-2xl">
+                <h2 className="text-xl font-bold text-white text-white-outlined sm:text-2xl">
                   {xpData.levelName}
                 </h2>
               </div>
@@ -545,7 +545,7 @@ export default async function StudentDashboardPage() {
             </div>
           </div>
           <div className="text-right">
-            <p className="text-3xl font-extrabold text-white">
+            <p className="text-3xl font-extrabold text-white text-white-outlined">
               {xpData.currentXP}
               <span className="text-lg font-medium text-white/90 text-white-outlined">
                 {' '}
@@ -651,7 +651,7 @@ export default async function StudentDashboardPage() {
               return (
                 <div
                   key={assignment.id}
-                  className="group relative overflow-hidden rounded-2xl p-5 text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                  className="group relative overflow-hidden rounded-2xl p-5 text-white text-white-outlined shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 >
                   {/* Gradient background */}
                   <div
@@ -660,21 +660,21 @@ export default async function StudentDashboardPage() {
                   {/* Content */}
                   <div className="relative z-10">
                     {isUrgent && (
-                      <span className="mb-2 inline-flex items-center gap-1 rounded-full bg-white/25 px-3 py-1 text-xs font-bold uppercase tracking-wide backdrop-blur-sm">
+                      <span className="mb-2 inline-flex items-center gap-1 rounded-full bg-white/25 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white-outlined backdrop-blur-sm">
                         <Clock className="h-3 w-3" />
                         {assignment.urgency === 'overdue'
                           ? 'Overdue'
                           : 'Due Today'}
                       </span>
                     )}
-                    <h3 className="mt-1 text-lg font-bold leading-snug">
+                    <h3 className="mt-1 text-lg font-bold leading-snug text-white-outlined">
                       {assignment.name}
                     </h3>
                     <p className="mt-1 text-sm text-white text-white-outlined">
                       {assignment.course}
                     </p>
                     <div className="mt-4 flex items-center justify-between">
-                      <span className="flex items-center gap-1 rounded-full bg-white/20 px-3 py-1 text-sm font-semibold backdrop-blur-sm">
+                      <span className="flex items-center gap-1 rounded-full bg-white/20 px-3 py-1 text-sm font-semibold text-white-outlined backdrop-blur-sm">
                         <Zap className="h-3.5 w-3.5" /> {assignment.points} pts
                       </span>
                       <span className="text-sm font-medium text-white/90 text-white-outlined">
@@ -703,7 +703,7 @@ export default async function StudentDashboardPage() {
       <section>
         <div className="mb-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#33FF33] to-[#00FFFF] shadow-md">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#33FF33] to-[#00FFFF] text-white-outlined shadow-md">
               <BookOpen className="h-5 w-5 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-foreground text-outlined">My Classes</h2>
@@ -731,7 +731,7 @@ export default async function StudentDashboardPage() {
                     className={`h-28 bg-gradient-to-br ${gradient} flex items-end p-5 transition-all duration-300 group-hover:h-32`}
                   >
                     <div className="relative z-10">
-                      <h3 className="text-lg font-bold text-white drop-shadow-sm">
+                      <h3 className="text-lg font-bold text-white text-white-outlined">
                         {course.name}
                       </h3>
                       <p className="flex items-center gap-1 text-sm text-white text-white-outlined">
@@ -885,7 +885,7 @@ export default async function StudentDashboardPage() {
               className={`group flex flex-col items-center gap-3 rounded-2xl ${action.bg} border border-transparent p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-gray-200 dark:hover:border-gray-700`}
             >
               <div
-                className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${action.gradient} text-white shadow-md transition-transform duration-300 group-hover:scale-110`}
+                className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${action.gradient} text-white text-white-outlined shadow-md transition-transform duration-300 group-hover:scale-110`}
               >
                 {action.icon}
               </div>

@@ -104,7 +104,7 @@ export function StoreItemCard({
     >
       {/* Owned / Equipped badges */}
       {isOwned && (
-        <div className="absolute -top-1.5 -right-1.5 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-green-500 shadow-md">
+        <div className="absolute -top-1.5 -right-1.5 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-green-500 text-white-outlined shadow-md">
           <Check className="h-4 w-4 text-white" />
         </div>
       )}

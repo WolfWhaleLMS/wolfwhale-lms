@@ -846,7 +846,7 @@ export default async function LandingPage({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/login"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#00BFFF] to-[#33FF33] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] transition-all font-semibold text-white group neon-glow-blue"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#00BFFF] to-[#33FF33] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] transition-all font-semibold text-white text-white-outlined group neon-glow-blue"
             >
               Get Started Free
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -918,7 +918,7 @@ export default async function LandingPage({
             {/* USP Card */}
             <div className="rounded-2xl p-8 liquid-glass">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF] to-[#33FF33]">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF] to-[#33FF33] text-white-outlined">
                   <Brain className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-xl font-bold">
@@ -1078,7 +1078,7 @@ export default async function LandingPage({
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/login"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#00BFFF] to-[#33FF33] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] transition-all font-semibold text-white group neon-glow-blue"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#00BFFF] to-[#33FF33] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] transition-all font-semibold text-white text-white-outlined group neon-glow-blue"
               >
                 Get Started Free
                 <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />

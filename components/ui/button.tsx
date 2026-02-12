@@ -17,7 +17,7 @@ const buttonVariants = cva(
         outline: 'border-2 border-[#00BFFF] text-[#00BFFF] hover:bg-[#00BFFF]/5 dark:border-[#00BFFF] dark:text-[#00BFFF]',
         ghost: 'text-[#0A2540] dark:text-[#E8F8FF] hover:bg-[#00BFFF]/8 active:bg-[#00BFFF]/15',
         link: 'text-[#00BFFF] underline-offset-4 hover:underline',
-        fun: 'bg-gradient-to-r from-[#00BFFF] via-[#33FF33] to-[#00FFFF] text-white hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] btn-glow animate-ocean-wave bg-[length:200%_200%]',
+        fun: 'bg-gradient-to-r from-[#00BFFF] via-[#33FF33] to-[#00FFFF] text-white text-white-outlined hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] btn-glow animate-ocean-wave bg-[length:200%_200%]',
       },
       size: {
         sm: 'h-8 px-3 text-xs',

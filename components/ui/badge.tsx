@@ -12,9 +12,9 @@ const badgeVariants = cva(
         destructive: 'border-transparent bg-[#DC2626]/15 text-[#DC2626] dark:bg-[#DC2626]/20 dark:text-[#FF6B6B]',
         outline: 'text-[#0A2540] dark:text-[#E8F8FF] border-[#00BFFF]/30 dark:border-[#00BFFF]/20',
         xp: 'border-transparent bg-gradient-to-r from-[#33FF33] to-[#00FFFF] text-[#0A2540] shadow-md shadow-[#33FF33]/20',
-        achievement: 'border-transparent bg-gradient-to-r from-[#00FFFF] to-[#00BFFF] text-white shadow-md neon-pulse-cyan',
-        level: 'border-transparent bg-gradient-to-r from-[#00BFFF] to-[#33FF33] text-white shadow-md',
-        streak: 'border-transparent bg-gradient-to-r from-[#FFAA00] to-[#FF3366] text-white shadow-md shadow-[#FFAA00]/20',
+        achievement: 'border-transparent bg-gradient-to-r from-[#00FFFF] to-[#00BFFF] text-white text-white-outlined shadow-md neon-pulse-cyan',
+        level: 'border-transparent bg-gradient-to-r from-[#00BFFF] to-[#33FF33] text-white text-white-outlined shadow-md',
+        streak: 'border-transparent bg-gradient-to-r from-[#FFAA00] to-[#FF3366] text-white text-white-outlined shadow-md shadow-[#FFAA00]/20',
       },
       size: {
         sm: 'px-2 py-0.5 text-xs',

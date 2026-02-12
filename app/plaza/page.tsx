@@ -104,7 +104,7 @@ export default async function PlazaPage() {
       </Link>
 
       {/* Hero banner */}
-      <div className="relative mb-8 overflow-hidden rounded-3xl bg-gradient-to-br from-[#00BFFF] via-[#00FFFF] to-[#33FF33] p-8 text-white shadow-2xl sm:p-10">
+      <div className="relative mb-8 overflow-hidden rounded-3xl bg-gradient-to-br from-[#00BFFF] via-[#00FFFF] to-[#33FF33] p-8 text-white text-white-outlined shadow-2xl sm:p-10">
         <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/10" />
         <div className="pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/10" />
         <div className="pointer-events-none absolute right-1/4 top-1/3 h-20 w-20 rounded-full bg-white/5" />
@@ -115,16 +115,16 @@ export default async function PlazaPage() {
               <Map className="h-8 w-8 text-[#E8F8FF]" />
               <p className="text-lg font-medium text-white/90 text-white-outlined">Welcome to the Plaza</p>
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
+            <h1 className="text-4xl font-extrabold tracking-tight text-white-outlined sm:text-5xl">
               Hey {avatarDisplayName}!
             </h1>
-            <p className="mt-2 text-lg text-white/90">
+            <p className="mt-2 text-lg text-white/90 text-white-outlined">
               Explore the town, play games, and hang out with friends.
             </p>
           </div>
 
           {/* Online count placeholder */}
-          <div className="hidden sm:flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-semibold backdrop-blur-sm">
+          <div className="hidden sm:flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-semibold text-white-outlined backdrop-blur-sm">
             <Users className="h-4 w-4" />
             <span>Plaza</span>
           </div>
@@ -147,7 +147,7 @@ export default async function PlazaPage() {
               >
                 <div className="relative z-10">
                   <Icon className="h-8 w-8 text-white/90 text-white-outlined mb-2" />
-                  <h3 className="text-xl font-bold text-white drop-shadow-sm">
+                  <h3 className="text-xl font-bold text-white text-white-outlined">
                     {room.name}
                   </h3>
                 </div>

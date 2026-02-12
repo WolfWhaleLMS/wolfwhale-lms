@@ -294,7 +294,7 @@ export default function InfoPage() {
             {/* Student Dashboard */}
             <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
               <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33]">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33] text-white-outlined">
                   <GraduationCap className="h-5 w-5 text-white" />
                 </div>
                 <div>
@@ -308,7 +308,7 @@ export default function InfoPage() {
             {/* Teacher Dashboard */}
             <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
               <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33]">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33] text-white-outlined">
                   <BookOpen className="h-5 w-5 text-white" />
                 </div>
                 <div>
@@ -322,7 +322,7 @@ export default function InfoPage() {
             {/* Parent Dashboard */}
             <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
               <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33]">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33] text-white-outlined">
                   <Users className="h-5 w-5 text-white" />
                 </div>
                 <div>
@@ -336,7 +336,7 @@ export default function InfoPage() {
             {/* Admin Dashboard */}
             <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
               <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33]">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33] text-white-outlined">
                   <LayoutDashboard className="h-5 w-5 text-white" />
                 </div>
                 <div>

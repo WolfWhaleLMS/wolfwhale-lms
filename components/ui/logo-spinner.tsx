@@ -116,9 +116,9 @@ export function LogoSpinner({ size = 80 }: { size?: number }) {
           className="text-[#00BFFF]"
         />
       </svg>
-      {/* Logo — circular clip */}
+      {/* Logo — rounded square clip */}
       <div
-        className="rounded-full overflow-hidden bg-white shadow-lg"
+        className="rounded-xl border-2 border-black overflow-hidden bg-white shadow-lg"
         style={{ width: size, height: size }}
       >
         <img

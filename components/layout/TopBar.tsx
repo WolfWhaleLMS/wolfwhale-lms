@@ -133,7 +133,7 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
                 className="object-cover"
               />
             ) : (
-              <span className="flex h-full w-full items-center justify-center whale-gradient text-xs font-bold text-white">
+              <span className="flex h-full w-full items-center justify-center whale-gradient text-xs font-bold text-white text-white-outlined">
                 {initials}
               </span>
             )}

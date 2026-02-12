@@ -86,7 +86,7 @@ export function XPBar({
         <div className="flex items-center gap-3">
           <div
             className={cn(
-              'flex size-12 items-center justify-center rounded-xl chrome-surface bg-gradient-to-br text-lg font-bold text-white shadow-lg font-data',
+              'flex size-12 items-center justify-center rounded-xl chrome-surface bg-gradient-to-br text-lg font-bold text-white text-white-outlined shadow-lg font-data',
               gradient,
               glow
             )}

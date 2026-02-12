@@ -846,7 +846,7 @@ export default function PrivacyPolicyPage() {
 
         {/* Title Block */}
         <div className="mb-10 sm:mb-12">
-          <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-[#00BFFF] to-[#33FF33] shadow-2xl mb-6">
+          <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-[#00BFFF] to-[#33FF33] shadow-2xl mb-6 text-white-outlined">
             <span className="text-white font-bold text-3xl">W</span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-[#0A2540]">{t.title}</h1>

@@ -120,7 +120,7 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
       <div className="flex items-center justify-between border-b border-sidebar-border px-4 py-5">
         <Link href="/" className="group flex items-center gap-3 min-w-0">
           {/* Wolf Whale logo */}
-          <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-full chrome-ring neon-glow-blue shadow-lg shadow-ocean-500/20 transition-shadow group-hover:shadow-ocean-500/40">
+          <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl border-2 border-black neon-glow-blue shadow-lg shadow-ocean-500/20 transition-shadow group-hover:shadow-ocean-500/40">
             <Image
               src={tenantLogo || '/logo.png'}
               alt={tenantName}
@@ -173,7 +173,7 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
                     className={cn(
                       'sidebar-chrome-tab flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-300 relative overflow-hidden',
                       isActive
-                        ? 'sidebar-chrome-tab-active text-white'
+                        ? 'sidebar-chrome-tab-active text-white [text-shadow:_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_1px_1px_0_#000,_0_0_8px_rgba(0,0,0,0.5)]'
                         : 'text-sidebar-foreground/70 hover:text-sidebar-foreground'
                     )}
                   >

@@ -54,7 +54,7 @@ const STATUS_CONFIG: Record<
     color:
       'border-2 border-[#33FF33]/20 text-[#059669] bg-[#33FF33]/5 dark:border-[#33FF33]/20 dark:text-[#059669] dark:bg-[#33FF33]/5',
     activeColor:
-      'bg-[#33FF33] text-white border-2 border-[#33FF33] shadow-lg shadow-[#33FF33]/30 scale-105',
+      'bg-[#33FF33] text-white text-white-outlined border-2 border-[#33FF33] shadow-lg shadow-[#33FF33]/30 scale-105',
     icon: <Check className="size-5" />,
   },
   absent: {
