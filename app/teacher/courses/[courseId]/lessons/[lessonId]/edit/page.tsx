@@ -637,9 +637,9 @@ function CalloutBlockEditor({ block, onChange }: { block: ContentBlock; onChange
       </div>
       {block.data.text && (
         <div className={`mt-3 rounded-lg p-4 ${
-          block.data.variant === 'warning' ? 'bg-[#FFAA00]/5 border-[#FFAA00]/20 text-[#FFAA00] dark:bg-[#FFAA00]/10 dark:border-[#FFAA00]/20 dark:text-[#FFAA00]' :
+          block.data.variant === 'warning' ? 'bg-[#FFAA00]/5 border-[#FFAA00]/20 text-[#D97706] dark:bg-[#FFAA00]/10 dark:border-[#FFAA00]/20 dark:text-[#D97706]' :
           block.data.variant === 'tip' ? 'bg-[#00BFFF]/5 border-[#00BFFF]/20 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:border-[#00BFFF]/20 dark:text-[#00BFFF]' :
-          block.data.variant === 'success' ? 'bg-[#33FF33]/5 border-[#33FF33]/20 text-[#33FF33] dark:bg-[#33FF33]/10 dark:border-[#33FF33]/20 dark:text-[#33FF33]' :
+          block.data.variant === 'success' ? 'bg-[#33FF33]/5 border-[#33FF33]/20 text-[#059669] dark:bg-[#33FF33]/10 dark:border-[#33FF33]/20 dark:text-[#059669]' :
           'bg-[#00BFFF]/5 border-[#00BFFF]/10 text-[#0A2540] dark:bg-[#00BFFF]/5 dark:border-[#00BFFF]/10 dark:text-[#E8F8FF]'
         } border`}>
           <div className="flex gap-2">

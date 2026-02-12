@@ -93,7 +93,7 @@ export function ModuleList({ modules, lessons, courseId }: ModuleListProps) {
       case 'published':
         return 'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]'
       case 'draft':
-        return 'bg-[#FFAA00]/10 text-[#FFAA00] dark:bg-[#FFAA00]/10 dark:text-[#FFAA00]'
+        return 'bg-[#FFAA00]/10 text-[#D97706] dark:bg-[#FFAA00]/10 dark:text-[#D97706]'
       case 'archived':
         return 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
       default:

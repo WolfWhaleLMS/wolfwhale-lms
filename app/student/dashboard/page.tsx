@@ -502,20 +502,20 @@ export default async function StudentDashboardPage() {
 
         <div className="relative z-10">
           <div className="flex items-center gap-3">
-            <Sparkles className="h-8 w-8 text-[#FFAA00]" />
-            <p className="text-lg font-medium text-white/80">{greeting}</p>
+            <Sparkles className="h-8 w-8 text-[#D97706]" />
+            <p className="text-lg font-medium text-white text-white-outlined">{greeting}</p>
           </div>
           <h1 className="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">
             Hey {studentName}!
           </h1>
-          <p className="mt-2 text-xl text-white/90">
+          <p className="mt-2 text-xl text-white/90 text-white-outlined">
             Ready to learn something awesome today?
           </p>
 
           {/* Streak badge */}
           {streak > 0 && (
             <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2.5 text-base font-semibold backdrop-blur-sm">
-              <Flame className="h-5 w-5 text-[#FFAA00]" />
+              <Flame className="h-5 w-5 text-[#D97706]" />
               {streak}-day streak &mdash; {streakMessage}
             </div>
           )}
@@ -539,7 +539,7 @@ export default async function StudentDashboardPage() {
                   {xpData.levelName}
                 </h2>
               </div>
-              <p className="text-sm font-medium text-white/80">
+              <p className="text-sm font-medium text-white text-white-outlined">
                 {xpData.tier} Tier &middot; {xpMessage}
               </p>
             </div>
@@ -547,7 +547,7 @@ export default async function StudentDashboardPage() {
           <div className="text-right">
             <p className="text-3xl font-extrabold text-white">
               {xpData.currentXP}
-              <span className="text-lg font-medium text-white/70">
+              <span className="text-lg font-medium text-white/90 text-white-outlined">
                 {' '}
                 / {xpData.nextLevelXP} XP
               </span>
@@ -562,7 +562,7 @@ export default async function StudentDashboardPage() {
             style={{ width: `${Math.max(xpProgress, 3)}%` }}
           >
             {xpProgress >= 10 && (
-              <Zap className="h-4 w-4 text-[#FFAA00]" />
+              <Zap className="h-4 w-4 text-[#D97706]" />
             )}
           </div>
         </div>
@@ -571,7 +571,7 @@ export default async function StudentDashboardPage() {
       {/* ===== PERFORMANCE GAUGES ===== */}
       <section>
         <div className="ocean-card rounded-3xl p-6 sm:p-8">
-          <h2 className="mb-6 text-center text-lg font-bold text-foreground">
+          <h2 className="mb-6 text-center text-lg font-bold text-foreground text-outlined">
             Your Performance at a Glance
           </h2>
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
@@ -606,17 +606,17 @@ export default async function StudentDashboardPage() {
                 </div>
               </div>
               <p className="text-sm font-semibold text-foreground">Courses</p>
-              <p className="text-xs text-muted-foreground">Enrolled</p>
+              <p className="text-sm text-muted-foreground">Enrolled</p>
             </div>
             <div className="flex flex-col items-center gap-2" role="status" aria-label={`${stats.assignmentsDue} assignments due this week`}>
               <div className={`flex h-[140px] w-[140px] items-center justify-center rounded-full ${stats.assignmentsDue > 0 ? 'bg-[#FFAA00]/5 dark:bg-[#FFAA00]/10' : 'bg-muted/30'}`}>
                 <div className="text-center">
-                  <Calendar className={`mx-auto mb-1 h-6 w-6 ${stats.assignmentsDue > 0 ? 'text-[#FFAA00]' : 'text-muted-foreground'}`} />
-                  <p className={`text-2xl font-extrabold ${stats.assignmentsDue > 0 ? 'text-[#FFAA00] dark:text-[#FFD700]' : 'text-foreground'}`}>{stats.assignmentsDue}</p>
+                  <Calendar className={`mx-auto mb-1 h-6 w-6 ${stats.assignmentsDue > 0 ? 'text-[#D97706]' : 'text-muted-foreground'}`} />
+                  <p className={`text-2xl font-extrabold ${stats.assignmentsDue > 0 ? 'text-[#D97706] dark:text-[#FFD700]' : 'text-foreground'}`}>{stats.assignmentsDue}</p>
                 </div>
               </div>
               <p className="text-sm font-semibold text-foreground">Due Soon</p>
-              <p className="text-xs text-muted-foreground">This Week</p>
+              <p className="text-sm text-muted-foreground">This Week</p>
             </div>
           </div>
         </div>
@@ -629,7 +629,7 @@ export default async function StudentDashboardPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#00BFFF] to-[#00FFFF] shadow-md">
               <Target className="h-5 w-5 text-white" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground">
+            <h2 className="text-2xl font-bold text-foreground text-outlined">
               Today&apos;s Tasks
             </h2>
           </div>
@@ -670,14 +670,14 @@ export default async function StudentDashboardPage() {
                     <h3 className="mt-1 text-lg font-bold leading-snug">
                       {assignment.name}
                     </h3>
-                    <p className="mt-1 text-sm text-white/80">
+                    <p className="mt-1 text-sm text-white text-white-outlined">
                       {assignment.course}
                     </p>
                     <div className="mt-4 flex items-center justify-between">
                       <span className="flex items-center gap-1 rounded-full bg-white/20 px-3 py-1 text-sm font-semibold backdrop-blur-sm">
                         <Zap className="h-3.5 w-3.5" /> {assignment.points} pts
                       </span>
-                      <span className="text-sm font-medium text-white/90">
+                      <span className="text-sm font-medium text-white/90 text-white-outlined">
                         {assignment.dueDate}
                       </span>
                     </div>
@@ -706,11 +706,11 @@ export default async function StudentDashboardPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#33FF33] to-[#00FFFF] shadow-md">
               <BookOpen className="h-5 w-5 text-white" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground">My Classes</h2>
+            <h2 className="text-2xl font-bold text-foreground text-outlined">My Classes</h2>
           </div>
           <Link
             href="/student/courses"
-            className="flex items-center gap-1 rounded-full bg-[#33FF33]/5 px-4 py-2 text-sm font-semibold text-[#33FF33] transition-all hover:bg-[#33FF33]/10 hover:scale-105 dark:bg-[#33FF33]/10 dark:text-[#33FF33]"
+            className="flex items-center gap-1 rounded-full bg-[#33FF33]/5 px-4 py-2 text-sm font-semibold text-[#059669] transition-all hover:bg-[#33FF33]/10 hover:scale-105 dark:bg-[#33FF33]/10 dark:text-[#059669]"
           >
             See All <ChevronRight className="h-4 w-4" />
           </Link>
@@ -734,7 +734,7 @@ export default async function StudentDashboardPage() {
                       <h3 className="text-lg font-bold text-white drop-shadow-sm">
                         {course.name}
                       </h3>
-                      <p className="flex items-center gap-1 text-sm text-white/80">
+                      <p className="flex items-center gap-1 text-sm text-white text-white-outlined">
                         <GraduationCap className="h-3.5 w-3.5" />{' '}
                         {course.teacher}
                       </p>
@@ -762,7 +762,7 @@ export default async function StudentDashboardPage() {
                     </div>
                     <p className="mt-3 text-sm text-muted-foreground">
                       {course.progress === 100 ? (
-                        <span className="flex items-center gap-1 font-semibold text-[#33FF33] dark:text-[#33FF33]">
+                        <span className="flex items-center gap-1 font-semibold text-[#059669] dark:text-[#059669]">
                           <PartyPopper className="h-4 w-4" /> All caught up!
                         </span>
                       ) : (
@@ -783,7 +783,7 @@ export default async function StudentDashboardPage() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-[#33FF33]/20 bg-[#33FF33]/5 py-16 text-center dark:border-[#33FF33]/20 dark:bg-[#33FF33]/5">
-            <BookOpen className="mb-4 h-16 w-16 text-[#33FF33]/50" />
+            <BookOpen className="mb-4 h-16 w-16 text-[#059669]/50" />
             <p className="text-xl font-bold text-foreground">No classes yet</p>
             <p className="mt-2 text-base text-muted-foreground">
               Ask your teacher to enroll you in a class to get started!
@@ -799,13 +799,13 @@ export default async function StudentDashboardPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#FFAA00] to-[#FFD700] shadow-md">
               <Trophy className="h-5 w-5 text-white" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground">
+            <h2 className="text-2xl font-bold text-foreground text-outlined">
               Achievements
             </h2>
           </div>
           <Link
             href="/student/achievements"
-            className="flex items-center gap-1 rounded-full bg-[#FFAA00]/5 px-4 py-2 text-sm font-semibold text-[#FFAA00] transition-all hover:bg-[#FFAA00]/10 hover:scale-105 dark:bg-[#FFAA00]/10 dark:text-[#FFD700]"
+            className="flex items-center gap-1 rounded-full bg-[#FFAA00]/5 px-4 py-2 text-sm font-semibold text-[#D97706] transition-all hover:bg-[#FFAA00]/10 hover:scale-105 dark:bg-[#FFAA00]/10 dark:text-[#FFD700]"
           >
             See All <ChevronRight className="h-4 w-4" />
           </Link>
@@ -829,13 +829,13 @@ export default async function StudentDashboardPage() {
                     {achievement.earnedAt}
                   </p>
                 </div>
-                <Crown className="h-5 w-5 text-[#FFAA00]" />
+                <Crown className="h-5 w-5 text-[#D97706]" />
               </div>
             ))}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-[#FFAA00]/20 bg-[#FFAA00]/5 py-12 text-center dark:border-[#FFAA00]/20 dark:bg-[#FFAA00]/5">
-            <Trophy className="mb-4 h-14 w-14 text-[#FFAA00]/50" />
+            <Trophy className="mb-4 h-14 w-14 text-[#D97706]/50" />
             <p className="text-lg font-bold text-foreground">
               Your trophy case is waiting!
             </p>

@@ -350,7 +350,7 @@ export function AssignmentActions({ courseId }: { courseId: string }) {
             </div>
 
             {(formData.type === 'quiz' || formData.type === 'exam') && (
-              <div className="rounded-lg border border-[#FFAA00]/20 bg-[#FFAA00]/5 px-4 py-3 text-sm text-[#FFAA00] dark:border-[#FFAA00]/20 dark:bg-[#FFAA00]/10 dark:text-[#FFAA00]">
+              <div className="rounded-lg border border-[#FFAA00]/20 bg-[#FFAA00]/5 px-4 py-3 text-sm text-[#D97706] dark:border-[#FFAA00]/20 dark:bg-[#FFAA00]/10 dark:text-[#D97706]">
                 For quiz/exam question building, use the{' '}
                 <Link
                   href={`/teacher/courses/${courseId}/assignments/new`}

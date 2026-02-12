@@ -136,8 +136,8 @@ export default async function TeacherAllStudentsPage() {
             <p className="mt-1 text-xs text-muted-foreground">Active Courses</p>
           </div>
           <div className="ocean-card rounded-2xl p-4 text-center">
-            <GraduationCap className="mx-auto mb-1 h-5 w-5 text-[#33FF33]" />
-            <p className="text-2xl font-bold text-[#33FF33] dark:text-[#33FF33]">
+            <GraduationCap className="mx-auto mb-1 h-5 w-5 text-[#059669]" />
+            <p className="text-2xl font-bold text-[#059669] dark:text-[#059669]">
               {enrollments.length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Total Enrollments</p>

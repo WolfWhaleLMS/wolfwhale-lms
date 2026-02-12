@@ -59,10 +59,10 @@ function TypeBadge({ type }: { type: string }) {
       'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]',
     quiz: 'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]',
     project:
-      'bg-[#33FF33]/10 text-[#33FF33] dark:bg-[#33FF33]/10 dark:text-[#33FF33]',
+      'bg-[#33FF33]/10 text-[#059669] dark:bg-[#33FF33]/10 dark:text-[#059669]',
     exam: 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-300',
     discussion:
-      'bg-[#FFAA00]/10 text-[#FFAA00] dark:bg-[#FFAA00]/10 dark:text-[#FFAA00]',
+      'bg-[#FFAA00]/10 text-[#D97706] dark:bg-[#FFAA00]/10 dark:text-[#D97706]',
     presentation:
       'bg-pink-100 text-pink-700 dark:bg-pink-950/40 dark:text-pink-300',
     other:

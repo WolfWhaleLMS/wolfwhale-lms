@@ -23,7 +23,7 @@ export default function RootError({
         <h1 className="text-2xl font-bold text-[#0A2540] dark:text-white mb-2">
           Something went wrong
         </h1>
-        <p className="text-[#6B8FA3] dark:text-white/60 mb-6">
+        <p className="text-muted-foreground dark:text-white/60 mb-6">
           Our whale hit a rough wave. Don&apos;t worry, we&apos;re on it!
         </p>
         <button

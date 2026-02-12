@@ -219,9 +219,9 @@ export default async function StudentCoursesPage() {
                       <span>{course.completed_lessons} / {course.lesson_count} lessons</span>
                     </div>
                     <span className={`text-lg font-bold ${
-                      course.progress_percentage === 100 ? 'text-[#33FF33] dark:text-[#33FF33]' :
+                      course.progress_percentage === 100 ? 'text-[#059669] dark:text-[#059669]' :
                       course.progress_percentage >= 70 ? 'text-[#00BFFF] dark:text-[#00BFFF]' :
-                      course.progress_percentage >= 40 ? 'text-[#FFAA00] dark:text-[#FFD700]' :
+                      course.progress_percentage >= 40 ? 'text-[#D97706] dark:text-[#FFD700]' :
                       'text-[#00BFFF] dark:text-[#00BFFF]'
                     }`}>
                       {course.progress_percentage}%

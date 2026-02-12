@@ -62,18 +62,18 @@ export default async function SkillTreeDetailPage({
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-xl ring-2 ring-[#FFAA00]/30">
           <div className="mb-2 flex items-center justify-center">
-            <CheckCircle2 className="size-8 text-[#FFAA00] group-hover:animate-float" />
+            <CheckCircle2 className="size-8 text-[#D97706] group-hover:animate-float" />
           </div>
-          <p className="text-4xl font-bold text-[#FFAA00] dark:text-[#FFD700]">
+          <p className="text-4xl font-bold text-[#D97706] dark:text-[#FFD700]">
             {completedNodes}
           </p>
           <p className="text-sm font-medium text-muted-foreground">Completed</p>
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-xl ring-2 ring-[#33FF33]/30">
           <div className="mb-2 flex items-center justify-center">
-            <Target className="size-8 text-[#33FF33] group-hover:rotate-12 transition-transform" />
+            <Target className="size-8 text-[#059669] group-hover:rotate-12 transition-transform" />
           </div>
-          <p className="text-4xl font-bold text-[#33FF33] dark:text-[#33FF33]">
+          <p className="text-4xl font-bold text-[#059669] dark:text-[#059669]">
             {completionPct}%
           </p>
           <p className="text-sm font-medium text-muted-foreground">Progress</p>

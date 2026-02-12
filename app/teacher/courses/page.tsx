@@ -72,9 +72,9 @@ export default async function TeacherCoursesPage() {
   const statusColor = (status: string) => {
     switch (status) {
       case 'active':
-        return 'bg-[#33FF33]/10 text-[#33FF33] dark:bg-[#33FF33]/10 dark:text-[#33FF33]'
+        return 'bg-[#33FF33]/10 text-[#059669] dark:bg-[#33FF33]/10 dark:text-[#059669]'
       case 'draft':
-        return 'bg-[#FFAA00]/10 text-[#FFAA00] dark:bg-[#FFAA00]/10 dark:text-[#FFAA00]'
+        return 'bg-[#FFAA00]/10 text-[#D97706] dark:bg-[#FFAA00]/10 dark:text-[#D97706]'
       case 'archived':
         return 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
       default:

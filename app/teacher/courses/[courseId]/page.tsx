@@ -111,9 +111,9 @@ export default async function TeacherCourseDetailPage({
   const statusColor = (status: string) => {
     switch (status) {
       case 'active':
-        return 'bg-[#33FF33]/10 text-[#33FF33] dark:bg-[#33FF33]/10 dark:text-[#33FF33]'
+        return 'bg-[#33FF33]/10 text-[#059669] dark:bg-[#33FF33]/10 dark:text-[#059669]'
       case 'draft':
-        return 'bg-[#FFAA00]/10 text-[#FFAA00] dark:bg-[#FFAA00]/10 dark:text-[#FFAA00]'
+        return 'bg-[#FFAA00]/10 text-[#D97706] dark:bg-[#FFAA00]/10 dark:text-[#D97706]'
       case 'published':
         return 'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]'
       case 'archived':
@@ -341,7 +341,7 @@ export default async function TeacherCourseDetailPage({
                             {student.grade_letter || '--'}
                           </td>
                           <td className="px-4 py-3 text-right">
-                            <span className="inline-flex items-center rounded-full bg-[#33FF33]/10 px-2 py-0.5 text-xs font-medium text-[#33FF33] dark:bg-[#33FF33]/10 dark:text-[#33FF33]">
+                            <span className="inline-flex items-center rounded-full bg-[#33FF33]/10 px-2 py-0.5 text-xs font-medium text-[#059669] dark:bg-[#33FF33]/10 dark:text-[#059669]">
                               {student.status}
                             </span>
                           </td>

@@ -73,7 +73,7 @@ export default async function LeaderboardPage({
       {/* Current User Quick Stats */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-xl">
-          <Trophy className="mx-auto mb-2 size-6 text-[#FFAA00] group-hover:animate-float" />
+          <Trophy className="mx-auto mb-2 size-6 text-[#D97706] group-hover:animate-float" />
           <p className="text-2xl font-bold text-foreground">
             {(userLevel.total_xp ?? 0).toLocaleString()}
           </p>
@@ -89,7 +89,7 @@ export default async function LeaderboardPage({
           </p>
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-xl">
-          <Shield className="mx-auto mb-2 size-6 text-[#33FF33] group-hover:animate-pulse" />
+          <Shield className="mx-auto mb-2 size-6 text-[#059669] group-hover:animate-pulse" />
           <p className="text-2xl font-bold text-foreground">
             {entries.find((e) => e.userId === currentUserId)?.rank ?? '--'}
           </p>
@@ -106,7 +106,7 @@ export default async function LeaderboardPage({
       {topThree.length >= 3 && (
         <div className="ocean-card rounded-2xl p-8">
           <h2 className="mb-6 flex items-center gap-2 text-xl font-semibold text-foreground">
-            <Crown className="size-6 text-[#FFAA00]" />
+            <Crown className="size-6 text-[#D97706]" />
             Top Champions
           </h2>
           <div className="flex items-end justify-center gap-4">
@@ -128,14 +128,14 @@ export default async function LeaderboardPage({
             {/* 1st Place - Center (Elevated) */}
             {topThree[0] && (
               <div className="flex flex-col items-center">
-                <Crown className="mb-2 size-10 text-[#FFAA00] animate-float" />
+                <Crown className="mb-2 size-10 text-[#D97706] animate-float" />
                 <div className="mb-3 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-[#FFAA00] to-[#FFD700] ring-4 ring-[#FFAA00]/50 shadow-2xl animate-pulse">
                   <span className="text-4xl font-bold text-white">1</span>
                 </div>
                 <div className="ocean-card rounded-xl bg-gradient-to-b from-[#FFAA00]/10 to-[#FFD700]/10 dark:from-[#FFAA00]/15 dark:to-[#FFD700]/10 p-6 text-center shadow-2xl ring-4 ring-[#FFAA00]/50 h-64 w-52 flex flex-col justify-center glow-animate">
                   <p className="text-xl font-bold text-foreground line-clamp-1">{topThree[0].userName}</p>
-                  <p className="mt-1 text-sm font-medium text-[#FFAA00] dark:text-[#FFD700]">Level {topThree[0].level}</p>
-                  <p className="mt-3 text-3xl font-bold text-[#FFAA00] dark:text-[#FFD700]">{topThree[0].xpTotal.toLocaleString()}</p>
+                  <p className="mt-1 text-sm font-medium text-[#D97706] dark:text-[#FFD700]">Level {topThree[0].level}</p>
+                  <p className="mt-3 text-3xl font-bold text-[#D97706] dark:text-[#FFD700]">{topThree[0].xpTotal.toLocaleString()}</p>
                   <p className="text-xs font-semibold text-muted-foreground">XP</p>
                   <div className="mt-3 text-3xl">🏆</div>
                 </div>
@@ -151,7 +151,7 @@ export default async function LeaderboardPage({
                 <div className="ocean-card rounded-xl bg-gradient-to-b from-[#FFAA00]/10 to-[#FFD700]/5 dark:from-[#FFAA00]/10 dark:to-[#FFD700]/5 p-6 text-center shadow-lg ring-2 ring-[#FFAA00]/50 h-48 w-48 flex flex-col justify-center">
                   <p className="text-lg font-bold text-foreground line-clamp-1">{topThree[2].userName}</p>
                   <p className="mt-1 text-sm text-muted-foreground">Level {topThree[2].level}</p>
-                  <p className="mt-2 text-2xl font-bold text-[#FFAA00] dark:text-[#FFD700]">{topThree[2].xpTotal.toLocaleString()}</p>
+                  <p className="mt-2 text-2xl font-bold text-[#D97706] dark:text-[#FFD700]">{topThree[2].xpTotal.toLocaleString()}</p>
                   <p className="text-xs text-muted-foreground">XP</p>
                 </div>
               </div>
@@ -163,7 +163,7 @@ export default async function LeaderboardPage({
       {/* Full Leaderboard */}
       <div className="ocean-card rounded-2xl p-6">
         <div className="mb-4 flex items-center gap-3">
-          <Trophy className="size-5 text-[#FFAA00]" />
+          <Trophy className="size-5 text-[#D97706]" />
           <h2 className="text-lg font-semibold text-foreground">
             {PERIOD_LABELS[period]} Rankings
           </h2>

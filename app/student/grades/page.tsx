@@ -28,18 +28,18 @@ interface GradeEntry {
 }
 
 function gradeColorClass(percentage: number): string {
-  if (percentage >= 90) return 'text-[#33FF33] dark:text-[#33FF33]'
-  if (percentage >= 80) return 'text-[#00BFFF] dark:text-[#00BFFF]'
-  if (percentage >= 70) return 'text-[#FFAA00] dark:text-[#FFD700]'
-  if (percentage >= 60) return 'text-[#FFAA00] dark:text-[#FFD700]'
+  if (percentage >= 90) return 'text-[#059669] dark:text-[#34D399]'
+  if (percentage >= 80) return 'text-[#0284C7] dark:text-[#7DD3FC]'
+  if (percentage >= 70) return 'text-[#D97706] dark:text-[#FBBF24]'
+  if (percentage >= 60) return 'text-[#D97706] dark:text-[#FBBF24]'
   return 'text-red-600 dark:text-red-400'
 }
 
 function gradeBarColor(percentage: number): string {
-  if (percentage >= 90) return 'bg-[#33FF33]'
-  if (percentage >= 80) return 'bg-[#00BFFF]'
-  if (percentage >= 70) return 'bg-[#FFAA00]'
-  if (percentage >= 60) return 'bg-[#FFAA00]'
+  if (percentage >= 90) return 'bg-[#059669]'
+  if (percentage >= 80) return 'bg-[#0284C7]'
+  if (percentage >= 70) return 'bg-[#D97706]'
+  if (percentage >= 60) return 'bg-[#D97706]'
   return 'bg-red-500'
 }
 
@@ -165,10 +165,10 @@ export default function StudentGradesPage() {
                     fill="none"
                     strokeDasharray={`${(gpa / 4.0) * 502.4} 502.4`}
                     className={`transition-all duration-1000 ${
-                      gpa >= 3.5 ? 'text-[#33FF33]' :
-                      gpa >= 3.0 ? 'text-[#00BFFF]' :
-                      gpa >= 2.5 ? 'text-[#FFAA00]' :
-                      gpa >= 2.0 ? 'text-[#FFAA00]' :
+                      gpa >= 3.5 ? 'text-[#059669]' :
+                      gpa >= 3.0 ? 'text-[#0284C7]' :
+                      gpa >= 2.5 ? 'text-[#D97706]' :
+                      gpa >= 2.0 ? 'text-[#D97706]' :
                       'text-red-500'
                     }`}
                     strokeLinecap="round"
@@ -177,10 +177,10 @@ export default function StudentGradesPage() {
                 {/* Center Text */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <p className={`text-5xl font-bold ${
-                    gpa >= 3.5 ? 'text-[#33FF33] dark:text-[#33FF33]' :
-                    gpa >= 3.0 ? 'text-[#00BFFF] dark:text-[#00BFFF]' :
-                    gpa >= 2.5 ? 'text-[#FFAA00] dark:text-[#FFD700]' :
-                    gpa >= 2.0 ? 'text-[#FFAA00] dark:text-[#FFD700]' :
+                    gpa >= 3.5 ? 'text-[#059669] dark:text-[#34D399]' :
+                    gpa >= 3.0 ? 'text-[#0284C7] dark:text-[#7DD3FC]' :
+                    gpa >= 2.5 ? 'text-[#D97706] dark:text-[#FBBF24]' :
+                    gpa >= 2.0 ? 'text-[#D97706] dark:text-[#FBBF24]' :
                     'text-red-600 dark:text-red-400'
                   }`}>
                     {gpa.toFixed(2)}
@@ -202,9 +202,9 @@ export default function StudentGradesPage() {
                   <p className="text-3xl font-bold text-foreground">{recentGrades.length}</p>
                   <p className="text-xs font-medium text-muted-foreground">Graded</p>
                 </div>
-                <div className="rounded-xl bg-gradient-to-br from-[#33FF33]/10 to-[#33FF33]/5 p-4 text-center">
+                <div className="rounded-xl bg-gradient-to-br from-[#059669]/10 to-[#059669]/5 p-4 text-center">
                   <div className="flex items-center justify-center gap-1">
-                    <p className="text-3xl font-bold text-[#33FF33] dark:text-[#33FF33]">
+                    <p className="text-3xl font-bold text-[#059669] dark:text-[#34D399]">
                       {recentGrades.filter((g) => (g.points_earned / g.percentage) * 100 >= 90).length}
                     </p>
                     <span className="text-lg">🏆</span>
@@ -247,9 +247,9 @@ export default function StudentGradesPage() {
 
             return (
               <div key={course.courseId} className={`ocean-card overflow-hidden rounded-2xl transition-all hover:scale-[1.01] ${
-                course.percentage >= 90 ? 'ring-2 ring-[#33FF33]/30' :
-                course.percentage >= 80 ? 'ring-2 ring-[#00BFFF]/30' :
-                course.percentage >= 70 ? 'ring-2 ring-[#FFAA00]/30' :
+                course.percentage >= 90 ? 'ring-2 ring-[#059669]/30' :
+                course.percentage >= 80 ? 'ring-2 ring-[#0284C7]/30' :
+                course.percentage >= 70 ? 'ring-2 ring-[#D97706]/30' :
                 'ring-2 ring-red-500/30'
               }`}>
                 <button
@@ -263,7 +263,7 @@ export default function StudentGradesPage() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <h3 className="font-semibold text-foreground">{course.courseTitle}</h3>
-                      {trend === 'up' && <TrendingUp className="h-4 w-4 text-[#33FF33]" />}
+                      {trend === 'up' && <TrendingUp className="h-4 w-4 text-[#059669] dark:text-[#34D399]" />}
                       {trend === 'down' && <TrendingDown className="h-4 w-4 text-red-500" />}
                       {trend === 'stable' && <Minus className="h-4 w-4 text-gray-500" />}
                     </div>
@@ -283,9 +283,9 @@ export default function StudentGradesPage() {
                   </div>
                   <div className="ml-6 flex items-center gap-3">
                     <div className={`flex h-16 w-16 items-center justify-center rounded-full shadow-lg ${
-                      course.percentage >= 90 ? 'bg-gradient-to-br from-[#33FF33]/20 to-[#33FF33]/10' :
-                      course.percentage >= 80 ? 'bg-gradient-to-br from-[#00BFFF]/20 to-[#00BFFF]/10' :
-                      course.percentage >= 70 ? 'bg-gradient-to-br from-[#FFAA00]/20 to-[#FFAA00]/10' :
+                      course.percentage >= 90 ? 'bg-gradient-to-br from-[#059669]/20 to-[#059669]/10' :
+                      course.percentage >= 80 ? 'bg-gradient-to-br from-[#0284C7]/20 to-[#0284C7]/10' :
+                      course.percentage >= 70 ? 'bg-gradient-to-br from-[#D97706]/20 to-[#D97706]/10' :
                       'bg-gradient-to-br from-red-500/20 to-red-500/10'
                     }`}>
                       <span className={`text-2xl font-bold ${gradeColorClass(course.percentage)}`}>

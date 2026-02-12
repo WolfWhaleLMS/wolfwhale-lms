@@ -92,7 +92,7 @@ export default function HomePage() {
               <h1 className="text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-[#00BFFF] to-[#33FF33] bg-clip-text text-transparent text-glow-blue tracking-wider">
                 WOLF WHALE LMS
               </h1>
-              <p className="text-xl md:text-2xl text-white/70 max-w-2xl mx-auto">
+              <p className="text-xl md:text-2xl text-white/90 text-white-outlined max-w-2xl mx-auto">
                 The Modern Learning Platform for K-12 & Post-Secondary
               </p>
             </div>
@@ -131,7 +131,7 @@ export default function HomePage() {
             {/* Feature 2 */}
             <div className="ocean-card rounded-2xl p-6 group hover:neon-border-blue transition-all">
               <div className="inline-flex p-3 rounded-xl bg-[#33FF33]/15 border border-[#33FF33]/25 mb-4 group-hover:bg-[#33FF33]/25 transition-colors">
-                <Zap className="h-6 w-6 text-[#33FF33]" />
+                <Zap className="h-6 w-6 text-[#059669]" />
               </div>
               <h3 className="text-xl font-bold text-white mb-2">Real-Time Everything</h3>
               <p className="text-white/60 text-sm leading-relaxed">

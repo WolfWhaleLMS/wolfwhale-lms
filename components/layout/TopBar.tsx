@@ -37,11 +37,11 @@ function getInitials(name: string): string {
 /** Maps role to a Tailwind color scheme for the badge. */
 function roleBadgeClasses(role: UserRole): string {
   const map: Record<UserRole, string> = {
-    student:     'bg-[#33FF33]/15 text-[#33FF33] border-[#33FF33]/30',
-    teacher:     'bg-[#00BFFF]/15 text-[#00BFFF] border-[#00BFFF]/30',
-    parent:      'bg-[#00FFFF]/15 text-[#00FFFF] border-[#00FFFF]/30',
-    admin:       'bg-[#FFD700]/15 text-[#FFD700] border-[#FFD700]/30',
-    super_admin: 'bg-[#FFAA00]/15 text-[#FFAA00] border-[#FFAA00]/30',
+    student:     'bg-[#059669]/15 text-[#059669] dark:text-[#34D399] border-[#059669]/30',
+    teacher:     'bg-[#00BFFF]/15 text-[#0284C7] dark:text-[#7DD3FC] border-[#00BFFF]/30',
+    parent:      'bg-[#00FFFF]/15 text-[#0891B2] dark:text-[#67E8F9] border-[#00FFFF]/30',
+    admin:       'bg-[#FFD700]/15 text-[#B45309] dark:text-[#FCD34D] border-[#FFD700]/30',
+    super_admin: 'bg-[#FFAA00]/15 text-[#D97706] dark:text-[#FBBF24] border-[#FFAA00]/30',
   }
   return map[role] ?? 'bg-muted text-muted-foreground'
 }

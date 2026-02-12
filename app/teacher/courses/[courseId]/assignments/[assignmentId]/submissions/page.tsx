@@ -102,7 +102,7 @@ function StatusBadge({ status, isLate }: { status: string; isLate: boolean }) {
     },
     graded: {
       label: 'Graded',
-      className: 'bg-[#33FF33]/10 text-[#33FF33] dark:bg-[#33FF33]/10 dark:text-[#33FF33]',
+      className: 'bg-[#33FF33]/10 text-[#059669] dark:bg-[#33FF33]/10 dark:text-[#059669]',
     },
     returned: {
       label: 'Returned',
@@ -117,7 +117,7 @@ function StatusBadge({ status, isLate }: { status: string; isLate: boolean }) {
   return (
     <div className="flex items-center gap-1.5">
       {isLate && (
-        <span className="inline-flex items-center gap-1 rounded-full bg-[#FFAA00]/10 px-2 py-0.5 text-xs font-medium text-[#FFAA00] dark:bg-[#FFAA00]/10 dark:text-[#FFAA00]">
+        <span className="inline-flex items-center gap-1 rounded-full bg-[#FFAA00]/10 px-2 py-0.5 text-xs font-medium text-[#D97706] dark:bg-[#FFAA00]/10 dark:text-[#D97706]">
           <AlertTriangle className="h-3 w-3" />
           Late
         </span>
@@ -238,7 +238,7 @@ function GradingPanel({
           <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
             <span>Submitted: {formatDate(submission.submitted_at)}</span>
             {submission.is_late && (
-              <span className="flex items-center gap-1 font-medium text-[#FFAA00] dark:text-[#FFAA00]">
+              <span className="flex items-center gap-1 font-medium text-[#D97706] dark:text-[#D97706]">
                 <AlertTriangle className="h-3 w-3" />
                 Late submission
               </span>
@@ -577,9 +577,9 @@ export default function TeacherSubmissionsPage() {
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-lg">
           <div className="mb-2 flex items-center justify-center">
-            <CheckCircle2 className="h-6 w-6 text-[#33FF33] dark:text-[#33FF33]" />
+            <CheckCircle2 className="h-6 w-6 text-[#059669] dark:text-[#059669]" />
           </div>
-          <p className="text-3xl font-bold text-[#33FF33] dark:text-[#33FF33]">{gradedCount}</p>
+          <p className="text-3xl font-bold text-[#059669] dark:text-[#059669]">{gradedCount}</p>
           <p className="mt-1 text-xs font-medium text-muted-foreground">Graded</p>
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-lg">
@@ -595,9 +595,9 @@ export default function TeacherSubmissionsPage() {
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-lg">
           <div className="mb-2 flex items-center justify-center">
-            <Clock className={`h-6 w-6 ${lateCount > 0 ? 'text-[#FFAA00] dark:text-[#FFAA00]' : 'text-[#FFAA00]/50 dark:text-[#FFAA00]/50'}`} />
+            <Clock className={`h-6 w-6 ${lateCount > 0 ? 'text-[#D97706] dark:text-[#D97706]' : 'text-[#D97706]/50 dark:text-[#D97706]/50'}`} />
           </div>
-          <p className={`text-3xl font-bold ${lateCount > 0 ? 'text-[#FFAA00] dark:text-[#FFAA00]' : 'text-[#FFAA00]/50 dark:text-[#FFAA00]/50'}`}>
+          <p className={`text-3xl font-bold ${lateCount > 0 ? 'text-[#D97706] dark:text-[#D97706]' : 'text-[#D97706]/50 dark:text-[#D97706]/50'}`}>
             {lateCount}
           </p>
           <p className="mt-1 text-xs font-medium text-muted-foreground">Late</p>

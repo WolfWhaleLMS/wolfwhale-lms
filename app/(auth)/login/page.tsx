@@ -61,7 +61,7 @@ export default function LoginPage() {
         <div className="relative px-8 py-5 bg-gradient-to-r from-[#00BFFF]/5 via-[#33FF33]/5 to-[#00BFFF]/5 border-b border-[#00BFFF]/15">
           <div className="text-center space-y-1">
             <h2 className="text-xl font-bold text-[#0A2540]">Welcome Back</h2>
-            <p className="text-[#6B8FA3] text-sm">
+            <p className="text-muted-foreground text-sm">
               Sign in to continue your learning journey
             </p>
           </div>
@@ -69,7 +69,7 @@ export default function LoginPage() {
 
         {/* Form */}
         <div className="p-8">
-          <p className="text-sm text-[#6B8FA3] mb-4 text-center">
+          <p className="text-sm text-muted-foreground mb-4 text-center">
             Sign in with credentials assigned by your administrator
           </p>
           <Suspense fallback={<LoginFormSkeleton />}>
@@ -79,7 +79,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="px-8 py-4 bg-[#00BFFF]/[0.03] border-t border-[#00BFFF]/10 text-center">
-          <p className="text-sm text-[#6B8FA3]">
+          <p className="text-sm text-muted-foreground">
             Need access?{' '}
             <span className="text-[#00BFFF] font-medium">
               Contact your administrator for credentials
@@ -92,21 +92,21 @@ export default function LoginPage() {
       <div className="grid grid-cols-3 gap-3">
         <div className="rounded-xl p-4 text-center ocean-card hover:neon-border-blue transition-all hover:scale-105">
           <GraduationCap className="h-5 w-5 text-[#00BFFF] mx-auto mb-2" />
-          <p className="text-xs font-medium text-[#6B8FA3]">All-in-One</p>
+          <p className="text-xs font-medium text-muted-foreground">All-in-One</p>
         </div>
         <div className="rounded-xl p-4 text-center ocean-card hover:neon-border-blue transition-all hover:scale-105">
           <Users className="h-5 w-5 text-[#00BFFF] mx-auto mb-2" />
-          <p className="text-xs font-medium text-[#6B8FA3]">K-12 & Post-Sec</p>
+          <p className="text-xs font-medium text-muted-foreground">K-12 & Post-Sec</p>
         </div>
         <div className="rounded-xl p-4 text-center ocean-card hover:neon-border-blue transition-all hover:scale-105">
           <Shield className="h-5 w-5 text-[#00BFFF] mx-auto mb-2" />
-          <p className="text-xs font-medium text-[#6B8FA3]">FERPA Secure</p>
+          <p className="text-xs font-medium text-muted-foreground">FERPA Secure</p>
         </div>
       </div>
 
       {/* School Access Info */}
       <div className="rounded-xl p-4 ocean-card">
-        <p className="text-xs text-center text-[#6B8FA3]">
+        <p className="text-xs text-center text-muted-foreground">
           <span className="text-[#00BFFF] font-medium">School Access:</span>{' '}
           Contact your school administrator or{' '}
           <Link href="/#contact" className="text-[#00BFFF] hover:underline font-medium">

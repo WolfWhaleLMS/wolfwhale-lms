@@ -232,7 +232,7 @@ export default function DeckCardsPage({
                       </div>
                     </div>
                     {card.hint && (
-                      <p className="mt-2 text-xs text-[#FFAA00] italic">Hint: {card.hint}</p>
+                      <p className="mt-2 text-xs text-[#D97706] italic">Hint: {card.hint}</p>
                     )}
                   </div>
                   <div className="flex gap-1 ml-4">

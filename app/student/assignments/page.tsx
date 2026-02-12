@@ -39,7 +39,7 @@ function StatusBadge({ status }: { status: string }) {
     },
     graded: {
       label: 'Graded',
-      className: 'bg-[#33FF33]/10 text-[#33FF33] dark:bg-[#33FF33]/15 dark:text-[#33FF33]',
+      className: 'bg-[#33FF33]/10 text-[#059669] dark:bg-[#33FF33]/15 dark:text-[#059669]',
     },
     overdue: {
       label: 'Overdue',
@@ -47,11 +47,11 @@ function StatusBadge({ status }: { status: string }) {
     },
     late: {
       label: 'Late',
-      className: 'bg-[#FFAA00]/10 text-[#FFAA00] dark:bg-[#FFAA00]/15 dark:text-[#FFD700]',
+      className: 'bg-[#FFAA00]/10 text-[#D97706] dark:bg-[#FFAA00]/15 dark:text-[#FFD700]',
     },
     returned: {
       label: 'Returned',
-      className: 'bg-[#FFAA00]/10 text-[#FFAA00] dark:bg-[#FFAA00]/15 dark:text-[#FFD700]',
+      className: 'bg-[#FFAA00]/10 text-[#D97706] dark:bg-[#FFAA00]/15 dark:text-[#FFD700]',
     },
   }
 
@@ -207,9 +207,9 @@ export default function StudentAssignmentsPage() {
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-lg">
           <div className="mb-2 flex items-center justify-center">
-            <CheckCircle className="h-6 w-6 text-[#33FF33] dark:text-[#33FF33]" />
+            <CheckCircle className="h-6 w-6 text-[#059669] dark:text-[#059669]" />
           </div>
-          <p className="text-3xl font-bold text-[#33FF33] dark:text-[#33FF33]">{completedCount}</p>
+          <p className="text-3xl font-bold text-[#059669] dark:text-[#059669]">{completedCount}</p>
           <p className="mt-1 text-xs font-medium text-muted-foreground">Completed</p>
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-lg">
@@ -314,9 +314,9 @@ export default function StudentAssignmentsPage() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
                       {isOverdue && <AlertCircle className="h-5 w-5 text-red-500 animate-pulse" />}
-                      {isDueToday && <Clock className="h-5 w-5 text-[#FFAA00]" />}
-                      {assignment.submissionStatus === 'graded' && <CheckCircle className="h-5 w-5 text-[#33FF33]" />}
-                      {assignment.submissionStatus === 'returned' && <RotateCcw className="h-5 w-5 text-[#FFAA00]" />}
+                      {isDueToday && <Clock className="h-5 w-5 text-[#D97706]" />}
+                      {assignment.submissionStatus === 'graded' && <CheckCircle className="h-5 w-5 text-[#059669]" />}
+                      {assignment.submissionStatus === 'returned' && <RotateCcw className="h-5 w-5 text-[#D97706]" />}
                       <h3 className="font-semibold text-foreground">{assignment.title}</h3>
                       <TypeBadge type={assignment.type} />
                       <StatusBadge status={assignment.submissionStatus} />
@@ -327,8 +327,8 @@ export default function StudentAssignmentsPage() {
                     <div className="mt-2 flex items-center gap-4 text-xs">
                       <span className={`flex items-center gap-1 ${
                         isOverdue ? 'font-bold text-red-600 dark:text-red-400' :
-                        isDueToday ? 'font-bold text-[#FFAA00] dark:text-[#FFD700]' :
-                        isDueSoon(assignment.due_date) ? 'font-medium text-[#FFAA00] dark:text-[#FFD700]' :
+                        isDueToday ? 'font-bold text-[#D97706] dark:text-[#FFD700]' :
+                        isDueSoon(assignment.due_date) ? 'font-medium text-[#D97706] dark:text-[#FFD700]' :
                         'text-muted-foreground'
                       }`}>
                         <Clock className="h-3 w-3" />
@@ -343,10 +343,10 @@ export default function StudentAssignmentsPage() {
                   <div className="text-right">
                     {assignment.grade ? (
                       <div className="rounded-lg bg-gradient-to-br from-[#33FF33]/10 to-[#00FFFF]/10 px-3 py-2">
-                        <p className="text-lg font-bold text-[#33FF33] dark:text-[#33FF33]">
+                        <p className="text-lg font-bold text-[#059669] dark:text-[#059669]">
                           {assignment.grade.points_earned}/{assignment.grade.percentage}
                         </p>
-                        <p className="text-xs font-semibold text-[#33FF33]/80 dark:text-[#33FF33]/80">
+                        <p className="text-xs font-semibold text-[#059669]/80 dark:text-[#059669]/80">
                           {Math.round((assignment.grade.points_earned / assignment.grade.percentage) * 100)}%
                         </p>
                       </div>

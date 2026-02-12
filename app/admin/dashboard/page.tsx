@@ -31,7 +31,7 @@ function DashboardCard({
     <div className={`ocean-card rounded-2xl p-6 ${className}`}>
       <div className="mb-4 flex items-center gap-3">
         {icon}
-        <h3 className="text-lg font-semibold text-foreground">{title}</h3>
+        <h3 className="text-lg font-semibold text-foreground text-outlined">{title}</h3>
       </div>
       {children}
     </div>
@@ -189,7 +189,7 @@ export default async function AdminDashboardPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground text-outlined">
           Admin Dashboard
         </h1>
         <p className="mt-1 text-muted-foreground">
@@ -209,7 +209,7 @@ export default async function AdminDashboardPage() {
             </div>
             <div>
               <p className="text-sm font-medium text-foreground">Seat Usage</p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 {seatUsage.currentUsers} of {seatUsage.maxUsers} seats used
               </p>
             </div>
@@ -239,7 +239,7 @@ export default async function AdminDashboardPage() {
             }}
           />
         </div>
-        <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+        <div className="mt-2 flex justify-between text-sm text-muted-foreground">
           <span>{Math.max(0, seatUsage.maxUsers - seatUsage.currentUsers)} seats remaining</span>
           <span>{Math.round((seatUsage.currentUsers / seatUsage.maxUsers) * 100)}% utilized</span>
         </div>
@@ -259,7 +259,7 @@ export default async function AdminDashboardPage() {
               <GraduationCap className="h-6 w-6 text-primary" />
             </div>
           </div>
-          <p className="mt-2 text-xs text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground">
             {stats?.totalUsers ?? 0} total users
           </p>
         </div>
@@ -275,7 +275,7 @@ export default async function AdminDashboardPage() {
               <Users className="h-6 w-6 text-purple-500" />
             </div>
           </div>
-          <p className="mt-2 text-xs text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground">
             {activeCourses} active courses
           </p>
         </div>
@@ -291,7 +291,7 @@ export default async function AdminDashboardPage() {
               <BookOpen className="h-6 w-6 text-teal-500" />
             </div>
           </div>
-          <p className="mt-2 text-xs text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground">
             {stats?.weeklyLogins ?? 0} logins this week
           </p>
         </div>
@@ -307,7 +307,7 @@ export default async function AdminDashboardPage() {
               <BarChart3 className="h-6 w-6 text-amber-500" />
             </div>
           </div>
-          <p className="mt-2 text-xs text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground">
             School-wide average (7 days)
           </p>
         </div>
@@ -382,25 +382,25 @@ export default async function AdminDashboardPage() {
                 <p className="text-2xl font-bold text-foreground">
                   {studentCount}
                 </p>
-                <p className="text-xs text-muted-foreground">Students</p>
+                <p className="text-sm text-muted-foreground">Students</p>
               </div>
               <div className="rounded-xl bg-muted/50 p-4 text-center">
                 <p className="text-2xl font-bold text-foreground">
                   {teacherCount}
                 </p>
-                <p className="text-xs text-muted-foreground">Teachers</p>
+                <p className="text-sm text-muted-foreground">Teachers</p>
               </div>
               <div className="rounded-xl bg-muted/50 p-4 text-center">
                 <p className="text-2xl font-bold text-foreground">
                   {parentCount}
                 </p>
-                <p className="text-xs text-muted-foreground">Parents</p>
+                <p className="text-sm text-muted-foreground">Parents</p>
               </div>
               <div className="rounded-xl bg-muted/50 p-4 text-center">
                 <p className="text-2xl font-bold text-foreground">
                   {adminCount}
                 </p>
-                <p className="text-xs text-muted-foreground">Admins</p>
+                <p className="text-sm text-muted-foreground">Admins</p>
               </div>
             </div>
             {stats && stats.totalUsers > 0 ? (
@@ -411,7 +411,7 @@ export default async function AdminDashboardPage() {
                 <div className="space-y-2">
                   {Object.entries(stats.roleCounts).map(([role, count]) => (
                     <div key={role} className="flex items-center gap-3">
-                      <span className="w-20 text-xs capitalize text-muted-foreground">
+                      <span className="w-20 text-sm capitalize text-muted-foreground">
                         {role.replace('_', ' ')}
                       </span>
                       <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
@@ -527,22 +527,22 @@ export default async function AdminDashboardPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border bg-muted/50">
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                    <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
                       School
                     </th>
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                    <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
                       Slug
                     </th>
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                    <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
                       Plan
                     </th>
-                    <th className="px-4 py-3 text-center font-medium text-muted-foreground">
+                    <th className="px-4 py-3 text-center font-semibold text-muted-foreground">
                       Users / Max
                     </th>
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                    <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
                       Status
                     </th>
-                    <th className="px-4 py-3 text-right font-medium text-muted-foreground">
+                    <th className="px-4 py-3 text-right font-semibold text-muted-foreground">
                       Created
                     </th>
                   </tr>
@@ -594,7 +594,7 @@ export default async function AdminDashboardPage() {
                             </div>
                           </td>
                           <td className="px-4 py-3">
-                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <div className="flex items-center gap-1 text-sm text-muted-foreground">
                               <Globe className="h-3 w-3" />
                               {school.slug ?? '--'}
                             </div>
@@ -630,7 +630,7 @@ export default async function AdminDashboardPage() {
                               {status}
                             </span>
                           </td>
-                          <td className="whitespace-nowrap px-4 py-3 text-right text-xs text-muted-foreground">
+                          <td className="whitespace-nowrap px-4 py-3 text-right text-sm text-muted-foreground">
                             {school.created_at
                               ? new Date(school.created_at).toLocaleDateString(
                                   'en-US',
@@ -663,16 +663,16 @@ export default async function AdminDashboardPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
                   Event
                 </th>
-                <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
                   User
                 </th>
-                <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
                   Type
                 </th>
-                <th className="px-4 py-3 text-right font-medium text-muted-foreground">
+                <th className="px-4 py-3 text-right font-semibold text-muted-foreground">
                   Time
                 </th>
               </tr>
@@ -715,7 +715,7 @@ export default async function AdminDashboardPage() {
                           {actionType}
                         </span>
                       </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-right text-xs text-muted-foreground">
+                      <td className="whitespace-nowrap px-4 py-3 text-right text-sm text-muted-foreground">
                         {timeAgo}
                       </td>
                     </tr>

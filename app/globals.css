@@ -105,7 +105,7 @@ body::before {
   --secondary: #00FFFF;
   --secondary-foreground: #0A2540;
   --muted: #D0E8F4;
-  --muted-foreground: #6B8FA3;
+  --muted-foreground: #3D5A6E;
   --accent: #33FF33;
   --accent-foreground: #0A2540;
   --destructive: #FF3366;
@@ -117,7 +117,7 @@ body::before {
   --chart-3: #00FFFF;
   --chart-4: #FFD700;
   --chart-5: #FF3366;
-  --sidebar: rgba(255, 255, 255, 0.70);
+  --sidebar: rgba(255, 255, 255, 0.85);
   --sidebar-foreground: #0A2540;
   --sidebar-primary: #00BFFF;
   --sidebar-primary-foreground: #ffffff;
@@ -127,8 +127,8 @@ body::before {
   --sidebar-ring: #00BFFF;
 
   /* Liquid Glass — Light mode surfaces */
-  --glass-bg:             rgba(255, 255, 255, 0.55);
-  --glass-bg-elevated:    rgba(255, 255, 255, 0.72);
+  --glass-bg:             rgba(255, 255, 255, 0.78);
+  --glass-bg-elevated:    rgba(255, 255, 255, 0.88);
   --glass-bg-heavy:       rgba(255, 255, 255, 0.82);
   --glass-border:         rgba(0, 191, 255, 0.22);
   --glass-border-subtle:  rgba(0, 191, 255, 0.12);
@@ -166,8 +166,8 @@ body::before {
 
 .dark {
   /* Liquid Glass — Dark mode surfaces */
-  --glass-bg:             rgba(0, 40, 80, 0.55);
-  --glass-bg-elevated:    rgba(0, 50, 100, 0.70);
+  --glass-bg:             rgba(0, 40, 80, 0.72);
+  --glass-bg-elevated:    rgba(0, 50, 100, 0.85);
   --glass-bg-heavy:       rgba(0, 35, 70, 0.82);
   --glass-border:         rgba(0, 191, 255, 0.25);
   --glass-border-subtle:  rgba(0, 191, 255, 0.12);
@@ -202,7 +202,7 @@ body::before {
   --secondary: #00FFFF;
   --secondary-foreground: #041428;
   --muted: rgba(0, 60, 120, 0.50);
-  --muted-foreground: #6B8FA3;
+  --muted-foreground: #B0D0E0;
   --accent: #33FF33;
   --accent-foreground: #041428;
   --destructive: #FF3366;
@@ -214,7 +214,7 @@ body::before {
   --chart-3: #00FFFF;
   --chart-4: #FFD700;
   --chart-5: #FF3366;
-  --sidebar: rgba(4, 20, 40, 0.85);
+  --sidebar: rgba(4, 20, 40, 0.92);
   --sidebar-foreground: #E8F8FF;
   --sidebar-primary: #00BFFF;
   --sidebar-primary-foreground: #041428;
@@ -558,6 +558,43 @@ body::before {
       0 0 20px rgba(0, 255, 255, 0.40),
       0 0 40px rgba(0, 255, 255, 0.20);
   }
+
+  /* Text outline for readability on glass/varied backgrounds */
+  .text-outlined {
+    -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.15);
+    paint-order: stroke fill;
+  }
+
+  .text-outlined-bold {
+    text-shadow:
+      -1px -1px 0 rgba(0, 0, 0, 0.3),
+       1px -1px 0 rgba(0, 0, 0, 0.3),
+      -1px  1px 0 rgba(0, 0, 0, 0.3),
+       1px  1px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .dark .text-outlined {
+    -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.3);
+  }
+
+  .dark .text-outlined-bold {
+    text-shadow:
+      -1px -1px 0 rgba(0, 0, 0, 0.6),
+       1px -1px 0 rgba(0, 0, 0, 0.6),
+      -1px  1px 0 rgba(0, 0, 0, 0.6),
+       1px  1px 0 rgba(0, 0, 0, 0.6);
+  }
+
+  /* White text with strong black outline — for colored/gradient backgrounds */
+  .text-white-outlined {
+    color: #ffffff;
+    text-shadow:
+      -1px -1px 0 rgba(0, 0, 0, 0.7),
+       1px -1px 0 rgba(0, 0, 0, 0.7),
+      -1px  1px 0 rgba(0, 0, 0, 0.7),
+       1px  1px 0 rgba(0, 0, 0, 0.7),
+       0px  0px 4px rgba(0, 0, 0, 0.3);
+  }
 }
 
 /* ============================================
@@ -636,6 +673,15 @@ body::before {
       0 0 30px rgba(0, 191, 255, 0.20),
       0 12px 40px rgba(0, 0, 0, 0.30),
       inset 0 1px 0 var(--glass-highlight);
+  }
+
+  /* Ensure all text inside ocean-card has subtle depth for readability */
+  .ocean-card > *,
+  .ocean-card p,
+  .ocean-card h1, .ocean-card h2, .ocean-card h3, .ocean-card h4,
+  .ocean-card span, .ocean-card label, .ocean-card td, .ocean-card th {
+    position: relative;
+    z-index: 2;
   }
 }
 

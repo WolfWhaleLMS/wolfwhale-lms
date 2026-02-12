@@ -65,7 +65,7 @@ export default async function ParentDashboardPage() {
 
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground text-outlined">
           Parent Dashboard
         </h1>
         <p className="mt-1 text-muted-foreground">
@@ -87,7 +87,7 @@ export default async function ParentDashboardPage() {
       {!error && children.length === 0 && (
         <div className="ocean-card rounded-2xl p-12 text-center">
           <Users className="mx-auto h-16 w-16 text-muted-foreground/30" />
-          <h3 className="mt-4 text-lg font-semibold text-foreground">
+          <h3 className="mt-4 text-lg font-semibold text-foreground text-outlined">
             No Children Linked
           </h3>
           <p className="mt-2 max-w-md mx-auto text-muted-foreground">
@@ -137,14 +137,14 @@ export default async function ParentDashboardPage() {
                   </p>
                 </div>
                 <p className="mt-2 text-sm font-semibold text-foreground">Missing</p>
-                <p className="text-xs text-muted-foreground">Assignments</p>
+                <p className="text-sm text-muted-foreground">Assignments</p>
               </div>
             </div>
           </div>
 
           {/* Children Cards */}
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">
+            <h2 className="text-lg font-semibold text-foreground text-outlined">
               Your Children
             </h2>
             <div className="grid gap-6 md:grid-cols-2">
@@ -236,7 +236,7 @@ export default async function ParentDashboardPage() {
 
           {/* Quick Actions */}
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">
+            <h2 className="text-lg font-semibold text-foreground text-outlined">
               Quick Actions
             </h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">

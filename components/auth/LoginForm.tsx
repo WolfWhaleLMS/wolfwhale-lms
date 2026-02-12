@@ -84,9 +84,9 @@ export function LoginForm() {
 
   const demoAccounts = [
     { username: 'student', label: 'Student', icon: GraduationCap, color: 'from-[#00BFFF] to-[#00BFFF]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(0,191,255,0.3)]' },
-    { username: 'teacher', label: 'Teacher', icon: BookOpen, color: 'from-[#33FF33] to-[#33FF33]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(51,255,51,0.3)]' },
+    { username: 'teacher', label: 'Teacher', icon: BookOpen, color: 'from-[#059669] to-[#059669]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(5,150,105,0.3)]' },
     { username: 'parent', label: 'Parent', icon: Users, color: 'from-[#00FFFF] to-[#00FFFF]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(0,255,255,0.3)]' },
-    { username: 'admin', label: 'Admin', icon: Shield, color: 'from-[#FFAA00] to-[#FFAA00]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(255,170,0,0.3)]' },
+    { username: 'admin', label: 'Admin', icon: Shield, color: 'from-[#D97706] to-[#D97706]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(217,119,6,0.3)]' },
   ]
 
   async function handleDemoLogin(username: string) {
@@ -117,7 +117,7 @@ export function LoginForm() {
           <h3 className="text-lg font-bold text-[#0A2540]">
             Try It Now — No Sign-Up Required
           </h3>
-          <p className="text-sm text-[#6B8FA3] leading-relaxed">
+          <p className="text-sm text-muted-foreground leading-relaxed">
             Tap any role below to instantly explore Wolf Whale as a student, teacher, parent, or admin.
           </p>
         </div>
@@ -148,7 +148,7 @@ export function LoginForm() {
       {/* Divider */}
       <div className="flex items-center gap-3">
         <div className="flex-1 h-px bg-[#00BFFF]/15" />
-        <span className="text-xs text-[#6B8FA3] font-medium">or sign in with credentials</span>
+        <span className="text-xs text-muted-foreground font-medium">or sign in with credentials</span>
         <div className="flex-1 h-px bg-[#00BFFF]/15" />
       </div>
 
@@ -240,7 +240,7 @@ export function LoginForm() {
         </form>
       </Form>
 
-      <p className="text-xs text-center text-[#6B8FA3]">
+      <p className="text-xs text-center text-muted-foreground">
         Your administrator will provide your login credentials
       </p>
     </div>

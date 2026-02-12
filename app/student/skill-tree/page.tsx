@@ -161,7 +161,7 @@ export default async function SkillTreePage() {
                   </div>
                   {isComplete && (
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#33FF33]/10 dark:bg-[#33FF33]/15">
-                      <Trophy className="h-4 w-4 text-[#33FF33] dark:text-[#33FF33]" />
+                      <Trophy className="h-4 w-4 text-[#059669] dark:text-[#059669]" />
                     </div>
                   )}
                 </div>
@@ -192,7 +192,7 @@ export default async function SkillTreePage() {
                     <span
                       className={`font-bold ${
                         isComplete
-                          ? 'text-[#33FF33] dark:text-[#33FF33]'
+                          ? 'text-[#059669] dark:text-[#059669]'
                           : pct >= 70
                             ? 'text-[#00BFFF] dark:text-[#00BFFF]'
                             : pct >= 40

@@ -52,7 +52,7 @@ export default async function StudentFlashcardsPage() {
                   <Layers className="h-5 w-5 text-[#00BFFF] dark:text-[#00BFFF]" />
                 </div>
                 {deck.dueCards > 0 && (
-                  <span className="flex items-center gap-1 rounded-full bg-[#FFAA00]/10 px-2 py-0.5 text-xs font-medium text-[#FFAA00] dark:bg-[#FFAA00]/15 dark:text-[#FFD700]">
+                  <span className="flex items-center gap-1 rounded-full bg-[#FFAA00]/10 px-2 py-0.5 text-xs font-medium text-[#D97706] dark:bg-[#FFAA00]/15 dark:text-[#FFD700]">
                     <Clock className="h-3 w-3" />
                     {deck.dueCards} due
                   </span>

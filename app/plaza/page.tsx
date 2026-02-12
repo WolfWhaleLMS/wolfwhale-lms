@@ -113,7 +113,7 @@ export default async function PlazaPage() {
           <div>
             <div className="flex items-center gap-3 mb-2">
               <Map className="h-8 w-8 text-[#E8F8FF]" />
-              <p className="text-lg font-medium text-white/80">Welcome to the Plaza</p>
+              <p className="text-lg font-medium text-white/90 text-white-outlined">Welcome to the Plaza</p>
             </div>
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
               Hey {avatarDisplayName}!
@@ -146,7 +146,7 @@ export default async function PlazaPage() {
                 className={`flex h-32 items-end bg-gradient-to-br ${room.gradient} p-5 transition-all duration-300 group-hover:h-36`}
               >
                 <div className="relative z-10">
-                  <Icon className="h-8 w-8 text-white/80 mb-2" />
+                  <Icon className="h-8 w-8 text-white/90 text-white-outlined mb-2" />
                   <h3 className="text-xl font-bold text-white drop-shadow-sm">
                     {room.name}
                   </h3>

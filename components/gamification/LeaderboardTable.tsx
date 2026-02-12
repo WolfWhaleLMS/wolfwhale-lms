@@ -26,9 +26,9 @@ const RANK_MEDALS: Record<number, string> = {
 }
 
 const RANK_STYLES: Record<number, string> = {
-  1: 'bg-[#33FF33]/5 border-[#33FF33]/30 chrome-surface',
+  1: 'bg-[#059669]/5 border-[#059669]/30 chrome-surface',
   2: 'bg-[#00BFFF]/5 border-[#00BFFF]/30 chrome-surface',
-  3: 'bg-[#FFAA00]/5 border-[#FFAA00]/30 chrome-surface',
+  3: 'bg-[#D97706]/5 border-[#D97706]/30 chrome-surface',
 }
 
 function getInitials(name: string): string {
@@ -56,7 +56,7 @@ export function LeaderboardTable({ entries, currentUserId }: LeaderboardTablePro
   return (
     <div className="space-y-2">
       {/* Desktop Table Header */}
-      <div className="hidden items-center gap-4 rounded-xl liquid-glass bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10 px-4 py-3 text-xs font-medium uppercase tracking-wider text-[#6B8FA3] font-display sm:flex">
+      <div className="hidden items-center gap-4 rounded-xl liquid-glass bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10 px-4 py-3 text-xs font-medium uppercase tracking-wider text-muted-foreground font-display sm:flex">
         <div className="w-12 text-center">Rank</div>
         <div className="flex-1">Student</div>
         <div className="w-24 text-right">XP</div>
@@ -75,7 +75,7 @@ export function LeaderboardTable({ entries, currentUserId }: LeaderboardTablePro
             key={entry.userId}
             className={cn(
               'flex items-center gap-4 rounded-xl border px-4 py-3 transition-all duration-200 liquid-glass',
-              isCurrentUser && 'border-2 border-[#33FF33]/50 bg-[#33FF33]/5 shadow-[0_0_15px_rgba(51,255,51,0.2)] neon-glow-green',
+              isCurrentUser && 'border-2 border-[#059669]/50 bg-[#059669]/5 shadow-[0_0_15px_rgba(5,150,105,0.2)]',
               !isCurrentUser && isTopThree && rankStyle,
               !isCurrentUser && !isTopThree && 'border-[#00BFFF]/15 bg-white/5 hover:bg-[#00BFFF]/5'
             )}
@@ -101,7 +101,7 @@ export function LeaderboardTable({ entries, currentUserId }: LeaderboardTablePro
                 <p
                   className={cn(
                     'truncate text-sm font-medium',
-                    isCurrentUser ? 'text-[#33FF33]' : 'text-[#0A2540] dark:text-[#E8F8FF]'
+                    isCurrentUser ? 'text-[#059669] dark:text-[#34D399]' : 'text-[#0A2540] dark:text-[#E8F8FF]'
                   )}
                 >
                   {entry.userName}
@@ -111,7 +111,7 @@ export function LeaderboardTable({ entries, currentUserId }: LeaderboardTablePro
                 </p>
                 {/* Mobile: show XP and level inline */}
                 <div className="flex items-center gap-2 sm:hidden">
-                  <span className="text-xs font-medium text-[#33FF33] font-data">
+                  <span className="text-xs font-medium text-[#059669] dark:text-[#34D399] font-data">
                     {entry.xpTotal.toLocaleString()} XP
                   </span>
                   <span className="text-xs text-muted-foreground">

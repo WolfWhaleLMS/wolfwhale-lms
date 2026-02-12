@@ -94,9 +94,9 @@ export default async function TeacherAllAssignmentsPage() {
       case 'past_due':
         return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
       case 'due_soon':
-        return 'bg-[#FFAA00]/10 text-[#FFAA00] dark:bg-[#FFAA00]/10 dark:text-[#FFAA00]'
+        return 'bg-[#FFAA00]/10 text-[#D97706] dark:bg-[#FFAA00]/10 dark:text-[#D97706]'
       case 'published':
-        return 'bg-[#33FF33]/10 text-[#33FF33] dark:bg-[#33FF33]/10 dark:text-[#33FF33]'
+        return 'bg-[#33FF33]/10 text-[#059669] dark:bg-[#33FF33]/10 dark:text-[#059669]'
       default:
         return 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
     }
@@ -185,15 +185,15 @@ export default async function TeacherAllAssignmentsPage() {
             <p className="mt-1 text-xs text-muted-foreground">Total Assignments</p>
           </div>
           <div className="ocean-card rounded-2xl p-4 text-center">
-            <CheckCircle2 className="mx-auto mb-1 h-5 w-5 text-[#33FF33]" />
-            <p className="text-2xl font-bold text-[#33FF33] dark:text-[#33FF33]">
+            <CheckCircle2 className="mx-auto mb-1 h-5 w-5 text-[#059669]" />
+            <p className="text-2xl font-bold text-[#059669] dark:text-[#059669]">
               {assignments.filter((a) => getAssignmentStatus(a) === 'published').length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Active</p>
           </div>
           <div className="ocean-card rounded-2xl p-4 text-center">
-            <AlertTriangle className="mx-auto mb-1 h-5 w-5 text-[#FFAA00]" />
-            <p className="text-2xl font-bold text-[#FFAA00] dark:text-[#FFAA00]">
+            <AlertTriangle className="mx-auto mb-1 h-5 w-5 text-[#D97706]" />
+            <p className="text-2xl font-bold text-[#D97706] dark:text-[#D97706]">
               {assignments.filter((a) => getAssignmentStatus(a) === 'due_soon').length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Due Soon</p>

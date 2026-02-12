@@ -40,7 +40,7 @@ export default function MiniGamesPage() {
           className="ocean-card group rounded-2xl p-6 transition-all hover:shadow-lg hover:scale-[1.02]"
         >
           <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#33FF33]/10">
-            <Dices className="h-8 w-8 text-[#33FF33]" />
+            <Dices className="h-8 w-8 text-[#059669]" />
           </div>
           <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
             Brain Games
@@ -55,7 +55,7 @@ export default function MiniGamesPage() {
           className="ocean-card group rounded-2xl p-6 transition-all hover:shadow-lg hover:scale-[1.02]"
         >
           <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#FFAA00]/10">
-            <Crown className="h-8 w-8 text-[#FFAA00]" />
+            <Crown className="h-8 w-8 text-[#D97706]" />
           </div>
           <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
             Chess

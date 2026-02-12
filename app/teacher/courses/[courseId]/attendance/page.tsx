@@ -52,7 +52,7 @@ const STATUS_CONFIG: Record<
   present: {
     label: 'Present',
     color:
-      'border-2 border-[#33FF33]/20 text-[#33FF33] bg-[#33FF33]/5 dark:border-[#33FF33]/20 dark:text-[#33FF33] dark:bg-[#33FF33]/5',
+      'border-2 border-[#33FF33]/20 text-[#059669] bg-[#33FF33]/5 dark:border-[#33FF33]/20 dark:text-[#059669] dark:bg-[#33FF33]/5',
     activeColor:
       'bg-[#33FF33] text-white border-2 border-[#33FF33] shadow-lg shadow-[#33FF33]/30 scale-105',
     icon: <Check className="size-5" />,
@@ -68,7 +68,7 @@ const STATUS_CONFIG: Record<
   tardy: {
     label: 'Tardy',
     color:
-      'border-2 border-[#FFAA00]/20 text-[#FFAA00] bg-[#FFAA00]/5 dark:border-[#FFAA00]/20 dark:text-[#FFAA00] dark:bg-[#FFAA00]/5',
+      'border-2 border-[#FFAA00]/20 text-[#D97706] bg-[#FFAA00]/5 dark:border-[#FFAA00]/20 dark:text-[#D97706] dark:bg-[#FFAA00]/5',
     activeColor:
       'bg-[#FFAA00] text-white border-2 border-[#FFAA00] shadow-lg shadow-[#FFAA00]/30 scale-105',
     icon: <Clock className="size-5" />,
@@ -292,7 +292,7 @@ export default function TakeAttendancePage({
             <p className="mt-2 text-white/90 text-lg font-medium">
               {courseName}
             </p>
-            <p className="mt-1 text-white/70 text-sm">
+            <p className="mt-1 text-white/90 text-white-outlined text-sm">
               {new Date(date + 'T00:00:00').toLocaleDateString('en-US', {
                 weekday: 'long',
                 year: 'numeric',
@@ -316,9 +316,9 @@ export default function TakeAttendancePage({
         </div>
         <div className="ocean-card rounded-2xl p-5 text-center">
           <div className="flex items-center justify-center mb-2">
-            <Check className="size-5 text-[#33FF33] dark:text-[#33FF33]" />
+            <Check className="size-5 text-[#059669] dark:text-[#059669]" />
           </div>
-          <p className="text-3xl font-bold text-[#33FF33] dark:text-[#33FF33]">
+          <p className="text-3xl font-bold text-[#059669] dark:text-[#059669]">
             {stats.present}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">Present Today</p>
@@ -334,9 +334,9 @@ export default function TakeAttendancePage({
         </div>
         <div className="ocean-card rounded-2xl p-5 text-center">
           <div className="flex items-center justify-center mb-2">
-            <Clock className="size-5 text-[#FFAA00] dark:text-[#FFAA00]" />
+            <Clock className="size-5 text-[#D97706] dark:text-[#D97706]" />
           </div>
-          <p className="text-3xl font-bold text-[#FFAA00] dark:text-[#FFAA00]">
+          <p className="text-3xl font-bold text-[#D97706] dark:text-[#D97706]">
             {stats.tardy}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">Tardy Today</p>
@@ -382,7 +382,7 @@ export default function TakeAttendancePage({
         <div
           className={`rounded-2xl p-4 text-sm font-medium flex items-center gap-2 ${
             feedback.type === 'success'
-              ? 'bg-[#33FF33]/5 text-[#33FF33] dark:bg-[#33FF33]/10 dark:text-[#33FF33]'
+              ? 'bg-[#33FF33]/5 text-[#059669] dark:bg-[#33FF33]/10 dark:text-[#059669]'
               : feedback.type === 'saving'
               ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400'
               : 'bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400'

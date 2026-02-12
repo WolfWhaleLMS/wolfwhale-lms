@@ -42,9 +42,9 @@ const STATUS_CONFIG: Record<
 > = {
   present: {
     label: 'Present',
-    dotColor: 'bg-[#33FF33]',
-    bgColor: 'bg-[#33FF33]/10 dark:bg-[#33FF33]/15',
-    textColor: 'text-[#33FF33] dark:text-[#33FF33]',
+    dotColor: 'bg-[#059669]',
+    bgColor: 'bg-[#059669]/10 dark:bg-[#059669]/15',
+    textColor: 'text-[#059669] dark:text-[#34D399]',
     icon: <Check className="size-3.5" />,
   },
   absent: {
@@ -56,9 +56,9 @@ const STATUS_CONFIG: Record<
   },
   tardy: {
     label: 'Tardy',
-    dotColor: 'bg-[#FFAA00]',
-    bgColor: 'bg-[#FFAA00]/10 dark:bg-[#FFAA00]/15',
-    textColor: 'text-[#FFAA00] dark:text-[#FFD700]',
+    dotColor: 'bg-[#D97706]',
+    bgColor: 'bg-[#D97706]/10 dark:bg-[#D97706]/15',
+    textColor: 'text-[#D97706] dark:text-[#FBBF24]',
     icon: <Clock className="size-3.5" />,
   },
   excused: {
@@ -70,9 +70,9 @@ const STATUS_CONFIG: Record<
   },
   online: {
     label: 'Online',
-    dotColor: 'bg-[#33FF33]',
-    bgColor: 'bg-[#33FF33]/10 dark:bg-[#33FF33]/15',
-    textColor: 'text-[#33FF33] dark:text-[#33FF33]',
+    dotColor: 'bg-[#059669]',
+    bgColor: 'bg-[#059669]/10 dark:bg-[#059669]/15',
+    textColor: 'text-[#059669] dark:text-[#34D399]',
     icon: <Check className="size-3.5" />,
   },
 }
@@ -204,9 +204,9 @@ export default function StudentAttendancePage() {
                 strokeDashoffset={progressOffset}
                 className={
                   summary.rate >= 90
-                    ? 'stroke-[#33FF33]'
+                    ? 'stroke-[#059669]'
                     : summary.rate >= 75
-                      ? 'stroke-[#FFAA00]'
+                      ? 'stroke-[#D97706]'
                       : 'stroke-red-500'
                 }
                 style={{ transition: 'stroke-dashoffset 0.5s ease-in-out' }}
@@ -227,7 +227,7 @@ export default function StudentAttendancePage() {
             </h2>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               <div className="text-center p-4 rounded-xl bg-muted/50">
-                <p className="text-2xl font-bold text-[#33FF33] dark:text-[#33FF33]">
+                <p className="text-2xl font-bold text-[#059669] dark:text-[#34D399]">
                   {summary.present}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">Days Present</p>
@@ -239,7 +239,7 @@ export default function StudentAttendancePage() {
                 <p className="text-xs text-muted-foreground mt-1">Days Absent</p>
               </div>
               <div className="text-center p-4 rounded-xl bg-muted/50">
-                <p className="text-2xl font-bold text-[#FFAA00] dark:text-[#FFD700]">
+                <p className="text-2xl font-bold text-[#D97706] dark:text-[#FBBF24]">
                   {summary.tardy}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">Days Tardy</p>
@@ -342,7 +342,7 @@ export default function StudentAttendancePage() {
         {/* Legend */}
         <div className="mt-6 flex flex-wrap gap-4 justify-center text-xs">
           <div className="flex items-center gap-2">
-            <div className="size-3 rounded-full bg-[#33FF33]"></div>
+            <div className="size-3 rounded-full bg-[#059669]"></div>
             <span className="text-muted-foreground">Present</span>
           </div>
           <div className="flex items-center gap-2">
@@ -350,7 +350,7 @@ export default function StudentAttendancePage() {
             <span className="text-muted-foreground">Absent</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="size-3 rounded-full bg-[#FFAA00]"></div>
+            <div className="size-3 rounded-full bg-[#D97706]"></div>
             <span className="text-muted-foreground">Tardy</span>
           </div>
           <div className="flex items-center gap-2">
@@ -386,11 +386,11 @@ export default function StudentAttendancePage() {
                   key={record.id}
                   className={`flex items-center justify-between rounded-xl p-4 transition-colors ${
                     record.status === 'present' || record.status === 'online'
-                      ? 'bg-[#33FF33]/5 dark:bg-[#33FF33]/10 border border-[#33FF33]/20 dark:border-[#33FF33]/20'
+                      ? 'bg-[#059669]/5 dark:bg-[#059669]/10 border border-[#059669]/20 dark:border-[#059669]/20'
                       : record.status === 'absent'
                         ? 'bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900'
                         : record.status === 'tardy'
-                          ? 'bg-[#FFAA00]/5 dark:bg-[#FFAA00]/10 border border-[#FFAA00]/20 dark:border-[#FFAA00]/20'
+                          ? 'bg-[#D97706]/5 dark:bg-[#D97706]/10 border border-[#D97706]/20 dark:border-[#D97706]/20'
                           : 'bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10 border border-[#00BFFF]/20 dark:border-[#00BFFF]/20'
                   }`}
                 >

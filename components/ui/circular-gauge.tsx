@@ -12,10 +12,10 @@ interface CircularGaugeProps {
 }
 
 const defaultThresholds = [
-  { value: 90, color: '#33FF33', bgColor: '#33FF3320' },
+  { value: 90, color: '#059669', bgColor: '#05966920' },
   { value: 75, color: '#00BFFF', bgColor: '#00BFFF20' },
-  { value: 60, color: '#FFAA00', bgColor: '#FFAA0020' },
-  { value: 0, color: '#FF3366', bgColor: '#FF336620' },
+  { value: 60, color: '#D97706', bgColor: '#D9770620' },
+  { value: 0, color: '#DC2626', bgColor: '#DC262620' },
 ]
 
 export function CircularGauge({
@@ -105,7 +105,7 @@ export function CircularGauge({
       <div className="text-center">
         <p className="text-sm font-semibold text-[#0A2540] dark:text-[#E8F8FF]">{label}</p>
         {sublabel && (
-          <p className="text-xs text-[#6B8FA3]">{sublabel}</p>
+          <p className="text-xs text-muted-foreground">{sublabel}</p>
         )}
       </div>
       {/* Screen reader description */}

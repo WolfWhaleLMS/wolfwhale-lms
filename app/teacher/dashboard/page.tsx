@@ -174,7 +174,7 @@ export default async function TeacherDashboardPage() {
       {/* Welcome Header */}
       <div className="ocean-card rounded-2xl p-6">
         <div className="mb-4">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground text-outlined">
             Welcome back, {teacherName}
           </h1>
           <p className="mt-1 text-muted-foreground">
@@ -197,8 +197,8 @@ export default async function TeacherDashboardPage() {
             <p className="mt-1 text-sm text-muted-foreground">Students</p>
           </div>
           <div className="rounded-xl border border-border bg-muted/30 p-4 text-center">
-            <ClipboardList className="mx-auto mb-1 h-5 w-5 text-[#FFAA00]" />
-            <p className="text-3xl font-bold text-[#FFAA00] dark:text-[#FFAA00]">
+            <ClipboardList className="mx-auto mb-1 h-5 w-5 text-[#D97706]" />
+            <p className="text-3xl font-bold text-[#D97706] dark:text-[#D97706]">
               {pendingGrading}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -206,8 +206,8 @@ export default async function TeacherDashboardPage() {
             </p>
           </div>
           <div className="rounded-xl border border-border bg-muted/30 p-4 text-center">
-            <Clock className="mx-auto mb-1 h-5 w-5 text-[#33FF33]" />
-            <p className="text-3xl font-bold text-[#33FF33] dark:text-[#33FF33]">
+            <Clock className="mx-auto mb-1 h-5 w-5 text-[#059669]" />
+            <p className="text-3xl font-bold text-[#059669] dark:text-[#059669]">
               {courses.reduce((s: number, c: any) => s + (c.lessonCount || 0), 0)}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">Total Lessons</p>
@@ -217,7 +217,7 @@ export default async function TeacherDashboardPage() {
 
       {/* Quick Actions */}
       <div className="ocean-card rounded-2xl p-6">
-        <h2 className="mb-4 text-xl font-bold text-foreground">
+        <h2 className="mb-4 text-xl font-bold text-foreground text-outlined">
           Quick Actions
         </h2>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
@@ -250,7 +250,7 @@ export default async function TeacherDashboardPage() {
             className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-[#33FF33]/10 to-[#33FF33]/5 p-6 transition-all hover:shadow-lg hover:scale-105"
           >
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#33FF33]/20">
-              <GraduationCap className="h-6 w-6 text-[#33FF33]" />
+              <GraduationCap className="h-6 w-6 text-[#059669]" />
             </div>
             <span className="text-sm font-semibold text-foreground">
               Gradebook
@@ -286,7 +286,7 @@ export default async function TeacherDashboardPage() {
       {/* My Courses */}
       <div className="ocean-card rounded-2xl p-6">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-foreground">My Courses</h2>
+          <h2 className="text-xl font-bold text-foreground text-outlined">My Courses</h2>
           <Link
             href="/teacher/courses"
             className="text-sm text-primary hover:underline"
@@ -328,11 +328,11 @@ export default async function TeacherDashboardPage() {
                   <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary shrink-0" />
                 </div>
                 {course.subject && (
-                  <p className="mb-3 text-xs text-muted-foreground">
+                  <p className="mb-3 text-sm text-muted-foreground">
                     {course.subject}
                   </p>
                 )}
-                <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Users className="h-3.5 w-3.5" />
                     {course.studentCount || 0} students
@@ -351,26 +351,26 @@ export default async function TeacherDashboardPage() {
       {/* Recent Submissions */}
       {recentSubmissions.length > 0 && (
         <div className="ocean-card rounded-2xl p-6">
-          <h2 className="mb-4 text-xl font-bold text-foreground">
+          <h2 className="mb-4 text-xl font-bold text-foreground text-outlined">
             Recent Submissions
           </h2>
           <div className="overflow-hidden rounded-xl border border-border">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-muted/50">
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
                     Student
                   </th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
                     Assignment
                   </th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
                     Course
                   </th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground">
                     Time
                   </th>
-                  <th className="px-4 py-3 text-right font-medium text-muted-foreground">
+                  <th className="px-4 py-3 text-right font-semibold text-muted-foreground">
                     Status
                   </th>
                 </tr>
@@ -387,10 +387,10 @@ export default async function TeacherDashboardPage() {
                     <td className="px-4 py-3 text-muted-foreground">
                       {sub.assignmentTitle}
                     </td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {sub.courseName}
                     </td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {formatTimeAgo(sub.submittedAt)}
                     </td>
                     <td className="px-4 py-3 text-right">
@@ -402,7 +402,7 @@ export default async function TeacherDashboardPage() {
                           Grade
                         </Link>
                       ) : (
-                        <span className="text-xs text-[#33FF33] dark:text-[#33FF33]">
+                        <span className="text-xs text-[#059669] dark:text-[#059669]">
                           Graded
                         </span>
                       )}

@@ -24,10 +24,10 @@ const TIER_BORDER: Record<string, string> = {
 }
 
 const TIER_BADGE_STYLES: Record<string, string> = {
-  bronze: 'bg-[#FFAA00]/15 text-[#FFAA00]',
-  silver: 'bg-[#00BFFF]/15 text-[#00BFFF]',
-  gold: 'bg-[#33FF33]/15 text-[#33FF33]',
-  platinum: 'bg-[#00FFFF]/15 text-[#00FFFF]',
+  bronze: 'bg-[#D97706]/15 text-[#D97706] dark:text-[#FBBF24]',
+  silver: 'bg-[#00BFFF]/15 text-[#0284C7] dark:text-[#7DD3FC]',
+  gold: 'bg-[#059669]/15 text-[#059669] dark:text-[#34D399]',
+  platinum: 'bg-[#00FFFF]/15 text-[#0891B2] dark:text-[#67E8F9]',
 }
 
 const TIER_GLOW: Record<string, string> = {
@@ -120,7 +120,7 @@ export function AchievementCard({
             <span
               className={cn(
                 'text-xs font-medium font-data',
-                earned ? 'text-[#33FF33]' : 'text-muted-foreground/50'
+                earned ? 'text-[#059669] dark:text-[#34D399]' : 'text-muted-foreground/50'
               )}
             >
               +{xpReward} XP

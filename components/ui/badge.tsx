@@ -8,8 +8,8 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: 'border-transparent bg-[#00BFFF]/15 text-[#00BFFF] dark:bg-[#00BFFF]/20 dark:text-[#00BFFF]',
-        secondary: 'border-transparent bg-[#E8F8FF] text-[#6B8FA3] dark:bg-[#041428] dark:text-[#6B8FA3]',
-        destructive: 'border-transparent bg-[#FF3366]/15 text-[#FF3366] dark:bg-[#FF3366]/20 dark:text-[#FF3366]',
+        secondary: 'border-transparent bg-[#E8F8FF] text-muted-foreground dark:bg-[#041428] dark:text-muted-foreground',
+        destructive: 'border-transparent bg-[#DC2626]/15 text-[#DC2626] dark:bg-[#DC2626]/20 dark:text-[#FF6B6B]',
         outline: 'text-[#0A2540] dark:text-[#E8F8FF] border-[#00BFFF]/30 dark:border-[#00BFFF]/20',
         xp: 'border-transparent bg-gradient-to-r from-[#33FF33] to-[#00FFFF] text-[#0A2540] shadow-md shadow-[#33FF33]/20',
         achievement: 'border-transparent bg-gradient-to-r from-[#00FFFF] to-[#00BFFF] text-white shadow-md neon-pulse-cyan',
