@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { deleteModule } from '@/app/actions/modules'
 import { deleteLesson } from '@/app/actions/lessons'
+import { LessonActions } from './lesson-actions'
 import {
   ChevronRight,
   ChevronDown,
@@ -14,6 +15,7 @@ import {
   Trash2,
   Clock,
   GripVertical,
+  Plus,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
@@ -49,6 +51,8 @@ export function ModuleList({ modules, lessons, courseId }: ModuleListProps) {
   )
   const [deletingModule, setDeletingModule] = useState<string | null>(null)
   const [deletingLesson, setDeletingLesson] = useState<string | null>(null)
+  // Track which module's inline "Add Lesson" dialog is open
+  const [addLessonModuleId, setAddLessonModuleId] = useState<string | null>(null)
 
   const toggleModule = (moduleId: string) => {
     setExpandedModules((prev) => {
@@ -102,6 +106,9 @@ export function ModuleList({ modules, lessons, courseId }: ModuleListProps) {
   }
 
   const uncategorizedLessons = lessons.filter((l) => !l.module_id)
+
+  // Module list for the selector (id + title only)
+  const moduleOptions = modules.map((m) => ({ id: m.id, title: m.title }))
 
   function LessonRow({ lesson, index }: { lesson: Lesson; index: number }) {
     return (
@@ -205,6 +212,15 @@ export function ModuleList({ modules, lessons, courseId }: ModuleListProps) {
                 <Button
                   variant="ghost"
                   size="sm"
+                  className="h-7 gap-1 text-xs text-primary hover:text-primary/80 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={() => setAddLessonModuleId(module.id)}
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  Add Lesson
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
                   className="h-7 w-7 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 opacity-0 group-hover:opacity-100 transition-opacity"
                   onClick={() => handleDeleteModule(module.id, module.title)}
                   disabled={deletingModule === module.id}
@@ -226,14 +242,34 @@ export function ModuleList({ modules, lessons, courseId }: ModuleListProps) {
             {isExpanded && moduleLessons.length === 0 && (
               <div className="border-t border-border bg-muted/20 p-8 text-center">
                 <BookOpen className="mx-auto h-8 w-8 text-muted-foreground/40 mb-2" />
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-3">
                   No lessons in this module yet
                 </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-1.5"
+                  onClick={() => setAddLessonModuleId(module.id)}
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  Add First Lesson
+                </Button>
               </div>
             )}
           </div>
         )
       })}
+
+      {/* Inline Add-Lesson dialog (rendered once, controlled by addLessonModuleId) */}
+      <LessonActions
+        courseId={courseId}
+        modules={moduleOptions}
+        defaultModuleId={addLessonModuleId || undefined}
+        externalOpen={addLessonModuleId !== null}
+        onExternalOpenChange={(open) => {
+          if (!open) setAddLessonModuleId(null)
+        }}
+      />
 
       {/* Uncategorized Lessons */}
       {uncategorizedLessons.length > 0 && (

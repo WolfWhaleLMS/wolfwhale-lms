@@ -204,6 +204,7 @@ interface CreateLessonInput {
   learning_objectives?: string[]
   duration_minutes?: number
   status?: string
+  module_id?: string
 }
 
 export async function createLesson(courseId: string, input: CreateLessonInput) {
@@ -215,6 +216,7 @@ export async function createLesson(courseId: string, input: CreateLessonInput) {
     learning_objectives: z.array(z.string().max(500)).max(20).optional(),
     duration_minutes: z.number().min(0).max(600).optional(),
     status: z.string().max(50).optional(),
+    module_id: z.string().uuid().optional(),
   })
   const parsed = createLessonSchema.safeParse({ courseId, ...input })
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
@@ -249,6 +251,19 @@ export async function createLesson(courseId: string, input: CreateLessonInput) {
       ? existingLessons[0].order_index + 1
       : 0
 
+  // If module_id is provided, verify it belongs to the same course
+  if (input.module_id) {
+    const { data: mod } = await supabase
+      .from('modules')
+      .select('course_id')
+      .eq('id', input.module_id)
+      .single()
+
+    if (!mod || mod.course_id !== courseId) {
+      return { error: 'Module does not belong to this course' }
+    }
+  }
+
   const { data: lesson, error } = await supabase
     .from('lessons')
     .insert({
@@ -262,6 +277,7 @@ export async function createLesson(courseId: string, input: CreateLessonInput) {
       duration_minutes: input.duration_minutes || null,
       order_index: nextOrderIndex,
       status: input.status || 'draft',
+      module_id: input.module_id || null,
     })
     .select('id')
     .single()

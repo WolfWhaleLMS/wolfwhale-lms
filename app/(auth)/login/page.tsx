@@ -24,13 +24,13 @@ export default function LoginPage() {
 
   return (
     <div className="space-y-6">
-      {/* Back to Hub Button */}
-      <div className="-ml-2">
+      {/* Back to Hub Button — pinned top-left under the logo */}
+      <div className="fixed top-[108px] left-6 z-20 sm:top-[112px]">
         <Link
           href="/"
-          className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl btn-chrome-3d-silver font-semibold text-sm tracking-wide transition-all hover:scale-105 neon-glow-blue group"
+          className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl btn-chrome-3d-silver font-semibold text-sm tracking-wide transition-all hover:scale-105 neon-glow-blue group shadow-lg"
         >
-          <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
+          <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
           <span>WolfWhale EdTech Hub</span>
         </Link>
       </div>

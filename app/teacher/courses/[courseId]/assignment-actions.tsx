@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createAssignment } from '@/app/actions/assignments'
@@ -17,7 +17,7 @@ import {
   DialogTrigger,
   DialogFooter,
 } from '@/components/ui/dialog'
-import { Plus, Loader2, Wand2, Link2, X } from 'lucide-react'
+import { Plus, Loader2, Wand2, Link2, X, FolderOpen, BookOpen } from 'lucide-react'
 import { toast } from 'sonner'
 
 type QuickLink = {
@@ -26,7 +26,24 @@ type QuickLink = {
   title: string
 }
 
-export function AssignmentActions({ courseId }: { courseId: string }) {
+interface ModuleOption {
+  id: string
+  title: string
+}
+
+interface LessonOption {
+  id: string
+  title: string
+  module_id: string | null
+}
+
+interface AssignmentActionsProps {
+  courseId: string
+  modules?: ModuleOption[]
+  lessons?: LessonOption[]
+}
+
+export function AssignmentActions({ courseId, modules = [], lessons = [] }: AssignmentActionsProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -40,7 +57,15 @@ export function AssignmentActions({ courseId }: { courseId: string }) {
     pointsPossible: '100',
     submissionType: 'text',
     latePolicy: true,
+    moduleId: '',
+    lessonId: '',
   })
+
+  // Filter lessons based on selected module
+  const filteredLessons = useMemo(() => {
+    if (!formData.moduleId) return lessons
+    return lessons.filter((l) => l.module_id === formData.moduleId)
+  }, [lessons, formData.moduleId])
 
   function resetForm() {
     setFormData({
@@ -51,6 +76,8 @@ export function AssignmentActions({ courseId }: { courseId: string }) {
       pointsPossible: '100',
       submissionType: 'text',
       latePolicy: true,
+      moduleId: '',
+      lessonId: '',
     })
     setQuickLinks([])
     setError(null)
@@ -106,6 +133,8 @@ export function AssignmentActions({ courseId }: { courseId: string }) {
         submissionType: formData.submissionType,
         latePolicy: formData.latePolicy,
         links: validLinks.length > 0 ? validLinks : undefined,
+        moduleId: formData.moduleId || undefined,
+        lessonId: formData.lessonId || undefined,
       })
 
       if (result.error) {
@@ -147,7 +176,7 @@ export function AssignmentActions({ courseId }: { courseId: string }) {
             Add Assignment
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Create New Assignment</DialogTitle>
           </DialogHeader>
@@ -155,6 +184,78 @@ export function AssignmentActions({ courseId }: { courseId: string }) {
             {error && (
               <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/50 dark:text-red-400">
                 {error}
+              </div>
+            )}
+
+            {/* Attach to Module / Lesson — shown when modules or lessons exist */}
+            {(modules.length > 0 || lessons.length > 0) && (
+              <div className="rounded-lg border border-border bg-muted/20 p-3 space-y-3">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                  Attach to
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  {modules.length > 0 && (
+                    <div className="space-y-1.5">
+                      <Label htmlFor="assignment-module" className="text-xs">
+                        <span className="flex items-center gap-1">
+                          <FolderOpen className="h-3 w-3" />
+                          Module
+                        </span>
+                      </Label>
+                      <select
+                        id="assignment-module"
+                        value={formData.moduleId}
+                        onChange={(e) => {
+                          const newModuleId = e.target.value
+                          setFormData((prev) => ({
+                            ...prev,
+                            moduleId: newModuleId,
+                            // Reset lesson if switching modules
+                            lessonId: '',
+                          }))
+                        }}
+                        className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                        disabled={isSubmitting}
+                      >
+                        <option value="">None</option>
+                        {modules.map((m) => (
+                          <option key={m.id} value={m.id}>
+                            {m.title}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                  {filteredLessons.length > 0 && (
+                    <div className="space-y-1.5">
+                      <Label htmlFor="assignment-lesson" className="text-xs">
+                        <span className="flex items-center gap-1">
+                          <BookOpen className="h-3 w-3" />
+                          Lesson
+                        </span>
+                      </Label>
+                      <select
+                        id="assignment-lesson"
+                        value={formData.lessonId}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            lessonId: e.target.value,
+                          }))
+                        }
+                        className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                        disabled={isSubmitting}
+                      >
+                        <option value="">None</option>
+                        {filteredLessons.map((l) => (
+                          <option key={l.id} value={l.id}>
+                            {l.title}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 

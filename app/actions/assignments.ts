@@ -111,6 +111,8 @@ export async function createAssignment(formData: {
   questions?: unknown[]
   attachments?: { url: string; fileName: string; fileSize: number; fileType: string }[]
   links?: { url: string; title: string }[]
+  moduleId?: string
+  lessonId?: string
 }) {
   const createAssignmentSchema = z.object({
     courseId: z.string().uuid(),
@@ -132,6 +134,8 @@ export async function createAssignment(formData: {
       url: z.string().max(2000),
       title: z.string().max(500),
     })).optional(),
+    moduleId: z.string().uuid().optional(),
+    lessonId: z.string().uuid().optional(),
   })
   const parsed = createAssignmentSchema.safeParse(formData)
   if (!parsed.success) return { error: 'Invalid input: ' + parsed.error.issues[0].message }
@@ -167,6 +171,8 @@ export async function createAssignment(formData: {
     allow_late_submission: parsed.data.latePolicy ?? false,
     status: 'assigned',
     questions: parsed.data.questions || [],
+    module_id: parsed.data.moduleId || null,
+    lesson_id: parsed.data.lessonId || null,
   }
 
   // Build combined attachments array (files + links)

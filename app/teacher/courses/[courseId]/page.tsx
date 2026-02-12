@@ -252,7 +252,7 @@ export default async function TeacherCourseDetailPage({
               </h2>
               <div className="flex items-center gap-2">
                 <ModuleActions courseId={courseId} />
-                <LessonActions courseId={courseId} />
+                <LessonActions courseId={courseId} modules={modules} />
               </div>
             </div>
 
@@ -267,7 +267,11 @@ export default async function TeacherCourseDetailPage({
               <h2 className="text-lg font-semibold text-foreground">
                 Course Assignments
               </h2>
-              <AssignmentActions courseId={courseId} />
+              <AssignmentActions
+                courseId={courseId}
+                modules={modules.map((m) => ({ id: m.id, title: m.title }))}
+                lessons={lessons.map((l) => ({ id: l.id, title: l.title, module_id: l.module_id }))}
+              />
             </div>
 
             <AssignmentList courseId={courseId} assignments={assignments} />
