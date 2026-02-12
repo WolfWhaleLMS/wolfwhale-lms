@@ -29,8 +29,13 @@ export function DashboardLayout({
 
   // Demo pets for students (will be replaced with Supabase data)
   const demoPets: PetData[] = role === 'student' ? [
-    { id: 'demo-1', creatureType: 1, name: 'Rex', walkSpeed: 18, startOffset: 10 },
-    { id: 'demo-2', creatureType: 2, name: 'Buddy', walkSpeed: 24, startOffset: 60 },
+    { id: 'demo-1', creatureType: 1, name: 'Rex',     walkSpeed: 28, startOffset: 5  },
+    { id: 'demo-2', creatureType: 2, name: 'Buddy',   walkSpeed: 38, startOffset: 18 },
+    { id: 'demo-3', creatureType: 3, name: 'Spike',   walkSpeed: 22, startOffset: 32 },
+    { id: 'demo-4', creatureType: 4, name: 'Coral',   walkSpeed: 45, startOffset: 48 },
+    { id: 'demo-5', creatureType: 5, name: 'Nori',    walkSpeed: 33, startOffset: 62 },
+    { id: 'demo-6', creatureType: 6, name: 'Pebble',  walkSpeed: 52, startOffset: 78 },
+    { id: 'demo-7', creatureType: 7, name: 'Drift',   walkSpeed: 26, startOffset: 92 },
   ] : []
 
   // Close sidebar on Escape key
