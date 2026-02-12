@@ -39,14 +39,14 @@ export function memoryRateLimit(key: string, limit: number, windowMs: number): {
 export type RateLimitTier = 'auth' | 'api' | 'general' | 'report'
 
 const TIER_CONFIG: Record<RateLimitTier, { requests: number; window: `${number} s` }> = {
-  /** Auth endpoints (login, signup, forgot-password): 5 requests per 60 seconds */
-  auth: { requests: 5, window: '60 s' },
-  /** API / server actions: 30 requests per 60 seconds */
-  api: { requests: 30, window: '60 s' },
-  /** General page loads: 60 requests per 60 seconds */
-  general: { requests: 60, window: '60 s' },
-  /** Report generation (expensive PDF/CSV): 5 requests per 60 seconds */
-  report: { requests: 5, window: '60 s' },
+  /** Auth endpoints (login, signup, forgot-password): 10 requests per 60 seconds */
+  auth: { requests: 10, window: '60 s' },
+  /** API / server actions: 200 requests per 60 seconds */
+  api: { requests: 200, window: '60 s' },
+  /** General page loads: 300 requests per 60 seconds */
+  general: { requests: 300, window: '60 s' },
+  /** Report generation (expensive PDF/CSV): 10 requests per 60 seconds */
+  report: { requests: 10, window: '60 s' },
 }
 
 // ---------------------------------------------------------------------------
@@ -112,19 +112,20 @@ export async function rateLimit(
   const limiter = getLimiter(tier)
 
   if (!limiter) {
-    if (process.env.NODE_ENV === 'production') {
-      console.warn('[rate-limit] Redis not available, using in-memory fallback')
-    }
+    // Without Redis, in-memory rate limiting is unreliable on serverless
+    // (each instance has its own Map). Use 3x the configured limit to only
+    // catch obvious abuse while avoiding false positives on normal usage.
     const config = TIER_CONFIG[tier]
     const windowSeconds = parseInt(config.window, 10)
+    const generousLimit = config.requests * 3
     const result = memoryRateLimit(
       `wolfwhale:ratelimit:${tier}:${identifier}`,
-      config.requests,
+      generousLimit,
       windowSeconds * 1000
     )
     return {
       success: result.success,
-      limit: config.requests,
+      limit: generousLimit,
       remaining: result.remaining,
       reset: Date.now() + windowSeconds * 1000,
     }
