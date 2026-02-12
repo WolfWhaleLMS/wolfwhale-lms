@@ -66,22 +66,20 @@ export default function AuthLayout({
         <div className="blob-ocean absolute top-[-10%] right-[-5%] w-[500px] h-[500px] opacity-30" />
         <div className="blob-teal absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] opacity-20" />
 
-        {/* Floating bubble particles */}
+        {/* Lava lamp chrome blobs */}
         {mounted && (
           <div className="absolute inset-0">
-            {/* Bubbles with bubble-float animation */}
-            <div className="absolute bubble-float rounded-full bg-[#00BFFF]/8 w-3 h-3" style={{ left: '8%', top: '15%', animationDelay: '0s' }} />
-            <div className="absolute bubble-float rounded-full bg-[#00FFFF]/6 w-4 h-4" style={{ left: '85%', top: '20%', animationDelay: '0.8s' }} />
-            <div className="absolute bubble-float rounded-full bg-[#00BFFF]/8 w-2 h-2" style={{ left: '25%', top: '60%', animationDelay: '1.5s' }} />
-            <div className="absolute bubble-float rounded-full bg-[#00FFFF]/6 w-5 h-5" style={{ left: '70%', top: '75%', animationDelay: '2.2s' }} />
-            <div className="absolute bubble-float rounded-full bg-[#00BFFF]/8 w-3.5 h-3.5" style={{ left: '45%', top: '10%', animationDelay: '3s' }} />
-            <div className="absolute bubble-float rounded-full bg-[#00FFFF]/6 w-2.5 h-2.5" style={{ left: '15%', top: '85%', animationDelay: '3.8s' }} />
-            <div className="absolute bubble-float rounded-full bg-[#00BFFF]/8 w-4 h-4" style={{ left: '60%', top: '45%', animationDelay: '4.5s' }} />
-            <div className="absolute bubble-float rounded-full bg-[#00FFFF]/6 w-3 h-3" style={{ left: '90%', top: '55%', animationDelay: '5.2s' }} />
-            <div className="absolute bubble-float rounded-full bg-[#00BFFF]/6 w-2 h-2" style={{ left: '35%', top: '35%', animationDelay: '1s' }} />
-            <div className="absolute bubble-float rounded-full bg-[#00FFFF]/8 w-3 h-3" style={{ left: '50%', top: '90%', animationDelay: '2.8s' }} />
+            {/* Large lava blobs — organic, slow-morphing chrome shapes */}
+            <div className="lava-blob" style={{ width: '120px', height: '120px', left: '5%', animationDuration: '14s', animationDelay: '0s' }} />
+            <div className="lava-blob" style={{ width: '90px', height: '90px', right: '8%', animationDuration: '18s', animationDelay: '2s' }} />
+            <div className="lava-blob" style={{ width: '150px', height: '150px', left: '25%', animationDuration: '20s', animationDelay: '4s' }} />
+            <div className="lava-blob" style={{ width: '70px', height: '70px', right: '25%', animationDuration: '16s', animationDelay: '6s' }} />
+            <div className="lava-blob" style={{ width: '100px', height: '100px', left: '60%', animationDuration: '22s', animationDelay: '1s' }} />
+            <div className="lava-blob" style={{ width: '80px', height: '80px', left: '45%', animationDuration: '15s', animationDelay: '8s' }} />
+            <div className="lava-blob" style={{ width: '60px', height: '60px', right: '15%', animationDuration: '17s', animationDelay: '3s' }} />
+            <div className="lava-blob" style={{ width: '110px', height: '110px', left: '80%', animationDuration: '19s', animationDelay: '5s' }} />
 
-            {/* Chrome orb decorations */}
+            {/* Small chrome orbs for sparkle */}
             <div className="absolute chrome-orb orb-float w-5 h-5" style={{ left: '10%', top: '30%', animationDelay: '0s' }} />
             <div className="absolute chrome-orb orb-float w-7 h-7" style={{ right: '12%', top: '65%', animationDelay: '1.5s' }} />
             <div className="absolute chrome-orb orb-float w-4 h-4" style={{ left: '55%', top: '8%', animationDelay: '3s' }} />
@@ -140,6 +138,88 @@ export default function AuthLayout({
         @keyframes ocean-drift {
           0%, 100% { transform: translateX(0) scale(1); }
           50% { transform: translateX(10%) scale(1.05); }
+        }
+      `}</style>
+
+      {/* Lava blob styles */}
+      <style jsx global>{`
+        .lava-blob {
+          position: absolute;
+          border-radius: 50%;
+          background: linear-gradient(
+            180deg,
+            rgba(240, 248, 255, 0.85) 0%,
+            rgba(192, 216, 232, 0.70) 25%,
+            rgba(232, 244, 255, 0.80) 50%,
+            rgba(168, 200, 224, 0.65) 75%,
+            rgba(224, 240, 255, 0.75) 100%
+          );
+          box-shadow:
+            0 0 30px rgba(0, 191, 255, 0.20),
+            0 0 60px rgba(0, 191, 255, 0.10),
+            inset -8px -8px 20px rgba(0, 0, 0, 0.08),
+            inset 8px 8px 20px rgba(255, 255, 255, 0.60);
+          animation: lava-float linear infinite;
+          filter: blur(1px);
+          opacity: 0.55;
+          pointer-events: none;
+        }
+        .lava-blob::before {
+          content: '';
+          position: absolute;
+          top: 12%;
+          left: 18%;
+          width: 40%;
+          height: 35%;
+          background: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.75) 0%,
+            rgba(255, 255, 255, 0.15) 60%,
+            transparent 100%
+          );
+          border-radius: 50%;
+        }
+        @keyframes lava-float {
+          0% {
+            bottom: -15%;
+            border-radius: 50% 45% 55% 48%;
+            transform: scale(1) translateX(0);
+          }
+          15% {
+            border-radius: 45% 55% 48% 52%;
+            transform: scale(1.08) translateX(15px);
+          }
+          30% {
+            border-radius: 52% 48% 45% 55%;
+            transform: scale(0.95) translateX(-10px);
+          }
+          50% {
+            bottom: 105%;
+            border-radius: 48% 52% 55% 45%;
+            transform: scale(1.12) translateX(20px);
+          }
+          51% {
+            bottom: -15%;
+            opacity: 0;
+          }
+          55% {
+            opacity: 0.55;
+            border-radius: 55% 45% 50% 50%;
+            transform: scale(1) translateX(0);
+          }
+          70% {
+            border-radius: 45% 52% 48% 55%;
+            transform: scale(1.05) translateX(-15px);
+          }
+          85% {
+            border-radius: 50% 48% 55% 45%;
+            transform: scale(0.98) translateX(10px);
+          }
+          100% {
+            bottom: 105%;
+            border-radius: 50% 45% 55% 48%;
+            transform: scale(1) translateX(0);
+          }
         }
       `}</style>
     </div>

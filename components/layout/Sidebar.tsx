@@ -171,19 +171,19 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
                       onClose?.()
                     }}
                     className={cn(
-                      'flex items-center gap-3 rounded-full px-3 py-2.5 text-sm font-medium transition-all duration-200',
+                      'sidebar-chrome-tab flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-300 relative overflow-hidden',
                       isActive
-                        ? 'wolf-gradient text-white shadow-md shadow-ocean-500/20 glow-border-ocean neon-glow-blue'
-                        : 'text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground'
+                        ? 'sidebar-chrome-tab-active text-white'
+                        : 'text-sidebar-foreground/70 hover:text-sidebar-foreground'
                     )}
                   >
                     <Icon
                       className={cn(
-                        'h-5 w-5 flex-shrink-0',
-                        isActive ? 'text-white' : 'text-sidebar-foreground/50'
+                        'h-5 w-5 flex-shrink-0 relative z-10',
+                        isActive ? 'text-white drop-shadow-[0_0_6px_rgba(51,255,51,0.6)]' : 'text-sidebar-foreground/50'
                       )}
                     />
-                    <span className="truncate">{item.label}</span>
+                    <span className="truncate relative z-10">{item.label}</span>
                   </Link>
                 </li>
               )

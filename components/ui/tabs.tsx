@@ -28,11 +28,13 @@ const TabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      'inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium ring-offset-white transition-all duration-200',
+      'inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium ring-offset-white transition-all duration-300 relative overflow-hidden',
       'text-[#6B8FA3] dark:text-[#6B8FA3]',
-      'hover:text-[#00BFFF] dark:hover:text-[#00BFFF]',
+      'hover:text-[#0A2540] dark:hover:text-white',
+      'hover:bg-gradient-to-b hover:from-white/20 hover:to-white/5 hover:border-white/20',
+      'border border-transparent',
       'disabled:pointer-events-none disabled:opacity-50',
-      'data-[state=active]:bg-[#00BFFF]/10 dark:data-[state=active]:bg-[#00BFFF]/15 data-[state=active]:text-[#00BFFF] dark:data-[state=active]:text-[#00BFFF] data-[state=active]:shadow-[0_2px_10px_rgba(0,191,255,0.3)] data-[state=active]:border-b-2 data-[state=active]:border-[#00BFFF]',
+      'data-[state=active]:sidebar-chrome-tab-active data-[state=active]:text-white data-[state=active]:bg-gradient-to-b data-[state=active]:from-[rgba(51,255,51,0.20)] data-[state=active]:to-[rgba(51,255,51,0.10)] data-[state=active]:border-[rgba(51,255,51,0.30)] data-[state=active]:shadow-[0_0_15px_rgba(51,255,51,0.25),0_0_30px_rgba(51,255,51,0.10),inset_0_1px_0_rgba(255,255,255,0.25)]',
       className
     )}
     {...props}
