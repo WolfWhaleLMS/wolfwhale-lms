@@ -6,6 +6,7 @@ import { TopBar } from './TopBar'
 import type { UserRole } from '@/lib/auth/permissions'
 import { PixelPetBar } from '@/components/pets/PixelPetBar'
 import type { PetData } from '@/components/pets/PetWalker'
+import TutorWidget from '@/components/tutor/TutorWidget'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -128,6 +129,11 @@ export function DashboardLayout({
       </div>
 
       {role === 'student' && demoPets.length > 0 && <PixelPetBar pets={demoPets} />}
+
+      {/* Floating AI Tutor widget — available for students and teachers */}
+      {(role === 'student' || role === 'teacher') && (
+        <TutorWidget role={role === 'teacher' ? 'teacher' : 'student'} />
+      )}
     </div>
   )
 }

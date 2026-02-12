@@ -70,11 +70,11 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value:
               "default-src 'self'; " +
-              `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://challenges.cloudflare.com https://va.vercel-scripts.com; ` +
+              `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'${isDev ? " 'unsafe-eval'" : ''} https://challenges.cloudflare.com https://va.vercel-scripts.com; ` +
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
               "font-src 'self' https://fonts.gstatic.com; " +
               "img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com; " +
-              "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com https://*.sentry.io https://*.vercel-insights.com https://va.vercel-scripts.com; " +
+              "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com https://*.sentry.io https://*.vercel-insights.com https://va.vercel-scripts.com https://huggingface.co https://*.huggingface.co https://raw.githubusercontent.com; " +
               "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://challenges.cloudflare.com; " +
               "worker-src 'self' blob:; " +
               "object-src 'none'; " +

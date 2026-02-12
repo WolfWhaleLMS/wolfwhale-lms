@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { GraduationCap, Brain, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield } from 'lucide-react'
+import { GraduationCap, Brain, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield, ShieldAlert, Eye, Radio, LineChart } from 'lucide-react'
 
 export default function EdTechHubPage() {
   return (
@@ -283,14 +283,14 @@ export default function EdTechHubPage() {
               <h2 className="text-3xl md:text-4xl font-display font-bold text-white text-glow-blue tracking-wider">
                 OUR PRODUCTS
               </h2>
-              <p className="text-white/60 max-w-xl mx-auto">
+              <p className="text-white/80 max-w-xl mx-auto">
                 Education technology solutions designed to transform how students learn and educators teach.
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* Product 1: WolfWhale LMS */}
-              <div className="ocean-card rounded-2xl p-8 group hover:neon-border-blue transition-all flex flex-col">
+              <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#00BFFF]/20 shadow-xl rounded-2xl p-8 group hover:neon-border-blue transition-all flex flex-col">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="inline-flex p-3 rounded-xl bg-[#00BFFF]/15 border border-[#00BFFF]/25 group-hover:bg-[#00BFFF]/25 transition-colors">
@@ -302,7 +302,7 @@ export default function EdTechHubPage() {
                 </div>
 
                 <h3 className="text-xl font-bold text-white mb-3">WolfWhale LMS</h3>
-                <p className="text-white/60 text-sm leading-relaxed mb-5">
+                <p className="text-white/80 text-sm leading-relaxed mb-5">
                   Canada&apos;s modern learning management system with built-in spaced repetition flashcards. Designed for K-12 and post-secondary education.
                 </p>
 
@@ -315,7 +315,7 @@ export default function EdTechHubPage() {
                     { icon: BarChart3, text: 'Analytics & grade tracking' },
                     { icon: Shield, text: 'FERPA & PIPEDA compliant' },
                   ].map(({ icon: Icon, text }) => (
-                    <li key={text} className="flex items-center gap-2 text-white/50 text-sm">
+                    <li key={text} className="flex items-center gap-2 text-white/75 text-sm">
                       <Icon className="h-4 w-4 text-[#00BFFF] shrink-0" />
                       {text}
                     </li>
@@ -340,7 +340,7 @@ export default function EdTechHubPage() {
               </div>
 
               {/* Product 2: AI Consulting — Coming Soon */}
-              <div className="ocean-card rounded-2xl p-8 group transition-all opacity-70 flex flex-col">
+              <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#00BFFF]/20 shadow-xl rounded-2xl p-8 group transition-all opacity-70 flex flex-col">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="inline-flex p-3 rounded-xl bg-[#A78BFA]/15 border border-[#A78BFA]/25">
@@ -352,7 +352,7 @@ export default function EdTechHubPage() {
                 </div>
 
                 <h3 className="text-xl font-bold text-white mb-3">AI Consulting</h3>
-                <p className="text-white/60 text-sm leading-relaxed mb-5">
+                <p className="text-white/80 text-sm leading-relaxed mb-5">
                   Custom AI solutions for education institutions. From intelligent tutoring systems to automated assessment and curriculum optimization.
                 </p>
 
@@ -364,7 +364,7 @@ export default function EdTechHubPage() {
                     'Curriculum optimization',
                     'Custom integrations',
                   ].map((text) => (
-                    <li key={text} className="flex items-center gap-2 text-white/40 text-sm">
+                    <li key={text} className="flex items-center gap-2 text-white/75 text-sm">
                       <div className="h-1.5 w-1.5 rounded-full bg-[#A78BFA]/50 shrink-0" />
                       {text}
                     </li>
@@ -382,13 +382,47 @@ export default function EdTechHubPage() {
                 </div>
               </div>
 
-              {/* Placeholder card — visual balance for grid */}
-              <div className="hidden lg:flex ocean-card rounded-2xl p-8 items-center justify-center opacity-40 border-dashed">
-                <div className="text-center space-y-3">
-                  <div className="inline-flex p-3 rounded-xl bg-white/5 border border-white/10 mx-auto">
-                    <Sparkles className="h-7 w-7 text-white/30" />
+              {/* Product 3: Cerebus — Coming Soon */}
+              <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#FF4444]/20 shadow-xl rounded-2xl p-8 group transition-all opacity-70 flex flex-col">
+                {/* Status Badge */}
+                <div className="flex items-center justify-between mb-6">
+                  <div className="inline-flex p-3 rounded-xl bg-[#FF4444]/15 border border-[#FF4444]/25">
+                    <ShieldAlert className="h-7 w-7 text-[#FF4444]" />
                   </div>
-                  <p className="text-white/30 text-sm font-medium">More products coming</p>
+                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#FF4444]/20 text-[#FF4444] border border-[#FF4444]/30">
+                    Coming Soon
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-bold text-white mb-3">WolfWhale: Cerebus</h3>
+                <p className="text-white/80 text-sm leading-relaxed mb-5">
+                  AI-powered surveillance and data security platform designed for First Nations reserves and bands. Combines intelligent monitoring with powerful data collection and visualization tools to protect community infrastructure and sovereignty.
+                </p>
+
+                {/* Feature bullets */}
+                <ul className="space-y-2 mb-6 flex-1">
+                  {[
+                    { icon: Eye, text: 'AI surveillance & threat detection' },
+                    { icon: Shield, text: 'Community data sovereignty tools' },
+                    { icon: LineChart, text: 'Real-time data visualization dashboards' },
+                    { icon: Radio, text: 'Secure infrastructure monitoring' },
+                    { icon: BarChart3, text: 'Band council analytics & reporting' },
+                  ].map(({ icon: Icon, text }) => (
+                    <li key={text} className="flex items-center gap-2 text-white/75 text-sm">
+                      <Icon className="h-4 w-4 text-[#FF4444] shrink-0" />
+                      {text}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Button */}
+                <div className="flex gap-3">
+                  <Link
+                    href="/cerebus"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#FF4444]/10 border border-[#FF4444]/25 text-[#FF4444] text-sm font-semibold hover:bg-[#FF4444]/20 transition-all hover:scale-105"
+                  >
+                    Learn More
+                  </Link>
                 </div>
               </div>
             </div>
@@ -398,11 +432,11 @@ export default function EdTechHubPage() {
         {/* About Section */}
         <section id="about" className="px-4 py-20">
           <div className="max-w-3xl mx-auto">
-            <div className="ocean-card rounded-2xl p-8 md:p-12 space-y-6">
+            <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#00BFFF]/20 shadow-xl rounded-2xl p-8 md:p-12 space-y-6">
               <h2 className="text-2xl md:text-3xl font-display font-bold text-white text-glow-blue tracking-wider">
                 ABOUT WOLFWHALE EDTECH
               </h2>
-              <div className="space-y-4 text-white/70 leading-relaxed">
+              <div className="space-y-4 text-white/80 leading-relaxed">
                 <p>
                   WolfWhale EdTech is a Canadian education technology company on a mission to make powerful, accessible learning tools available to every student and educator.
                 </p>
@@ -423,7 +457,7 @@ export default function EdTechHubPage() {
             <h2 className="text-2xl md:text-3xl font-display font-bold text-white text-glow-blue tracking-wider">
               GET IN TOUCH
             </h2>
-            <p className="text-white/60 max-w-lg mx-auto">
+            <p className="text-white/80 max-w-lg mx-auto">
               Interested in WolfWhale for your school or institution? We&apos;d love to hear from you.
             </p>
             <a
@@ -441,17 +475,17 @@ export default function EdTechHubPage() {
         <div className="max-w-6xl mx-auto">
           <div className="h-px bg-[#00BFFF]/15 mb-6" />
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-white/50">
+            <p className="text-sm text-white/65">
               &copy; 2026 WolfWhale EdTech. All rights reserved.
             </p>
             <div className="flex gap-6">
-              <Link href="/privacy" className="text-sm text-white/50 hover:text-[#00BFFF] transition-colors">
+              <Link href="/privacy" className="text-sm text-white/65 hover:text-[#00BFFF] transition-colors">
                 Privacy
               </Link>
-              <Link href="/terms" className="text-sm text-white/50 hover:text-[#00BFFF] transition-colors">
+              <Link href="/terms" className="text-sm text-white/65 hover:text-[#00BFFF] transition-colors">
                 Terms
               </Link>
-              <Link href="/help" className="text-sm text-white/50 hover:text-[#00BFFF] transition-colors">
+              <Link href="/help" className="text-sm text-white/65 hover:text-[#00BFFF] transition-colors">
                 Help
               </Link>
             </div>

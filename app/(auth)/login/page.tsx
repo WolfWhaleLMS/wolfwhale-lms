@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 import Link from 'next/link'
 import { LoginForm } from '@/components/auth/LoginForm'
 import { GraduationCap, Shield, Users, ArrowRight, ArrowLeft } from 'lucide-react'
@@ -16,16 +16,24 @@ function LoginFormSkeleton() {
 }
 
 export default function LoginPage() {
+  // Scroll to top on mount — prevents browser from jumping to the login form
+  // due to the vertical centering layout + large spacer div
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   return (
     <div className="space-y-6">
-      {/* Back to Hub Link */}
-      <Link
-        href="/"
-        className="inline-flex items-center gap-1.5 text-sm font-medium text-[#0A2540]/60 hover:text-[#00BFFF] transition-colors group"
-      >
-        <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
-        <span>WolfWhale EdTech Hub</span>
-      </Link>
+      {/* Back to Hub Button */}
+      <div className="-ml-2">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl btn-chrome-3d-silver font-semibold text-sm tracking-wide transition-all hover:scale-105 neon-glow-blue group"
+        >
+          <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
+          <span>WolfWhale EdTech Hub</span>
+        </Link>
+      </div>
 
       {/* Aqua Neon Title */}
       <div className="text-center space-y-3">
