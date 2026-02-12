@@ -477,7 +477,7 @@ export default async function StudentDashboardPage() {
           : 'Start a streak today!'
 
   return (
-    <div className="min-h-screen space-y-8 pb-16">
+    <div className="space-y-4 sm:space-y-8 pb-8 sm:pb-16">
       {/* ===== BIG FRIENDLY GREETING ===== */}
       <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#00BFFF] via-[#00FFFF] to-[#33FF33] p-5 sm:p-8 text-white text-white-outlined shadow-2xl sm:p-10">
         {/* Decorative background circles */}
@@ -567,20 +567,20 @@ export default async function StudentDashboardPage() {
 
       {/* ===== TODAY'S TASKS ===== */}
       <section>
-        <div className="mb-5 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#00BFFF] to-[#00FFFF] shadow-md">
+        <div className="mb-3 sm:mb-5 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#00BFFF] to-[#00FFFF] shadow-md">
               <Target className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </div>
-            <h2 className="text-2xl sm:text-4xl font-bold text-foreground text-outlined">
+            <h2 className="text-xl sm:text-4xl font-bold text-foreground text-outlined truncate">
               Today&apos;s Tasks
             </h2>
           </div>
           <Link
             href="/student/assignments"
-            className="flex items-center gap-1 rounded-full bg-[#00BFFF]/5 px-3 py-1.5 sm:px-5 sm:py-2.5 text-sm sm:text-lg font-semibold text-[#00BFFF] transition-all hover:bg-[#00BFFF]/10 hover:scale-105 dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]"
+            className="flex shrink-0 items-center gap-1 rounded-full bg-[#00BFFF]/5 px-2.5 py-1 sm:px-5 sm:py-2.5 text-xs sm:text-lg font-semibold text-[#00BFFF] transition-all hover:bg-[#00BFFF]/10 hover:scale-105 dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]"
           >
-            See All <ChevronRight className="h-4 w-4" />
+            See All <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
           </Link>
         </div>
 
@@ -630,12 +630,12 @@ export default async function StudentDashboardPage() {
             })}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-[#00BFFF]/20 bg-[#00BFFF]/5 py-16 text-center dark:border-[#00BFFF]/20 dark:bg-[#00BFFF]/5">
-            <Rocket className="mb-4 h-16 w-16 text-[#00BFFF]/50" />
-            <p className="text-3xl font-bold text-foreground">
+          <div className="flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl border-2 border-dashed border-[#00BFFF]/20 bg-[#00BFFF]/5 py-8 sm:py-16 px-4 text-center dark:border-[#00BFFF]/20 dark:bg-[#00BFFF]/5">
+            <Rocket className="mb-3 sm:mb-4 h-10 w-10 sm:h-16 sm:w-16 text-[#00BFFF]/50" />
+            <p className="text-xl sm:text-3xl font-bold text-foreground">
               All clear! Nothing due soon.
             </p>
-            <p className="mt-2 text-xl text-muted-foreground">
+            <p className="mt-1 sm:mt-2 text-sm sm:text-xl text-muted-foreground">
               You&apos;re all caught up &mdash; nice work!
             </p>
           </div>
@@ -644,18 +644,18 @@ export default async function StudentDashboardPage() {
 
       {/* ===== MY CLASSES ===== */}
       <section>
-        <div className="mb-5 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#33FF33] to-[#00FFFF] text-white-outlined shadow-md">
+        <div className="mb-3 sm:mb-5 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#33FF33] to-[#00FFFF] text-white-outlined shadow-md">
               <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </div>
-            <h2 className="text-2xl sm:text-4xl font-bold text-foreground text-outlined">My Classes</h2>
+            <h2 className="text-xl sm:text-4xl font-bold text-foreground text-outlined truncate">My Classes</h2>
           </div>
           <Link
             href="/student/courses"
-            className="flex items-center gap-1 rounded-full bg-[#33FF33]/5 px-3 py-1.5 sm:px-5 sm:py-2.5 text-sm sm:text-lg font-semibold text-[#059669] transition-all hover:bg-[#33FF33]/10 hover:scale-105 dark:bg-[#33FF33]/10 dark:text-[#059669]"
+            className="flex shrink-0 items-center gap-1 rounded-full bg-[#33FF33]/5 px-2.5 py-1 sm:px-5 sm:py-2.5 text-xs sm:text-lg font-semibold text-[#059669] transition-all hover:bg-[#33FF33]/10 hover:scale-105 dark:bg-[#33FF33]/10 dark:text-[#059669]"
           >
-            See All <ChevronRight className="h-4 w-4" />
+            See All <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
           </Link>
         </div>
 
@@ -725,10 +725,10 @@ export default async function StudentDashboardPage() {
             })}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-[#33FF33]/20 bg-[#33FF33]/5 py-16 text-center dark:border-[#33FF33]/20 dark:bg-[#33FF33]/5">
-            <BookOpen className="mb-4 h-16 w-16 text-[#059669]/50" />
-            <p className="text-3xl font-bold text-foreground">No classes yet</p>
-            <p className="mt-2 text-xl text-muted-foreground">
+          <div className="flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl border-2 border-dashed border-[#33FF33]/20 bg-[#33FF33]/5 py-8 sm:py-16 px-4 text-center dark:border-[#33FF33]/20 dark:bg-[#33FF33]/5">
+            <BookOpen className="mb-3 sm:mb-4 h-10 w-10 sm:h-16 sm:w-16 text-[#059669]/50" />
+            <p className="text-xl sm:text-3xl font-bold text-foreground">No classes yet</p>
+            <p className="mt-1 sm:mt-2 text-sm sm:text-xl text-muted-foreground">
               Ask your teacher to enroll you in a class to get started!
             </p>
           </div>
@@ -737,20 +737,20 @@ export default async function StudentDashboardPage() {
 
       {/* ===== ACHIEVEMENTS ===== */}
       <section>
-        <div className="mb-5 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#FFAA00] to-[#FFD700] shadow-md">
+        <div className="mb-3 sm:mb-5 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#FFAA00] to-[#FFD700] shadow-md">
               <Trophy className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </div>
-            <h2 className="text-2xl sm:text-4xl font-bold text-foreground text-outlined">
+            <h2 className="text-xl sm:text-4xl font-bold text-foreground text-outlined truncate">
               Achievements
             </h2>
           </div>
           <Link
             href="/student/achievements"
-            className="flex items-center gap-1 rounded-full bg-[#FFAA00]/5 px-3 py-1.5 sm:px-5 sm:py-2.5 text-sm sm:text-lg font-semibold text-[#D97706] transition-all hover:bg-[#FFAA00]/10 hover:scale-105 dark:bg-[#FFAA00]/10 dark:text-[#FFD700]"
+            className="flex shrink-0 items-center gap-1 rounded-full bg-[#FFAA00]/5 px-2.5 py-1 sm:px-5 sm:py-2.5 text-xs sm:text-lg font-semibold text-[#D97706] transition-all hover:bg-[#FFAA00]/10 hover:scale-105 dark:bg-[#FFAA00]/10 dark:text-[#FFD700]"
           >
-            See All <ChevronRight className="h-4 w-4" />
+            See All <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
           </Link>
         </div>
 
@@ -777,12 +777,12 @@ export default async function StudentDashboardPage() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-[#FFAA00]/20 bg-[#FFAA00]/5 py-12 text-center dark:border-[#FFAA00]/20 dark:bg-[#FFAA00]/5">
-            <Trophy className="mb-4 h-14 w-14 text-[#D97706]/50" />
-            <p className="text-2xl font-bold text-foreground">
+          <div className="flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl border-2 border-dashed border-[#FFAA00]/20 bg-[#FFAA00]/5 py-8 sm:py-12 px-4 text-center dark:border-[#FFAA00]/20 dark:bg-[#FFAA00]/5">
+            <Trophy className="mb-3 sm:mb-4 h-10 w-10 sm:h-14 sm:w-14 text-[#D97706]/50" />
+            <p className="text-lg sm:text-2xl font-bold text-foreground">
               Your trophy case is waiting!
             </p>
-            <p className="mt-2 text-xl text-muted-foreground">
+            <p className="mt-1 sm:mt-2 text-sm sm:text-xl text-muted-foreground">
               Complete tasks and lessons to earn awesome achievements.
             </p>
           </div>

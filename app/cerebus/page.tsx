@@ -5,7 +5,7 @@ import { Eye, ShieldAlert, Database, BarChart3, Radar, FileBarChart, Lock, Arrow
 export const metadata = {
   title: 'Cerebus - AI Surveillance & Data Security',
   description:
-    'WolfWhale Cerebus: AI-powered surveillance, data security, and data visualization platform designed for First Nations reserves and Indigenous communities.',
+    'Cerebus: AI-powered surveillance, data security, and data visualization platform designed for First Nations reserves and Indigenous communities.',
 }
 
 export default function CerebusPage() {
@@ -135,7 +135,7 @@ export default function CerebusPage() {
                 CEREBUS
               </h1>
               <p className="text-lg sm:text-2xl text-white/90 text-white-outlined font-semibold">
-                WolfWhale: Cerebus
+                Cerebus
               </p>
               <p className="text-sm sm:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
                 AI-Powered Surveillance &amp; Data Sovereignty for Indigenous Communities

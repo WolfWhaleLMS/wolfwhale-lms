@@ -59,7 +59,7 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
   const sounds = useSound()
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-4 liquid-glass-heavy chrome-texture-topbar border-b-2 border-[#00BFFF]/30 neon-glow-blue px-4 md:px-6">
+    <header className="flex h-14 sm:h-16 shrink-0 items-center gap-2 sm:gap-4 liquid-glass-heavy chrome-texture-topbar border-b-2 border-[#00BFFF]/30 neon-glow-blue px-3 sm:px-4 md:px-6">
       {/* --------------------------------------------------------------- */}
       {/* Mobile hamburger                                                 */}
       {/* --------------------------------------------------------------- */}
@@ -99,9 +99,11 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
       {/* --------------------------------------------------------------- */}
       {/* Right side: notifications, avatar, name, role badge              */}
       {/* --------------------------------------------------------------- */}
-      <div className="flex items-center gap-3">
-        {/* Radio player */}
-        <RadioDropdown />
+      <div className="flex items-center gap-1.5 sm:gap-3">
+        {/* Radio player — hidden on very small screens */}
+        <div className="hidden sm:block">
+          <RadioDropdown />
+        </div>
 
         {/* Theme toggle */}
         <button
@@ -110,13 +112,13 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
             sounds.playClick()
             setTheme(theme === 'dark' ? 'light' : 'dark')
           }}
-          className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="rounded-lg p-1.5 sm:p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           aria-label="Toggle theme"
         >
           {theme === 'dark' ? (
-            <Sun className="h-5 w-5" />
+            <Sun className="h-4 w-4 sm:h-5 sm:w-5" />
           ) : (
-            <Moon className="h-5 w-5" />
+            <Moon className="h-4 w-4 sm:h-5 sm:w-5" />
           )}
         </button>
 
@@ -130,9 +132,9 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
         <div className="hidden h-6 w-px bg-border/60 md:block" />
 
         {/* User info */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* Avatar */}
-          <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-muted chrome-ring">
+          <div className="relative h-7 w-7 sm:h-8 sm:w-8 flex-shrink-0 overflow-hidden rounded-full bg-muted chrome-ring">
             {userAvatar ? (
               <Image
                 src={userAvatar}

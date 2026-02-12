@@ -41,14 +41,14 @@ export function CircularGauge({
 
   return (
     <div
-      className="flex flex-col items-center gap-2"
+      className="flex flex-col items-center gap-1 sm:gap-2"
       role="meter"
       aria-valuenow={value}
       aria-valuemin={0}
       aria-valuemax={max}
       aria-label={`${label}: ${display}`}
     >
-      <div className="relative rounded-full" style={{ width: size, height: size }}>
+      <div className="relative rounded-full scale-[0.7] sm:scale-100 origin-center" style={{ width: size, height: size }}>
         <svg
           width={size}
           height={size}
@@ -82,7 +82,7 @@ export function CircularGauge({
         {/* Center text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span
-            className="text-2xl font-extrabold leading-none font-data"
+            className="text-xl sm:text-2xl font-extrabold leading-none font-data"
             style={{ color: value > 0 ? threshold.color : undefined }}
           >
             {display}

@@ -407,7 +407,7 @@ export default function EdTechHubPage() {
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-3">WolfWhale: Cerebus</h3>
+                <h3 className="text-xl font-bold text-white mb-3">Cerebus</h3>
                 <p className="text-white/80 text-sm leading-relaxed mb-5">
                   AI-powered surveillance and data security platform designed for First Nations reserves and bands. Combines intelligent monitoring with powerful data collection and visualization tools to protect community infrastructure and sovereignty.
                 </p>
