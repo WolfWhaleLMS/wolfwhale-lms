@@ -5,7 +5,7 @@ import * as ProgressPrimitive from '@radix-ui/react-progress';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
-const progressVariants = cva('h-3 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700', {
+const progressVariants = cva('h-3 w-full overflow-hidden rounded-full bg-[#00BFFF]/10 dark:bg-[#00BFFF]/15', {
   variants: {
     variant: {
       default: '',
@@ -24,12 +24,12 @@ const progressVariants = cva('h-3 w-full overflow-hidden rounded-full bg-slate-2
 const indicatorVariants = cva('h-full w-full flex-1 transition-all', {
   variants: {
     variant: {
-      default: 'bg-indigo-600',
-      xp: 'bg-gradient-to-r from-gold-400 to-gold-500 animate-shimmer',
-      health: 'bg-gradient-to-r from-success-400 to-success-600',
-      energy: 'bg-gradient-to-r from-ocean-400 to-ocean-600',
-      happiness: 'bg-gradient-to-r from-pink-400 to-pink-600',
-      knowledge: 'bg-gradient-to-r from-aurora-400 to-aurora-600',
+      default: 'bg-[#00BFFF] shadow-[0_0_10px_rgba(0,191,255,0.4)]',
+      xp: 'bg-[#33FF33] shadow-[0_0_10px_rgba(51,255,51,0.4)] animate-shimmer',
+      health: 'bg-gradient-to-r from-[#33FF33] to-[#00FFFF]',
+      energy: 'bg-gradient-to-r from-[#00BFFF] to-[#00FFFF]',
+      happiness: 'bg-gradient-to-r from-[#FF3366] to-[#FFAA00]',
+      knowledge: 'bg-gradient-to-r from-[#00FFFF] to-[#33FF33]',
     },
   },
   defaultVariants: {

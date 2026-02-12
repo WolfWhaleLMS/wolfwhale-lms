@@ -17,24 +17,24 @@ interface AchievementCardProps {
 }
 
 const TIER_BORDER: Record<string, string> = {
-  bronze: 'border-amber-600/50 hover:border-amber-600',
-  silver: 'border-slate-400/50 hover:border-slate-400',
-  gold: 'border-yellow-400/50 hover:border-yellow-400',
-  platinum: 'border-cyan-300/50 hover:border-cyan-300',
+  bronze: 'border-[#FFAA00]/50 hover:border-[#FFAA00]',
+  silver: 'border-[#00BFFF]/50 hover:border-[#00BFFF]',
+  gold: 'border-[#33FF33]/50 hover:border-[#33FF33]',
+  platinum: 'border-[#00FFFF]/50 hover:border-[#00FFFF] neon-pulse-cyan',
 }
 
 const TIER_BADGE_STYLES: Record<string, string> = {
-  bronze: 'bg-amber-600/15 text-amber-700 dark:text-amber-400',
-  silver: 'bg-slate-400/15 text-slate-600 dark:text-slate-300',
-  gold: 'bg-yellow-400/15 text-yellow-700 dark:text-yellow-400',
-  platinum: 'bg-cyan-300/15 text-cyan-700 dark:text-cyan-300',
+  bronze: 'bg-[#FFAA00]/15 text-[#FFAA00]',
+  silver: 'bg-[#00BFFF]/15 text-[#00BFFF]',
+  gold: 'bg-[#33FF33]/15 text-[#33FF33]',
+  platinum: 'bg-[#00FFFF]/15 text-[#00FFFF]',
 }
 
 const TIER_GLOW: Record<string, string> = {
-  bronze: 'shadow-amber-600/20',
-  silver: 'shadow-slate-400/20',
-  gold: 'shadow-yellow-400/20',
-  platinum: 'shadow-cyan-300/20',
+  bronze: 'shadow-[#FFAA00]/20',
+  silver: 'shadow-[#00BFFF]/20',
+  gold: 'shadow-[#33FF33]/20',
+  platinum: 'shadow-[#00FFFF]/30',
 }
 
 function formatDate(dateStr: string): string {
@@ -62,14 +62,14 @@ export function AchievementCard({
       className={cn(
         'relative overflow-hidden rounded-2xl border-2 p-5 transition-all duration-300',
         earned
-          ? cn('ocean-card', tierBorder, 'shadow-lg', tierGlow)
-          : 'border-border/30 bg-muted/30 opacity-60'
+          ? cn('liquid-glass', tierBorder, 'shadow-lg', tierGlow)
+          : 'border-[#00BFFF]/10 bg-[#041428]/20 opacity-60'
       )}
     >
       {/* Shimmer animation for newly earned */}
       {isNew && earned && (
         <div className="pointer-events-none absolute inset-0 animate-pulse">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#00BFFF]/10 to-transparent" />
         </div>
       )}
 
@@ -119,8 +119,8 @@ export function AchievementCard({
           <div className="mt-3 flex items-center gap-3">
             <span
               className={cn(
-                'text-xs font-medium',
-                earned ? 'text-primary' : 'text-muted-foreground/50'
+                'text-xs font-medium font-data',
+                earned ? 'text-[#33FF33]' : 'text-muted-foreground/50'
               )}
             >
               +{xpReward} XP

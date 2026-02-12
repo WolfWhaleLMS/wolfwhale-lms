@@ -7,14 +7,14 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: 'border-transparent bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300',
-        secondary: 'border-transparent bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300',
-        destructive: 'border-transparent bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
-        outline: 'text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600',
-        xp: 'border-transparent bg-gradient-to-r from-gold-400 to-gold-500 text-gold-900 dark:from-gold-600 dark:to-gold-700 dark:text-gold-100 shadow-md',
-        achievement: 'border-transparent bg-gradient-to-r from-purple-400 to-pink-400 text-white dark:from-purple-600 dark:to-pink-600 shadow-md animate-pulse',
-        level: 'border-transparent bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md',
-        streak: 'border-transparent bg-gradient-to-r from-orange-400 to-red-500 text-white dark:from-orange-600 dark:to-red-700 shadow-md',
+        default: 'border-transparent bg-[#00BFFF]/15 text-[#00BFFF] dark:bg-[#00BFFF]/20 dark:text-[#00BFFF]',
+        secondary: 'border-transparent bg-[#E8F8FF] text-[#6B8FA3] dark:bg-[#041428] dark:text-[#6B8FA3]',
+        destructive: 'border-transparent bg-[#FF3366]/15 text-[#FF3366] dark:bg-[#FF3366]/20 dark:text-[#FF3366]',
+        outline: 'text-[#0A2540] dark:text-[#E8F8FF] border-[#00BFFF]/30 dark:border-[#00BFFF]/20',
+        xp: 'border-transparent bg-gradient-to-r from-[#33FF33] to-[#00FFFF] text-[#0A2540] shadow-md shadow-[#33FF33]/20',
+        achievement: 'border-transparent bg-gradient-to-r from-[#00FFFF] to-[#00BFFF] text-white shadow-md neon-pulse-cyan',
+        level: 'border-transparent bg-gradient-to-r from-[#00BFFF] to-[#33FF33] text-white shadow-md',
+        streak: 'border-transparent bg-gradient-to-r from-[#FFAA00] to-[#FF3366] text-white shadow-md shadow-[#FFAA00]/20',
       },
       size: {
         sm: 'px-2 py-0.5 text-xs',

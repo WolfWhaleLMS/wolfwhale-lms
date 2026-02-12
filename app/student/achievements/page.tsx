@@ -111,11 +111,11 @@ export default async function AchievementsPage({
 
       {/* Enhanced Stats Row */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-xl ring-2 ring-yellow-500/30">
+        <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-xl ring-2 ring-[#FFAA00]/30">
           <div className="mb-2 flex items-center justify-center">
-            <Trophy className="size-8 text-yellow-500 group-hover:animate-float" />
+            <Trophy className="size-8 text-[#FFAA00] group-hover:animate-float" />
           </div>
-          <p className="text-4xl font-bold text-yellow-600 dark:text-yellow-400">{totalEarned}</p>
+          <p className="text-4xl font-bold text-[#FFAA00] dark:text-[#FFD700]">{totalEarned}</p>
           <p className="text-sm font-medium text-muted-foreground">Earned</p>
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-xl ring-2 ring-primary/30">
@@ -125,11 +125,11 @@ export default async function AchievementsPage({
           <p className="text-4xl font-bold text-foreground">{totalAvailable}</p>
           <p className="text-sm font-medium text-muted-foreground">Total Available</p>
         </div>
-        <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-xl ring-2 ring-emerald-500/30">
+        <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-xl ring-2 ring-[#33FF33]/30">
           <div className="mb-2 flex items-center justify-center">
-            <Zap className="size-8 text-emerald-500 group-hover:rotate-12 transition-transform" />
+            <Zap className="size-8 text-[#33FF33] group-hover:rotate-12 transition-transform" />
           </div>
-          <p className="text-4xl font-bold text-emerald-600 dark:text-emerald-400">
+          <p className="text-4xl font-bold text-[#33FF33] dark:text-[#33FF33]">
             {totalAvailable > 0
               ? Math.round((totalEarned / totalAvailable) * 100)
               : 0}
@@ -149,7 +149,7 @@ export default async function AchievementsPage({
       {earnedAchievements.length > 0 && (
         <section>
           <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-foreground">
-            <Trophy className="size-5 text-yellow-500 animate-pulse" />
+            <Trophy className="size-5 text-[#FFAA00] animate-pulse" />
             Earned ({earnedAchievements.length})
           </h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

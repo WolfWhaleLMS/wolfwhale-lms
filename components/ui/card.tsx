@@ -7,8 +7,8 @@ const cardVariants = cva('rounded-2xl transition-all duration-200', {
     variant: {
       default: 'liquid-glass liquid-glass-hover',
       solid: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700',
-      fun: 'liquid-glass bg-gradient-to-br from-indigo-300/20 via-purple-300/20 to-pink-300/20 dark:from-indigo-900/15 dark:via-purple-900/15 dark:to-pink-900/15 border-2 border-white/40 dark:border-slate-600/30 rounded-3xl',
-      pet: 'liquid-glass relative bg-gradient-to-br from-amber-200/20 to-orange-200/20 dark:from-amber-900/15 dark:to-orange-900/15 border-2 border-white/40 dark:border-slate-600/30 rounded-3xl overflow-hidden',
+      fun: 'liquid-glass bg-gradient-to-br from-[#00BFFF]/15 via-[#33FF33]/10 to-[#00FFFF]/15 dark:from-[#00BFFF]/10 dark:via-[#33FF33]/8 dark:to-[#00FFFF]/10 border-2 border-[#00BFFF]/25 dark:border-[#00BFFF]/15 rounded-3xl',
+      pet: 'liquid-glass relative bg-gradient-to-br from-[#FFAA00]/15 to-[#FFD700]/15 dark:from-[#FFAA00]/10 dark:to-[#FFD700]/10 border-2 border-[#FFAA00]/25 dark:border-[#FFAA00]/15 rounded-3xl overflow-hidden',
     },
   },
   defaultVariants: {
@@ -36,7 +36,7 @@ const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HT
   ({ className, ...props }, ref) => (
     <h2
       ref={ref}
-      className={cn('text-2xl font-semibold leading-none tracking-tight text-slate-900 dark:text-white', className)}
+      className={cn('text-2xl font-semibold leading-none tracking-tight text-[#0A2540] dark:text-[#E8F8FF] font-display', className)}
       {...props}
     />
   )
@@ -45,7 +45,7 @@ CardTitle.displayName = 'CardTitle';
 
 const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
   ({ className, ...props }, ref) => (
-    <p ref={ref} className={cn('text-sm text-slate-600 dark:text-slate-400', className)} {...props} />
+    <p ref={ref} className={cn('text-sm text-[#6B8FA3]', className)} {...props} />
   )
 );
 CardDescription.displayName = 'CardDescription';

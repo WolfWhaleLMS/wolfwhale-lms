@@ -701,7 +701,7 @@ export default async function LandingPage({
   const canonical = `${SITE_URL}/lms/${slug}`
 
   return (
-    <div className="min-h-screen text-[#003C99]">
+    <div className="min-h-screen text-[#0A2540]">
       {/* JSON-LD Structured Data */}
       <JsonLd
         data={{
@@ -741,7 +741,7 @@ export default async function LandingPage({
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(135deg, #e8f0fe 0%, #dce8f5 25%, #c5d8ee 50%, #b8d4e8 75%, #d0e4f0 100%)',
+              'linear-gradient(135deg, #E8F8FF 0%, #D0F0FF 25%, #B0E8FF 50%, #D0F0FF 75%, #E8F8FF 100%)',
           }}
         />
         <div
@@ -761,7 +761,7 @@ export default async function LandingPage({
       </div>
 
       {/* Header */}
-      <header className="relative z-10 border-b border-[#003C99]/10 liquid-glass-heavy">
+      <header className="relative z-10 border-b border-[#0A2540]/10 backdrop-blur-md bg-white/40">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <img
@@ -770,22 +770,10 @@ export default async function LandingPage({
               className="h-14 w-14 rounded-xl object-contain shadow-lg"
             />
             <div>
-              <span
-                className="text-xl font-bold text-[#003C99] block"
-                style={{
-                  fontFamily: "'Shippori Mincho B1', Georgia, serif",
-                  fontWeight: 800,
-                }}
-              >
+              <span className="text-xl font-display font-bold text-[#0A2540] block tracking-wider uppercase">
                 Wolf Whale LMS
               </span>
-              <span
-                className="text-xs text-[#003C99]/60 font-semibold"
-                style={{
-                  fontFamily: "'Shippori Mincho B1', Georgia, serif",
-                  fontWeight: 600,
-                }}
-              >
+              <span className="text-xs text-[#0A2540]/60 font-display font-semibold tracking-widest uppercase">
                 Learning Management System
               </span>
             </div>
@@ -793,13 +781,13 @@ export default async function LandingPage({
           <nav className="flex items-center gap-4">
             <Link
               href="/info"
-              className="hidden sm:inline-block text-sm text-[#003C99]/70 hover:text-[#812BFF] transition-colors font-medium"
+              className="hidden sm:inline-block text-sm text-[#0A2540]/70 hover:text-[#00BFFF] transition-colors font-medium"
             >
               Features
             </Link>
             <Link
               href="/login"
-              className="px-6 py-2.5 rounded-lg bg-[#003C99] text-white hover:bg-[#812BFF] transition-all text-sm font-medium shadow-md"
+              className="px-6 py-2.5 rounded-lg bg-[#0A2540] text-white hover:bg-[#00BFFF] transition-all text-sm font-medium shadow-md"
             >
               Login
             </Link>
@@ -813,43 +801,43 @@ export default async function LandingPage({
       <section className="relative z-10 py-20 md:py-28">
         <div className="max-w-5xl mx-auto px-6 text-center">
           {isCity && (
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#003C99]/5 border border-[#003C99]/10 mb-6">
-              <MapPin className="h-4 w-4 text-[#812BFF]" />
-              <span className="text-sm text-[#003C99]/80">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0A2540]/5 border border-[#0A2540]/10 mb-6">
+              <MapPin className="h-4 w-4 text-[#00BFFF]" />
+              <span className="text-sm text-[#0A2540]/80">
                 Serving {page.city}, {page.province}
               </span>
             </div>
           )}
 
           {!isCity && (
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#003C99]/5 border border-[#003C99]/10 mb-6">
-              <Brain className="h-4 w-4 text-[#812BFF]" />
-              <span className="text-sm text-[#003C99]/80">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0A2540]/5 border border-[#0A2540]/10 mb-6">
+              <Brain className="h-4 w-4 text-[#00BFFF]" />
+              <span className="text-sm text-[#0A2540]/80">
                 100% Canadian Built &amp; Hosted
               </span>
             </div>
           )}
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-[#003C99] to-[#812BFF] bg-clip-text text-transparent leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-[#00BFFF] to-[#33FF33] bg-clip-text text-transparent leading-tight">
             {page.h1}
           </h1>
 
-          <p className="text-lg md:text-xl text-[#003C99]/70 mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-[#0A2540]/70 mb-8 max-w-3xl mx-auto leading-relaxed">
             {page.heroText}
           </p>
 
           {/* Canadian Badge */}
-          <div className="flex items-center justify-center gap-3 mb-10 px-6 py-3 rounded-xl bg-white/60 border border-[#003C99]/10 w-fit mx-auto shadow-sm">
+          <div className="flex items-center justify-center gap-3 mb-10 px-6 py-3 rounded-xl bg-white/60 border border-[#0A2540]/10 w-fit mx-auto shadow-sm">
             <img
               src="/canada-coat-of-arms.png"
               alt="Coat of Arms of Canada"
               className="h-16 w-auto object-contain"
             />
             <div className="text-left">
-              <p className="text-sm font-bold text-[#003C99]">
+              <p className="text-sm font-bold text-[#0A2540]">
                 100% Canadian Owned &amp; Built
               </p>
-              <p className="text-xs text-[#003C99]/60">
+              <p className="text-xs text-[#0A2540]/60">
                 Student data stays in Canada
               </p>
             </div>
@@ -858,14 +846,14 @@ export default async function LandingPage({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/login"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#003C99] to-[#812BFF] hover:shadow-[0_0_30px_oklch(0.72_0.13_177/0.4)] transition-all font-semibold text-white group btn-glow"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#00BFFF] to-[#33FF33] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] transition-all font-semibold text-white group neon-glow-blue"
             >
               Get Started Free
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="/info"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border-2 border-[#003C99]/20 hover:border-[#812BFF] hover:bg-white/50 transition-all font-semibold text-[#003C99]"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border-2 border-[#0A2540]/20 hover:border-[#00BFFF] hover:bg-white/50 transition-all font-semibold text-[#0A2540]"
             >
               See All Features
             </Link>
@@ -884,7 +872,7 @@ export default async function LandingPage({
                 ? `Everything ${page.city} Schools Need`
                 : 'Everything Your School Needs'}
             </h2>
-            <p className="text-lg text-[#003C99]/60 max-w-2xl mx-auto">
+            <p className="text-lg text-[#0A2540]/60 max-w-2xl mx-auto">
               A complete learning platform with features no other LMS can match
             </p>
           </div>
@@ -897,11 +885,11 @@ export default async function LandingPage({
                   key={feature}
                   className="rounded-2xl p-6 liquid-glass liquid-glass-hover group"
                 >
-                  <div className="p-3 rounded-xl bg-gradient-to-br from-[#003C99]/10 to-[#812BFF]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
-                    <Icon className="h-6 w-6 text-[#812BFF]" />
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-[#0A2540]/10 to-[#00BFFF]/10 w-fit mb-4 group-hover:scale-110 transition-transform">
+                    <Icon className="h-6 w-6 text-[#00BFFF]" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">{feature}</h3>
-                  <p className="text-[#003C99]/70 text-sm leading-relaxed">
+                  <p className="text-[#0A2540]/70 text-sm leading-relaxed">
                     {getFeatureDescription(feature)}
                   </p>
                 </div>
@@ -920,7 +908,7 @@ export default async function LandingPage({
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Why Wolf Whale LMS?
             </h2>
-            <p className="text-lg text-[#003C99]/60 max-w-2xl mx-auto">
+            <p className="text-lg text-[#0A2540]/60 max-w-2xl mx-auto">
               The only learning management system with built-in spaced
               repetition flashcards
             </p>
@@ -930,14 +918,14 @@ export default async function LandingPage({
             {/* USP Card */}
             <div className="rounded-2xl p-8 liquid-glass">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 rounded-xl bg-gradient-to-br from-[#003C99] to-[#812BFF]">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-[#00BFFF] to-[#33FF33]">
                   <Brain className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-xl font-bold">
                   Spaced Repetition Flashcards
                 </h3>
               </div>
-              <p className="text-[#003C99]/70 leading-relaxed mb-4">
+              <p className="text-[#0A2540]/70 leading-relaxed mb-4">
                 Students forget up to 80% of new information within a week. Our
                 built-in spaced repetition system combats the forgetting curve by
                 scheduling flashcard reviews at scientifically optimal intervals.
@@ -945,26 +933,26 @@ export default async function LandingPage({
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-[#812BFF] mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-[#003C99]/70">
+                  <CheckCircle2 className="h-5 w-5 text-[#00BFFF] mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-[#0A2540]/70">
                     Teachers create flashcard decks alongside course content
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-[#812BFF] mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-[#003C99]/70">
+                  <CheckCircle2 className="h-5 w-5 text-[#00BFFF] mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-[#0A2540]/70">
                     Algorithm schedules reviews based on student performance
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-[#812BFF] mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-[#003C99]/70">
+                  <CheckCircle2 className="h-5 w-5 text-[#00BFFF] mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-[#0A2540]/70">
                     Up to 200% improvement in long-term knowledge retention
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-[#812BFF] mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-[#003C99]/70">
+                  <CheckCircle2 className="h-5 w-5 text-[#00BFFF] mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-[#0A2540]/70">
                     No third-party apps needed — everything is inside the LMS
                   </span>
                 </li>
@@ -979,33 +967,33 @@ export default async function LandingPage({
                     ? `Built for ${page.city}`
                     : 'Built for Canadian Education'}
                 </h3>
-                <p className="text-[#003C99]/70 leading-relaxed">
+                <p className="text-[#0A2540]/70 leading-relaxed">
                   {page.whyExtra}
                 </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="rounded-xl p-5 liquid-glass text-center">
-                  <p className="text-3xl font-bold text-[#812BFF]">200%</p>
-                  <p className="text-xs text-[#003C99]/60 mt-1">
+                  <p className="text-3xl font-bold text-[#00BFFF]">200%</p>
+                  <p className="text-xs text-[#0A2540]/60 mt-1">
                     Better Retention
                   </p>
                 </div>
                 <div className="rounded-xl p-5 liquid-glass text-center">
-                  <p className="text-3xl font-bold text-[#812BFF]">100%</p>
-                  <p className="text-xs text-[#003C99]/60 mt-1">
+                  <p className="text-3xl font-bold text-[#00BFFF]">100%</p>
+                  <p className="text-xs text-[#0A2540]/60 mt-1">
                     Canadian Hosted
                   </p>
                 </div>
                 <div className="rounded-xl p-5 liquid-glass text-center">
-                  <p className="text-3xl font-bold text-[#812BFF]">K-12+</p>
-                  <p className="text-xs text-[#003C99]/60 mt-1">
+                  <p className="text-3xl font-bold text-[#00BFFF]">K-12+</p>
+                  <p className="text-xs text-[#0A2540]/60 mt-1">
                     All Grade Levels
                   </p>
                 </div>
                 <div className="rounded-xl p-5 liquid-glass text-center">
-                  <p className="text-3xl font-bold text-[#812BFF]">$12</p>
-                  <p className="text-xs text-[#003C99]/60 mt-1">
+                  <p className="text-3xl font-bold text-[#00BFFF]">$12</p>
+                  <p className="text-xs text-[#0A2540]/60 mt-1">
                     CAD / User / Mo
                   </p>
                 </div>
@@ -1025,7 +1013,7 @@ export default async function LandingPage({
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 Wolf Whale vs {page.competitor}
               </h2>
-              <p className="text-lg text-[#003C99]/60 max-w-2xl mx-auto">
+              <p className="text-lg text-[#0A2540]/60 max-w-2xl mx-auto">
                 See how Wolf Whale LMS compares to {page.competitor} on the
                 features that matter most to Canadian schools
               </p>
@@ -1034,14 +1022,14 @@ export default async function LandingPage({
             <div className="rounded-2xl overflow-hidden liquid-glass">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[#003C99]/10">
-                    <th className="text-left py-4 px-6 text-sm font-semibold text-[#003C99]">
+                  <tr className="border-b border-[#0A2540]/10">
+                    <th className="text-left py-4 px-6 text-sm font-semibold text-[#0A2540]">
                       Feature
                     </th>
-                    <th className="text-center py-4 px-4 text-sm font-semibold text-[#812BFF]">
+                    <th className="text-center py-4 px-4 text-sm font-semibold text-[#00BFFF]">
                       Wolf Whale
                     </th>
-                    <th className="text-center py-4 px-4 text-sm font-semibold text-[#003C99]/60">
+                    <th className="text-center py-4 px-4 text-sm font-semibold text-[#0A2540]/60">
                       {page.competitor}
                     </th>
                   </tr>
@@ -1054,7 +1042,7 @@ export default async function LandingPage({
                         i % 2 === 0 ? 'bg-white/20' : 'bg-transparent'
                       }
                     >
-                      <td className="py-3 px-6 text-sm text-[#003C99]/80">
+                      <td className="py-3 px-6 text-sm text-[#0A2540]/80">
                         {row.feature}
                       </td>
                       <td className="py-3 px-4 text-center">
@@ -1083,26 +1071,26 @@ export default async function LandingPage({
                 ? `Ready to Transform Learning in ${page.city}?`
                 : 'Ready to Transform Your School?'}
             </h2>
-            <p className="text-lg text-[#003C99]/60 mb-8 max-w-xl mx-auto">
+            <p className="text-lg text-[#0A2540]/60 mb-8 max-w-xl mx-auto">
               Join the growing number of Canadian schools choosing Wolf Whale
               LMS. Start with a free account today.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/login"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#003C99] to-[#812BFF] hover:shadow-[0_0_30px_oklch(0.72_0.13_177/0.4)] transition-all font-semibold text-white group btn-glow"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#00BFFF] to-[#33FF33] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] transition-all font-semibold text-white group neon-glow-blue"
               >
                 Get Started Free
                 <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <a
                 href="mailto:info@wolfwhale.ca?subject=Wolf%20Whale%20LMS%20-%20Demo%20Request"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border-2 border-[#003C99]/20 hover:border-[#812BFF] hover:bg-white/50 transition-all font-semibold text-[#003C99]"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border-2 border-[#0A2540]/20 hover:border-[#00BFFF] hover:bg-white/50 transition-all font-semibold text-[#0A2540]"
               >
                 Request a Demo
               </a>
             </div>
-            <p className="text-sm text-[#003C99]/50 mt-6">
+            <p className="text-sm text-[#0A2540]/50 mt-6">
               $12 CAD per user per month. All features included. No hidden
               fees.
             </p>
@@ -1113,7 +1101,7 @@ export default async function LandingPage({
       {/* ============================================================
           FOOTER
           ============================================================ */}
-      <footer className="relative z-10 border-t border-[#003C99]/10 py-12 liquid-glass-heavy">
+      <footer className="relative z-10 border-t border-[#0A2540]/10 py-12 backdrop-blur-md bg-white/40">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="md:col-span-2">
@@ -1124,26 +1112,15 @@ export default async function LandingPage({
                   className="h-14 w-14 rounded-xl object-contain shadow-lg"
                 />
                 <div>
-                  <span
-                    className="font-bold block"
-                    style={{
-                      fontFamily: "'Shippori Mincho B1', Georgia, serif",
-                      fontWeight: 800,
-                    }}
-                  >
+                  <span className="font-display font-bold block tracking-wider uppercase">
                     Wolf Whale LMS
                   </span>
-                  <span
-                    className="text-xs text-[#003C99]/60 font-semibold"
-                    style={{
-                      fontFamily: "'Shippori Mincho B1', Georgia, serif",
-                    }}
-                  >
+                  <span className="text-xs text-[#0A2540]/60 font-display font-semibold tracking-widest uppercase">
                     Modern K-12 &amp; Post-Secondary Learning Platform
                   </span>
                 </div>
               </div>
-              <p className="text-sm text-[#003C99]/60 max-w-md">
+              <p className="text-sm text-[#0A2540]/60 max-w-md">
                 Canadian-built learning management system with built-in spaced
                 repetition flashcards. FERPA, COPPA, and PIPEDA compliant.
               </p>
@@ -1151,11 +1128,11 @@ export default async function LandingPage({
 
             <div>
               <h4 className="font-semibold mb-3 text-sm">Product</h4>
-              <ul className="space-y-2 text-sm text-[#003C99]/60">
+              <ul className="space-y-2 text-sm text-[#0A2540]/60">
                 <li>
                   <Link
                     href="/info"
-                    className="hover:text-[#812BFF] transition-colors"
+                    className="hover:text-[#00BFFF] transition-colors"
                   >
                     Features
                   </Link>
@@ -1163,7 +1140,7 @@ export default async function LandingPage({
                 <li>
                   <Link
                     href="/login"
-                    className="hover:text-[#812BFF] transition-colors"
+                    className="hover:text-[#00BFFF] transition-colors"
                   >
                     Login
                   </Link>
@@ -1171,7 +1148,7 @@ export default async function LandingPage({
                 <li>
                   <Link
                     href="/lms/k-12"
-                    className="hover:text-[#812BFF] transition-colors"
+                    className="hover:text-[#00BFFF] transition-colors"
                   >
                     K-12 Schools
                   </Link>
@@ -1179,7 +1156,7 @@ export default async function LandingPage({
                 <li>
                   <Link
                     href="/lms/post-secondary"
-                    className="hover:text-[#812BFF] transition-colors"
+                    className="hover:text-[#00BFFF] transition-colors"
                   >
                     Post-Secondary
                   </Link>
@@ -1189,11 +1166,11 @@ export default async function LandingPage({
 
             <div>
               <h4 className="font-semibold mb-3 text-sm">Legal</h4>
-              <ul className="space-y-2 text-sm text-[#003C99]/60">
+              <ul className="space-y-2 text-sm text-[#0A2540]/60">
                 <li>
                   <Link
                     href="/privacy"
-                    className="hover:text-[#812BFF] transition-colors"
+                    className="hover:text-[#00BFFF] transition-colors"
                   >
                     Privacy Policy
                   </Link>
@@ -1201,7 +1178,7 @@ export default async function LandingPage({
                 <li>
                   <Link
                     href="/terms"
-                    className="hover:text-[#812BFF] transition-colors"
+                    className="hover:text-[#00BFFF] transition-colors"
                   >
                     Terms of Service
                   </Link>
@@ -1209,7 +1186,7 @@ export default async function LandingPage({
                 <li>
                   <Link
                     href="/help"
-                    className="hover:text-[#812BFF] transition-colors"
+                    className="hover:text-[#00BFFF] transition-colors"
                   >
                     Help Center
                   </Link>
@@ -1218,7 +1195,7 @@ export default async function LandingPage({
             </div>
           </div>
 
-          <div className="pt-8 border-t border-[#003C99]/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#003C99]/50">
+          <div className="pt-8 border-t border-[#0A2540]/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#0A2540]/50">
             <p>&copy; 2026 Wolf Whale LMS. All rights reserved.</p>
             <div className="flex items-center gap-2">
               <img
@@ -1226,7 +1203,7 @@ export default async function LandingPage({
                 alt="Coat of Arms of Canada"
                 className="h-12 w-auto object-contain"
               />
-              <span className="text-xs font-semibold text-[#003C99]/60">
+              <span className="text-xs font-semibold text-[#0A2540]/60">
                 100% Canadian Owned &amp; Built
               </span>
             </div>

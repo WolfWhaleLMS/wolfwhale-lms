@@ -456,21 +456,21 @@ export default async function StudentDashboardPage() {
 
   // Playful gradient palettes for course cards
   const courseGradients = [
-    'from-violet-500 to-purple-600',
-    'from-blue-500 to-cyan-500',
-    'from-emerald-500 to-teal-500',
-    'from-orange-400 to-pink-500',
-    'from-fuchsia-500 to-rose-500',
-    'from-amber-400 to-orange-500',
+    'from-[#00BFFF] to-[#33FF33]',
+    'from-[#00BFFF] to-[#00FFFF]',
+    'from-[#33FF33] to-[#00FFFF]',
+    'from-[#FFAA00] to-[#FFD700]',
+    'from-[#00BFFF] to-[#33FF33]',
+    'from-[#FFAA00] to-[#FFD700]',
   ]
 
   // Playful gradient palettes for task cards
   const taskGradients = [
-    'from-sky-400 to-blue-500',
-    'from-violet-400 to-purple-500',
-    'from-emerald-400 to-green-500',
-    'from-amber-400 to-orange-500',
-    'from-pink-400 to-rose-500',
+    'from-[#00BFFF] to-[#00FFFF]',
+    'from-[#00BFFF] to-[#33FF33]',
+    'from-[#33FF33] to-[#00FFFF]',
+    'from-[#FFAA00] to-[#FFD700]',
+    'from-[#00BFFF] to-[#00FFFF]',
   ]
 
   // Streak encouragement messages
@@ -494,7 +494,7 @@ export default async function StudentDashboardPage() {
   return (
     <div className="min-h-screen space-y-8 pb-16">
       {/* ===== BIG FRIENDLY GREETING ===== */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-purple-500 to-fuchsia-500 p-8 text-white shadow-2xl sm:p-10">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#00BFFF] via-[#00FFFF] to-[#33FF33] p-8 text-white shadow-2xl sm:p-10">
         {/* Decorative background circles */}
         <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/10" />
         <div className="pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/10" />
@@ -502,7 +502,7 @@ export default async function StudentDashboardPage() {
 
         <div className="relative z-10">
           <div className="flex items-center gap-3">
-            <Sparkles className="h-8 w-8 text-yellow-300" />
+            <Sparkles className="h-8 w-8 text-[#FFAA00]" />
             <p className="text-lg font-medium text-white/80">{greeting}</p>
           </div>
           <h1 className="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">
@@ -515,7 +515,7 @@ export default async function StudentDashboardPage() {
           {/* Streak badge */}
           {streak > 0 && (
             <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2.5 text-base font-semibold backdrop-blur-sm">
-              <Flame className="h-5 w-5 text-orange-300" />
+              <Flame className="h-5 w-5 text-[#FFAA00]" />
               {streak}-day streak &mdash; {streakMessage}
             </div>
           )}
@@ -526,7 +526,7 @@ export default async function StudentDashboardPage() {
       <AnnouncementBanner />
 
       {/* ===== XP / LEVEL PROGRESS BAR ===== */}
-      <div className="rounded-3xl bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 p-6 shadow-lg sm:p-8">
+      <div className="rounded-3xl bg-gradient-to-r from-[#FFAA00] via-[#FFD700] to-[#FFAA00] p-6 shadow-lg sm:p-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/30 text-3xl font-black text-white shadow-inner backdrop-blur-sm">
@@ -562,7 +562,7 @@ export default async function StudentDashboardPage() {
             style={{ width: `${Math.max(xpProgress, 3)}%` }}
           >
             {xpProgress >= 10 && (
-              <Zap className="h-4 w-4 text-amber-500" />
+              <Zap className="h-4 w-4 text-[#FFAA00]" />
             )}
           </div>
         </div>
@@ -599,9 +599,9 @@ export default async function StudentDashboardPage() {
               ]}
             />
             <div className="flex flex-col items-center gap-2" role="status" aria-label={`${stats.coursesEnrolled} courses enrolled`}>
-              <div className="flex h-[140px] w-[140px] items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/20">
+              <div className="flex h-[140px] w-[140px] items-center justify-center rounded-full bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10">
                 <div className="text-center">
-                  <BookOpen className="mx-auto mb-1 h-6 w-6 text-blue-500" />
+                  <BookOpen className="mx-auto mb-1 h-6 w-6 text-[#00BFFF]" />
                   <p className="text-2xl font-extrabold text-foreground">{stats.coursesEnrolled}</p>
                 </div>
               </div>
@@ -609,10 +609,10 @@ export default async function StudentDashboardPage() {
               <p className="text-xs text-muted-foreground">Enrolled</p>
             </div>
             <div className="flex flex-col items-center gap-2" role="status" aria-label={`${stats.assignmentsDue} assignments due this week`}>
-              <div className={`flex h-[140px] w-[140px] items-center justify-center rounded-full ${stats.assignmentsDue > 0 ? 'bg-amber-50 dark:bg-amber-950/20' : 'bg-muted/30'}`}>
+              <div className={`flex h-[140px] w-[140px] items-center justify-center rounded-full ${stats.assignmentsDue > 0 ? 'bg-[#FFAA00]/5 dark:bg-[#FFAA00]/10' : 'bg-muted/30'}`}>
                 <div className="text-center">
-                  <Calendar className={`mx-auto mb-1 h-6 w-6 ${stats.assignmentsDue > 0 ? 'text-amber-500' : 'text-muted-foreground'}`} />
-                  <p className={`text-2xl font-extrabold ${stats.assignmentsDue > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-foreground'}`}>{stats.assignmentsDue}</p>
+                  <Calendar className={`mx-auto mb-1 h-6 w-6 ${stats.assignmentsDue > 0 ? 'text-[#FFAA00]' : 'text-muted-foreground'}`} />
+                  <p className={`text-2xl font-extrabold ${stats.assignmentsDue > 0 ? 'text-[#FFAA00] dark:text-[#FFD700]' : 'text-foreground'}`}>{stats.assignmentsDue}</p>
                 </div>
               </div>
               <p className="text-sm font-semibold text-foreground">Due Soon</p>
@@ -626,7 +626,7 @@ export default async function StudentDashboardPage() {
       <section>
         <div className="mb-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-blue-500 shadow-md">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#00BFFF] to-[#00FFFF] shadow-md">
               <Target className="h-5 w-5 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-foreground">
@@ -635,7 +635,7 @@ export default async function StudentDashboardPage() {
           </div>
           <Link
             href="/student/assignments"
-            className="flex items-center gap-1 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600 transition-all hover:bg-blue-100 hover:scale-105 dark:bg-blue-950 dark:text-blue-300"
+            className="flex items-center gap-1 rounded-full bg-[#00BFFF]/5 px-4 py-2 text-sm font-semibold text-[#00BFFF] transition-all hover:bg-[#00BFFF]/10 hover:scale-105 dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]"
           >
             See All <ChevronRight className="h-4 w-4" />
           </Link>
@@ -687,8 +687,8 @@ export default async function StudentDashboardPage() {
             })}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-blue-200 bg-blue-50/50 py-16 text-center dark:border-blue-800 dark:bg-blue-950/30">
-            <Rocket className="mb-4 h-16 w-16 text-blue-300" />
+          <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-[#00BFFF]/20 bg-[#00BFFF]/5 py-16 text-center dark:border-[#00BFFF]/20 dark:bg-[#00BFFF]/5">
+            <Rocket className="mb-4 h-16 w-16 text-[#00BFFF]/50" />
             <p className="text-xl font-bold text-foreground">
               All clear! Nothing due soon.
             </p>
@@ -703,14 +703,14 @@ export default async function StudentDashboardPage() {
       <section>
         <div className="mb-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 shadow-md">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#33FF33] to-[#00FFFF] shadow-md">
               <BookOpen className="h-5 w-5 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-foreground">My Classes</h2>
           </div>
           <Link
             href="/student/courses"
-            className="flex items-center gap-1 rounded-full bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-600 transition-all hover:bg-emerald-100 hover:scale-105 dark:bg-emerald-950 dark:text-emerald-300"
+            className="flex items-center gap-1 rounded-full bg-[#33FF33]/5 px-4 py-2 text-sm font-semibold text-[#33FF33] transition-all hover:bg-[#33FF33]/10 hover:scale-105 dark:bg-[#33FF33]/10 dark:text-[#33FF33]"
           >
             See All <ChevronRight className="h-4 w-4" />
           </Link>
@@ -762,7 +762,7 @@ export default async function StudentDashboardPage() {
                     </div>
                     <p className="mt-3 text-sm text-muted-foreground">
                       {course.progress === 100 ? (
-                        <span className="flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
+                        <span className="flex items-center gap-1 font-semibold text-[#33FF33] dark:text-[#33FF33]">
                           <PartyPopper className="h-4 w-4" /> All caught up!
                         </span>
                       ) : (
@@ -782,8 +782,8 @@ export default async function StudentDashboardPage() {
             })}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-emerald-200 bg-emerald-50/50 py-16 text-center dark:border-emerald-800 dark:bg-emerald-950/30">
-            <BookOpen className="mb-4 h-16 w-16 text-emerald-300" />
+          <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-[#33FF33]/20 bg-[#33FF33]/5 py-16 text-center dark:border-[#33FF33]/20 dark:bg-[#33FF33]/5">
+            <BookOpen className="mb-4 h-16 w-16 text-[#33FF33]/50" />
             <p className="text-xl font-bold text-foreground">No classes yet</p>
             <p className="mt-2 text-base text-muted-foreground">
               Ask your teacher to enroll you in a class to get started!
@@ -796,7 +796,7 @@ export default async function StudentDashboardPage() {
       <section>
         <div className="mb-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-md">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#FFAA00] to-[#FFD700] shadow-md">
               <Trophy className="h-5 w-5 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-foreground">
@@ -805,7 +805,7 @@ export default async function StudentDashboardPage() {
           </div>
           <Link
             href="/student/achievements"
-            className="flex items-center gap-1 rounded-full bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-600 transition-all hover:bg-amber-100 hover:scale-105 dark:bg-amber-950 dark:text-amber-300"
+            className="flex items-center gap-1 rounded-full bg-[#FFAA00]/5 px-4 py-2 text-sm font-semibold text-[#FFAA00] transition-all hover:bg-[#FFAA00]/10 hover:scale-105 dark:bg-[#FFAA00]/10 dark:text-[#FFD700]"
           >
             See All <ChevronRight className="h-4 w-4" />
           </Link>
@@ -816,9 +816,9 @@ export default async function StudentDashboardPage() {
             {achievements.slice(0, 3).map((achievement) => (
               <div
                 key={achievement.id}
-                className="group flex items-center gap-4 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-yellow-50 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-amber-800 dark:from-amber-950/50 dark:to-yellow-950/50"
+                className="group flex items-center gap-4 rounded-2xl border border-[#FFAA00]/20 bg-gradient-to-br from-[#FFAA00]/5 to-[#FFD700]/5 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-[#FFAA00]/20 dark:from-[#FFAA00]/10 dark:to-[#FFD700]/10"
               >
-                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-2xl shadow-md transition-transform duration-300 group-hover:scale-110">
+                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#FFAA00] to-[#FFD700] text-2xl shadow-md transition-transform duration-300 group-hover:scale-110">
                   {achievement.icon}
                 </span>
                 <div className="flex-1">
@@ -829,13 +829,13 @@ export default async function StudentDashboardPage() {
                     {achievement.earnedAt}
                   </p>
                 </div>
-                <Crown className="h-5 w-5 text-amber-400" />
+                <Crown className="h-5 w-5 text-[#FFAA00]" />
               </div>
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-amber-200 bg-amber-50/50 py-12 text-center dark:border-amber-800 dark:bg-amber-950/30">
-            <Trophy className="mb-4 h-14 w-14 text-amber-300" />
+          <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-[#FFAA00]/20 bg-[#FFAA00]/5 py-12 text-center dark:border-[#FFAA00]/20 dark:bg-[#FFAA00]/5">
+            <Trophy className="mb-4 h-14 w-14 text-[#FFAA00]/50" />
             <p className="text-lg font-bold text-foreground">
               Your trophy case is waiting!
             </p>
@@ -854,29 +854,29 @@ export default async function StudentDashboardPage() {
               href: '/student/study-mode',
               label: 'Study Mode',
               icon: <Rocket className="h-7 w-7" />,
-              gradient: 'from-blue-500 to-cyan-400',
-              bg: 'bg-blue-50 dark:bg-blue-950/40',
+              gradient: 'from-[#00BFFF] to-[#00FFFF]',
+              bg: 'bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10',
             },
             {
               href: '/messaging',
               label: 'Messages',
               icon: <MessageCircle className="h-7 w-7" />,
-              gradient: 'from-purple-500 to-pink-400',
-              bg: 'bg-purple-50 dark:bg-purple-950/40',
+              gradient: 'from-[#00BFFF] to-[#33FF33]',
+              bg: 'bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10',
             },
             {
               href: '/calendar',
               label: 'Calendar',
               icon: <CalendarDays className="h-7 w-7" />,
-              gradient: 'from-emerald-500 to-green-400',
-              bg: 'bg-emerald-50 dark:bg-emerald-950/40',
+              gradient: 'from-[#33FF33] to-[#00FFFF]',
+              bg: 'bg-[#33FF33]/5 dark:bg-[#33FF33]/10',
             },
             {
               href: '/student/leaderboard',
               label: 'Leaderboard',
               icon: <Crown className="h-7 w-7" />,
-              gradient: 'from-amber-500 to-orange-400',
-              bg: 'bg-amber-50 dark:bg-amber-950/40',
+              gradient: 'from-[#FFAA00] to-[#FFD700]',
+              bg: 'bg-[#FFAA00]/5 dark:bg-[#FFAA00]/10',
             },
           ].map((action) => (
             <Link

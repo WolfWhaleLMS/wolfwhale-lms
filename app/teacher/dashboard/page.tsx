@@ -190,15 +190,15 @@ export default async function TeacherDashboardPage() {
             <p className="mt-1 text-sm text-muted-foreground">Courses</p>
           </div>
           <div className="rounded-xl border border-border bg-muted/30 p-4 text-center">
-            <Users className="mx-auto mb-1 h-5 w-5 text-blue-500" />
-            <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+            <Users className="mx-auto mb-1 h-5 w-5 text-[#00BFFF]" />
+            <p className="text-3xl font-bold text-[#00BFFF] dark:text-[#00BFFF]">
               {totalStudents}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">Students</p>
           </div>
           <div className="rounded-xl border border-border bg-muted/30 p-4 text-center">
-            <ClipboardList className="mx-auto mb-1 h-5 w-5 text-rose-500" />
-            <p className="text-3xl font-bold text-rose-600 dark:text-rose-400">
+            <ClipboardList className="mx-auto mb-1 h-5 w-5 text-[#FFAA00]" />
+            <p className="text-3xl font-bold text-[#FFAA00] dark:text-[#FFAA00]">
               {pendingGrading}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -206,8 +206,8 @@ export default async function TeacherDashboardPage() {
             </p>
           </div>
           <div className="rounded-xl border border-border bg-muted/30 p-4 text-center">
-            <Clock className="mx-auto mb-1 h-5 w-5 text-green-500" />
-            <p className="text-3xl font-bold text-green-600 dark:text-green-400">
+            <Clock className="mx-auto mb-1 h-5 w-5 text-[#33FF33]" />
+            <p className="text-3xl font-bold text-[#33FF33] dark:text-[#33FF33]">
               {courses.reduce((s: number, c: any) => s + (c.lessonCount || 0), 0)}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">Total Lessons</p>
@@ -235,10 +235,10 @@ export default async function TeacherDashboardPage() {
 
           <Link
             href="/teacher/courses"
-            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-blue-500/10 to-blue-500/5 p-6 transition-all hover:shadow-lg hover:scale-105"
+            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-[#00BFFF]/10 to-[#00BFFF]/5 p-6 transition-all hover:shadow-lg hover:scale-105"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/20">
-              <BookOpen className="h-6 w-6 text-blue-500" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00BFFF]/20">
+              <BookOpen className="h-6 w-6 text-[#00BFFF]" />
             </div>
             <span className="text-sm font-semibold text-foreground">
               My Courses
@@ -247,10 +247,10 @@ export default async function TeacherDashboardPage() {
 
           <Link
             href="/teacher/gradebook"
-            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-green-500/10 to-green-500/5 p-6 transition-all hover:shadow-lg hover:scale-105"
+            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-[#33FF33]/10 to-[#33FF33]/5 p-6 transition-all hover:shadow-lg hover:scale-105"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-500/20">
-              <GraduationCap className="h-6 w-6 text-green-500" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#33FF33]/20">
+              <GraduationCap className="h-6 w-6 text-[#33FF33]" />
             </div>
             <span className="text-sm font-semibold text-foreground">
               Gradebook
@@ -259,10 +259,10 @@ export default async function TeacherDashboardPage() {
 
           <Link
             href="/messaging"
-            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-purple-500/10 to-purple-500/5 p-6 transition-all hover:shadow-lg hover:scale-105"
+            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-[#00BFFF]/10 to-[#00BFFF]/5 p-6 transition-all hover:shadow-lg hover:scale-105"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-500/20">
-              <MessageSquare className="h-6 w-6 text-purple-500" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00BFFF]/20">
+              <MessageSquare className="h-6 w-6 text-[#00BFFF]" />
             </div>
             <span className="text-sm font-semibold text-foreground">
               Messages
@@ -271,10 +271,10 @@ export default async function TeacherDashboardPage() {
 
           <Link
             href="/calendar"
-            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-rose-500/10 to-rose-500/5 p-6 transition-all hover:shadow-lg hover:scale-105"
+            className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-gradient-to-br from-[#00FFFF]/10 to-[#00FFFF]/5 p-6 transition-all hover:shadow-lg hover:scale-105"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-500/20">
-              <Calendar className="h-6 w-6 text-rose-500" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00FFFF]/20">
+              <Calendar className="h-6 w-6 text-[#00FFFF]" />
             </div>
             <span className="text-sm font-semibold text-foreground">
               Calendar
@@ -402,7 +402,7 @@ export default async function TeacherDashboardPage() {
                           Grade
                         </Link>
                       ) : (
-                        <span className="text-xs text-green-600 dark:text-green-400">
+                        <span className="text-xs text-[#33FF33] dark:text-[#33FF33]">
                           Graded
                         </span>
                       )}

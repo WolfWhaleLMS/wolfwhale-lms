@@ -23,7 +23,7 @@ interface Quiz {
 function StatusBadge({ status }: { status: string }) {
   const colorMap: Record<string, string> = {
     draft: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400',
-    published: 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-300',
+    published: 'bg-[#33FF33]/10 text-[#33FF33] dark:bg-[#33FF33]/10 dark:text-[#33FF33]',
     closed: 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-300',
   }
 
@@ -212,7 +212,7 @@ export default function TeacherQuizzesPage() {
                   {quiz.status === 'draft' && (
                     <button
                       onClick={() => handleToggleStatus(quiz)}
-                      className="rounded-lg border border-green-200 px-3 py-1.5 text-sm font-medium text-green-600 transition-colors hover:bg-green-50 dark:border-green-800 dark:text-green-400 dark:hover:bg-green-950/30"
+                      className="rounded-lg border border-[#33FF33]/20 px-3 py-1.5 text-sm font-medium text-[#33FF33] transition-colors hover:bg-[#33FF33]/5 dark:border-[#33FF33]/20 dark:text-[#33FF33] dark:hover:bg-[#33FF33]/10"
                     >
                       Publish
                     </button>
@@ -220,7 +220,7 @@ export default function TeacherQuizzesPage() {
                   {quiz.status === 'published' && (
                     <button
                       onClick={() => handleToggleStatus(quiz)}
-                      className="rounded-lg border border-rose-200 px-3 py-1.5 text-sm font-medium text-rose-600 transition-colors hover:bg-rose-50 dark:border-rose-800 dark:text-rose-400 dark:hover:bg-rose-950/30"
+                      className="rounded-lg border border-[#FFAA00]/20 px-3 py-1.5 text-sm font-medium text-[#FFAA00] transition-colors hover:bg-[#FFAA00]/5 dark:border-[#FFAA00]/20 dark:text-[#FFAA00] dark:hover:bg-[#FFAA00]/10"
                     >
                       Close
                     </button>

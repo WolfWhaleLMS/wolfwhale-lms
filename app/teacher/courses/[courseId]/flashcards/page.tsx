@@ -78,7 +78,7 @@ export default function TeacherFlashcardsPage({ params }: { params: Promise<{ co
         </div>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+          className="inline-flex items-center gap-2 rounded-xl bg-[#00BFFF] px-4 py-2.5 text-sm font-medium text-white hover:bg-[#00BFFF]/90 transition-colors"
         >
           <Plus className="h-4 w-4" />
           New Deck
@@ -107,7 +107,7 @@ export default function TeacherFlashcardsPage({ params }: { params: Promise<{ co
             <button
               type="submit"
               disabled={creating}
-              className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              className="rounded-xl bg-[#00BFFF] px-4 py-2 text-sm font-medium text-white hover:bg-[#00BFFF]/90 disabled:opacity-50"
             >
               {creating ? 'Creating...' : 'Create Deck'}
             </button>
@@ -142,14 +142,14 @@ export default function TeacherFlashcardsPage({ params }: { params: Promise<{ co
                 className="flex-1 min-w-0"
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/30">
-                    <Layers className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#00BFFF]/10 dark:bg-[#00BFFF]/10">
+                    <Layers className="h-5 w-5 text-[#00BFFF] dark:text-[#00BFFF]" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground">{deck.title}</h3>
                     <p className="text-sm text-muted-foreground">
                       {deck.card_count} cards &middot;{' '}
-                      <span className={deck.status === 'published' ? 'text-green-600' : 'text-rose-600'}>
+                      <span className={deck.status === 'published' ? 'text-[#33FF33]' : 'text-[#FFAA00]'}>
                         {deck.status}
                       </span>
                     </p>

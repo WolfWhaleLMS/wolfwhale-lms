@@ -83,10 +83,10 @@ export function LoginForm() {
   }
 
   const demoAccounts = [
-    { username: 'student', label: 'Student', icon: GraduationCap, color: 'from-purple-500 to-purple-600', hoverGlow: 'hover:shadow-purple-500/30' },
-    { username: 'teacher', label: 'Teacher', icon: BookOpen, color: 'from-rose-500 to-rose-600', hoverGlow: 'hover:shadow-rose-500/30' },
-    { username: 'parent', label: 'Parent', icon: Users, color: 'from-emerald-500 to-emerald-600', hoverGlow: 'hover:shadow-emerald-500/30' },
-    { username: 'admin', label: 'Admin', icon: Shield, color: 'from-slate-500 to-slate-700', hoverGlow: 'hover:shadow-slate-500/30' },
+    { username: 'student', label: 'Student', icon: GraduationCap, color: 'from-[#00BFFF] to-[#00BFFF]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(0,191,255,0.3)]' },
+    { username: 'teacher', label: 'Teacher', icon: BookOpen, color: 'from-[#33FF33] to-[#33FF33]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(51,255,51,0.3)]' },
+    { username: 'parent', label: 'Parent', icon: Users, color: 'from-[#00FFFF] to-[#00FFFF]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(0,255,255,0.3)]' },
+    { username: 'admin', label: 'Admin', icon: Shield, color: 'from-[#FFAA00] to-[#FFAA00]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(255,170,0,0.3)]' },
   ]
 
   async function handleDemoLogin(username: string) {
@@ -114,10 +114,10 @@ export function LoginForm() {
       {/* Demo Quick-Login Buttons */}
       <div className="space-y-4">
         <div className="text-center space-y-1.5">
-          <h3 className="text-lg font-bold text-[#003C99]">
+          <h3 className="text-lg font-bold text-[#0A2540]">
             Try It Now — No Sign-Up Required
           </h3>
-          <p className="text-sm text-[#003C99]/60 leading-relaxed">
+          <p className="text-sm text-[#6B8FA3] leading-relaxed">
             Tap any role below to instantly explore Wolf Whale as a student, teacher, parent, or admin.
           </p>
         </div>
@@ -147,9 +147,9 @@ export function LoginForm() {
 
       {/* Divider */}
       <div className="flex items-center gap-3">
-        <div className="flex-1 h-px bg-[#003C99]/10" />
-        <span className="text-xs text-[#003C99]/30 font-medium">or sign in with credentials</span>
-        <div className="flex-1 h-px bg-[#003C99]/10" />
+        <div className="flex-1 h-px bg-[#00BFFF]/15" />
+        <span className="text-xs text-[#6B8FA3] font-medium">or sign in with credentials</span>
+        <div className="flex-1 h-px bg-[#00BFFF]/15" />
       </div>
 
       <Form {...form}>
@@ -159,17 +159,17 @@ export function LoginForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[#003C99]/70">Username</FormLabel>
+                <FormLabel className="text-[#0A2540]/70">Username</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#003C99]/30" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#00BFFF]/40" />
                     <Input
                       type="text"
                       placeholder="student"
                       autoComplete="username"
                       autoFocus
                       disabled={isLoading}
-                      className="pl-10 bg-white/80 border-[#003C99]/15 text-[#003C99] placeholder:text-[#003C99]/30 focus:border-[#812BFF]/50 focus:ring-[#812BFF]/20"
+                      className="pl-10 bg-white/80 border-[#00BFFF]/20 text-[#0A2540] placeholder:text-[#0A2540]/30 focus:border-[#00BFFF] focus:ring-[#00BFFF]/30"
                       {...field}
                     />
                   </div>
@@ -185,23 +185,23 @@ export function LoginForm() {
             render={({ field }) => (
               <FormItem>
                 <div className="flex items-center justify-between">
-                  <FormLabel className="text-[#003C99]/70">Password</FormLabel>
+                  <FormLabel className="text-[#0A2540]/70">Password</FormLabel>
                   <a
                     href="/forgot-password"
-                    className="text-sm text-[#812BFF]/70 hover:text-[#812BFF] transition-colors"
+                    className="text-sm text-[#00BFFF]/70 hover:text-[#00BFFF] transition-colors"
                   >
                     Forgot password?
                   </a>
                 </div>
                 <FormControl>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#003C99]/30" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#00BFFF]/40" />
                     <Input
                       type="password"
                       placeholder="••••••••"
                       autoComplete="current-password"
                       disabled={isLoading}
-                      className="pl-10 bg-white/80 border-[#003C99]/15 text-[#003C99] placeholder:text-[#003C99]/30 focus:border-[#812BFF]/50 focus:ring-[#812BFF]/20"
+                      className="pl-10 bg-white/80 border-[#00BFFF]/20 text-[#0A2540] placeholder:text-[#0A2540]/30 focus:border-[#00BFFF] focus:ring-[#00BFFF]/30"
                       {...field}
                     />
                   </div>
@@ -225,7 +225,7 @@ export function LoginForm() {
 
           <Button
             type="submit"
-            className="w-full bg-gradient-to-r from-[#003C99] to-[#812BFF] text-white font-medium h-11 hover:opacity-90 transition-opacity"
+            className="w-full bg-[#00BFFF] text-white font-medium h-11 hover:shadow-[0_0_25px_rgba(0,191,255,0.4)] hover:bg-[#00BFFF]/90 transition-all"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -240,7 +240,7 @@ export function LoginForm() {
         </form>
       </Form>
 
-      <p className="text-xs text-center text-[#003C99]/40">
+      <p className="text-xs text-center text-[#6B8FA3]">
         Your administrator will provide your login credentials
       </p>
     </div>

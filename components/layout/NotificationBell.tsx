@@ -92,21 +92,21 @@ export function NotificationBell() {
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white ring-2 ring-background">
+          <span className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#33FF33] text-[10px] font-bold text-[#0A2540] neon-glow-green ring-2 ring-background">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
       </button>
 
       {open && (
-        <div className="absolute right-0 z-50 mt-2 w-80 rounded-2xl liquid-glass-elevated animate-glass-pop-in">
+        <div className="absolute right-0 z-50 mt-2 w-80 rounded-2xl liquid-glass-elevated animate-glass-pop-in border border-[#00BFFF]/25 neon-glow-blue">
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <h3 className="text-sm font-semibold">Notifications</h3>
             {unreadCount > 0 && (
               <button
                 type="button"
                 onClick={handleMarkAllRead}
-                className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700"
+                className="flex items-center gap-1 text-xs text-[#00BFFF] hover:text-[#00FFFF]"
               >
                 <CheckCheck className="h-3 w-3" />
                 Mark all read
@@ -124,7 +124,7 @@ export function NotificationBell() {
                 <div
                   key={n.id}
                   className={`flex items-start gap-3 border-b border-border/50 px-4 py-3 transition-colors hover:bg-muted/50 ${
-                    !n.read ? 'bg-blue-50/50 dark:bg-blue-950/20' : ''
+                    !n.read ? 'bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10' : ''
                   }`}
                 >
                   <div className="flex-1 min-w-0">

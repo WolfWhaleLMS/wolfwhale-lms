@@ -94,9 +94,9 @@ export default async function TeacherAllAssignmentsPage() {
       case 'past_due':
         return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
       case 'due_soon':
-        return 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400'
+        return 'bg-[#FFAA00]/10 text-[#FFAA00] dark:bg-[#FFAA00]/10 dark:text-[#FFAA00]'
       case 'published':
-        return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+        return 'bg-[#33FF33]/10 text-[#33FF33] dark:bg-[#33FF33]/10 dark:text-[#33FF33]'
       default:
         return 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
     }
@@ -120,16 +120,16 @@ export default async function TeacherAllAssignmentsPage() {
   function typeBadge(type: string) {
     switch (type) {
       case 'homework':
-        return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+        return 'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]'
       case 'quiz':
-        return 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+        return 'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]'
       case 'test':
       case 'exam':
         return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
       case 'project':
-        return 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400'
+        return 'bg-[#00FFFF]/10 text-[#00FFFF] dark:bg-[#00FFFF]/10 dark:text-[#00FFFF]'
       case 'essay':
-        return 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400'
+        return 'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]'
       default:
         return 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
     }
@@ -168,9 +168,9 @@ export default async function TeacherAllAssignmentsPage() {
       </div>
 
       {/* Hint */}
-      <div className="flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950/20">
-        <Info className="mt-0.5 h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400" />
-        <p className="text-sm text-blue-700 dark:text-blue-300">
+      <div className="flex items-start gap-3 rounded-xl border border-[#00BFFF]/20 bg-[#00BFFF]/5 p-4 dark:border-[#00BFFF]/20 dark:bg-[#00BFFF]/5">
+        <Info className="mt-0.5 h-5 w-5 shrink-0 text-[#00BFFF] dark:text-[#00BFFF]" />
+        <p className="text-sm text-[#00BFFF] dark:text-[#00BFFF]">
           To create a new assignment, navigate to a specific course and use the
           Assignments tab.
         </p>
@@ -185,15 +185,15 @@ export default async function TeacherAllAssignmentsPage() {
             <p className="mt-1 text-xs text-muted-foreground">Total Assignments</p>
           </div>
           <div className="ocean-card rounded-2xl p-4 text-center">
-            <CheckCircle2 className="mx-auto mb-1 h-5 w-5 text-green-500" />
-            <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+            <CheckCircle2 className="mx-auto mb-1 h-5 w-5 text-[#33FF33]" />
+            <p className="text-2xl font-bold text-[#33FF33] dark:text-[#33FF33]">
               {assignments.filter((a) => getAssignmentStatus(a) === 'published').length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Active</p>
           </div>
           <div className="ocean-card rounded-2xl p-4 text-center">
-            <AlertTriangle className="mx-auto mb-1 h-5 w-5 text-rose-500" />
-            <p className="text-2xl font-bold text-rose-600 dark:text-rose-400">
+            <AlertTriangle className="mx-auto mb-1 h-5 w-5 text-[#FFAA00]" />
+            <p className="text-2xl font-bold text-[#FFAA00] dark:text-[#FFAA00]">
               {assignments.filter((a) => getAssignmentStatus(a) === 'due_soon').length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Due Soon</p>

@@ -40,18 +40,18 @@ interface GradebookData {
 }
 
 function GradeColor({ percentage }: { percentage: number }) {
-  if (percentage >= 90) return 'text-green-600 dark:text-green-400'
-  if (percentage >= 80) return 'text-blue-600 dark:text-blue-400'
-  if (percentage >= 70) return 'text-rose-600 dark:text-rose-400'
-  if (percentage >= 60) return 'text-orange-600 dark:text-orange-400'
+  if (percentage >= 90) return 'text-[#33FF33] dark:text-[#33FF33]'
+  if (percentage >= 80) return 'text-[#00BFFF] dark:text-[#00BFFF]'
+  if (percentage >= 70) return 'text-[#FFAA00] dark:text-[#FFAA00]'
+  if (percentage >= 60) return 'text-[#FFD700] dark:text-[#FFD700]'
   return 'text-red-600 dark:text-red-400'
 }
 
 function gradeColorClass(percentage: number): string {
-  if (percentage >= 90) return 'text-green-600 dark:text-green-400'
-  if (percentage >= 80) return 'text-blue-600 dark:text-blue-400'
-  if (percentage >= 70) return 'text-rose-600 dark:text-rose-400'
-  if (percentage >= 60) return 'text-orange-600 dark:text-orange-400'
+  if (percentage >= 90) return 'text-[#33FF33] dark:text-[#33FF33]'
+  if (percentage >= 80) return 'text-[#00BFFF] dark:text-[#00BFFF]'
+  if (percentage >= 70) return 'text-[#FFAA00] dark:text-[#FFAA00]'
+  if (percentage >= 60) return 'text-[#FFD700] dark:text-[#FFD700]'
   return 'text-red-600 dark:text-red-400'
 }
 

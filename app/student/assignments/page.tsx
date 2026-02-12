@@ -35,11 +35,11 @@ function StatusBadge({ status }: { status: string }) {
     },
     submitted: {
       label: 'Submitted',
-      className: 'bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300',
+      className: 'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/15 dark:text-[#00BFFF]',
     },
     graded: {
       label: 'Graded',
-      className: 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-300',
+      className: 'bg-[#33FF33]/10 text-[#33FF33] dark:bg-[#33FF33]/15 dark:text-[#33FF33]',
     },
     overdue: {
       label: 'Overdue',
@@ -47,11 +47,11 @@ function StatusBadge({ status }: { status: string }) {
     },
     late: {
       label: 'Late',
-      className: 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300',
+      className: 'bg-[#FFAA00]/10 text-[#FFAA00] dark:bg-[#FFAA00]/15 dark:text-[#FFD700]',
     },
     returned: {
       label: 'Returned',
-      className: 'bg-orange-100 text-orange-700 dark:bg-orange-950/40 dark:text-orange-300',
+      className: 'bg-[#FFAA00]/10 text-[#FFAA00] dark:bg-[#FFAA00]/15 dark:text-[#FFD700]',
     },
   }
 
@@ -207,16 +207,16 @@ export default function StudentAssignmentsPage() {
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-lg">
           <div className="mb-2 flex items-center justify-center">
-            <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+            <CheckCircle className="h-6 w-6 text-[#33FF33] dark:text-[#33FF33]" />
           </div>
-          <p className="text-3xl font-bold text-green-600 dark:text-green-400">{completedCount}</p>
+          <p className="text-3xl font-bold text-[#33FF33] dark:text-[#33FF33]">{completedCount}</p>
           <p className="mt-1 text-xs font-medium text-muted-foreground">Completed</p>
         </div>
         <div className="ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 hover:shadow-lg">
           <div className="mb-2 flex items-center justify-center">
-            <Clock className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+            <Clock className="h-6 w-6 text-[#00BFFF] dark:text-[#00BFFF]" />
           </div>
-          <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{pendingCount}</p>
+          <p className="text-3xl font-bold text-[#00BFFF] dark:text-[#00BFFF]">{pendingCount}</p>
           <p className="mt-1 text-xs font-medium text-muted-foreground">Pending</p>
         </div>
         <div className={`ocean-card group rounded-2xl p-5 text-center transition-all hover:scale-105 ${
@@ -304,19 +304,19 @@ export default function StudentAssignmentsPage() {
                 {/* Status indicator stripe */}
                 <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${
                   isOverdue ? 'bg-gradient-to-b from-red-500 to-red-600' :
-                  isDueToday ? 'bg-gradient-to-b from-amber-500 to-orange-500' :
-                  assignment.submissionStatus === 'graded' ? 'bg-gradient-to-b from-green-500 to-emerald-500' :
-                  assignment.submissionStatus === 'returned' ? 'bg-gradient-to-b from-orange-500 to-orange-600' :
-                  'bg-gradient-to-b from-blue-500 to-teal-500'
+                  isDueToday ? 'bg-gradient-to-b from-[#FFAA00] to-[#FFD700]' :
+                  assignment.submissionStatus === 'graded' ? 'bg-gradient-to-b from-[#33FF33] to-[#00FFFF]' :
+                  assignment.submissionStatus === 'returned' ? 'bg-gradient-to-b from-[#FFAA00] to-[#FFD700]' :
+                  'bg-gradient-to-b from-[#00BFFF] to-[#00FFFF]'
                 }`} />
 
                 <div className="flex items-start justify-between gap-4 pl-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
                       {isOverdue && <AlertCircle className="h-5 w-5 text-red-500 animate-pulse" />}
-                      {isDueToday && <Clock className="h-5 w-5 text-amber-500" />}
-                      {assignment.submissionStatus === 'graded' && <CheckCircle className="h-5 w-5 text-green-500" />}
-                      {assignment.submissionStatus === 'returned' && <RotateCcw className="h-5 w-5 text-orange-500" />}
+                      {isDueToday && <Clock className="h-5 w-5 text-[#FFAA00]" />}
+                      {assignment.submissionStatus === 'graded' && <CheckCircle className="h-5 w-5 text-[#33FF33]" />}
+                      {assignment.submissionStatus === 'returned' && <RotateCcw className="h-5 w-5 text-[#FFAA00]" />}
                       <h3 className="font-semibold text-foreground">{assignment.title}</h3>
                       <TypeBadge type={assignment.type} />
                       <StatusBadge status={assignment.submissionStatus} />
@@ -327,8 +327,8 @@ export default function StudentAssignmentsPage() {
                     <div className="mt-2 flex items-center gap-4 text-xs">
                       <span className={`flex items-center gap-1 ${
                         isOverdue ? 'font-bold text-red-600 dark:text-red-400' :
-                        isDueToday ? 'font-bold text-amber-600 dark:text-amber-400' :
-                        isDueSoon(assignment.due_date) ? 'font-medium text-amber-600 dark:text-amber-400' :
+                        isDueToday ? 'font-bold text-[#FFAA00] dark:text-[#FFD700]' :
+                        isDueSoon(assignment.due_date) ? 'font-medium text-[#FFAA00] dark:text-[#FFD700]' :
                         'text-muted-foreground'
                       }`}>
                         <Clock className="h-3 w-3" />
@@ -342,11 +342,11 @@ export default function StudentAssignmentsPage() {
                   </div>
                   <div className="text-right">
                     {assignment.grade ? (
-                      <div className="rounded-lg bg-gradient-to-br from-green-500/10 to-emerald-500/10 px-3 py-2">
-                        <p className="text-lg font-bold text-green-600 dark:text-green-400">
+                      <div className="rounded-lg bg-gradient-to-br from-[#33FF33]/10 to-[#00FFFF]/10 px-3 py-2">
+                        <p className="text-lg font-bold text-[#33FF33] dark:text-[#33FF33]">
                           {assignment.grade.points_earned}/{assignment.grade.percentage}
                         </p>
-                        <p className="text-xs font-semibold text-green-600/80 dark:text-green-400/80">
+                        <p className="text-xs font-semibold text-[#33FF33]/80 dark:text-[#33FF33]/80">
                           {Math.round((assignment.grade.points_earned / assignment.grade.percentage) * 100)}%
                         </p>
                       </div>

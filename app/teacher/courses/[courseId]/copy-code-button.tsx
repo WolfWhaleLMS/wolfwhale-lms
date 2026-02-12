@@ -31,7 +31,7 @@ export function CopyCodeButton({ code }: { code: string }) {
       title="Copy class code"
     >
       {copied ? (
-        <Check className="h-4 w-4 text-green-500" />
+        <Check className="h-4 w-4 text-[#33FF33]" />
       ) : (
         <Copy className="h-4 w-4" />
       )}

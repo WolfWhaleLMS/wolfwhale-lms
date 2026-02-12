@@ -14,17 +14,17 @@ interface XPBarProps {
 }
 
 const TIER_GRADIENTS: Record<string, string> = {
-  Awakening: 'from-blue-400 to-cyan-400',
-  Growth: 'from-emerald-400 to-teal-400',
-  Advancement: 'from-violet-400 to-purple-400',
-  Mastery: 'from-amber-400 to-orange-400',
+  Awakening: 'from-[#00BFFF] to-[#00FFFF]',
+  Growth: 'from-[#33FF33] to-[#00FFFF]',
+  Advancement: 'from-[#00BFFF] to-[#33FF33]',
+  Mastery: 'from-[#FFAA00] to-[#FF3366]',
 }
 
 const TIER_GLOW: Record<string, string> = {
-  Awakening: 'shadow-blue-400/30',
-  Growth: 'shadow-emerald-400/30',
-  Advancement: 'shadow-violet-400/30',
-  Mastery: 'shadow-amber-400/30',
+  Awakening: 'shadow-[#00BFFF]/30',
+  Growth: 'shadow-[#33FF33]/30',
+  Advancement: 'shadow-[#00BFFF]/30',
+  Mastery: 'shadow-[#FFAA00]/30',
 }
 
 export function XPBar({
@@ -62,10 +62,10 @@ export function XPBar({
           <span className="text-sm font-semibold text-foreground">Lv {level}</span>
         </div>
         <div className="flex-1">
-          <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+          <div className="h-2 w-full overflow-hidden rounded-full bg-[#00BFFF]/10 dark:bg-[#00BFFF]/15">
             <div
               className={cn(
-                'h-full rounded-full bg-gradient-to-r transition-all duration-1000 ease-out',
+                'h-full rounded-full bg-gradient-to-r transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(51,255,51,0.4)]',
                 gradient
               )}
               style={{ width: `${animatedProgress}%` }}
@@ -86,7 +86,7 @@ export function XPBar({
         <div className="flex items-center gap-3">
           <div
             className={cn(
-              'flex size-12 items-center justify-center rounded-xl bg-gradient-to-br text-lg font-bold text-white shadow-lg',
+              'flex size-12 items-center justify-center rounded-xl chrome-surface bg-gradient-to-br text-lg font-bold text-white shadow-lg font-data',
               gradient,
               glow
             )}
@@ -118,10 +118,10 @@ export function XPBar({
 
       {/* Progress Bar */}
       <div className="relative">
-        <div className="h-4 w-full overflow-hidden rounded-full bg-muted">
+        <div className="h-4 w-full overflow-hidden rounded-full bg-[#00BFFF]/10 dark:bg-[#00BFFF]/15">
           <div
             className={cn(
-              'h-full rounded-full bg-gradient-to-r transition-all duration-1000 ease-out',
+              'h-full rounded-full bg-gradient-to-r transition-all duration-1000 ease-out neon-glow-green',
               gradient
             )}
             style={{ width: `${animatedProgress}%` }}

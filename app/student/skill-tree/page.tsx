@@ -63,11 +63,11 @@ export default async function SkillTreePage() {
       <div
         className="relative overflow-hidden rounded-2xl p-8 text-white shadow-lg"
         style={{
-          background: 'linear-gradient(135deg, #003C99 0%, #812BFF 50%, #003C99 100%)',
+          background: 'linear-gradient(135deg, #0A2540 0%, #00BFFF 50%, #0A2540 100%)',
         }}
       >
-        {/* Decorative gradient overlay for purple student accent */}
-        <div className="absolute inset-0 bg-gradient-to-r from-violet-600/20 via-purple-500/10 to-fuchsia-500/20" />
+        {/* Decorative gradient overlay for neon student accent */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#00BFFF]/20 via-[#33FF33]/10 to-[#00FFFF]/20" />
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
             <TreePine className="h-8 w-8" />
@@ -128,12 +128,12 @@ export default async function SkillTreePage() {
             const isComplete = pct === 100 && total > 0
 
             const progressColor = isComplete
-              ? 'from-green-500 to-emerald-500'
+              ? 'from-[#33FF33] to-[#00FFFF]'
               : pct >= 70
-                ? 'from-violet-500 to-purple-500'
+                ? 'from-[#00BFFF] to-[#33FF33]'
                 : pct >= 40
-                  ? 'from-purple-500 to-fuchsia-500'
-                  : 'from-fuchsia-500 to-pink-500'
+                  ? 'from-[#00BFFF] to-[#00FFFF]'
+                  : 'from-[#00BFFF] to-[#00FFFF]'
 
             return (
               <div
@@ -154,27 +154,27 @@ export default async function SkillTreePage() {
                     className="flex h-12 w-12 items-center justify-center rounded-xl"
                     style={{
                       background:
-                        'linear-gradient(135deg, rgba(139,92,246,0.15), rgba(217,70,239,0.15))',
+                        'linear-gradient(135deg, rgba(0,191,255,0.15), rgba(51,255,51,0.15))',
                     }}
                   >
-                    <Icon className="h-6 w-6 text-violet-600 dark:text-violet-400" />
+                    <Icon className="h-6 w-6 text-[#00BFFF] dark:text-[#00BFFF]" />
                   </div>
                   {isComplete && (
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
-                      <Trophy className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#33FF33]/10 dark:bg-[#33FF33]/15">
+                      <Trophy className="h-4 w-4 text-[#33FF33] dark:text-[#33FF33]" />
                     </div>
                   )}
                 </div>
 
                 {/* Subject pill */}
                 <div className="mb-3">
-                  <span className="inline-block rounded-full bg-gradient-to-r from-violet-600/15 to-fuchsia-500/15 px-3 py-1 text-xs font-medium text-violet-700 dark:text-violet-300">
+                  <span className="inline-block rounded-full bg-gradient-to-r from-[#00BFFF]/15 to-[#33FF33]/15 px-3 py-1 text-xs font-medium text-[#00BFFF] dark:text-[#00BFFF]">
                     {tree.subject}
                   </span>
                 </div>
 
                 {/* Tree name and description */}
-                <h3 className="text-lg font-semibold text-foreground group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors line-clamp-1">
+                <h3 className="text-lg font-semibold text-foreground group-hover:text-[#00BFFF] dark:group-hover:text-[#00BFFF] transition-colors line-clamp-1">
                   {tree.name}
                 </h3>
                 {tree.description && (
@@ -192,12 +192,12 @@ export default async function SkillTreePage() {
                     <span
                       className={`font-bold ${
                         isComplete
-                          ? 'text-green-600 dark:text-green-400'
+                          ? 'text-[#33FF33] dark:text-[#33FF33]'
                           : pct >= 70
-                            ? 'text-violet-600 dark:text-violet-400'
+                            ? 'text-[#00BFFF] dark:text-[#00BFFF]'
                             : pct >= 40
-                              ? 'text-purple-600 dark:text-purple-400'
-                              : 'text-fuchsia-600 dark:text-fuchsia-400'
+                              ? 'text-[#00BFFF] dark:text-[#00BFFF]'
+                              : 'text-[#00BFFF] dark:text-[#00BFFF]'
                       }`}
                     >
                       {pct}%
@@ -214,7 +214,7 @@ export default async function SkillTreePage() {
                 {/* View Tree link */}
                 <Link
                   href={`/student/skill-tree/${tree.id}`}
-                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-violet-600 transition-colors hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
+                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[#00BFFF] transition-colors hover:text-[#00BFFF]/80 dark:text-[#00BFFF] dark:hover:text-[#00BFFF]/80"
                 >
                   View Tree
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

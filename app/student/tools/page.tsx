@@ -24,8 +24,8 @@ export default function MiniGamesPage() {
           href="/student/flashcards"
           className="ocean-card group rounded-2xl p-6 transition-all hover:shadow-lg hover:scale-[1.02]"
         >
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-500/10">
-            <Layers className="h-8 w-8 text-violet-500" />
+          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#00BFFF]/10">
+            <Layers className="h-8 w-8 text-[#00BFFF]" />
           </div>
           <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
             Flashcards
@@ -39,8 +39,8 @@ export default function MiniGamesPage() {
           href="/student/tools/mini-games"
           className="ocean-card group rounded-2xl p-6 transition-all hover:shadow-lg hover:scale-[1.02]"
         >
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-fuchsia-500/10">
-            <Dices className="h-8 w-8 text-fuchsia-500" />
+          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#33FF33]/10">
+            <Dices className="h-8 w-8 text-[#33FF33]" />
           </div>
           <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
             Brain Games
@@ -54,8 +54,8 @@ export default function MiniGamesPage() {
           href="/student/tools/chess"
           className="ocean-card group rounded-2xl p-6 transition-all hover:shadow-lg hover:scale-[1.02]"
         >
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500/10">
-            <Crown className="h-8 w-8 text-amber-500" />
+          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#FFAA00]/10">
+            <Crown className="h-8 w-8 text-[#FFAA00]" />
           </div>
           <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
             Chess

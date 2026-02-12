@@ -5,19 +5,19 @@ import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-medium ring-offset-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-95',
+  'inline-flex items-center justify-center whitespace-nowrap rounded-2xl text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00BFFF] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-95',
   {
     variants: {
       variant: {
         default:
-          'bg-gradient-to-r from-[oklch(0.48_0.29_285)] to-[oklch(0.72_0.13_177)] text-white shadow-lg hover:shadow-[0_0_25px_oklch(0.72_0.13_177/0.4)] btn-glow',
+          'bg-[#00BFFF] text-white shadow-lg hover:bg-[#00BFFF]/90 hover:shadow-[0_0_25px_rgba(0,191,255,0.4)] btn-glow',
         secondary:
-          'liquid-glass-subtle text-slate-900 dark:text-white hover:bg-white/20 active:bg-white/30',
-        destructive: 'bg-red-500 text-white hover:bg-red-600 active:bg-red-700 shadow-lg hover:shadow-[0_0_20px_oklch(0.63_0.24_25/0.4)]',
-        outline: 'border-2 border-[oklch(0.48_0.29_285)] text-[oklch(0.48_0.29_285)] hover:bg-[oklch(0.48_0.29_285/0.05)] dark:border-[oklch(0.72_0.13_177)] dark:text-[oklch(0.72_0.13_177)]',
-        ghost: 'text-slate-900 dark:text-slate-100 hover:bg-white/10 active:bg-white/20',
-        link: 'text-[oklch(0.48_0.29_285)] underline-offset-4 hover:underline dark:text-[oklch(0.72_0.13_177)]',
-        fun: 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 shadow-lg hover:shadow-[0_0_30px_oklch(0.55_0.22_285/0.4)] btn-glow',
+          'liquid-glass-subtle text-[#0A2540] dark:text-[#E8F8FF] border border-[#00FFFF]/30 hover:border-[#00FFFF]/50 hover:bg-[#00FFFF]/5',
+        destructive: 'bg-[#FF3366] text-white hover:bg-[#FF3366]/90 shadow-lg hover:shadow-[0_0_20px_rgba(255,51,102,0.4)]',
+        outline: 'border-2 border-[#00BFFF] text-[#00BFFF] hover:bg-[#00BFFF]/5 dark:border-[#00BFFF] dark:text-[#00BFFF]',
+        ghost: 'text-[#0A2540] dark:text-[#E8F8FF] hover:bg-[#00BFFF]/8 active:bg-[#00BFFF]/15',
+        link: 'text-[#00BFFF] underline-offset-4 hover:underline',
+        fun: 'bg-gradient-to-r from-[#00BFFF] via-[#33FF33] to-[#00FFFF] text-white hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] btn-glow animate-ocean-wave bg-[length:200%_200%]',
       },
       size: {
         sm: 'h-8 px-3 text-xs',

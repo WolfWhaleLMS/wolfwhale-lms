@@ -52,9 +52,9 @@ const STATUS_CONFIG: Record<
   present: {
     label: 'Present',
     color:
-      'border-2 border-green-200 text-green-700 bg-green-50 dark:border-green-800 dark:text-green-400 dark:bg-green-950/20',
+      'border-2 border-[#33FF33]/20 text-[#33FF33] bg-[#33FF33]/5 dark:border-[#33FF33]/20 dark:text-[#33FF33] dark:bg-[#33FF33]/5',
     activeColor:
-      'bg-green-500 text-white border-2 border-green-600 shadow-lg shadow-green-500/30 scale-105',
+      'bg-[#33FF33] text-white border-2 border-[#33FF33] shadow-lg shadow-[#33FF33]/30 scale-105',
     icon: <Check className="size-5" />,
   },
   absent: {
@@ -68,17 +68,17 @@ const STATUS_CONFIG: Record<
   tardy: {
     label: 'Tardy',
     color:
-      'border-2 border-rose-200 text-rose-700 bg-rose-50 dark:border-rose-800 dark:text-rose-400 dark:bg-rose-950/20',
+      'border-2 border-[#FFAA00]/20 text-[#FFAA00] bg-[#FFAA00]/5 dark:border-[#FFAA00]/20 dark:text-[#FFAA00] dark:bg-[#FFAA00]/5',
     activeColor:
-      'bg-rose-500 text-white border-2 border-rose-600 shadow-lg shadow-rose-500/30 scale-105',
+      'bg-[#FFAA00] text-white border-2 border-[#FFAA00] shadow-lg shadow-[#FFAA00]/30 scale-105',
     icon: <Clock className="size-5" />,
   },
   excused: {
     label: 'Excused',
     color:
-      'border-2 border-blue-200 text-blue-700 bg-blue-50 dark:border-blue-800 dark:text-blue-400 dark:bg-blue-950/20',
+      'border-2 border-[#00BFFF]/20 text-[#00BFFF] bg-[#00BFFF]/5 dark:border-[#00BFFF]/20 dark:text-[#00BFFF] dark:bg-[#00BFFF]/5',
     activeColor:
-      'bg-blue-500 text-white border-2 border-blue-600 shadow-lg shadow-blue-500/30 scale-105',
+      'bg-[#00BFFF] text-white border-2 border-[#00BFFF] shadow-lg shadow-[#00BFFF]/30 scale-105',
     icon: <AlertCircle className="size-5" />,
   },
 }
@@ -316,9 +316,9 @@ export default function TakeAttendancePage({
         </div>
         <div className="ocean-card rounded-2xl p-5 text-center">
           <div className="flex items-center justify-center mb-2">
-            <Check className="size-5 text-green-600 dark:text-green-400" />
+            <Check className="size-5 text-[#33FF33] dark:text-[#33FF33]" />
           </div>
-          <p className="text-3xl font-bold text-green-600 dark:text-green-400">
+          <p className="text-3xl font-bold text-[#33FF33] dark:text-[#33FF33]">
             {stats.present}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">Present Today</p>
@@ -334,18 +334,18 @@ export default function TakeAttendancePage({
         </div>
         <div className="ocean-card rounded-2xl p-5 text-center">
           <div className="flex items-center justify-center mb-2">
-            <Clock className="size-5 text-rose-600 dark:text-rose-400" />
+            <Clock className="size-5 text-[#FFAA00] dark:text-[#FFAA00]" />
           </div>
-          <p className="text-3xl font-bold text-rose-600 dark:text-rose-400">
+          <p className="text-3xl font-bold text-[#FFAA00] dark:text-[#FFAA00]">
             {stats.tardy}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">Tardy Today</p>
         </div>
         <div className="ocean-card rounded-2xl p-5 text-center">
           <div className="flex items-center justify-center mb-2">
-            <AlertCircle className="size-5 text-blue-600 dark:text-blue-400" />
+            <AlertCircle className="size-5 text-[#00BFFF] dark:text-[#00BFFF]" />
           </div>
-          <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+          <p className="text-3xl font-bold text-[#00BFFF] dark:text-[#00BFFF]">
             {stats.excused}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">Excused Today</p>
@@ -382,7 +382,7 @@ export default function TakeAttendancePage({
         <div
           className={`rounded-2xl p-4 text-sm font-medium flex items-center gap-2 ${
             feedback.type === 'success'
-              ? 'bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400'
+              ? 'bg-[#33FF33]/5 text-[#33FF33] dark:bg-[#33FF33]/10 dark:text-[#33FF33]'
               : feedback.type === 'saving'
               ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400'
               : 'bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400'
@@ -536,7 +536,7 @@ export default function TakeAttendancePage({
             </div>
             <div className="flex gap-4 text-sm">
               <div className="flex items-center gap-2">
-                <div className="size-3 rounded-full bg-green-500"></div>
+                <div className="size-3 rounded-full bg-[#33FF33]"></div>
                 <span className="text-muted-foreground">
                   {Math.round((stats.present / stats.total) * 100)}% Present
                 </span>
@@ -548,7 +548,7 @@ export default function TakeAttendancePage({
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="size-3 rounded-full bg-rose-500"></div>
+                <div className="size-3 rounded-full bg-[#FFAA00]"></div>
                 <span className="text-muted-foreground">
                   {Math.round((stats.tardy / stats.total) * 100)}% Tardy
                 </span>

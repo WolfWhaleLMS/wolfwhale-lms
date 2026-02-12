@@ -697,12 +697,12 @@ function renderMarkdown(text: string) {
       return (
         <div key={pIdx} className="mb-4">
           {intro && (
-            <p className="mb-2 text-[#003C99]/70" dangerouslySetInnerHTML={{ __html: formatInline(intro) }} />
+            <p className="mb-2 text-[#0A2540]/70" dangerouslySetInnerHTML={{ __html: formatInline(intro) }} />
           )}
           <ul className="space-y-1.5 ml-1">
             {items.map((item, iIdx) => (
-              <li key={iIdx} className="flex items-start gap-2 text-[#003C99]/60">
-                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#812BFF] flex-shrink-0" />
+              <li key={iIdx} className="flex items-start gap-2 text-[#0A2540]/60">
+                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#00BFFF] flex-shrink-0" />
                 <span dangerouslySetInnerHTML={{ __html: formatInline(item.slice(2)) }} />
               </li>
             ))}
@@ -717,8 +717,8 @@ function renderMarkdown(text: string) {
       return (
         <ul key={pIdx} className="space-y-1.5 ml-1 mb-4">
           {items.map((item, iIdx) => (
-            <li key={iIdx} className="flex items-start gap-2 text-[#003C99]/60">
-              <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#812BFF] flex-shrink-0" />
+            <li key={iIdx} className="flex items-start gap-2 text-[#0A2540]/60">
+              <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#00BFFF] flex-shrink-0" />
               <span dangerouslySetInnerHTML={{ __html: formatInline(item.slice(2)) }} />
             </li>
           ))}
@@ -730,7 +730,7 @@ function renderMarkdown(text: string) {
     return (
       <p
         key={pIdx}
-        className="mb-4 text-[#003C99]/70 leading-relaxed"
+        className="mb-4 text-[#0A2540]/70 leading-relaxed"
         dangerouslySetInnerHTML={{ __html: formatInline(paragraph) }}
       />
     )
@@ -739,16 +739,16 @@ function renderMarkdown(text: string) {
 
 function formatInline(text: string): string {
   // Bold **text**
-  let result = text.replace(/\*\*(.+?)\*\*/g, '<strong class="text-[#003C99] font-semibold">$1</strong>')
+  let result = text.replace(/\*\*(.+?)\*\*/g, '<strong class="text-[#0A2540] font-semibold">$1</strong>')
   // Links
   result = result.replace(
     /(https?:\/\/[^\s<]+)/g,
-    '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-[#812BFF] hover:underline">$1</a>'
+    '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-[#00BFFF] hover:underline">$1</a>'
   )
   // Email
   result = result.replace(
     /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
-    '<a href="mailto:$1" class="text-[#812BFF] hover:underline">$1</a>'
+    '<a href="mailto:$1" class="text-[#00BFFF] hover:underline">$1</a>'
   )
   return result
 }
@@ -764,8 +764,8 @@ export default function PrivacyPolicyPage() {
 
   return (
     <div
-      className="min-h-screen text-[#003C99]"
-      style={{ background: 'linear-gradient(135deg, #e8f0fe 0%, #dce8f5 25%, #c5d8ee 50%, #b8d4e8 75%, #d0e4f0 100%)' }}
+      className="min-h-screen text-[#0A2540]"
+      style={{ background: 'linear-gradient(135deg, #E8F8FF 0%, #D0F0FF 25%, #B0E8FF 50%, #D0F0FF 75%, #E8F8FF 100%)' }}
     >
       {/* Ambient Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -776,7 +776,7 @@ export default function PrivacyPolicyPage() {
                 key={i}
                 className="absolute w-1.5 h-1.5 rounded-full animate-twinkle"
                 style={{
-                  background: 'rgba(0,60,153,0.12)',
+                  background: 'rgba(0,191,255,0.12)',
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
                   animationDelay: `${Math.random() * 5}s`,
@@ -786,33 +786,33 @@ export default function PrivacyPolicyPage() {
             ))}
           </div>
         )}
-        <div className="absolute inset-0 opacity-40" style={{ background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(2,194,173,0.15) 0%, transparent 60%)' }} />
-        <div className="absolute inset-0 opacity-25" style={{ background: 'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(0,60,153,0.08) 0%, transparent 50%)' }} />
+        <div className="absolute inset-0 opacity-40" style={{ background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(0,191,255,0.15) 0%, transparent 60%)' }} />
+        <div className="absolute inset-0 opacity-25" style={{ background: 'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(51,255,51,0.06) 0%, transparent 50%)' }} />
       </div>
 
       {/* Header */}
-      <header className="relative z-10 border-b border-[#003C99]/10">
+      <header className="relative z-10 border-b border-[#0A2540]/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
             <img src="/logo.png" alt="Wolf Whale" className="h-12 w-12 rounded-xl object-contain shadow-lg" />
             <div>
-              <h1 className="text-lg sm:text-xl font-bold text-[#003C99] group-hover:text-[#812BFF] transition-colors" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>
+              <h1 className="text-lg sm:text-xl font-display font-bold text-[#0A2540] group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase">
                 Wolf Whale
               </h1>
-              <p className="text-[10px] sm:text-xs text-[#003C99]/60 font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 600 }}>Learning Management System</p>
+              <p className="text-[10px] sm:text-xs text-[#0A2540]/60 font-display font-semibold tracking-widest uppercase">Learning Management System</p>
             </div>
           </Link>
 
           {/* Language Toggle */}
           <div className="flex items-center gap-2 sm:gap-3">
-            <Globe className="h-4 w-4 text-[#003C99]/50 hidden sm:block" />
-            <div className="flex rounded-lg border border-[#003C99]/20 overflow-hidden">
+            <Globe className="h-4 w-4 text-[#0A2540]/50 hidden sm:block" />
+            <div className="flex rounded-lg border border-[#0A2540]/20 overflow-hidden">
               <button
                 onClick={() => setLang('en')}
                 className={`px-3 py-1.5 text-sm font-medium transition-all ${
                   lang === 'en'
-                    ? 'bg-gradient-to-r from-[#003C99] to-[#812BFF] text-white'
-                    : 'text-[#003C99]/60 hover:text-[#003C99] hover:bg-[#003C99]/5'
+                    ? 'bg-gradient-to-r from-[#0A2540] to-[#00BFFF] text-white'
+                    : 'text-[#0A2540]/60 hover:text-[#0A2540] hover:bg-[#0A2540]/5'
                 }`}
               >
                 EN
@@ -821,8 +821,8 @@ export default function PrivacyPolicyPage() {
                 onClick={() => setLang('fr')}
                 className={`px-3 py-1.5 text-sm font-medium transition-all ${
                   lang === 'fr'
-                    ? 'bg-gradient-to-r from-[#003C99] to-[#812BFF] text-white'
-                    : 'text-[#003C99]/60 hover:text-[#003C99] hover:bg-[#003C99]/5'
+                    ? 'bg-gradient-to-r from-[#0A2540] to-[#00BFFF] text-white'
+                    : 'text-[#0A2540]/60 hover:text-[#0A2540] hover:bg-[#0A2540]/5'
                 }`}
               >
                 FR
@@ -837,7 +837,7 @@ export default function PrivacyPolicyPage() {
         {/* Back Link */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-[#003C99]/50 hover:text-[#812BFF] transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           {t.backToHome}
@@ -845,17 +845,17 @@ export default function PrivacyPolicyPage() {
 
         {/* Title Block */}
         <div className="mb-10 sm:mb-12">
-          <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-[#003C99] to-[#812BFF] shadow-2xl mb-6">
+          <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-[#00BFFF] to-[#33FF33] shadow-2xl mb-6">
             <span className="text-white font-bold text-3xl">W</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-[#003C99]">{t.title}</h1>
-          <p className="text-lg sm:text-xl text-[#003C99]/60 mb-2">{t.subtitle}</p>
-          <p className="text-sm text-[#003C99]/40">{t.lastUpdated}</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-[#0A2540]">{t.title}</h1>
+          <p className="text-lg sm:text-xl text-[#0A2540]/60 mb-2">{t.subtitle}</p>
+          <p className="text-sm text-[#0A2540]/40">{t.lastUpdated}</p>
         </div>
 
         {/* Table of Contents */}
-        <nav className="liquid-glass rounded-2xl p-5 sm:p-6 border border-[#003C99]/10 mb-10 sm:mb-12">
-          <h2 className="text-sm font-semibold text-[#003C99]/50 uppercase tracking-wider mb-4">
+        <nav className="liquid-glass rounded-2xl p-5 sm:p-6 border border-[#0A2540]/10 mb-10 sm:mb-12">
+          <h2 className="text-sm font-semibold text-[#0A2540]/50 uppercase tracking-wider mb-4">
             {lang === 'en' ? 'Table of Contents' : 'Table des mati\u00e8res'}
           </h2>
           <ol className="space-y-1.5">
@@ -863,7 +863,7 @@ export default function PrivacyPolicyPage() {
               <li key={idx}>
                 <a
                   href={`#${section.id}`}
-                  className="text-sm text-[#003C99]/70 hover:text-[#812BFF] transition-colors block py-0.5"
+                  className="text-sm text-[#0A2540]/70 hover:text-[#00BFFF] transition-colors block py-0.5"
                 >
                   {section.heading}
                 </a>
@@ -876,7 +876,7 @@ export default function PrivacyPolicyPage() {
         <div className="space-y-10 sm:space-y-12">
           {t.sections.map((section, idx) => (
             <section key={idx} id={section.id} className="scroll-mt-24">
-              <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5 text-[#003C99] border-b border-[#003C99]/10 pb-3">
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5 text-[#0A2540] border-b border-[#0A2540]/10 pb-3">
                 {section.heading}
               </h2>
               <div className="text-sm sm:text-base leading-relaxed">
@@ -888,28 +888,28 @@ export default function PrivacyPolicyPage() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-[#003C99]/10 mt-16 sm:mt-20">
+      <footer className="relative z-10 border-t border-[#0A2540]/10 mt-16 sm:mt-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-[#003C99]/40">
+            <p className="text-sm text-[#0A2540]/40">
               &copy; 2026 Wolf Whale LMS. {lang === 'en' ? 'All rights reserved.' : 'Tous droits r\u00e9serv\u00e9s.'}
             </p>
             <div className="flex gap-6">
               <Link
                 href="/privacy"
-                className="text-sm text-[#812BFF] font-medium"
+                className="text-sm text-[#00BFFF] font-medium"
               >
                 {lang === 'en' ? 'Privacy' : 'Confidentialit\u00e9'}
               </Link>
               <Link
                 href="/terms"
-                className="text-sm text-[#003C99]/50 hover:text-[#812BFF] transition-colors"
+                className="text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors"
               >
                 {lang === 'en' ? 'Terms' : 'Conditions'}
               </Link>
               <Link
                 href="/help"
-                className="text-sm text-[#003C99]/50 hover:text-[#812BFF] transition-colors"
+                className="text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors"
               >
                 {lang === 'en' ? 'Help' : 'Aide'}
               </Link>

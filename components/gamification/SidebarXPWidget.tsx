@@ -63,21 +63,21 @@ export function SidebarXPWidget() {
     <div className="px-3 py-3">
       <div className="rounded-xl bg-sidebar-accent/60 p-3">
         <div className="flex items-center gap-2 mb-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-400/20">
-            <Zap className="h-3.5 w-3.5 text-amber-500" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#33FF33]/20">
+            <Zap className="h-3.5 w-3.5 text-[#33FF33]" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-bold text-sidebar-foreground truncate">
+            <p className="text-xs font-bold text-sidebar-foreground truncate font-display">
               Lv.{xp.level} {LEVEL_NAMES[xp.level] || 'Navigator'}
             </p>
-            <p className="text-[10px] text-sidebar-foreground/60">
+            <p className="text-[10px] text-sidebar-foreground/60 font-data">
               {xp.totalXP.toLocaleString()} XP
             </p>
           </div>
         </div>
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-sidebar-foreground/10">
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#00BFFF]/10">
           <div
-            className="h-full rounded-full bg-amber-400 transition-all duration-500"
+            className="h-full rounded-full bg-[#33FF33] shadow-[0_0_8px_rgba(51,255,51,0.4)] transition-all duration-500"
             style={{ width: `${Math.max(progress, 3)}%` }}
           />
         </div>

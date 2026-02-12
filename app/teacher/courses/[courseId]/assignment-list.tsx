@@ -56,13 +56,13 @@ function TypeBadge({ type }: { type: string }) {
 
   const colorMap: Record<string, string> = {
     homework:
-      'bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300',
-    quiz: 'bg-purple-100 text-purple-700 dark:bg-purple-950/40 dark:text-purple-300',
+      'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]',
+    quiz: 'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]',
     project:
-      'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-300',
+      'bg-[#33FF33]/10 text-[#33FF33] dark:bg-[#33FF33]/10 dark:text-[#33FF33]',
     exam: 'bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-300',
     discussion:
-      'bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300',
+      'bg-[#FFAA00]/10 text-[#FFAA00] dark:bg-[#FFAA00]/10 dark:text-[#FFAA00]',
     presentation:
       'bg-pink-100 text-pink-700 dark:bg-pink-950/40 dark:text-pink-300',
     other:

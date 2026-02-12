@@ -274,7 +274,7 @@ export function CourseSettings({
               toast.info('Click "Save Changes" to apply')
             }}
             className={
-              formData.status === 'active' ? 'bg-green-600 hover:bg-green-700' : ''
+              formData.status === 'active' ? 'bg-[#33FF33] hover:bg-[#33FF33]/90' : ''
             }
           >
             <Eye className="mr-1.5 h-4 w-4" />
@@ -289,7 +289,7 @@ export function CourseSettings({
             }}
             className={
               formData.status === 'draft'
-                ? 'bg-rose-600 hover:bg-rose-700'
+                ? 'bg-[#FFAA00] hover:bg-[#FFAA00]/90'
                 : ''
             }
           >

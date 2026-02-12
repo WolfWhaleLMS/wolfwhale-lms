@@ -4,8 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================
-   WOLF WHALE LMS — Design System
-   Ocean Daylight (light) / Arctic Moonlight (dark)
+   WOLF WHALE LMS — AQUA NEON Design System
+   Futuristic Chrome · Neon Glow · Glass Surfaces
    ============================================ */
 
 @theme inline {
@@ -13,6 +13,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-orbitron);
+  --font-data: var(--font-share-tech-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -50,87 +52,87 @@
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 
-  /* Wolf Whale Brand Colors */
-  --color-midnight-blue: var(--ww-midnight-blue);
-  --color-silver: var(--ww-silver);
-  --color-arctic-white: var(--ww-arctic-white);
-  --color-deep-ocean: var(--ww-deep-ocean);
-  --color-teal: var(--ww-teal);
-  --color-ocean-foam: var(--ww-ocean-foam);
-  --color-success: var(--ww-success);
-  --color-warning: var(--ww-warning);
-  --color-error: var(--ww-error);
-  --color-gold: var(--ww-gold);
-  --color-purple: var(--ww-purple);
+  /* Aqua Neon Brand Colors */
+  --color-neon-blue: #00BFFF;
+  --color-neon-green: #33FF33;
+  --color-neon-cyan: #00FFFF;
+  --color-neon-amber: #FFAA00;
+  --color-chrome: #C0D8E8;
+  --color-midnight: #041428;
+  --color-ice: #E8F8FF;
+  --color-navy: #0A2540;
+  --color-gold: #FFD700;
+  --color-success: #33FF33;
+  --color-warning: #FFAA00;
+  --color-error: #FF3366;
+  --color-purple: #8B5CF6;
 }
 
 /* ============================================
-   ROOT — Ocean Daylight (Light Mode)
+   ROOT — Aqua Neon Bright Mode
+   Luminous ice-blue, chrome, neon accents
    ============================================ */
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.75rem;
 
-  /* Wolf Whale Brand Palette */
-  --ww-midnight-blue: oklch(0.35 0.17 260);   /* #003C99 */
-  --ww-silver: oklch(0.79 0.00 0);             /* #c0c0c0 */
-  --ww-arctic-white: oklch(0.98 0.005 250);    /* #f8fafc */
-  --ww-deep-ocean: oklch(0.48 0.29 285);       /* #812BFF */
-  --ww-teal: oklch(0.72 0.13 177);             /* #02C2AD */
-  --ww-ocean-foam: oklch(0.96 0.02 195);       /* #e0f7fa */
-  --ww-success: oklch(0.68 0.17 160);          /* #10b981 */
-  --ww-warning: oklch(0.75 0.16 75);           /* #f59e0b */
-  --ww-error: oklch(0.63 0.24 25);             /* #ef4444 */
-  --ww-gold: oklch(0.80 0.15 85);              /* #fbbf24 */
-  --ww-purple: oklch(0.55 0.22 285);           /* #8b5cf6 */
-
-  /* Base Theme — Ocean Daylight */
-  --background: oklch(0.98 0.005 250);         /* Arctic White */
-  --foreground: oklch(0.35 0.17 260);          /* Midnight Blue */
-  --card: oklch(1 0 0);                        /* Pure white */
-  --card-foreground: oklch(0.35 0.17 260);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.35 0.17 260);
-  --primary: oklch(0.48 0.29 285);             /* Deep Ocean Blue */
-  --primary-foreground: oklch(0.98 0.005 250);
-  --secondary: oklch(0.72 0.13 177);           /* Teal */
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.96 0.01 240);               /* Light blue-gray */
-  --muted-foreground: oklch(0.50 0.03 255);
-  --accent: oklch(0.96 0.02 195);              /* Ocean Foam */
-  --accent-foreground: oklch(0.35 0.17 260);
-  --destructive: oklch(0.63 0.24 25);          /* Error Red */
-  --border: oklch(0.91 0.01 240);
-  --input: oklch(0.93 0.01 240);
-  --ring: oklch(0.48 0.29 285);                /* Deep Ocean Blue */
-  --chart-1: oklch(0.48 0.29 285);             /* Deep Ocean */
-  --chart-2: oklch(0.72 0.13 177);             /* Teal */
-  --chart-3: oklch(0.68 0.17 160);             /* Success Green */
-  --chart-4: oklch(0.55 0.22 285);             /* Purple */
-  --chart-5: oklch(0.80 0.15 85);              /* Gold */
-  --sidebar: oklch(0.97 0.005 250);
-  --sidebar-foreground: oklch(0.35 0.17 260);
-  --sidebar-primary: oklch(0.48 0.29 285);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-accent: oklch(0.96 0.02 195);
-  --sidebar-accent-foreground: oklch(0.35 0.17 260);
-  --sidebar-border: oklch(0.91 0.01 240);
-  --sidebar-ring: oklch(0.48 0.29 285);
+  /* Base Theme — Bright Aqua Futuristic */
+  --background: #E8F8FF;
+  --foreground: #0A2540;
+  --card: rgba(255, 255, 255, 0.65);
+  --card-foreground: #0A2540;
+  --popover: rgba(255, 255, 255, 0.85);
+  --popover-foreground: #0A2540;
+  --primary: #00BFFF;
+  --primary-foreground: #ffffff;
+  --secondary: #00FFFF;
+  --secondary-foreground: #0A2540;
+  --muted: #D0E8F4;
+  --muted-foreground: #6B8FA3;
+  --accent: #33FF33;
+  --accent-foreground: #0A2540;
+  --destructive: #FF3366;
+  --border: rgba(0, 191, 255, 0.20);
+  --input: rgba(0, 191, 255, 0.10);
+  --ring: #00BFFF;
+  --chart-1: #00BFFF;
+  --chart-2: #33FF33;
+  --chart-3: #00FFFF;
+  --chart-4: #FFD700;
+  --chart-5: #FF3366;
+  --sidebar: rgba(255, 255, 255, 0.70);
+  --sidebar-foreground: #0A2540;
+  --sidebar-primary: #00BFFF;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(0, 191, 255, 0.08);
+  --sidebar-accent-foreground: #0A2540;
+  --sidebar-border: rgba(0, 191, 255, 0.15);
+  --sidebar-ring: #00BFFF;
 
   /* Liquid Glass — Light mode surfaces */
-  --glass-bg:             oklch(1 0 0 / 0.60);
-  --glass-bg-elevated:    oklch(1 0 0 / 0.72);
-  --glass-bg-heavy:       oklch(1 0 0 / 0.82);
-  --glass-border:         oklch(1 0 0 / 0.35);
-  --glass-border-subtle:  oklch(1 0 0 / 0.20);
-  --glass-highlight:      oklch(1 0 0 / 0.60);
-  --glass-shadow:         oklch(0 0 0 / 0.06);
-  --glass-shadow-heavy:   oklch(0 0 0 / 0.12);
-  --glass-blur-sm:        8px;
-  --glass-blur-md:        16px;
-  --glass-blur-lg:        24px;
-  --glass-blur-xl:        40px;
-  --glass-saturate:       180%;
+  --glass-bg:             rgba(255, 255, 255, 0.55);
+  --glass-bg-elevated:    rgba(255, 255, 255, 0.72);
+  --glass-bg-heavy:       rgba(255, 255, 255, 0.82);
+  --glass-border:         rgba(0, 191, 255, 0.22);
+  --glass-border-subtle:  rgba(0, 191, 255, 0.12);
+  --glass-highlight:      rgba(255, 255, 255, 0.70);
+  --glass-shadow:         rgba(0, 191, 255, 0.08);
+  --glass-shadow-heavy:   rgba(0, 60, 120, 0.12);
+  --glass-blur-sm:        10px;
+  --glass-blur-md:        18px;
+  --glass-blur-lg:        28px;
+  --glass-blur-xl:        44px;
+  --glass-saturate:       200%;
+
+  /* Neon glow tokens */
+  --glow-blue:   0 0 20px rgba(0, 191, 255, 0.35), 0 0 40px rgba(0, 191, 255, 0.15);
+  --glow-green:  0 0 20px rgba(51, 255, 51, 0.35), 0 0 40px rgba(51, 255, 51, 0.15);
+  --glow-cyan:   0 0 20px rgba(0, 255, 255, 0.35), 0 0 40px rgba(0, 255, 255, 0.15);
+  --glow-chrome: 0 0 15px rgba(192, 216, 232, 0.40), 0 0 30px rgba(0, 191, 255, 0.15);
+
+  /* Chrome surface gradient */
+  --chrome-gradient: linear-gradient(180deg, #F0F8FF 0%, #C0D8E8 30%, #E8F4FF 50%, #A8C8E0 70%, #E0F0FF 100%);
+  --chrome-gradient-horizontal: linear-gradient(90deg, #E0F0FF 0%, #A0C8E8 25%, #E8F4FF 50%, #A0C8E8 75%, #E0F0FF 100%);
 
   /* Age Variant Defaults (age-68 balanced) */
   --font-size-base: 15px;
@@ -141,65 +143,68 @@
 }
 
 /* ============================================
-   DARK MODE — Arctic Moonlight
+   DARK MODE — Deep Ocean Neon
+   Bioluminescent glow, vivid neon accents
    ============================================ */
 
 .dark {
-  /* Palette adjustments for dark */
-  --ww-midnight-blue: oklch(0.35 0.17 260);
-  --ww-silver: oklch(0.79 0.00 0);
-  --ww-arctic-white: oklch(0.98 0.005 250);
-  --ww-deep-ocean: oklch(0.55 0.28 285);
-  --ww-teal: oklch(0.76 0.13 177);
-  --ww-ocean-foam: oklch(0.30 0.04 220);
-
   /* Liquid Glass — Dark mode surfaces */
-  --glass-bg:             oklch(0.18 0.03 258 / 0.55);
-  --glass-bg-elevated:    oklch(0.22 0.04 258 / 0.65);
-  --glass-bg-heavy:       oklch(0.24 0.04 258 / 0.80);
-  --glass-border:         oklch(1 0 0 / 0.12);
-  --glass-border-subtle:  oklch(1 0 0 / 0.08);
-  --glass-highlight:      oklch(1 0 0 / 0.08);
-  --glass-shadow:         oklch(0 0 0 / 0.25);
-  --glass-shadow-heavy:   oklch(0 0 0 / 0.40);
-  --glass-blur-sm:        8px;
-  --glass-blur-md:        16px;
-  --glass-blur-lg:        24px;
-  --glass-blur-xl:        40px;
-  --glass-saturate:       200%;
+  --glass-bg:             rgba(0, 40, 80, 0.55);
+  --glass-bg-elevated:    rgba(0, 50, 100, 0.70);
+  --glass-bg-heavy:       rgba(0, 35, 70, 0.82);
+  --glass-border:         rgba(0, 191, 255, 0.25);
+  --glass-border-subtle:  rgba(0, 191, 255, 0.12);
+  --glass-highlight:      rgba(0, 191, 255, 0.08);
+  --glass-shadow:         rgba(0, 0, 0, 0.30);
+  --glass-shadow-heavy:   rgba(0, 0, 0, 0.50);
+  --glass-blur-sm:        10px;
+  --glass-blur-md:        18px;
+  --glass-blur-lg:        28px;
+  --glass-blur-xl:        44px;
+  --glass-saturate:       220%;
 
-  /* Base Theme — Arctic Moonlight */
-  --background: oklch(0.20 0.04 258);          /* Softer midnight */
-  --foreground: oklch(0.95 0.005 250);         /* Near white */
-  --card: oklch(0.26 0.04 258);                /* Raised dark surface */
-  --card-foreground: oklch(0.95 0.005 250);
-  --popover: oklch(0.24 0.04 258);
-  --popover-foreground: oklch(0.95 0.005 250);
-  --primary: oklch(0.76 0.13 177);             /* Bright Teal */
-  --primary-foreground: oklch(0.16 0.04 260);
-  --secondary: oklch(0.55 0.28 285);           /* Deep Ocean Blue */
-  --secondary-foreground: oklch(0.95 0.005 250);
-  --muted: oklch(0.24 0.03 258);
-  --muted-foreground: oklch(0.68 0.02 255);
-  --accent: oklch(0.30 0.04 220);
-  --accent-foreground: oklch(0.95 0.005 250);
-  --destructive: oklch(0.65 0.22 25);
-  --border: oklch(0.30 0.04 258);
-  --input: oklch(0.24 0.03 258);
-  --ring: oklch(0.76 0.13 177);                /* Teal ring */
-  --chart-1: oklch(0.76 0.13 177);             /* Teal */
-  --chart-2: oklch(0.55 0.28 285);             /* Deep Ocean */
-  --chart-3: oklch(0.72 0.17 160);             /* Success Green */
-  --chart-4: oklch(0.60 0.22 285);             /* Purple */
-  --chart-5: oklch(0.82 0.15 85);              /* Gold */
-  --sidebar: oklch(0.14 0.04 262);
-  --sidebar-foreground: oklch(0.95 0.005 250);
-  --sidebar-primary: oklch(0.76 0.13 177);
-  --sidebar-primary-foreground: oklch(0.14 0.04 262);
-  --sidebar-accent: oklch(0.22 0.04 258);
-  --sidebar-accent-foreground: oklch(0.95 0.005 250);
-  --sidebar-border: oklch(0.28 0.04 258);
-  --sidebar-ring: oklch(0.76 0.13 177);
+  /* Neon glow tokens — more vivid in dark */
+  --glow-blue:   0 0 25px rgba(0, 191, 255, 0.50), 0 0 50px rgba(0, 191, 255, 0.20);
+  --glow-green:  0 0 25px rgba(51, 255, 51, 0.50), 0 0 50px rgba(51, 255, 51, 0.20);
+  --glow-cyan:   0 0 25px rgba(0, 255, 255, 0.50), 0 0 50px rgba(0, 255, 255, 0.20);
+  --glow-chrome: 0 0 20px rgba(192, 216, 232, 0.30), 0 0 40px rgba(0, 191, 255, 0.20);
+
+  /* Chrome gradient — darker variant */
+  --chrome-gradient: linear-gradient(180deg, #1A3A5C 0%, #0A2A4A 30%, #1A3A5C 50%, #0A2A4A 70%, #1A3A5C 100%);
+  --chrome-gradient-horizontal: linear-gradient(90deg, #1A3A5C 0%, #0A2A4A 25%, #1A3A5C 50%, #0A2A4A 75%, #1A3A5C 100%);
+
+  /* Base Theme — Deep Ocean Neon */
+  --background: #041428;
+  --foreground: #E8F8FF;
+  --card: rgba(0, 40, 80, 0.70);
+  --card-foreground: #E8F8FF;
+  --popover: rgba(0, 35, 70, 0.90);
+  --popover-foreground: #E8F8FF;
+  --primary: #00BFFF;
+  --primary-foreground: #041428;
+  --secondary: #00FFFF;
+  --secondary-foreground: #041428;
+  --muted: rgba(0, 60, 120, 0.50);
+  --muted-foreground: #6B8FA3;
+  --accent: #33FF33;
+  --accent-foreground: #041428;
+  --destructive: #FF3366;
+  --border: rgba(0, 191, 255, 0.25);
+  --input: rgba(0, 191, 255, 0.12);
+  --ring: #00BFFF;
+  --chart-1: #00BFFF;
+  --chart-2: #33FF33;
+  --chart-3: #00FFFF;
+  --chart-4: #FFD700;
+  --chart-5: #FF3366;
+  --sidebar: rgba(4, 20, 40, 0.85);
+  --sidebar-foreground: #E8F8FF;
+  --sidebar-primary: #00BFFF;
+  --sidebar-primary-foreground: #041428;
+  --sidebar-accent: rgba(0, 191, 255, 0.10);
+  --sidebar-accent-foreground: #E8F8FF;
+  --sidebar-border: rgba(0, 191, 255, 0.20);
+  --sidebar-ring: #00BFFF;
 }
 
 /* ============================================
@@ -243,25 +248,23 @@
   padding: 0.625rem 1rem;
 }
 
-/* K-5: Override accent and secondary to be more colorful */
 .age-k5 {
-  --accent: oklch(0.96 0.03 195);
-  --secondary: oklch(0.74 0.14 180);
+  --accent: #33FF33;
+  --secondary: #00FFFF;
 }
 
 .age-k5.dark,
 .age-k5 .dark {
-  --accent: oklch(0.32 0.06 220);
-  --secondary: oklch(0.74 0.14 180);
+  --accent: #33FF33;
+  --secondary: #00FFFF;
 }
 
 /* ============================================
    AGE VARIANT: 6-8 (Moderate / Balanced)
-   Standard proportions, medium rounding
    ============================================ */
 
 .age-68 {
-  --radius: 0.625rem;
+  --radius: 0.75rem;
   --font-size-base: 15px;
   --font-size-sm: 13px;
   --font-size-lg: 18px;
@@ -296,11 +299,10 @@
 
 /* ============================================
    AGE VARIANT: 9-12 (Sleek / Professional)
-   Compact, sharp, minimal decoration
    ============================================ */
 
 .age-912 {
-  --radius: 0.375rem;
+  --radius: 0.5rem;
   --font-size-base: 14px;
   --font-size-sm: 12px;
   --font-size-lg: 16px;
@@ -334,124 +336,128 @@
   padding: 0.375rem 0.75rem;
 }
 
-/* 9-12: Tighter spacing, more muted accents */
 .age-912 {
-  --accent: oklch(0.95 0.01 240);
+  --accent: #33FF33;
 }
 
 .age-912.dark,
 .age-912 .dark {
-  --accent: oklch(0.26 0.03 258);
+  --accent: #33FF33;
 }
 
 /* ============================================
-   ROLE-ADAPTIVE DESIGN
-   Each role gets distinct accent colors & sidebar treatment
-   Applied via data-role attribute on DashboardLayout
+   ROLE-ADAPTIVE DESIGN — Aqua Neon
+   Student=#33FF33, Teacher=#00BFFF,
+   Admin=#FFD700, Parent=#00FFFF
    ============================================ */
 
-/* Student: Playful, vibrant, gamified */
+/* Student: Neon Green — The Gamer */
 [data-role="student"] {
-  --sidebar: oklch(0.96 0.02 280);
-  --sidebar-foreground: oklch(0.25 0.08 280);
-  --sidebar-accent: oklch(0.93 0.04 280);
-  --sidebar-accent-foreground: oklch(0.25 0.08 280);
-  --sidebar-primary: oklch(0.55 0.22 285);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.90 0.03 280);
+  --sidebar: rgba(240, 255, 240, 0.70);
+  --sidebar-foreground: #0A2540;
+  --sidebar-accent: rgba(51, 255, 51, 0.08);
+  --sidebar-accent-foreground: #0A2540;
+  --sidebar-primary: #33FF33;
+  --sidebar-primary-foreground: #0A2540;
+  --sidebar-border: rgba(51, 255, 51, 0.15);
 }
 
 .dark [data-role="student"],
 [data-role="student"].dark {
-  --sidebar: oklch(0.16 0.04 280);
-  --sidebar-foreground: oklch(0.95 0.005 280);
-  --sidebar-accent: oklch(0.22 0.05 280);
-  --sidebar-accent-foreground: oklch(0.95 0.005 280);
-  --sidebar-primary: oklch(0.65 0.22 285);
-  --sidebar-primary-foreground: oklch(0.14 0.04 280);
-  --sidebar-border: oklch(0.26 0.04 280);
+  --sidebar: rgba(4, 30, 15, 0.85);
+  --sidebar-foreground: #E8F8FF;
+  --sidebar-accent: rgba(51, 255, 51, 0.10);
+  --sidebar-accent-foreground: #E8F8FF;
+  --sidebar-primary: #33FF33;
+  --sidebar-primary-foreground: #041428;
+  --sidebar-border: rgba(51, 255, 51, 0.20);
 }
 
-/* Teacher: Warm, welcoming, functional */
+/* Teacher: Neon Blue — Authority */
 [data-role="teacher"] {
-  --sidebar: oklch(0.97 0.01 60);
-  --sidebar-foreground: oklch(0.28 0.06 50);
-  --sidebar-accent: oklch(0.94 0.03 60);
-  --sidebar-accent-foreground: oklch(0.28 0.06 50);
-  --sidebar-primary: oklch(0.55 0.15 45);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.91 0.02 60);
+  --sidebar: rgba(232, 248, 255, 0.75);
+  --sidebar-foreground: #0A2540;
+  --sidebar-accent: rgba(0, 191, 255, 0.08);
+  --sidebar-accent-foreground: #0A2540;
+  --sidebar-primary: #00BFFF;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-border: rgba(0, 191, 255, 0.15);
 }
 
 .dark [data-role="teacher"],
 [data-role="teacher"].dark {
-  --sidebar: oklch(0.16 0.03 50);
-  --sidebar-foreground: oklch(0.95 0.005 50);
-  --sidebar-accent: oklch(0.22 0.04 50);
-  --sidebar-accent-foreground: oklch(0.95 0.005 50);
-  --sidebar-primary: oklch(0.70 0.14 50);
-  --sidebar-primary-foreground: oklch(0.14 0.03 50);
-  --sidebar-border: oklch(0.26 0.03 50);
+  --sidebar: rgba(4, 20, 50, 0.85);
+  --sidebar-foreground: #E8F8FF;
+  --sidebar-accent: rgba(0, 191, 255, 0.10);
+  --sidebar-accent-foreground: #E8F8FF;
+  --sidebar-primary: #00BFFF;
+  --sidebar-primary-foreground: #041428;
+  --sidebar-border: rgba(0, 191, 255, 0.20);
 }
 
-/* Admin / Super Admin: Professional, data-dense, cool tones */
+/* Admin / Super Admin: Gold — Command */
 [data-role="admin"],
 [data-role="super_admin"] {
-  --sidebar: oklch(0.97 0.005 240);
-  --sidebar-foreground: oklch(0.25 0.05 240);
-  --sidebar-accent: oklch(0.94 0.01 240);
-  --sidebar-accent-foreground: oklch(0.25 0.05 240);
-  --sidebar-primary: oklch(0.45 0.12 250);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.91 0.01 240);
+  --sidebar: rgba(255, 252, 235, 0.75);
+  --sidebar-foreground: #0A2540;
+  --sidebar-accent: rgba(255, 215, 0, 0.08);
+  --sidebar-accent-foreground: #0A2540;
+  --sidebar-primary: #FFD700;
+  --sidebar-primary-foreground: #0A2540;
+  --sidebar-border: rgba(255, 215, 0, 0.15);
 }
 
 .dark [data-role="admin"],
 .dark [data-role="super_admin"],
 [data-role="admin"].dark,
 [data-role="super_admin"].dark {
-  --sidebar: oklch(0.13 0.02 250);
-  --sidebar-foreground: oklch(0.92 0.005 240);
-  --sidebar-accent: oklch(0.20 0.03 250);
-  --sidebar-accent-foreground: oklch(0.92 0.005 240);
-  --sidebar-primary: oklch(0.60 0.14 250);
-  --sidebar-primary-foreground: oklch(0.13 0.02 250);
-  --sidebar-border: oklch(0.24 0.03 250);
+  --sidebar: rgba(30, 20, 4, 0.85);
+  --sidebar-foreground: #E8F8FF;
+  --sidebar-accent: rgba(255, 215, 0, 0.10);
+  --sidebar-accent-foreground: #E8F8FF;
+  --sidebar-primary: #FFD700;
+  --sidebar-primary-foreground: #041428;
+  --sidebar-border: rgba(255, 215, 0, 0.20);
 }
 
-/* Parent: Calm, trustworthy, green-tinted */
+/* Parent: Cyan — Calm Observer */
 [data-role="parent"] {
-  --sidebar: oklch(0.97 0.01 160);
-  --sidebar-foreground: oklch(0.28 0.06 160);
-  --sidebar-accent: oklch(0.94 0.02 160);
-  --sidebar-accent-foreground: oklch(0.28 0.06 160);
-  --sidebar-primary: oklch(0.50 0.14 160);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.91 0.02 160);
+  --sidebar: rgba(232, 255, 255, 0.75);
+  --sidebar-foreground: #0A2540;
+  --sidebar-accent: rgba(0, 255, 255, 0.08);
+  --sidebar-accent-foreground: #0A2540;
+  --sidebar-primary: #00FFFF;
+  --sidebar-primary-foreground: #0A2540;
+  --sidebar-border: rgba(0, 255, 255, 0.15);
 }
 
 .dark [data-role="parent"],
 [data-role="parent"].dark {
-  --sidebar: oklch(0.15 0.03 160);
-  --sidebar-foreground: oklch(0.95 0.005 160);
-  --sidebar-accent: oklch(0.22 0.04 160);
-  --sidebar-accent-foreground: oklch(0.95 0.005 160);
-  --sidebar-primary: oklch(0.65 0.14 160);
-  --sidebar-primary-foreground: oklch(0.15 0.03 160);
-  --sidebar-border: oklch(0.26 0.03 160);
+  --sidebar: rgba(4, 20, 30, 0.85);
+  --sidebar-foreground: #E8F8FF;
+  --sidebar-accent: rgba(0, 255, 255, 0.10);
+  --sidebar-accent-foreground: #E8F8FF;
+  --sidebar-primary: #00FFFF;
+  --sidebar-primary-foreground: #041428;
+  --sidebar-border: rgba(0, 255, 255, 0.20);
 }
 
-/* Role-specific active nav link glow overrides */
+/* Role-specific gradient overrides */
 [data-role="student"] .wolf-gradient {
-  background: linear-gradient(135deg, oklch(0.50 0.20 285) 0%, oklch(0.55 0.22 300) 100%);
+  background: linear-gradient(135deg, #33FF33 0%, #00FFFF 100%);
 }
 
 [data-role="teacher"] .wolf-gradient {
-  background: linear-gradient(135deg, oklch(0.50 0.14 40) 0%, oklch(0.55 0.15 55) 100%);
+  background: linear-gradient(135deg, #00BFFF 0%, #00FFFF 100%);
+}
+
+[data-role="admin"] .wolf-gradient,
+[data-role="super_admin"] .wolf-gradient {
+  background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
 }
 
 [data-role="parent"] .wolf-gradient {
-  background: linear-gradient(135deg, oklch(0.45 0.13 155) 0%, oklch(0.50 0.14 170) 100%);
+  background: linear-gradient(135deg, #00FFFF 0%, #00BFFF 100%);
 }
 
 /* ============================================
@@ -470,12 +476,12 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Accessibility — focus states */
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-primary;
+    outline: 2px solid #00BFFF;
+    outline-offset: 2px;
+    box-shadow: 0 0 12px rgba(0, 191, 255, 0.40);
   }
 
-  /* Smooth scrolling */
   html {
     scroll-behavior: smooth;
   }
@@ -493,6 +499,48 @@
   .text-pretty {
     text-wrap: pretty;
   }
+
+  /* Futuristic display font (Orbitron) */
+  .font-display {
+    font-family: var(--font-orbitron), 'Orbitron', sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Technical data font (Share Tech Mono) */
+  .font-data {
+    font-family: var(--font-share-tech-mono), 'Share Tech Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  /* Neon text glow */
+  .text-glow {
+    text-shadow:
+      0 0 10px currentColor,
+      0 0 20px currentColor,
+      0 0 40px currentColor;
+  }
+
+  .text-glow-blue {
+    text-shadow:
+      0 0 10px rgba(0, 191, 255, 0.60),
+      0 0 20px rgba(0, 191, 255, 0.40),
+      0 0 40px rgba(0, 191, 255, 0.20);
+  }
+
+  .text-glow-green {
+    text-shadow:
+      0 0 10px rgba(51, 255, 51, 0.60),
+      0 0 20px rgba(51, 255, 51, 0.40),
+      0 0 40px rgba(51, 255, 51, 0.20);
+  }
+
+  .text-glow-cyan {
+    text-shadow:
+      0 0 10px rgba(0, 255, 255, 0.60),
+      0 0 20px rgba(0, 255, 255, 0.40),
+      0 0 40px rgba(0, 255, 255, 0.20);
+  }
 }
 
 /* ============================================
@@ -500,131 +548,143 @@
    ============================================ */
 
 @layer utilities {
-  /* Wolf Gradient — Midnight Blue to Deep Ocean */
+  /* Wolf Gradient — Primary neon blue to green */
   .wolf-gradient {
-    background: linear-gradient(
-      135deg,
-      oklch(0.35 0.17 260) 0%,
-      oklch(0.48 0.29 285) 100%
-    );
+    background: linear-gradient(135deg, #00BFFF 0%, #33FF33 100%);
   }
 
-  /* Whale Gradient — Deep Ocean to Teal */
+  /* Whale Gradient — Green to Cyan */
   .whale-gradient {
-    background: linear-gradient(
-      135deg,
-      oklch(0.48 0.29 285) 0%,
-      oklch(0.72 0.13 177) 100%
-    );
+    background: linear-gradient(135deg, #33FF33 0%, #00FFFF 100%);
   }
 
-  /* Child Card Header — light-friendly gradient for parent dashboard */
+  /* Child Card Header — for parent dashboard */
   .child-card-header {
-    background: linear-gradient(
-      135deg,
-      oklch(0.95 0.02 210) 0%,
-      oklch(0.92 0.04 195) 100%
-    );
+    background: linear-gradient(135deg, rgba(0, 191, 255, 0.15) 0%, rgba(0, 255, 255, 0.10) 100%);
   }
 
   .dark .child-card-header {
-    background: linear-gradient(
-      135deg,
-      oklch(0.48 0.29 285) 0%,
-      oklch(0.72 0.13 177) 100%
-    );
+    background: linear-gradient(135deg, rgba(0, 191, 255, 0.25) 0%, rgba(0, 255, 255, 0.15) 100%);
   }
 
-  /* Ocean Card — liquid glass treatment (auto-applies to all 62+ pages) */
+  /* ------------------------------------------------
+     Ocean Card — Neon glass treatment
+     Cascades to 72+ files / 297+ card instances
+     ------------------------------------------------ */
   .ocean-card {
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(0, 191, 255, 0.22);
+    border-radius: 20px;
     box-shadow:
-      0 4px 16px var(--glass-shadow),
+      0 0 15px rgba(0, 191, 255, 0.08),
+      0 8px 32px rgba(0, 0, 0, 0.06),
       inset 0 1px 0 var(--glass-highlight);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Chrome reflection overlay */
+  .ocean-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(192, 216, 232, 0.06) 40%,
+      transparent 100%
+    );
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
   }
 
   .ocean-card:hover {
     transform: translateY(-2px);
+    border-color: rgba(0, 191, 255, 0.45);
     box-shadow:
-      0 12px 40px var(--glass-shadow-heavy),
+      0 0 25px rgba(0, 191, 255, 0.15),
+      0 12px 40px rgba(0, 60, 120, 0.10),
       inset 0 1px 0 var(--glass-highlight);
-    border-color: oklch(1 0 0 / 0.30);
   }
 
   .dark .ocean-card:hover {
     box-shadow:
-      0 12px 40px var(--glass-shadow-heavy),
-      0 0 16px oklch(0.72 0.13 177 / 0.06),
+      0 0 30px rgba(0, 191, 255, 0.20),
+      0 12px 40px rgba(0, 0, 0, 0.30),
       inset 0 1px 0 var(--glass-highlight);
   }
 }
 
 /* ============================================
-   GLASS / FROSTED GLASS EFFECTS
-   (Rebranded from aurora to ocean theme)
+   GLASS / FROSTED GLASS EFFECTS — Neon Tinted
    ============================================ */
 
 @layer utilities {
-  /* Frosted Glass Panel — Dark */
   .glass-panel {
-    background: oklch(0.22 0.04 258 / 0.85);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid oklch(1 0 0 / 0.12);
+    background: rgba(0, 40, 80, 0.80);
+    backdrop-filter: blur(20px) saturate(200%);
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
+    border: 1px solid rgba(0, 191, 255, 0.20);
     box-shadow:
-      0 8px 32px oklch(0 0 0 / 0.25),
-      inset 0 1px 0 oklch(1 0 0 / 0.08);
+      0 8px 32px rgba(0, 0, 0, 0.30),
+      0 0 15px rgba(0, 191, 255, 0.08),
+      inset 0 1px 0 rgba(0, 191, 255, 0.08);
   }
 
   .glass-panel-strong {
-    background: oklch(0.20 0.04 258 / 0.92);
-    backdrop-filter: blur(24px) saturate(200%);
-    -webkit-backdrop-filter: blur(24px) saturate(200%);
-    border: 1px solid oklch(1 0 0 / 0.15);
+    background: rgba(0, 30, 60, 0.90);
+    backdrop-filter: blur(28px) saturate(220%);
+    -webkit-backdrop-filter: blur(28px) saturate(220%);
+    border: 1px solid rgba(0, 191, 255, 0.25);
     box-shadow:
-      0 8px 32px oklch(0 0 0 / 0.35),
-      inset 0 1px 0 oklch(1 0 0 / 0.12);
+      0 8px 32px rgba(0, 0, 0, 0.40),
+      0 0 20px rgba(0, 191, 255, 0.12),
+      inset 0 1px 0 rgba(0, 191, 255, 0.10);
   }
 
   .glass-panel-ocean {
     background: linear-gradient(
       135deg,
-      oklch(0.48 0.29 285 / 0.10),
-      oklch(0.72 0.13 177 / 0.08)
+      rgba(0, 191, 255, 0.12),
+      rgba(0, 255, 255, 0.08)
     );
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid oklch(0.72 0.13 177 / 0.25);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(0, 191, 255, 0.30);
     box-shadow:
-      0 8px 32px oklch(0 0 0 / 0.25),
-      0 0 16px oklch(0.72 0.13 177 / 0.06),
-      inset 0 1px 0 oklch(1 0 0 / 0.08);
+      0 8px 32px rgba(0, 0, 0, 0.25),
+      0 0 20px rgba(0, 191, 255, 0.10),
+      inset 0 1px 0 rgba(0, 191, 255, 0.08);
   }
 
   .glass-panel-light {
-    background: oklch(1 0 0 / 0.75);
-    backdrop-filter: blur(16px) saturate(150%);
-    -webkit-backdrop-filter: blur(16px) saturate(150%);
-    border: 1px solid oklch(1 0 0 / 0.80);
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(0, 191, 255, 0.18);
     box-shadow:
-      0 8px 32px oklch(0 0 0 / 0.06),
-      inset 0 1px 0 oklch(1 0 0 / 0.90);
+      0 8px 32px rgba(0, 60, 120, 0.06),
+      0 0 12px rgba(0, 191, 255, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.90);
   }
 
-  /* Frosted Glass Card — Dark */
   .glass-card {
-    background: oklch(1 0 0 / 0.04);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border: 1px solid oklch(1 0 0 / 0.15);
-    border-radius: var(--radius);
+    background: rgba(0, 191, 255, 0.04);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(0, 191, 255, 0.18);
+    border-radius: 20px;
     box-shadow:
-      0 16px 48px oklch(0 0 0 / 0.30),
-      inset 0 1px 0 oklch(1 0 0 / 0.06);
+      0 16px 48px rgba(0, 0, 0, 0.25),
+      0 0 15px rgba(0, 191, 255, 0.08),
+      inset 0 1px 0 rgba(0, 191, 255, 0.06);
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -639,8 +699,8 @@
     height: 50%;
     background: linear-gradient(
       180deg,
-      oklch(1 0 0 / 0.10) 0%,
-      oklch(1 0 0 / 0.03) 50%,
+      rgba(255, 255, 255, 0.10) 0%,
+      rgba(192, 216, 232, 0.04) 50%,
       transparent 100%
     );
     border-radius: inherit;
@@ -649,23 +709,24 @@
 
   .glass-card:hover {
     transform: translateY(-3px);
+    border-color: rgba(0, 191, 255, 0.40);
     box-shadow:
-      0 24px 64px oklch(0 0 0 / 0.35),
-      inset 0 1px 0 oklch(1 0 0 / 0.10);
-    border-color: oklch(1 0 0 / 0.22);
+      0 24px 64px rgba(0, 0, 0, 0.30),
+      0 0 25px rgba(0, 191, 255, 0.15),
+      inset 0 1px 0 rgba(0, 191, 255, 0.10);
   }
 
-  /* Frosted Glass Card — Light */
   .glass-card-light {
-    background: oklch(1 0 0 / 0.75);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid oklch(1 0 0 / 0.85);
-    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.70);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(0, 191, 255, 0.18);
+    border-radius: 20px;
     box-shadow:
-      0 16px 48px oklch(0 0 0 / 0.06),
-      0 4px 12px oklch(0 0 0 / 0.03),
-      inset 0 1px 0 oklch(1 0 0 / 0.95);
+      0 16px 48px rgba(0, 60, 120, 0.06),
+      0 4px 12px rgba(0, 0, 0, 0.03),
+      0 0 12px rgba(0, 191, 255, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.90);
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -680,8 +741,8 @@
     height: 50%;
     background: linear-gradient(
       180deg,
-      oklch(1 0 0 / 0.90) 0%,
-      oklch(1 0 0 / 0.40) 50%,
+      rgba(255, 255, 255, 0.85) 0%,
+      rgba(232, 248, 255, 0.30) 50%,
       transparent 100%
     );
     border-radius: inherit;
@@ -690,11 +751,12 @@
 
   .glass-card-light:hover {
     transform: translateY(-3px);
+    border-color: rgba(0, 191, 255, 0.35);
     box-shadow:
-      0 24px 64px oklch(0.48 0.29 285 / 0.08),
-      0 8px 20px oklch(0 0 0 / 0.05),
-      inset 0 1px 0 oklch(1 0 0 / 0.98);
-    border-color: oklch(0.72 0.13 177 / 0.15);
+      0 24px 64px rgba(0, 191, 255, 0.10),
+      0 8px 20px rgba(0, 0, 0, 0.05),
+      0 0 20px rgba(0, 191, 255, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
   }
 }
 
@@ -703,7 +765,6 @@
    ============================================ */
 
 @layer utilities {
-  /* Base liquid glass surface — use for cards, panels */
   .liquid-glass {
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
@@ -711,11 +772,11 @@
     border: 1px solid var(--glass-border);
     box-shadow:
       0 8px 32px var(--glass-shadow),
+      0 0 12px rgba(0, 191, 255, 0.06),
       inset 0 1px 0 var(--glass-highlight);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Elevated glass — for floating elements (dropdowns, tooltips, notifications) */
   .liquid-glass-elevated {
     background: var(--glass-bg-elevated);
     backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate));
@@ -724,11 +785,11 @@
     box-shadow:
       0 16px 48px var(--glass-shadow-heavy),
       0 4px 12px var(--glass-shadow),
+      0 0 18px rgba(0, 191, 255, 0.08),
       inset 0 1px 0 var(--glass-highlight);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Heavy / opaque glass — for sidebar, modals (needs higher readability) */
   .liquid-glass-heavy {
     background: var(--glass-bg-heavy);
     backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate));
@@ -736,11 +797,11 @@
     border: 1px solid var(--glass-border);
     box-shadow:
       0 8px 32px var(--glass-shadow-heavy),
+      0 0 15px rgba(0, 191, 255, 0.06),
       inset 0 1px 0 var(--glass-highlight);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Subtle glass — for inline card sections, stat boxes inside other glass */
   .liquid-glass-subtle {
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur-sm));
@@ -750,25 +811,24 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Interactive hover lift for glass cards */
   .liquid-glass-hover:hover {
     transform: translateY(-3px) scale(1.005);
+    border-color: rgba(0, 191, 255, 0.40);
     box-shadow:
       0 20px 60px var(--glass-shadow-heavy),
       0 8px 24px var(--glass-shadow),
+      0 0 25px rgba(0, 191, 255, 0.12),
       inset 0 1px 0 var(--glass-highlight);
-    border-color: oklch(1 0 0 / 0.30);
   }
 
   .dark .liquid-glass-hover:hover {
-    border-color: oklch(1 0 0 / 0.18);
+    border-color: rgba(0, 191, 255, 0.35);
     box-shadow:
       0 20px 60px var(--glass-shadow-heavy),
-      0 0 20px oklch(0.72 0.13 177 / 0.06),
+      0 0 30px rgba(0, 191, 255, 0.15),
       inset 0 1px 0 var(--glass-highlight);
   }
 
-  /* Standard glass transition for interactive surfaces */
   .transition-glass {
     transition:
       transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -777,18 +837,15 @@
       background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Hover lift — subtle translateY + scale for card interactions */
   .hover-lift:hover {
     transform: translateY(-3px) scale(1.005);
   }
 
-  /* Active press — feedback for buttons on glass surfaces */
   .active-press:active {
     transform: translateY(0) scale(0.98);
     transition-duration: 0.1s;
   }
 
-  /* Button glow on hover for liquid glass buttons */
   .btn-glow {
     position: relative;
     overflow: hidden;
@@ -801,14 +858,14 @@
     border-radius: inherit;
     background: linear-gradient(
       135deg,
-      oklch(0.72 0.13 177 / 0.0) 0%,
-      oklch(0.72 0.13 177 / 0.3) 50%,
-      oklch(0.48 0.29 285 / 0.0) 100%
+      rgba(0, 191, 255, 0.0) 0%,
+      rgba(0, 191, 255, 0.35) 50%,
+      rgba(51, 255, 51, 0.0) 100%
     );
     opacity: 0;
     transition: opacity 0.3s ease;
     z-index: -1;
-    filter: blur(8px);
+    filter: blur(10px);
   }
 
   .btn-glow:hover::after {
@@ -816,7 +873,276 @@
   }
 }
 
-/* Spring-like entrance for glass panels */
+/* ============================================
+   CHROME SURFACE EFFECTS
+   Metallic reflective gradients
+   ============================================ */
+
+@layer utilities {
+  /* Full chrome surface with metallic shine */
+  .chrome-surface {
+    background: var(--chrome-gradient);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chrome-surface::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.25) 45%,
+      rgba(255, 255, 255, 0.50) 50%,
+      rgba(255, 255, 255, 0.25) 55%,
+      transparent 70%
+    );
+    animation: chrome-sweep 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* Chrome ring border */
+  .chrome-ring {
+    border: 2px solid transparent;
+    background-image:
+      linear-gradient(var(--background), var(--background)),
+      var(--chrome-gradient-horizontal);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    box-shadow:
+      0 0 8px rgba(192, 216, 232, 0.30),
+      inset 0 0 4px rgba(192, 216, 232, 0.15);
+  }
+
+  /* Chrome border for cards */
+  .chrome-border {
+    border: 1px solid;
+    border-image: var(--chrome-gradient-horizontal) 1;
+    box-shadow: 0 0 10px rgba(192, 216, 232, 0.20);
+  }
+
+  /* Subtle chrome overlay — add to any element */
+  .chrome-overlay {
+    position: relative;
+  }
+
+  .chrome-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(240, 248, 255, 0.10) 0%,
+      rgba(192, 216, 232, 0.05) 30%,
+      transparent 60%,
+      rgba(192, 216, 232, 0.03) 90%,
+      rgba(240, 248, 255, 0.08) 100%
+    );
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 1;
+  }
+
+  /* Shiny chrome sphere */
+  .chrome-orb {
+    background: var(--chrome-gradient);
+    border-radius: 50%;
+    box-shadow:
+      0 0 15px rgba(0, 191, 255, 0.25),
+      0 0 30px rgba(0, 191, 255, 0.10),
+      inset -3px -3px 8px rgba(0, 0, 0, 0.15),
+      inset 3px 3px 8px rgba(255, 255, 255, 0.50);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chrome-orb::before {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 20%;
+    width: 35%;
+    height: 35%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.80) 0%,
+      rgba(255, 255, 255, 0.20) 60%,
+      transparent 100%
+    );
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .chrome-orb::after {
+    content: '';
+    position: absolute;
+    bottom: 10%;
+    right: 15%;
+    width: 20%;
+    height: 15%;
+    background: radial-gradient(
+      ellipse,
+      rgba(0, 191, 255, 0.40) 0%,
+      transparent 70%
+    );
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* Chrome text — metallic text effect */
+  .chrome-text {
+    background: var(--chrome-gradient-horizontal);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 4px rgba(192, 216, 232, 0.30));
+  }
+}
+
+/* ============================================
+   NEON GLOW UTILITIES
+   ============================================ */
+
+@layer utilities {
+  .neon-glow-blue {
+    box-shadow: var(--glow-blue);
+  }
+
+  .neon-glow-green {
+    box-shadow: var(--glow-green);
+  }
+
+  .neon-glow-cyan {
+    box-shadow: var(--glow-cyan);
+  }
+
+  .neon-glow-amber {
+    box-shadow: 0 0 20px rgba(255, 170, 0, 0.35), 0 0 40px rgba(255, 170, 0, 0.15);
+  }
+
+  .neon-glow-chrome {
+    box-shadow: var(--glow-chrome);
+  }
+
+  /* Animated neon pulse */
+  .neon-pulse-blue {
+    animation: neon-pulse-b 2s ease-in-out infinite;
+  }
+
+  .neon-pulse-green {
+    animation: neon-pulse-g 2s ease-in-out infinite;
+  }
+
+  .neon-pulse-cyan {
+    animation: neon-pulse-c 2s ease-in-out infinite;
+  }
+
+  /* Neon border line */
+  .neon-border-blue {
+    border-color: rgba(0, 191, 255, 0.60);
+    box-shadow: 0 0 8px rgba(0, 191, 255, 0.30);
+  }
+
+  .neon-border-green {
+    border-color: rgba(51, 255, 51, 0.60);
+    box-shadow: 0 0 8px rgba(51, 255, 51, 0.30);
+  }
+
+  .neon-border-cyan {
+    border-color: rgba(0, 255, 255, 0.60);
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.30);
+  }
+}
+
+/* ============================================
+   BORDER GLOW — Neon Accents
+   ============================================ */
+
+@layer utilities {
+  .glow-border-ocean {
+    box-shadow:
+      0 0 8px rgba(0, 191, 255, 0.40),
+      0 0 16px rgba(0, 191, 255, 0.20),
+      inset 0 0 8px rgba(0, 191, 255, 0.08);
+    border-color: rgba(0, 191, 255, 0.55);
+  }
+
+  .glow-border-teal {
+    box-shadow:
+      0 0 8px rgba(0, 255, 255, 0.40),
+      0 0 16px rgba(0, 255, 255, 0.20),
+      inset 0 0 8px rgba(0, 255, 255, 0.08);
+    border-color: rgba(0, 255, 255, 0.55);
+  }
+
+  .glow-border-subtle {
+    box-shadow:
+      0 0 4px rgba(0, 191, 255, 0.25),
+      0 0 8px rgba(0, 191, 255, 0.10);
+  }
+
+  .glow-border-green {
+    box-shadow:
+      0 0 8px rgba(51, 255, 51, 0.40),
+      0 0 16px rgba(51, 255, 51, 0.20),
+      inset 0 0 8px rgba(51, 255, 51, 0.08);
+    border-color: rgba(51, 255, 51, 0.55);
+  }
+
+  .glow-border-gold {
+    box-shadow:
+      0 0 8px rgba(255, 215, 0, 0.40),
+      0 0 16px rgba(255, 215, 0, 0.20),
+      inset 0 0 8px rgba(255, 215, 0, 0.08);
+    border-color: rgba(255, 215, 0, 0.55);
+  }
+}
+
+/* ============================================
+   BACKGROUND BLOBS — Vivid Neon
+   ============================================ */
+
+@layer utilities {
+  .blob-ocean {
+    background: radial-gradient(
+      circle at center,
+      rgba(0, 191, 255, 0.18) 0%,
+      rgba(0, 191, 255, 0.06) 40%,
+      transparent 70%
+    );
+    filter: blur(60px);
+  }
+
+  .blob-teal {
+    background: radial-gradient(
+      circle at center,
+      rgba(0, 255, 255, 0.15) 0%,
+      rgba(0, 255, 255, 0.05) 40%,
+      transparent 70%
+    );
+    filter: blur(60px);
+  }
+
+  .blob-midnight {
+    background: radial-gradient(
+      circle at center,
+      rgba(51, 255, 51, 0.10) 0%,
+      rgba(51, 255, 51, 0.03) 40%,
+      transparent 70%
+    );
+    filter: blur(60px);
+  }
+}
+
+/* ============================================
+   KEYFRAME ANIMATIONS
+   ============================================ */
+
+/* Glass entrance */
 @keyframes glass-slide-up {
   from {
     opacity: 0;
@@ -828,7 +1154,6 @@
   }
 }
 
-/* Soft scale-in for dropdowns and tooltips */
 @keyframes glass-pop-in {
   from {
     opacity: 0;
@@ -840,66 +1165,23 @@
   }
 }
 
-/* Background blob slow drift */
+/* Background blob drift */
 @keyframes blob-drift {
   0%, 100% {
     transform: translate(0, 0) scale(1);
   }
   25% {
-    transform: translate(30px, -20px) scale(1.05);
+    transform: translate(40px, -30px) scale(1.08);
   }
   50% {
-    transform: translate(-20px, 15px) scale(0.95);
+    transform: translate(-30px, 20px) scale(0.92);
   }
   75% {
-    transform: translate(15px, 25px) scale(1.02);
+    transform: translate(20px, 35px) scale(1.05);
   }
 }
 
-@layer utilities {
-  .animate-glass-slide-up {
-    animation: glass-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .animate-glass-pop-in {
-    animation: glass-pop-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .animate-blob-drift {
-    animation: blob-drift 20s ease-in-out infinite;
-  }
-}
-
-/* ============================================
-   BORDER GLOW — Subtle Brand Accents
-   ============================================ */
-
-@layer utilities {
-  .glow-border-ocean {
-    box-shadow:
-      0 0 4px oklch(0.48 0.29 285 / 0.30),
-      0 0 8px oklch(0.48 0.29 285 / 0.15);
-    border-color: oklch(0.48 0.29 285 / 0.50);
-  }
-
-  .glow-border-teal {
-    box-shadow:
-      0 0 4px oklch(0.72 0.13 177 / 0.30),
-      0 0 8px oklch(0.72 0.13 177 / 0.15);
-    border-color: oklch(0.72 0.13 177 / 0.50);
-  }
-
-  .glow-border-subtle {
-    box-shadow:
-      0 0 3px oklch(0.48 0.29 285 / 0.20),
-      0 0 6px oklch(0.72 0.13 177 / 0.10);
-  }
-}
-
-/* ============================================
-   ANIMATIONS — Kept Minimal & School-Friendly
-   ============================================ */
-
+/* Gentle float */
 @keyframes gentle-float {
   0%, 100% {
     transform: translateY(0);
@@ -909,6 +1191,7 @@
   }
 }
 
+/* Fade in up */
 @keyframes fade-in-up {
   from {
     opacity: 0;
@@ -920,6 +1203,7 @@
   }
 }
 
+/* Shimmer */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -929,6 +1213,7 @@
   }
 }
 
+/* Pulse soft */
 @keyframes pulse-soft {
   0%, 100% {
     opacity: 1;
@@ -938,6 +1223,7 @@
   }
 }
 
+/* Ocean wave bg */
 @keyframes ocean-wave {
   0%, 100% {
     background-position: 0% 50%;
@@ -947,7 +1233,135 @@
   }
 }
 
+/* Bubble rise — for floating bubble particles */
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(100%) translateX(0) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(40%) translateX(15px) scale(0.8);
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.15;
+  }
+  100% {
+    transform: translateY(-20%) translateX(-10px) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Orb drift — slow floating chrome spheres */
+@keyframes orb-drift {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(15px, -20px) rotate(90deg);
+  }
+  50% {
+    transform: translate(-10px, -35px) rotate(180deg);
+  }
+  75% {
+    transform: translate(20px, -15px) rotate(270deg);
+  }
+}
+
+/* Neon pulse — glow shadow oscillation */
+@keyframes neon-pulse-b {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.30), 0 0 20px rgba(0, 191, 255, 0.10);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 191, 255, 0.60), 0 0 50px rgba(0, 191, 255, 0.25);
+  }
+}
+
+@keyframes neon-pulse-g {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(51, 255, 51, 0.30), 0 0 20px rgba(51, 255, 51, 0.10);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(51, 255, 51, 0.60), 0 0 50px rgba(51, 255, 51, 0.25);
+  }
+}
+
+@keyframes neon-pulse-c {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.30), 0 0 20px rgba(0, 255, 255, 0.10);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.60), 0 0 50px rgba(0, 255, 255, 0.25);
+  }
+}
+
+/* Chrome sweep — moving highlight across chrome surfaces */
+@keyframes chrome-sweep {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  50% {
+    transform: translateX(0%) translateY(0%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+/* Glass shine — moving highlight sweep across glass */
+@keyframes glass-shine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Aqua wave — background position shift */
+@keyframes aqua-wave {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Glow pulse */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(0, 191, 255, 0.30); }
+  50% { box-shadow: 0 0 25px rgba(0, 191, 255, 0.60), 0 0 50px rgba(0, 191, 255, 0.25); }
+}
+
+/* Click glow */
+@keyframes click-glow {
+  0% { box-shadow: 0 0 0 rgba(0, 191, 255, 0.50); }
+  50% { box-shadow: 0 0 30px rgba(0, 191, 255, 0.45), 0 0 60px rgba(0, 191, 255, 0.15); }
+  100% { box-shadow: 0 0 0 rgba(0, 191, 255, 0); }
+}
+
+/* ============================================
+   ANIMATION UTILITIES
+   ============================================ */
+
 @layer utilities {
+  .animate-glass-slide-up {
+    animation: glass-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .animate-glass-pop-in {
+    animation: glass-pop-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .animate-blob-drift {
+    animation: blob-drift 25s ease-in-out infinite;
+  }
+
   .animate-float {
     animation: gentle-float 3s ease-in-out infinite;
   }
@@ -967,50 +1381,71 @@
   .animate-ocean-wave {
     animation: ocean-wave 12s ease infinite;
   }
+
+  /* Bubble float — apply to translucent circle elements */
+  .bubble-float {
+    animation: bubble-rise 8s ease-in-out infinite;
+  }
+
+  /* Orb float — apply to chrome sphere decorations */
+  .orb-float {
+    animation: orb-drift 12s ease-in-out infinite;
+  }
+
+  /* Neon pulse */
+  .neon-pulse {
+    animation: neon-pulse-b 2s ease-in-out infinite;
+  }
+
+  /* Glass shine sweep */
+  .glass-reflection {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.08) 45%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0.08) 55%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: glass-shine 6s ease-in-out infinite;
+  }
+
+  /* Chrome shine animation */
+  .chrome-shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chrome-shine::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.15) 45%,
+      rgba(255, 255, 255, 0.35) 50%,
+      rgba(255, 255, 255, 0.15) 55%,
+      transparent 65%
+    );
+    animation: chrome-sweep 5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .glow-animate {
+    animation: glow-pulse 2s ease-in-out infinite;
+  }
 }
 
 /* ============================================
-   BACKGROUND BLOBS — Soft, Ambient
+   SCROLLBAR STYLING — Neon Blue
    ============================================ */
 
 @layer utilities {
-  .blob-ocean {
-    background: radial-gradient(
-      circle at center,
-      oklch(0.48 0.29 285 / 0.20) 0%,
-      oklch(0.48 0.29 285 / 0.08) 40%,
-      transparent 70%
-    );
-    filter: blur(50px);
-  }
-
-  .blob-teal {
-    background: radial-gradient(
-      circle at center,
-      oklch(0.72 0.13 177 / 0.18) 0%,
-      oklch(0.72 0.13 177 / 0.06) 40%,
-      transparent 70%
-    );
-    filter: blur(50px);
-  }
-
-  .blob-midnight {
-    background: radial-gradient(
-      circle at center,
-      oklch(0.35 0.17 260 / 0.25) 0%,
-      oklch(0.35 0.17 260 / 0.10) 40%,
-      transparent 70%
-    );
-    filter: blur(50px);
-  }
-}
-
-/* ============================================
-   SCROLLBAR STYLING
-   ============================================ */
-
-@layer utilities {
-  /* Hide scrollbar */
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -1019,36 +1454,34 @@
     display: none;
   }
 
-  /* Ocean themed scrollbar */
   .scrollbar-ocean {
     scrollbar-width: thin;
-    scrollbar-color: oklch(0.72 0.13 177) oklch(0.96 0.01 240);
+    scrollbar-color: #00BFFF rgba(0, 191, 255, 0.08);
   }
   .scrollbar-ocean::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
   .scrollbar-ocean::-webkit-scrollbar-track {
-    background: oklch(0.96 0.01 240);
+    background: rgba(0, 191, 255, 0.06);
     border-radius: 4px;
   }
   .scrollbar-ocean::-webkit-scrollbar-thumb {
-    background: oklch(0.72 0.13 177);
+    background: #00BFFF;
     border-radius: 4px;
+    box-shadow: 0 0 6px rgba(0, 191, 255, 0.30);
   }
   .scrollbar-ocean::-webkit-scrollbar-thumb:hover {
-    background: oklch(0.68 0.13 177);
+    background: #33CCFF;
   }
 
-  /* Dark mode scrollbar */
   .dark .scrollbar-ocean {
-    scrollbar-color: oklch(0.72 0.13 177) oklch(0.20 0.03 258);
+    scrollbar-color: #00BFFF rgba(0, 191, 255, 0.10);
   }
   .dark .scrollbar-ocean::-webkit-scrollbar-track {
-    background: oklch(0.20 0.03 258);
+    background: rgba(0, 191, 255, 0.08);
   }
 
-  /* Thin sidebar scrollbar */
   .scrollbar-thin {
     scrollbar-width: thin;
   }
@@ -1066,10 +1499,10 @@
     border-radius: 2px;
   }
   .scrollbar-thin:hover::-webkit-scrollbar-thumb {
-    background: oklch(0.50 0.03 258 / 0.3);
+    background: rgba(0, 191, 255, 0.25);
   }
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background: oklch(0.50 0.03 258 / 0.5);
+    background: rgba(0, 191, 255, 0.45);
   }
 }
 
@@ -1078,13 +1511,11 @@
    ============================================ */
 
 @layer utilities {
-  /* Touch-friendly tap targets */
   .touch-target {
     min-height: 44px;
     min-width: 44px;
   }
 
-  /* Safe area padding for notched devices */
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom);
   }
@@ -1163,49 +1594,28 @@
 }
 
 /* ============================================
-   BUTTON GLOW EFFECTS
+   BUTTON GLOW EFFECTS — Neon
    ============================================ */
 
-/* Glow pulse on active/click for primary buttons */
 .whale-gradient:active,
 button.whale-gradient:active {
-  box-shadow: 0 0 20px oklch(0.72 0.13 177 / 0.6), 0 0 40px oklch(0.72 0.13 177 / 0.3);
+  box-shadow: 0 0 25px rgba(51, 255, 51, 0.50), 0 0 50px rgba(0, 255, 255, 0.25);
   transform: scale(0.97);
   transition: all 0.1s ease;
 }
 
-/* Glow for ocean-themed elements */
 .ocean-glow:active {
-  box-shadow: 0 0 15px oklch(0.48 0.29 285 / 0.5), 0 0 30px oklch(0.48 0.29 285 / 0.2);
+  box-shadow: 0 0 20px rgba(0, 191, 255, 0.50), 0 0 40px rgba(0, 191, 255, 0.20);
 }
 
-/* General button hover glow */
 button:not(:disabled):hover,
 a[role="button"]:hover {
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-/* General button glow on click */
 button:active:not(:disabled),
 a[role="button"]:active {
   transition: box-shadow 0.1s ease, transform 0.1s ease;
-}
-
-/* Glow border animation for important elements */
-@keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 5px oklch(0.72 0.13 177 / 0.3); }
-  50% { box-shadow: 0 0 20px oklch(0.72 0.13 177 / 0.6), 0 0 40px oklch(0.72 0.13 177 / 0.2); }
-}
-
-.glow-animate {
-  animation: glow-pulse 2s ease-in-out infinite;
-}
-
-/* Click ripple glow effect */
-@keyframes click-glow {
-  0% { box-shadow: 0 0 0 oklch(0.72 0.13 177 / 0.5); }
-  50% { box-shadow: 0 0 25px oklch(0.72 0.13 177 / 0.4), 0 0 50px oklch(0.72 0.13 177 / 0.1); }
-  100% { box-shadow: 0 0 0 oklch(0.72 0.13 177 / 0); }
 }
 
 button:focus-visible {
@@ -1214,14 +1624,14 @@ button:focus-visible {
 
 /* Sidebar active link glow */
 .glow-border-ocean {
-  box-shadow: 0 0 12px oklch(0.72 0.13 177 / 0.4), inset 0 0 12px oklch(0.72 0.13 177 / 0.1);
+  box-shadow: 0 0 12px rgba(0, 191, 255, 0.45), 0 0 24px rgba(0, 191, 255, 0.15), inset 0 0 12px rgba(0, 191, 255, 0.10);
 }
 
 /* Dark mode enhanced glows */
 .dark button:active:not(:disabled) {
-  box-shadow: 0 0 15px oklch(0.76 0.13 177 / 0.4);
+  box-shadow: 0 0 20px rgba(0, 191, 255, 0.45);
 }
 
 .dark .whale-gradient:active {
-  box-shadow: 0 0 25px oklch(0.76 0.13 177 / 0.6), 0 0 50px oklch(0.76 0.13 177 / 0.3);
+  box-shadow: 0 0 30px rgba(51, 255, 51, 0.55), 0 0 60px rgba(0, 255, 255, 0.30);
 }

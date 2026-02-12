@@ -42,9 +42,9 @@ const STATUS_CONFIG: Record<
 > = {
   present: {
     label: 'Present',
-    dotColor: 'bg-green-500',
-    bgColor: 'bg-green-100 dark:bg-green-950/40',
-    textColor: 'text-green-700 dark:text-green-400',
+    dotColor: 'bg-[#33FF33]',
+    bgColor: 'bg-[#33FF33]/10 dark:bg-[#33FF33]/15',
+    textColor: 'text-[#33FF33] dark:text-[#33FF33]',
     icon: <Check className="size-3.5" />,
   },
   absent: {
@@ -56,23 +56,23 @@ const STATUS_CONFIG: Record<
   },
   tardy: {
     label: 'Tardy',
-    dotColor: 'bg-amber-500',
-    bgColor: 'bg-amber-100 dark:bg-amber-950/40',
-    textColor: 'text-amber-700 dark:text-amber-400',
+    dotColor: 'bg-[#FFAA00]',
+    bgColor: 'bg-[#FFAA00]/10 dark:bg-[#FFAA00]/15',
+    textColor: 'text-[#FFAA00] dark:text-[#FFD700]',
     icon: <Clock className="size-3.5" />,
   },
   excused: {
     label: 'Excused',
-    dotColor: 'bg-blue-500',
-    bgColor: 'bg-blue-100 dark:bg-blue-950/40',
-    textColor: 'text-blue-700 dark:text-blue-400',
+    dotColor: 'bg-[#00BFFF]',
+    bgColor: 'bg-[#00BFFF]/10 dark:bg-[#00BFFF]/15',
+    textColor: 'text-[#00BFFF] dark:text-[#00BFFF]',
     icon: <AlertCircle className="size-3.5" />,
   },
   online: {
     label: 'Online',
-    dotColor: 'bg-green-500',
-    bgColor: 'bg-green-100 dark:bg-green-950/40',
-    textColor: 'text-green-700 dark:text-green-400',
+    dotColor: 'bg-[#33FF33]',
+    bgColor: 'bg-[#33FF33]/10 dark:bg-[#33FF33]/15',
+    textColor: 'text-[#33FF33] dark:text-[#33FF33]',
     icon: <Check className="size-3.5" />,
   },
 }
@@ -204,9 +204,9 @@ export default function StudentAttendancePage() {
                 strokeDashoffset={progressOffset}
                 className={
                   summary.rate >= 90
-                    ? 'stroke-green-500'
+                    ? 'stroke-[#33FF33]'
                     : summary.rate >= 75
-                      ? 'stroke-amber-500'
+                      ? 'stroke-[#FFAA00]'
                       : 'stroke-red-500'
                 }
                 style={{ transition: 'stroke-dashoffset 0.5s ease-in-out' }}
@@ -227,7 +227,7 @@ export default function StudentAttendancePage() {
             </h2>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               <div className="text-center p-4 rounded-xl bg-muted/50">
-                <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                <p className="text-2xl font-bold text-[#33FF33] dark:text-[#33FF33]">
                   {summary.present}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">Days Present</p>
@@ -239,13 +239,13 @@ export default function StudentAttendancePage() {
                 <p className="text-xs text-muted-foreground mt-1">Days Absent</p>
               </div>
               <div className="text-center p-4 rounded-xl bg-muted/50">
-                <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+                <p className="text-2xl font-bold text-[#FFAA00] dark:text-[#FFD700]">
                   {summary.tardy}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">Days Tardy</p>
               </div>
               <div className="text-center p-4 rounded-xl bg-muted/50">
-                <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                <p className="text-2xl font-bold text-[#00BFFF] dark:text-[#00BFFF]">
                   {summary.excused}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">Days Excused</p>
@@ -342,7 +342,7 @@ export default function StudentAttendancePage() {
         {/* Legend */}
         <div className="mt-6 flex flex-wrap gap-4 justify-center text-xs">
           <div className="flex items-center gap-2">
-            <div className="size-3 rounded-full bg-green-500"></div>
+            <div className="size-3 rounded-full bg-[#33FF33]"></div>
             <span className="text-muted-foreground">Present</span>
           </div>
           <div className="flex items-center gap-2">
@@ -350,11 +350,11 @@ export default function StudentAttendancePage() {
             <span className="text-muted-foreground">Absent</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="size-3 rounded-full bg-amber-500"></div>
+            <div className="size-3 rounded-full bg-[#FFAA00]"></div>
             <span className="text-muted-foreground">Tardy</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="size-3 rounded-full bg-blue-500"></div>
+            <div className="size-3 rounded-full bg-[#00BFFF]"></div>
             <span className="text-muted-foreground">Excused</span>
           </div>
         </div>
@@ -386,12 +386,12 @@ export default function StudentAttendancePage() {
                   key={record.id}
                   className={`flex items-center justify-between rounded-xl p-4 transition-colors ${
                     record.status === 'present' || record.status === 'online'
-                      ? 'bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900'
+                      ? 'bg-[#33FF33]/5 dark:bg-[#33FF33]/10 border border-[#33FF33]/20 dark:border-[#33FF33]/20'
                       : record.status === 'absent'
                         ? 'bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900'
                         : record.status === 'tardy'
-                          ? 'bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900'
-                          : 'bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900'
+                          ? 'bg-[#FFAA00]/5 dark:bg-[#FFAA00]/10 border border-[#FFAA00]/20 dark:border-[#FFAA00]/20'
+                          : 'bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10 border border-[#00BFFF]/20 dark:border-[#00BFFF]/20'
                   }`}
                 >
                   <div className="flex items-center gap-4">

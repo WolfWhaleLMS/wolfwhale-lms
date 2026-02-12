@@ -13,41 +13,41 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-background">
-      {/* Ocean Background */}
+      {/* Aqua Neon Dark Background */}
       <div className="fixed inset-0 z-0">
-        {/* Base gradient — Midnight Blue to Deep Ocean */}
-        <div className="absolute inset-0 wolf-gradient" />
+        {/* Base gradient — Deep dark aqua */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#041428] via-[#0A2040] to-[#041428]" />
 
-        {/* Ambient ocean glow layers */}
+        {/* Ambient neon glow layers */}
         <div
           className="absolute inset-0 opacity-30"
           style={{
-            background: 'radial-gradient(ellipse 150% 80% at 50% 20%, oklch(0.72 0.13 177 / 0.30) 0%, transparent 60%)',
+            background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(0,191,255,0.25) 0%, transparent 60%)',
             animation: 'ocean-pulse 8s ease-in-out infinite',
           }}
         />
         <div
           className="absolute inset-0 opacity-20"
           style={{
-            background: 'radial-gradient(ellipse 120% 60% at 30% 30%, oklch(0.48 0.29 285 / 0.25) 0%, transparent 50%)',
+            background: 'radial-gradient(ellipse 120% 60% at 30% 30%, rgba(51,255,51,0.15) 0%, transparent 50%)',
             animation: 'ocean-drift 12s ease-in-out infinite',
           }}
         />
         <div
           className="absolute inset-0 opacity-15"
           style={{
-            background: 'radial-gradient(ellipse 100% 50% at 70% 25%, oklch(0.76 0.13 177 / 0.20) 0%, transparent 45%)',
+            background: 'radial-gradient(ellipse 100% 50% at 70% 25%, rgba(0,255,255,0.15) 0%, transparent 45%)',
             animation: 'ocean-wave-slow 15s ease-in-out infinite reverse',
           }}
         />
 
-        {/* Subtle star dots */}
+        {/* Floating bubble particles */}
         {mounted && (
           <div className="absolute inset-0">
             {[...Array(40)].map((_, i) => (
               <div
                 key={i}
-                className="absolute w-1 h-1 bg-white rounded-full animate-twinkle"
+                className="absolute w-1 h-1 bg-[#00BFFF] rounded-full animate-twinkle"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 50}%`,
@@ -56,18 +56,22 @@ export default function HomePage() {
                 }}
               />
             ))}
+            {/* Chrome orbs */}
+            <div className="absolute chrome-orb orb-float w-4 h-4" style={{ left: '15%', top: '20%', animationDelay: '0s' }} />
+            <div className="absolute chrome-orb orb-float w-6 h-6" style={{ right: '10%', top: '40%', animationDelay: '2s' }} />
+            <div className="absolute chrome-orb orb-float w-3 h-3" style={{ left: '60%', top: '15%', animationDelay: '4s' }} />
           </div>
         )}
 
         {/* Depth overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.18_0.08_265)] via-transparent to-transparent opacity-60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#041428] via-transparent to-transparent opacity-60" />
       </div>
 
       {/* Header */}
       <header className="relative z-10 p-6">
         <Link href="/" className="inline-flex items-center gap-3 group">
           <img src="/logo.png" alt="Wolf Whale" className="h-16 w-16 rounded-xl object-contain shadow-lg" />
-          <span className="text-xl font-bold text-white group-hover:text-[oklch(0.74_0.13_180)] transition-colors" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>
+          <span className="text-xl font-display font-bold text-white group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase">
             Wolf Whale
           </span>
         </Link>
@@ -79,14 +83,14 @@ export default function HomePage() {
           {/* Hero Section */}
           <section className="text-center space-y-8 animate-fade-in-up">
             {/* Logo */}
-            <div className="inline-flex rounded-2xl shadow-2xl overflow-hidden">
+            <div className="inline-flex rounded-2xl shadow-2xl overflow-hidden chrome-shine">
               <img src="/logo.png" alt="Wolf Whale" className="h-48 w-48 rounded-2xl object-contain" />
             </div>
 
             {/* Heading */}
             <div className="space-y-4">
-              <h1 className="text-5xl md:text-6xl font-bold text-white" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>
-                Wolf Whale LMS
+              <h1 className="text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-[#00BFFF] to-[#33FF33] bg-clip-text text-transparent text-glow-blue tracking-wider">
+                WOLF WHALE LMS
               </h1>
               <p className="text-xl md:text-2xl text-white/70 max-w-2xl mx-auto">
                 The Modern Learning Platform for K-12 & Post-Secondary
@@ -97,14 +101,14 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
               <Link
                 href="/login"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[oklch(0.35_0.08_220)] to-[oklch(0.70_0.12_180)] text-white font-semibold hover:shadow-[0_0_40px_oklch(0.70_0.12_180/0.5)] transition-all hover:scale-105 btn-glow"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#00BFFF] text-white font-semibold hover:shadow-[0_0_40px_rgba(0,191,255,0.5)] transition-all hover:scale-105 neon-glow-blue"
               >
                 Sign In
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <Link
                 href="/info"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border-2 border-white/20 text-white font-semibold hover:border-[oklch(0.70_0.12_180)] hover:bg-white/5 transition-all"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border-2 border-[#00BFFF]/30 text-white font-semibold hover:border-[#00BFFF] hover:bg-[#00BFFF]/5 transition-all"
               >
                 Learn More
               </Link>
@@ -114,9 +118,9 @@ export default function HomePage() {
           {/* Feature Highlights */}
           <section className="grid md:grid-cols-3 gap-6 pt-8">
             {/* Feature 1 */}
-            <div className="liquid-glass rounded-2xl p-6 liquid-glass-hover group">
-              <div className="inline-flex p-3 rounded-xl bg-[oklch(0.70_0.12_180/0.20)] border border-[oklch(0.70_0.12_180/0.30)] mb-4 group-hover:bg-[oklch(0.70_0.12_180/0.30)] transition-colors">
-                <GraduationCap className="h-6 w-6 text-[oklch(0.74_0.13_180)]" />
+            <div className="ocean-card rounded-2xl p-6 group hover:neon-border-blue transition-all">
+              <div className="inline-flex p-3 rounded-xl bg-[#00BFFF]/15 border border-[#00BFFF]/25 mb-4 group-hover:bg-[#00BFFF]/25 transition-colors">
+                <GraduationCap className="h-6 w-6 text-[#00BFFF]" />
               </div>
               <h3 className="text-xl font-bold text-white mb-2">Built for K-12 & Post-Secondary</h3>
               <p className="text-white/60 text-sm leading-relaxed">
@@ -125,9 +129,9 @@ export default function HomePage() {
             </div>
 
             {/* Feature 2 */}
-            <div className="liquid-glass rounded-2xl p-6 liquid-glass-hover group">
-              <div className="inline-flex p-3 rounded-xl bg-[oklch(0.70_0.12_180/0.20)] border border-[oklch(0.70_0.12_180/0.30)] mb-4 group-hover:bg-[oklch(0.70_0.12_180/0.30)] transition-colors">
-                <Zap className="h-6 w-6 text-[oklch(0.74_0.13_180)]" />
+            <div className="ocean-card rounded-2xl p-6 group hover:neon-border-blue transition-all">
+              <div className="inline-flex p-3 rounded-xl bg-[#33FF33]/15 border border-[#33FF33]/25 mb-4 group-hover:bg-[#33FF33]/25 transition-colors">
+                <Zap className="h-6 w-6 text-[#33FF33]" />
               </div>
               <h3 className="text-xl font-bold text-white mb-2">Real-Time Everything</h3>
               <p className="text-white/60 text-sm leading-relaxed">
@@ -136,9 +140,9 @@ export default function HomePage() {
             </div>
 
             {/* Feature 3 */}
-            <div className="liquid-glass rounded-2xl p-6 liquid-glass-hover group">
-              <div className="inline-flex p-3 rounded-xl bg-[oklch(0.70_0.12_180/0.20)] border border-[oklch(0.70_0.12_180/0.30)] mb-4 group-hover:bg-[oklch(0.70_0.12_180/0.30)] transition-colors">
-                <Shield className="h-6 w-6 text-[oklch(0.74_0.13_180)]" />
+            <div className="ocean-card rounded-2xl p-6 group hover:neon-border-blue transition-all">
+              <div className="inline-flex p-3 rounded-xl bg-[#00FFFF]/15 border border-[#00FFFF]/25 mb-4 group-hover:bg-[#00FFFF]/25 transition-colors">
+                <Shield className="h-6 w-6 text-[#00FFFF]" />
               </div>
               <h3 className="text-xl font-bold text-white mb-2">Secure & Compliant</h3>
               <p className="text-white/60 text-sm leading-relaxed">
@@ -153,7 +157,7 @@ export default function HomePage() {
       <footer className="relative z-10 p-6">
         <div className="max-w-4xl mx-auto">
           {/* Divider */}
-          <div className="h-px bg-white/10 mb-6" />
+          <div className="h-px bg-[#00BFFF]/15 mb-6" />
 
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-sm text-white/50">
@@ -162,19 +166,19 @@ export default function HomePage() {
             <div className="flex gap-6">
               <Link
                 href="/privacy"
-                className="text-sm text-white/50 hover:text-[oklch(0.74_0.13_180)] transition-colors"
+                className="text-sm text-white/50 hover:text-[#00BFFF] transition-colors"
               >
                 Privacy
               </Link>
               <Link
                 href="/terms"
-                className="text-sm text-white/50 hover:text-[oklch(0.74_0.13_180)] transition-colors"
+                className="text-sm text-white/50 hover:text-[#00BFFF] transition-colors"
               >
                 Terms
               </Link>
               <Link
                 href="/help"
-                className="text-sm text-white/50 hover:text-[oklch(0.74_0.13_180)] transition-colors"
+                className="text-sm text-white/50 hover:text-[#00BFFF] transition-colors"
               >
                 Help
               </Link>

@@ -12,10 +12,10 @@ interface CircularGaugeProps {
 }
 
 const defaultThresholds = [
-  { value: 90, color: '#22c55e', bgColor: '#22c55e20' },
-  { value: 75, color: '#3b82f6', bgColor: '#3b82f620' },
-  { value: 60, color: '#f59e0b', bgColor: '#f59e0b20' },
-  { value: 0, color: '#ef4444', bgColor: '#ef444420' },
+  { value: 90, color: '#33FF33', bgColor: '#33FF3320' },
+  { value: 75, color: '#00BFFF', bgColor: '#00BFFF20' },
+  { value: 60, color: '#FFAA00', bgColor: '#FFAA0020' },
+  { value: 0, color: '#FF3366', bgColor: '#FF336620' },
 ]
 
 export function CircularGauge({
@@ -48,13 +48,22 @@ export function CircularGauge({
       aria-valuemax={max}
       aria-label={`${label}: ${display}`}
     >
-      <div className="relative" style={{ width: size, height: size }}>
+      <div className="relative chrome-ring rounded-full" style={{ width: size, height: size }}>
         <svg
           width={size}
           height={size}
           className="-rotate-90"
           aria-hidden="true"
         >
+          <defs>
+            <filter id="gaugeGlow">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
           {/* Background circle */}
           <circle
             cx={size / 2}
@@ -63,7 +72,7 @@ export function CircularGauge({
             fill="none"
             stroke="currentColor"
             strokeWidth={strokeWidth}
-            className="text-muted/30 dark:text-muted/20"
+            className="text-[#00BFFF]/10 dark:text-[#00BFFF]/15"
           />
           {/* Progress arc */}
           <circle
@@ -76,13 +85,17 @@ export function CircularGauge({
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={value > 0 ? offset : circumference}
-            style={{ transition: 'stroke-dashoffset 0.8s ease-in-out' }}
+            filter="url(#gaugeGlow)"
+            style={{
+              transition: 'stroke-dashoffset 0.8s ease-in-out',
+              filter: `drop-shadow(0 0 8px ${threshold.color})`,
+            }}
           />
         </svg>
         {/* Center text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span
-            className="text-2xl font-extrabold text-foreground leading-none"
+            className="text-2xl font-extrabold leading-none font-data"
             style={{ color: value > 0 ? threshold.color : undefined }}
           >
             {display}
@@ -90,9 +103,9 @@ export function CircularGauge({
         </div>
       </div>
       <div className="text-center">
-        <p className="text-sm font-semibold text-foreground">{label}</p>
+        <p className="text-sm font-semibold text-[#0A2540] dark:text-[#E8F8FF]">{label}</p>
         {sublabel && (
-          <p className="text-xs text-muted-foreground">{sublabel}</p>
+          <p className="text-xs text-[#6B8FA3]">{sublabel}</p>
         )}
       </div>
       {/* Screen reader description */}

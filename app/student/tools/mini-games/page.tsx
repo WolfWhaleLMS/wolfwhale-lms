@@ -19,7 +19,7 @@ export default function MiniGamesPage() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-3 mb-1">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 shadow-md">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#00BFFF] to-[#33FF33] shadow-md">
             <Gamepad2 className="h-5 w-5 text-white" />
           </div>
           <div>

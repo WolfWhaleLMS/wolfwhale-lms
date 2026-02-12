@@ -100,7 +100,7 @@ export default function DeckCardsPage({
         </div>
         <button
           onClick={() => { setShowAdd(!showAdd); setEditingId(null); setFront(''); setBack(''); setHint('') }}
-          className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+          className="inline-flex items-center gap-2 rounded-xl bg-[#00BFFF] px-4 py-2.5 text-sm font-medium text-white hover:bg-[#00BFFF]/90 transition-colors"
         >
           <Plus className="h-4 w-4" />
           Add Card
@@ -146,7 +146,7 @@ export default function DeckCardsPage({
             <button
               type="submit"
               disabled={saving}
-              className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              className="rounded-xl bg-[#00BFFF] px-4 py-2 text-sm font-medium text-white hover:bg-[#00BFFF]/90 disabled:opacity-50"
             >
               {saving ? 'Adding...' : 'Add Card'}
             </button>
@@ -203,7 +203,7 @@ export default function DeckCardsPage({
                     <button
                       onClick={handleSaveEdit}
                       disabled={saving}
-                      className="inline-flex items-center gap-1 rounded-lg bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
+                      className="inline-flex items-center gap-1 rounded-lg bg-[#00BFFF] px-3 py-1.5 text-sm text-white hover:bg-[#00BFFF]/90"
                     >
                       <Save className="h-3 w-3" /> Save
                     </button>
@@ -232,7 +232,7 @@ export default function DeckCardsPage({
                       </div>
                     </div>
                     {card.hint && (
-                      <p className="mt-2 text-xs text-rose-600 italic">Hint: {card.hint}</p>
+                      <p className="mt-2 text-xs text-[#FFAA00] italic">Hint: {card.hint}</p>
                     )}
                   </div>
                   <div className="flex gap-1 ml-4">

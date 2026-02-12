@@ -48,18 +48,18 @@ export default async function StudentFlashcardsPage() {
               className="ocean-card group rounded-2xl p-5 transition-all hover:shadow-lg hover:-translate-y-0.5"
             >
               <div className="flex items-start justify-between mb-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/30">
-                  <Layers className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#00BFFF]/10 dark:bg-[#00BFFF]/15">
+                  <Layers className="h-5 w-5 text-[#00BFFF] dark:text-[#00BFFF]" />
                 </div>
                 {deck.dueCards > 0 && (
-                  <span className="flex items-center gap-1 rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
+                  <span className="flex items-center gap-1 rounded-full bg-[#FFAA00]/10 px-2 py-0.5 text-xs font-medium text-[#FFAA00] dark:bg-[#FFAA00]/15 dark:text-[#FFD700]">
                     <Clock className="h-3 w-3" />
                     {deck.dueCards} due
                   </span>
                 )}
               </div>
 
-              <h3 className="font-semibold text-foreground group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              <h3 className="font-semibold text-foreground group-hover:text-[#00BFFF] dark:group-hover:text-[#00BFFF] transition-colors">
                 {deck.title}
               </h3>
               <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
@@ -80,7 +80,7 @@ export default async function StudentFlashcardsPage() {
               {deck.card_count > 0 && (
                 <div className="mt-3 h-1.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
                   <div
-                    className="h-full rounded-full bg-blue-500 transition-all"
+                    className="h-full rounded-full bg-[#00BFFF] transition-all"
                     style={{ width: `${Math.min(100, (deck.studiedCards / deck.card_count) * 100)}%` }}
                   />
                 </div>

@@ -8,9 +8,9 @@ import { GraduationCap, Shield, Users, ArrowRight } from 'lucide-react'
 function LoginFormSkeleton() {
   return (
     <div className="space-y-4 animate-pulse">
-      <div className="h-10 bg-[#003C99]/10 rounded-lg" />
-      <div className="h-10 bg-[#003C99]/10 rounded-lg" />
-      <div className="h-12 bg-[#003C99]/10 rounded-lg" />
+      <div className="h-10 bg-[#00BFFF]/10 rounded-lg" />
+      <div className="h-10 bg-[#00BFFF]/10 rounded-lg" />
+      <div className="h-12 bg-[#00BFFF]/10 rounded-lg" />
     </div>
   )
 }
@@ -18,24 +18,15 @@ function LoginFormSkeleton() {
 export default function LoginPage() {
   return (
     <div className="space-y-6">
-      {/* EVA-style Title */}
+      {/* Aqua Neon Title */}
       <div className="text-center space-y-2">
         <h1
-          className="text-[2.6rem] sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#003C99] leading-none whitespace-nowrap underline decoration-[#812BFF]/30 underline-offset-8"
-          style={{
-            fontFamily: "'Shippori Mincho B1', Georgia, 'Times New Roman', serif",
-            fontWeight: 800,
-            letterSpacing: '0.04em',
-          }}
+          className="text-[2.6rem] sm:text-5xl md:text-6xl font-display font-extrabold tracking-wider text-glow-blue leading-none whitespace-nowrap bg-gradient-to-r from-[#00BFFF] to-[#33FF33] bg-clip-text text-transparent"
         >
           WOLF WHALE
         </h1>
         <p
-          className="text-sm sm:text-base tracking-[0.2em] uppercase text-[#812BFF] font-bold"
-          style={{
-            fontFamily: "'Shippori Mincho B1', Georgia, 'Times New Roman', serif",
-            fontWeight: 800,
-          }}
+          className="text-sm sm:text-base tracking-[0.2em] uppercase text-[#00BFFF] font-display font-bold"
         >
           Learning Management System
         </p>
@@ -44,19 +35,19 @@ export default function LoginPage() {
       {/* Learn More — BIG button near the top */}
       <Link
         href="/info"
-        className="!mt-16 flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl bg-gradient-to-r from-[#003C99] to-[#812BFF] text-white font-semibold text-lg shadow-lg hover:shadow-[0_0_30px_oklch(0.70_0.12_180/0.4)] hover:scale-[1.02] transition-all group btn-glow"
+        className="!mt-16 flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl bg-[#00BFFF] text-white font-semibold text-lg shadow-lg hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] hover:scale-[1.02] transition-all group neon-glow-blue"
       >
         <span>Learn More About Wolf Whale LMS</span>
         <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
       </Link>
 
-      {/* Glass Card */}
-      <div className="rounded-2xl overflow-hidden liquid-glass shadow-xl">
+      {/* Glass Card with neon border */}
+      <div className="rounded-2xl overflow-hidden ocean-card neon-border-blue shadow-xl">
         {/* Header */}
-        <div className="relative px-8 py-5 bg-gradient-to-r from-[#003C99]/5 via-[#812BFF]/5 to-[#003C99]/5 border-b border-[#003C99]/10">
+        <div className="relative px-8 py-5 bg-gradient-to-r from-[#00BFFF]/5 via-[#33FF33]/5 to-[#00BFFF]/5 border-b border-[#00BFFF]/15">
           <div className="text-center space-y-1">
-            <h2 className="text-xl font-bold text-[#003C99]">Welcome Back</h2>
-            <p className="text-[#003C99]/50 text-sm">
+            <h2 className="text-xl font-bold text-[#0A2540]">Welcome Back</h2>
+            <p className="text-[#6B8FA3] text-sm">
               Sign in to continue your learning journey
             </p>
           </div>
@@ -64,7 +55,7 @@ export default function LoginPage() {
 
         {/* Form */}
         <div className="p-8">
-          <p className="text-sm text-[#003C99]/50 mb-4 text-center">
+          <p className="text-sm text-[#6B8FA3] mb-4 text-center">
             Sign in with credentials assigned by your administrator
           </p>
           <Suspense fallback={<LoginFormSkeleton />}>
@@ -73,10 +64,10 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <div className="px-8 py-4 bg-[#003C99]/[0.02] border-t border-[#003C99]/10 text-center">
-          <p className="text-sm text-[#003C99]/50">
+        <div className="px-8 py-4 bg-[#00BFFF]/[0.03] border-t border-[#00BFFF]/10 text-center">
+          <p className="text-sm text-[#6B8FA3]">
             Need access?{' '}
-            <span className="text-[#812BFF] font-medium">
+            <span className="text-[#00BFFF] font-medium">
               Contact your administrator for credentials
             </span>
           </p>
@@ -85,26 +76,26 @@ export default function LoginPage() {
 
       {/* Feature Highlights */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-xl p-4 text-center liquid-glass-subtle hover:border-[#812BFF]/30 transition-all hover:scale-105">
-          <GraduationCap className="h-5 w-5 text-[#812BFF] mx-auto mb-2" />
-          <p className="text-xs font-medium text-[#003C99]/60">All-in-One</p>
+        <div className="rounded-xl p-4 text-center ocean-card hover:neon-border-blue transition-all hover:scale-105">
+          <GraduationCap className="h-5 w-5 text-[#00BFFF] mx-auto mb-2" />
+          <p className="text-xs font-medium text-[#6B8FA3]">All-in-One</p>
         </div>
-        <div className="rounded-xl p-4 text-center liquid-glass-subtle hover:border-[#812BFF]/30 transition-all hover:scale-105">
-          <Users className="h-5 w-5 text-[#812BFF] mx-auto mb-2" />
-          <p className="text-xs font-medium text-[#003C99]/60">K-12 & Post-Sec</p>
+        <div className="rounded-xl p-4 text-center ocean-card hover:neon-border-blue transition-all hover:scale-105">
+          <Users className="h-5 w-5 text-[#00BFFF] mx-auto mb-2" />
+          <p className="text-xs font-medium text-[#6B8FA3]">K-12 & Post-Sec</p>
         </div>
-        <div className="rounded-xl p-4 text-center liquid-glass-subtle hover:border-[#812BFF]/30 transition-all hover:scale-105">
-          <Shield className="h-5 w-5 text-[#812BFF] mx-auto mb-2" />
-          <p className="text-xs font-medium text-[#003C99]/60">FERPA Secure</p>
+        <div className="rounded-xl p-4 text-center ocean-card hover:neon-border-blue transition-all hover:scale-105">
+          <Shield className="h-5 w-5 text-[#00BFFF] mx-auto mb-2" />
+          <p className="text-xs font-medium text-[#6B8FA3]">FERPA Secure</p>
         </div>
       </div>
 
       {/* School Access Info */}
-      <div className="rounded-xl p-4 liquid-glass-subtle">
-        <p className="text-xs text-center text-[#003C99]/50">
-          <span className="text-[#812BFF] font-medium">School Access:</span>{' '}
+      <div className="rounded-xl p-4 ocean-card">
+        <p className="text-xs text-center text-[#6B8FA3]">
+          <span className="text-[#00BFFF] font-medium">School Access:</span>{' '}
           Contact your school administrator or{' '}
-          <Link href="/#contact" className="text-[#812BFF] hover:underline font-medium">
+          <Link href="/#contact" className="text-[#00BFFF] hover:underline font-medium">
             request a demo
           </Link>
         </p>

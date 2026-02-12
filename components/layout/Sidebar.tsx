@@ -113,14 +113,14 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
   }
 
   return (
-    <div className="relative z-10 flex h-full flex-col text-sidebar-foreground">
+    <div className="relative z-10 flex h-full flex-col text-sidebar-foreground border-l-2 border-[#00BFFF] neon-border-blue">
       {/* ----------------------------------------------------------------- */}
       {/* Header: tenant branding + mobile close button                     */}
       {/* ----------------------------------------------------------------- */}
       <div className="flex items-center justify-between border-b border-sidebar-border px-4 py-5">
         <Link href="/" className="group flex items-center gap-3 min-w-0">
           {/* Wolf Whale logo */}
-          <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl shadow-lg shadow-ocean-500/20 transition-shadow group-hover:shadow-ocean-500/40">
+          <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-full chrome-ring neon-glow-blue shadow-lg shadow-ocean-500/20 transition-shadow group-hover:shadow-ocean-500/40">
             <Image
               src={tenantLogo || '/logo.png'}
               alt={tenantName}
@@ -129,7 +129,7 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
             />
           </div>
 
-          <span className="text-base font-bold tracking-tight leading-tight line-clamp-2">
+          <span className="font-display text-xs font-bold tracking-widest uppercase leading-tight line-clamp-2">
             {tenantName}
           </span>
         </Link>
@@ -171,9 +171,9 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
                       onClose?.()
                     }}
                     className={cn(
-                      'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
+                      'flex items-center gap-3 rounded-full px-3 py-2.5 text-sm font-medium transition-all duration-200',
                       isActive
-                        ? 'wolf-gradient text-white shadow-md shadow-ocean-500/20 glow-border-ocean'
+                        ? 'wolf-gradient text-white shadow-md shadow-ocean-500/20 glow-border-ocean neon-glow-blue'
                         : 'text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground'
                     )}
                   >
@@ -212,7 +212,7 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
         <button
           type="button"
           onClick={handleSignOut}
-          className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-400 transition-all duration-200 hover:bg-red-500/10 hover:text-red-300"
+          className="flex w-full items-center gap-3 rounded-full px-3 py-2.5 text-sm font-medium text-red-400 transition-all duration-200 hover:bg-red-500/10 hover:text-red-300"
         >
           <LogOut className="h-5 w-5 flex-shrink-0" />
           <span>Sign Out</span>

@@ -158,10 +158,10 @@ export default async function StudentCoursesPage() {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {coursesWithMeta.map((course) => {
             const progressColor =
-              course.progress_percentage === 100 ? 'bg-gradient-to-r from-green-500 to-emerald-500' :
-              course.progress_percentage >= 70 ? 'bg-gradient-to-r from-blue-500 to-teal-500' :
-              course.progress_percentage >= 40 ? 'bg-gradient-to-r from-amber-500 to-yellow-500' :
-              'bg-gradient-to-r from-purple-500 to-pink-500'
+              course.progress_percentage === 100 ? 'bg-gradient-to-r from-[#33FF33] to-[#00FFFF]' :
+              course.progress_percentage >= 70 ? 'bg-gradient-to-r from-[#00BFFF] to-[#00FFFF]' :
+              course.progress_percentage >= 40 ? 'bg-gradient-to-r from-[#FFAA00] to-[#FFD700]' :
+              'bg-gradient-to-r from-[#00BFFF] to-[#33FF33]'
 
             return (
               <Link
@@ -219,10 +219,10 @@ export default async function StudentCoursesPage() {
                       <span>{course.completed_lessons} / {course.lesson_count} lessons</span>
                     </div>
                     <span className={`text-lg font-bold ${
-                      course.progress_percentage === 100 ? 'text-green-600 dark:text-green-400' :
-                      course.progress_percentage >= 70 ? 'text-blue-600 dark:text-blue-400' :
-                      course.progress_percentage >= 40 ? 'text-amber-600 dark:text-amber-400' :
-                      'text-purple-600 dark:text-purple-400'
+                      course.progress_percentage === 100 ? 'text-[#33FF33] dark:text-[#33FF33]' :
+                      course.progress_percentage >= 70 ? 'text-[#00BFFF] dark:text-[#00BFFF]' :
+                      course.progress_percentage >= 40 ? 'text-[#FFAA00] dark:text-[#FFD700]' :
+                      'text-[#00BFFF] dark:text-[#00BFFF]'
                     }`}>
                       {course.progress_percentage}%
                     </span>

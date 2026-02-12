@@ -37,49 +37,54 @@ export default function AuthLayout({
   }, [start])
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-[#f0f4f8]">
-      {/* Light Ocean Background */}
+    <div className="min-h-screen relative overflow-hidden bg-[#E8F8FF]">
+      {/* Aqua Neon Background */}
       <div className="fixed inset-0 z-0">
-        {/* Base — soft arctic white to light ocean blue */}
+        {/* Base gradient — bright aqua-futuristic */}
         <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(135deg, #e8f0fe 0%, #dce8f5 25%, #c5d8ee 50%, #b8d4e8 75%, #d0e4f0 100%)',
-          }}
+          className="absolute inset-0 bg-gradient-to-br from-[#E8F8FF] via-[#D0F0FF] to-[#B0E8FF]"
         />
 
-        {/* Ambient teal glow */}
+        {/* Ambient neon glow — cyan */}
         <div
           className="absolute inset-0 opacity-40"
           style={{
-            background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(2,194,173,0.15) 0%, transparent 60%)',
+            background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(0,191,255,0.18) 0%, transparent 60%)',
             animation: 'ocean-pulse 8s ease-in-out infinite',
           }}
         />
+        {/* Ambient neon glow — green */}
         <div
           className="absolute inset-0 opacity-25"
           style={{
-            background: 'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(0,60,153,0.08) 0%, transparent 50%)',
+            background: 'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(51,255,51,0.10) 0%, transparent 50%)',
             animation: 'ocean-drift 12s ease-in-out infinite',
           }}
         />
 
-        {/* Subtle floating particles */}
+        {/* Blob backgrounds */}
+        <div className="blob-ocean absolute top-[-10%] right-[-5%] w-[500px] h-[500px] opacity-30" />
+        <div className="blob-teal absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] opacity-20" />
+
+        {/* Floating bubble particles */}
         {mounted && (
           <div className="absolute inset-0">
-            {[...Array(20)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1.5 h-1.5 rounded-full animate-twinkle"
-                style={{
-                  background: 'rgba(0,60,153,0.12)',
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 5}s`,
-                  opacity: Math.random() * 0.3 + 0.1,
-                }}
-              />
-            ))}
+            {/* Bubbles with bubble-float animation */}
+            <div className="absolute bubble-float rounded-full bg-[#00BFFF]/8 w-3 h-3" style={{ left: '8%', top: '15%', animationDelay: '0s' }} />
+            <div className="absolute bubble-float rounded-full bg-[#00FFFF]/6 w-4 h-4" style={{ left: '85%', top: '20%', animationDelay: '0.8s' }} />
+            <div className="absolute bubble-float rounded-full bg-[#00BFFF]/8 w-2 h-2" style={{ left: '25%', top: '60%', animationDelay: '1.5s' }} />
+            <div className="absolute bubble-float rounded-full bg-[#00FFFF]/6 w-5 h-5" style={{ left: '70%', top: '75%', animationDelay: '2.2s' }} />
+            <div className="absolute bubble-float rounded-full bg-[#00BFFF]/8 w-3.5 h-3.5" style={{ left: '45%', top: '10%', animationDelay: '3s' }} />
+            <div className="absolute bubble-float rounded-full bg-[#00FFFF]/6 w-2.5 h-2.5" style={{ left: '15%', top: '85%', animationDelay: '3.8s' }} />
+            <div className="absolute bubble-float rounded-full bg-[#00BFFF]/8 w-4 h-4" style={{ left: '60%', top: '45%', animationDelay: '4.5s' }} />
+            <div className="absolute bubble-float rounded-full bg-[#00FFFF]/6 w-3 h-3" style={{ left: '90%', top: '55%', animationDelay: '5.2s' }} />
+            <div className="absolute bubble-float rounded-full bg-[#00BFFF]/6 w-2 h-2" style={{ left: '35%', top: '35%', animationDelay: '1s' }} />
+            <div className="absolute bubble-float rounded-full bg-[#00FFFF]/8 w-3 h-3" style={{ left: '50%', top: '90%', animationDelay: '2.8s' }} />
+
+            {/* Chrome orb decorations */}
+            <div className="absolute chrome-orb orb-float w-5 h-5" style={{ left: '10%', top: '30%', animationDelay: '0s' }} />
+            <div className="absolute chrome-orb orb-float w-7 h-7" style={{ right: '12%', top: '65%', animationDelay: '1.5s' }} />
+            <div className="absolute chrome-orb orb-float w-4 h-4" style={{ left: '55%', top: '8%', animationDelay: '3s' }} />
           </div>
         )}
       </div>
@@ -89,10 +94,10 @@ export default function AuthLayout({
         <Link href="/" className="inline-flex items-center gap-3 group">
           <img src="/logo.png" alt="Wolf Whale" className="h-20 w-20 rounded-xl object-contain shadow-lg" />
           <div>
-            <span className="text-xl font-bold text-[#003C99] group-hover:text-[#812BFF] transition-colors block" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 800 }}>
+            <span className="text-xl font-display font-bold text-[#0A2540] group-hover:text-[#00BFFF] transition-colors block tracking-wider uppercase">
               Wolf Whale
             </span>
-            <span className="text-xs text-[#003C99]/60 block font-semibold" style={{ fontFamily: "'Shippori Mincho B1', Georgia, serif", fontWeight: 600 }}>
+            <span className="text-xs text-[#0A2540]/60 block font-display font-semibold tracking-widest uppercase">
               Learning Management System
             </span>
           </div>
@@ -108,7 +113,7 @@ export default function AuthLayout({
 
       {/* Footer */}
       <footer className="relative z-10 p-6 text-center">
-        <p className="text-sm text-[#003C99]/50">
+        <p className="text-sm text-[#0A2540]/50">
           &copy; {new Date().getFullYear()} Wolf Whale Inc. All rights reserved.
         </p>
       </footer>
@@ -116,13 +121,13 @@ export default function AuthLayout({
       {/* Music Toggle */}
       <button
         onClick={toggle}
-        className="fixed bottom-6 right-6 z-50 p-3 rounded-full liquid-glass shadow-lg hover:shadow-xl transition-all hover:scale-110 group"
+        className="fixed bottom-6 right-6 z-50 p-3 rounded-full ocean-card shadow-lg hover:shadow-[0_0_20px_rgba(0,191,255,0.3)] transition-all hover:scale-110 group"
         title={isPlaying ? 'Mute music' : 'Play music'}
       >
         {isPlaying ? (
-          <Music className="h-5 w-5 text-[#812BFF] animate-pulse" />
+          <Music className="h-5 w-5 text-[#00BFFF] animate-pulse" />
         ) : (
-          <VolumeX className="h-5 w-5 text-[#003C99]/50" />
+          <VolumeX className="h-5 w-5 text-[#0A2540]/50" />
         )}
       </button>
 
@@ -135,13 +140,6 @@ export default function AuthLayout({
         @keyframes ocean-drift {
           0%, 100% { transform: translateX(0) scale(1); }
           50% { transform: translateX(10%) scale(1.05); }
-        }
-        @keyframes twinkle {
-          0%, 100% { opacity: 0.1; transform: scale(1); }
-          50% { opacity: 0.4; transform: scale(1.3); }
-        }
-        .animate-twinkle {
-          animation: twinkle 4s ease-in-out infinite;
         }
       `}</style>
     </div>

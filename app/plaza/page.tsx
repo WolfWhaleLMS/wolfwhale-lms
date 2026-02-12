@@ -55,40 +55,40 @@ export default async function PlazaPage() {
       description: 'Play educational mini games and earn tokens',
       href: '/plaza/games',
       icon: Gamepad2,
-      gradient: 'from-violet-500 to-purple-600',
-      bg: 'bg-violet-50 dark:bg-violet-950/30',
+      gradient: 'from-[#00BFFF] to-[#33FF33]',
+      bg: 'bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10',
     },
     {
       name: 'Avatar Store',
       description: 'Buy hats, outfits, and accessories for your avatar',
       href: '/plaza/store',
       icon: ShoppingBag,
-      gradient: 'from-amber-400 to-orange-500',
-      bg: 'bg-amber-50 dark:bg-amber-950/30',
+      gradient: 'from-[#FFAA00] to-[#FFD700]',
+      bg: 'bg-[#FFAA00]/5 dark:bg-[#FFAA00]/10',
     },
     {
       name: 'Study Hall',
       description: 'Join study sessions with classmates',
       href: '/plaza/study',
       icon: BookOpen,
-      gradient: 'from-emerald-500 to-teal-500',
-      bg: 'bg-emerald-50 dark:bg-emerald-950/30',
+      gradient: 'from-[#33FF33] to-[#00FFFF]',
+      bg: 'bg-[#33FF33]/5 dark:bg-[#33FF33]/10',
     },
     {
       name: 'Ocean Theater',
       description: 'Watch educational documentaries together',
       href: '/plaza/theater',
       icon: Film,
-      gradient: 'from-blue-500 to-cyan-500',
-      bg: 'bg-blue-50 dark:bg-blue-950/30',
+      gradient: 'from-[#00BFFF] to-[#00FFFF]',
+      bg: 'bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10',
     },
     {
       name: 'Customize Avatar',
       description: 'Change your look, colors, and style',
       href: '/plaza/avatar',
       icon: Palette,
-      gradient: 'from-pink-500 to-rose-500',
-      bg: 'bg-pink-50 dark:bg-pink-950/30',
+      gradient: 'from-[#00BFFF] to-[#00FFFF]',
+      bg: 'bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10',
     },
   ]
 
@@ -104,7 +104,7 @@ export default async function PlazaPage() {
       </Link>
 
       {/* Hero banner */}
-      <div className="relative mb-8 overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-purple-500 to-cyan-500 p-8 text-white shadow-2xl sm:p-10">
+      <div className="relative mb-8 overflow-hidden rounded-3xl bg-gradient-to-br from-[#00BFFF] via-[#00FFFF] to-[#33FF33] p-8 text-white shadow-2xl sm:p-10">
         <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/10" />
         <div className="pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/10" />
         <div className="pointer-events-none absolute right-1/4 top-1/3 h-20 w-20 rounded-full bg-white/5" />
@@ -112,7 +112,7 @@ export default async function PlazaPage() {
         <div className="relative z-10 flex items-start justify-between">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <Map className="h-8 w-8 text-cyan-200" />
+              <Map className="h-8 w-8 text-[#E8F8FF]" />
               <p className="text-lg font-medium text-white/80">Welcome to the Plaza</p>
             </div>
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">

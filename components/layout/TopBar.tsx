@@ -37,11 +37,11 @@ function getInitials(name: string): string {
 /** Maps role to a Tailwind color scheme for the badge. */
 function roleBadgeClasses(role: UserRole): string {
   const map: Record<UserRole, string> = {
-    student:     'bg-ocean-500/15 text-ocean-400 border-ocean-500/30',
-    teacher:     'bg-teal-500/15 text-teal-400 border-teal-500/30',
-    parent:      'bg-violet-500/15 text-violet-400 border-violet-500/30',
-    admin:       'bg-amber-500/15 text-amber-400 border-amber-500/30',
-    super_admin: 'bg-rose-500/15 text-rose-400 border-rose-500/30',
+    student:     'bg-[#33FF33]/15 text-[#33FF33] border-[#33FF33]/30',
+    teacher:     'bg-[#00BFFF]/15 text-[#00BFFF] border-[#00BFFF]/30',
+    parent:      'bg-[#00FFFF]/15 text-[#00FFFF] border-[#00FFFF]/30',
+    admin:       'bg-[#FFD700]/15 text-[#FFD700] border-[#FFD700]/30',
+    super_admin: 'bg-[#FFAA00]/15 text-[#FFAA00] border-[#FFAA00]/30',
   }
   return map[role] ?? 'bg-muted text-muted-foreground'
 }
@@ -57,7 +57,7 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
   const sounds = useSound()
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-4 liquid-glass-heavy border-b border-border/30 px-4 md:px-6">
+    <header className="flex h-16 shrink-0 items-center gap-4 liquid-glass-heavy border-b-2 border-[#00BFFF]/30 neon-glow-blue px-4 md:px-6">
       {/* --------------------------------------------------------------- */}
       {/* Mobile hamburger                                                 */}
       {/* --------------------------------------------------------------- */}
@@ -84,7 +84,7 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
           className={cn(
             'h-9 w-full rounded-xl border border-white/20 bg-white/30 dark:bg-white/5 backdrop-blur-sm pl-9 pr-4 text-sm',
             'placeholder:text-muted-foreground/60',
-            'focus:border-ocean-500/50 focus:outline-none focus:ring-2 focus:ring-ocean-500/20',
+            'focus:border-[#00BFFF]/50 focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/30',
             'transition-colors'
           )}
           readOnly
@@ -124,7 +124,7 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
         {/* User info */}
         <div className="flex items-center gap-3">
           {/* Avatar */}
-          <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-muted">
+          <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-muted chrome-ring">
             {userAvatar ? (
               <Image
                 src={userAvatar}
