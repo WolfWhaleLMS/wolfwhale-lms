@@ -201,11 +201,11 @@ export default function EdTechHubPage() {
       </div>
 
       {/* Header / Nav */}
-      <header className="relative z-10 p-6">
+      <header className="relative z-10 px-4 py-4 sm:p-6">
         <nav className="max-w-6xl mx-auto flex items-center justify-between">
-          <Link href="/" className="inline-flex items-center gap-3 group">
-            <Image src="/logo.png" alt="WolfWhale" width={48} height={48} className="rounded-xl object-contain shadow-lg border-2 border-black" />
-            <span className="text-lg font-display font-bold text-white group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase">
+          <Link href="/" className="inline-flex items-center gap-2 sm:gap-3 group shrink-0">
+            <Image src="/logo.png" alt="WolfWhale" width={40} height={40} className="rounded-xl object-contain shadow-lg border-2 border-black sm:w-12 sm:h-12" />
+            <span className="text-sm sm:text-lg font-display font-bold text-white group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase">
               WolfWhale EdTech
             </span>
           </Link>
@@ -231,44 +231,57 @@ export default function EdTechHubPage() {
           {/* Mobile sign-in */}
           <Link
             href="/login"
-            className="sm:hidden inline-flex items-center gap-2 px-4 py-2 rounded-xl btn-chrome-3d-blue text-white text-sm font-semibold"
+            className="sm:hidden inline-flex items-center gap-2 px-3 py-2 rounded-xl btn-chrome-3d-blue text-white text-xs font-semibold"
           >
             Sign In
           </Link>
         </nav>
+
+        {/* Mobile nav links */}
+        <div className="flex sm:hidden items-center justify-center gap-4 mt-3">
+          <a href="#products" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            Products
+          </a>
+          <a href="#about" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            About
+          </a>
+          <a href="#contact" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            Contact
+          </a>
+        </div>
       </header>
 
       {/* Hero Section */}
       <main className="relative z-10">
-        <section className="flex items-center justify-center min-h-[calc(100vh-200px)] px-4 py-16">
-          <div className="w-full max-w-5xl text-center space-y-8 animate-fade-in-up">
+        <section className="flex items-center justify-center min-h-[60vh] sm:min-h-[calc(100vh-200px)] px-4 py-10 sm:py-16">
+          <div className="w-full max-w-5xl text-center space-y-6 sm:space-y-8 animate-fade-in-up">
             {/* Logo */}
             <div className="inline-flex rounded-2xl shadow-2xl overflow-hidden chrome-shine">
-              <Image src="/logo.png" alt="WolfWhale EdTech" width={160} height={160} className="rounded-2xl object-contain border-2 border-black" />
+              <Image src="/logo.png" alt="WolfWhale EdTech" width={160} height={160} className="rounded-2xl object-contain border-2 border-black w-24 h-24 sm:w-40 sm:h-40" />
             </div>
 
             {/* Heading */}
-            <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-[#00BFFF] via-[#00FFFF] to-[#33FF33] bg-clip-text text-transparent text-glow-blue tracking-wider">
+            <div className="space-y-3 sm:space-y-4">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-[#00BFFF] via-[#00FFFF] to-[#33FF33] bg-clip-text text-transparent text-glow-blue tracking-wide sm:tracking-wider">
                 WOLFWHALE EDTECH
               </h1>
-              <p className="text-lg sm:text-xl md:text-2xl text-white/90 text-white-outlined max-w-2xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-xl md:text-2xl text-white/90 text-white-outlined max-w-2xl mx-auto leading-relaxed">
                 Building the future of education technology
               </p>
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center pt-2 sm:pt-4">
               <a
                 href="#products"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl btn-chrome-3d-blue text-white font-semibold transition-all hover:scale-105"
+                className="inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl btn-chrome-3d-blue text-white text-sm sm:text-base font-semibold transition-all hover:scale-105 w-full sm:w-auto justify-center"
               >
                 Explore Our Products
                 <ArrowRight className="h-5 w-5" />
               </a>
               <Link
                 href="/login"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border-2 border-[#00BFFF]/30 text-white font-semibold hover:border-[#00BFFF] hover:bg-[#00BFFF]/5 transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl border-2 border-[#00BFFF]/30 text-white text-sm sm:text-base font-semibold hover:border-[#00BFFF] hover:bg-[#00BFFF]/5 transition-all w-full sm:w-auto justify-center"
               >
                 Sign In to LMS
               </Link>
@@ -277,20 +290,20 @@ export default function EdTechHubPage() {
         </section>
 
         {/* Products Grid */}
-        <section id="products" className="px-4 py-20">
-          <div className="max-w-6xl mx-auto space-y-12">
+        <section id="products" className="px-4 py-12 sm:py-20">
+          <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-white text-glow-blue tracking-wider">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white text-glow-blue tracking-wider">
                 OUR PRODUCTS
               </h2>
-              <p className="text-white/80 max-w-xl mx-auto">
+              <p className="text-sm sm:text-base text-white/80 max-w-xl mx-auto">
                 Education technology solutions designed to transform how students learn and educators teach.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
               {/* Product 1: WolfWhale LMS */}
-              <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#00BFFF]/20 shadow-xl rounded-2xl p-8 group hover:neon-border-blue transition-all flex flex-col">
+              <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#00BFFF]/20 shadow-xl rounded-2xl p-5 sm:p-8 group hover:neon-border-blue transition-all flex flex-col">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="inline-flex p-3 rounded-xl bg-[#00BFFF]/15 border border-[#00BFFF]/25 group-hover:bg-[#00BFFF]/25 transition-colors">
@@ -340,7 +353,7 @@ export default function EdTechHubPage() {
               </div>
 
               {/* Product 2: AI Consulting — Coming Soon */}
-              <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#00BFFF]/20 shadow-xl rounded-2xl p-8 group transition-all opacity-70 flex flex-col">
+              <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#00BFFF]/20 shadow-xl rounded-2xl p-5 sm:p-8 group transition-all opacity-70 flex flex-col">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="inline-flex p-3 rounded-xl bg-[#A78BFA]/15 border border-[#A78BFA]/25">
@@ -383,7 +396,7 @@ export default function EdTechHubPage() {
               </div>
 
               {/* Product 3: Cerebus — Coming Soon */}
-              <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#FF4444]/20 shadow-xl rounded-2xl p-8 group transition-all opacity-70 flex flex-col">
+              <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#FF4444]/20 shadow-xl rounded-2xl p-5 sm:p-8 group transition-all opacity-70 flex flex-col">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="inline-flex p-3 rounded-xl bg-[#FF4444]/15 border border-[#FF4444]/25">
@@ -430,13 +443,13 @@ export default function EdTechHubPage() {
         </section>
 
         {/* About Section */}
-        <section id="about" className="px-4 py-20">
+        <section id="about" className="px-4 py-12 sm:py-20">
           <div className="max-w-3xl mx-auto">
-            <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#00BFFF]/20 shadow-xl rounded-2xl p-8 md:p-12 space-y-6">
-              <h2 className="text-2xl md:text-3xl font-display font-bold text-white text-glow-blue tracking-wider">
+            <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#00BFFF]/20 shadow-xl rounded-2xl p-5 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white text-glow-blue tracking-wider">
                 ABOUT WOLFWHALE EDTECH
               </h2>
-              <div className="space-y-4 text-white/80 leading-relaxed">
+              <div className="space-y-3 sm:space-y-4 text-sm sm:text-base text-white/80 leading-relaxed">
                 <p>
                   WolfWhale EdTech is a Canadian education technology company on a mission to make powerful, accessible learning tools available to every student and educator.
                 </p>
@@ -452,12 +465,12 @@ export default function EdTechHubPage() {
         </section>
 
         {/* Contact CTA */}
-        <section id="contact" className="px-4 py-16">
-          <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h2 className="text-2xl md:text-3xl font-display font-bold text-white text-glow-blue tracking-wider">
+        <section id="contact" className="px-4 py-12 sm:py-16">
+          <div className="max-w-3xl mx-auto text-center space-y-4 sm:space-y-6">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white text-glow-blue tracking-wider">
               GET IN TOUCH
             </h2>
-            <p className="text-white/80 max-w-lg mx-auto">
+            <p className="text-sm sm:text-base text-white/80 max-w-lg mx-auto">
               Interested in WolfWhale for your school or institution? We&apos;d love to hear from you.
             </p>
             <a

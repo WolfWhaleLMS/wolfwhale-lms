@@ -74,34 +74,32 @@ export default function CerebusPage() {
       </div>
 
       {/* Header / Nav */}
-      <header className="relative z-10 p-6">
+      <header className="relative z-10 px-4 py-4 sm:p-6">
         <nav className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-[#FF6B6B] transition-colors font-medium"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Hub
-            </Link>
-          </div>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-white/70 hover:text-[#FF6B6B] transition-colors font-medium shrink-0"
+          >
+            <ArrowLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            Back to Hub
+          </Link>
 
-          <Link href="/" className="inline-flex items-center gap-3 group">
+          <Link href="/" className="inline-flex items-center gap-2 sm:gap-3 group">
             <Image
               src="/logo.png"
               alt="WolfWhale"
-              width={42}
-              height={42}
-              className="rounded-xl object-contain shadow-lg border-2 border-black"
+              width={36}
+              height={36}
+              className="rounded-xl object-contain shadow-lg border-2 border-black sm:w-[42px] sm:h-[42px]"
             />
-            <span className="text-lg font-display font-bold text-white group-hover:text-[#FF6B6B] transition-colors tracking-wider uppercase hidden sm:inline">
+            <span className="text-sm sm:text-lg font-display font-bold text-white group-hover:text-[#FF6B6B] transition-colors tracking-wider uppercase hidden sm:inline">
               WolfWhale EdTech
             </span>
           </Link>
 
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl btn-chrome-3d-blue text-white text-sm font-semibold transition-all hover:scale-105"
+            className="inline-flex items-center gap-2 px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl btn-chrome-3d-blue text-white text-xs sm:text-sm font-semibold transition-all hover:scale-105"
           >
             Sign In
           </Link>
@@ -111,17 +109,17 @@ export default function CerebusPage() {
       {/* Main Content */}
       <main className="relative z-10">
         {/* Hero Section */}
-        <section className="flex items-center justify-center min-h-[60vh] px-4 py-20">
-          <div className="w-full max-w-4xl text-center space-y-8 animate-fade-in-up">
+        <section className="flex items-center justify-center min-h-[50vh] sm:min-h-[60vh] px-4 py-12 sm:py-20">
+          <div className="w-full max-w-4xl text-center space-y-6 sm:space-y-8 animate-fade-in-up">
             {/* Icon with crimson glow */}
             <div className="inline-flex items-center justify-center">
               <div
-                className="relative p-6 rounded-2xl bg-[#0A1628]/80 border border-[#FF4444]/30"
+                className="relative p-4 sm:p-6 rounded-2xl bg-[#0A1628]/80 border border-[#FF4444]/30"
                 style={{
                   boxShadow: '0 0 40px rgba(255,68,68,0.25), 0 0 80px rgba(255,68,68,0.10)',
                 }}
               >
-                <Eye className="h-16 w-16 text-[#FF4444]" />
+                <Eye className="h-10 w-10 sm:h-16 sm:w-16 text-[#FF4444]" />
                 <div
                   className="absolute inset-0 rounded-2xl"
                   style={{
@@ -132,14 +130,14 @@ export default function CerebusPage() {
             </div>
 
             {/* Title */}
-            <div className="space-y-4">
-              <h1 className="text-5xl sm:text-6xl md:text-7xl font-display font-bold bg-gradient-to-r from-[#FF4444] via-[#FF6B6B] to-[#FF4444] bg-clip-text text-transparent tracking-wider">
+            <div className="space-y-3 sm:space-y-4">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-bold bg-gradient-to-r from-[#FF4444] via-[#FF6B6B] to-[#FF4444] bg-clip-text text-transparent tracking-wide sm:tracking-wider">
                 CEREBUS
               </h1>
-              <p className="text-xl sm:text-2xl text-white/90 text-white-outlined font-semibold">
+              <p className="text-lg sm:text-2xl text-white/90 text-white-outlined font-semibold">
                 WolfWhale: Cerebus
               </p>
-              <p className="text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-sm sm:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
                 AI-Powered Surveillance &amp; Data Sovereignty for Indigenous Communities
               </p>
             </div>
@@ -155,13 +153,13 @@ export default function CerebusPage() {
         </section>
 
         {/* What is Cerebus? Section */}
-        <section className="px-4 py-16">
+        <section className="px-4 py-10 sm:py-16">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#FF4444]/20 shadow-xl rounded-2xl p-8 md:p-12 space-y-6">
-              <h2 className="text-2xl md:text-3xl font-display font-bold text-white tracking-wider">
+            <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#FF4444]/20 shadow-xl rounded-2xl p-5 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white tracking-wider">
                 WHAT IS CEREBUS?
               </h2>
-              <div className="space-y-4 text-white/80 leading-relaxed">
+              <div className="space-y-3 sm:space-y-4 text-sm sm:text-base text-white/80 leading-relaxed">
                 <p>
                   Cerebus is an AI-powered surveillance, data security, and data visualization platform
                   purpose-built for First Nations reserves, bands, and Indigenous communities across Canada.
@@ -207,19 +205,19 @@ export default function CerebusPage() {
         </section>
 
         {/* Features Grid */}
-        <section className="px-4 py-16">
-          <div className="max-w-6xl mx-auto space-y-12">
+        <section className="px-4 py-10 sm:py-16">
+          <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
                 PLATFORM FEATURES
               </h2>
-              <p className="text-white/65 max-w-xl mx-auto">
+              <p className="text-sm sm:text-base text-white/65 max-w-xl mx-auto">
                 A comprehensive suite of tools designed to empower Indigenous communities with
                 AI-driven security and data intelligence.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {[
                 {
                   icon: Eye,
@@ -254,7 +252,7 @@ export default function CerebusPage() {
               ].map(({ icon: Icon, title, desc }) => (
                 <div
                   key={title}
-                  className="bg-[#0A1628]/80 backdrop-blur-xl border border-[#FF4444]/15 shadow-xl rounded-2xl p-6 group hover:border-[#FF4444]/40 transition-all"
+                  className="bg-[#0A1628]/80 backdrop-blur-xl border border-[#FF4444]/15 shadow-xl rounded-2xl p-4 sm:p-6 group hover:border-[#FF4444]/40 transition-all"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <div className="inline-flex p-3 rounded-xl bg-[#FF4444]/10 border border-[#FF4444]/20 group-hover:bg-[#FF4444]/20 transition-colors">
@@ -270,13 +268,13 @@ export default function CerebusPage() {
         </section>
 
         {/* Interest / Contact Section */}
-        <section className="px-4 py-20">
+        <section className="px-4 py-12 sm:py-20">
           <div className="max-w-3xl mx-auto">
-            <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#FF4444]/20 shadow-xl rounded-2xl p-8 md:p-12 text-center space-y-6">
-              <h2 className="text-2xl md:text-3xl font-display font-bold text-white tracking-wider">
+            <div className="bg-[#0A1628]/85 backdrop-blur-xl border border-[#FF4444]/20 shadow-xl rounded-2xl p-5 sm:p-8 md:p-12 text-center space-y-4 sm:space-y-6">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white tracking-wider">
                 INTERESTED IN CEREBUS?
               </h2>
-              <div className="space-y-3 text-white/80 max-w-lg mx-auto leading-relaxed">
+              <div className="space-y-3 text-sm sm:text-base text-white/80 max-w-lg mx-auto leading-relaxed">
                 <p>
                   Cerebus is currently in early development. We&apos;re seeking First Nations communities,
                   band councils, and Indigenous organizations to partner with us in shaping this platform.
