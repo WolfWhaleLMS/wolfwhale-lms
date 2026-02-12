@@ -10,7 +10,7 @@ export default function NotFound() {
         <h1 className="text-2xl font-bold text-[#0A2540] dark:text-white mb-2">
           Page Not Found
         </h1>
-        <p className="text-lg text-[#6B8FA3] dark:text-white/60 mb-6">
+        <p className="text-lg text-[#0A2540]/70 dark:text-white/60 mb-6">
           This page swam away! Let&apos;s get you back on course.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">

@@ -18,10 +18,10 @@ export default function ParentError({
     <div className="flex items-center justify-center min-h-[60vh] p-4">
       <div className="text-center max-w-md">
         <div className="text-5xl mb-4">🐋</div>
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+        <h2 className="text-xl font-bold text-[#0A2540] dark:text-[#E8F8FF] mb-2">
           Something went wrong
         </h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
+        <p className="text-[#0A2540]/70 dark:text-[#E8F8FF]/60 mb-6">
           We couldn&apos;t load this page. Please try again.
         </p>
         <button

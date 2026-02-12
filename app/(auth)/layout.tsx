@@ -40,9 +40,13 @@ export default function AuthLayout({
     <div className="min-h-screen relative overflow-hidden bg-[#E8F8FF]">
       {/* Aqua Neon Background */}
       <div className="fixed inset-0 z-0">
+        {/* Chrome texture base */}
+        <div className="absolute inset-0">
+          <img src="/chrome-bg.jpg" alt="" className="absolute inset-0 w-full h-full object-cover opacity-20" />
+        </div>
         {/* Base gradient — bright aqua-futuristic */}
         <div
-          className="absolute inset-0 bg-gradient-to-br from-[#E8F8FF] via-[#D0F0FF] to-[#B0E8FF]"
+          className="absolute inset-0 bg-gradient-to-br from-[#E8F8FF]/85 via-[#D0F0FF]/80 to-[#B0E8FF]/85"
         />
 
         {/* Ambient neon glow — cyan */}
@@ -108,6 +112,30 @@ export default function AuthLayout({
               alt=""
               className="absolute pointer-events-none select-none opacity-45"
               style={{ right: '8%', bottom: '25%', width: '85px', animation: 'fish-swim-right 18s ease-in-out infinite', animationDelay: '5s', filter: 'drop-shadow(0 3px 8px rgba(0,0,0,0.08))' }}
+            />
+
+            {/* Frutiger Aero orca decoration */}
+            <img
+              src="/orcas/orca-5.png"
+              alt=""
+              className="absolute pointer-events-none select-none opacity-35"
+              style={{ left: '5%', top: '8%', width: '150px', animation: 'orca-glide 22s ease-in-out infinite', animationDelay: '-4s', filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.08))' }}
+            />
+
+            {/* Frutiger Aero parrot decoration */}
+            <img
+              src="/parrots/parrot-3.png"
+              alt=""
+              className="absolute pointer-events-none select-none opacity-40"
+              style={{ right: '5%', top: '55%', width: '110px', animation: 'parrot-soar 20s ease-in-out infinite', animationDelay: '-7s', filter: 'drop-shadow(0 3px 8px rgba(0,0,0,0.08))' }}
+            />
+
+            {/* Frutiger Aero chameleon decoration */}
+            <img
+              src="/chameleons/chameleon-2.png"
+              alt=""
+              className="absolute pointer-events-none select-none opacity-30"
+              style={{ right: '20%', bottom: '8%', width: '90px', animation: 'chameleon-sway 16s ease-in-out infinite', animationDelay: '-2s', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.06))' }}
             />
           </div>
         )}

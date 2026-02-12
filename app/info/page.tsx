@@ -28,8 +28,12 @@ export default function InfoPage() {
     <div className="min-h-screen text-[#0A2540]">
       {/* Bright Aqua Background */}
       <div className="fixed inset-0 z-0">
+        {/* Chrome texture base */}
+        <div className="absolute inset-0">
+          <img src="/chrome-bg-2.jpg" alt="" className="absolute inset-0 w-full h-full object-cover opacity-20" />
+        </div>
         <div
-          className="absolute inset-0 bg-gradient-to-br from-[#E8F8FF] via-[#D0F0FF] to-[#B0E8FF]"
+          className="absolute inset-0 bg-gradient-to-br from-[#E8F8FF]/85 via-[#D0F0FF]/80 to-[#B0E8FF]/85"
         />
         <div
           className="absolute inset-0 opacity-40"
@@ -78,6 +82,42 @@ export default function InfoPage() {
           className="absolute pointer-events-none select-none opacity-20"
           style={{ right: '5%', top: '85%', width: '150px', animation: 'gentle-float 24s ease-in-out infinite', animationDelay: '-6s', filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.06))' }}
         />
+
+        {/* Frutiger Aero orca decorations */}
+        <img
+          src="/orcas/orca-2.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-25"
+          style={{ left: '2%', top: '15%', width: '170px', animation: 'orca-glide 26s ease-in-out infinite', filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.06))' }}
+        />
+        <img
+          src="/orcas/orca-4.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-20"
+          style={{ right: '3%', top: '45%', width: '130px', animation: 'orca-glide 22s ease-in-out infinite', animationDelay: '-8s', transform: 'scaleX(-1)', filter: 'drop-shadow(0 3px 8px rgba(0,0,0,0.05))' }}
+        />
+
+        {/* Frutiger Aero parrot decoration */}
+        <img
+          src="/parrots/parrot-2.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-25"
+          style={{ right: '8%', top: '25%', width: '120px', animation: 'parrot-soar 20s ease-in-out infinite', animationDelay: '-5s', filter: 'drop-shadow(0 3px 8px rgba(0,0,0,0.06))' }}
+        />
+
+        {/* Frutiger Aero chameleon decorations */}
+        <img
+          src="/chameleons/chameleon-3.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-25"
+          style={{ left: '5%', top: '60%', width: '110px', animation: 'chameleon-sway 18s ease-in-out infinite', animationDelay: '-3s', filter: 'drop-shadow(0 3px 8px rgba(0,0,0,0.06))' }}
+        />
+        <img
+          src="/chameleons/chameleon-6.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-20"
+          style={{ right: '15%', top: '75%', width: '85px', animation: 'chameleon-sway 22s ease-in-out infinite', animationDelay: '-10s', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.05))' }}
+        />
       </div>
 
       {/* Header Navigation */}
@@ -87,7 +127,7 @@ export default function InfoPage() {
             <img src="/logo.png" alt="Wolf Whale" className="h-14 w-14 rounded-xl object-contain shadow-lg" />
             <div>
               <h1 className="text-xl font-display font-bold text-[#0A2540] tracking-wider uppercase">WolfWhale</h1>
-              <p className="text-xs text-[#6B8FA3] font-display font-semibold tracking-widest uppercase">Learning Management System</p>
+              <p className="text-xs text-[#0A2540]/80 font-display font-semibold tracking-widest uppercase">Learning Management System</p>
             </div>
           </div>
           <Link
@@ -120,16 +160,16 @@ export default function InfoPage() {
             WOLFWHALE
           </h1>
 
-          <p className="text-lg md:text-xl text-[#6B8FA3] mb-2 tracking-[0.15em] uppercase font-display font-bold"
+          <p className="text-lg md:text-xl text-[#0A2540]/80 mb-2 tracking-[0.15em] uppercase font-display font-bold"
             style={{ textShadow: '0 1px 2px rgba(0,0,0,0.10)' }}
           >
             Learning Management System
           </p>
-          <p className="text-xl md:text-2xl text-[#6B8FA3] mb-4 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-[#0A2540]/80 mb-4 max-w-3xl mx-auto">
             The comprehensive learning management system built for K-12 and post-secondary institutions
           </p>
 
-          <p className="text-base md:text-lg text-[#6B8FA3] mb-6 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-[#0A2540]/80 mb-6 max-w-2xl mx-auto">
             Empower teachers, engage students, and connect parents with a unified platform that combines course management, real-time messaging, gamification, and compliance—all in one place.
           </p>
 
@@ -138,7 +178,7 @@ export default function InfoPage() {
             <img src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" className="h-20 w-auto object-contain" />
             <div className="text-left">
               <p className="text-sm font-bold text-[#0A2540]">100% Canadian Owned &amp; Built</p>
-              <p className="text-xs text-[#6B8FA3]">Proudly designed and developed in Canada</p>
+              <p className="text-xs text-[#0A2540]/80">Proudly designed and developed in Canada</p>
             </div>
           </div>
 
@@ -165,7 +205,7 @@ export default function InfoPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Everything You Need</h2>
-            <p className="text-lg text-[#6B8FA3] max-w-2xl mx-auto">
+            <p className="text-lg text-[#0A2540]/80 max-w-2xl mx-auto">
               A complete suite of tools designed for K-12 and post-secondary education
             </p>
           </div>
@@ -177,7 +217,7 @@ export default function InfoPage() {
                 <BookOpen className="h-6 w-6 text-[#00BFFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Course Management</h3>
-              <p className="text-[#6B8FA3] text-sm leading-relaxed">
+              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
                 Teachers create courses with modules and lessons using our intuitive block-based content builder. Support for videos, documents, quizzes, and interactive content.
               </p>
             </div>
@@ -188,7 +228,7 @@ export default function InfoPage() {
                 <ClipboardCheck className="h-6 w-6 text-[#00BFFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Assignment & Testing</h3>
-              <p className="text-[#6B8FA3] text-sm leading-relaxed">
+              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
                 Rich quiz builder with multiple choice, true/false, short answer, and essay questions. Auto-grading support and detailed analytics for student performance.
               </p>
             </div>
@@ -199,7 +239,7 @@ export default function InfoPage() {
                 <BarChart3 className="h-6 w-6 text-[#00BFFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Gradebook</h3>
-              <p className="text-[#6B8FA3] text-sm leading-relaxed">
+              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
                 Traditional weighted gradebook with A-F grading, category weighting, grade statistics, and CSV/PDF export. Full control over grading policies and late work.
               </p>
             </div>
@@ -210,7 +250,7 @@ export default function InfoPage() {
                 <MessageSquare className="h-6 w-6 text-[#00BFFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Real-Time Messaging</h3>
-              <p className="text-[#6B8FA3] text-sm leading-relaxed">
+              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
                 Direct messages, group conversations, and class discussions with real-time delivery. File sharing, typing indicators, read receipts, and message search.
               </p>
             </div>
@@ -221,7 +261,7 @@ export default function InfoPage() {
                 <CalendarCheck className="h-6 w-6 text-[#00BFFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Attendance Tracking</h3>
-              <p className="text-[#6B8FA3] text-sm leading-relaxed">
+              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
                 Daily attendance with present/absent/tardy/excused statuses. Pattern detection alerts teachers and parents to potential issues before they escalate.
               </p>
             </div>
@@ -232,7 +272,7 @@ export default function InfoPage() {
                 <Users className="h-6 w-6 text-[#00BFFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Parent Portal</h3>
-              <p className="text-[#6B8FA3] text-sm leading-relaxed">
+              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
                 At-a-glance visual dashboard with grade dials, attendance gauges, upcoming assignments, and easy teacher messaging. Keep parents engaged and informed.
               </p>
             </div>
@@ -243,7 +283,7 @@ export default function InfoPage() {
                 <Trophy className="h-6 w-6 text-[#00BFFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Gamification</h3>
-              <p className="text-[#6B8FA3] text-sm leading-relaxed">
+              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
                 XP system with 40 levels, 4 tiers, achievements, badges, and age-appropriate leaderboards. Motivate students through friendly competition and recognition.
               </p>
             </div>
@@ -254,7 +294,7 @@ export default function InfoPage() {
                 <Clock className="h-6 w-6 text-[#00BFFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Study Mode</h3>
-              <p className="text-[#6B8FA3] text-sm leading-relaxed">
+              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
                 Focus timer with ambient music, DND mode, and XP rewards for completion. Helps students build healthy study habits and stay focused on their work.
               </p>
             </div>
@@ -265,7 +305,7 @@ export default function InfoPage() {
                 <Shield className="h-6 w-6 text-[#00BFFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Compliance</h3>
-              <p className="text-[#6B8FA3] text-sm leading-relaxed">
+              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
                 FERPA, COPPA, and PIPEDA compliant with full audit logging and data export. Built from the ground up with student privacy and security in mind.
               </p>
             </div>
@@ -276,7 +316,7 @@ export default function InfoPage() {
                 <Building2 className="h-6 w-6 text-[#00BFFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Multi-Tenant</h3>
-              <p className="text-[#6B8FA3] text-sm leading-relaxed">
+              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
                 Each school gets their own subdomain with isolated data, custom branding, and independent settings. Secure, scalable, and fully customizable.
               </p>
             </div>
@@ -287,7 +327,7 @@ export default function InfoPage() {
                 <Calendar className="h-6 w-6 text-[#00BFFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Calendar</h3>
-              <p className="text-[#6B8FA3] text-sm leading-relaxed">
+              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
                 Auto-populated with assignments, events, and school calendar items. .ics export for external calendar apps. Never miss a deadline or school event.
               </p>
             </div>
@@ -298,7 +338,7 @@ export default function InfoPage() {
                 <LayoutDashboard className="h-6 w-6 text-[#00BFFF]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Admin Dashboard</h3>
-              <p className="text-[#6B8FA3] text-sm leading-relaxed">
+              <p className="text-[#0A2540]/80 text-sm leading-relaxed">
                 School health overview, user management, enrollment stats, and system monitoring. Comprehensive tools for school administrators to manage their LMS.
               </p>
             </div>
@@ -311,7 +351,7 @@ export default function InfoPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Built for Every Role</h2>
-            <p className="text-lg text-[#6B8FA3] max-w-2xl mx-auto">
+            <p className="text-lg text-[#0A2540]/80 max-w-2xl mx-auto">
               Tailored experiences for students, teachers, parents, and administrators
             </p>
           </div>
@@ -325,7 +365,7 @@ export default function InfoPage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">Student Dashboard</h3>
-                  <p className="text-xs text-[#6B8FA3]">Your learning command center</p>
+                  <p className="text-xs text-[#0A2540]/80">Your learning command center</p>
                 </div>
               </div>
               <img src="/screenshot-student.png" alt="Student Dashboard" className="w-full h-auto" />
@@ -339,7 +379,7 @@ export default function InfoPage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">Teacher Dashboard</h3>
-                  <p className="text-xs text-[#6B8FA3]">Manage courses and students</p>
+                  <p className="text-xs text-[#0A2540]/80">Manage courses and students</p>
                 </div>
               </div>
               <img src="/screenshot-teacher.png" alt="Teacher Dashboard" className="w-full h-auto" />
@@ -353,7 +393,7 @@ export default function InfoPage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">Parent Dashboard</h3>
-                  <p className="text-xs text-[#6B8FA3]">Monitor child progress</p>
+                  <p className="text-xs text-[#0A2540]/80">Monitor child progress</p>
                 </div>
               </div>
               <img src="/screenshot-parent.png" alt="Parent Dashboard" className="w-full h-auto" />
@@ -367,7 +407,7 @@ export default function InfoPage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">Admin Dashboard</h3>
-                  <p className="text-xs text-[#6B8FA3]">School-wide insights</p>
+                  <p className="text-xs text-[#0A2540]/80">School-wide insights</p>
                 </div>
               </div>
               <img src="/screenshot-admin.png" alt="Admin Dashboard" className="w-full h-auto" />
@@ -381,7 +421,7 @@ export default function InfoPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Four User Roles</h2>
-            <p className="text-lg text-[#6B8FA3] max-w-2xl mx-auto">
+            <p className="text-lg text-[#0A2540]/80 max-w-2xl mx-auto">
               Each role has specific capabilities designed for their needs
             </p>
           </div>
@@ -393,7 +433,7 @@ export default function InfoPage() {
                 <GraduationCap className="h-5 w-5 text-[#00BFFF]" />
               </div>
               <h3 className="font-semibold mb-3 text-sm">Student</h3>
-              <ul className="space-y-2 text-xs text-[#6B8FA3]">
+              <ul className="space-y-2 text-xs text-[#0A2540]/80">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
                   <span>View courses & lessons</span>
@@ -423,7 +463,7 @@ export default function InfoPage() {
                 <BookOpen className="h-5 w-5 text-[#00BFFF]" />
               </div>
               <h3 className="font-semibold mb-3 text-sm">Teacher</h3>
-              <ul className="space-y-2 text-xs text-[#6B8FA3]">
+              <ul className="space-y-2 text-xs text-[#0A2540]/80">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
                   <span>Create courses</span>
@@ -453,7 +493,7 @@ export default function InfoPage() {
                 <Users className="h-5 w-5 text-[#00BFFF]" />
               </div>
               <h3 className="font-semibold mb-3 text-sm">Parent</h3>
-              <ul className="space-y-2 text-xs text-[#6B8FA3]">
+              <ul className="space-y-2 text-xs text-[#0A2540]/80">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
                   <span>View child grades</span>
@@ -483,7 +523,7 @@ export default function InfoPage() {
                 <Building2 className="h-5 w-5 text-[#00BFFF]" />
               </div>
               <h3 className="font-semibold mb-3 text-sm">School Admin</h3>
-              <ul className="space-y-2 text-xs text-[#6B8FA3]">
+              <ul className="space-y-2 text-xs text-[#0A2540]/80">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
                   <span>Manage users</span>
@@ -516,7 +556,7 @@ export default function InfoPage() {
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Modern Tech Stack</h2>
-            <p className="text-lg text-[#6B8FA3]">
+            <p className="text-lg text-[#0A2540]/80">
               Built with cutting-edge technologies for performance and scalability
             </p>
           </div>
@@ -528,7 +568,7 @@ export default function InfoPage() {
                   <Zap className="h-6 w-6 text-[#00BFFF]" />
                   <h3 className="text-xl font-semibold">Frontend</h3>
                 </div>
-                <ul className="space-y-2 text-[#6B8FA3]">
+                <ul className="space-y-2 text-[#0A2540]/80">
                   <li className="flex items-center gap-2">
                     <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
                     Next.js 16 with App Router
@@ -553,7 +593,7 @@ export default function InfoPage() {
                   <Shield className="h-6 w-6 text-[#00BFFF]" />
                   <h3 className="text-xl font-semibold">Backend</h3>
                 </div>
-                <ul className="space-y-2 text-[#6B8FA3]">
+                <ul className="space-y-2 text-[#0A2540]/80">
                   <li className="flex items-center gap-2">
                     <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
                     Supabase for database & auth
@@ -581,7 +621,7 @@ export default function InfoPage() {
       <section id="pricing" className="relative z-10 py-20 bg-white/30 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Simple Pricing</h2>
-          <p className="text-lg text-[#6B8FA3] mb-12 max-w-2xl mx-auto">
+          <p className="text-lg text-[#0A2540]/80 mb-12 max-w-2xl mx-auto">
             One plan. All features. No hidden fees.
           </p>
 
@@ -591,9 +631,9 @@ export default function InfoPage() {
               <div>
                 <div className="flex items-baseline justify-center gap-1">
                   <span className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#00BFFF] to-[#33FF33] bg-clip-text text-transparent">$20</span>
-                  <span className="text-lg text-[#6B8FA3]">CAD</span>
+                  <span className="text-lg text-[#0A2540]/80">CAD</span>
                 </div>
-                <p className="text-[#6B8FA3] mt-2">per user account, per month</p>
+                <p className="text-[#0A2540]/80 mt-2">per user account, per month</p>
               </div>
 
               {/* Key details */}
@@ -616,35 +656,35 @@ export default function InfoPage() {
               <div className="grid grid-cols-2 gap-3 text-left text-sm max-w-md mx-auto">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-[#6B8FA3]">Unlimited courses</span>
+                  <span className="text-[#0A2540]/80">Unlimited courses</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-[#6B8FA3]">Real-time messaging</span>
+                  <span className="text-[#0A2540]/80">Real-time messaging</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-[#6B8FA3]">Gradebook & reports</span>
+                  <span className="text-[#0A2540]/80">Gradebook & reports</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-[#6B8FA3]">Gamification & XP</span>
+                  <span className="text-[#0A2540]/80">Gamification & XP</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-[#6B8FA3]">Parent portal</span>
+                  <span className="text-[#0A2540]/80">Parent portal</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-[#6B8FA3]">Attendance tracking</span>
+                  <span className="text-[#0A2540]/80">Attendance tracking</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-[#6B8FA3]">Custom branding</span>
+                  <span className="text-[#0A2540]/80">Custom branding</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-[#6B8FA3]">FERPA & COPPA compliant</span>
+                  <span className="text-[#0A2540]/80">FERPA & COPPA compliant</span>
                 </div>
               </div>
 
@@ -687,13 +727,13 @@ export default function InfoPage() {
                 <img src="/logo.png" alt="Wolf Whale" className="h-14 w-14 rounded-xl object-contain shadow-lg" />
                 <div>
                   <h3 className="font-display font-bold tracking-wider uppercase">WolfWhale</h3>
-                  <p className="text-xs text-[#6B8FA3] font-display tracking-widest uppercase">Modern K-12 & Post-Secondary Learning Platform</p>
+                  <p className="text-xs text-[#0A2540]/80 font-display tracking-widest uppercase">Modern K-12 & Post-Secondary Learning Platform</p>
                 </div>
               </div>
-              <p className="text-sm text-[#6B8FA3] max-w-md mb-3">
+              <p className="text-sm text-[#0A2540]/80 max-w-md mb-3">
                 Empowering schools with a comprehensive learning management system designed for K-12 and post-secondary education.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 text-sm text-[#6B8FA3]">
+              <div className="flex flex-col sm:flex-row gap-3 text-sm text-[#0A2540]/80">
                 <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1.5 hover:text-[#00BFFF] transition-colors">
                   <Mail className="h-3.5 w-3.5" /> info@wolfwhale.ca
                 </a>
@@ -705,7 +745,7 @@ export default function InfoPage() {
 
             <div>
               <h4 className="font-semibold mb-3 text-sm">Product</h4>
-              <ul className="space-y-2 text-sm text-[#6B8FA3]">
+              <ul className="space-y-2 text-sm text-[#0A2540]/80">
                 <li><a href="#" className="hover:text-[#00BFFF] transition-colors">Features</a></li>
                 <li><a href="#pricing" className="hover:text-[#00BFFF] transition-colors">Pricing</a></li>
                 <li><a href="#" className="hover:text-[#00BFFF] transition-colors">Documentation</a></li>
@@ -715,7 +755,7 @@ export default function InfoPage() {
 
             <div>
               <h4 className="font-semibold mb-3 text-sm">Legal</h4>
-              <ul className="space-y-2 text-sm text-[#6B8FA3]">
+              <ul className="space-y-2 text-sm text-[#0A2540]/80">
                 <li><Link href="/privacy" className="hover:text-[#00BFFF] transition-colors">Privacy Policy</Link></li>
                 <li><Link href="/terms" className="hover:text-[#00BFFF] transition-colors">Terms of Service</Link></li>
                 <li><Link href="/help" className="hover:text-[#00BFFF] transition-colors">Help Center</Link></li>
@@ -723,11 +763,11 @@ export default function InfoPage() {
             </div>
           </div>
 
-          <div className="pt-8 border-t border-[#00BFFF]/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#6B8FA3]">
+          <div className="pt-8 border-t border-[#00BFFF]/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#0A2540]/80">
             <p>&copy; 2026 WolfWhale Learning Management System. All rights reserved.</p>
             <div className="flex items-center gap-2">
               <img src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" className="h-12 w-auto object-contain" />
-              <span className="text-xs font-semibold text-[#6B8FA3]">100% Canadian Owned &amp; Built</span>
+              <span className="text-xs font-semibold text-[#0A2540]/80">100% Canadian Owned &amp; Built</span>
             </div>
           </div>
         </div>

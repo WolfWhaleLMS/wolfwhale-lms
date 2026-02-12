@@ -37,6 +37,11 @@ export function DashboardLayout({
 
   return (
     <div className="relative flex h-screen overflow-hidden bg-background" data-role={role}>
+      {/* Chrome texture background */}
+      <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
+        <img src="/chrome-bg-3.jpg" alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.12]" />
+      </div>
+
       {/* Ambient blobs for glass depth effect — LARGER & more vivid */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
         <div className="blob-ocean absolute -top-1/4 -right-1/4 h-[800px] w-[800px] animate-blob-drift opacity-50" />
@@ -79,6 +84,30 @@ export function DashboardLayout({
           className="absolute pointer-events-none select-none opacity-[0.05]"
           style={{ right: '35%', top: '55%', width: '70px', animation: 'gentle-float 15s ease-in-out infinite', animationDelay: '-10s' }}
         />
+
+        {/* Frutiger Aero orca — subtle background */}
+        <img
+          src="/orcas/orca-1.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-[0.06]"
+          style={{ left: '8%', top: '20%', width: '130px', animation: 'orca-glide 24s ease-in-out infinite', animationDelay: '-8s' }}
+        />
+
+        {/* Frutiger Aero parrot — subtle background */}
+        <img
+          src="/parrots/parrot-4.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-[0.05]"
+          style={{ right: '12%', bottom: '20%', width: '100px', animation: 'parrot-soar 22s ease-in-out infinite', animationDelay: '-12s' }}
+        />
+
+        {/* Frutiger Aero chameleon — subtle background */}
+        <img
+          src="/chameleons/chameleon-5.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-[0.05]"
+          style={{ left: '55%', top: '75%', width: '80px', animation: 'chameleon-sway 20s ease-in-out infinite', animationDelay: '-6s' }}
+        />
       </div>
 
       {/* Mobile sidebar overlay */}
@@ -93,7 +122,7 @@ export function DashboardLayout({
       <aside
         className={`
           fixed inset-y-0 left-0 z-50 w-64 transform
-          liquid-glass-heavy border-r border-sidebar-border/50
+          liquid-glass-heavy chrome-texture-sidebar border-r border-sidebar-border/50
           transition-transform duration-300 ease-in-out
           lg:relative lg:translate-x-0
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}

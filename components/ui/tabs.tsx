@@ -34,7 +34,7 @@ const TabsTrigger = React.forwardRef<
       'hover:bg-gradient-to-b hover:from-white/20 hover:to-white/5 hover:border-white/20',
       'border border-transparent',
       'disabled:pointer-events-none disabled:opacity-50',
-      'data-[state=active]:sidebar-chrome-tab-active data-[state=active]:text-white data-[state=active]:bg-gradient-to-b data-[state=active]:from-[rgba(51,255,51,0.20)] data-[state=active]:to-[rgba(51,255,51,0.10)] data-[state=active]:border-[rgba(51,255,51,0.30)] data-[state=active]:shadow-[0_0_15px_rgba(51,255,51,0.25),0_0_30px_rgba(51,255,51,0.10),inset_0_1px_0_rgba(255,255,255,0.25)]',
+      'data-[state=active]:sidebar-chrome-tab-active data-[state=active]:text-[#0A2540] dark:data-[state=active]:text-white data-[state=active]:bg-gradient-to-b data-[state=active]:from-[rgba(0,191,255,0.15)] data-[state=active]:to-[rgba(0,191,255,0.05)] data-[state=active]:border-[rgba(0,191,255,0.30)] data-[state=active]:shadow-[0_0_15px_rgba(0,191,255,0.20),0_0_30px_rgba(0,191,255,0.08),inset_0_1px_0_rgba(255,255,255,0.25)]',
       className
     )}
     {...props}

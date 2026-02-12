@@ -57,7 +57,7 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
   const sounds = useSound()
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-4 liquid-glass-heavy border-b-2 border-[#00BFFF]/30 neon-glow-blue px-4 md:px-6">
+    <header className="flex h-16 shrink-0 items-center gap-4 liquid-glass-heavy chrome-texture-topbar border-b-2 border-[#00BFFF]/30 neon-glow-blue px-4 md:px-6">
       {/* --------------------------------------------------------------- */}
       {/* Mobile hamburger                                                 */}
       {/* --------------------------------------------------------------- */}

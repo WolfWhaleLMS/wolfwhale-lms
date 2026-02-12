@@ -21,7 +21,7 @@ export default function TeacherError({
         <h2 className="text-xl font-bold text-[#0A2540] dark:text-[#E8F8FF] mb-2">
           Something went wrong
         </h2>
-        <p className="text-[#6B8FA3] dark:text-[#6B8FA3] mb-6">
+        <p className="text-[#0A2540]/70 dark:text-[#E8F8FF]/60 mb-6">
           We couldn&apos;t load this page. Please try again.
         </p>
         <button

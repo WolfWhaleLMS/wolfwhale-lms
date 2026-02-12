@@ -15,8 +15,12 @@ export default function HomePage() {
     <div className="min-h-screen relative overflow-hidden bg-background">
       {/* Aqua Neon Dark Background */}
       <div className="fixed inset-0 z-0">
+        {/* Chrome texture base */}
+        <div className="absolute inset-0">
+          <img src="/chrome-bg-2.jpg" alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+        </div>
         {/* Base gradient — Deep dark aqua */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#041428] via-[#0A2040] to-[#041428]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#041428]/90 via-[#0A2040]/85 to-[#041428]/90" />
 
         {/* Ambient neon glow layers */}
         <div
@@ -79,6 +83,30 @@ export default function HomePage() {
               alt=""
               className="absolute pointer-events-none select-none opacity-15"
               style={{ right: '15%', bottom: '20%', width: '90px', animation: 'gentle-float 18s ease-in-out infinite', animationDelay: '-8s', filter: 'drop-shadow(0 0 15px rgba(0,191,255,0.20))' }}
+            />
+
+            {/* Frutiger Aero orca — deep ocean glide */}
+            <img
+              src="/orcas/orca-2.png"
+              alt=""
+              className="absolute pointer-events-none select-none opacity-20"
+              style={{ left: '8%', top: '25%', width: '160px', animation: 'orca-glide 24s ease-in-out infinite', animationDelay: '-6s', filter: 'drop-shadow(0 0 18px rgba(0,191,255,0.20))' }}
+            />
+
+            {/* Frutiger Aero parrot — soaring through the glow */}
+            <img
+              src="/parrots/parrot-1.png"
+              alt=""
+              className="absolute pointer-events-none select-none opacity-15"
+              style={{ right: '12%', top: '45%', width: '120px', animation: 'parrot-soar 22s ease-in-out infinite', animationDelay: '-3s', filter: 'drop-shadow(0 0 15px rgba(0,191,255,0.18))' }}
+            />
+
+            {/* Frutiger Aero chameleon — perched in the deep */}
+            <img
+              src="/chameleons/chameleon-4.png"
+              alt=""
+              className="absolute pointer-events-none select-none opacity-15"
+              style={{ left: '20%', bottom: '15%', width: '100px', animation: 'chameleon-sway 18s ease-in-out infinite', animationDelay: '-10s', filter: 'drop-shadow(0 0 12px rgba(0,191,255,0.15))' }}
             />
           </div>
         )}
