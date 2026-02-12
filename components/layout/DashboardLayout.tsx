@@ -59,6 +59,26 @@ export function DashboardLayout({
         <div className="chrome-orb orb-float absolute left-[20%] top-[25%] h-5 w-5" style={{ animationDelay: '-2s' }} />
         <div className="chrome-orb orb-float absolute left-[75%] top-[65%] h-7 w-7" style={{ animationDelay: '-7s' }} />
         <div className="chrome-orb orb-float absolute left-[45%] top-[80%] h-4 w-4" style={{ animationDelay: '-12s' }} />
+
+        {/* Frutiger Aero fish — subtle background decorations */}
+        <img
+          src="/fish/clownfish-mid-right.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-[0.07]"
+          style={{ right: '5%', top: '15%', width: '140px', animation: 'gentle-float 20s ease-in-out infinite' }}
+        />
+        <img
+          src="/fish/clownfish-bot-left.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-[0.06]"
+          style={{ left: '30%', bottom: '10%', width: '110px', animation: 'gentle-float 18s ease-in-out infinite', animationDelay: '-5s', transform: 'scaleX(-1)' }}
+        />
+        <img
+          src="/fish/clownfish-small-front.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-[0.05]"
+          style={{ right: '35%', top: '55%', width: '70px', animation: 'gentle-float 15s ease-in-out infinite', animationDelay: '-10s' }}
+        />
       </div>
 
       {/* Mobile sidebar overlay */}

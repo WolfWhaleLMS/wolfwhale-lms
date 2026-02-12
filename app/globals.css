@@ -1417,6 +1417,25 @@
   100% { box-shadow: 0 0 0 rgba(0, 191, 255, 0); }
 }
 
+/* Frutiger Aero fish swim animations */
+@keyframes fish-swim-right {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  25% { transform: translateX(30px) translateY(-15px); }
+  50% { transform: translateX(50px) translateY(5px); }
+  75% { transform: translateX(20px) translateY(-10px); }
+}
+@keyframes fish-swim-left {
+  0%, 100% { transform: translateX(0) translateY(0) scaleX(-1); }
+  25% { transform: translateX(-25px) translateY(-12px) scaleX(-1); }
+  50% { transform: translateX(-45px) translateY(8px) scaleX(-1); }
+  75% { transform: translateX(-15px) translateY(-8px) scaleX(-1); }
+}
+@keyframes fish-bob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-8px) rotate(3deg); }
+  66% { transform: translateY(5px) rotate(-2deg); }
+}
+
 /* ============================================
    ANIMATION UTILITIES
    ============================================ */

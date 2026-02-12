@@ -60,6 +60,26 @@ export default function HomePage() {
             <div className="absolute chrome-orb orb-float w-4 h-4" style={{ left: '15%', top: '20%', animationDelay: '0s' }} />
             <div className="absolute chrome-orb orb-float w-6 h-6" style={{ right: '10%', top: '40%', animationDelay: '2s' }} />
             <div className="absolute chrome-orb orb-float w-3 h-3" style={{ left: '60%', top: '15%', animationDelay: '4s' }} />
+
+            {/* Frutiger Aero fish — glowing in the deep */}
+            <img
+              src="/fish/clownfish-hero.png"
+              alt=""
+              className="absolute pointer-events-none select-none opacity-30"
+              style={{ right: '5%', top: '20%', width: '180px', animation: 'gentle-float 20s ease-in-out infinite', filter: 'drop-shadow(0 0 20px rgba(0,191,255,0.25))' }}
+            />
+            <img
+              src="/fish/clownfish-mid-left.png"
+              alt=""
+              className="absolute pointer-events-none select-none opacity-20"
+              style={{ left: '3%', top: '55%', width: '110px', animation: 'gentle-float 16s ease-in-out infinite', animationDelay: '-4s', transform: 'scaleX(-1)', filter: 'drop-shadow(0 0 15px rgba(0,191,255,0.20))' }}
+            />
+            <img
+              src="/fish/clownfish-bot-right.png"
+              alt=""
+              className="absolute pointer-events-none select-none opacity-15"
+              style={{ right: '15%', bottom: '20%', width: '90px', animation: 'gentle-float 18s ease-in-out infinite', animationDelay: '-8s', filter: 'drop-shadow(0 0 15px rgba(0,191,255,0.20))' }}
+            />
           </div>
         )}
 

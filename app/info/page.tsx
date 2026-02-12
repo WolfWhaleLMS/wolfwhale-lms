@@ -46,6 +46,38 @@ export default function InfoPage() {
         {/* Blob backgrounds */}
         <div className="blob-ocean absolute top-[-10%] right-[-5%] w-[500px] h-[500px] opacity-20" />
         <div className="blob-teal absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] opacity-15" />
+
+        {/* Frutiger Aero fish decorations */}
+        <img
+          src="/fish/clownfish-hero.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-40"
+          style={{ right: '2%', top: '8%', width: '200px', animation: 'gentle-float 22s ease-in-out infinite', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.08))' }}
+        />
+        <img
+          src="/fish/clownfish-mid-left.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-30"
+          style={{ left: '3%', top: '35%', width: '120px', animation: 'gentle-float 18s ease-in-out infinite', animationDelay: '-4s', transform: 'scaleX(-1)', filter: 'drop-shadow(0 3px 8px rgba(0,0,0,0.06))' }}
+        />
+        <img
+          src="/fish/clownfish-small-front.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-25"
+          style={{ right: '10%', top: '55%', width: '75px', animation: 'gentle-float 14s ease-in-out infinite', animationDelay: '-8s', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.06))' }}
+        />
+        <img
+          src="/fish/clownfish-bot-right.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-30"
+          style={{ left: '8%', top: '70%', width: '100px', animation: 'gentle-float 20s ease-in-out infinite', animationDelay: '-12s', filter: 'drop-shadow(0 3px 8px rgba(0,0,0,0.06))' }}
+        />
+        <img
+          src="/fish/clownfish-large.png"
+          alt=""
+          className="absolute pointer-events-none select-none opacity-20"
+          style={{ right: '5%', top: '85%', width: '150px', animation: 'gentle-float 24s ease-in-out infinite', animationDelay: '-6s', filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.06))' }}
+        />
       </div>
 
       {/* Header Navigation */}

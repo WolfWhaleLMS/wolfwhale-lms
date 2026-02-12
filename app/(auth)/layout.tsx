@@ -83,6 +83,32 @@ export default function AuthLayout({
             <div className="absolute chrome-orb orb-float w-5 h-5" style={{ left: '10%', top: '30%', animationDelay: '0s' }} />
             <div className="absolute chrome-orb orb-float w-7 h-7" style={{ right: '12%', top: '65%', animationDelay: '1.5s' }} />
             <div className="absolute chrome-orb orb-float w-4 h-4" style={{ left: '55%', top: '8%', animationDelay: '3s' }} />
+
+            {/* Frutiger Aero clownfish decorations */}
+            <img
+              src="/fish/clownfish-hero.png"
+              alt=""
+              className="absolute pointer-events-none select-none opacity-60"
+              style={{ right: '3%', top: '12%', width: '180px', animation: 'fish-swim-right 20s ease-in-out infinite', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))' }}
+            />
+            <img
+              src="/fish/clownfish-mid-left.png"
+              alt=""
+              className="absolute pointer-events-none select-none opacity-50"
+              style={{ left: '2%', bottom: '18%', width: '100px', animation: 'fish-swim-left 16s ease-in-out infinite', animationDelay: '3s', filter: 'drop-shadow(0 3px 8px rgba(0,0,0,0.08))' }}
+            />
+            <img
+              src="/fish/clownfish-small-front.png"
+              alt=""
+              className="absolute pointer-events-none select-none opacity-40"
+              style={{ left: '15%', top: '60%', width: '60px', animation: 'fish-bob 8s ease-in-out infinite', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.08))' }}
+            />
+            <img
+              src="/fish/clownfish-bot-right.png"
+              alt=""
+              className="absolute pointer-events-none select-none opacity-45"
+              style={{ right: '8%', bottom: '25%', width: '85px', animation: 'fish-swim-right 18s ease-in-out infinite', animationDelay: '5s', filter: 'drop-shadow(0 3px 8px rgba(0,0,0,0.08))' }}
+            />
           </div>
         )}
       </div>
@@ -141,8 +167,25 @@ export default function AuthLayout({
         }
       `}</style>
 
-      {/* Lava blob styles */}
+      {/* Fish swim + Lava blob styles */}
       <style jsx global>{`
+        @keyframes fish-swim-right {
+          0%, 100% { transform: translateX(0) translateY(0) scaleX(1); }
+          25% { transform: translateX(30px) translateY(-15px) scaleX(1); }
+          50% { transform: translateX(50px) translateY(5px) scaleX(1); }
+          75% { transform: translateX(20px) translateY(-10px) scaleX(1); }
+        }
+        @keyframes fish-swim-left {
+          0%, 100% { transform: translateX(0) translateY(0) scaleX(-1); }
+          25% { transform: translateX(-25px) translateY(-12px) scaleX(-1); }
+          50% { transform: translateX(-45px) translateY(8px) scaleX(-1); }
+          75% { transform: translateX(-15px) translateY(-8px) scaleX(-1); }
+        }
+        @keyframes fish-bob {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          33% { transform: translateY(-8px) rotate(3deg); }
+          66% { transform: translateY(5px) rotate(-2deg); }
+        }
         .lava-blob {
           position: absolute;
           border-radius: 50%;
