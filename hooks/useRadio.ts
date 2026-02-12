@@ -17,6 +17,7 @@ export const RADIO_TRACKS: RadioTrack[] = [
   { name: 'Flute Relaxation',  src: '/radio/flute-relaxation.mp3',  icon: '\u{1FA88}' },
   { name: 'Lofi Beat',         src: '/radio/lofi-beat.mp3',         icon: '\u{1F3A7}' },
   { name: 'Violin Strings',    src: '/radio/violin-strings.mp3',    icon: '\u{1F3BB}' },
+  { name: 'Ambient Dubstep',   src: '/radio/ambient-dubstep.mp3',   icon: '\u{1F50A}' },
 ]
 
 // ---------------------------------------------------------------------------
