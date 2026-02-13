@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
@@ -491,6 +492,16 @@ export default async function StudentDashboardPage() {
         <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/10" />
         <div className="pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/10" />
         <div className="pointer-events-none absolute right-1/4 top-1/2 h-20 w-20 rounded-full bg-white/5 hidden sm:block" />
+
+        {/* Clownfish easter egg */}
+        <Image
+          src="/clownfish.svg"
+          alt="Nemo the clownfish"
+          width={60}
+          height={45}
+          className="pointer-events-none absolute bottom-2 right-4 sm:bottom-4 sm:right-8 z-[5] opacity-80 hover:opacity-100 hover:animate-wiggle transition-opacity duration-300"
+          aria-hidden="true"
+        />
 
         <div className="relative z-10">
           <div className="flex items-center gap-2 sm:gap-3">

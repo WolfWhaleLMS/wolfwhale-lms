@@ -34,6 +34,7 @@ const PROTECTED_PREFIXES = [
   '/parent',
   '/admin',
   '/messaging',
+  '/indigenous-knowledge',
   '/notifications',
   '/calendar',
   '/study-mode',

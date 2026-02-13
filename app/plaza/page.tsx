@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import {
@@ -108,6 +109,16 @@ export default async function PlazaPage() {
         <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/10" />
         <div className="pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/10" />
         <div className="pointer-events-none absolute right-1/4 top-1/3 h-20 w-20 rounded-full bg-white/5" />
+
+        {/* Clownfish easter egg */}
+        <Image
+          src="/clownfish.svg"
+          alt="Nemo the clownfish"
+          width={50}
+          height={38}
+          className="pointer-events-none absolute top-4 right-4 sm:top-6 sm:right-6 z-[5] opacity-70 hover:opacity-100 hover:animate-wiggle transition-opacity duration-300 rotate-[-15deg]"
+          aria-hidden="true"
+        />
 
         <div className="relative z-10 flex items-start justify-between">
           <div>

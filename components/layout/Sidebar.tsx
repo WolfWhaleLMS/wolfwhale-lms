@@ -28,6 +28,8 @@ import {
   GitFork,
   Bot,
   Apple,
+  Feather,
+  Heart,
   LogOut,
   X,
   type LucideIcon,
@@ -74,6 +76,8 @@ const ICON_MAP: Record<string, LucideIcon> = {
   GitFork,
   Bot,
   Apple,
+  Feather,
+  Heart,
 }
 
 // ---------------------------------------------------------------------------

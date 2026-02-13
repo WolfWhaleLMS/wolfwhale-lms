@@ -1399,32 +1399,32 @@ body::before {
   .btn-chrome-3d-blue {
     background: linear-gradient(
       180deg,
-      #8DE8FF 0%,
-      #4DD6FF 8%,
-      #00BFFF 25%,
-      #009EDD 50%,
-      #007BB5 75%,
-      #005A8C 92%,
-      #3AAFDD 100%
+      #5AD0FF 0%,
+      #2CC4FF 8%,
+      #00AAEE 25%,
+      #0088CC 50%,
+      #006699 75%,
+      #004D80 92%,
+      #2A99CC 100%
     );
-    border: 1px solid #005280;
+    border: 1px solid #004060;
     box-shadow:
       0 6px 16px rgba(0, 80, 160, 0.40),
       0 2px 4px rgba(0, 0, 0, 0.20),
-      inset 0 2px 1px rgba(255, 255, 255, 0.50),
+      inset 0 2px 1px rgba(255, 255, 255, 0.45),
       inset 0 -1px 1px rgba(0, 0, 0, 0.15);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.40);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.50);
   }
   .btn-chrome-3d-blue:hover {
     background: linear-gradient(
       180deg,
-      #A0EEFF 0%,
-      #66E0FF 8%,
-      #1ECBFF 25%,
-      #00AAEE 50%,
-      #008ACC 75%,
-      #006AA0 92%,
-      #50C0EE 100%
+      #70DAFF 0%,
+      #40CCFF 8%,
+      #00BBFF 25%,
+      #0099DD 50%,
+      #0077BB 75%,
+      #005A99 92%,
+      #3AADDD 100%
     );
     box-shadow:
       0 8px 24px rgba(0, 100, 180, 0.50),
@@ -2401,4 +2401,18 @@ button:focus-visible {
 
 .dark .whale-gradient:active {
   box-shadow: 0 0 30px rgba(51, 255, 51, 0.55), 0 0 60px rgba(0, 255, 255, 0.30);
+}
+
+/* ============================================
+   Clownfish Easter Egg — Wiggle Animation
+   ============================================ */
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+.hover\:animate-wiggle:hover {
+  animation: wiggle 0.5s ease-in-out infinite;
 }

@@ -207,6 +207,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
   const common: MenuItem[] = [
     { label: 'Dashboard',     href: getRouteForRole(role), icon: 'LayoutDashboard' },
     { label: 'Messages',      href: '/messaging',           icon: 'MessageSquare' },
+    { label: 'Indigenous Knowledge', href: '/indigenous-knowledge', icon: 'Feather' },
   ]
 
   const roleSpecific: Record<UserRole, MenuItem[]> = {
@@ -248,6 +249,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Settings',       href: '/admin/settings',         icon: 'Settings' },
       { label: 'Plaza Settings', href: '/admin/plaza',            icon: 'Map' },
       { label: 'Compliance',     href: '/admin/compliance',       icon: 'Shield' },
+      { label: 'TRC Tracker',    href: '/admin/trc',              icon: 'Heart' },
       { label: 'Audit Logs',     href: '/admin/audit-logs',       icon: 'FileText' },
       { label: 'Calendar',       href: '/calendar',               icon: 'Calendar' },
       { label: 'Announcements',  href: '/announcements',          icon: 'Megaphone' },
@@ -265,6 +267,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Nutrition',     href: '/admin/nutrition',        icon: 'Apple' },
       { label: 'Settings',      href: '/admin/settings',         icon: 'Settings' },
       { label: 'Compliance',    href: '/admin/compliance',       icon: 'Shield' },
+      { label: 'TRC Tracker',   href: '/admin/trc',              icon: 'Heart' },
       { label: 'Audit Logs',    href: '/admin/audit-logs',       icon: 'FileText' },
       { label: 'Calendar',      href: '/calendar',               icon: 'Calendar' },
       { label: 'Announcements', href: '/announcements',          icon: 'Megaphone' },

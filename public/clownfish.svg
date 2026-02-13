@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" fill="none">
+  <!-- Body -->
+  <ellipse cx="100" cy="75" rx="65" ry="45" fill="#FF6B00" stroke="#333" stroke-width="2"/>
+  <!-- White stripes -->
+  <path d="M70 35 Q72 75 70 115" stroke="white" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M115 40 Q117 75 115 110" stroke="white" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <!-- Stripe outlines -->
+  <path d="M70 35 Q72 75 70 115" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="0" opacity="0.3"/>
+  <path d="M115 40 Q117 75 115 110" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.3"/>
+  <!-- Tail -->
+  <path d="M160 75 L185 55 Q190 75 185 95 Z" fill="#FF8C00" stroke="#333" stroke-width="2"/>
+  <path d="M170 65 L185 55" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+  <!-- Top fin -->
+  <path d="M60 35 Q80 10 110 30" fill="#FF8C00" stroke="#333" stroke-width="2"/>
+  <!-- Bottom fin -->
+  <path d="M80 110 Q90 130 100 115" fill="#FF8C00" stroke="#333" stroke-width="2"/>
+  <!-- Eye -->
+  <circle cx="52" cy="68" r="10" fill="white" stroke="#333" stroke-width="2"/>
+  <circle cx="49" cy="67" r="5" fill="#333"/>
+  <circle cx="47" cy="65" r="2" fill="white"/>
+  <!-- Mouth -->
+  <path d="M36 78 Q40 83 38 78" stroke="#333" stroke-width="1.5" fill="none"/>
+  <!-- Pectoral fin -->
+  <path d="M85 85 Q75 100 90 95" fill="#FF8C00" stroke="#333" stroke-width="1.5"/>
+</svg>

@@ -64,7 +64,7 @@ export default function LoginPage() {
       {/* Learn More — BIG button */}
       <Link
         href="/info"
-        className="!mt-0 flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl bg-[#00BFFF] text-white font-semibold text-lg shadow-lg hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] hover:scale-[1.02] transition-all group neon-glow-blue"
+        className="!mt-0 flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl btn-chrome-3d-blue text-white text-white-outlined font-bold text-lg transition-all group"
       >
         <span>Learn More About WolfWhale LMS</span>
         <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -73,7 +73,7 @@ export default function LoginPage() {
       {/* User Guide — silver chrome button */}
       <Link
         href="/guide"
-        className="!mt-0 flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl btn-chrome-3d-silver font-semibold text-lg shadow-lg hover:scale-[1.02] transition-all group neon-glow-blue"
+        className="!mt-0 flex items-center justify-center gap-3 w-full py-4 px-6 rounded-xl btn-chrome-3d-silver font-bold text-lg transition-all group"
       >
         <BookOpen className="h-5 w-5" />
         <span>User Guide</span>
