@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Loader2, GraduationCap, BookOpen, Users, Shield } from 'lucide-react'
-import { demoLogin } from '@/app/actions/demo-auth'
+import { createClient } from '@/lib/supabase/client'
+import { getDemoCredentials } from '@/app/actions/demo-auth'
 
 const demoAccounts = [
   { username: 'student', label: 'Student', icon: GraduationCap, color: 'from-[#00BFFF] to-[#00BFFF]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(0,191,255,0.3)]' },
@@ -29,11 +30,26 @@ export function DemoLoginButtons({ onSuccess, redirectTo = '/dashboard' }: DemoL
     setLoading(username)
     setError(null)
     try {
-      const result = await demoLogin(username)
-      if (result.error) {
-        setError(result.error)
+      // Step 1: Get credentials from server (rate-limited, password stays server-side)
+      const creds = await getDemoCredentials(username)
+      if (creds.error || !creds.email || !creds.password) {
+        setError(creds.error || 'Demo login failed.')
         return
       }
+
+      // Step 2: Sign in client-side so browser cookies are set properly
+      const supabase = createClient()
+      const { error: authError } = await supabase.auth.signInWithPassword({
+        email: creds.email,
+        password: creds.password,
+      })
+
+      if (authError) {
+        setError(authError.message)
+        return
+      }
+
+      // Step 3: Navigate to dashboard
       onSuccess?.()
       router.push(redirectTo)
       router.refresh()

@@ -1,6 +1,5 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
 import { rateLimitAction } from '@/lib/rate-limit-action'
 
 const DEMO_ACCOUNTS: Record<string, string> = {
@@ -10,7 +9,11 @@ const DEMO_ACCOUNTS: Record<string, string> = {
   admin: 'admin@wolfwhale.ca',
 }
 
-export async function demoLogin(role: string): Promise<{ error?: string }> {
+/**
+ * Returns demo credentials after rate-limiting.
+ * The actual sign-in happens client-side so browser cookies are set properly.
+ */
+export async function getDemoCredentials(role: string): Promise<{ email?: string; password?: string; error?: string }> {
   // Rate limit demo logins to prevent abuse
   const rl = await rateLimitAction('demo-login')
   if (!rl.success) {
@@ -25,12 +28,5 @@ export async function demoLogin(role: string): Promise<{ error?: string }> {
   const email = DEMO_ACCOUNTS[role]
   if (!email) return { error: 'Invalid demo role' }
 
-  const supabase = await createClient()
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password: DEMO_PASSWORD,
-  })
-
-  if (error) return { error: error.message }
-  return {}
+  return { email, password: DEMO_PASSWORD }
 }
