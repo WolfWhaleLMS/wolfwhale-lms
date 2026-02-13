@@ -1,5 +1,6 @@
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { getDashboardStats, getAttendanceReport } from '@/app/actions/school-admin'
 import Link from 'next/link'
@@ -214,7 +215,9 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Pinned Announcements */}
-      <AnnouncementBanner />
+      <Suspense fallback={null}>
+        <AnnouncementBanner />
+      </Suspense>
 
       {/* Seat Usage Banner */}
       <div className="ocean-card rounded-2xl p-3 sm:p-5">

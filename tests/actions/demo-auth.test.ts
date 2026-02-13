@@ -1,22 +1,20 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 // ────────────────────────────────────────────────────────────────
-// Mock the Supabase server client
+// Mock the rate limiter
 // ────────────────────────────────────────────────────────────────
-const mockSignInWithPassword = vi.fn()
-
-vi.mock('@/lib/supabase/server', () => ({
-  createClient: vi.fn(async () => ({
-    auth: {
-      signInWithPassword: mockSignInWithPassword,
-    },
-  })),
+vi.mock('@/lib/rate-limit-action', () => ({
+  rateLimitAction: vi.fn(async () => ({ success: true })),
 }))
 
-// We must import AFTER the mock is set up
-import { demoLogin } from '@/app/actions/demo-auth'
+// Set the env var for tests
+vi.stubEnv('DEMO_ACCOUNT_PASSWORD', 'TestPassword123!')
 
-describe('demoLogin', () => {
+// We must import AFTER the mock is set up
+import { getDemoCredentials } from '@/app/actions/demo-auth'
+import { rateLimitAction } from '@/lib/rate-limit-action'
+
+describe('getDemoCredentials', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
@@ -25,53 +23,46 @@ describe('demoLogin', () => {
   // Invalid role handling
   // ──────────────────────────────────────────────────────
   it('returns an error for an invalid role', async () => {
-    const result = await demoLogin('hacker')
+    const result = await getDemoCredentials('hacker')
     expect(result).toEqual({ error: 'Invalid demo role' })
-    // Should NOT call supabase at all
-    expect(mockSignInWithPassword).not.toHaveBeenCalled()
   })
 
   it('returns an error for an empty string role', async () => {
-    const result = await demoLogin('')
+    const result = await getDemoCredentials('')
     expect(result).toEqual({ error: 'Invalid demo role' })
-    expect(mockSignInWithPassword).not.toHaveBeenCalled()
   })
 
   it('returns an error for a role with wrong casing', async () => {
-    const result = await demoLogin('Student')
+    const result = await getDemoCredentials('Student')
     expect(result).toEqual({ error: 'Invalid demo role' })
-    expect(mockSignInWithPassword).not.toHaveBeenCalled()
   })
 
   // ──────────────────────────────────────────────────────
-  // Valid roles
+  // Valid roles — returns email + password
   // ──────────────────────────────────────────────────────
   const validRoles = ['student', 'teacher', 'parent', 'admin'] as const
 
   for (const role of validRoles) {
-    it(`accepts the "${role}" role and calls signInWithPassword`, async () => {
-      mockSignInWithPassword.mockResolvedValueOnce({ error: null })
-
-      const result = await demoLogin(role)
-      expect(result).toEqual({})
-      expect(mockSignInWithPassword).toHaveBeenCalledOnce()
-      expect(mockSignInWithPassword).toHaveBeenCalledWith({
+    it(`returns credentials for the "${role}" role`, async () => {
+      const result = await getDemoCredentials(role)
+      expect(result).toEqual({
         email: `${role}@wolfwhale.ca`,
-        password: expect.any(String),
+        password: 'TestPassword123!',
       })
     })
   }
 
   // ──────────────────────────────────────────────────────
-  // Supabase error passthrough
+  // Rate limiting
   // ──────────────────────────────────────────────────────
-  it('passes through supabase auth errors', async () => {
-    mockSignInWithPassword.mockResolvedValueOnce({
-      error: { message: 'Invalid login credentials' },
+  it('returns an error when rate limited', async () => {
+    vi.mocked(rateLimitAction).mockResolvedValueOnce({
+      success: false,
+      error: 'Too many attempts',
     })
 
-    const result = await demoLogin('student')
-    expect(result).toEqual({ error: 'Invalid login credentials' })
+    const result = await getDemoCredentials('student')
+    expect(result).toEqual({ error: 'Too many attempts' })
   })
 
   // ──────────────────────────────────────────────────────
@@ -86,12 +77,8 @@ describe('demoLogin', () => {
     }
 
     for (const [role, email] of Object.entries(expectedEmails)) {
-      mockSignInWithPassword.mockResolvedValueOnce({ error: null })
-      await demoLogin(role)
-      expect(mockSignInWithPassword).toHaveBeenCalledWith(
-        expect.objectContaining({ email })
-      )
-      vi.clearAllMocks()
+      const result = await getDemoCredentials(role)
+      expect(result.email).toBe(email)
     }
   })
 })

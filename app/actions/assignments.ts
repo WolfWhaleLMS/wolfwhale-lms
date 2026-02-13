@@ -376,11 +376,19 @@ export async function getStudentAssignments() {
   let gradeMap: Record<string, { points_earned: number; percentage: number; feedback: string | null }> = {}
 
   if (assignmentIds.length > 0) {
-    const { data: submissions } = await supabase
-      .from('submissions')
-      .select('assignment_id, status, submitted_at')
-      .eq('student_id', user.id)
-      .in('assignment_id', assignmentIds)
+    // Fetch submissions and grades in parallel for faster loading
+    const [{ data: submissions }, { data: grades }] = await Promise.all([
+      supabase
+        .from('submissions')
+        .select('assignment_id, status, submitted_at')
+        .eq('student_id', user.id)
+        .in('assignment_id', assignmentIds),
+      supabase
+        .from('grades')
+        .select('assignment_id, points_earned, percentage, feedback')
+        .eq('student_id', user.id)
+        .in('assignment_id', assignmentIds),
+    ])
 
     if (submissions) {
       for (const s of submissions) {
@@ -390,12 +398,6 @@ export async function getStudentAssignments() {
         }
       }
     }
-
-    const { data: grades } = await supabase
-      .from('grades')
-      .select('assignment_id, points_earned, percentage, feedback')
-      .eq('student_id', user.id)
-      .in('assignment_id', assignmentIds)
 
     if (grades) {
       for (const g of grades) {
@@ -425,7 +427,7 @@ export async function getStudentAssignments() {
 
     return {
       ...a,
-      courseTitle: courseMap[a.course_id] || 'Unknown Course',
+      courseName: courseMap[a.course_id] || 'Unknown Course',
       submissionStatus: displayStatus,
       submittedAt: submission?.submitted_at || null,
       grade: grade || null,

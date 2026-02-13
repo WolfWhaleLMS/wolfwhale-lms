@@ -1,104 +1,75 @@
 'use client'
 
 import { useState } from 'react'
-import { Apple, ChevronDown, ChevronUp, Send, Sparkles } from 'lucide-react'
+import { Apple, ChevronDown, ChevronUp, Droplets, Send, Sparkles, Users, UtensilsCrossed, Brain } from 'lucide-react'
 
 /* ------------------------------------------------------------------ */
-/*  Data                                                               */
+/*  Data — Canada's Food Guide (2019)                                  */
 /* ------------------------------------------------------------------ */
 
-interface PyramidTier {
+interface PlateGroup {
   id: string
   emoji: string
   label: string
-  servings: string
+  proportion: string
   color: string
   colorDark: string
   borderColor: string
+  fillColor: string
   foods: string[]
   tip: string
-  widthPercent: number // visual width (bottom=100, top=40)
 }
 
-const PYRAMID_TIERS: PyramidTier[] = [
+const PLATE_GROUPS: PlateGroup[] = [
   {
-    id: 'sugars',
-    emoji: '\ud83c\udf6c\ud83c\udf70\ud83e\uddc2',
-    label: 'Sugars & Sweets',
-    servings: 'Use sparingly',
-    color: 'from-red-400 to-red-500',
-    colorDark: 'dark:from-red-600 dark:to-red-700',
-    borderColor: 'border-red-400 dark:border-red-600',
-    foods: [
-      '\ud83c\udf6c Candy', '\ud83c\udf6b Chocolate', '\ud83c\udf70 Cake', '\ud83c\udf69 Doughnuts',
-      '\ud83e\uddc1 Cupcakes', '\ud83c\udf6a Cookies', '\ud83e\udd64 Soda', '\ud83c\udf66 Ice Cream',
-      '\ud83c\udf6f Honey (small amounts)', '\ud83e\uddc2 Salt (limit intake)',
-    ],
-    tip: 'These foods taste great but offer little nutrition. Enjoy as an occasional treat, not a daily habit!',
-    widthPercent: 40,
-  },
-  {
-    id: 'dairy',
-    emoji: '\ud83e\uddc0\ud83e\udd5b\ud83e\uddc8',
-    label: 'Dairy & Healthy Fats',
-    servings: '2\u20133 servings/day',
-    color: 'from-yellow-300 to-yellow-400',
-    colorDark: 'dark:from-yellow-600 dark:to-yellow-700',
-    borderColor: 'border-yellow-400 dark:border-yellow-600',
-    foods: [
-      '\ud83e\udd5b Milk', '\ud83e\uddc0 Cheese', '\ud83e\ude98 Yogurt', '\ud83e\uddc8 Butter (moderation)',
-      '\ud83e\uded2 Olive Oil', '\ud83e\udd51 Avocado', '\ud83e\udd5c Peanut Butter', '\ud83c\udf65 Coconut Oil',
-    ],
-    tip: 'Dairy gives you calcium for strong bones and teeth. Choose low-fat options when you can!',
-    widthPercent: 55,
-  },
-  {
-    id: 'protein',
-    emoji: '\ud83c\udf57\ud83d\udc1f\ud83e\udd5c\ud83e\uded8',
-    label: 'Protein',
-    servings: '2\u20133 servings/day',
-    color: 'from-orange-400 to-orange-500',
-    colorDark: 'dark:from-orange-600 dark:to-orange-700',
-    borderColor: 'border-orange-400 dark:border-orange-600',
-    foods: [
-      '\ud83c\udf57 Chicken', '\ud83e\udd69 Steak', '\ud83d\udc1f Fish', '\ud83e\udd5a Eggs',
-      '\ud83e\uded8 Beans', '\ud83e\udd5c Nuts', '\ud83c\udf2d Tofu', '\ud83e\udd90 Shrimp',
-      '\ud83e\udd53 Turkey', '\ud83e\udd6b Lentils',
-    ],
-    tip: 'Protein builds your muscles and repairs your body. Mix it up with both animal and plant proteins!',
-    widthPercent: 70,
-  },
-  {
-    id: 'fruits-veggies',
-    emoji: '\ud83e\udd66\ud83e\udd55\ud83c\udf4e\ud83c\udf4c',
-    label: 'Fruits & Vegetables',
-    servings: '5\u20139 servings/day',
+    id: 'vegetables-fruits',
+    emoji: '\ud83e\udd66\ud83c\udf4e\ud83e\udd55\ud83c\udf53',
+    label: 'Vegetables & Fruits',
+    proportion: 'Half your plate',
     color: 'from-green-400 to-emerald-500',
     colorDark: 'dark:from-green-600 dark:to-emerald-700',
     borderColor: 'border-green-400 dark:border-green-600',
+    fillColor: '#22c55e',
     foods: [
-      '\ud83e\udd66 Broccoli', '\ud83e\udd55 Carrots', '\ud83c\udf4e Apples', '\ud83c\udf4c Bananas',
-      '\ud83c\udf4a Oranges', '\ud83c\udf53 Strawberries', '\ud83e\udd6c Spinach', '\ud83c\udf45 Tomatoes',
-      '\ud83e\udd54 Potatoes', '\ud83c\udf47 Grapes', '\ud83c\udf49 Watermelon', '\ud83e\udd6d Mangoes',
+      '\ud83e\udd66 Broccoli', '\ud83e\udd55 Carrots', '\ud83c\udf4e Apples', '\ud83c\udf53 Strawberries',
+      '\ud83e\udd6c Spinach', '\ud83c\udf45 Tomatoes', '\ud83c\udf47 Grapes', '\ud83c\udf4a Oranges',
+      '\ud83c\udf49 Watermelon', '\ud83e\udd54 Sweet Potatoes', '\ud83e\udd6d Mangoes', '\ud83c\udf4c Bananas',
+      '\ud83e\uded1 Bell Peppers', '\ud83e\udd52 Cucumbers', '\ud83c\udf51 Peaches', '\ud83e\uded0 Blueberries',
     ],
-    tip: 'Eat the rainbow! Different colored fruits and veggies give you different vitamins and minerals.',
-    widthPercent: 85,
+    tip: 'Vegetables and fruits should fill half your plate at every meal. Choose plenty of colourful options \u2014 fresh, frozen, or canned all count!',
   },
   {
-    id: 'grains',
+    id: 'whole-grains',
     emoji: '\ud83c\udf5e\ud83c\udf3e\ud83c\udf5a',
-    label: 'Grains & Carbs',
-    servings: '6\u20138 servings/day',
+    label: 'Whole Grain Foods',
+    proportion: 'Quarter of your plate',
     color: 'from-amber-400 to-amber-600',
     colorDark: 'dark:from-amber-600 dark:to-amber-800',
     borderColor: 'border-amber-500 dark:border-amber-600',
+    fillColor: '#d97706',
     foods: [
-      '\ud83c\udf5e Bread', '\ud83c\udf5a Rice', '\ud83c\udf5d Pasta', '\ud83e\udd63 Oatmeal',
-      '\ud83e\udd5e Pancakes (whole grain)', '\ud83c\udf3d Corn', '\ud83e\udd56 Baguette',
-      '\ud83c\udf6e Quinoa', '\ud83e\uded3 Tortilla', '\ud83e\udd42 Cereal (whole grain)',
+      '\ud83c\udf5e Whole Wheat Bread', '\ud83c\udf5a Brown Rice', '\ud83e\udd63 Oatmeal', '\ud83c\udf3e Quinoa',
+      '\ud83c\udf5d Whole Wheat Pasta', '\ud83c\udf3d Corn', '\ud83e\uded3 Whole Grain Tortilla',
+      '\ud83e\udd42 Whole Grain Cereal', '\ud83e\udd56 Barley', '\ud83c\udf5e Wild Rice',
     ],
-    tip: 'Grains are your energy fuel! Choose whole grains for extra fiber and nutrients.',
-    widthPercent: 100,
+    tip: 'Choose whole grain foods instead of refined grains. They have more fibre and help you feel full longer. Look for "whole grain" as the first ingredient!',
+  },
+  {
+    id: 'protein',
+    emoji: '\ud83c\udf57\ud83d\udc1f\ud83e\uded8\ud83e\udd5c',
+    label: 'Protein Foods',
+    proportion: 'Quarter of your plate',
+    color: 'from-rose-400 to-red-500',
+    colorDark: 'dark:from-rose-600 dark:to-red-700',
+    borderColor: 'border-rose-400 dark:border-rose-600',
+    fillColor: '#e11d48',
+    foods: [
+      '\ud83e\uded8 Beans & Lentils', '\ud83e\udd5c Nuts & Seeds', '\ud83c\udf2d Tofu',
+      '\ud83d\udc1f Fish & Shellfish', '\ud83c\udf57 Chicken & Turkey', '\ud83e\udd5a Eggs',
+      '\ud83e\udd69 Lean Beef', '\ud83e\uddc0 Lower-fat Cheese', '\ud83e\ude98 Yogurt (plain)',
+      '\ud83e\udd53 Tempeh',
+    ],
+    tip: 'Choose protein foods that come from plants more often. Plant-based proteins provide more fibre and less saturated fat. Mix it up with both plant and animal sources!',
   },
 ]
 
@@ -113,7 +84,7 @@ const NUTRITION_FACTS: NutritionFact[] = [
   {
     emoji: '\ud83d\udca7',
     title: 'Water',
-    description: '8 glasses/day \u2014 your body is 60% water!',
+    description: 'Make water your drink of choice \u2014 it quenches thirst without added sugars or calories.',
     color: 'from-blue-400/20 to-cyan-400/20 border-blue-400/30',
   },
   {
@@ -125,19 +96,19 @@ const NUTRITION_FACTS: NutritionFact[] = [
   {
     emoji: '\ud83d\udcaa',
     title: 'Protein',
-    description: 'Builds muscles and repairs cells throughout your body.',
+    description: 'Builds muscles and repairs cells. Choose plant-based protein more often.',
     color: 'from-rose-400/20 to-pink-400/20 border-rose-400/30',
   },
   {
     emoji: '\ud83c\udf3e',
-    title: 'Fiber',
-    description: 'Keeps digestion healthy \u2014 aim for 25\u201330g per day!',
+    title: 'Fibre',
+    description: 'Keeps digestion healthy \u2014 whole grains, veggies, and beans are great sources.',
     color: 'from-amber-400/20 to-yellow-400/20 border-amber-400/30',
   },
   {
     emoji: '\ud83e\uddb4',
     title: 'Calcium',
-    description: 'Strong bones & teeth \u2014 found in dairy, greens & fortified foods.',
+    description: 'Strong bones & teeth \u2014 found in fortified plant drinks, dairy, and dark leafy greens.',
     color: 'from-gray-300/20 to-slate-400/20 border-gray-400/30',
   },
   {
@@ -157,47 +128,53 @@ interface MealIdea {
 const MEAL_IDEAS: Record<string, MealIdea[]> = {
   Breakfast: [
     { emoji: '\ud83e\udd5e', name: 'Whole Grain Pancakes', description: 'Top with fresh berries and a drizzle of maple syrup' },
-    { emoji: '\ud83e\udd63', name: 'Oatmeal Power Bowl', description: 'Oats + banana + almonds + honey = energy boost!' },
-    { emoji: '\ud83e\udd5a', name: 'Scrambled Eggs & Toast', description: 'Protein-packed start with whole wheat toast' },
-    { emoji: '\ud83c\udf53', name: 'Yogurt Parfait', description: 'Layer yogurt, granola, and fresh fruit' },
-    { emoji: '\ud83e\udd64', name: 'Fruit Smoothie', description: 'Blend spinach, banana, berries & milk \u2014 can\u2019t taste the greens!' },
+    { emoji: '\ud83e\udd63', name: 'Oatmeal Power Bowl', description: 'Oats + banana + almonds + cinnamon = energy boost!' },
+    { emoji: '\ud83e\udd5a', name: 'Scrambled Eggs & Toast', description: 'Protein-packed start with whole wheat toast and veggies' },
+    { emoji: '\ud83c\udf53', name: 'Yogurt Parfait', description: 'Layer plain yogurt, granola, and fresh fruit' },
+    { emoji: '\ud83e\udd64', name: 'Fruit Smoothie', description: 'Blend spinach, banana, berries & water \u2014 can\u2019t taste the greens!' },
   ],
   Lunch: [
-    { emoji: '\ud83e\udd6a', name: 'Turkey & Veggie Wrap', description: 'Whole wheat wrap with turkey, lettuce, tomato & cheese' },
-    { emoji: '\ud83e\udd57', name: 'Rainbow Salad', description: 'Mixed greens with colorful veggies, chicken & light dressing' },
+    { emoji: '\ud83e\udd6a', name: 'Turkey & Veggie Wrap', description: 'Whole wheat wrap with turkey, lettuce, tomato & hummus' },
+    { emoji: '\ud83e\udd57', name: 'Rainbow Salad', description: 'Mixed greens with colourful veggies, chickpeas & light dressing' },
     { emoji: '\ud83c\udf5c', name: 'Veggie Noodle Soup', description: 'Warm broth with noodles, carrots, peas & chicken' },
-    { emoji: '\ud83c\udf2f', name: 'Bean Burrito Bowl', description: 'Rice, beans, salsa, corn & avocado \u2014 no tortilla needed!' },
-    { emoji: '\ud83e\uddc0', name: 'Grilled Cheese & Tomato Soup', description: 'A classic combo \u2014 use whole grain bread for extra points' },
+    { emoji: '\ud83c\udf2f', name: 'Bean Burrito Bowl', description: 'Brown rice, beans, salsa, corn & avocado \u2014 no tortilla needed!' },
+    { emoji: '\ud83e\uded8', name: 'Lentil Soup & Bread', description: 'Hearty lentil soup with a slice of whole grain bread' },
   ],
   Dinner: [
-    { emoji: '\ud83c\udf57', name: 'Baked Chicken & Veggies', description: 'Seasoned chicken breast with roasted broccoli & sweet potato' },
+    { emoji: '\ud83c\udf57', name: 'Baked Chicken & Veggies', description: 'Seasoned chicken with roasted broccoli & sweet potato' },
     { emoji: '\ud83d\udc1f', name: 'Fish Tacos', description: 'Grilled fish in corn tortillas with cabbage slaw' },
-    { emoji: '\ud83c\udf5d', name: 'Pasta Primavera', description: 'Whole wheat pasta loaded with colorful vegetables' },
+    { emoji: '\ud83c\udf5d', name: 'Pasta Primavera', description: 'Whole wheat pasta loaded with colourful vegetables' },
     { emoji: '\ud83c\udf72', name: 'Hearty Veggie Stew', description: 'Potatoes, carrots, beans & herbs in a warm broth' },
-    { emoji: '\ud83c\udf5b', name: 'Stir-Fry Rice Bowl', description: 'Brown rice with tofu or chicken, peppers, snap peas & soy sauce' },
+    { emoji: '\ud83c\udf5b', name: 'Stir-Fry Rice Bowl', description: 'Brown rice with tofu, peppers, snap peas & soy sauce' },
   ],
+}
+
+interface FoodGuideHabit {
+  icon: React.ReactNode
+  title: string
+  description: string
+  color: string
 }
 
 /* ------------------------------------------------------------------ */
 /*  Sub-components                                                     */
 /* ------------------------------------------------------------------ */
 
-function PyramidTierRow({ tier, index }: { tier: PyramidTier; index: number }) {
+function PlateGroupCard({ group }: { group: PlateGroup }) {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="flex flex-col w-full">
       <button
         onClick={() => setExpanded(!expanded)}
         className="group relative w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00BFFF] focus-visible:ring-offset-2 rounded-xl"
-        style={{ maxWidth: `${tier.widthPercent}%` }}
         aria-expanded={expanded}
-        aria-label={`${tier.label} — ${tier.servings}. Click to ${expanded ? 'collapse' : 'expand'} details.`}
+        aria-label={`${group.label} \u2014 ${group.proportion}. Click to ${expanded ? 'collapse' : 'expand'} details.`}
       >
         <div
           className={`
-            relative overflow-hidden rounded-xl border-2 ${tier.borderColor}
-            bg-gradient-to-r ${tier.color} ${tier.colorDark}
+            relative overflow-hidden rounded-xl border-2 ${group.borderColor}
+            bg-gradient-to-r ${group.color} ${group.colorDark}
             px-4 py-3 sm:px-6 sm:py-4
             transition-all duration-300
             group-hover:scale-[1.02] group-hover:shadow-lg
@@ -209,13 +186,13 @@ function PyramidTierRow({ tier, index }: { tier: PyramidTier; index: number }) {
 
           <div className="relative z-10 flex items-center justify-between gap-2 text-white">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <span className="text-xl sm:text-2xl flex-shrink-0" aria-hidden="true">{tier.emoji}</span>
+              <span className="text-xl sm:text-2xl flex-shrink-0" aria-hidden="true">{group.emoji}</span>
               <div className="min-w-0">
                 <h3 className="font-bold text-sm sm:text-base lg:text-lg leading-tight drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
-                  {tier.label}
+                  {group.label}
                 </h3>
                 <p className="text-xs sm:text-sm opacity-90 drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]">
-                  {tier.servings}
+                  {group.proportion}
                 </p>
               </div>
             </div>
@@ -231,16 +208,15 @@ function PyramidTierRow({ tier, index }: { tier: PyramidTier; index: number }) {
         <div
           className={`
             mt-2 w-full ocean-card rounded-xl p-4 sm:p-6
-            border ${tier.borderColor}
+            border ${group.borderColor}
             animate-in slide-in-from-top-2 fade-in duration-300
           `}
-          style={{ maxWidth: `${Math.min(tier.widthPercent + 10, 100)}%` }}
         >
           <p className="text-sm sm:text-base text-foreground/80 mb-3 italic">
-            {'\ud83d\udca1'} {tier.tip}
+            {'\ud83d\udca1'} {group.tip}
           </p>
           <div className="flex flex-wrap gap-2">
-            {tier.foods.map((food) => (
+            {group.foods.map((food) => (
               <span
                 key={food}
                 className="inline-flex items-center rounded-lg bg-background/60 dark:bg-white/10 px-3 py-1.5 text-xs sm:text-sm font-medium border border-border/50"
@@ -268,7 +244,6 @@ function PlateSection({
   startAngle: number
   color: string
 }) {
-  // SVG arc path for the pie slice
   const endAngle = startAngle + (percent / 100) * 360
   const startRad = ((startAngle - 90) * Math.PI) / 180
   const endRad = ((endAngle - 90) * Math.PI) / 180
@@ -335,10 +310,37 @@ export function NutritionPage() {
 
   const mealTabs = ['Breakfast', 'Lunch', 'Dinner'] as const
 
+  const FOOD_GUIDE_HABITS: FoodGuideHabit[] = [
+    {
+      icon: <UtensilsCrossed className="h-6 w-6 text-orange-500 dark:text-orange-400" />,
+      title: 'Cook more often',
+      description: 'Cooking at home lets you control what goes into your food. Try new recipes and make it fun!',
+      color: 'from-orange-400/20 to-amber-400/20 border-orange-400/30',
+    },
+    {
+      icon: <Users className="h-6 w-6 text-blue-500 dark:text-blue-400" />,
+      title: 'Eat meals with others',
+      description: 'Sharing meals with family or friends creates connection and helps you enjoy food more.',
+      color: 'from-blue-400/20 to-sky-400/20 border-blue-400/30',
+    },
+    {
+      icon: <Brain className="h-6 w-6 text-purple-500 dark:text-purple-400" />,
+      title: 'Be mindful of your eating habits',
+      description: 'Take time to eat. Notice when you are hungry and when you are full. Enjoy each bite!',
+      color: 'from-purple-400/20 to-violet-400/20 border-purple-400/30',
+    },
+    {
+      icon: <Droplets className="h-6 w-6 text-cyan-500 dark:text-cyan-400" />,
+      title: 'Make water your drink of choice',
+      description: 'Water is the best way to stay hydrated \u2014 no added sugar, no calories, and it keeps your body running smoothly.',
+      color: 'from-cyan-400/20 to-blue-400/20 border-cyan-400/30',
+    },
+  ]
+
   function handleCheckMeal() {
     if (!mealInput.trim()) return
     setAiResponse(
-      `\ud83d\ude80 Coming soon \u2014 Wally will analyze "${mealInput}" and tell you exactly what nutrients you're getting! Stay tuned for our AI-powered meal analysis.`
+      `\ud83d\ude80 Coming soon \u2014 AI Tutor will analyze "${mealInput}" and tell you exactly what nutrients you're getting! Stay tuned for our AI-powered meal analysis.`
     )
   }
 
@@ -356,15 +358,15 @@ export function NutritionPage() {
             </div>
             <div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
-                {'\ud83c\udf4e'} Food Pyramid & Nutrition {'\ud83e\udd66'}
+                {'\ud83c\udf4e'} Canada&apos;s Food Guide {'\ud83e\udd66'}
               </h1>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Learn what to eat, how much, and why it matters for your health!
+                Learn about healthy eating with Canada&apos;s Food Guide \u2014 what to eat, how much, and healthy habits!
               </p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2 mt-4">
-            {['\ud83c\udf4e Fruits', '\ud83e\udd66 Veggies', '\ud83c\udf57 Protein', '\ud83e\udd5b Dairy', '\ud83c\udf3e Grains'].map((tag) => (
+            {['\ud83e\udd66 Vegetables & Fruits', '\ud83c\udf3e Whole Grains', '\ud83c\udf57 Protein Foods', '\ud83d\udca7 Water'].map((tag) => (
               <span
                 key={tag}
                 className="inline-flex items-center rounded-full bg-white/50 dark:bg-white/10 px-3 py-1 text-xs sm:text-sm font-medium border border-white/30 dark:border-white/10"
@@ -377,65 +379,47 @@ export function NutritionPage() {
       </div>
 
       {/* ============================================================ */}
-      {/*  A. Food Pyramid                                              */}
-      {/* ============================================================ */}
-      <section>
-        <div className="flex items-center gap-2 mb-6">
-          <span className="text-2xl sm:text-3xl" aria-hidden="true">{'\ud83c\udfd4\ufe0f'}</span>
-          <h2 className="text-xl sm:text-2xl font-bold text-foreground">The Food Pyramid</h2>
-        </div>
-        <p className="text-sm sm:text-base text-muted-foreground mb-6 max-w-2xl">
-          The food pyramid shows you how much of each food group to eat every day.
-          The <strong>bottom</strong> is what you should eat <strong>most</strong> of, and the <strong>top</strong> is what you should eat <strong>least</strong> of.
-          Click any tier to learn more! {'\ud83d\udc47'}
-        </p>
-
-        <div className="flex flex-col items-center gap-2 sm:gap-3 w-full max-w-3xl mx-auto">
-          {PYRAMID_TIERS.map((tier, i) => (
-            <PyramidTierRow key={tier.id} tier={tier} index={i} />
-          ))}
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/*  B. Daily Plate Guide                                         */}
+      {/*  A. Canada's Food Guide Plate                                 */}
       {/* ============================================================ */}
       <section>
         <div className="flex items-center gap-2 mb-6">
           <span className="text-2xl sm:text-3xl" aria-hidden="true">{'\ud83c\udf7d\ufe0f'}</span>
-          <h2 className="text-xl sm:text-2xl font-bold text-foreground">Your Daily Plate</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground">Canada&apos;s Food Guide Plate</h2>
         </div>
         <p className="text-sm sm:text-base text-muted-foreground mb-6 max-w-2xl">
-          Imagine your plate divided into sections. Here is how much of each food group should fill your plate at every meal!
+          In 2019, Canada replaced the old food pyramid with the <strong>Eat Well Plate</strong>. Fill half your plate with
+          <strong> vegetables and fruits</strong>, a quarter with <strong>whole grain foods</strong>, and a quarter with
+          <strong> protein foods</strong>. Make <strong>water</strong> your drink of choice! Click each food group below to explore. {'\ud83d\udc47'}
         </p>
 
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
-          {/* SVG Plate */}
+          {/* SVG Plate — Canada's Food Guide proportions */}
           <div className="relative w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] flex-shrink-0">
             <svg viewBox="0 0 300 300" className="w-full h-full drop-shadow-xl">
               {/* Plate ring */}
               <circle cx="150" cy="150" r="148" fill="none" stroke="currentColor" strokeWidth="4" className="text-border" />
-              <PlateSection emoji={'\ud83e\udd6c'} label="Vegetables" percent={30} startAngle={0} color="#22c55e" />
-              <PlateSection emoji={'\ud83c\udf3e'} label="Grains" percent={30} startAngle={108} color="#d97706" />
-              <PlateSection emoji={'\ud83c\udf57'} label="Protein" percent={20} startAngle={216} color="#ef4444" />
-              <PlateSection emoji={'\ud83c\udf4e'} label="Fruits" percent={20} startAngle={288} color="#a855f7" />
+              {/* Half plate: Vegetables & Fruits (50%) */}
+              <PlateSection emoji={'\ud83e\udd66\ud83c\udf4e'} label="Vegetables & Fruits" percent={50} startAngle={0} color="#22c55e" />
+              {/* Quarter plate: Whole Grain Foods (25%) */}
+              <PlateSection emoji={'\ud83c\udf3e'} label="Whole Grains" percent={25} startAngle={180} color="#d97706" />
+              {/* Quarter plate: Protein Foods (25%) */}
+              <PlateSection emoji={'\ud83c\udf57'} label="Protein Foods" percent={25} startAngle={270} color="#e11d48" />
             </svg>
 
-            {/* Dairy circle */}
-            <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-blue-400 border-4 border-white dark:border-gray-800 shadow-lg flex flex-col items-center justify-center">
-              <span className="text-lg sm:text-xl" aria-hidden="true">{'\ud83e\udd5b'}</span>
-              <span className="text-[9px] sm:text-[10px] font-bold text-white drop-shadow">Dairy</span>
+            {/* Water glass icon */}
+            <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-b from-cyan-400 to-blue-500 border-4 border-white dark:border-gray-800 shadow-lg flex flex-col items-center justify-center">
+              <Droplets className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+              <span className="text-[9px] sm:text-[10px] font-bold text-white drop-shadow mt-0.5">Water</span>
             </div>
           </div>
 
-          {/* Plate tips */}
+          {/* Plate group descriptions */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1 min-w-0">
             {[
-              { emoji: '\ud83e\udd6c', title: 'Vegetables (30%)', tip: 'Fill almost a third of your plate with veggies. The more colors, the better!' },
-              { emoji: '\ud83c\udf3e', title: 'Grains (30%)', tip: 'Another third should be whole grains like brown rice, oats, or whole wheat bread.' },
-              { emoji: '\ud83c\udf57', title: 'Protein (20%)', tip: 'A smaller section for lean meats, fish, beans, or tofu.' },
-              { emoji: '\ud83c\udf4e', title: 'Fruits (20%)', tip: 'Round out the plate with fresh or frozen fruits.' },
-              { emoji: '\ud83e\udd5b', title: 'Dairy (side)', tip: 'A glass of milk, cup of yogurt, or serving of cheese on the side.' },
+              { emoji: '\ud83e\udd66\ud83c\udf4e', title: 'Vegetables & Fruits (50%)', tip: 'Fill half your plate! The more variety and colour, the better. Fresh, frozen, or canned all count.' },
+              { emoji: '\ud83c\udf3e', title: 'Whole Grain Foods (25%)', tip: 'Choose whole grains like brown rice, oats, quinoa, and whole wheat bread for energy and fibre.' },
+              { emoji: '\ud83c\udf57', title: 'Protein Foods (25%)', tip: 'Choose plant-based proteins like beans, lentils, nuts, and tofu more often. Fish, eggs, and lean meats are great too.' },
+              { emoji: '\ud83d\udca7', title: 'Water (drink of choice)', tip: 'Make water your go-to drink. It has zero sugar and keeps your body hydrated and running well.' },
             ].map((item) => (
               <div key={item.title} className="ocean-card rounded-xl p-3 sm:p-4">
                 <div className="flex items-center gap-2 mb-1">
@@ -450,7 +434,56 @@ export function NutritionPage() {
       </section>
 
       {/* ============================================================ */}
-      {/*  C. Quick Nutrition Facts                                     */}
+      {/*  B. Explore Food Groups                                       */}
+      {/* ============================================================ */}
+      <section>
+        <div className="flex items-center gap-2 mb-6">
+          <span className="text-2xl sm:text-3xl" aria-hidden="true">{'\ud83d\udd0d'}</span>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground">Explore the Food Groups</h2>
+        </div>
+        <p className="text-sm sm:text-base text-muted-foreground mb-6 max-w-2xl">
+          Click on each food group to discover the foods that belong to it and helpful tips from Canada&apos;s Food Guide.
+        </p>
+
+        <div className="flex flex-col gap-3 sm:gap-4 w-full max-w-3xl mx-auto">
+          {PLATE_GROUPS.map((group) => (
+            <PlateGroupCard key={group.id} group={group} />
+          ))}
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/*  C. Healthy Eating Habits                                     */}
+      {/* ============================================================ */}
+      <section>
+        <div className="flex items-center gap-2 mb-6">
+          <span className="text-2xl sm:text-3xl" aria-hidden="true">{'\ud83c\udf1f'}</span>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground">Healthy Eating Habits</h2>
+        </div>
+        <p className="text-sm sm:text-base text-muted-foreground mb-6 max-w-2xl">
+          Canada&apos;s Food Guide is not just about <em>what</em> you eat \u2014 it is also about <em>how</em> you eat. These habits help you build a healthy relationship with food.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {FOOD_GUIDE_HABITS.map((habit) => (
+            <div
+              key={habit.title}
+              className={`ocean-card rounded-xl p-5 border bg-gradient-to-br ${habit.color} hover:scale-[1.02] transition-transform duration-200`}
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-background/50 dark:bg-white/10 border border-border/30">
+                  {habit.icon}
+                </div>
+                <h3 className="font-bold text-base sm:text-lg text-foreground">{habit.title}</h3>
+              </div>
+              <p className="text-sm sm:text-base text-foreground/80">{habit.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/*  D. Quick Nutrition Facts                                     */}
       {/* ============================================================ */}
       <section>
         <div className="flex items-center gap-2 mb-6">
@@ -475,7 +508,7 @@ export function NutritionPage() {
       </section>
 
       {/* ============================================================ */}
-      {/*  D. Meal Ideas                                                */}
+      {/*  E. Meal Ideas                                                */}
       {/* ============================================================ */}
       <section>
         <div className="flex items-center gap-2 mb-6">
@@ -511,7 +544,7 @@ export function NutritionPage() {
       </section>
 
       {/* ============================================================ */}
-      {/*  E. AI Nutrition Helper                                       */}
+      {/*  F. AI Nutrition Helper                                       */}
       {/* ============================================================ */}
       <section>
         <div className="ocean-card rounded-2xl p-6 sm:p-8 border-2 border-[#33FF33]/30 dark:border-[#33FF33]/20">
@@ -521,10 +554,10 @@ export function NutritionPage() {
             </div>
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-                {'\ud83e\udd16'} Ask Wally About Your Meal!
+                {'\ud83e\udd16'} Ask AI Tutor About Your Meal!
               </h2>
               <p className="text-sm text-muted-foreground">
-                Type what you are about to eat and Wally will check its nutritional value.
+                Type what you are about to eat and AI Tutor will check its nutritional value.
               </p>
             </div>
           </div>
@@ -556,7 +589,7 @@ export function NutritionPage() {
 
           {!aiResponse && (
             <p className="mt-4 text-xs sm:text-sm text-muted-foreground italic">
-              {'\ud83d\udee0\ufe0f'} Coming soon \u2014 Wally will analyze your meal&apos;s nutritional value with AI-powered insights!
+              {'\ud83d\udee0\ufe0f'} Coming soon \u2014 AI Tutor will analyze your meal&apos;s nutritional value with AI-powered insights!
             </p>
           )}
         </div>
@@ -567,8 +600,8 @@ export function NutritionPage() {
       {/* ============================================================ */}
       <div className="text-center py-6">
         <p className="text-base sm:text-lg text-muted-foreground">
-          {'\ud83c\udf1f'} <strong>Remember:</strong> There are no &quot;bad&quot; foods \u2014 just eat a balanced variety!
-          Your body is amazing, and it needs lots of different nutrients to thrive. {'\ud83d\udcaa\ud83c\udf08'}
+          {'\ud83c\udf1f'} <strong>Remember:</strong> Healthy eating is about what you eat <em>and</em> how you eat.
+          Cook more, eat with others, enjoy your food, and make water your drink of choice! {'\ud83d\udcaa\ud83d\udca7'}
         </p>
       </div>
     </div>

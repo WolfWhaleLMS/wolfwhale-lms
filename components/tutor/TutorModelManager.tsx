@@ -59,10 +59,10 @@ export default function TutorModelManager() {
               </div>
               <div className="space-y-2">
                 <h2 className="font-display text-lg text-foreground">
-                  Wally AI Tutor
+                  AI Tutor
                 </h2>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Wally AI runs locally on your device. Approximately 1.6 GB
+                  AI Tutor runs locally on your device. Approximately 1.6 GB
                   download on first use. Requires a browser with WebGPU support
                   (Chrome 113+, Edge 113+, or Safari 18+).
                 </p>

@@ -41,7 +41,7 @@ export default function TutorContextBanner({
               </>
             ) : (
               <p className="text-sm text-muted-foreground">
-                Ask Wally about any of your courses!
+                Ask AI Tutor about any of your courses!
               </p>
             )}
           </div>

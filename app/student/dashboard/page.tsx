@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { getLetterGrade } from '@/lib/config/constants'
 import {
@@ -134,6 +135,8 @@ export default async function StudentDashboardPage() {
       gradeResult,
       xpResult,
       achievementResult,
+      attendanceResult,
+      xpEventsResult,
     ] = await Promise.all([
       // Teacher profiles
       teacherIds.length > 0
@@ -200,6 +203,22 @@ export default async function StudentDashboardPage() {
         .eq('tenant_id', tenantId)
         .order('unlocked_at', { ascending: false })
         .limit(5),
+
+      // Attendance records (previously fetched sequentially)
+      supabase
+        .from('attendance_records')
+        .select('status')
+        .eq('tenant_id', tenantId)
+        .eq('student_id', user.id),
+
+      // XP events for streak calculation (previously fetched sequentially)
+      supabase
+        .from('xp_transactions')
+        .select('created_at')
+        .eq('student_id', user.id)
+        .eq('tenant_id', tenantId)
+        .order('created_at', { ascending: false })
+        .limit(100),
     ])
 
     const profiles = profileResult.data || []
@@ -366,27 +385,15 @@ export default async function StudentDashboardPage() {
       }
     })
 
-    // Fetch attendance summary
-    const { data: attendanceRecords } = await supabase
-      .from('attendance_records')
-      .select('status')
-      .eq('tenant_id', tenantId)
-      .eq('student_id', user.id)
-
+    // Process attendance from parallel results
+    const attendanceRecords = attendanceResult.data
     if (attendanceRecords && attendanceRecords.length > 0) {
       const present = attendanceRecords.filter((r) => r.status === 'present' || r.status === 'online').length
       attendanceRate = Math.round((present / attendanceRecords.length) * 100)
     }
 
     // Calculate streak from XP events (consecutive days with activity)
-    const { data: xpEvents } = await supabase
-      .from('xp_transactions')
-      .select('created_at')
-      .eq('student_id', user.id)
-      .eq('tenant_id', tenantId)
-      .order('created_at', { ascending: false })
-      .limit(100)
-
+    const xpEvents = xpEventsResult.data
     if (xpEvents && xpEvents.length > 0) {
       const uniqueDays = [
         ...new Set(
@@ -508,7 +515,9 @@ export default async function StudentDashboardPage() {
       </div>
 
       {/* ===== PINNED ANNOUNCEMENTS ===== */}
-      <AnnouncementBanner />
+      <Suspense fallback={null}>
+        <AnnouncementBanner />
+      </Suspense>
 
 
       {/* ===== PERFORMANCE GAUGES ===== */}

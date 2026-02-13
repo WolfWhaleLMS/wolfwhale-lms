@@ -586,12 +586,40 @@ export default function StudentLessonViewerPage({
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
   }
 
-  // Loading state
+  // Loading state — skeleton that mirrors the final layout
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-20">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="mt-4 text-muted-foreground">Loading lesson...</p>
+      <div className="mx-auto max-w-4xl space-y-6 animate-in fade-in duration-300">
+        <div className="h-5 w-32 rounded bg-muted animate-pulse" />
+        <div className="ocean-card rounded-2xl p-6 space-y-4">
+          <div className="h-7 w-3/4 rounded bg-muted animate-pulse" />
+          <div className="h-4 w-full rounded bg-muted animate-pulse" />
+          <div className="flex items-center gap-4">
+            <div className="h-4 w-20 rounded bg-muted animate-pulse" />
+            <div className="h-4 w-16 rounded bg-muted animate-pulse" />
+          </div>
+        </div>
+        <div className="ocean-card rounded-2xl p-6 space-y-4">
+          <div className="h-6 w-1/2 rounded bg-muted animate-pulse" />
+          <div className="space-y-2">
+            <div className="h-4 w-full rounded bg-muted animate-pulse" />
+            <div className="h-4 w-full rounded bg-muted animate-pulse" />
+            <div className="h-4 w-5/6 rounded bg-muted animate-pulse" />
+            <div className="h-4 w-3/4 rounded bg-muted animate-pulse" />
+          </div>
+          <div className="h-48 w-full rounded-lg bg-muted animate-pulse" />
+          <div className="space-y-2">
+            <div className="h-4 w-full rounded bg-muted animate-pulse" />
+            <div className="h-4 w-2/3 rounded bg-muted animate-pulse" />
+          </div>
+        </div>
+        <div className="flex justify-center">
+          <div className="h-12 w-48 rounded-lg bg-muted animate-pulse" />
+        </div>
+        <div className="flex items-center justify-between border-t border-border pt-6">
+          <div className="h-16 w-44 rounded-lg bg-muted animate-pulse" />
+          <div className="h-16 w-44 rounded-lg bg-muted animate-pulse" />
+        </div>
       </div>
     )
   }

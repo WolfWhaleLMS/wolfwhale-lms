@@ -107,7 +107,7 @@ export function StudentTutorClient({
               </div>
               <div>
                 <h1 className="font-display text-2xl font-bold tracking-tight text-white-outlined sm:text-3xl" style={{ fontFamily: 'var(--font-orbitron, Orbitron, sans-serif)' }}>
-                  Wally AI Tutor
+                  AI Tutor
                 </h1>
                 <div className="flex items-center gap-2 mt-0.5">
                   <span className={`h-2 w-2 rounded-full ${statusColor}`} aria-hidden="true" />
@@ -196,7 +196,7 @@ export function StudentTutorClient({
           </div>
         </aside>
 
-        <main className="flex flex-1 flex-col overflow-hidden" aria-label="Chat with Wally AI Tutor">
+        <main className="flex flex-1 flex-col overflow-hidden" aria-label="Chat with AI Tutor">
           <div className="ocean-card flex h-full flex-col rounded-2xl">
             <TutorChat compact={false} />
           </div>

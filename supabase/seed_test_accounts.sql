@@ -109,7 +109,7 @@ BEGIN
     crypt('WolfWhale-Teacher-2026', gen_salt('bf')),
     now(), now(), now(),
     '{"provider": "email", "providers": ["email"]}'::jsonb,
-    '{"full_name": "Jordan Teacher", "first_name": "Jordan", "last_name": "Teacher"}'::jsonb,
+    '{"full_name": "Mr. Teacher", "first_name": "Mr.", "last_name": "Teacher"}'::jsonb,
     now(), now()
   )
   ON CONFLICT (email) DO UPDATE SET
@@ -204,7 +204,7 @@ BEGIN
     last_name = EXCLUDED.last_name;
 
   INSERT INTO profiles (id, first_name, last_name, avatar_url)
-  VALUES (v_teacher_id, 'Jordan', 'Teacher', NULL)
+  VALUES (v_teacher_id, 'Mr.', 'Teacher', NULL)
   ON CONFLICT (id) DO UPDATE SET
     first_name = EXCLUDED.first_name,
     last_name = EXCLUDED.last_name;

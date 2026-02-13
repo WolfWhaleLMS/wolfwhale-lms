@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Suspense } from 'react'
 import {
   Users,
   GraduationCap,
@@ -61,7 +62,9 @@ export default async function ParentDashboardPage() {
   return (
     <div className="space-y-4 sm:space-y-8 pb-8 sm:pb-12 overflow-x-hidden max-w-full">
       {/* Pinned Announcements */}
-      <AnnouncementBanner />
+      <Suspense fallback={null}>
+        <AnnouncementBanner />
+      </Suspense>
 
       {/* Header */}
       <div>

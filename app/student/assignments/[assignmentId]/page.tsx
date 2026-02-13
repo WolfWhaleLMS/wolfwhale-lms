@@ -338,15 +338,39 @@ export default function StudentAssignmentDetailPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-3xl space-y-8">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">Loading...</h1>
-          <p className="mt-1 text-muted-foreground">Fetching assignment details...</p>
+      <div className="mx-auto max-w-3xl space-y-8 animate-in fade-in duration-300">
+        {/* Back button skeleton */}
+        <div className="h-5 w-36 rounded bg-muted animate-pulse" />
+
+        {/* Assignment header skeleton */}
+        <div className="ocean-card rounded-2xl p-6 space-y-4">
+          <div className="flex items-start justify-between">
+            <div className="flex-1 space-y-2">
+              <div className="h-7 w-3/4 rounded bg-muted animate-pulse" />
+              <div className="h-4 w-40 rounded bg-muted animate-pulse" />
+            </div>
+            <div className="h-8 w-20 rounded-full bg-muted animate-pulse" />
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="h-6 w-20 rounded-full bg-muted animate-pulse" />
+            <div className="h-6 w-24 rounded-full bg-muted animate-pulse" />
+          </div>
+          {/* Due date skeleton */}
+          <div className="h-16 w-full rounded-xl bg-muted animate-pulse" />
+          {/* Description skeleton */}
+          <div className="space-y-2 pt-2">
+            <div className="h-4 w-20 rounded bg-muted animate-pulse" />
+            <div className="h-24 w-full rounded-xl bg-muted animate-pulse" />
+          </div>
         </div>
-        <div className="ocean-card animate-pulse rounded-2xl p-8">
-          <div className="h-6 w-64 rounded bg-muted" />
-          <div className="mt-4 h-4 w-full rounded bg-muted" />
-          <div className="mt-2 h-4 w-3/4 rounded bg-muted" />
+
+        {/* Submission area skeleton */}
+        <div className="ocean-card rounded-2xl p-6 space-y-4">
+          <div className="h-6 w-40 rounded bg-muted animate-pulse" />
+          <div className="h-40 w-full rounded-xl bg-muted animate-pulse" />
+          <div className="flex justify-end pt-2">
+            <div className="h-10 w-28 rounded-xl bg-muted animate-pulse" />
+          </div>
         </div>
       </div>
     )

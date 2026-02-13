@@ -20,7 +20,13 @@ const BUMP_PROXIMITY = 38 // pixels — how close before bump triggers
 const BUMP_COOLDOWN = 5000 // ms — minimum time between same-pair bumps
 const PHASE_DURATION = 280 // ms per bump phase
 
+/** Maximum number of creatures walking on screen at once */
+const MAX_WALKING_PETS = 2
+
 export function PixelPetBar({ pets }: PixelPetBarProps) {
+  // Limit the number of walking pets to avoid performance overhead
+  const visiblePets = pets.slice(0, MAX_WALKING_PETS)
+
   // Create stable refs for each pet's walking state
   const stateRefsMap = useRef<Map<string, React.MutableRefObject<PetState>>>(new Map())
   const [bumpPhases, setBumpPhases] = useState<Map<string, BumpPhase>>(new Map())
@@ -28,8 +34,8 @@ export function PixelPetBar({ pets }: PixelPetBarProps) {
   const cooldownsRef = useRef<Map<string, number>>(new Map())
   const checkIntervalRef = useRef<number>(0)
 
-  // Ensure we have a state ref for every pet
-  for (const pet of pets) {
+  // Ensure we have a state ref for every visible pet
+  for (const pet of visiblePets) {
     if (!stateRefsMap.current.has(pet.id)) {
       const startX = (pet.startOffset / 100) * (typeof window !== 'undefined' ? window.innerWidth : 1200)
       stateRefsMap.current.set(pet.id, {
@@ -117,7 +123,7 @@ export function PixelPetBar({ pets }: PixelPetBarProps) {
     return () => window.clearInterval(checkIntervalRef.current)
   }, [checkProximity])
 
-  if (pets.length === 0) return null
+  if (visiblePets.length === 0) return null
 
   return (
     <div
@@ -125,7 +131,7 @@ export function PixelPetBar({ pets }: PixelPetBarProps) {
       style={{ zIndex: 9998 }}
       aria-hidden="true"
     >
-      {pets.map((pet) => {
+      {visiblePets.map((pet) => {
         const stateRef = stateRefsMap.current.get(pet.id)
         if (!stateRef) return null
         return (

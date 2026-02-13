@@ -28,6 +28,7 @@ import {
   Dog,
   Monitor,
   Bot,
+  Heart,
   type LucideIcon
 } from 'lucide-react'
 
@@ -444,6 +445,96 @@ export default function InfoPage() {
               title="Mobile Responsive"
               description="Fully responsive design that works beautifully on desktops, tablets, and phones. Students and teachers can access everything from any device, anywhere."
             />
+          </div>
+        </div>
+      </section>
+
+      {/* TRC Calls to Action */}
+      <section className="relative z-10 py-20 bg-white/30 backdrop-blur-sm">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#D97706]/10 border border-[#D97706]/20 mb-6">
+              <Heart className="h-4 w-4 text-[#D97706]" />
+              <span className="text-sm text-[#0A2540]/80">Advancing Reconciliation Through Technology</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Supporting TRC Calls to Action</h2>
+            <p className="text-lg text-[#0A2540]/80 max-w-3xl mx-auto">
+              WolfWhale is built to support the Truth and Reconciliation Commission&apos;s Education Calls to Action (6-12), helping schools deliver culturally responsive education through technology.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Call 6 */}
+            <div className="rounded-2xl p-6 ocean-card hover:neon-border-blue transition-all">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#D97706]/15 text-[#D97706] font-bold text-sm">#6</div>
+                <h3 className="font-semibold text-base">Eliminate Education Gaps</h3>
+              </div>
+              <p className="text-sm text-[#0A2540]/80 leading-relaxed">
+                Offline learning mode ensures students in remote and rural communities have full access to courses, flashcards, and study materials -- even without internet connectivity.
+              </p>
+            </div>
+
+            {/* Call 7 */}
+            <div className="rounded-2xl p-6 ocean-card hover:neon-border-blue transition-all">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#D97706]/15 text-[#D97706] font-bold text-sm">#7</div>
+                <h3 className="font-semibold text-base">Culturally Appropriate Curricula</h3>
+              </div>
+              <p className="text-sm text-[#0A2540]/80 leading-relaxed">
+                Culturally responsive content templates and flexible course builders allow educators to create curricula that reflect Indigenous perspectives, traditions, and ways of knowing.
+              </p>
+            </div>
+
+            {/* Call 8 */}
+            <div className="rounded-2xl p-6 ocean-card hover:neon-border-blue transition-all">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#D97706]/15 text-[#D97706] font-bold text-sm">#8</div>
+                <h3 className="font-semibold text-base">Indigenous Language Instruction</h3>
+              </div>
+              <p className="text-sm text-[#0A2540]/80 leading-relaxed">
+                Built-in support for Indigenous language content through spaced repetition flashcards and multimedia lessons, enabling language revitalization programs within the platform.
+              </p>
+            </div>
+
+            {/* Call 9 */}
+            <div className="rounded-2xl p-6 ocean-card hover:neon-border-blue transition-all">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#D97706]/15 text-[#D97706] font-bold text-sm">#9</div>
+                <h3 className="font-semibold text-base">Residential Schools History</h3>
+              </div>
+              <p className="text-sm text-[#0A2540]/80 leading-relaxed">
+                Ready-to-use course modules on residential schools history, designed to be age-appropriate and delivered through interactive lessons, ensuring all students learn this essential history.
+              </p>
+            </div>
+
+            {/* Call 10 */}
+            <div className="rounded-2xl p-6 ocean-card hover:neon-border-blue transition-all">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#D97706]/15 text-[#D97706] font-bold text-sm">#10</div>
+                <h3 className="font-semibold text-base">Share Best Practices</h3>
+              </div>
+              <p className="text-sm text-[#0A2540]/80 leading-relaxed">
+                Community-driven content creation and Indigenous educator collaboration tools allow schools to share teaching resources, pedagogical approaches, and successful program models.
+              </p>
+            </div>
+
+            {/* Call 11 */}
+            <div className="rounded-2xl p-6 ocean-card hover:neon-border-blue transition-all">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#D97706]/15 text-[#D97706] font-bold text-sm">#11</div>
+                <h3 className="font-semibold text-base">Teacher Training</h3>
+              </div>
+              <p className="text-sm text-[#0A2540]/80 leading-relaxed">
+                Professional development courses on Indigenous knowledge systems and First Nations pedagogical approaches, delivered right within the platform teachers already use daily.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-10 text-center">
+            <p className="text-sm text-[#0A2540]/60 max-w-2xl mx-auto italic">
+              WolfWhale is committed to supporting reconciliation through technology. We believe every student deserves access to education that honors Indigenous ways of knowing and learning.
+            </p>
           </div>
         </div>
       </section>

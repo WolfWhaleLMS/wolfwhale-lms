@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import {
   BookOpen,
@@ -169,7 +170,9 @@ export default async function TeacherDashboardPage() {
   return (
     <div className="space-y-4 sm:space-y-6 overflow-x-hidden max-w-full">
       {/* Pinned Announcements */}
-      <AnnouncementBanner />
+      <Suspense fallback={null}>
+        <AnnouncementBanner />
+      </Suspense>
 
       {/* Welcome Header */}
       <div className="ocean-card rounded-2xl p-4 sm:p-6">

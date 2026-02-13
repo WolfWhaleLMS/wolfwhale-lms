@@ -1,18 +1,28 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { Sidebar } from './Sidebar'
 import { TopBar } from './TopBar'
 import type { UserRole } from '@/lib/auth/permissions'
-import { PixelPetBar } from '@/components/pets/PixelPetBar'
 import type { PetData } from '@/components/pets/PetWalker'
 import dynamic from 'next/dynamic'
+
+// Lazy-load heavy client components that are not needed for initial paint
+const PixelPetBar = dynamic(
+  () => import('@/components/pets/PixelPetBar').then((m) => ({ default: m.PixelPetBar })),
+  { ssr: false, loading: () => null }
+)
 
 const TutorWidget = dynamic(() => import('@/components/tutor/TutorWidget'), {
   ssr: false,
   loading: () => null,
 })
-import { OfflineStatusBar } from './OfflineStatusBar'
+
+const OfflineStatusBar = dynamic(
+  () => import('./OfflineStatusBar').then((m) => ({ default: m.OfflineStatusBar })),
+  { ssr: false, loading: () => null }
+)
+
 import { useAutoSync } from '@/lib/offline/hooks'
 
 interface DashboardLayoutProps {
@@ -39,14 +49,10 @@ export function DashboardLayout({
   useAutoSync()
 
   // Demo pets for students (will be replaced with Supabase data)
+  // PixelPetBar enforces a MAX_WALKING_PETS=2 cap for performance
   const demoPets: PetData[] = role === 'student' ? [
-    { id: 'demo-1', creatureType: 1, name: 'Rex',     walkSpeed: 28, startOffset: 5  },
-    { id: 'demo-2', creatureType: 2, name: 'Buddy',   walkSpeed: 38, startOffset: 18 },
-    { id: 'demo-3', creatureType: 3, name: 'Spike',   walkSpeed: 22, startOffset: 32 },
-    { id: 'demo-4', creatureType: 4, name: 'Coral',   walkSpeed: 45, startOffset: 48 },
-    { id: 'demo-5', creatureType: 5, name: 'Nori',    walkSpeed: 33, startOffset: 62 },
-    { id: 'demo-6', creatureType: 6, name: 'Pebble',  walkSpeed: 52, startOffset: 78 },
-    { id: 'demo-7', creatureType: 7, name: 'Drift',   walkSpeed: 26, startOffset: 92 },
+    { id: 'demo-1', creatureType: 1, name: 'Rex',     walkSpeed: 28, startOffset: 15 },
+    { id: 'demo-2', creatureType: 2, name: 'Buddy',   walkSpeed: 38, startOffset: 70 },
   ] : []
 
   // Close sidebar on Escape key

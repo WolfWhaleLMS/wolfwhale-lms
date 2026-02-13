@@ -16,7 +16,7 @@ export default function TutorWidget({ role }: TutorWidgetProps) {
   const status = useTutorStore((s) => s.status)
 
   const isStudent = role === 'student'
-  const title = isStudent ? 'Wally AI' : 'AI Assistant'
+  const title = isStudent ? 'AI Tutor' : 'AI Assistant'
   const tooltipLabel = isStudent ? 'AI Tutor' : 'AI Assistant'
 
   // ------ Status dot color ------ //

@@ -104,7 +104,7 @@ export default function TutorChat({ compact = false }: TutorChatProps) {
         {messages.length === 0 && (
           <div className="flex h-full items-center justify-center">
             <p className="text-sm text-muted-foreground text-center px-4">
-              Ask Wally anything about your courses, lessons, or study material.
+              Ask AI Tutor anything about your courses, lessons, or study material.
             </p>
           </div>
         )}
@@ -124,7 +124,7 @@ export default function TutorChat({ compact = false }: TutorChatProps) {
 
         {/* Typing indicator -- waiting for first token */}
         {waitingForFirstToken && (
-          <div className="flex items-end gap-2" role="status" aria-label="Wally is thinking">
+          <div className="flex items-end gap-2" role="status" aria-label="AI Tutor is thinking">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#00FFFF]/15 text-[#00FFFF]">
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
             </div>
@@ -170,7 +170,7 @@ export default function TutorChat({ compact = false }: TutorChatProps) {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={isGenerating ? 'Wally is thinking...' : 'Ask Wally a question...'}
+            placeholder={isGenerating ? 'AI Tutor is thinking...' : 'Ask AI Tutor a question...'}
             disabled={isGenerating}
             rows={1}
             className={`flex-1 resize-none rounded-xl border border-[#00BFFF]/20 bg-transparent px-3 py-2 text-foreground placeholder:text-muted-foreground focus:border-[#00BFFF]/50 focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/25 disabled:cursor-not-allowed disabled:opacity-50 scrollbar-ocean ${
@@ -195,7 +195,7 @@ export default function TutorChat({ compact = false }: TutorChatProps) {
         </div>
 
         <p className="mt-1.5 text-[10px] text-muted-foreground/70 text-center">
-          Wally runs locally on your device. Responses may vary.
+          AI Tutor runs locally on your device. Responses may vary.
         </p>
       </div>
     </div>

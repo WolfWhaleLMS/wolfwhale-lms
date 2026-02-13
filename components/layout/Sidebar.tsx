@@ -37,7 +37,13 @@ import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 import { getRoleMenuItems, type UserRole } from '@/lib/auth/permissions'
 import { useSound } from '@/components/providers/sound-provider'
-import { SidebarXPWidget } from '@/components/gamification/SidebarXPWidget'
+import dynamic from 'next/dynamic'
+
+// Lazy-load XP widget — it makes a Supabase call on mount, not needed for initial sidebar render
+const SidebarXPWidget = dynamic(
+  () => import('@/components/gamification/SidebarXPWidget').then((m) => ({ default: m.SidebarXPWidget })),
+  { ssr: false, loading: () => null }
+)
 
 // ---------------------------------------------------------------------------
 // Icon mapping: string name -> lucide-react component

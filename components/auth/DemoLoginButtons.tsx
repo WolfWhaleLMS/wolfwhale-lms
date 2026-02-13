@@ -9,7 +9,7 @@ import { getDemoCredentials } from '@/app/actions/demo-auth'
 const demoAccounts = [
   { username: 'student', label: 'Student', icon: GraduationCap, color: 'from-[#00BFFF] to-[#00BFFF]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(0,191,255,0.3)]' },
   { username: 'teacher', label: 'Teacher', icon: BookOpen, color: 'from-[#059669] to-[#059669]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(5,150,105,0.3)]' },
-  { username: 'parent', label: 'Parent', icon: Users, color: 'from-[#00FFFF] to-[#00FFFF]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(0,255,255,0.3)]' },
+  { username: 'parent', label: 'Parent', icon: Users, color: 'from-[#0891B2] to-[#0891B2]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(8,145,178,0.3)]' },
   { username: 'admin', label: 'Admin', icon: Shield, color: 'from-[#D97706] to-[#D97706]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(217,119,6,0.3)]' },
 ]
 
