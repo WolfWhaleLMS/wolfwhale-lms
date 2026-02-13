@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { DemoLoginButtons } from '@/components/auth/DemoLoginButtons'
 import {
   BookOpen,
   ClipboardCheck,
@@ -234,7 +235,7 @@ export default function InfoPage() {
           </p>
 
           <p className="text-base md:text-lg text-[#0A2540]/80 mb-6 max-w-2xl mx-auto">
-            Spaced repetition flashcards, AI tutoring, offline learning, gamification, and complete course management -- all in one platform. Empower teachers, engage students, and connect parents.
+            Interactive courses, quiz builder, gradebook, real-time messaging, attendance tracking, role-based dashboards for students, teachers, parents, and administrators -- everything a school needs in one platform.
           </p>
 
           {/* Canadian Badge */}
@@ -246,7 +247,7 @@ export default function InfoPage() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
             <a
               href="#pricing"
               className="px-8 py-4 rounded-xl bg-[#00BFFF] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] transition-all font-semibold text-white flex items-center gap-2 group neon-glow-blue"
@@ -260,6 +261,11 @@ export default function InfoPage() {
             >
               Login to Your School
             </Link>
+          </div>
+
+          {/* One-Click Demo Buttons */}
+          <div className="max-w-2xl mx-auto rounded-2xl p-6 ocean-card">
+            <DemoLoginButtons />
           </div>
         </div>
       </section>

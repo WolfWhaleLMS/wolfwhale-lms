@@ -5,9 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Loader2, AlertCircle, User, Lock, GraduationCap, BookOpen, Users, Shield } from 'lucide-react'
+import { Loader2, AlertCircle, User, Lock } from 'lucide-react'
 import { loginUser } from '@/app/actions/auth'
-import { demoLogin } from '@/app/actions/demo-auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -19,6 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { TurnstileWidget } from '@/components/auth/TurnstileWidget'
+import { DemoLoginButtons } from '@/components/auth/DemoLoginButtons'
 import { usePianoMusic } from '@/hooks/usePianoMusic'
 
 const loginSchema = z.object({
@@ -33,7 +33,6 @@ export function LoginForm() {
   const searchParams = useSearchParams()
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [demoLoading, setDemoLoading] = useState<string | null>(null)
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
   const { destroy: destroyPianoMusic } = usePianoMusic()
 
@@ -97,70 +96,10 @@ export function LoginForm() {
     router.refresh()
   }
 
-  const demoAccounts = [
-    { username: 'student', label: 'Student', icon: GraduationCap, color: 'from-[#00BFFF] to-[#00BFFF]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(0,191,255,0.3)]' },
-    { username: 'teacher', label: 'Teacher', icon: BookOpen, color: 'from-[#059669] to-[#059669]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(5,150,105,0.3)]' },
-    { username: 'parent', label: 'Parent', icon: Users, color: 'from-[#00FFFF] to-[#00FFFF]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(0,255,255,0.3)]' },
-    { username: 'admin', label: 'Admin', icon: Shield, color: 'from-[#D97706] to-[#D97706]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(217,119,6,0.3)]' },
-  ]
-
-  async function handleDemoLogin(username: string) {
-    if (isLoading) return
-    setDemoLoading(username)
-    setIsLoading(true)
-    setError(null)
-    try {
-      const result = await demoLogin(username)
-      if (result.error) {
-        setError(result.error)
-        return
-      }
-      // Stop piano music before navigating to the dashboard
-      destroyPianoMusic()
-      router.push(redirectTo)
-    } catch {
-      setError('Demo login failed. Please try again.')
-    } finally {
-      setIsLoading(false)
-      setDemoLoading(null)
-    }
-  }
-
   return (
     <div className="space-y-6">
       {/* Demo Quick-Login Buttons */}
-      <div className="space-y-4">
-        <div className="text-center space-y-1.5">
-          <h3 className="text-lg font-bold text-[#0A2540]">
-            Try It Now — No Sign-Up Required
-          </h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Tap any role below to instantly explore WolfWhale as a student, teacher, parent, or admin.
-          </p>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          {demoAccounts.map((account) => {
-            const Icon = account.icon
-            const loading = demoLoading === account.username
-            return (
-              <button
-                key={account.username}
-                type="button"
-                onClick={() => handleDemoLogin(account.username)}
-                disabled={isLoading || demoLoading !== null}
-                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-gradient-to-br ${account.color} text-white font-semibold shadow-md ${account.hoverGlow} hover:shadow-lg hover:scale-[1.03] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed`}
-              >
-                {loading ? (
-                  <Loader2 className="h-6 w-6 animate-spin" />
-                ) : (
-                  <Icon className="h-6 w-6" />
-                )}
-                <span className="text-sm">{loading ? 'Signing in...' : account.label}</span>
-              </button>
-            )
-          })}
-        </div>
-      </div>
+      <DemoLoginButtons />
 
       {/* Divider */}
       <div className="flex items-center gap-3">
