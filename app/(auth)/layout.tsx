@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Music, VolumeX, ArrowLeft } from 'lucide-react'
+import { useTheme } from 'next-themes'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 import { usePianoMusic } from '@/hooks/usePianoMusic'
 import UnderwaterSunbeams from '@/components/effects/UnderwaterSunbeams'
@@ -15,10 +16,20 @@ export default function AuthLayout({
 }) {
   const [mounted, setMounted] = useState(false)
   const { isPlaying, toggle, start } = usePianoMusic()
+  const { setTheme } = useTheme()
 
+  // Force light mode immediately before paint — prevents dark flash
+  useLayoutEffect(() => {
+    document.documentElement.classList.remove('dark')
+    document.documentElement.classList.add('light')
+    document.documentElement.style.colorScheme = 'light'
+  }, [])
+
+  // Keep next-themes state in sync so it persists correctly
   useEffect(() => {
     setMounted(true)
-  }, [])
+    setTheme('light')
+  }, [setTheme])
 
   // Start music on first user interaction only (no eager autoplay)
   useEffect(() => {
