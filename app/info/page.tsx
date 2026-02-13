@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { DemoLoginButtons } from '@/components/auth/DemoLoginButtons'
+import UnderwaterSunbeams from '@/components/effects/UnderwaterSunbeams'
 import {
   BookOpen,
   ClipboardCheck,
@@ -115,10 +116,22 @@ export default function InfoPage() {
             background: 'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(51,255,51,0.08) 0%, transparent 50%)',
           }}
         />
+        {/* Underwater sunbeam light rays */}
+        <UnderwaterSunbeams />
+
         {/* Blob backgrounds */}
         <div className="blob-ocean absolute top-[-10%] right-[-5%] w-[500px] h-[500px] opacity-20" />
         <div className="blob-teal absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] opacity-15" />
 
+        {/* Floating bubble particles */}
+        <div className="bubble-float absolute left-[10%] top-[15%] h-3 w-3 rounded-full bg-[#00BFFF]/10" style={{ animationDelay: '0s' }} />
+        <div className="bubble-float absolute left-[25%] top-[70%] h-5 w-5 rounded-full bg-[#00FFFF]/8" style={{ animationDelay: '-3s' }} />
+        <div className="bubble-float absolute left-[55%] top-[20%] h-2 w-2 rounded-full bg-[#00BFFF]/10" style={{ animationDelay: '-5s' }} />
+        <div className="bubble-float absolute left-[80%] top-[60%] h-4 w-4 rounded-full bg-[#00FFFF]/8" style={{ animationDelay: '-8s' }} />
+        <div className="bubble-float absolute left-[40%] top-[85%] h-6 w-6 rounded-full bg-[#00BFFF]/10" style={{ animationDelay: '-2s' }} />
+        <div className="bubble-float absolute left-[70%] top-[10%] h-3 w-3 rounded-full bg-[#00FFFF]/8" style={{ animationDelay: '-11s' }} />
+        <div className="bubble-float absolute left-[15%] top-[45%] h-4 w-4 rounded-full bg-[#00BFFF]/10" style={{ animationDelay: '-6s' }} />
+        <div className="bubble-float absolute left-[90%] top-[35%] h-2 w-2 rounded-full bg-[#00FFFF]/8" style={{ animationDelay: '-9s' }} />
       </div>
 
       {/* Header Navigation */}
@@ -210,8 +223,93 @@ export default function InfoPage() {
         </div>
       </section>
 
-      {/* Features Grid */}
+      {/* Four User Roles */}
       <section className="relative z-10 py-20 bg-white/30 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Four User Roles</h2>
+            <p className="text-lg text-[#0A2540]/80 max-w-2xl mx-auto">
+              Each role has specific capabilities designed for their needs
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Student */}
+            <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
+              <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-3">
+                <GraduationCap className="h-5 w-5 text-[#00BFFF]" />
+              </div>
+              <h3 className="font-semibold mb-3 text-sm">Student</h3>
+              <ul className="space-y-2 text-xs text-[#0A2540]/80">
+                <RoleItem text="View courses & lessons" />
+                <RoleItem text="Spaced repetition flashcards" />
+                <RoleItem text="Take quizzes & submit work" />
+                <RoleItem text="Earn XP, badges & streaks" />
+                <RoleItem text="AI Tutor for instant help" />
+                <RoleItem text="Virtual pet companion" />
+                <RoleItem text="Chess, mini-games & study tools" />
+                <RoleItem text="Study music radio" />
+                <RoleItem text="Full offline study mode" />
+              </ul>
+            </div>
+
+            {/* Teacher */}
+            <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
+              <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-3">
+                <BookOpen className="h-5 w-5 text-[#00BFFF]" />
+              </div>
+              <h3 className="font-semibold mb-3 text-sm">Teacher</h3>
+              <ul className="space-y-2 text-xs text-[#0A2540]/80">
+                <RoleItem text="Create courses & modules" />
+                <RoleItem text="Rich lesson builder with content blocks" />
+                <RoleItem text="Build quizzes (multiple types)" />
+                <RoleItem text="Create flashcard decks" />
+                <RoleItem text="Gradebook & grade management" />
+                <RoleItem text="Track attendance" />
+                <RoleItem text="Student analytics" />
+                <RoleItem text="Message students & parents" />
+              </ul>
+            </div>
+
+            {/* Parent */}
+            <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
+              <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-3">
+                <Users className="h-5 w-5 text-[#00BFFF]" />
+              </div>
+              <h3 className="font-semibold mb-3 text-sm">Parent</h3>
+              <ul className="space-y-2 text-xs text-[#0A2540]/80">
+                <RoleItem text="Monitor child grades & progress" />
+                <RoleItem text="View attendance patterns" />
+                <RoleItem text="See upcoming assignments" />
+                <RoleItem text="Track XP & achievements" />
+                <RoleItem text="Message teachers directly" />
+                <RoleItem text="Receive real-time alerts" />
+                <RoleItem text="Visual performance dashboards" />
+              </ul>
+            </div>
+
+            {/* School Admin */}
+            <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
+              <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-3">
+                <Building2 className="h-5 w-5 text-[#00BFFF]" />
+              </div>
+              <h3 className="font-semibold mb-3 text-sm">School Admin</h3>
+              <ul className="space-y-2 text-xs text-[#0A2540]/80">
+                <RoleItem text="Manage all users & roles" />
+                <RoleItem text="Configure school settings" />
+                <RoleItem text="View school-wide reports" />
+                <RoleItem text="Bulk enrollment" />
+                <RoleItem text="Custom branding & subdomain" />
+                <RoleItem text="Audit logs & compliance" />
+                <RoleItem text="System monitoring" />
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section className="relative z-10 py-20">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Everything You Need</h2>
@@ -424,92 +522,6 @@ export default function InfoPage() {
                 <Image src="/screenshots/admin-dashboard.png" alt="Admin Dashboard — school health, enrollment, users, and system settings" width={1440} height={900} className="w-full h-auto" />
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Role Overview */}
-      <section className="relative z-10 py-20 bg-white/30 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Four User Roles</h2>
-            <p className="text-lg text-[#0A2540]/80 max-w-2xl mx-auto">
-              Each role has specific capabilities designed for their needs
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Student */}
-            <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-3">
-                <GraduationCap className="h-5 w-5 text-[#00BFFF]" />
-              </div>
-              <h3 className="font-semibold mb-3 text-sm">Student</h3>
-              <ul className="space-y-2 text-xs text-[#0A2540]/80">
-                <RoleItem text="View courses & lessons" />
-                <RoleItem text="Spaced repetition flashcards" />
-                <RoleItem text="Take quizzes & submit work" />
-                <RoleItem text="Earn XP, badges & streaks" />
-                <RoleItem text="AI Tutor for instant help" />
-                <RoleItem text="Virtual pet companion" />
-                <RoleItem text="Chess, mini-games & study tools" />
-                <RoleItem text="Study music radio" />
-                <RoleItem text="Full offline study mode" />
-              </ul>
-            </div>
-
-            {/* Teacher */}
-            <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-3">
-                <BookOpen className="h-5 w-5 text-[#00BFFF]" />
-              </div>
-              <h3 className="font-semibold mb-3 text-sm">Teacher</h3>
-              <ul className="space-y-2 text-xs text-[#0A2540]/80">
-                <RoleItem text="Create courses & modules" />
-                <RoleItem text="Rich lesson builder with content blocks" />
-                <RoleItem text="Build quizzes (multiple types)" />
-                <RoleItem text="Create flashcard decks" />
-                <RoleItem text="Gradebook & grade management" />
-                <RoleItem text="Track attendance" />
-                <RoleItem text="Student analytics" />
-                <RoleItem text="Message students & parents" />
-              </ul>
-            </div>
-
-            {/* Parent */}
-            <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-3">
-                <Users className="h-5 w-5 text-[#00BFFF]" />
-              </div>
-              <h3 className="font-semibold mb-3 text-sm">Parent</h3>
-              <ul className="space-y-2 text-xs text-[#0A2540]/80">
-                <RoleItem text="Monitor child grades & progress" />
-                <RoleItem text="View attendance patterns" />
-                <RoleItem text="See upcoming assignments" />
-                <RoleItem text="Track XP & achievements" />
-                <RoleItem text="Message teachers directly" />
-                <RoleItem text="Receive real-time alerts" />
-                <RoleItem text="Visual performance dashboards" />
-              </ul>
-            </div>
-
-            {/* School Admin */}
-            <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-3">
-                <Building2 className="h-5 w-5 text-[#00BFFF]" />
-              </div>
-              <h3 className="font-semibold mb-3 text-sm">School Admin</h3>
-              <ul className="space-y-2 text-xs text-[#0A2540]/80">
-                <RoleItem text="Manage all users & roles" />
-                <RoleItem text="Configure school settings" />
-                <RoleItem text="View school-wide reports" />
-                <RoleItem text="Bulk enrollment" />
-                <RoleItem text="Custom branding & subdomain" />
-                <RoleItem text="Audit logs & compliance" />
-                <RoleItem text="System monitoring" />
-              </ul>
-            </div>
-
           </div>
         </div>
       </section>

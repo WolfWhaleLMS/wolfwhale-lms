@@ -39,11 +39,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wolfwhale.ca";
 
 export const metadata: Metadata = {
   title: {
-    default: "WolfWhale EdTech - Education Technology Solutions",
+    default: "WolfWhale - Learning Management System",
     template: "%s | WolfWhale",
   },
   description:
-    "WolfWhale EdTech is a Canadian education technology company building modern tools for learning. Our flagship LMS features built-in spaced repetition, interactive courses, and FERPA & PIPEDA compliance.",
+    "WolfWhale is a Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, gamification, and complete course management for K-12 and post-secondary schools.",
   keywords: [
     "LMS",
     "learning management system",
@@ -80,9 +80,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "WolfWhale EdTech",
-    title: "WolfWhale EdTech - Education Technology Solutions",
+    title: "WolfWhale - Learning Management System",
     description:
-      "Canadian education technology company building modern tools for learning. Flagship LMS with spaced repetition, interactive courses, and full compliance.",
+      "Canadian learning management system with spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
     images: [
       {
         url: "/ww-card.png",
@@ -94,9 +94,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "WolfWhale EdTech - Education Technology Solutions",
+    title: "WolfWhale - Learning Management System",
     description:
-      "Canadian education technology company building modern tools for learning. Flagship LMS with spaced repetition, interactive courses, and full compliance.",
+      "Canadian learning management system with spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
     images: ["/ww-card.png"],
     creator: "@wolfwhale",
   },
