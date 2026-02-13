@@ -488,12 +488,12 @@ export default async function StudentDashboardPage() {
         <div className="relative z-10">
           <div className="flex items-center gap-2 sm:gap-3">
             <Sparkles className="h-6 w-6 sm:h-10 sm:w-10 text-[#D97706] shrink-0" />
-            <p className="text-base sm:text-2xl font-medium text-white text-white-outlined">{greeting}</p>
+            <p className="text-lg sm:text-3xl font-medium text-white text-white-outlined">{greeting}</p>
           </div>
-          <h1 className="mt-1 sm:mt-2 text-2xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white-outlined break-words">
+          <h1 className="mt-1 sm:mt-2 text-3xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white-outlined break-words">
             Hey {studentName}!
           </h1>
-          <p className="mt-1 sm:mt-2 text-base sm:text-3xl text-white/90 text-white-outlined">
+          <p className="mt-1 sm:mt-2 text-lg sm:text-3xl text-white/90 text-white-outlined">
             Ready to learn something awesome today?
           </p>
 
