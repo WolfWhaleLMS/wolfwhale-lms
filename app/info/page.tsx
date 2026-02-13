@@ -19,7 +19,6 @@ import {
   Phone,
   ChevronRight,
   CheckCircle2,
-  Brain,
   WifiOff,
   Gamepad2,
   Music,
@@ -27,9 +26,7 @@ import {
   Bell,
   Dog,
   Monitor,
-  Repeat,
   Bot,
-  Wifi,
   type LucideIcon
 } from 'lucide-react'
 
@@ -78,67 +75,6 @@ function FeatureCard({
   )
 }
 
-/* ============================================
-   Screenshot Placeholder Card Component
-   ============================================ */
-function ScreenshotCard({
-  icon: Icon,
-  title,
-  subtitle,
-  description,
-  gradientFrom,
-  gradientTo,
-}: {
-  icon: LucideIcon
-  title: string
-  subtitle: string
-  description: string
-  gradientFrom: string
-  gradientTo: string
-}) {
-  return (
-    <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
-      <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
-        <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33] text-white">
-          <Icon className="h-5 w-5 text-white" />
-        </div>
-        <div>
-          <h3 className="text-lg font-semibold">{title}</h3>
-          <p className="text-xs text-[#0A2540]/80">{subtitle}</p>
-        </div>
-      </div>
-      {/* Glass placeholder with gradient + icon where screenshot will go */}
-      <div
-        className="relative h-56 md:h-64 flex flex-col items-center justify-center gap-4 p-6"
-        style={{
-          background: `linear-gradient(135deg, ${gradientFrom}18, ${gradientTo}12, ${gradientFrom}08)`,
-        }}
-      >
-        {/* Decorative grid dots */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle, #0A2540 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
-          }}
-        />
-        <div
-          className="relative p-5 rounded-2xl backdrop-blur-sm border border-white/30 shadow-lg"
-          style={{
-            background: `linear-gradient(135deg, ${gradientFrom}25, ${gradientTo}15)`,
-          }}
-        >
-          <Icon className="h-10 w-10 text-white drop-shadow-lg" />
-        </div>
-        <div className="relative text-center">
-          <p className="text-sm font-semibold text-[#0A2540]/70">{description}</p>
-          <p className="text-xs text-[#0A2540]/50 mt-1">Screenshot coming soon</p>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 /* ============================================
    Role Capability Item
@@ -204,8 +140,17 @@ export default function InfoPage() {
         </div>
       </header>
 
+      {/* One-Click Demo — top of page for instant access */}
+      <section className="relative z-10 pt-8 pb-4">
+        <div className="max-w-2xl mx-auto px-6">
+          <div className="rounded-2xl p-6 ocean-card">
+            <DemoLoginButtons />
+          </div>
+        </div>
+      </section>
+
       {/* Hero Section */}
-      <section className="relative z-10 py-20 md:py-32">
+      <section className="relative z-10 py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00BFFF]/10 border border-[#00BFFF]/20 mb-6">
             <Sparkles className="h-4 w-4 text-[#00BFFF]" />
@@ -235,12 +180,12 @@ export default function InfoPage() {
           </p>
 
           <p className="text-base md:text-lg text-[#0A2540]/80 mb-6 max-w-2xl mx-auto">
-            Interactive courses, quiz builder, gradebook, real-time messaging, attendance tracking, role-based dashboards for students, teachers, parents, and administrators -- everything a school needs in one platform.
+            Interactive courses, AI tutoring, full offline learning, spaced repetition flashcards, gradebook, real-time messaging, attendance tracking, and role-based dashboards for students, teachers, parents, and administrators -- everything a school needs in one platform.
           </p>
 
           {/* Canadian Badge */}
           <div className="flex items-center justify-center gap-3 mb-10 px-6 py-3 rounded-xl ocean-card w-fit mx-auto shadow-sm">
-            <Image src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" width={40} height={80} className="h-20 w-auto object-contain" />
+            <Image src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" width={160} height={160} className="h-20 w-auto object-contain" />
             <div className="text-left">
               <p className="text-sm font-bold text-[#0A2540]">100% Canadian Owned &amp; Built</p>
               <p className="text-xs text-[#0A2540]/80">Proudly designed and developed in Canada</p>
@@ -261,57 +206,6 @@ export default function InfoPage() {
             >
               Login to Your School
             </Link>
-          </div>
-
-          {/* One-Click Demo Buttons */}
-          <div className="max-w-2xl mx-auto rounded-2xl p-6 ocean-card">
-            <DemoLoginButtons />
-          </div>
-        </div>
-      </section>
-
-      {/* USP Highlight — Spaced Repetition Flashcards */}
-      <section className="relative z-10 py-16 bg-white/20 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#33FF33]/10 border border-[#33FF33]/25 mb-4">
-              <Brain className="h-4 w-4 text-[#33FF33]" />
-              <span className="text-sm font-semibold text-[#0A2540]/80">What Sets Us Apart</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Spaced Repetition Flashcards</h2>
-            <p className="text-lg text-[#0A2540]/80 max-w-3xl mx-auto">
-              The only LMS with a built-in SM-2 spaced repetition system. Students retain more, study smarter, and see measurable improvements in long-term memory -- a feature no competitor offers.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            <div className="rounded-2xl p-6 ocean-card text-center">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#33FF33]/15 to-[#00BFFF]/10 w-fit mx-auto mb-4">
-                <Repeat className="h-7 w-7 text-[#33FF33]" />
-              </div>
-              <h3 className="font-semibold mb-2">SM-2 Algorithm</h3>
-              <p className="text-sm text-[#0A2540]/80">
-                Scientifically proven spaced repetition scheduling adjusts review intervals based on how well each student knows the material.
-              </p>
-            </div>
-            <div className="rounded-2xl p-6 ocean-card text-center">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#33FF33]/15 to-[#00BFFF]/10 w-fit mx-auto mb-4">
-                <Brain className="h-7 w-7 text-[#33FF33]" />
-              </div>
-              <h3 className="font-semibold mb-2">Long-Term Retention</h3>
-              <p className="text-sm text-[#0A2540]/80">
-                Students review at optimal intervals so knowledge moves from short-term to long-term memory. Less cramming, better results.
-              </p>
-            </div>
-            <div className="rounded-2xl p-6 ocean-card text-center">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#33FF33]/15 to-[#00BFFF]/10 w-fit mx-auto mb-4">
-                <Sparkles className="h-7 w-7 text-[#33FF33]" />
-              </div>
-              <h3 className="font-semibold mb-2">XP Integration</h3>
-              <p className="text-sm text-[#0A2540]/80">
-                Flashcard reviews earn XP, feeding into the gamification system. Students stay motivated as studying directly levels up their profile.
-              </p>
-            </div>
           </div>
         </div>
       </section>
@@ -468,44 +362,68 @@ export default function InfoPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Student Dashboard */}
-            <ScreenshotCard
-              icon={GraduationCap}
-              title="Student Dashboard"
-              subtitle="Your learning command center"
-              description="Performance gauges, upcoming tasks, enrolled classes, XP progress, and virtual pet status"
-              gradientFrom="#00BFFF"
-              gradientTo="#33FF33"
-            />
+            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
+              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33] text-white">
+                  <GraduationCap className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Student Dashboard</h3>
+                  <p className="text-xs text-[#0A2540]/80">Your learning command center</p>
+                </div>
+              </div>
+              <div className="relative">
+                <Image src="/screenshots/student-dashboard.png" alt="Student Dashboard — performance gauges, courses, tasks, XP, and virtual pets" width={1440} height={900} className="w-full h-auto" />
+              </div>
+            </div>
 
             {/* Teacher Dashboard */}
-            <ScreenshotCard
-              icon={BookOpen}
-              title="Teacher Dashboard"
-              subtitle="Manage courses and students"
-              description="Course management, gradebook overview, student analytics, and attendance tracking"
-              gradientFrom="#00BFFF"
-              gradientTo="#8B5CF6"
-            />
+            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
+              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#8B5CF6] text-white">
+                  <BookOpen className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Teacher Dashboard</h3>
+                  <p className="text-xs text-[#0A2540]/80">Manage courses and students</p>
+                </div>
+              </div>
+              <div className="relative">
+                <Image src="/screenshots/teacher-dashboard.png" alt="Teacher Dashboard — courses, gradebook, students, and quick actions" width={1440} height={900} className="w-full h-auto" />
+              </div>
+            </div>
 
-            {/* AI Tutor */}
-            <ScreenshotCard
-              icon={Bot}
-              title="AI Tutor"
-              subtitle="Browser-based intelligent tutoring"
-              description="WebLLM-powered AI tutor running entirely in the browser -- zero API cost, full privacy"
-              gradientFrom="#33FF33"
-              gradientTo="#00BFFF"
-            />
+            {/* Parent Dashboard */}
+            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
+              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00FFFF] to-[#00BFFF] text-white">
+                  <Users className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Parent Dashboard</h3>
+                  <p className="text-xs text-[#0A2540]/80">Monitor your child&apos;s progress</p>
+                </div>
+              </div>
+              <div className="relative">
+                <Image src="/screenshots/parent-dashboard.png" alt="Parent Dashboard — grades, attendance, assignments, and child progress" width={1440} height={900} className="w-full h-auto" />
+              </div>
+            </div>
 
-            {/* Offline Mode */}
-            <ScreenshotCard
-              icon={Wifi}
-              title="Offline Mode"
-              subtitle="Study anywhere, anytime"
-              description="Full offline support with IndexedDB storage and automatic sync when back online"
-              gradientFrom="#FFAA00"
-              gradientTo="#00BFFF"
-            />
+            {/* Admin Dashboard */}
+            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
+              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#D97706] to-[#F59E0B] text-white">
+                  <Building2 className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Admin Dashboard</h3>
+                  <p className="text-xs text-[#0A2540]/80">School overview and management</p>
+                </div>
+              </div>
+              <div className="relative">
+                <Image src="/screenshots/admin-dashboard.png" alt="Admin Dashboard — school health, enrollment, users, and system settings" width={1440} height={900} className="w-full h-auto" />
+              </div>
+            </div>
           </div>
         </div>
       </section>

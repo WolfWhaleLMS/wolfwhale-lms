@@ -12,7 +12,14 @@ const demoAccounts = [
   { username: 'admin', label: 'Admin', icon: Shield, color: 'from-[#D97706] to-[#D97706]/80', hoverGlow: 'hover:shadow-[0_0_20px_rgba(217,119,6,0.3)]' },
 ]
 
-export function DemoLoginButtons() {
+interface DemoLoginButtonsProps {
+  /** Called after successful login, before navigation */
+  onSuccess?: () => void
+  /** Where to redirect after login (default: /dashboard) */
+  redirectTo?: string
+}
+
+export function DemoLoginButtons({ onSuccess, redirectTo = '/dashboard' }: DemoLoginButtonsProps = {}) {
   const router = useRouter()
   const [loading, setLoading] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -27,7 +34,8 @@ export function DemoLoginButtons() {
         setError(result.error)
         return
       }
-      router.push('/dashboard')
+      onSuccess?.()
+      router.push(redirectTo)
       router.refresh()
     } catch {
       setError('Demo login failed. Please try again.')

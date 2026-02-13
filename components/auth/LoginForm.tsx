@@ -99,7 +99,7 @@ export function LoginForm() {
   return (
     <div className="space-y-6">
       {/* Demo Quick-Login Buttons */}
-      <DemoLoginButtons />
+      <DemoLoginButtons onSuccess={destroyPianoMusic} redirectTo={redirectTo} />
 
       {/* Divider */}
       <div className="flex items-center gap-3">
