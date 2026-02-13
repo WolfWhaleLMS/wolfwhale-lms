@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { DemoLoginButtons } from '@/components/auth/DemoLoginButtons'
 import UnderwaterSunbeams from '@/components/effects/UnderwaterSunbeams'
+import LavaBlobs from '@/components/effects/LavaBlobs'
 import {
   BookOpen,
   ClipboardCheck,
@@ -15,7 +15,6 @@ import {
   LayoutDashboard,
   GraduationCap,
   Sparkles,
-  Zap,
   Mail,
   Phone,
   ChevronRight,
@@ -59,7 +58,7 @@ function FeatureCard({
             : 'from-[#00BFFF]/10 to-[#33FF33]/10'
         }`}
       >
-        <Icon className={`h-6 w-6 ${highlight ? 'text-[#33FF33]' : 'text-[#00BFFF]'}`} />
+        <Icon className={`h-6 w-6 ${highlight ? 'text-[#33FF33]' : 'text-[#0077B6]'}`} />
       </div>
       <h3 className={`font-semibold mb-3 ${highlight ? 'text-2xl' : 'text-xl'}`}>
         {title}
@@ -84,7 +83,7 @@ function FeatureCard({
 function RoleItem({ text }: { text: string }) {
   return (
     <li className="flex items-start gap-2">
-      <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
+      <CheckCircle2 className="h-3 w-3 text-[#0077B6] mt-0.5 flex-shrink-0" />
       <span>{text}</span>
     </li>
   )
@@ -124,6 +123,9 @@ export default function InfoPage() {
         <div className="blob-ocean absolute top-[-10%] right-[-5%] w-[500px] h-[500px] opacity-20" />
         <div className="blob-teal absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] opacity-15" />
 
+        {/* Lava lamp chrome blobs */}
+        <LavaBlobs />
+
         {/* Floating bubble particles */}
         <div className="bubble-float absolute left-[10%] top-[15%] h-3 w-3 rounded-full bg-[#00BFFF]/10" style={{ animationDelay: '0s' }} />
         <div className="bubble-float absolute left-[25%] top-[70%] h-5 w-5 rounded-full bg-[#00FFFF]/8" style={{ animationDelay: '-3s' }} />
@@ -147,27 +149,18 @@ export default function InfoPage() {
           </div>
           <Link
             href="/login"
-            className="px-6 py-2.5 rounded-lg bg-[#00BFFF] text-white hover:shadow-[0_0_20px_rgba(0,191,255,0.4)] transition-all text-sm font-medium shadow-md"
+            className="px-6 py-2.5 rounded-lg btn-chrome-3d-blue text-white transition-all text-sm font-bold"
           >
             Login
           </Link>
         </div>
       </header>
 
-      {/* One-Click Demo — top of page for instant access */}
-      <section className="relative z-10 pt-8 pb-4">
-        <div className="max-w-2xl mx-auto px-6">
-          <div className="rounded-2xl p-6 ocean-card">
-            <DemoLoginButtons />
-          </div>
-        </div>
-      </section>
-
       {/* Hero Section */}
       <section className="relative z-10 py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00BFFF]/10 border border-[#00BFFF]/20 mb-6">
-            <Sparkles className="h-4 w-4 text-[#00BFFF]" />
+            <Sparkles className="h-4 w-4 text-[#0077B6]" />
             <span className="text-sm text-[#0A2540]/80">The Modern K-12 & Post-Secondary Learning Platform</span>
           </div>
 
@@ -177,49 +170,118 @@ export default function InfoPage() {
               background: 'linear-gradient(to right, #00BFFF, #33FF33)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              WebkitTextStroke: '1.5px rgba(0,0,0,0.35)',
-              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
+              WebkitTextStroke: '3px rgba(0,0,0,0.6)',
+              filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.3))',
             }}
           >
             WOLFWHALE
           </h1>
 
-          <p className="text-lg md:text-xl text-[#0A2540]/80 mb-2 tracking-[0.15em] uppercase font-display font-bold"
+          <p className="text-lg md:text-xl text-[#0A2540]/80 mb-6 tracking-[0.15em] uppercase font-display font-bold"
             style={{ textShadow: '0 1px 2px rgba(0,0,0,0.10)' }}
           >
             Learning Management System
           </p>
           <p className="text-xl md:text-2xl text-[#0A2540]/80 mb-4 max-w-3xl mx-auto">
-            The comprehensive learning management system built for K-12 and post-secondary institutions
+            The most essential tool in modern education — built for Canadian K-12 and post-secondary schools
           </p>
 
           <p className="text-base md:text-lg text-[#0A2540]/80 mb-6 max-w-2xl mx-auto">
             Interactive courses, AI tutoring, full offline learning, spaced repetition flashcards, gradebook, real-time messaging, attendance tracking, and role-based dashboards for students, teachers, parents, and administrators -- everything a school needs in one platform.
           </p>
 
-          {/* Canadian Badge */}
-          <div className="flex items-center justify-center gap-3 mb-10 px-6 py-3 rounded-xl ocean-card w-fit mx-auto shadow-sm">
-            <Image src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" width={160} height={160} className="h-20 w-auto object-contain" />
-            <div className="text-left">
-              <p className="text-sm font-bold text-[#0A2540]">100% Canadian Owned &amp; Built</p>
-              <p className="text-xs text-[#0A2540]/80">Proudly designed and developed in Canada</p>
-            </div>
-          </div>
-
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
             <a
               href="#pricing"
-              className="px-8 py-4 rounded-xl bg-[#00BFFF] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] transition-all font-semibold text-white flex items-center gap-2 group neon-glow-blue"
+              className="px-8 py-4 rounded-xl btn-chrome-3d-blue text-white transition-all font-bold flex items-center gap-2 group"
             >
               Request a Demo
               <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </a>
             <Link
               href="/login"
-              className="px-8 py-4 rounded-xl border-2 border-[#00BFFF]/20 hover:border-[#00BFFF] hover:bg-[#00BFFF]/5 transition-all font-semibold text-[#0A2540]"
+              className="px-8 py-4 rounded-xl btn-chrome-3d-silver transition-all font-bold"
             >
               Login to Your School
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Dashboard Previews */}
+      <section className="relative z-10 py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Built for Every Role</h2>
+            <p className="text-lg text-[#0A2540]/80 max-w-2xl mx-auto">
+              Tailored experiences for students, teachers, parents, and administrators
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Student Dashboard */}
+            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
+              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33] text-white">
+                  <GraduationCap className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Student Dashboard</h3>
+                  <p className="text-xs text-[#0A2540]/80">Your learning command center</p>
+                </div>
+              </div>
+              <div className="relative">
+                <Image src="/screenshots/student-dashboard.png" alt="Student Dashboard — performance gauges, courses, tasks, XP, and virtual pets" width={1440} height={900} className="w-full h-auto" />
+              </div>
+            </div>
+
+            {/* Teacher Dashboard */}
+            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
+              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#8B5CF6] text-white">
+                  <BookOpen className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Teacher Dashboard</h3>
+                  <p className="text-xs text-[#0A2540]/80">Manage courses and students</p>
+                </div>
+              </div>
+              <div className="relative">
+                <Image src="/screenshots/teacher-dashboard.png" alt="Teacher Dashboard — courses, gradebook, students, and quick actions" width={1440} height={900} className="w-full h-auto" />
+              </div>
+            </div>
+
+            {/* Parent Dashboard */}
+            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
+              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00FFFF] to-[#00BFFF] text-white">
+                  <Users className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Parent Dashboard</h3>
+                  <p className="text-xs text-[#0A2540]/80">Monitor your child&apos;s progress</p>
+                </div>
+              </div>
+              <div className="relative">
+                <Image src="/screenshots/parent-dashboard.png" alt="Parent Dashboard — grades, attendance, assignments, and child progress" width={1440} height={900} className="w-full h-auto" />
+              </div>
+            </div>
+
+            {/* Admin Dashboard */}
+            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
+              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-[#D97706] to-[#F59E0B] text-white">
+                  <Building2 className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Admin Dashboard</h3>
+                  <p className="text-xs text-[#0A2540]/80">School overview and management</p>
+                </div>
+              </div>
+              <div className="relative">
+                <Image src="/screenshots/admin-dashboard.png" alt="Admin Dashboard — school health, enrollment, users, and system settings" width={1440} height={900} className="w-full h-auto" />
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -238,7 +300,7 @@ export default function InfoPage() {
             {/* Student */}
             <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
               <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-3">
-                <GraduationCap className="h-5 w-5 text-[#00BFFF]" />
+                <GraduationCap className="h-5 w-5 text-[#0077B6]" />
               </div>
               <h3 className="font-semibold mb-3 text-sm">Student</h3>
               <ul className="space-y-2 text-xs text-[#0A2540]/80">
@@ -257,7 +319,7 @@ export default function InfoPage() {
             {/* Teacher */}
             <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
               <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-3">
-                <BookOpen className="h-5 w-5 text-[#00BFFF]" />
+                <BookOpen className="h-5 w-5 text-[#0077B6]" />
               </div>
               <h3 className="font-semibold mb-3 text-sm">Teacher</h3>
               <ul className="space-y-2 text-xs text-[#0A2540]/80">
@@ -275,7 +337,7 @@ export default function InfoPage() {
             {/* Parent */}
             <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
               <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-3">
-                <Users className="h-5 w-5 text-[#00BFFF]" />
+                <Users className="h-5 w-5 text-[#0077B6]" />
               </div>
               <h3 className="font-semibold mb-3 text-sm">Parent</h3>
               <ul className="space-y-2 text-xs text-[#0A2540]/80">
@@ -292,7 +354,7 @@ export default function InfoPage() {
             {/* School Admin */}
             <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
               <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#33FF33]/10 w-fit mb-3">
-                <Building2 className="h-5 w-5 text-[#00BFFF]" />
+                <Building2 className="h-5 w-5 text-[#0077B6]" />
               </div>
               <h3 className="font-semibold mb-3 text-sm">School Admin</h3>
               <ul className="space-y-2 text-xs text-[#0A2540]/80">
@@ -320,131 +382,24 @@ export default function InfoPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Interactive Courses */}
-            <FeatureCard
-              icon={BookOpen}
-              title="Interactive Courses"
-              description="Create courses with modules and lessons using our rich lesson builder. Content blocks for text, headings, images, and video make building engaging lessons intuitive and fast."
-            />
-
-            {/* Quiz Builder */}
-            <FeatureCard
-              icon={ClipboardCheck}
-              title="Quiz Builder"
-              description="Build quizzes with multiple question types: multiple choice, true/false, short answer, and essay. Auto-grading support and detailed analytics for student performance."
-            />
-
-            {/* Gradebook */}
-            <FeatureCard
-              icon={BarChart3}
-              title="Gradebook & Grade Tracking"
-              description="Traditional weighted gradebook with A-F grading, category weighting, grade statistics, and CSV/PDF export. Full control over grading policies and late work handling."
-            />
-
-            {/* AI Tutor */}
-            <FeatureCard
-              icon={Bot}
-              title="AI Tutor (WebLLM)"
-              description="Intelligent tutoring powered by WebLLM that runs entirely in the browser. Zero API costs, full student privacy, and instant help whenever students need it -- no data leaves the device."
-            />
-
-            {/* Offline Mode */}
-            <FeatureCard
-              icon={WifiOff}
-              title="Full Offline Mode"
-              description="Study anywhere with complete offline support powered by IndexedDB storage. Lessons, flashcards, and progress sync automatically when connectivity returns."
-            />
-
-            {/* Gamification */}
-            <FeatureCard
-              icon={Trophy}
-              title="Gamification"
-              description="XP system with levels, achievements, badges, leaderboards, and streak tracking. Motivate students through friendly competition and recognition of consistent effort."
-            />
-
-            {/* Virtual Pet Companions */}
-            <FeatureCard
-              icon={Dog}
-              title="Virtual Pet Companions"
-              description="Students adopt virtual pets that evolve and grow as they learn. Pets level up through study activity, creating a fun, nurturing motivation loop alongside academic progress."
-            />
-
-            {/* Attendance Tracking */}
-            <FeatureCard
-              icon={CalendarCheck}
-              title="Attendance Tracking"
-              description="Daily attendance with present, absent, tardy, and excused statuses. Pattern detection alerts teachers and parents to potential issues before they escalate."
-            />
-
-            {/* Parent Dashboard */}
-            <FeatureCard
-              icon={Users}
-              title="Parent Dashboard"
-              description="At-a-glance visual dashboard with grade dials, attendance gauges, upcoming assignments, and easy teacher messaging. Keep parents engaged and informed about their child's progress."
-            />
-
-            {/* Student Tools */}
-            <FeatureCard
-              icon={Gamepad2}
-              title="Student Tools"
-              description="Chess, mini-games, and a dedicated study mode with focus timers and DND. Students earn XP for study sessions, building healthy habits while having fun."
-            />
-
-            {/* Study Music Radio */}
-            <FeatureCard
-              icon={Music}
-              title="Study Music Radio"
-              description="Built-in ambient music radio player to help students stay focused during study sessions. Lo-fi beats, nature sounds, and focus tracks available at the click of a button."
-            />
-
-            {/* Real-Time Notifications */}
-            <FeatureCard
-              icon={Bell}
-              title="Real-Time Notifications"
-              description="Instant notifications for assignments, grades, messages, and school announcements. Students, teachers, and parents stay in the loop with real-time updates."
-            />
-
-            {/* Role-Based Dashboards */}
-            <FeatureCard
-              icon={LayoutDashboard}
-              title="Role-Based Dashboards"
-              description="Tailored experiences for students, teachers, parents, and administrators. Each role sees exactly the tools and information most relevant to their needs."
-            />
-
-            {/* Dark/Light Mode */}
-            <FeatureCard
-              icon={Moon}
-              title="Dark & Light Mode"
-              description="Full dark and light theme support with smooth transitions. Comfortable viewing in any environment -- classrooms, libraries, or late-night study sessions."
-            />
-
-            {/* Compliance */}
-            <FeatureCard
-              icon={Shield}
-              title="FERPA & PIPEDA Compliant"
-              description="Built from the ground up with student privacy and security in mind. Full audit logging, data export, and compliance with FERPA, COPPA, and PIPEDA regulations."
-            />
-
-            {/* Multi-Tenant */}
-            <FeatureCard
-              icon={Building2}
-              title="Multi-Tenant Architecture"
-              description="Each school gets their own subdomain with isolated data, custom branding, and independent settings. Secure, scalable, and fully customizable per institution."
-            />
-
-            {/* Real-Time Messaging */}
-            <FeatureCard
-              icon={MessageSquare}
-              title="Real-Time Messaging"
-              description="Direct messages, group conversations, and class discussions with real-time delivery. File sharing, typing indicators, read receipts, and message search built in."
-            />
-
-            {/* Mobile Responsive */}
-            <FeatureCard
-              icon={Monitor}
-              title="Mobile Responsive"
-              description="Fully responsive design that works beautifully on desktops, tablets, and phones. Students and teachers can access everything from any device, anywhere."
-            />
+            <FeatureCard icon={BookOpen} title="Interactive Courses" description="Modules, lessons, and rich content blocks — text, images, and video." />
+            <FeatureCard icon={ClipboardCheck} title="Quiz Builder" description="Multiple choice, true/false, short answer, essay. Auto-grading included." />
+            <FeatureCard icon={BarChart3} title="Gradebook" description="Weighted grades, A-F scale, category stats, CSV/PDF export." />
+            <FeatureCard icon={Bot} title="AI Tutor (WebLLM)" description="Runs in-browser. Zero API costs, full privacy — no data leaves the device." />
+            <FeatureCard icon={WifiOff} title="Offline Mode" description="Study anywhere. Lessons and flashcards sync when you reconnect." />
+            <FeatureCard icon={Trophy} title="Gamification" description="XP, levels, badges, leaderboards, and streak tracking." />
+            <FeatureCard icon={Dog} title="Virtual Pets" description="Adopt pets that grow as you learn. Study more, level them up." />
+            <FeatureCard icon={CalendarCheck} title="Attendance" description="Daily tracking with pattern alerts for teachers and parents." />
+            <FeatureCard icon={Users} title="Parent Dashboard" description="Grades, attendance, assignments, and teacher messaging at a glance." />
+            <FeatureCard icon={Gamepad2} title="Student Tools" description="Chess, mini-games, focus timers, and study mode with DND." />
+            <FeatureCard icon={Music} title="Study Music" description="Ambient lo-fi and focus tracks built right into the platform." />
+            <FeatureCard icon={Bell} title="Notifications" description="Real-time alerts for grades, assignments, and messages." />
+            <FeatureCard icon={LayoutDashboard} title="Role Dashboards" description="Tailored views for students, teachers, parents, and admins." />
+            <FeatureCard icon={Moon} title="Dark & Light Mode" description="Smooth theme switching for any environment." />
+            <FeatureCard icon={Shield} title="FERPA & PIPEDA" description="Audit logging, data export, and full regulatory compliance." />
+            <FeatureCard icon={Building2} title="Multi-Tenant" description="Per-school subdomains with isolated data and custom branding." />
+            <FeatureCard icon={MessageSquare} title="Messaging" description="DMs, group chats, file sharing, and read receipts." />
+            <FeatureCard icon={Monitor} title="Mobile Responsive" description="Works on desktop, tablet, and phone — any device, anywhere." />
           </div>
         </div>
       </section>
@@ -539,170 +494,10 @@ export default function InfoPage() {
         </div>
       </section>
 
-      {/* Dashboard Previews */}
-      <section className="relative z-10 py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Built for Every Role</h2>
-            <p className="text-lg text-[#0A2540]/80 max-w-2xl mx-auto">
-              Tailored experiences for students, teachers, parents, and administrators
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Student Dashboard */}
-            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#33FF33] text-white">
-                  <GraduationCap className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">Student Dashboard</h3>
-                  <p className="text-xs text-[#0A2540]/80">Your learning command center</p>
-                </div>
-              </div>
-              <div className="relative">
-                <Image src="/screenshots/student-dashboard.png" alt="Student Dashboard — performance gauges, courses, tasks, XP, and virtual pets" width={1440} height={900} className="w-full h-auto" />
-              </div>
-            </div>
-
-            {/* Teacher Dashboard */}
-            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#8B5CF6] text-white">
-                  <BookOpen className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">Teacher Dashboard</h3>
-                  <p className="text-xs text-[#0A2540]/80">Manage courses and students</p>
-                </div>
-              </div>
-              <div className="relative">
-                <Image src="/screenshots/teacher-dashboard.png" alt="Teacher Dashboard — courses, gradebook, students, and quick actions" width={1440} height={900} className="w-full h-auto" />
-              </div>
-            </div>
-
-            {/* Parent Dashboard */}
-            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00FFFF] to-[#00BFFF] text-white">
-                  <Users className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">Parent Dashboard</h3>
-                  <p className="text-xs text-[#0A2540]/80">Monitor your child&apos;s progress</p>
-                </div>
-              </div>
-              <div className="relative">
-                <Image src="/screenshots/parent-dashboard.png" alt="Parent Dashboard — grades, attendance, assignments, and child progress" width={1440} height={900} className="w-full h-auto" />
-              </div>
-            </div>
-
-            {/* Admin Dashboard */}
-            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 p-5 border-b border-[#00BFFF]/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#D97706] to-[#F59E0B] text-white">
-                  <Building2 className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">Admin Dashboard</h3>
-                  <p className="text-xs text-[#0A2540]/80">School overview and management</p>
-                </div>
-              </div>
-              <div className="relative">
-                <Image src="/screenshots/admin-dashboard.png" alt="Admin Dashboard — school health, enrollment, users, and system settings" width={1440} height={900} className="w-full h-auto" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Tech Stack */}
-      <section className="relative z-10 py-20">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Modern Tech Stack</h2>
-            <p className="text-lg text-[#0A2540]/80">
-              Built with cutting-edge technologies for performance and scalability
-            </p>
-          </div>
-
-          <div className="rounded-2xl p-8 ocean-card">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <Zap className="h-6 w-6 text-[#00BFFF]" />
-                  <h3 className="text-xl font-semibold">Frontend</h3>
-                </div>
-                <ul className="space-y-2 text-[#0A2540]/80">
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
-                    Next.js 16 with App Router
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
-                    React 19 with Server Components
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
-                    Tailwind CSS 4 for styling
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
-                    TypeScript throughout
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
-                    WebLLM for on-device AI
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
-                    IndexedDB for offline storage
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <Shield className="h-6 w-6 text-[#00BFFF]" />
-                  <h3 className="text-xl font-semibold">Backend</h3>
-                </div>
-                <ul className="space-y-2 text-[#0A2540]/80">
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
-                    Supabase for database & auth
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
-                    Real-time with Supabase Realtime
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
-                    Edge functions on Vercel
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
-                    PostgreSQL with Row Level Security
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
-                    Multi-tenant data isolation
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-[#00BFFF]"></div>
-                    FERPA & PIPEDA audit logging
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Pricing Section */}
       <section id="pricing" className="relative z-10 py-20 bg-white/30 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Simple Pricing</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Pricing</h2>
           <p className="text-lg text-[#0A2540]/80 mb-12 max-w-2xl mx-auto">
             One plan. All features. No hidden fees.
           </p>
@@ -721,15 +516,15 @@ export default function InfoPage() {
               {/* Key details */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full ocean-card">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF]" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6]" />
                   <span className="text-[#0A2540]/80">All features included</span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full ocean-card">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF]" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6]" />
                   <span className="text-[#0A2540]/80">2-year minimum contract</span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full ocean-card">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF]" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6]" />
                   <span className="text-[#0A2540]/80">Single tier</span>
                 </div>
               </div>
@@ -737,51 +532,51 @@ export default function InfoPage() {
               {/* What's included */}
               <div className="grid grid-cols-2 gap-3 text-left text-sm max-w-lg mx-auto">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">Unlimited courses</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">Spaced repetition flashcards</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">AI Tutor (zero API cost)</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">Full offline mode</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">Gradebook & reports</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">Gamification & XP</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">Virtual pet companions</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">Parent portal</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">Attendance tracking</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">Real-time messaging</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">Custom branding</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0077B6] flex-shrink-0" />
                   <span className="text-[#0A2540]/80">FERPA & PIPEDA compliant</span>
                 </div>
               </div>
@@ -790,13 +585,13 @@ export default function InfoPage() {
               <div className="pt-4 space-y-4">
                 <a
                   href="mailto:info@wolfwhale.ca?subject=Wolf%20Whale%20LMS%20-%20Get%20Started"
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#00BFFF] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] transition-all font-semibold text-white group neon-glow-blue"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl btn-chrome-3d-blue text-white transition-all font-bold group"
                 >
                   Get Started
                   <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </a>
 
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-[#00BFFF]">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-[#0077B6]">
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4" />
                     <a href="mailto:info@wolfwhale.ca" className="text-sm font-medium hover:underline">
@@ -832,10 +627,10 @@ export default function InfoPage() {
                 Empowering schools with a comprehensive learning management system designed for K-12 and post-secondary education. Featuring the only built-in spaced repetition system and browser-based AI tutoring.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 text-sm text-[#0A2540]/80">
-                <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1.5 hover:text-[#00BFFF] transition-colors">
+                <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1.5 hover:text-[#0077B6] transition-colors">
                   <Mail className="h-3.5 w-3.5" /> info@wolfwhale.ca
                 </a>
-                <a href="tel:+13069815926" className="flex items-center gap-1.5 hover:text-[#00BFFF] transition-colors">
+                <a href="tel:+13069815926" className="flex items-center gap-1.5 hover:text-[#0077B6] transition-colors">
                   <Phone className="h-3.5 w-3.5" /> +1 (306) 981-5926
                 </a>
               </div>
@@ -844,19 +639,19 @@ export default function InfoPage() {
             <div>
               <h4 className="font-semibold mb-3 text-sm">Product</h4>
               <ul className="space-y-2 text-sm text-[#0A2540]/80">
-                <li><a href="#" className="hover:text-[#00BFFF] transition-colors">Features</a></li>
-                <li><a href="#pricing" className="hover:text-[#00BFFF] transition-colors">Pricing</a></li>
-                <li><a href="#" className="hover:text-[#00BFFF] transition-colors">Documentation</a></li>
-                <li><Link href="/login" className="hover:text-[#00BFFF] transition-colors">Login</Link></li>
+                <li><a href="#" className="hover:text-[#0077B6] transition-colors">Features</a></li>
+                <li><a href="#pricing" className="hover:text-[#0077B6] transition-colors">Pricing</a></li>
+                <li><a href="#" className="hover:text-[#0077B6] transition-colors">Documentation</a></li>
+                <li><Link href="/login" className="hover:text-[#0077B6] transition-colors">Login</Link></li>
               </ul>
             </div>
 
             <div>
               <h4 className="font-semibold mb-3 text-sm">Legal</h4>
               <ul className="space-y-2 text-sm text-[#0A2540]/80">
-                <li><Link href="/privacy" className="hover:text-[#00BFFF] transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="hover:text-[#00BFFF] transition-colors">Terms of Service</Link></li>
-                <li><Link href="/help" className="hover:text-[#00BFFF] transition-colors">Help Center</Link></li>
+                <li><Link href="/privacy" className="hover:text-[#0077B6] transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="hover:text-[#0077B6] transition-colors">Terms of Service</Link></li>
+                <li><Link href="/help" className="hover:text-[#0077B6] transition-colors">Help Center</Link></li>
               </ul>
             </div>
           </div>

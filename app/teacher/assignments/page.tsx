@@ -5,14 +5,12 @@ import { createClient } from '@/lib/supabase/server'
 import {
   ArrowLeft,
   ClipboardList,
-  Calendar,
-  Award,
-  FileText,
   CheckCircle2,
   Clock,
   AlertTriangle,
   Info,
 } from 'lucide-react'
+import AssignmentsListClient from './AssignmentsListClient'
 
 export default async function TeacherAllAssignmentsPage() {
   const supabase = await createClient()
@@ -87,62 +85,22 @@ export default async function TeacherAllAssignmentsPage() {
     return 'published'
   }
 
-  function statusBadge(status: string) {
-    switch (status) {
-      case 'draft':
-        return 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
-      case 'past_due':
-        return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-      case 'due_soon':
-        return 'bg-[#FFAA00]/10 text-[#D97706] dark:bg-[#FFAA00]/10 dark:text-[#D97706]'
-      case 'published':
-        return 'bg-[#33FF33]/10 text-[#059669] dark:bg-[#33FF33]/10 dark:text-[#059669]'
-      default:
-        return 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
-    }
-  }
+  // Enrich assignments with display status for client component
+  const enrichedAssignments = assignments.map((a) => ({
+    id: a.id,
+    title: a.title,
+    course_id: a.course_id,
+    type: a.type,
+    due_date: a.due_date,
+    max_points: a.max_points,
+    status: a.status,
+    created_at: a.created_at,
+    courseName: a.courseName,
+    submissionCount: a.submissionCount,
+    displayStatus: getAssignmentStatus(a),
+  }))
 
-  function statusLabel(status: string) {
-    switch (status) {
-      case 'draft':
-        return 'Draft'
-      case 'past_due':
-        return 'Past Due'
-      case 'due_soon':
-        return 'Due Soon'
-      case 'published':
-        return 'Active'
-      default:
-        return status
-    }
-  }
-
-  function typeBadge(type: string) {
-    switch (type) {
-      case 'homework':
-        return 'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]'
-      case 'quiz':
-        return 'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]'
-      case 'test':
-      case 'exam':
-        return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-      case 'project':
-        return 'bg-[#00FFFF]/10 text-[#00FFFF] dark:bg-[#00FFFF]/10 dark:text-[#00FFFF]'
-      case 'essay':
-        return 'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]'
-      default:
-        return 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
-    }
-  }
-
-  function formatDate(dateStr: string | null) {
-    if (!dateStr) return 'No due date'
-    return new Date(dateStr).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    })
-  }
+  const courseInfoList = courseList.map((c) => ({ id: c.id, name: c.name }))
 
   return (
     <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
@@ -177,162 +135,42 @@ export default async function TeacherAllAssignmentsPage() {
       </div>
 
       {/* Summary Stats */}
-      {assignments.length > 0 && (
+      {enrichedAssignments.length > 0 && (
         <div className="grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-4">
           <div className="ocean-card rounded-2xl p-3 sm:p-4 text-center">
             <ClipboardList className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-            <p className="text-xl sm:text-2xl font-bold text-primary">{assignments.length}</p>
+            <p className="text-xl sm:text-2xl font-bold text-primary">{enrichedAssignments.length}</p>
             <p className="mt-1 text-xs text-muted-foreground">Total</p>
           </div>
           <div className="ocean-card rounded-2xl p-3 sm:p-4 text-center">
             <CheckCircle2 className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-[#059669]" />
             <p className="text-xl sm:text-2xl font-bold text-[#059669] dark:text-[#059669]">
-              {assignments.filter((a) => getAssignmentStatus(a) === 'published').length}
+              {enrichedAssignments.filter((a) => a.displayStatus === 'published').length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Active</p>
           </div>
           <div className="ocean-card rounded-2xl p-3 sm:p-4 text-center">
             <AlertTriangle className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-[#D97706]" />
             <p className="text-xl sm:text-2xl font-bold text-[#D97706] dark:text-[#D97706]">
-              {assignments.filter((a) => getAssignmentStatus(a) === 'due_soon').length}
+              {enrichedAssignments.filter((a) => a.displayStatus === 'due_soon').length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Due Soon</p>
           </div>
           <div className="ocean-card rounded-2xl p-3 sm:p-4 text-center">
             <Clock className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
             <p className="text-xl sm:text-2xl font-bold text-red-600 dark:text-red-400">
-              {assignments.filter((a) => getAssignmentStatus(a) === 'past_due').length}
+              {enrichedAssignments.filter((a) => a.displayStatus === 'past_due').length}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">Past Due</p>
           </div>
         </div>
       )}
 
-      {/* Assignment List */}
-      {assignments.length === 0 ? (
-        <div className="ocean-card flex flex-col items-center justify-center rounded-2xl py-20 text-center">
-          <ClipboardList className="mb-4 h-16 w-16 text-muted-foreground/40" />
-          <h3 className="text-lg font-semibold text-foreground">
-            No assignments yet
-          </h3>
-          <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-            Create assignments from within your courses. They will appear here
-            for a cross-course overview.
-          </p>
-          <Link
-            href="/teacher/courses"
-            className="whale-gradient mt-6 inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white shadow-md transition-all hover:shadow-lg"
-          >
-            Go to Courses
-          </Link>
-        </div>
-      ) : (
-        <div className="ocean-card overflow-hidden rounded-2xl">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border bg-muted/50">
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Assignment
-                  </th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Course
-                  </th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Type
-                  </th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">
-                    Due Date
-                  </th>
-                  <th className="px-4 py-3 text-center font-medium text-muted-foreground">
-                    Points
-                  </th>
-                  <th className="px-4 py-3 text-center font-medium text-muted-foreground">
-                    Submissions
-                  </th>
-                  <th className="px-4 py-3 text-right font-medium text-muted-foreground">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {assignments.map((assignment) => {
-                  const displayStatus = getAssignmentStatus(assignment)
-                  return (
-                    <tr
-                      key={assignment.id}
-                      className="transition-colors hover:bg-muted/30"
-                    >
-                      <td className="px-4 py-3">
-                        <Link
-                          href={`/teacher/courses/${assignment.course_id}/assignments/${assignment.id}/submissions`}
-                          className="font-medium text-foreground hover:text-primary transition-colors"
-                        >
-                          {assignment.title}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3">
-                        <Link
-                          href={`/teacher/courses/${assignment.course_id}`}
-                          className="text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                          {assignment.courseName}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span
-                          className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${typeBadge(assignment.type)}`}
-                        >
-                          {assignment.type || 'general'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-1.5 text-muted-foreground">
-                          <Calendar className="h-3.5 w-3.5" />
-                          <span className="text-xs">
-                            {formatDate(assignment.due_date)}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <div className="flex items-center justify-center gap-1">
-                          <Award className="h-3.5 w-3.5 text-muted-foreground" />
-                          <span className="font-medium text-foreground">
-                            {assignment.max_points ?? 0}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <div className="flex items-center justify-center gap-1">
-                          <FileText className="h-3.5 w-3.5 text-muted-foreground" />
-                          <span className="font-medium text-foreground">
-                            {assignment.submissionCount}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <span
-                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusBadge(displayStatus)}`}
-                        >
-                          {statusLabel(displayStatus)}
-                        </span>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Summary footer */}
-          <div className="border-t border-border bg-muted/30 px-4 py-3">
-            <p className="text-sm text-muted-foreground">
-              {assignments.length} assignment{assignments.length !== 1 ? 's' : ''} across{' '}
-              {courseList.length} course{courseList.length !== 1 ? 's' : ''}
-            </p>
-          </div>
-        </div>
-      )}
+      {/* Assignment List — Client Component with grouped/flat toggle */}
+      <AssignmentsListClient
+        assignments={enrichedAssignments}
+        courses={courseInfoList}
+      />
     </div>
   )
 }

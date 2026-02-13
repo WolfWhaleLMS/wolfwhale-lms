@@ -100,34 +100,52 @@ export function DashboardLayout({
 
       </div>
 
-      {/* Mobile sidebar overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+      {/* ----------------------------------------------------------------- */}
+      {/* Mobile sidebar: rendered outside the flex flow so it never        */}
+      {/* affects the main content width on any mobile browser.             */}
+      {/* ----------------------------------------------------------------- */}
+      <div className="md:hidden">
+        {/* Backdrop overlay */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
 
-      {/* Sidebar — fixed overlay on mobile, static flex-child on lg+ */}
+        {/* Sidebar drawer */}
+        <aside
+          className={`
+            fixed inset-y-0 left-0 z-50 w-64
+            liquid-glass-heavy chrome-texture-sidebar border-r border-sidebar-border/50
+            transition-transform duration-300 ease-in-out
+            ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+          `}
+        >
+          <Sidebar
+            role={role}
+            tenantName={tenantName}
+            tenantLogo={tenantLogo}
+            onClose={() => setSidebarOpen(false)}
+          />
+        </aside>
+      </div>
+
+      {/* ----------------------------------------------------------------- */}
+      {/* Desktop sidebar: static flex child, always visible at md+         */}
+      {/* ----------------------------------------------------------------- */}
       <aside
-        className={`
-          fixed inset-y-0 left-0 z-50 w-64 transform
-          liquid-glass-heavy chrome-texture-sidebar border-r border-sidebar-border/50
-          transition-transform duration-300 ease-in-out
-          lg:static lg:z-auto lg:translate-x-0 lg:flex-shrink-0
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-        `}
+        className="hidden md:flex md:w-64 md:flex-shrink-0 liquid-glass-heavy chrome-texture-sidebar border-r border-sidebar-border/50"
       >
         <Sidebar
           role={role}
           tenantName={tenantName}
           tenantLogo={tenantLogo}
-          onClose={() => setSidebarOpen(false)}
         />
       </aside>
 
-      {/* Main content — full width on mobile, fills remaining space on lg+ */}
-      <div className="chrome-overlay relative z-10 flex min-w-0 w-full flex-1 flex-col overflow-hidden lg:w-auto">
+      {/* Main content — full width on mobile, fills remaining space on md+ */}
+      <div className="chrome-overlay relative z-10 flex min-w-0 w-full flex-1 flex-col overflow-hidden md:w-auto">
         <TopBar
           userName={userName}
           userAvatar={userAvatar}

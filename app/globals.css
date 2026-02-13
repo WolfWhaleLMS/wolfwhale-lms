@@ -1381,171 +1381,236 @@ body::before {
     pointer-events: none;
   }
 
-  /* ── Chrome 3D Button Effects ── */
+  /* ── Liquid Metal Chrome 3D Buttons ── */
+
+  /* Shared chrome base — liquid metal feel */
+  .btn-chrome-3d-blue,
+  .btn-chrome-3d-red,
+  .btn-chrome-3d-green,
+  .btn-chrome-3d-silver {
+    position: relative;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── BLUE ─── */
   .btn-chrome-3d-blue {
     background: linear-gradient(
       180deg,
-      #4DD6FF 0%,
-      #00BFFF 30%,
-      #009EDD 65%,
-      #007BB5 100%
+      #8DE8FF 0%,
+      #4DD6FF 8%,
+      #00BFFF 25%,
+      #009EDD 50%,
+      #007BB5 75%,
+      #005A8C 92%,
+      #3AAFDD 100%
     );
-    border: 1px solid #006A9E;
+    border: 1px solid #005280;
     box-shadow:
-      0 4px 12px rgba(0, 100, 180, 0.30),
-      0 2px 4px rgba(0, 0, 0, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.35);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+      0 6px 16px rgba(0, 80, 160, 0.40),
+      0 2px 4px rgba(0, 0, 0, 0.20),
+      inset 0 2px 1px rgba(255, 255, 255, 0.50),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.40);
   }
   .btn-chrome-3d-blue:hover {
     background: linear-gradient(
       180deg,
-      #66E0FF 0%,
-      #1ECBFF 30%,
-      #00AAEE 65%,
-      #008ACC 100%
+      #A0EEFF 0%,
+      #66E0FF 8%,
+      #1ECBFF 25%,
+      #00AAEE 50%,
+      #008ACC 75%,
+      #006AA0 92%,
+      #50C0EE 100%
     );
     box-shadow:
-      0 6px 20px rgba(0, 100, 180, 0.40),
-      0 3px 6px rgba(0, 0, 0, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.40);
+      0 8px 24px rgba(0, 100, 180, 0.50),
+      0 3px 6px rgba(0, 0, 0, 0.20),
+      inset 0 2px 1px rgba(255, 255, 255, 0.55),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
   }
   .btn-chrome-3d-blue:active {
     background: linear-gradient(
       180deg,
-      #007BB5 0%,
+      #005A8C 0%,
+      #007BB5 15%,
       #009EDD 50%,
-      #00BFFF 100%
+      #00BFFF 85%,
+      #4DD6FF 100%
     );
     box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.20),
-      inset 0 2px 4px rgba(0, 0, 0, 0.15);
-    transform: translateY(1px);
+      0 1px 2px rgba(0, 0, 0, 0.25),
+      inset 0 3px 6px rgba(0, 0, 0, 0.25),
+      inset 0 1px 2px rgba(0, 0, 0, 0.15);
+    transform: translateY(2px);
   }
 
+  /* ─── RED ─── */
   .btn-chrome-3d-red {
     background: linear-gradient(
       180deg,
-      #FF6688 0%,
-      #FF3366 30%,
-      #E6204D 65%,
-      #CC1040 100%
+      #FFAABB 0%,
+      #FF6688 8%,
+      #FF3366 25%,
+      #E6204D 50%,
+      #CC1040 75%,
+      #990830 92%,
+      #DD3058 100%
     );
-    border: 1px solid #AA0033;
+    border: 1px solid #880028;
     box-shadow:
-      0 4px 12px rgba(200, 0, 50, 0.30),
-      0 2px 4px rgba(0, 0, 0, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.30);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+      0 6px 16px rgba(180, 0, 40, 0.40),
+      0 2px 4px rgba(0, 0, 0, 0.20),
+      inset 0 2px 1px rgba(255, 255, 255, 0.40),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.40);
   }
   .btn-chrome-3d-red:hover {
     background: linear-gradient(
       180deg,
-      #FF88AA 0%,
-      #FF4477 30%,
-      #F0305E 65%,
-      #DD1848 100%
+      #FFBBCC 0%,
+      #FF88AA 8%,
+      #FF4477 25%,
+      #F0305E 50%,
+      #DD1848 75%,
+      #AA1038 92%,
+      #EE4068 100%
     );
     box-shadow:
-      0 6px 20px rgba(200, 0, 50, 0.40),
-      0 3px 6px rgba(0, 0, 0, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      0 8px 24px rgba(200, 0, 50, 0.50),
+      0 3px 6px rgba(0, 0, 0, 0.20),
+      inset 0 2px 1px rgba(255, 255, 255, 0.45),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
   }
   .btn-chrome-3d-red:active {
     background: linear-gradient(
       180deg,
-      #CC1040 0%,
+      #990830 0%,
+      #CC1040 15%,
       #E6204D 50%,
-      #FF3366 100%
+      #FF3366 85%,
+      #FF6688 100%
     );
     box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.20),
-      inset 0 2px 4px rgba(0, 0, 0, 0.15);
-    transform: translateY(1px);
+      0 1px 2px rgba(0, 0, 0, 0.25),
+      inset 0 3px 6px rgba(0, 0, 0, 0.25),
+      inset 0 1px 2px rgba(0, 0, 0, 0.15);
+    transform: translateY(2px);
   }
 
+  /* ─── GREEN ─── */
   .btn-chrome-3d-green {
     background: linear-gradient(
       180deg,
-      #66FF66 0%,
-      #33FF33 30%,
-      #22DD22 65%,
-      #11BB11 100%
+      #AAFFAA 0%,
+      #66FF66 8%,
+      #33FF33 25%,
+      #22DD22 50%,
+      #11BB11 75%,
+      #0A8A0A 92%,
+      #30CC30 100%
     );
-    border: 1px solid #0A9E0A;
+    border: 1px solid #087808;
     color: #0A2540;
     box-shadow:
-      0 4px 12px rgba(0, 180, 0, 0.30),
-      0 2px 4px rgba(0, 0, 0, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.35);
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.30);
+      0 6px 16px rgba(0, 150, 0, 0.40),
+      0 2px 4px rgba(0, 0, 0, 0.20),
+      inset 0 2px 1px rgba(255, 255, 255, 0.50),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.12);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
   }
   .btn-chrome-3d-green:hover {
     background: linear-gradient(
       180deg,
-      #88FF88 0%,
-      #44FF44 30%,
-      #33EE33 65%,
-      #22CC22 100%
+      #CCFFCC 0%,
+      #88FF88 8%,
+      #44FF44 25%,
+      #33EE33 50%,
+      #22CC22 75%,
+      #159E15 92%,
+      #44DD44 100%
     );
     box-shadow:
-      0 6px 20px rgba(0, 180, 0, 0.40),
-      0 3px 6px rgba(0, 0, 0, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.40);
+      0 8px 24px rgba(0, 180, 0, 0.50),
+      0 3px 6px rgba(0, 0, 0, 0.20),
+      inset 0 2px 1px rgba(255, 255, 255, 0.55),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.12);
+    transform: translateY(-1px);
   }
   .btn-chrome-3d-green:active {
     background: linear-gradient(
       180deg,
-      #11BB11 0%,
+      #0A8A0A 0%,
+      #11BB11 15%,
       #22DD22 50%,
-      #33FF33 100%
+      #33FF33 85%,
+      #66FF66 100%
     );
     box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.20),
-      inset 0 2px 4px rgba(0, 0, 0, 0.15);
-    transform: translateY(1px);
+      0 1px 2px rgba(0, 0, 0, 0.25),
+      inset 0 3px 6px rgba(0, 0, 0, 0.25),
+      inset 0 1px 2px rgba(0, 0, 0, 0.12);
+    transform: translateY(2px);
   }
 
+  /* ─── SILVER ─── */
   .btn-chrome-3d-silver {
     background: linear-gradient(
       180deg,
-      #F0F8FF 0%,
-      #D0E4F0 35%,
-      #B8D4E8 65%,
-      #A0C4DC 100%
+      #FFFFFF 0%,
+      #F0F4F8 8%,
+      #D8E4EE 25%,
+      #C0D4E4 50%,
+      #A8C0D4 75%,
+      #90ACC4 92%,
+      #B8D0E0 100%
     );
-    border: 1px solid rgba(140, 175, 200, 0.70);
+    border: 1px solid rgba(120, 160, 190, 0.80);
     color: #0A2540;
     box-shadow:
-      0 4px 12px rgba(0, 60, 120, 0.20),
-      0 2px 4px rgba(0, 0, 0, 0.10),
-      inset 0 1px 0 rgba(255, 255, 255, 0.70);
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.50);
+      0 6px 16px rgba(0, 50, 100, 0.25),
+      0 2px 4px rgba(0, 0, 0, 0.15),
+      inset 0 2px 1px rgba(255, 255, 255, 0.80),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.08);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.60);
   }
   .btn-chrome-3d-silver:hover {
     background: linear-gradient(
       180deg,
       #FFFFFF 0%,
-      #E0ECF4 35%,
-      #C8DCF0 65%,
-      #B0D0E8 100%
+      #F8FAFC 8%,
+      #E8F0F6 25%,
+      #D0E0EE 50%,
+      #B8D0E4 75%,
+      #A0BCD4 92%,
+      #C8DCE8 100%
     );
     box-shadow:
-      0 6px 16px rgba(0, 60, 120, 0.25),
-      0 3px 6px rgba(0, 0, 0, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.80);
+      0 8px 24px rgba(0, 60, 120, 0.30),
+      0 3px 6px rgba(0, 0, 0, 0.15),
+      inset 0 2px 1px rgba(255, 255, 255, 0.90),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
   }
   .btn-chrome-3d-silver:active {
     background: linear-gradient(
       180deg,
-      #A0C4DC 0%,
-      #B8D4E8 50%,
-      #D0E4F0 100%
+      #90ACC4 0%,
+      #A8C0D4 15%,
+      #C0D4E4 50%,
+      #D8E4EE 85%,
+      #F0F4F8 100%
     );
     box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.15),
-      inset 0 2px 4px rgba(0, 0, 0, 0.10);
-    transform: translateY(1px);
+      0 1px 2px rgba(0, 0, 0, 0.20),
+      inset 0 3px 6px rgba(0, 0, 0, 0.15),
+      inset 0 1px 2px rgba(0, 0, 0, 0.10);
+    transform: translateY(2px);
   }
 }
 

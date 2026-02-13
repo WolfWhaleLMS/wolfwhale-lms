@@ -69,7 +69,7 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
           sounds.playClick()
           onMenuToggle()
         }}
-        className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:hidden"
+        className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
         aria-label="Toggle menu"
       >
         <Menu className="h-5 w-5" />

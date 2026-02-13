@@ -154,7 +154,7 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-1.5 text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground lg:hidden"
+            className="rounded-lg p-1.5 text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground md:hidden"
             aria-label="Close sidebar"
           >
             <X className="h-5 w-5" />
