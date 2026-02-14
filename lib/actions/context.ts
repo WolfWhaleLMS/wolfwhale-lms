@@ -1,9 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { createAdminClient } from '@/lib/supabase/admin'
 import { headers } from 'next/headers'
-import type { SupabaseClient } from '@supabase/supabase-js'
 import type { UserRole } from '@/lib/auth/permissions'
 
 export interface ActionContext {
@@ -11,19 +9,6 @@ export interface ActionContext {
   user: { id: string; email?: string }
   tenantId: string
   role?: UserRole
-}
-
-export interface AdminActionContext {
-  admin: SupabaseClient
-  user: { id: string; email?: string }
-  tenantId: string
-}
-
-export interface FullActionContext {
-  supabase: Awaited<ReturnType<typeof createClient>>
-  admin: SupabaseClient
-  user: { id: string; email?: string }
-  tenantId: string
 }
 
 /**
@@ -48,52 +33,6 @@ export async function getActionContext(): Promise<ActionContext> {
   const role = headersList.get('x-user-role') as UserRole | null
 
   return { supabase, user, tenantId, role: role || undefined }
-}
-
-/**
- * Get context with admin (service-role) client instead of the user-scoped client.
- * Used by plaza-store, plaza-games, and other actions that need to bypass RLS.
- */
-export async function getAdminActionContext(): Promise<AdminActionContext> {
-  const supabase = await createClient()
-  const { data: { user }, error } = await supabase.auth.getUser()
-
-  if (error || !user) {
-    throw new Error('Not authenticated')
-  }
-
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-
-  if (!tenantId) {
-    throw new Error('No tenant context')
-  }
-
-  const admin = createAdminClient()
-  return { admin, user, tenantId }
-}
-
-/**
- * Get context with both user-scoped and admin clients.
- * Used by actions that need RLS-scoped queries AND privileged operations.
- */
-export async function getFullActionContext(): Promise<FullActionContext> {
-  const supabase = await createClient()
-  const { data: { user }, error } = await supabase.auth.getUser()
-
-  if (error || !user) {
-    throw new Error('Not authenticated')
-  }
-
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id')
-
-  if (!tenantId) {
-    throw new Error('No tenant context')
-  }
-
-  const admin = createAdminClient()
-  return { supabase, admin, user, tenantId }
 }
 
 /**

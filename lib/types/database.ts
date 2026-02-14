@@ -43,12 +43,6 @@ export type InvoiceStatus = 'draft' | 'open' | 'paid' | 'void' | 'uncollectible'
 export type TenantStatus = 'active' | 'suspended' | 'cancelled'
 export type SubscriptionPlan = 'starter' | 'growth' | 'enterprise' | 'free'
 
-export type AchievementCategory = 'academic' | 'consistency' | 'participation' | 'challenge' | 'social' | 'wellness'
-export type AchievementTier = 'bronze' | 'silver' | 'gold' | 'platinum'
-export type GamificationTier = 'awakening' | 'growth' | 'advancement' | 'mastery'
-export type LeaderboardScope = 'class' | 'grade' | 'school'
-export type LeaderboardPeriod = 'weekly' | 'monthly' | 'all_time'
-
 // =====================================================================
 // JSONB sub-types
 // =====================================================================
@@ -556,99 +550,6 @@ export interface SubscriptionUsage {
 }
 
 // =====================================================================
-// 26. Study Session
-// =====================================================================
-
-export interface StudySession {
-  id: string
-  tenant_id: string
-  user_id: string
-  duration_minutes: number
-  actual_minutes: number | null
-  music_type: string | null
-  assignment_id: string | null
-  completed: boolean
-  xp_awarded: number
-  started_at: string
-  ended_at: string | null
-}
-
-// =====================================================================
-// GAMIFICATION
-// =====================================================================
-
-// 27. XP Event
-export interface XpEvent {
-  id: string
-  tenant_id: string
-  user_id: string
-  event_type: string
-  xp_amount: number
-  source_type: string | null
-  source_id: string | null
-  course_id: string | null
-  metadata: Record<string, unknown>
-  created_at: string
-}
-
-// 28. User Level
-export interface UserLevel {
-  id: string
-  tenant_id: string
-  user_id: string
-  current_level: number
-  total_xp: number
-  current_tier: GamificationTier
-  coins: number
-  streak_days: number
-  longest_streak: number
-  last_active_date: string | null   // DATE
-  xp_decayed: number
-  updated_at: string
-}
-
-// 29. Achievement
-export interface Achievement {
-  id: string
-  tenant_id: string | null
-  name: string
-  description: string | null
-  icon: string | null
-  category: AchievementCategory
-  tier: AchievementTier
-  criteria: Record<string, unknown>
-  xp_reward: number
-  coin_reward: number
-  is_global: boolean
-  created_by: string | null
-  created_at: string
-}
-
-// 30. User Achievement
-export interface UserAchievement {
-  id: string
-  tenant_id: string
-  user_id: string
-  achievement_id: string
-  earned_at: string
-  notified: boolean
-}
-
-// 31. Leaderboard Entry
-export interface LeaderboardEntry {
-  id: string
-  tenant_id: string
-  user_id: string
-  scope: LeaderboardScope
-  scope_id: string | null
-  period: LeaderboardPeriod
-  period_start: string              // DATE
-  xp_total: number
-  rank: number | null
-  updated_at: string
-}
-
-// =====================================================================
 // Utility: Row type for Supabase .from() generics
 // =====================================================================
 
@@ -679,12 +580,6 @@ export interface DatabaseTableMap {
   audit_logs: AuditLog
   invoices: Invoice
   subscription_usage: SubscriptionUsage
-  study_sessions: StudySession
-  xp_events: XpEvent
-  user_levels: UserLevel
-  achievements: Achievement
-  user_achievements: UserAchievement
-  leaderboard_entries: LeaderboardEntry
 }
 
 export type TableName = keyof DatabaseTableMap

@@ -60,18 +60,6 @@ const content = {
             q: 'How do I view my grades?',
             a: 'Navigate to the Gradebook from your dashboard sidebar. You\'ll see all your courses with current grades, individual assignment scores, and grade trends.',
           },
-          {
-            q: 'What is XP and how do I earn it?',
-            a: 'XP (Experience Points) is part of our gamification system. You earn XP by completing assignments, attending classes, participating in discussions, and achieving milestones. XP helps you level up and earn badges!',
-          },
-          {
-            q: 'How do I use Study Mode?',
-            a: 'Click on "Study Mode" in your sidebar. You can create flashcards, take practice quizzes, and use other study tools to prepare for assessments.',
-          },
-          {
-            q: 'What is the Virtual Plaza?',
-            a: 'The Virtual Plaza is a fun, interactive space where you can customize your avatar, explore virtual rooms, and connect with classmates in a safe, school-monitored environment.',
-          },
         ],
       },
       {
@@ -184,18 +172,6 @@ const content = {
           {
             q: 'Comment puis-je consulter mes notes\u00a0?',
             a: 'Acc\u00e9dez au carnet de notes depuis la barre lat\u00e9rale de votre tableau de bord. Vous verrez tous vos cours avec les notes actuelles, les scores de chaque devoir et les tendances de vos r\u00e9sultats.',
-          },
-          {
-            q: 'Qu\'est-ce que les XP et comment en gagner\u00a0?',
-            a: 'Les XP (points d\'exp\u00e9rience) font partie de notre syst\u00e8me de ludification. Vous gagnez des XP en compl\u00e9tant des devoirs, en assistant aux cours, en participant aux discussions et en atteignant des jalons. Les XP vous aident \u00e0 monter de niveau et \u00e0 obtenir des badges\u00a0!',
-          },
-          {
-            q: 'Comment utiliser le mode \u00e9tude\u00a0?',
-            a: 'Cliquez sur \u00ab\u00a0Mode \u00e9tude\u00a0\u00bb dans votre barre lat\u00e9rale. Vous pouvez cr\u00e9er des cartes m\u00e9moire, passer des quiz d\'entra\u00eenement et utiliser d\'autres outils d\'\u00e9tude pour pr\u00e9parer vos \u00e9valuations.',
-          },
-          {
-            q: 'Qu\'est-ce que la Plaza virtuelle\u00a0?',
-            a: 'La Plaza virtuelle est un espace interactif et amusant o\u00f9 vous pouvez personnaliser votre avatar, explorer des salles virtuelles et communiquer avec vos camarades de classe dans un environnement s\u00e9curis\u00e9 et supervis\u00e9 par l\'\u00e9cole.',
           },
         ],
       },

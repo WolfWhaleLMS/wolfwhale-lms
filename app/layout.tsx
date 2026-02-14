@@ -24,7 +24,7 @@ const orbitron = Orbitron({
   variable: "--font-orbitron",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["600", "700", "800"],
 });
 
 const shareTechMono = Share_Tech_Mono({

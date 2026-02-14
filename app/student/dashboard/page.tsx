@@ -116,7 +116,8 @@ export default async function StudentDashboardPage() {
       progressResult,
       assignmentResult,
       gradeResult,
-      attendanceResult,
+      attendanceTotalResult,
+      attendancePresentResult,
     ] = await Promise.all([
       // Teacher profiles
       teacherIds.length > 0
@@ -167,12 +168,20 @@ export default async function StudentDashboardPage() {
             .limit(50)
         : Promise.resolve({ data: [] }),
 
-      // Attendance records
+      // Attendance: total count
       supabase
         .from('attendance_records')
-        .select('status')
+        .select('*', { count: 'exact', head: true })
         .eq('tenant_id', tenantId)
         .eq('student_id', user.id),
+
+      // Attendance: present + online count
+      supabase
+        .from('attendance_records')
+        .select('*', { count: 'exact', head: true })
+        .eq('tenant_id', tenantId)
+        .eq('student_id', user.id)
+        .in('status', ['present', 'online']),
     ])
 
     const profiles = profileResult.data || []
@@ -278,11 +287,11 @@ export default async function StudentDashboardPage() {
       }
     })
 
-    // Process attendance from parallel results
-    const attendanceRecords = attendanceResult.data
-    if (attendanceRecords && attendanceRecords.length > 0) {
-      const present = attendanceRecords.filter((r) => r.status === 'present' || r.status === 'online').length
-      attendanceRate = Math.round((present / attendanceRecords.length) * 100)
+    // Process attendance from count queries (no row transfer)
+    const totalCount = attendanceTotalResult.count ?? 0
+    const presentCount = attendancePresentResult.count ?? 0
+    if (totalCount > 0) {
+      attendanceRate = Math.round((presentCount / totalCount) * 100)
     }
 
   }

@@ -62,24 +62,16 @@ export function DashboardLayout({
         }}
       />
 
-      {/* Ambient blobs for glass depth effect — LARGER & more vivid */}
+      {/* Ambient blobs for glass depth effect */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
         <div className="blob-ocean absolute -top-1/4 -right-1/4 h-[800px] w-[800px] animate-blob-drift opacity-50" />
         <div className="blob-teal absolute -bottom-1/4 -left-1/4 h-[700px] w-[700px] animate-blob-drift opacity-40" style={{ animationDelay: '-7s' }} />
-        <div className="blob-midnight absolute top-1/2 left-1/3 h-[600px] w-[600px] animate-blob-drift opacity-30" style={{ animationDelay: '-14s' }} />
 
-        {/* Floating bubble particles */}
+        {/* Floating bubble particles — reduced set for less GPU compositing */}
         <div className="bubble-float absolute left-[10%] top-[15%] h-3 w-3 rounded-full bg-[#00BFFF]/10" style={{ animationDelay: '0s' }} />
-        <div className="bubble-float absolute left-[25%] top-[70%] h-5 w-5 rounded-full bg-[#00FFFF]/8" style={{ animationDelay: '-3s' }} />
-        <div className="bubble-float absolute left-[55%] top-[20%] h-2 w-2 rounded-full bg-[#00BFFF]/10" style={{ animationDelay: '-5s' }} />
-        <div className="bubble-float absolute left-[80%] top-[60%] h-4 w-4 rounded-full bg-[#00FFFF]/8" style={{ animationDelay: '-8s' }} />
-        <div className="bubble-float absolute left-[40%] top-[85%] h-6 w-6 rounded-full bg-[#00BFFF]/10" style={{ animationDelay: '-2s' }} />
-        <div className="bubble-float absolute left-[70%] top-[10%] h-3 w-3 rounded-full bg-[#00FFFF]/8" style={{ animationDelay: '-11s' }} />
-        <div className="bubble-float absolute left-[15%] top-[45%] h-4 w-4 rounded-full bg-[#00BFFF]/10" style={{ animationDelay: '-6s' }} />
-        <div className="bubble-float absolute left-[90%] top-[35%] h-2 w-2 rounded-full bg-[#00FFFF]/8" style={{ animationDelay: '-9s' }} />
-        <div className="bubble-float absolute left-[50%] top-[50%] h-5 w-5 rounded-full bg-[#00BFFF]/10" style={{ animationDelay: '-4s' }} />
-        <div className="bubble-float absolute left-[35%] top-[30%] h-3 w-3 rounded-full bg-[#00FFFF]/8" style={{ animationDelay: '-13s' }} />
-
+        <div className="bubble-float absolute left-[55%] top-[20%] h-5 w-5 rounded-full bg-[#00FFFF]/8" style={{ animationDelay: '-5s' }} />
+        <div className="bubble-float absolute left-[80%] top-[60%] h-4 w-4 rounded-full bg-[#00BFFF]/10" style={{ animationDelay: '-8s' }} />
+        <div className="bubble-float absolute left-[35%] top-[70%] h-6 w-6 rounded-full bg-[#00FFFF]/8" style={{ animationDelay: '-3s' }} />
       </div>
 
       {/* ----------------------------------------------------------------- */}
