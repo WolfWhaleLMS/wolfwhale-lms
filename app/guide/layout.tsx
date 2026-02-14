@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { PianoMusicWrapper } from '@/components/music/PianoMusicWrapper'
 
 export const metadata: Metadata = {
   title: 'User Guide | WolfWhale LMS',
@@ -21,5 +20,5 @@ export default function GuideLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <PianoMusicWrapper>{children}</PianoMusicWrapper>
+  return <>{children}</>
 }

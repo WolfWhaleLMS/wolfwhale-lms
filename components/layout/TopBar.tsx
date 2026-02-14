@@ -4,11 +4,9 @@ import Image from 'next/image'
 import { Menu, Search, Sun, Moon } from 'lucide-react'
 import { NotificationBell } from '@/components/layout/NotificationBell'
 import { OfflineToggleConnected } from '@/components/layout/OfflineToggle'
-import { RadioDropdown } from '@/components/layout/RadioDropdown'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
 import { getRoleLabel, type UserRole } from '@/lib/auth/permissions'
-import { useSound } from '@/components/providers/sound-provider'
 
 // ---------------------------------------------------------------------------
 // Props
@@ -56,7 +54,6 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
   const initials = getInitials(userName)
   const roleLabel = getRoleLabel(role)
   const { theme, setTheme } = useTheme()
-  const sounds = useSound()
 
   return (
     <header className="flex h-14 sm:h-16 shrink-0 items-center gap-2 sm:gap-4 liquid-glass-heavy chrome-texture-topbar border-b-2 border-[#00BFFF]/30 neon-glow-blue px-3 sm:px-4 md:px-6">
@@ -65,10 +62,7 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
       {/* --------------------------------------------------------------- */}
       <button
         type="button"
-        onClick={() => {
-          sounds.playClick()
-          onMenuToggle()
-        }}
+        onClick={onMenuToggle}
         className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
         aria-label="Toggle menu"
       >
@@ -100,18 +94,10 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
       {/* Right side: notifications, avatar, name, role badge              */}
       {/* --------------------------------------------------------------- */}
       <div className="flex items-center gap-1.5 sm:gap-3">
-        {/* Radio player — hidden on very small screens */}
-        <div className="hidden sm:block">
-          <RadioDropdown />
-        </div>
-
         {/* Theme toggle */}
         <button
           type="button"
-          onClick={() => {
-            sounds.playClick()
-            setTheme(theme === 'dark' ? 'light' : 'dark')
-          }}
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           className="rounded-lg p-1.5 sm:p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           aria-label="Toggle theme"
         >

@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import UnderwaterSunbeams from '@/components/effects/UnderwaterSunbeams'
-import LavaBlobs from '@/components/effects/LavaBlobs'
+import { DemoLoginButtons } from '@/components/auth/DemoLoginButtons'
 import {
   BookOpen,
   ClipboardCheck,
@@ -116,15 +115,9 @@ export default function InfoPage() {
             background: 'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(51,255,51,0.08) 0%, transparent 50%)',
           }}
         />
-        {/* Underwater sunbeam light rays */}
-        <UnderwaterSunbeams />
-
         {/* Blob backgrounds */}
         <div className="blob-ocean absolute top-[-10%] right-[-5%] w-[500px] h-[500px] opacity-20" />
         <div className="blob-teal absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] opacity-15" />
-
-        {/* Lava lamp chrome blobs */}
-        <LavaBlobs />
 
         {/* Floating bubble particles */}
         <div className="bubble-float absolute left-[10%] top-[15%] h-3 w-3 rounded-full bg-[#00BFFF]/10" style={{ animationDelay: '0s' }} />
@@ -183,14 +176,14 @@ export default function InfoPage() {
             Learning Management System
           </p>
           <p className="text-xl md:text-2xl text-[#0A2540]/80 mb-4 max-w-3xl mx-auto">
-            The most essential tool in modern education — built for Canadian K-12 and post-secondary schools
+            Innovating the most important tool in education
           </p>
 
           <p className="text-base md:text-lg text-[#0A2540]/80 mb-6 max-w-2xl mx-auto">
-            Interactive courses, AI tutoring, full offline learning, spaced repetition flashcards, gradebook, real-time messaging, attendance tracking, and role-based dashboards for students, teachers, parents, and administrators -- everything a school needs in one platform.
+            Browser-based AI tutoring. Spaced repetition flashcards. Full offline mode. No other LMS has these.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <a
               href="#pricing"
               className="px-8 py-4 rounded-xl btn-chrome-3d-blue text-white transition-all font-bold flex items-center gap-2 group"
@@ -205,6 +198,7 @@ export default function InfoPage() {
               Login to Your School
             </Link>
           </div>
+
         </div>
       </section>
 
@@ -213,9 +207,16 @@ export default function InfoPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Built for Every Role</h2>
-            <p className="text-lg text-[#0A2540]/80 max-w-2xl mx-auto">
+            <p className="text-lg text-[#0A2540]/80 max-w-2xl mx-auto mb-8">
               Tailored experiences for students, teachers, parents, and administrators
             </p>
+
+            {/* One-Click Demo Accounts */}
+            <div className="max-w-2xl mx-auto">
+              <div className="rounded-2xl p-6 ocean-card">
+                <DemoLoginButtons />
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

@@ -27,6 +27,11 @@ export default async function ParentDashboardPage() {
     error = e instanceof Error ? e.message : 'Failed to load data'
   }
 
+  // Time-of-day greeting
+  const hour = new Date().getHours()
+  const greeting =
+    hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
+
   const totalMissing = children.reduce((s, c) => s + c.missingAssignments, 0)
   const avgGPA =
     children.filter((c) => c.gpa > 0).length > 0
@@ -69,7 +74,7 @@ export default async function ParentDashboardPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground text-outlined">
-          Parent Dashboard
+          {greeting} &mdash; Parent Dashboard
         </h1>
         <p className="mt-1 text-sm sm:text-base text-muted-foreground">
           Monitor your children&apos;s academic progress at a glance.

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { GraduationCap, Brain, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield, ShieldAlert, Eye, Radio, LineChart, Shirt, Equal, Layers, CloudSun, Rocket, Wheat, Leaf, Heart, MapPin } from 'lucide-react'
+import { GraduationCap, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 
 export default function EdTechHubPage() {
@@ -300,7 +300,7 @@ export default function EdTechHubPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
+            <div className="max-w-lg mx-auto">
               {/* Product 1: WolfWhale LMS */}
               <div className="bg-white/92 backdrop-blur-xl border border-[#00BFFF]/20 shadow-lg shadow-[#00BFFF]/8 rounded-2xl p-5 sm:p-8 group hover:border-[#00BFFF]/40 hover:shadow-xl hover:shadow-[#00BFFF]/12 transition-all flex flex-col">
                 {/* Status Badge */}
@@ -351,186 +351,6 @@ export default function EdTechHubPage() {
                 </div>
               </div>
 
-              {/* Product 2: AI Consulting — Live */}
-              <div className="bg-white/92 backdrop-blur-xl border border-[#A78BFA]/20 shadow-lg shadow-[#A78BFA]/8 rounded-2xl p-5 sm:p-8 group hover:border-[#A78BFA]/40 hover:shadow-xl hover:shadow-[#A78BFA]/12 transition-all flex flex-col">
-                {/* Status Badge */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="inline-flex p-3 rounded-xl bg-[#A78BFA]/10 border border-[#A78BFA]/20 group-hover:bg-[#A78BFA]/15 transition-colors">
-                    <Brain className="h-7 w-7 text-[#7C3AED]" />
-                  </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#22C55E]/15 text-[#16A34A] border border-[#22C55E]/25">
-                    Live
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-bold text-[#0A2040] mb-3">AI Consulting</h3>
-                <p className="text-[#0A2040]/70 text-sm leading-relaxed mb-5">
-                  Custom AI solutions for education institutions. From intelligent tutoring systems to automated assessment and curriculum optimization.
-                </p>
-
-                {/* Feature bullets */}
-                <ul className="space-y-2 mb-6 flex-1">
-                  {[
-                    'AI-powered tutoring systems',
-                    'Automated assessment tools',
-                    'Curriculum optimization',
-                    'Custom integrations',
-                  ].map((text) => (
-                    <li key={text} className="flex items-center gap-2 text-[#0A2040]/65 text-sm">
-                      <div className="h-1.5 w-1.5 rounded-full bg-[#A78BFA]/60 shrink-0" />
-                      {text}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Buttons */}
-                <div className="flex gap-3">
-                  <Link
-                    href="/ai-consulting"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-silver text-sm font-semibold transition-all hover:scale-105"
-                  >
-                    Learn More
-                  </Link>
-                  <a
-                    href="mailto:info@wolfwhale.ca"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-blue text-white text-sm font-semibold transition-all hover:scale-105"
-                  >
-                    Contact Us
-                  </a>
-                </div>
-              </div>
-
-              {/* Product 3: Cerebus — Coming Soon */}
-              <div className="bg-white/88 backdrop-blur-xl border border-[#FF4444]/15 shadow-lg shadow-[#FF4444]/5 rounded-2xl p-5 sm:p-8 group transition-all opacity-80 flex flex-col">
-                {/* Status Badge */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="inline-flex p-3 rounded-xl bg-[#FF4444]/8 border border-[#FF4444]/15">
-                    <ShieldAlert className="h-7 w-7 text-[#DC2626]" />
-                  </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#FF4444]/10 text-[#DC2626] border border-[#FF4444]/20">
-                    Coming Soon
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-bold text-[#0A2040] mb-3">Cerebus</h3>
-                <p className="text-[#0A2040]/70 text-sm leading-relaxed mb-5">
-                  AI-powered surveillance and data security platform designed for First Nations reserves and bands. Combines intelligent monitoring with powerful data collection and visualization tools to protect community infrastructure and sovereignty.
-                </p>
-
-                {/* Feature bullets */}
-                <ul className="space-y-2 mb-6 flex-1">
-                  {[
-                    { icon: Eye, text: 'AI surveillance & threat detection' },
-                    { icon: Shield, text: 'Community data sovereignty tools' },
-                    { icon: LineChart, text: 'Real-time data visualization dashboards' },
-                    { icon: Radio, text: 'Secure infrastructure monitoring' },
-                    { icon: BarChart3, text: 'Band council analytics & reporting' },
-                  ].map(({ icon: Icon, text }) => (
-                    <li key={text} className="flex items-center gap-2 text-[#0A2040]/60 text-sm">
-                      <Icon className="h-4 w-4 text-[#DC2626] shrink-0" />
-                      {text}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Button */}
-                <div className="flex gap-3">
-                  <Link
-                    href="/cerebus"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#FF4444]/8 border border-[#FF4444]/20 text-[#DC2626] text-sm font-semibold hover:bg-[#FF4444]/15 transition-all hover:scale-105"
-                  >
-                    Learn More
-                  </Link>
-                </div>
-              </div>
-
-              {/* Product 4: School Uniforms — Coming Soon */}
-              <div className="bg-white/88 backdrop-blur-xl border border-[#14B8A6]/15 shadow-lg shadow-[#14B8A6]/5 rounded-2xl p-5 sm:p-8 group transition-all opacity-80 flex flex-col">
-                {/* Status Badge */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="inline-flex p-3 rounded-xl bg-[#14B8A6]/8 border border-[#14B8A6]/15">
-                    <Shirt className="h-7 w-7 text-[#0D9488]" />
-                  </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#14B8A6]/10 text-[#0D9488] border border-[#14B8A6]/20">
-                    Coming Soon
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-bold text-[#0A2040] mb-3">School Blazer</h3>
-                <p className="text-[#0A2040]/70 text-sm leading-relaxed mb-5">
-                  A premium grey school blazer with gold buttons and blue gingham lining &mdash; included with every student&apos;s WolfWhale LMS account. Manufactured by Eton Kidds.
-                </p>
-
-                {/* Feature bullets */}
-                <ul className="space-y-2 mb-6 flex-1">
-                  {[
-                    { icon: Shirt, text: 'Grey twill fabric blazer' },
-                    { icon: Equal, text: 'Gold buttons with embossed detailing' },
-                    { icon: Layers, text: 'Blue gingham checkered lining' },
-                    { icon: Rocket, text: 'Included with every LMS account' },
-                    { icon: CloudSun, text: 'Manufactured by Eton Kidds' },
-                  ].map(({ icon: Icon, text }) => (
-                    <li key={text} className="flex items-center gap-2 text-[#0A2040]/60 text-sm">
-                      <Icon className="h-4 w-4 text-[#0D9488] shrink-0" />
-                      {text}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Button */}
-                <div className="flex gap-3">
-                  <Link
-                    href="/uniforms"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#14B8A6]/8 border border-[#14B8A6]/20 text-[#0D9488] text-sm font-semibold hover:bg-[#14B8A6]/15 transition-all hover:scale-105"
-                  >
-                    Learn More
-                  </Link>
-                </div>
-              </div>
-
-              {/* Product 5: Pemmican Bars — Coming Soon */}
-              <div className="bg-white/88 backdrop-blur-xl border border-[#D97706]/15 shadow-lg shadow-[#D97706]/5 rounded-2xl p-5 sm:p-8 group transition-all opacity-80 flex flex-col">
-                {/* Status Badge */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="inline-flex p-3 rounded-xl bg-[#D97706]/8 border border-[#D97706]/15">
-                    <Wheat className="h-7 w-7 text-[#B45309]" />
-                  </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#D97706]/10 text-[#B45309] border border-[#D97706]/20">
-                    Coming Soon
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-bold text-[#0A2040] mb-3">Pemmican Bars</h3>
-                <p className="text-[#0A2040]/70 text-sm leading-relaxed mb-5">
-                  Healthy vending machines for schools, stocked with locally-sourced Indigenous-inspired foods. Dried berries, pemmican, jerky, and all-natural snacks from Saskatchewan and Canadian producers.
-                </p>
-
-                {/* Feature bullets */}
-                <ul className="space-y-2 mb-6 flex-1">
-                  {[
-                    { icon: MapPin, text: 'Locally sourced from Saskatchewan & Canada' },
-                    { icon: Leaf, text: 'Traditional Indigenous-inspired nutrition' },
-                    { icon: Heart, text: 'Healthy alternative to junk food vending' },
-                    { icon: Users, text: 'Supports local farmers & Indigenous producers' },
-                    { icon: Sparkles, text: 'Part of the complete WolfWhale ecosystem' },
-                  ].map(({ icon: Icon, text }) => (
-                    <li key={text} className="flex items-center gap-2 text-[#0A2040]/60 text-sm">
-                      <Icon className="h-4 w-4 text-[#B45309] shrink-0" />
-                      {text}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Button */}
-                <div className="flex gap-3">
-                  <Link
-                    href="/pemmican-bars"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#D97706]/8 border border-[#D97706]/20 text-[#B45309] text-sm font-semibold hover:bg-[#D97706]/15 transition-all hover:scale-105"
-                  >
-                    Learn More
-                  </Link>
-                </div>
-              </div>
             </div>
           </div>
         </section>

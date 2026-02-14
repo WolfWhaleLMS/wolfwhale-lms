@@ -6,7 +6,6 @@ import { Bell, X, Check, CheckCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { getNotifications, getUnreadCount, markAsRead, markAllAsRead } from '@/app/actions/notifications'
 import { useRealtimeNotifications } from '@/hooks/useRealtimeNotifications'
-import { useSound } from '@/components/providers/sound-provider'
 
 export function NotificationBell() {
   const [userId, setUserId] = useState<string | null>(null)
@@ -15,8 +14,6 @@ export function NotificationBell() {
   const btnRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
   const [pos, setPos] = useState({ top: 0, right: 0 })
-  const sounds = useSound()
-
   const { notifications, setNotifications, unreadCount, setUnreadCount } =
     useRealtimeNotifications(userId)
 
@@ -38,14 +35,6 @@ export function NotificationBell() {
       setUnreadCount(count)
     })
   }, [userId, initialLoaded, setNotifications, setUnreadCount])
-
-  // Play sound on new notification
-  useEffect(() => {
-    if (unreadCount > 0 && initialLoaded) {
-      sounds.playNotification()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [unreadCount])
 
   // Position the panel below the button
   const updatePos = useCallback(() => {
@@ -193,10 +182,7 @@ export function NotificationBell() {
       <button
         ref={btnRef}
         type="button"
-        onClick={() => {
-          sounds.playClick()
-          setOpen(!open)
-        }}
+        onClick={() => setOpen(!open)}
         className="relative rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         aria-label="Notifications"
       >

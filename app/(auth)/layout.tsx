@@ -3,12 +3,9 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Music, VolumeX, ArrowLeft } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
-import { usePianoMusic } from '@/hooks/usePianoMusic'
-import UnderwaterSunbeams from '@/components/effects/UnderwaterSunbeams'
-import LavaBlobs from '@/components/effects/LavaBlobs'
 
 export default function AuthLayout({
   children,
@@ -16,7 +13,6 @@ export default function AuthLayout({
   children: React.ReactNode
 }) {
   const [mounted, setMounted] = useState(false)
-  const { isPlaying, toggle, start } = usePianoMusic()
   const { setTheme } = useTheme()
 
   // Force light mode immediately before paint — prevents dark flash
@@ -31,21 +27,6 @@ export default function AuthLayout({
     setMounted(true)
     setTheme('light')
   }, [setTheme])
-
-  // Start music on first user interaction only (no eager autoplay)
-  useEffect(() => {
-    function handleInteraction() {
-      start()
-    }
-    document.addEventListener('click', handleInteraction, { once: true })
-    document.addEventListener('keydown', handleInteraction, { once: true })
-    document.addEventListener('touchstart', handleInteraction, { once: true })
-    return () => {
-      document.removeEventListener('click', handleInteraction)
-      document.removeEventListener('keydown', handleInteraction)
-      document.removeEventListener('touchstart', handleInteraction)
-    }
-  }, [start])
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-[#E8F8FF]">
@@ -77,15 +58,9 @@ export default function AuthLayout({
           }}
         />
 
-        {/* Underwater sunbeam light rays */}
-        <UnderwaterSunbeams />
-
         {/* Blob backgrounds */}
         <div className="blob-ocean absolute top-[-10%] right-[-5%] w-[500px] h-[500px] opacity-30" />
         <div className="blob-teal absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] opacity-20" />
-
-        {/* Lava lamp chrome blobs */}
-        <LavaBlobs />
       </div>
 
       {/* Header */}
@@ -126,19 +101,6 @@ export default function AuthLayout({
           &copy; {new Date().getFullYear()} WolfWhale Inc. All rights reserved.
         </p>
       </footer>
-
-      {/* Music Toggle */}
-      <button
-        onClick={toggle}
-        className="fixed bottom-6 right-6 z-50 p-3 rounded-full ocean-card shadow-lg hover:shadow-[0_0_20px_rgba(0,191,255,0.3)] transition-all hover:scale-110 group"
-        title={isPlaying ? 'Mute music' : 'Play music'}
-      >
-        {isPlaying ? (
-          <Music className="h-5 w-5 text-[#00BFFF] animate-pulse" />
-        ) : (
-          <VolumeX className="h-5 w-5 text-[#0A2540]/50" />
-        )}
-      </button>
 
       {/* Animation keyframes */}
       <style jsx>{`

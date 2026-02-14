@@ -19,7 +19,6 @@ import {
 } from '@/components/ui/form'
 import { TurnstileWidget } from '@/components/auth/TurnstileWidget'
 import { DemoLoginButtons } from '@/components/auth/DemoLoginButtons'
-import { usePianoMusic } from '@/hooks/usePianoMusic'
 
 const loginSchema = z.object({
   email: z.string().min(1, 'Please enter your username'),
@@ -34,7 +33,6 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
-  const { destroy: destroyPianoMusic } = usePianoMusic()
 
   const turnstileEnabled = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
@@ -89,9 +87,6 @@ export function LoginForm() {
       return
     }
 
-    // Stop piano music before navigating to the dashboard so it doesn't
-    // overlap with the dashboard's study-music radio.
-    destroyPianoMusic()
     router.push(redirectTo)
     router.refresh()
   }
@@ -99,7 +94,7 @@ export function LoginForm() {
   return (
     <div className="space-y-6">
       {/* Demo Quick-Login Buttons */}
-      <DemoLoginButtons onSuccess={destroyPianoMusic} redirectTo={redirectTo} />
+      <DemoLoginButtons redirectTo={redirectTo} />
 
       {/* Divider */}
       <div className="flex items-center gap-3">

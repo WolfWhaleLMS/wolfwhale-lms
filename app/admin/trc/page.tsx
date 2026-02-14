@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { ArrowLeft, Heart, CheckCircle2, Circle } from 'lucide-react'
 import { getTrcStatus, type TrcCallToAction } from '@/app/actions/trc'
-import { TrcExportButton } from '@/components/indigenous-knowledge/TrcExportButton'
 
 function statusBadgeClass(status: TrcCallToAction['status']) {
   if (status === 'addressed')
@@ -51,9 +50,6 @@ export default async function TrcCompliancePage() {
               Action 6&ndash;12
             </p>
           </div>
-        </div>
-        <div className="shrink-0">
-          <TrcExportButton />
         </div>
       </div>
 

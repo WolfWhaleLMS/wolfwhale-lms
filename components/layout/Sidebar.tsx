@@ -10,10 +10,6 @@ import {
   BookOpen,
   ClipboardList,
   GraduationCap,
-  Brain,
-  Trophy,
-  Medal,
-  Gamepad2,
   Users,
   CalendarCheck,
   BarChart3,
@@ -21,14 +17,7 @@ import {
   Shield,
   FileText,
   Building2,
-  Layers,
   Megaphone,
-  Map,
-  Dices,
-  GitFork,
-  Bot,
-  Apple,
-  Feather,
   Heart,
   LogOut,
   X,
@@ -38,14 +27,6 @@ import { useEffect, useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 import { getRoleMenuItems, type UserRole } from '@/lib/auth/permissions'
-import { useSound } from '@/components/providers/sound-provider'
-import dynamic from 'next/dynamic'
-
-// Lazy-load XP widget — it makes a Supabase call on mount, not needed for initial sidebar render
-const SidebarXPWidget = dynamic(
-  () => import('@/components/gamification/SidebarXPWidget').then((m) => ({ default: m.SidebarXPWidget })),
-  { ssr: false, loading: () => null }
-)
 
 // ---------------------------------------------------------------------------
 // Icon mapping: string name -> lucide-react component
@@ -58,10 +39,6 @@ const ICON_MAP: Record<string, LucideIcon> = {
   BookOpen,
   ClipboardList,
   GraduationCap,
-  Brain,
-  Trophy,
-  Medal,
-  Gamepad2,
   Users,
   CalendarCheck,
   BarChart3,
@@ -69,14 +46,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Shield,
   FileText,
   Building2,
-  Layers,
   Megaphone,
-  Map,
-  Dices,
-  GitFork,
-  Bot,
-  Apple,
-  Feather,
   Heart,
 }
 
@@ -99,7 +69,6 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
   const pathname = usePathname()
   const router = useRouter()
   const menuItems = getRoleMenuItems(role)
-  const sounds = useSound()
   const navRef = useRef<HTMLElement>(null)
   const [canScrollDown, setCanScrollDown] = useState(false)
 
@@ -186,7 +155,6 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
                   <Link
                     href={item.href}
                     onClick={() => {
-                      sounds.playNavigate()
                       onClose?.()
                     }}
                     className={cn(
@@ -218,11 +186,6 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
           )}
         />
       </div>
-
-      {/* ----------------------------------------------------------------- */}
-      {/* Student XP Widget                                                  */}
-      {/* ----------------------------------------------------------------- */}
-      {role === 'student' && <SidebarXPWidget />}
 
       {/* ----------------------------------------------------------------- */}
       {/* Footer: sign-out button                                            */}

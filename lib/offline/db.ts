@@ -33,24 +33,6 @@ export interface OfflineAssignment {
   assignment_type: string
 }
 
-export interface OfflineFlashcardDeck {
-  id: string
-  course_id: string
-  title: string
-  description: string | null
-  card_count: number
-}
-
-export interface OfflineFlashcard {
-  id: string
-  deck_id: string
-  front: string
-  back: string
-  ease_factor: number
-  interval: number
-  next_review: string | null
-}
-
 export interface OfflineGrade {
   id: string
   assignment_id: string
@@ -63,7 +45,7 @@ export interface OfflineGrade {
 
 export interface OfflinePendingAction {
   id?: number // auto-increment
-  type: string // 'flashcard_review' | 'assignment_submit' etc
+  type: string // 'assignment_submit' etc
   payload: string // JSON stringified
   created_at: string
 }
@@ -74,19 +56,15 @@ class WolfWhaleOfflineDB extends Dexie {
   courses!: Table<OfflineCourse>
   lessons!: Table<OfflineLesson>
   assignments!: Table<OfflineAssignment>
-  flashcardDecks!: Table<OfflineFlashcardDeck>
-  flashcards!: Table<OfflineFlashcard>
   grades!: Table<OfflineGrade>
   pendingActions!: Table<OfflinePendingAction>
 
   constructor() {
     super('wolfwhale-offline')
-    this.version(1).stores({
+    this.version(2).stores({
       courses: 'id',
       lessons: 'id, course_id',
       assignments: 'id, course_id',
-      flashcardDecks: 'id, course_id',
-      flashcards: 'id, deck_id',
       grades: 'id, assignment_id',
       pendingActions: '++id, type',
     })

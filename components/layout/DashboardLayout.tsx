@@ -4,20 +4,9 @@ import { useState, useEffect } from 'react'
 import { Sidebar } from './Sidebar'
 import { TopBar } from './TopBar'
 import type { UserRole } from '@/lib/auth/permissions'
-import type { PetData } from '@/components/pets/PetWalker'
 import dynamic from 'next/dynamic'
 
 // Lazy-load heavy client components that are not needed for initial paint
-const PixelPetBar = dynamic(
-  () => import('@/components/pets/PixelPetBar').then((m) => ({ default: m.PixelPetBar })),
-  { ssr: false, loading: () => null }
-)
-
-const TutorWidget = dynamic(() => import('@/components/tutor/TutorWidget'), {
-  ssr: false,
-  loading: () => null,
-})
-
 const OfflineStatusBar = dynamic(
   () => import('./OfflineStatusBar').then((m) => ({ default: m.OfflineStatusBar })),
   { ssr: false, loading: () => null }
@@ -47,13 +36,6 @@ export function DashboardLayout({
 
   // Auto-sync pending offline actions when connectivity returns
   useAutoSync()
-
-  // Demo pets for students (will be replaced with Supabase data)
-  // PixelPetBar enforces a MAX_WALKING_PETS=2 cap for performance
-  const demoPets: PetData[] = role === 'student' ? [
-    { id: 'demo-1', creatureType: 1, name: 'Rex',     walkSpeed: 28, startOffset: 15 },
-    { id: 'demo-2', creatureType: 2, name: 'Buddy',   walkSpeed: 38, startOffset: 70 },
-  ] : []
 
   // Close sidebar on Escape key
   useEffect(() => {
@@ -164,12 +146,6 @@ export function DashboardLayout({
         </main>
       </div>
 
-      {role === 'student' && demoPets.length > 0 && <PixelPetBar pets={demoPets} />}
-
-      {/* Floating AI Tutor widget — available for students and teachers */}
-      {(role === 'student' || role === 'teacher') && (
-        <TutorWidget role={role === 'teacher' ? 'teacher' : 'student'} />
-      )}
     </div>
   )
 }

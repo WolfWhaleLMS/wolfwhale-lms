@@ -3,8 +3,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import UnderwaterSunbeams from '@/components/effects/UnderwaterSunbeams'
-import LavaBlobs from '@/components/effects/LavaBlobs'
 import {
   LayoutDashboard,
   BookOpen,
@@ -335,12 +333,6 @@ export default function GuidePage() {
               'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(51,255,51,0.08) 0%, transparent 50%)',
           }}
         />
-        {/* Underwater sunbeam light rays */}
-        <UnderwaterSunbeams />
-
-        {/* Lava blobs */}
-        <LavaBlobs />
-
         {/* Blob backgrounds */}
         <div className="blob-ocean absolute top-[-10%] right-[-5%] w-[500px] h-[500px] opacity-20" />
         <div className="blob-teal absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] opacity-15" />

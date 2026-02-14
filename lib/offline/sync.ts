@@ -5,7 +5,6 @@ import {
   downloadUserCourses,
   downloadUserLessons,
   downloadUserAssignments,
-  downloadUserFlashcards,
   downloadUserGrades,
 } from '@/app/actions/offline'
 
@@ -65,7 +64,7 @@ export async function downloadAllUserData(
   }
   onProgress(40, 'lessons')
 
-  // ---- 3. Assignments (40 → 60%) ----
+  // ---- 3. Assignments (40 → 65%) ----
   try {
     onProgress(40, 'assignments')
     const assignmentsResult = await downloadUserAssignments(courseIds)
@@ -78,40 +77,11 @@ export async function downloadAllUserData(
   } catch (err) {
     errors.push(`Assignments: ${err instanceof Error ? err.message : 'Unknown error'}`)
   }
-  onProgress(60, 'assignments')
+  onProgress(65, 'assignments')
 
-  // ---- 4. Flashcards (60 → 80%) ----
+  // ---- 4. Grades (65 → 95%) ----
   try {
-    onProgress(60, 'flashcards')
-    const flashcardsResult = await downloadUserFlashcards(courseIds)
-
-    if (flashcardsResult.success) {
-      const { decks, cards } = flashcardsResult.data
-
-      // Map server card shape → offline card shape
-      await offlineDB.flashcardDecks.bulkPut(decks)
-      await offlineDB.flashcards.bulkPut(
-        cards.map((c) => ({
-          id: c.id,
-          deck_id: c.deck_id,
-          front: c.front_text,
-          back: c.back_text,
-          ease_factor: 2.5,
-          interval: 0,
-          next_review: null,
-        }))
-      )
-    } else {
-      errors.push(`Flashcards: ${flashcardsResult.error}`)
-    }
-  } catch (err) {
-    errors.push(`Flashcards: ${err instanceof Error ? err.message : 'Unknown error'}`)
-  }
-  onProgress(80, 'flashcards')
-
-  // ---- 5. Grades (80 → 95%) ----
-  try {
-    onProgress(80, 'grades')
+    onProgress(65, 'grades')
     const gradesResult = await downloadUserGrades()
 
     if (gradesResult.success) {
@@ -142,8 +112,6 @@ export async function clearOfflineData(): Promise<void> {
     offlineDB.courses.clear(),
     offlineDB.lessons.clear(),
     offlineDB.assignments.clear(),
-    offlineDB.flashcardDecks.clear(),
-    offlineDB.flashcards.clear(),
     offlineDB.grades.clear(),
     offlineDB.pendingActions.clear(),
   ])

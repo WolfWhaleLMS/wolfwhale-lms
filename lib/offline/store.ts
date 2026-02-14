@@ -14,7 +14,7 @@ interface OfflineState {
   isOffline: boolean
   isDownloading: boolean
   downloadProgress: number // 0-100
-  downloadPhase: string // 'idle' | 'courses' | 'lessons' | 'assignments' | 'flashcards' | 'grades' | 'complete' | 'error'
+  downloadPhase: string // 'idle' | 'courses' | 'lessons' | 'assignments' | 'grades' | 'complete' | 'error'
   lastSyncedAt: Date | null
   error: string | null
 

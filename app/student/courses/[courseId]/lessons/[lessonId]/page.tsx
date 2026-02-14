@@ -20,10 +20,7 @@ import {
   FileText,
   Loader2,
   Target,
-  Gamepad2,
 } from 'lucide-react'
-import { getToolBySlug } from '@/lib/tools/registry'
-import { ToolCard } from '@/components/tools/ToolCard'
 
 interface LessonData {
   id: string
@@ -525,25 +522,12 @@ export default function StudentLessonViewerPage({
                 )
               }
               case 'tool': {
-                const toolSlug = d(block, 'toolSlug')
-                if (!toolSlug) {
-                  return (
-                    <div key={blockKey} className="rounded-lg border border-border p-4 text-center text-sm text-muted-foreground">
-                      <Gamepad2 className="mx-auto mb-2 h-6 w-6 opacity-40" />
-                      No tool selected
-                    </div>
-                  )
-                }
-                const tool = getToolBySlug(toolSlug)
-                if (!tool) {
-                  return (
-                    <div key={blockKey} className="rounded-lg border border-border p-4 text-center text-sm text-muted-foreground">
-                      <Gamepad2 className="mx-auto mb-2 h-6 w-6 opacity-40" />
-                      Tool not found
-                    </div>
-                  )
-                }
-                return <ToolCard key={blockKey} tool={tool} variant="lesson-embed" />
+                return (
+                  <div key={blockKey} className="rounded-lg border border-border bg-muted/30 p-4 text-center text-sm text-muted-foreground opacity-60">
+                    <BookOpen className="mx-auto mb-2 h-6 w-6 opacity-40" />
+                    Tool not available
+                  </div>
+                )
               }
               default:
                 if (d(block, 'text') || d(block, 'content')) {

@@ -41,6 +41,11 @@ export default async function TeacherDashboardPage() {
     [profile?.first_name, profile?.last_name].filter(Boolean).join(' ') ||
     'Teacher'
 
+  // Time-of-day greeting
+  const hour = new Date().getHours()
+  const greeting =
+    hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
+
   // Fetch real data if tenant context exists
   let courses: any[] = []
   let totalStudents = 0
@@ -178,7 +183,7 @@ export default async function TeacherDashboardPage() {
       <div className="ocean-card rounded-2xl p-4 sm:p-6">
         <div className="mb-3 sm:mb-4">
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground text-outlined break-words">
-            Welcome back, {teacherName}
+            {greeting}, {teacherName}
           </h1>
           <p className="mt-1 text-sm sm:text-base text-muted-foreground">
             {currentDate} &mdash; You&apos;re making a difference today.

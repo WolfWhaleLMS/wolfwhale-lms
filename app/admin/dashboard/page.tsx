@@ -77,6 +77,11 @@ export default async function AdminDashboardPage() {
   const userRole = headersList.get('x-user-role')
   const isSuperAdmin = userRole === 'super_admin'
 
+  // Time-of-day greeting
+  const hour = new Date().getHours()
+  const greeting =
+    hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
+
   // Fetch dashboard data with error handling
   let stats: {
     totalUsers: number
@@ -207,7 +212,7 @@ export default async function AdminDashboardPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground text-outlined">
-          Admin Dashboard
+          {greeting} &mdash; Admin Dashboard
         </h1>
         <p className="mt-1 text-sm sm:text-base text-muted-foreground">
           School overview, enrollment data, and system health at a glance.

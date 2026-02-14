@@ -7,13 +7,10 @@ import { createClient } from '@/lib/supabase/server'
 import { getLetterGrade } from '@/lib/config/constants'
 import {
   Sparkles,
-  Trophy,
   Zap,
-  Flame,
   BookOpen,
   Target,
   Rocket,
-  Crown,
   ChevronRight,
   Clock,
   PartyPopper,
@@ -75,21 +72,6 @@ export default async function StudentDashboardPage() {
     grade: string
     percentage: number
   }[] = []
-  let achievements: {
-    id: string
-    name: string
-    icon: string
-    earnedAt: string
-  }[] = []
-  let xpData = {
-    currentXP: 0,
-    nextLevelXP: 100,
-    level: 1,
-    levelName: 'Rookie Navigator',
-    tier: 'Bronze',
-  }
-  let streak = 0
-
   let attendanceRate = 0
 
   if (tenantId) {
@@ -121,7 +103,7 @@ export default async function StudentDashboardPage() {
     const courseIds = courseData.map((c: any) => c.id)
     const teacherIds = [...new Set(courseData.map((c: any) => c.created_by))]
 
-    // Fetch in parallel: profiles, lessons, lesson_progress, assignments, grades, xp, achievements
+    // Fetch in parallel: profiles, lessons, lesson_progress, assignments, grades, attendance
     const now = new Date()
     const sevenDaysFromNow = new Date(now)
     sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7)
@@ -134,10 +116,7 @@ export default async function StudentDashboardPage() {
       progressResult,
       assignmentResult,
       gradeResult,
-      xpResult,
-      achievementResult,
       attendanceResult,
-      xpEventsResult,
     ] = await Promise.all([
       // Teacher profiles
       teacherIds.length > 0
@@ -188,38 +167,12 @@ export default async function StudentDashboardPage() {
             .limit(50)
         : Promise.resolve({ data: [] }),
 
-      // XP / level data
-      supabase
-        .from('student_xp')
-        .select('total_xp, current_level, current_tier')
-        .eq('student_id', user.id)
-        .eq('tenant_id', tenantId)
-        .single(),
-
-      // Recent achievements
-      supabase
-        .from('student_achievements')
-        .select('id, unlocked_at, achievements:achievement_id(id, name, icon)')
-        .eq('student_id', user.id)
-        .eq('tenant_id', tenantId)
-        .order('unlocked_at', { ascending: false })
-        .limit(5),
-
-      // Attendance records (previously fetched sequentially)
+      // Attendance records
       supabase
         .from('attendance_records')
         .select('status')
         .eq('tenant_id', tenantId)
         .eq('student_id', user.id),
-
-      // XP events for streak calculation (previously fetched sequentially)
-      supabase
-        .from('xp_transactions')
-        .select('created_at')
-        .eq('student_id', user.id)
-        .eq('tenant_id', tenantId)
-        .order('created_at', { ascending: false })
-        .limit(100),
     ])
 
     const profiles = profileResult.data || []
@@ -227,8 +180,6 @@ export default async function StudentDashboardPage() {
     const progressData = progressResult.data || []
     const assignmentsData = assignmentResult.data || []
     const gradesData = gradeResult.data || []
-    const userLevel = xpResult.data
-    const achievementsData = achievementResult.data || []
 
     // Build course name map for assignments
     const courseNameMap: Record<string, string> = {}
@@ -327,65 +278,6 @@ export default async function StudentDashboardPage() {
       }
     })
 
-    // XP data
-    if (userLevel) {
-      const level = userLevel.current_level || 1
-      // Approximate next level XP thresholds
-      const xpThresholds: Record<number, number> = {
-        1: 100,
-        2: 250,
-        3: 500,
-        4: 1000,
-        5: 2000,
-        6: 3500,
-        7: 5500,
-        8: 8000,
-        9: 12000,
-        10: 20000,
-      }
-      const nextLevelXP = xpThresholds[level + 1] || xpThresholds[level] || 100
-      const currentLevelXP = xpThresholds[level] || 0
-
-      // Level name mapping
-      const levelNames: Record<number, string> = {
-        1: 'Rookie Navigator',
-        2: 'Wave Rider',
-        3: 'Reef Explorer',
-        4: 'Ocean Scout',
-        5: 'Tide Master',
-        6: 'Deep Diver',
-        7: 'Sea Sage',
-        8: 'Whale Whisperer',
-        9: 'Ocean Guardian',
-        10: 'Legendary Leviathan',
-      }
-
-      xpData = {
-        currentXP: userLevel.total_xp || 0,
-        nextLevelXP: nextLevelXP,
-        level: level,
-        levelName: levelNames[level] || 'Rookie Navigator',
-        tier: userLevel.current_tier || 'Bronze',
-      }
-    }
-
-    // Recent achievements
-    achievements = achievementsData.map((ua: any) => {
-      const ach = ua.achievements as any
-      return {
-        id: ach?.id || ua.id,
-        name: ach?.name || 'Achievement',
-        icon: ach?.icon || '🏆',
-        earnedAt: ua.unlocked_at
-          ? new Date(ua.unlocked_at).toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
-            })
-          : '',
-      }
-    })
-
     // Process attendance from parallel results
     const attendanceRecords = attendanceResult.data
     if (attendanceRecords && attendanceRecords.length > 0) {
@@ -393,32 +285,6 @@ export default async function StudentDashboardPage() {
       attendanceRate = Math.round((present / attendanceRecords.length) * 100)
     }
 
-    // Calculate streak from XP events (consecutive days with activity)
-    const xpEvents = xpEventsResult.data
-    if (xpEvents && xpEvents.length > 0) {
-      const uniqueDays = [
-        ...new Set(
-          xpEvents.map((e) => e.created_at?.split('T')[0]).filter(Boolean)
-        ),
-      ].sort((a, b) => (b as string).localeCompare(a as string))
-
-      let currentStreak = 0
-      const today = new Date()
-      today.setHours(0, 0, 0, 0)
-
-      for (let i = 0; i < uniqueDays.length; i++) {
-        const expectedDate = new Date(today)
-        expectedDate.setDate(expectedDate.getDate() - i)
-        const expectedStr = expectedDate.toISOString().split('T')[0]
-
-        if (uniqueDays[i] === expectedStr) {
-          currentStreak++
-        } else {
-          break
-        }
-      }
-      streak = currentStreak
-    }
   }
 
   // Calculate GPA from grades
@@ -452,7 +318,6 @@ export default async function StudentDashboardPage() {
     coursesEnrolled: enrolledCourses.length,
     assignmentsDue: upcomingAssignments.length,
     currentGPA,
-    streak,
   }
 
   // Playful gradient palettes for course cards
@@ -473,16 +338,6 @@ export default async function StudentDashboardPage() {
     'from-[#FFAA00] to-[#FFD700]',
     'from-[#00BFFF] to-[#00FFFF]',
   ]
-
-  // Streak encouragement messages
-  const streakMessage =
-    streak >= 7
-      ? "You're UNSTOPPABLE!"
-      : streak >= 3
-        ? "You're on fire!"
-        : streak >= 1
-          ? 'Keep it going!'
-          : 'Start a streak today!'
 
   return (
     <div className="space-y-4 sm:space-y-8 pb-8 sm:pb-16 overflow-x-hidden max-w-full">
@@ -514,14 +369,6 @@ export default async function StudentDashboardPage() {
           <p className="mt-1 sm:mt-2 text-lg sm:text-3xl text-white/90 text-white-outlined">
             Ready to learn something awesome today?
           </p>
-
-          {/* Streak badge */}
-          {streak > 0 && (
-            <div className="mt-3 sm:mt-4 inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/20 px-2.5 py-1.5 sm:px-5 sm:py-2.5 text-xs sm:text-xl font-semibold text-white-outlined backdrop-blur-sm">
-              <Flame className="h-3.5 w-3.5 sm:h-6 sm:w-6 text-[#D97706] shrink-0" />
-              {streak}-day streak &mdash; {streakMessage}
-            </div>
-          )}
         </div>
       </div>
 
@@ -755,70 +602,23 @@ export default async function StudentDashboardPage() {
         )}
       </section>
 
-      {/* ===== ACHIEVEMENTS ===== */}
-      <section>
-        <div className="mb-3 sm:mb-5 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <div className="flex h-7 w-7 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-br from-[#FFAA00] to-[#FFD700] shadow-md">
-              <Trophy className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-white" />
-            </div>
-            <h2 className="text-lg sm:text-4xl font-bold text-foreground text-outlined truncate">
-              Achievements
-            </h2>
-          </div>
-          <Link
-            href="/student/achievements"
-            className="flex shrink-0 items-center gap-1 rounded-full bg-[#FFAA00]/5 px-2 py-1 sm:px-5 sm:py-2.5 text-[11px] sm:text-lg font-semibold text-[#D97706] transition-all hover:bg-[#FFAA00]/10 hover:scale-105 dark:bg-[#FFAA00]/10 dark:text-[#FFD700]"
-          >
-            See All <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
-          </Link>
-        </div>
-
-        {achievements.length > 0 ? (
-          <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {achievements.slice(0, 3).map((achievement) => (
-              <div
-                key={achievement.id}
-                className="group flex items-center gap-3 sm:gap-4 rounded-2xl border border-[#FFAA00]/20 bg-gradient-to-br from-[#FFAA00]/5 to-[#FFD700]/5 p-3 sm:p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-[#FFAA00]/20 dark:from-[#FFAA00]/10 dark:to-[#FFD700]/10"
-              >
-                <span className="flex h-12 w-12 sm:h-16 sm:w-16 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#FFAA00] to-[#FFD700] text-2xl sm:text-4xl shadow-md transition-transform duration-300 group-hover:scale-110">
-                  {achievement.icon}
-                </span>
-                <div className="flex-1 min-w-0">
-                  <p className="text-base sm:text-xl font-bold text-foreground truncate">
-                    {achievement.name}
-                  </p>
-                  <p className="text-sm sm:text-lg text-muted-foreground">
-                    {achievement.earnedAt}
-                  </p>
-                </div>
-                <Crown className="h-4 w-4 sm:h-5 sm:w-5 text-[#D97706] shrink-0" />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl border-2 border-dashed border-[#FFAA00]/20 bg-[#FFAA00]/5 py-6 sm:py-12 px-3 sm:px-4 text-center dark:border-[#FFAA00]/20 dark:bg-[#FFAA00]/5">
-            <Trophy className="mb-2 sm:mb-4 h-8 w-8 sm:h-14 sm:w-14 text-[#D97706]/50" />
-            <p className="text-base sm:text-2xl font-bold text-foreground">
-              Your trophy case is waiting!
-            </p>
-            <p className="mt-1 sm:mt-2 text-xs sm:text-xl text-muted-foreground">
-              Complete tasks and lessons to earn awesome achievements.
-            </p>
-          </div>
-        )}
-      </section>
-
       {/* ===== QUICK ACTIONS ===== */}
       <section>
         <div className="grid grid-cols-2 gap-2.5 sm:gap-4 sm:grid-cols-4">
           {[
             {
-              href: '/student/study-mode',
-              label: 'Study Mode',
-              icon: <Rocket className="h-5 w-5 sm:h-7 sm:w-7" />,
+              href: '/student/courses',
+              label: 'My Courses',
+              icon: <BookOpen className="h-5 w-5 sm:h-7 sm:w-7" />,
               gradient: 'from-[#00BFFF] to-[#00FFFF]',
               bg: 'bg-[#00BFFF]/5 dark:bg-[#00BFFF]/10',
+            },
+            {
+              href: '/student/assignments',
+              label: 'Assignments',
+              icon: <Target className="h-5 w-5 sm:h-7 sm:w-7" />,
+              gradient: 'from-[#33FF33] to-[#00FFFF]',
+              bg: 'bg-[#33FF33]/5 dark:bg-[#33FF33]/10',
             },
             {
               href: '/messaging',
@@ -831,13 +631,6 @@ export default async function StudentDashboardPage() {
               href: '/calendar',
               label: 'Calendar',
               icon: <CalendarDays className="h-5 w-5 sm:h-7 sm:w-7" />,
-              gradient: 'from-[#33FF33] to-[#00FFFF]',
-              bg: 'bg-[#33FF33]/5 dark:bg-[#33FF33]/10',
-            },
-            {
-              href: '/student/leaderboard',
-              label: 'Leaderboard',
-              icon: <Crown className="h-5 w-5 sm:h-7 sm:w-7" />,
               gradient: 'from-[#FFAA00] to-[#FFD700]',
               bg: 'bg-[#FFAA00]/5 dark:bg-[#FFAA00]/10',
             },
