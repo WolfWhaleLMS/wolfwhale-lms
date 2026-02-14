@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Clock, CheckCircle, AlertCircle, ListTodo } from 'lucide-react'
 import { AssignmentsClient } from './AssignmentsClient'
+import { BackToHubButton } from '@/components/hub/BackToHubButton'
 
 interface StudentAssignment {
   id: string
@@ -145,6 +146,7 @@ export default async function StudentAssignmentsPage() {
 
   return (
     <div className="space-y-8">
+      <BackToHubButton role="student" />
       {/* Visual Header with Whale Gradient */}
       <div className="whale-gradient rounded-2xl p-8 text-white shadow-lg">
         <div className="flex items-center gap-3 mb-2">

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, use } from 'react'
-import Link from 'next/link'
 import {
   Calendar,
   Check,
@@ -12,8 +11,8 @@ import {
   ChevronLeft,
   ChevronRight,
   AlertTriangle,
-  ArrowLeft,
 } from 'lucide-react'
+import { BackToHubButton } from '@/components/hub/BackToHubButton'
 import { getStudentAttendance, getAttendanceSummary } from '@/app/actions/attendance'
 import { getChildProgress } from '@/app/actions/parent'
 import { Button } from '@/components/ui/button'
@@ -161,13 +160,7 @@ export default function ParentChildAttendancePage({
   return (
     <div className="space-y-8">
       {/* Back Button */}
-      <Link
-        href={`/parent/children/${studentId}`}
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to Child Profile
-      </Link>
+      <BackToHubButton role="parent" />
 
       {/* Visual Header with Whale Gradient */}
       <div className="child-card-header rounded-2xl p-8">

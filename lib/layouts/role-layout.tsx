@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { DashboardLayout } from '@/components/layout/DashboardLayout'
+import { HubDashboardLayout } from '@/components/layout/HubDashboardLayout'
 import { AgeVariantProvider } from '@/components/providers/age-variant-provider'
 import type { UserRole } from '@/lib/auth/permissions'
 
@@ -82,9 +83,12 @@ export async function RoleLayout({
   const profile = profileResult.data
   const tenant = tenantResult?.data
 
+  const isHubRole = role === 'student' || role === 'parent'
+  const LayoutComponent = isHubRole ? HubDashboardLayout : DashboardLayout
+
   return (
     <AgeVariantProvider initialGradeLevel={profile?.grade_level}>
-      <DashboardLayout
+      <LayoutComponent
         role={effectiveRole}
         userName={
           profile?.full_name?.trim() ||
@@ -98,7 +102,7 @@ export async function RoleLayout({
         gradeLevel={profile?.grade_level}
       >
         {children}
-      </DashboardLayout>
+      </LayoutComponent>
     </AgeVariantProvider>
   )
 }

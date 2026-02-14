@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getLetterGrade } from '@/lib/config/constants'
 import { BarChart3 } from 'lucide-react'
 import { GradesClient } from './GradesClient'
+import { BackToHubButton } from '@/components/hub/BackToHubButton'
 
 interface CourseGrade {
   courseId: string
@@ -158,6 +159,7 @@ export default async function StudentGradesPage() {
 
   return (
     <div className="space-y-8">
+      <BackToHubButton role="student" />
       {/* Visual Header with Whale Gradient */}
       <div className="whale-gradient rounded-2xl p-8 text-white shadow-lg">
         <div className="flex items-center gap-3 mb-2">

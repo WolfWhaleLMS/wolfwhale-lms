@@ -2046,3 +2046,454 @@ button:focus-visible {
 .hover\:animate-wiggle:hover {
   animation: wiggle 0.5s ease-in-out infinite;
 }
+
+/* ============================================
+   HUB DASHBOARD — Giant 3D Button System
+   Fisher-Price arcade style for student/parent
+   ============================================ */
+
+/* ── Hub Button: Chrome metallic outer ring ── */
+.hub-button-ring {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: none;
+}
+
+/* ── Hub Button: Chrome outer circle ── */
+.hub-button-outer {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(
+    180deg,
+    #E8F4FF 0%,
+    #C0D8E8 15%,
+    #A0C0D8 30%,
+    #B0D0E4 50%,
+    #90B8D0 70%,
+    #A8C8DC 85%,
+    #D0E4F0 100%
+  );
+  border: 3px solid rgba(0, 191, 255, 0.30);
+  box-shadow:
+    0 8px 24px rgba(0, 60, 120, 0.20),
+    0 2px 6px rgba(0, 0, 0, 0.15),
+    inset 0 2px 1px rgba(255, 255, 255, 0.60),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark .hub-button-outer {
+  background: linear-gradient(
+    180deg,
+    #1A3A5C 0%,
+    #0F2A45 15%,
+    #0A2038 30%,
+    #102E4A 50%,
+    #0A2540 70%,
+    #0F2A45 85%,
+    #1A3A5C 100%
+  );
+  border-color: rgba(0, 191, 255, 0.40);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.40),
+    0 2px 6px rgba(0, 0, 0, 0.30),
+    inset 0 2px 1px rgba(255, 255, 255, 0.10),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.20);
+}
+
+/* ── Hub Button: Gradient inner face ── */
+.hub-button-face {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow:
+    inset 0 4px 8px rgba(255, 255, 255, 0.30),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.10);
+}
+
+/* ── Hub Button: Convex lens highlight ── */
+.hub-button-highlight {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 45%;
+  border-radius: 50% 50% 40% 40%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.50) 0%,
+    rgba(255, 255, 255, 0.20) 40%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.dark .hub-button-highlight {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.06) 40%,
+    transparent 100%
+  );
+}
+
+/* ── Hub Button: Icon styling ── */
+.hub-button-icon {
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.30));
+  color: white;
+}
+
+/* ── Hub Button: Label ── */
+.hub-button-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--foreground);
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+/* ── Hub Button: Notification badge ── */
+.hub-button-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #FF5577 0%, #FF3366 50%, #CC1040 100%);
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  border: 2px solid var(--background);
+  box-shadow: 0 2px 8px rgba(255, 51, 102, 0.40);
+  z-index: 5;
+}
+
+/* ── Hub Button: Hover state ── */
+.hub-button-ring:hover .hub-button-outer {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow:
+    0 16px 40px rgba(0, 60, 120, 0.30),
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 2px 1px rgba(255, 255, 255, 0.60),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.dark .hub-button-ring:hover .hub-button-outer {
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.50),
+    0 4px 12px rgba(0, 0, 0, 0.30),
+    inset 0 2px 1px rgba(255, 255, 255, 0.12),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.20);
+}
+
+/* ── Hub Button: Active/press state ── */
+.hub-button-ring:active .hub-button-outer {
+  transform: translateY(4px) scale(0.95);
+  box-shadow:
+    0 2px 8px rgba(0, 60, 120, 0.15),
+    0 1px 2px rgba(0, 0, 0, 0.10),
+    inset 0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.20);
+  transition-duration: 0.1s;
+}
+
+.dark .hub-button-ring:active .hub-button-outer {
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.30),
+    0 1px 2px rgba(0, 0, 0, 0.20),
+    inset 0 4px 12px rgba(0, 0, 0, 0.30),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.05);
+}
+
+/* ── Hub Button: Focus-visible ── */
+.hub-button-ring:focus-visible .hub-button-outer {
+  outline: 3px solid #00BFFF;
+  outline-offset: 4px;
+  box-shadow:
+    0 0 20px rgba(0, 191, 255, 0.50),
+    0 8px 24px rgba(0, 60, 120, 0.20),
+    inset 0 2px 1px rgba(255, 255, 255, 0.60);
+}
+
+/* ── Hub Button: Responsive sizes ── */
+@media (min-width: 640px) {
+  .hub-button-outer {
+    width: 160px;
+    height: 160px;
+  }
+  .hub-button-label {
+    font-size: 18px;
+  }
+  .hub-button-badge {
+    min-width: 28px;
+    height: 28px;
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hub-button-outer {
+    width: 180px;
+    height: 180px;
+  }
+  .hub-button-label {
+    font-size: 20px;
+  }
+}
+
+/* ── Hub Back Button: 3D pill ── */
+.hub-back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 56px;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0A2540;
+  background: linear-gradient(
+    180deg,
+    #FFFFFF 0%,
+    #F0F4F8 8%,
+    #D8E4EE 25%,
+    #C0D4E4 50%,
+    #A8C0D4 75%,
+    #90ACC4 92%,
+    #B8D0E0 100%
+  );
+  border: 1px solid rgba(120, 160, 190, 0.80);
+  box-shadow:
+    0 6px 16px rgba(0, 50, 100, 0.25),
+    0 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0 2px 1px rgba(255, 255, 255, 0.80),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.08);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.60);
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hub-back-button:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 10px 28px rgba(0, 60, 120, 0.30),
+    0 3px 6px rgba(0, 0, 0, 0.15),
+    inset 0 2px 1px rgba(255, 255, 255, 0.90),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.08);
+}
+
+.hub-back-button:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.20),
+    inset 0 3px 6px rgba(0, 0, 0, 0.15),
+    inset 0 1px 2px rgba(0, 0, 0, 0.10);
+  transition-duration: 0.1s;
+}
+
+.hub-back-button:focus-visible {
+  outline: 3px solid #00BFFF;
+  outline-offset: 3px;
+  box-shadow:
+    0 0 15px rgba(0, 191, 255, 0.40),
+    0 6px 16px rgba(0, 50, 100, 0.25);
+}
+
+.dark .hub-back-button {
+  color: #E8F8FF;
+  background: linear-gradient(
+    180deg,
+    #1A3A5C 0%,
+    #153050 8%,
+    #102840 25%,
+    #0D2238 50%,
+    #0A1C30 75%,
+    #081828 92%,
+    #102840 100%
+  );
+  border-color: rgba(0, 191, 255, 0.40);
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.40),
+    0 2px 4px rgba(0, 0, 0, 0.25),
+    inset 0 2px 1px rgba(255, 255, 255, 0.10),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.50);
+}
+
+.dark .hub-back-button:hover {
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.50),
+    0 0 15px rgba(0, 191, 255, 0.20),
+    inset 0 2px 1px rgba(255, 255, 255, 0.12);
+}
+
+/* ── Hub Toggle: Physical toggle switch ── */
+.hub-toggle {
+  position: relative;
+  width: 72px;
+  height: 38px;
+  border-radius: 19px;
+  cursor: pointer;
+  background: linear-gradient(
+    180deg,
+    #A0B0C0 0%,
+    #C0D0DD 30%,
+    #B0C0D0 70%,
+    #90A8B8 100%
+  );
+  border: 2px solid rgba(120, 150, 180, 0.50);
+  box-shadow:
+    inset 0 3px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 2px rgba(0, 0, 0, 0.10),
+    0 1px 3px rgba(0, 0, 0, 0.10);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hub-toggle[data-active="true"] {
+  background: linear-gradient(
+    180deg,
+    #22BB22 0%,
+    #33DD33 30%,
+    #28CC28 70%,
+    #1EA01E 100%
+  );
+  border-color: rgba(51, 255, 51, 0.50);
+  box-shadow:
+    inset 0 3px 8px rgba(0, 0, 0, 0.12),
+    0 0 15px rgba(51, 255, 51, 0.30),
+    0 1px 3px rgba(0, 0, 0, 0.10);
+}
+
+.dark .hub-toggle {
+  background: linear-gradient(
+    180deg,
+    #1A2A3A 0%,
+    #253545 30%,
+    #1E2E3E 70%,
+    #152535 100%
+  );
+  border-color: rgba(0, 191, 255, 0.30);
+}
+
+.dark .hub-toggle[data-active="true"] {
+  background: linear-gradient(
+    180deg,
+    #0A5A0A 0%,
+    #1A7A1A 30%,
+    #126A12 70%,
+    #0A500A 100%
+  );
+  border-color: rgba(51, 255, 51, 0.40);
+  box-shadow:
+    inset 0 3px 8px rgba(0, 0, 0, 0.25),
+    0 0 20px rgba(51, 255, 51, 0.35);
+}
+
+/* ── Hub Toggle: Knob ── */
+.hub-toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(
+    180deg,
+    #FFFFFF 0%,
+    #F0F4F8 20%,
+    #D8E4EE 50%,
+    #C0D4E4 80%,
+    #E0ECF4 100%
+  );
+  border: 1px solid rgba(160, 180, 200, 0.60);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.20),
+    inset 0 2px 1px rgba(255, 255, 255, 0.80),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.hub-toggle[data-active="true"] .hub-toggle-knob {
+  transform: translateX(34px);
+}
+
+.dark .hub-toggle-knob {
+  background: linear-gradient(
+    180deg,
+    #3A5A7A 0%,
+    #2A4A6A 20%,
+    #1A3A5A 50%,
+    #2A4A6A 80%,
+    #3A5A7A 100%
+  );
+  border-color: rgba(0, 191, 255, 0.30);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.40),
+    inset 0 2px 1px rgba(255, 255, 255, 0.10),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+}
+
+/* ── Hub Toggle: Convex highlight on knob ── */
+.hub-toggle-knob::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 15%;
+  right: 15%;
+  height: 40%;
+  border-radius: 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.60) 0%,
+    rgba(255, 255, 255, 0.15) 100%
+  );
+}
+
+.dark .hub-toggle-knob::before {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+}
+
+/* ── Hub: Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .hub-button-ring:hover .hub-button-outer,
+  .hub-button-ring:active .hub-button-outer {
+    transform: none !important;
+  }
+  .hub-back-button:hover,
+  .hub-back-button:active {
+    transform: none !important;
+  }
+  .hub-toggle-knob {
+    transition: none !important;
+  }
+}

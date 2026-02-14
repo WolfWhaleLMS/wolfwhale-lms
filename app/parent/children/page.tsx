@@ -6,9 +6,9 @@ import {
   AlertCircle,
   ChevronRight,
   TrendingUp,
-  ArrowLeft,
 } from 'lucide-react'
 import { getChildren } from '@/app/actions/parent'
+import { BackToHubButton } from '@/components/hub/BackToHubButton'
 
 export default async function ChildrenListPage() {
   let children: Awaited<ReturnType<typeof getChildren>> = []
@@ -23,13 +23,7 @@ export default async function ChildrenListPage() {
   return (
     <div className="space-y-4 sm:space-y-8 overflow-x-hidden max-w-full">
       {/* Back Button */}
-      <Link
-        href="/parent/dashboard"
-        className="mb-4 inline-flex items-center gap-1.5 text-lg text-muted-foreground hover:text-foreground transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to Dashboard
-      </Link>
+      <BackToHubButton role="parent" />
 
       {/* Header */}
       <div>

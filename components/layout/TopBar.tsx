@@ -17,6 +17,7 @@ interface TopBarProps {
   userAvatar?: string | null
   role: UserRole
   onMenuToggle: () => void
+  isHub?: boolean
 }
 
 // ---------------------------------------------------------------------------
@@ -50,7 +51,7 @@ function roleBadgeClasses(role: UserRole): string {
 // Component
 // ---------------------------------------------------------------------------
 
-export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps) {
+export function TopBar({ userName, userAvatar, role, onMenuToggle, isHub }: TopBarProps) {
   const initials = getInitials(userName)
   const roleLabel = getRoleLabel(role)
   const { theme, setTheme } = useTheme()
@@ -60,32 +61,36 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle }: TopBarProps
       {/* --------------------------------------------------------------- */}
       {/* Mobile hamburger                                                 */}
       {/* --------------------------------------------------------------- */}
-      <button
-        type="button"
-        onClick={onMenuToggle}
-        className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
-        aria-label="Toggle menu"
-      >
-        <Menu className="h-5 w-5" />
-      </button>
+      {!isHub && (
+        <button
+          type="button"
+          onClick={onMenuToggle}
+          className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
+          aria-label="Toggle menu"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+      )}
 
       {/* --------------------------------------------------------------- */}
       {/* Search bar (placeholder UI)                                      */}
       {/* --------------------------------------------------------------- */}
-      <div className="relative hidden flex-1 sm:block sm:max-w-md">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <input
-          type="text"
-          placeholder="Search courses, assignments..."
-          className={cn(
-            'h-9 w-full rounded-xl border border-white/20 bg-white/30 dark:bg-white/5 backdrop-blur-sm pl-9 pr-4 text-sm',
-            'placeholder:text-muted-foreground/60',
-            'focus:border-[#00BFFF]/50 focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/30',
-            'transition-colors'
-          )}
-          readOnly
-        />
-      </div>
+      {!isHub && (
+        <div className="relative hidden flex-1 sm:block sm:max-w-md">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Search courses, assignments..."
+            className={cn(
+              'h-9 w-full rounded-xl border border-white/20 bg-white/30 dark:bg-white/5 backdrop-blur-sm pl-9 pr-4 text-sm',
+              'placeholder:text-muted-foreground/60',
+              'focus:border-[#00BFFF]/50 focus:outline-none focus:ring-2 focus:ring-[#00BFFF]/30',
+              'transition-colors'
+            )}
+            readOnly
+          />
+        </div>
+      )}
 
       {/* Spacer so the right-side content is pushed to the end */}
       <div className="flex-1 sm:hidden" />

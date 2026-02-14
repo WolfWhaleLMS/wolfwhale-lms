@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Progress } from '@/components/ui/progress'
 import { BookOpen, Users, GraduationCap } from 'lucide-react'
 import { JoinCourseDialog } from './join-course-dialog'
+import { BackToHubButton } from '@/components/hub/BackToHubButton'
 
 export default async function StudentCoursesPage() {
   const supabase = await createClient()
@@ -111,6 +112,7 @@ export default async function StudentCoursesPage() {
 
   return (
     <div className="space-y-8">
+      <BackToHubButton role="student" />
       {/* Visual Header with Whale Gradient */}
       <div className="whale-gradient rounded-2xl p-8 text-white shadow-lg">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

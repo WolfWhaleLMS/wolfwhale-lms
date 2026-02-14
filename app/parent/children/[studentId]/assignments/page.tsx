@@ -1,12 +1,10 @@
-import Link from 'next/link'
 import {
-  ArrowLeft,
   BookOpen,
   AlertCircle,
   Calendar,
   GraduationCap,
-  ChevronRight,
 } from 'lucide-react'
+import { BackToHubButton } from '@/components/hub/BackToHubButton'
 import { getChildAssignments, getChildProgress } from '@/app/actions/parent'
 
 interface PageProps {
@@ -62,13 +60,7 @@ export default async function ChildAssignmentsPage({ params }: PageProps) {
   if (error) {
     return (
       <div className="space-y-6">
-        <Link
-          href={`/parent/children/${studentId}`}
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Student
-        </Link>
+        <BackToHubButton role="parent" />
         <div className="ocean-card rounded-2xl p-12 text-center">
           <AlertCircle className="mx-auto h-12 w-12 text-red-500/50" />
           <p className="mt-4 text-red-500">{error}</p>
@@ -98,13 +90,7 @@ export default async function ChildAssignmentsPage({ params }: PageProps) {
   return (
     <div className="space-y-8">
       {/* Back Button */}
-      <Link
-        href={`/parent/children/${studentId}`}
-        className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to {studentName}
-      </Link>
+      <BackToHubButton role="parent" />
 
       {/* Header */}
       <div>

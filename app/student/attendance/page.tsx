@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
 import {
   Calendar,
   Check,
@@ -9,12 +8,12 @@ import {
   Clock,
   AlertCircle,
   TrendingUp,
-  ArrowLeft,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react'
 import { getStudentAttendance, getAttendanceSummary } from '@/app/actions/attendance'
 import { Button } from '@/components/ui/button'
+import { BackToHubButton } from '@/components/hub/BackToHubButton'
 
 type AttendanceStatus = 'present' | 'absent' | 'tardy' | 'excused' | 'online'
 
@@ -155,14 +154,7 @@ export default function StudentAttendancePage() {
 
   return (
     <div className="space-y-8">
-      {/* Back Button */}
-      <Link
-        href="/student/dashboard"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to Dashboard
-      </Link>
+      <BackToHubButton role="student" />
 
       {/* Visual Header with Whale Gradient */}
       <div className="whale-gradient rounded-2xl p-8 text-white">
