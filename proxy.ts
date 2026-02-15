@@ -36,6 +36,7 @@ const PROTECTED_PREFIXES = [
   '/messaging',
   '/notifications',
   '/calendar',
+  '/announcements',
   '/api/reports',
 ]
 

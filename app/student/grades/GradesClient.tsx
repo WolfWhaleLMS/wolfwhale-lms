@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import { TrendingUp, TrendingDown, Minus, Award, BarChart3 } from 'lucide-react'
 import { ASSIGNMENT_TYPES } from '@/lib/config/constants'
 
@@ -41,14 +41,15 @@ function gradeBarColor(percentage: number): string {
   return 'bg-red-500'
 }
 
-function TypeBadge({ type }: { type: string }) {
+// Wrapped with React.memo since it's rendered in lists (grade breakdowns + table rows)
+const TypeBadge = memo(function TypeBadge({ type }: { type: string }) {
   const typeConfig = ASSIGNMENT_TYPES.find((t) => t.value === type)
   return (
     <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-sm font-medium text-muted-foreground">
       {typeConfig?.label || type}
     </span>
   )
-}
+})
 
 interface GradesClientProps {
   courseGrades: CourseGrade[]

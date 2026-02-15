@@ -327,16 +327,18 @@ export async function reorderModules(courseId: string, moduleIds: string[]) {
     return { error: 'Not authorized' }
   }
 
-  // Update order_index for each module
-  const updates = moduleIds.map((moduleId, index) =>
-    supabase
-      .from('modules')
-      .update({ order_index: index })
-      .eq('id', moduleId)
-      .eq('course_id', courseId)
-  )
+  // Batch reorder via single RPC call instead of N individual UPDATEs
+  const { error: rpcError } = await supabase.rpc('reorder_items', {
+    p_table_name: 'modules',
+    p_parent_column: 'course_id',
+    p_parent_id: courseId,
+    p_item_ids: moduleIds,
+  })
 
-  await Promise.all(updates)
+  if (rpcError) {
+    console.error('Error reordering modules:', rpcError)
+    return { error: 'Failed to reorder modules' }
+  }
 
   revalidatePath(`/teacher/courses/${courseId}`)
   return { success: true }

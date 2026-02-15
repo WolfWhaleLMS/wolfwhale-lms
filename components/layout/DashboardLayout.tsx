@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { Sidebar } from './Sidebar'
 import { TopBar } from './TopBar'
 import type { UserRole } from '@/lib/auth/permissions'
@@ -37,6 +38,10 @@ export function DashboardLayout({
   // Auto-sync pending offline actions when connectivity returns
   useAutoSync()
 
+  // Stable callback refs to avoid re-creating closures every render
+  const handleClose = useCallback(() => setSidebarOpen(false), [])
+  const handleMenuToggle = useCallback(() => setSidebarOpen((prev) => !prev), [])
+
   // Close sidebar on Escape key
   useEffect(() => {
     if (!sidebarOpen) return
@@ -53,14 +58,16 @@ export function DashboardLayout({
       <div
         className="pointer-events-none fixed inset-0 z-0"
         aria-hidden="true"
-        style={{
-          backgroundImage: 'url(/chrome-bg-3.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.10,
-        }}
-      />
+      >
+        <Image
+          src="/chrome-bg-3.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          priority
+          className="object-cover opacity-10"
+        />
+      </div>
 
       {/* Ambient blobs for glass depth effect */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
@@ -83,7 +90,7 @@ export function DashboardLayout({
         {sidebarOpen && (
           <div
             className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
-            onClick={() => setSidebarOpen(false)}
+            onClick={handleClose}
           />
         )}
 
@@ -100,7 +107,7 @@ export function DashboardLayout({
             role={role}
             tenantName={tenantName}
             tenantLogo={tenantLogo}
-            onClose={() => setSidebarOpen(false)}
+            onClose={handleClose}
           />
         </aside>
       </div>
@@ -124,7 +131,7 @@ export function DashboardLayout({
           userName={userName}
           userAvatar={userAvatar}
           role={role}
-          onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
+          onMenuToggle={handleMenuToggle}
         />
 
         <OfflineStatusBar />

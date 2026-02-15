@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo, memo } from 'react'
 import { useRouter } from 'next/navigation'
 import { ASSIGNMENT_TYPES } from '@/lib/config/constants'
 import { Clock, CheckCircle, AlertCircle, RotateCcw, ChevronRight } from 'lucide-react'
@@ -26,7 +26,7 @@ interface StudentAssignment {
 
 type SortKey = 'due_date' | 'title' | 'course' | 'status'
 
-function StatusBadge({ status }: { status: string }) {
+const StatusBadge = memo(function StatusBadge({ status }: { status: string }) {
   const config: Record<string, { label: string; className: string }> = {
     pending: {
       label: 'Pending',
@@ -60,16 +60,16 @@ function StatusBadge({ status }: { status: string }) {
       {c.label}
     </span>
   )
-}
+})
 
-function TypeBadge({ type }: { type: string }) {
+const TypeBadge = memo(function TypeBadge({ type }: { type: string }) {
   const typeConfig = ASSIGNMENT_TYPES.find((t) => t.value === type)
   return (
     <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-sm font-medium text-muted-foreground">
       {typeConfig?.label || type}
     </span>
   )
-}
+})
 
 function formatDate(dateStr: string | null) {
   if (!dateStr) return 'No due date'
@@ -110,33 +110,43 @@ export function AssignmentsClient({ assignments }: AssignmentsClientProps) {
   const [sortKey, setSortKey] = useState<SortKey>('due_date')
   const [filterStatus, setFilterStatus] = useState<string>('all')
 
-  const filteredAssignments = assignments
-    .filter((a) => filterStatus === 'all' || a.submissionStatus === filterStatus)
-    .sort((a, b) => {
-      switch (sortKey) {
-        case 'due_date':
-          if (!a.due_date) return 1
-          if (!b.due_date) return -1
-          return new Date(a.due_date).getTime() - new Date(b.due_date).getTime()
-        case 'title':
-          return a.title.localeCompare(b.title)
-        case 'course':
-          return a.courseName.localeCompare(b.courseName)
-        case 'status':
-          return a.submissionStatus.localeCompare(b.submissionStatus)
-        default:
-          return 0
-      }
-    })
+  // Memoize filtered + sorted assignments so they only recompute when
+  // the source data, filter, or sort key actually change.
+  const filteredAssignments = useMemo(
+    () =>
+      assignments
+        .filter((a) => filterStatus === 'all' || a.submissionStatus === filterStatus)
+        .sort((a, b) => {
+          switch (sortKey) {
+            case 'due_date':
+              if (!a.due_date) return 1
+              if (!b.due_date) return -1
+              return new Date(a.due_date).getTime() - new Date(b.due_date).getTime()
+            case 'title':
+              return a.title.localeCompare(b.title)
+            case 'course':
+              return a.courseName.localeCompare(b.courseName)
+            case 'status':
+              return a.submissionStatus.localeCompare(b.submissionStatus)
+            default:
+              return 0
+          }
+        }),
+    [assignments, filterStatus, sortKey]
+  )
 
-  const statusCounts = {
-    all: assignments.length,
-    pending: assignments.filter((a) => a.submissionStatus === 'pending').length,
-    submitted: assignments.filter((a) => a.submissionStatus === 'submitted').length,
-    graded: assignments.filter((a) => a.submissionStatus === 'graded').length,
-    overdue: assignments.filter((a) => a.submissionStatus === 'overdue').length,
-    returned: assignments.filter((a) => a.submissionStatus === 'returned').length,
-  }
+  // Memoize status counts so they only recompute when assignments array changes.
+  const statusCounts = useMemo(
+    () => ({
+      all: assignments.length,
+      pending: assignments.filter((a) => a.submissionStatus === 'pending').length,
+      submitted: assignments.filter((a) => a.submissionStatus === 'submitted').length,
+      graded: assignments.filter((a) => a.submissionStatus === 'graded').length,
+      overdue: assignments.filter((a) => a.submissionStatus === 'overdue').length,
+      returned: assignments.filter((a) => a.submissionStatus === 'returned').length,
+    }),
+    [assignments]
+  )
 
   return (
     <>

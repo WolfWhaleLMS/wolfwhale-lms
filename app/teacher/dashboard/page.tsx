@@ -106,15 +106,24 @@ export default async function TeacherDashboardPage() {
         (s) => s.status === 'submitted'
       ).length
 
-      // Get student names for recent submissions
+      // Batch-fetch student profiles and assignment info in parallel
       const studentIds = [
         ...new Set(submissions.map((s) => s.student_id)),
       ]
+      const assignmentIds = [
+        ...new Set(submissions.map((s) => s.assignment_id)),
+      ]
       if (studentIds.length > 0) {
-        const { data: profiles } = await supabase
-          .from('profiles')
-          .select('id, first_name, last_name')
-          .in('id', studentIds)
+        const [{ data: profiles }, { data: assignments }] = await Promise.all([
+          supabase
+            .from('profiles')
+            .select('id, first_name, last_name')
+            .in('id', studentIds),
+          supabase
+            .from('assignments')
+            .select('id, title, course_id')
+            .in('id', assignmentIds),
+        ])
 
         const profileMap = new Map(
           (profiles || []).map((p) => [
@@ -122,15 +131,6 @@ export default async function TeacherDashboardPage() {
             `${p.first_name || ''} ${p.last_name || ''}`.trim() || 'Student',
           ])
         )
-
-        // Get assignment info
-        const assignmentIds = [
-          ...new Set(submissions.map((s) => s.assignment_id)),
-        ]
-        const { data: assignments } = await supabase
-          .from('assignments')
-          .select('id, title, course_id')
-          .in('id', assignmentIds)
 
         const assignmentMap = new Map(
           (assignments || []).map((a) => [a.id, a])

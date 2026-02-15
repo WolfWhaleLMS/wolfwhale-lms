@@ -98,7 +98,7 @@ export default function InfoPage() {
       <div className="fixed inset-0 z-0">
         {/* Chrome texture base */}
         <div className="absolute inset-0">
-          <Image src="/chrome-bg-2.jpg" alt="" fill className="object-cover opacity-20" priority />
+          <Image src="/chrome-bg-2.jpg" alt="" fill sizes="100vw" className="object-cover opacity-20" priority />
         </div>
         <div
           className="absolute inset-0 bg-gradient-to-br from-[#E8F8FF]/85 via-[#D0F0FF]/80 to-[#B0E8FF]/85"
@@ -232,7 +232,7 @@ export default function InfoPage() {
                 </div>
               </div>
               <div className="relative">
-                <Image src="/screenshots/student-dashboard.png" alt="Student Dashboard — performance gauges, courses, tasks, XP, and virtual pets" width={1440} height={900} className="w-full h-auto" />
+                <Image src="/screenshots/student-dashboard.png" alt="Student Dashboard — performance gauges, courses, tasks, XP, and virtual pets" width={1440} height={900} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto" />
               </div>
             </div>
 
@@ -248,7 +248,7 @@ export default function InfoPage() {
                 </div>
               </div>
               <div className="relative">
-                <Image src="/screenshots/teacher-dashboard.png" alt="Teacher Dashboard — courses, gradebook, students, and quick actions" width={1440} height={900} className="w-full h-auto" />
+                <Image src="/screenshots/teacher-dashboard.png" alt="Teacher Dashboard — courses, gradebook, students, and quick actions" width={1440} height={900} sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" className="w-full h-auto" />
               </div>
             </div>
 
@@ -264,7 +264,7 @@ export default function InfoPage() {
                 </div>
               </div>
               <div className="relative">
-                <Image src="/screenshots/parent-dashboard.png" alt="Parent Dashboard — grades, attendance, assignments, and child progress" width={1440} height={900} className="w-full h-auto" />
+                <Image src="/screenshots/parent-dashboard.png" alt="Parent Dashboard — grades, attendance, assignments, and child progress" width={1440} height={900} sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" className="w-full h-auto" />
               </div>
             </div>
 
@@ -280,7 +280,7 @@ export default function InfoPage() {
                 </div>
               </div>
               <div className="relative">
-                <Image src="/screenshots/admin-dashboard.png" alt="Admin Dashboard — school health, enrollment, users, and system settings" width={1440} height={900} className="w-full h-auto" />
+                <Image src="/screenshots/admin-dashboard.png" alt="Admin Dashboard — school health, enrollment, users, and system settings" width={1440} height={900} sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" className="w-full h-auto" />
               </div>
             </div>
           </div>

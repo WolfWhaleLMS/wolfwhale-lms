@@ -108,6 +108,7 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
               src={tenantLogo || '/logo.png'}
               alt={tenantName}
               fill
+              sizes="64px"
               className="object-contain"
             />
           </div>

@@ -1,9 +1,9 @@
-'use client'
-
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft, Globe, ChevronDown, Mail, Phone, Clock } from 'lucide-react'
+import { ArrowLeft, Mail, Phone, Clock } from 'lucide-react'
+import { LanguageToggle } from '@/components/ui/LanguageToggle'
+import { AmbientParticles } from '@/components/ui/AmbientParticles'
+import { FAQAccordion } from '@/components/ui/FAQAccordion'
 
 type Lang = 'en' | 'fr'
 
@@ -247,47 +247,14 @@ const content = {
   },
 }
 
-function AccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: boolean; onToggle: () => void }) {
-  return (
-    <div className="border border-[#0A2540]/10 rounded-xl overflow-hidden transition-all">
-      <button
-        onClick={onToggle}
-        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-[#0A2540]/[0.03] transition-colors"
-      >
-        <span className="font-semibold text-[#0A2540] text-sm sm:text-base">{item.q}</span>
-        <ChevronDown
-          className={`h-5 w-5 text-[#00BFFF] flex-shrink-0 transition-transform duration-300 ${
-            isOpen ? 'rotate-180' : ''
-          }`}
-        />
-      </button>
-      <div
-        className={`overflow-hidden transition-all duration-300 ease-in-out ${
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        }`}
-      >
-        <div className="px-5 pb-4 text-sm sm:text-base text-[#0A2540]/70 leading-relaxed">
-          {item.a}
-        </div>
-      </div>
-    </div>
-  )
+interface PageProps {
+  searchParams: Promise<{ lang?: string }>
 }
 
-export default function HelpCenterPage() {
-  const [lang, setLang] = useState<Lang>('en')
-  const [mounted, setMounted] = useState(false)
-  const [openItems, setOpenItems] = useState<Record<string, boolean>>({})
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
+export default async function HelpCenterPage({ searchParams }: PageProps) {
+  const params = await searchParams
+  const lang: Lang = params.lang === 'fr' ? 'fr' : 'en'
   const t = content[lang]
-
-  const toggleItem = (key: string) => {
-    setOpenItems((prev) => ({ ...prev, [key]: !prev[key] }))
-  }
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-[#f0f4f8]">
@@ -308,7 +275,7 @@ export default function HelpCenterPage() {
           style={{
             background:
               'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(20,184,166,0.15) 0%, transparent 60%)',
-            animation: 'ocean-pulse 8s ease-in-out infinite',
+            animation: 'ocean-pulse-ambient 8s ease-in-out infinite',
           }}
         />
         <div
@@ -316,28 +283,12 @@ export default function HelpCenterPage() {
           style={{
             background:
               'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(26,42,78,0.08) 0%, transparent 50%)',
-            animation: 'ocean-drift 12s ease-in-out infinite',
+            animation: 'ocean-drift-ambient 12s ease-in-out infinite',
           }}
         />
 
-        {/* Floating particles */}
-        {mounted && (
-          <div className="absolute inset-0">
-            {[...Array(20)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1.5 h-1.5 rounded-full"
-                style={{
-                  background: 'rgba(26,42,78,0.12)',
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animation: `twinkle 4s ease-in-out infinite ${Math.random() * 5}s`,
-                  opacity: Math.random() * 0.3 + 0.1,
-                }}
-              />
-            ))}
-          </div>
-        )}
+        {/* Floating particles (client component) */}
+        <AmbientParticles count={20} color="rgba(26,42,78,0.12)" />
       </div>
 
       {/* Header */}
@@ -361,32 +312,8 @@ export default function HelpCenterPage() {
             </div>
           </Link>
 
-          {/* Language Toggle */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <Globe className="h-4 w-4 text-[#0A2540]/50 hidden sm:block" />
-            <div className="flex rounded-lg border border-[#0A2540]/20 overflow-hidden">
-              <button
-                onClick={() => setLang('en')}
-                className={`px-3 py-1.5 text-sm font-medium transition-all ${
-                  lang === 'en'
-                    ? 'bg-gradient-to-r from-[#0A2540] to-[#00BFFF] text-white'
-                    : 'text-[#0A2540]/60 hover:text-[#0A2540] hover:bg-[#0A2540]/5'
-                }`}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => setLang('fr')}
-                className={`px-3 py-1.5 text-sm font-medium transition-all ${
-                  lang === 'fr'
-                    ? 'bg-gradient-to-r from-[#0A2540] to-[#00BFFF] text-white'
-                    : 'text-[#0A2540]/60 hover:text-[#0A2540] hover:bg-[#0A2540]/5'
-                }`}
-              >
-                FR
-              </button>
-            </div>
-          </div>
+          {/* Language Toggle (client component) */}
+          <LanguageToggle lang={lang} />
         </div>
       </header>
 
@@ -457,30 +384,8 @@ export default function HelpCenterPage() {
           </div>
         </div>
 
-        {/* FAQ Sections */}
-        <div className="space-y-10 sm:space-y-12">
-          {t.sections.map((section) => (
-            <section key={section.id} id={section.id} className="scroll-mt-24">
-              <h2 className="text-xl sm:text-2xl font-bold text-[#0A2540] mb-4 sm:mb-5 border-b border-[#0A2540]/10 pb-3">
-                {section.heading}
-              </h2>
-              <div className="space-y-3">
-                {section.items.map((item, idx) => {
-                  const key = `${section.id}-${idx}`
-                  return (
-                    <div key={key} className="liquid-glass rounded-xl">
-                      <AccordionItem
-                        item={item}
-                        isOpen={!!openItems[key]}
-                        onToggle={() => toggleItem(key)}
-                      />
-                    </div>
-                  )
-                })}
-              </div>
-            </section>
-          ))}
-        </div>
+        {/* FAQ Sections (client component for accordion interactivity) */}
+        <FAQAccordion sections={t.sections} />
 
         {/* Still Need Help CTA */}
         <div className="mt-12 sm:mt-16 liquid-glass rounded-2xl p-8 sm:p-10 border border-[#0A2540]/10 text-center">
@@ -510,19 +415,19 @@ export default function HelpCenterPage() {
             </p>
             <div className="flex gap-6">
               <Link
-                href="/privacy"
+                href={`/privacy?lang=${lang}`}
                 className="text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors"
               >
                 {lang === 'en' ? 'Privacy' : 'Confidentialit\u00e9'}
               </Link>
               <Link
-                href="/terms"
+                href={`/terms?lang=${lang}`}
                 className="text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors"
               >
                 {lang === 'en' ? 'Terms' : 'Conditions'}
               </Link>
               <Link
-                href="/help"
+                href={`/help?lang=${lang}`}
                 className="text-sm text-[#00BFFF] font-medium"
               >
                 {lang === 'en' ? 'Help' : 'Aide'}
@@ -532,40 +437,6 @@ export default function HelpCenterPage() {
         </div>
       </footer>
 
-      {/* Animation keyframes */}
-      <style jsx>{`
-        @keyframes ocean-pulse {
-          0%,
-          100% {
-            transform: scale(1) translateY(0);
-            opacity: 0.4;
-          }
-          50% {
-            transform: scale(1.1) translateY(-5%);
-            opacity: 0.5;
-          }
-        }
-        @keyframes ocean-drift {
-          0%,
-          100% {
-            transform: translateX(0) scale(1);
-          }
-          50% {
-            transform: translateX(10%) scale(1.05);
-          }
-        }
-        @keyframes twinkle {
-          0%,
-          100% {
-            opacity: 0.1;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.4;
-            transform: scale(1.3);
-          }
-        }
-      `}</style>
     </div>
   )
 }

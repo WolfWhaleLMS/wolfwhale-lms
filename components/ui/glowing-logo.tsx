@@ -116,6 +116,7 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
           alt="WolfWhale"
           width={size}
           height={size}
+          sizes={`${size}px`}
           className="w-full h-full object-contain"
         />
       </div>

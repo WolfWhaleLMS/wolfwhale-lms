@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { TopBar } from './TopBar'
 import type { UserRole } from '@/lib/auth/permissions'
 import dynamic from 'next/dynamic'
@@ -20,6 +21,10 @@ interface HubDashboardLayoutProps {
   gradeLevel?: string | null
 }
 
+// Stable no-op callback hoisted to module scope so it never triggers
+// re-renders of TopBar due to a new function identity.
+const noop = () => {}
+
 export function HubDashboardLayout({
   children,
   role,
@@ -34,14 +39,16 @@ export function HubDashboardLayout({
       <div
         className="pointer-events-none fixed inset-0 z-0"
         aria-hidden="true"
-        style={{
-          backgroundImage: 'url(/chrome-bg-3.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.10,
-        }}
-      />
+      >
+        <Image
+          src="/chrome-bg-3.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          priority
+          className="object-cover opacity-10"
+        />
+      </div>
 
       {/* Ambient blobs */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
@@ -59,7 +66,7 @@ export function HubDashboardLayout({
           userName={userName}
           userAvatar={userAvatar}
           role={role}
-          onMenuToggle={() => {}}
+          onMenuToggle={noop}
           isHub
         />
 

@@ -53,57 +53,60 @@ export async function getChildren() {
   // Get profile data for each child
   const studentIds = relationships.map(r => r.student_id)
 
-  const { data: profiles } = await supabase
-    .from('profiles')
-    .select('id, first_name, last_name, avatar_url, grade_level')
-    .in('id', studentIds)
+  // Batch independent queries in parallel
+  const [
+    { data: profiles },
+    { data: enrollments },
+    { data: attendanceRecords },
+    { data: grades },
+  ] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('id, first_name, last_name, avatar_url, grade_level')
+      .in('id', studentIds),
+    supabase
+      .from('course_enrollments')
+      .select('student_id, status, course_id')
+      .eq('tenant_id', tenantId)
+      .in('student_id', studentIds)
+      .eq('status', 'active'),
+    supabase
+      .from('attendance_records')
+      .select('student_id, status')
+      .eq('tenant_id', tenantId)
+      .in('student_id', studentIds)
+      .limit(500),
+    supabase
+      .from('grades')
+      .select('student_id, percentage')
+      .eq('tenant_id', tenantId)
+      .in('student_id', studentIds)
+      .limit(200),
+  ])
 
-  // Get enrollment counts per student
-  const { data: enrollments } = await supabase
-    .from('course_enrollments')
-    .select('student_id, status, course_id')
-    .eq('tenant_id', tenantId)
-    .in('student_id', studentIds)
-    .eq('status', 'active')
-
-  // Get attendance summaries per student (with safety cap)
-  const { data: attendanceRecords } = await supabase
-    .from('attendance_records')
-    .select('student_id, status')
-    .eq('tenant_id', tenantId)
-    .in('student_id', studentIds)
-    .limit(500)
-
-  // Get grades per student for GPA calculation (with safety cap)
-  const { data: grades } = await supabase
-    .from('grades')
-    .select('student_id, percentage')
-    .eq('tenant_id', tenantId)
-    .in('student_id', studentIds)
-    .limit(200)
-
-  // Get missing assignments (past due, no submission) — filter by child's courses
+  // pastDueAssignments depends on enrollments for course IDs
   const now = new Date().toISOString()
   const childCourseIds = (enrollments ?? []).map(e => e.course_id)
-  const { data: pastDueAssignments } = await supabase
-    .from('assignments')
-    .select(`
-      id,
-      course_id,
-      due_date
-    `)
-    .eq('tenant_id', tenantId)
-    .eq('status', 'assigned')
-    .lt('due_date', now)
-    .in('course_id', childCourseIds.length > 0 ? childCourseIds : ['00000000-0000-0000-0000-000000000000'])
-    .limit(100)
 
-  // Get submissions for these students
-  const { data: submissions } = await supabase
-    .from('submissions')
-    .select('assignment_id, student_id')
-    .eq('tenant_id', tenantId)
-    .in('student_id', studentIds)
+  // These two queries depend on the above but are independent of each other
+  const [
+    { data: pastDueAssignments },
+    { data: submissions },
+  ] = await Promise.all([
+    supabase
+      .from('assignments')
+      .select('id, course_id, due_date')
+      .eq('tenant_id', tenantId)
+      .eq('status', 'assigned')
+      .lt('due_date', now)
+      .in('course_id', childCourseIds.length > 0 ? childCourseIds : ['00000000-0000-0000-0000-000000000000'])
+      .limit(100),
+    supabase
+      .from('submissions')
+      .select('assignment_id, student_id')
+      .eq('tenant_id', tenantId)
+      .in('student_id', studentIds),
+  ])
 
   const submissionMap = new Map<string, Set<string>>()
   for (const sub of submissions ?? []) {
@@ -478,42 +481,42 @@ export async function getChildCourses(studentId: string) {
 export async function getChildProgress(studentId: string) {
   const { supabase, tenantId } = await verifyParentAccess(studentId)
 
-  // Get profile
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('id, first_name, last_name, avatar_url, grade_level')
-    .eq('id', studentId)
-    .single()
-
-  // Get all grades
-  const { data: allGrades } = await supabase
-    .from('grades')
-    .select('percentage, course_id, graded_at')
-    .eq('tenant_id', tenantId)
-    .eq('student_id', studentId)
-    .order('graded_at', { ascending: true })
-
-  // Get enrollment data
-  const { data: enrollments } = await supabase
-    .from('course_enrollments')
-    .select('course_id, status, grade_numeric')
-    .eq('tenant_id', tenantId)
-    .eq('student_id', studentId)
-
-  // Get attendance
-  const { data: attendance } = await supabase
-    .from('attendance_records')
-    .select('status, attendance_date')
-    .eq('tenant_id', tenantId)
-    .eq('student_id', studentId)
-
-  // Get XP / gamification level
-  const { data: userLevel } = await supabase
-    .from('student_xp')
-    .select('total_xp, current_level, current_tier, streak_days, coins')
-    .eq('tenant_id', tenantId)
-    .eq('student_id', studentId)
-    .single()
+  // All 5 queries are independent — run in parallel
+  const [
+    { data: profile },
+    { data: allGrades },
+    { data: enrollments },
+    { data: attendance },
+    { data: userLevel },
+  ] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('id, first_name, last_name, avatar_url, grade_level')
+      .eq('id', studentId)
+      .single(),
+    supabase
+      .from('grades')
+      .select('percentage, course_id, graded_at')
+      .eq('tenant_id', tenantId)
+      .eq('student_id', studentId)
+      .order('graded_at', { ascending: true }),
+    supabase
+      .from('course_enrollments')
+      .select('course_id, status, grade_numeric')
+      .eq('tenant_id', tenantId)
+      .eq('student_id', studentId),
+    supabase
+      .from('attendance_records')
+      .select('status, attendance_date')
+      .eq('tenant_id', tenantId)
+      .eq('student_id', studentId),
+    supabase
+      .from('student_xp')
+      .select('total_xp, current_level, current_tier, streak_days, coins')
+      .eq('tenant_id', tenantId)
+      .eq('student_id', studentId)
+      .single(),
+  ])
 
   // Calculate overall GPA
   const validGrades = (allGrades ?? []).filter(g => g.percentage != null)

@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react'
 
 export type AgeVariant = 'k5' | '68' | '912'
 
@@ -62,6 +62,11 @@ export function AgeVariantProvider({
   )
   const [gradeLevel, setGradeLevel] = useState<string | null>(initialGradeLevel || null)
 
+  // Stable callback ref for setVariant
+  const stableSetVariant = useCallback((v: AgeVariant) => {
+    setVariant(v)
+  }, [])
+
   // Apply age variant class to document body
   useEffect(() => {
     const body = document.body
@@ -85,8 +90,14 @@ export function AgeVariantProvider({
     }
   }, [initialGradeLevel, initialVariant])
 
+  // Memoize the context value to prevent unnecessary re-renders of all consumers
+  const contextValue = useMemo(
+    () => ({ variant, setVariant: stableSetVariant, gradeLevel }),
+    [variant, stableSetVariant, gradeLevel]
+  )
+
   return (
-    <AgeVariantContext.Provider value={{ variant, setVariant, gradeLevel }}>
+    <AgeVariantContext.Provider value={contextValue}>
       {children}
     </AgeVariantContext.Provider>
   )

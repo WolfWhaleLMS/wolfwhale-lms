@@ -43,19 +43,19 @@ export async function getTeacherClassReport(courseId: string) {
     throw new Error('Not authorized for this course')
   }
 
-  // Get assignments
-  const { data: assignments } = await supabase
-    .from('assignments')
-    .select('id, title, max_points, type, due_date')
-    .eq('course_id', courseId)
-    .eq('status', 'assigned')
-    .order('due_date', { ascending: true })
-
-  // Get enrollments with profiles
-  const { data: enrollments } = await supabase
-    .from('course_enrollments')
-    .select('student_id, profiles:student_id(full_name)')
-    .eq('course_id', courseId)
+  // Assignments and enrollments are independent — fetch in parallel
+  const [{ data: assignments }, { data: enrollments }] = await Promise.all([
+    supabase
+      .from('assignments')
+      .select('id, title, max_points, type, due_date')
+      .eq('course_id', courseId)
+      .eq('status', 'assigned')
+      .order('due_date', { ascending: true }),
+    supabase
+      .from('course_enrollments')
+      .select('student_id, profiles:student_id(full_name)')
+      .eq('course_id', courseId),
+  ])
 
   // Get all grades for this course
   const assignmentIds = (assignments || []).map((a) => a.id)
@@ -117,47 +117,58 @@ export async function getAdminSchoolReport() {
     throw new Error('Not authorized')
   }
 
-  // User counts by role (with safety limit instead of unbounded fetch)
-  const { data: memberships } = await supabase
-    .from('tenant_memberships')
-    .select('role, status')
-    .eq('tenant_id', tenantId)
-    .limit(100000)
-
-  const roleCounts: Record<string, number> = {}
-  let activeCount = 0
-  for (const m of memberships || []) {
-    roleCounts[m.role] = (roleCounts[m.role] || 0) + 1
-    if (m.status === 'active') activeCount++
-  }
-
-  // Course count
-  const { count: courseCount } = await supabase
-    .from('courses')
-    .select('id', { count: 'exact', head: true })
-    .eq('tenant_id', tenantId)
-
-  // Enrollment count
-  const { count: enrollmentCount } = await supabase
-    .from('course_enrollments')
-    .select('id', { count: 'exact', head: true })
-    .eq('tenant_id', tenantId)
-
-  // Attendance (last 30 days) — safety cap to prevent unbounded fetch
+  // Fetch role counts, total user count, course count, enrollment count,
+  // and attendance summary all in parallel via RPCs + count queries
   const thirtyDaysAgo = new Date()
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-  const { data: attendance } = await supabase
-    .from('attendance_records')
-    .select('status')
-    .eq('tenant_id', tenantId)
-    .gte('date', thirtyDaysAgo.toISOString().split('T')[0])
-    .limit(50000)
 
-  const attendanceCounts: Record<string, number> = {}
-  for (const a of attendance || []) {
-    attendanceCounts[a.status] = (attendanceCounts[a.status] || 0) + 1
+  const [
+    { data: roleCountRows, error: roleCountError },
+    { count: totalUserCount },
+    { count: courseCount },
+    { count: enrollmentCount },
+    { data: attendanceRows, error: attendanceError },
+  ] = await Promise.all([
+    // RPC: get_tenant_role_counts — replaces fetching all memberships + JS counting
+    supabase.rpc('get_tenant_role_counts', { p_tenant_id: tenantId }),
+    // Total users (all statuses) for the summary
+    supabase
+      .from('tenant_memberships')
+      .select('id', { count: 'exact', head: true })
+      .eq('tenant_id', tenantId),
+    // Course count
+    supabase
+      .from('courses')
+      .select('id', { count: 'exact', head: true })
+      .eq('tenant_id', tenantId),
+    // Enrollment count
+    supabase
+      .from('course_enrollments')
+      .select('id', { count: 'exact', head: true })
+      .eq('tenant_id', tenantId),
+    // RPC: get_attendance_summary — replaces fetching 50k records + JS counting
+    supabase.rpc('get_attendance_summary', {
+      p_tenant_id: tenantId,
+      p_start_date: thirtyDaysAgo.toISOString().split('T')[0],
+      p_end_date: null,
+    }),
+  ])
+
+  // Build roleCounts from RPC result
+  const roleCounts: Record<string, number> = {}
+  let activeCount = 0
+  for (const row of roleCountRows || []) {
+    roleCounts[row.role] = Number(row.count)
+    activeCount += Number(row.count)
   }
-  const totalAttendance = (attendance || []).length
+
+  // Build attendanceCounts from RPC result
+  const attendanceCounts: Record<string, number> = {}
+  let totalAttendance = 0
+  for (const row of attendanceRows || []) {
+    attendanceCounts[row.status] = Number(row.count)
+    totalAttendance += Number(row.count)
+  }
   const presentCount = (attendanceCounts['present'] || 0) + (attendanceCounts['tardy'] || 0)
   const attendanceRate = totalAttendance > 0 ? Math.round((presentCount / totalAttendance) * 1000) / 10 : 0
 
@@ -179,7 +190,7 @@ export async function getAdminSchoolReport() {
 
   return {
     summary: {
-      totalUsers: (memberships || []).length,
+      totalUsers: totalUserCount || 0,
       activeUsers: activeCount,
       totalCourses: courseCount || 0,
       totalEnrollments: enrollmentCount || 0,
@@ -236,18 +247,18 @@ export async function getParentProgressReport(studentId: string) {
     .eq('tenant_id', tenantId)
     .order('graded_at', { ascending: false })
 
-  // Attendance
-  const { data: attendanceRecords } = await supabase
-    .from('attendance_records')
-    .select('status, date')
-    .eq('student_id', studentId)
-    .eq('tenant_id', tenantId)
+  // Attendance — use RPC instead of fetching all records and counting in JS
+  const { data: attSummaryRows } = await supabase.rpc('get_student_attendance_summary', {
+    p_student_id: studentId,
+    p_tenant_id: tenantId,
+  })
 
   const attCounts: Record<string, number> = {}
-  for (const a of attendanceRecords || []) {
-    attCounts[a.status] = (attCounts[a.status] || 0) + 1
+  let totalAtt = 0
+  for (const row of attSummaryRows || []) {
+    attCounts[row.status] = Number(row.count)
+    totalAtt += Number(row.count)
   }
-  const totalAtt = (attendanceRecords || []).length
   const presentAtt = (attCounts['present'] || 0) + (attCounts['tardy'] || 0)
 
   // Build grade rows

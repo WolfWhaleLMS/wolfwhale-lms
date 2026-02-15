@@ -226,27 +226,27 @@ export async function getGradebook(courseId: string) {
     return { error: 'Not authorized to view this gradebook' }
   }
 
-  // Get all assignments for this course
-  let assignmentQuery = supabase
-    .from('assignments')
-    .select('id, title, type, max_points, due_date')
-    .eq('course_id', courseId)
-    .eq('status', 'assigned')
-    .order('due_date', { ascending: true })
+  // Assignments and enrollments are independent — fetch in parallel
+  const [assignmentResult, enrollmentResult] = await Promise.all([
+    supabase
+      .from('assignments')
+      .select('id, title, type, max_points, due_date')
+      .eq('course_id', courseId)
+      .eq('status', 'assigned')
+      .eq('tenant_id', tenantId)
+      .order('due_date', { ascending: true }),
+    supabase
+      .from('course_enrollments')
+      .select('student_id, profiles:student_id(id, full_name)')
+      .eq('course_id', courseId),
+  ])
 
-  assignmentQuery = assignmentQuery.eq('tenant_id', tenantId)
-
-  const { data: assignments } = await assignmentQuery
+  const assignments = assignmentResult.data
+  const enrollments = enrollmentResult.data
 
   if (!assignments || assignments.length === 0) {
     return { data: { course, assignments: [], students: [], grades: {} } }
   }
-
-  // Get enrolled students
-  const { data: enrollments } = await supabase
-    .from('course_enrollments')
-    .select('student_id, profiles:student_id(id, full_name)')
-    .eq('course_id', courseId)
 
   const students = (enrollments || []).map((e) => {
     const profile = e.profiles as unknown as { id: string; full_name: string }

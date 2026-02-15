@@ -1,9 +1,8 @@
-'use client'
-
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Globe, ArrowLeft } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
+import { LanguageToggle } from '@/components/ui/LanguageToggle'
+import { AmbientParticles } from '@/components/ui/AmbientParticles'
 
 type Lang = 'en' | 'fr'
 
@@ -685,11 +684,9 @@ Les versions ant\u00e9rieures de la pr\u00e9sente Politique de confidentialit\u0
 }
 
 function renderMarkdown(text: string) {
-  // Split into paragraphs
   const paragraphs = text.split('\n\n')
 
   return paragraphs.map((paragraph, pIdx) => {
-    // Check if it's a list of bullet points
     if (paragraph.includes('\n\u2022')) {
       const lines = paragraph.split('\n').filter(Boolean)
       const intro = lines[0].startsWith('\u2022') ? null : lines[0]
@@ -712,7 +709,6 @@ function renderMarkdown(text: string) {
       )
     }
 
-    // Check if paragraph starts with a bullet
     if (paragraph.startsWith('\u2022')) {
       const items = paragraph.split('\n').filter(Boolean)
       return (
@@ -727,7 +723,6 @@ function renderMarkdown(text: string) {
       )
     }
 
-    // Regular paragraph
     return (
       <p
         key={`p-${pIdx}`}
@@ -739,14 +734,11 @@ function renderMarkdown(text: string) {
 }
 
 function formatInline(text: string): string {
-  // Bold **text**
   let result = text.replace(/\*\*(.+?)\*\*/g, '<strong class="text-[#0A2540] font-semibold">$1</strong>')
-  // Links
   result = result.replace(
     /(https?:\/\/[^\s<]+)/g,
     '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-[#00BFFF] hover:underline">$1</a>'
   )
-  // Email
   result = result.replace(
     /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
     '<a href="mailto:$1" class="text-[#00BFFF] hover:underline">$1</a>'
@@ -754,14 +746,14 @@ function formatInline(text: string): string {
   return result
 }
 
-export default function PrivacyPolicyPage() {
-  const [lang, setLang] = useState<Lang>('en')
-  const [mounted, setMounted] = useState(false)
-  const t = content[lang]
+interface PageProps {
+  searchParams: Promise<{ lang?: string }>
+}
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+export default async function PrivacyPolicyPage({ searchParams }: PageProps) {
+  const params = await searchParams
+  const lang: Lang = params.lang === 'fr' ? 'fr' : 'en'
+  const t = content[lang]
 
   return (
     <div
@@ -770,23 +762,7 @@ export default function PrivacyPolicyPage() {
     >
       {/* Ambient Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {mounted && (
-          <div className="absolute inset-0">
-            {[...Array(20)].map((_, i) => (
-              <div
-                key={`twinkle-${i}`}
-                className="absolute w-1.5 h-1.5 rounded-full animate-twinkle"
-                style={{
-                  background: 'rgba(0,191,255,0.12)',
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 5}s`,
-                  opacity: Math.random() * 0.3 + 0.1,
-                }}
-              />
-            ))}
-          </div>
-        )}
+        <AmbientParticles count={20} color="rgba(0,191,255,0.12)" />
         <div className="absolute inset-0 opacity-40" style={{ background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(0,191,255,0.15) 0%, transparent 60%)' }} />
         <div className="absolute inset-0 opacity-25" style={{ background: 'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(51,255,51,0.06) 0%, transparent 50%)' }} />
       </div>
@@ -804,32 +780,8 @@ export default function PrivacyPolicyPage() {
             </div>
           </Link>
 
-          {/* Language Toggle */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <Globe className="h-4 w-4 text-[#0A2540]/50 hidden sm:block" />
-            <div className="flex rounded-lg border border-[#0A2540]/20 overflow-hidden">
-              <button
-                onClick={() => setLang('en')}
-                className={`px-3 py-1.5 text-sm font-medium transition-all ${
-                  lang === 'en'
-                    ? 'bg-gradient-to-r from-[#0A2540] to-[#00BFFF] text-white'
-                    : 'text-[#0A2540]/60 hover:text-[#0A2540] hover:bg-[#0A2540]/5'
-                }`}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => setLang('fr')}
-                className={`px-3 py-1.5 text-sm font-medium transition-all ${
-                  lang === 'fr'
-                    ? 'bg-gradient-to-r from-[#0A2540] to-[#00BFFF] text-white'
-                    : 'text-[#0A2540]/60 hover:text-[#0A2540] hover:bg-[#0A2540]/5'
-                }`}
-              >
-                FR
-              </button>
-            </div>
-          </div>
+          {/* Language Toggle (client component) */}
+          <LanguageToggle lang={lang} />
         </div>
       </header>
 
@@ -897,19 +849,19 @@ export default function PrivacyPolicyPage() {
             </p>
             <div className="flex gap-6">
               <Link
-                href="/privacy"
+                href={`/privacy?lang=${lang}`}
                 className="text-sm text-[#00BFFF] font-medium"
               >
                 {lang === 'en' ? 'Privacy' : 'Confidentialit\u00e9'}
               </Link>
               <Link
-                href="/terms"
+                href={`/terms?lang=${lang}`}
                 className="text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors"
               >
                 {lang === 'en' ? 'Terms' : 'Conditions'}
               </Link>
               <Link
-                href="/help"
+                href={`/help?lang=${lang}`}
                 className="text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors"
               >
                 {lang === 'en' ? 'Help' : 'Aide'}
@@ -918,16 +870,6 @@ export default function PrivacyPolicyPage() {
           </div>
         </div>
       </footer>
-
-      <style jsx>{`
-        @keyframes twinkle {
-          0%, 100% { opacity: 0.1; transform: scale(1); }
-          50% { opacity: 0.4; transform: scale(1.3); }
-        }
-        .animate-twinkle {
-          animation: twinkle 4s ease-in-out infinite;
-        }
-      `}</style>
     </div>
   )
 }

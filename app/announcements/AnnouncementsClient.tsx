@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import {
   Megaphone,
@@ -52,12 +52,18 @@ export default function AnnouncementsClient({
   const [submitting, setSubmitting] = useState(false)
   const [filter, setFilter] = useState<'all' | 'pinned' | 'school' | 'course'>('all')
 
-  const filtered = announcements.filter((a) => {
-    if (filter === 'pinned') return a.is_pinned
-    if (filter === 'school') return !a.course_id
-    if (filter === 'course') return !!a.course_id
-    return true
-  })
+  // Memoize filtered announcements so they only recompute when the
+  // announcements array or the active filter changes.
+  const filtered = useMemo(
+    () =>
+      announcements.filter((a) => {
+        if (filter === 'pinned') return a.is_pinned
+        if (filter === 'school') return !a.course_id
+        if (filter === 'course') return !!a.course_id
+        return true
+      }),
+    [announcements, filter]
+  )
 
   const handleCreate = async () => {
     if (!title.trim() || !content.trim()) return

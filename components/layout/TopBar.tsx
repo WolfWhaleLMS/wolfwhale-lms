@@ -131,6 +131,7 @@ export function TopBar({ userName, userAvatar, role, onMenuToggle, isHub }: TopB
                 src={userAvatar}
                 alt={userName}
                 fill
+                sizes="32px"
                 className="object-cover"
               />
             ) : (

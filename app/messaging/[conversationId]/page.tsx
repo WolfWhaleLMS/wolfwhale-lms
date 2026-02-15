@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { use } from 'react'
 import Link from 'next/link'
 import { getConversation, getMessages, sendMessage } from '@/app/actions/messages'
@@ -122,8 +122,9 @@ export default function ConversationPage({
     load()
   }, [conversationId])
 
-  // Merge initial + realtime messages, deduplicated
-  const allMessages = (() => {
+  // Merge initial + realtime messages, deduplicated — memoized to avoid
+  // re-computing on every render.
+  const allMessages = useMemo(() => {
     const map = new Map<string, Message>()
     for (const msg of initialMessages) {
       map.set(msg.id, msg)
@@ -140,18 +141,22 @@ export default function ConversationPage({
       (a, b) =>
         new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
     )
-  })()
+  }, [initialMessages, realtimeMessages])
 
-  // Build a map of sender_id -> display name from conversation members
-  const memberNames = new Map<string, string>()
-  if (conversation?.conversation_members) {
-    for (const member of conversation.conversation_members) {
-      memberNames.set(
-        member.user_id,
-        member.profiles?.full_name || 'Unknown User'
-      )
+  // Build a map of sender_id -> display name from conversation members —
+  // memoized so it only recomputes when conversation changes.
+  const memberNames = useMemo(() => {
+    const names = new Map<string, string>()
+    if (conversation?.conversation_members) {
+      for (const member of conversation.conversation_members) {
+        names.set(
+          member.user_id,
+          member.profiles?.full_name || 'Unknown User'
+        )
+      }
     }
-  }
+    return names
+  }, [conversation])
 
   // Auto-scroll to bottom on new messages
   const scrollToBottom = useCallback(() => {

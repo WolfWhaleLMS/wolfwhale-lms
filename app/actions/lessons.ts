@@ -2,8 +2,7 @@
 
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
-import { sanitizeText } from '@/lib/sanitize'
-import DOMPurify from 'isomorphic-dompurify'
+import { sanitizeText, sanitizeRichText } from '@/lib/sanitize'
 import { rateLimitAction } from '@/lib/rate-limit-action'
 import { getActionContext, requireTeacher } from '@/lib/actions/context'
 
@@ -18,11 +17,7 @@ function sanitizeLessonContent(content: unknown[]): unknown[] {
     const sanitized = { ...block }
     // Sanitize any HTML content
     if (typeof sanitized.content === 'string') {
-      sanitized.content = DOMPurify.sanitize(sanitized.content, {
-        ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'pre', 'span', 'div', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'img', 'hr', 'sup', 'sub', 'mark'],
-        ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'target', 'rel', 'width', 'height', 'style'],
-        ALLOW_DATA_ATTR: false,
-      })
+      sanitized.content = sanitizeRichText(sanitized.content)
     }
     // Sanitize URLs
     if (typeof sanitized.url === 'string') {
@@ -419,16 +414,18 @@ export async function reorderLessons(courseId: string, lessonIds: string[]) {
     return { error: 'Not authorized' }
   }
 
-  // Update order_index for each lesson
-  const updates = lessonIds.map((lessonId, index) =>
-    supabase
-      .from('lessons')
-      .update({ order_index: index })
-      .eq('id', lessonId)
-      .eq('course_id', courseId)
-  )
+  // Batch reorder via single RPC call instead of N individual UPDATEs
+  const { error: rpcError } = await supabase.rpc('reorder_items', {
+    p_table_name: 'lessons',
+    p_parent_column: 'course_id',
+    p_parent_id: courseId,
+    p_item_ids: lessonIds,
+  })
 
-  await Promise.all(updates)
+  if (rpcError) {
+    console.error('Error reordering lessons:', rpcError)
+    return { error: 'Failed to reorder lessons' }
+  }
 
   revalidatePath(`/teacher/courses/${courseId}`)
   return { success: true }

@@ -269,20 +269,27 @@ export async function getAttendanceSummary(studentId?: string) {
     }
   }
 
-  const { data, error } = await supabase
-    .from('attendance_records')
-    .select('status')
-    .eq('tenant_id', tenantId)
-    .eq('student_id', targetId)
+  // Use RPC instead of fetching all records and counting in JS
+  const { data: summaryRows, error } = await supabase.rpc('get_student_attendance_summary', {
+    p_student_id: targetId,
+    p_tenant_id: tenantId,
+  })
 
   if (error) throw error
 
-  const records = data ?? []
-  const total = records.length
-  const present = records.filter((r) => r.status === 'present' || r.status === 'online').length
-  const absent = records.filter((r) => r.status === 'absent').length
-  const tardy = records.filter((r) => r.status === 'tardy').length
-  const excused = records.filter((r) => r.status === 'excused').length
+  // Convert RPC rows to the expected return shape
+  const counts: Record<string, number> = {}
+  let total = 0
+  for (const row of summaryRows || []) {
+    counts[row.status] = Number(row.count)
+    total += Number(row.count)
+  }
+
+  // 'present' includes both 'present' and 'online' statuses for rate calculation
+  const present = (counts['present'] || 0) + (counts['online'] || 0)
+  const absent = counts['absent'] || 0
+  const tardy = counts['tardy'] || 0
+  const excused = counts['excused'] || 0
   const rate = total > 0 ? Math.round((present / total) * 100) : 0
 
   return { total, present, absent, tardy, excused, rate }

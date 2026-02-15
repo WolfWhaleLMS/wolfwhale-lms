@@ -1,5 +1,6 @@
 'use server'
 
+import { cache } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { headers } from 'next/headers'
 import type { UserRole } from '@/lib/auth/permissions'
@@ -15,7 +16,7 @@ export interface ActionContext {
  * Get authenticated user context for server actions.
  * Throws if user is not authenticated or tenant is not resolved.
  */
-export async function getActionContext(): Promise<ActionContext> {
+export const getActionContext = cache(async (): Promise<ActionContext> => {
   const supabase = await createClient()
   const { data: { user }, error } = await supabase.auth.getUser()
 
@@ -33,7 +34,7 @@ export async function getActionContext(): Promise<ActionContext> {
   const role = headersList.get('x-user-role') as UserRole | null
 
   return { supabase, user, tenantId, role: role || undefined }
-}
+})
 
 /**
  * Get context with role verification.

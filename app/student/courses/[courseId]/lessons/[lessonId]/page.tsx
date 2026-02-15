@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import DOMPurify from 'isomorphic-dompurify'
+import DOMPurify from 'dompurify'
 import { getLessonWithNavigation } from '@/app/actions/lessons'
 import { trackProgress } from '@/app/actions/lessons'
 import { Button } from '@/components/ui/button'

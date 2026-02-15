@@ -10,7 +10,7 @@ const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
   experimental: {
-    optimizePackageImports: ['lucide-react'],
+    optimizePackageImports: ['lucide-react', 'date-fns', '@sentry/nextjs'],
   },
   images: {
     formats: ['image/avif', 'image/webp'],

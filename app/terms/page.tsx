@@ -1,9 +1,7 @@
-'use client'
-
-import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Globe, ArrowLeft } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
+import { LanguageToggle } from '@/components/ui/LanguageToggle'
 
 type Lang = 'en' | 'fr'
 
@@ -593,8 +591,13 @@ function formatInline(text: string): string {
   return result
 }
 
-export default function TermsOfServicePage() {
-  const [lang, setLang] = useState<Lang>('en')
+interface PageProps {
+  searchParams: Promise<{ lang?: string }>
+}
+
+export default async function TermsOfServicePage({ searchParams }: PageProps) {
+  const params = await searchParams
+  const lang: Lang = params.lang === 'fr' ? 'fr' : 'en'
   const t = content[lang]
 
   return (
@@ -635,32 +638,8 @@ export default function TermsOfServicePage() {
             </div>
           </Link>
 
-          {/* Language Toggle */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <Globe className="h-4 w-4 text-[#0A2540]/40 hidden sm:block" />
-            <div className="flex rounded-lg border border-[#0A2540]/10 overflow-hidden">
-              <button
-                onClick={() => setLang('en')}
-                className={`px-3 py-1.5 text-sm font-medium transition-all ${
-                  lang === 'en'
-                    ? 'bg-[#00BFFF] text-white'
-                    : 'text-[#0A2540]/60 hover:text-[#0A2540] hover:bg-[#0A2540]/5'
-                }`}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => setLang('fr')}
-                className={`px-3 py-1.5 text-sm font-medium transition-all ${
-                  lang === 'fr'
-                    ? 'bg-[#00BFFF] text-white'
-                    : 'text-[#0A2540]/60 hover:text-[#0A2540] hover:bg-[#0A2540]/5'
-                }`}
-              >
-                FR
-              </button>
-            </div>
-          </div>
+          {/* Language Toggle (client component) */}
+          <LanguageToggle lang={lang} />
         </div>
       </header>
 
@@ -728,19 +707,19 @@ export default function TermsOfServicePage() {
             </p>
             <div className="flex gap-6">
               <Link
-                href="/privacy"
+                href={`/privacy?lang=${lang}`}
                 className="text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors"
               >
                 {lang === 'en' ? 'Privacy' : 'Confidentialit\u00e9'}
               </Link>
               <Link
-                href="/terms"
+                href={`/terms?lang=${lang}`}
                 className="text-sm text-[#00BFFF] font-medium"
               >
                 {lang === 'en' ? 'Terms' : 'Conditions'}
               </Link>
               <Link
-                href="/help"
+                href={`/help?lang=${lang}`}
                 className="text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors"
               >
                 {lang === 'en' ? 'Help' : 'Aide'}

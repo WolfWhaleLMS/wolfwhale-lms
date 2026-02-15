@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { toast } from 'sonner'
 import {
   ArrowLeft,
@@ -348,8 +349,16 @@ function ImageBlockEditor({
         />
       </div>
       {block.data.url && (
-        <div className="mt-3 rounded-lg border border-border p-2">
-          <img src={block.data.url} alt={block.data.alt || ''} className="max-h-48 mx-auto" />
+        <div className="relative mt-3 rounded-lg border border-border p-2">
+          <Image
+            src={block.data.url}
+            alt={block.data.alt || ''}
+            width={400}
+            height={192}
+            sizes="400px"
+            className="max-h-48 w-auto mx-auto object-contain"
+            unoptimized
+          />
         </div>
       )}
     </div>

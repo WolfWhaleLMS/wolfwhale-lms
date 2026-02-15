@@ -50,32 +50,29 @@ export async function getCourses() {
       return []
     }
 
-    // Get student counts and class codes for each course
-    const courseIds = (courses || []).map((c) => c.id)
-
+    // Get student counts via batch RPC and class codes in parallel
     const [enrollmentResult, codeResult] = await Promise.all([
-      courseIds.length > 0
-        ? supabase
-            .from('course_enrollments')
-            .select('course_id')
-            .in('course_id', courseIds)
-            .eq('status', 'active')
-        : { data: [] },
-      courseIds.length > 0
+      // RPC: get_course_enrollment_counts — replaces fetching all enrollment rows + JS filtering
+      supabase.rpc('get_course_enrollment_counts', { p_tenant_id: tenantId }),
+      (courses || []).length > 0
         ? supabase
             .from('class_codes')
             .select('course_id, code, is_active')
-            .in('course_id', courseIds)
+            .in('course_id', (courses || []).map((c) => c.id))
             .eq('is_active', true)
         : { data: [] },
     ])
 
-    const enrollments = enrollmentResult.data || []
+    // Build a lookup map from course_id -> student_count
+    const enrollmentMap: Record<string, number> = {}
+    for (const row of enrollmentResult.data || []) {
+      enrollmentMap[row.course_id] = Number(row.student_count)
+    }
     const classCodes = codeResult.data || []
 
     return (courses || []).map((course) => ({
       ...course,
-      student_count: enrollments.filter((e) => e.course_id === course.id).length,
+      student_count: enrollmentMap[course.id] || 0,
       class_code: classCodes.find((c) => c.course_id === course.id)?.code || null,
     }))
   }

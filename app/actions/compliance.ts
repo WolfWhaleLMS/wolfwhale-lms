@@ -118,24 +118,26 @@ export async function getComplianceStatus(): Promise<{ data: ComplianceStatus | 
   try {
     const { supabase, tenantId: resolvedTenantId } = await requireAdmin()
 
-    // Check for audit logs existence (basic FERPA data-access-logging requirement)
-    const { count: auditCount } = await supabase
-      .from('audit_logs')
-      .select('*', { count: 'exact', head: true })
-      .eq('tenant_id', resolvedTenantId)
-
-    // Check consent records
-    const { count: consentCount } = await supabase
-      .from('consent_records')
-      .select('*', { count: 'exact', head: true })
-      .eq('tenant_id', resolvedTenantId)
-
-    // Check for students under 13 without consent via tenant_memberships + profiles
-    const { data: studentMembers } = await supabase
-      .from('tenant_memberships')
-      .select('user_id, profiles!inner(date_of_birth)')
-      .eq('tenant_id', resolvedTenantId)
-      .eq('role', 'student')
+    // These three checks are independent — run in parallel
+    const [
+      { count: auditCount },
+      { count: consentCount },
+      { data: studentMembers },
+    ] = await Promise.all([
+      supabase
+        .from('audit_logs')
+        .select('*', { count: 'exact', head: true })
+        .eq('tenant_id', resolvedTenantId),
+      supabase
+        .from('consent_records')
+        .select('*', { count: 'exact', head: true })
+        .eq('tenant_id', resolvedTenantId),
+      supabase
+        .from('tenant_memberships')
+        .select('user_id, profiles!inner(date_of_birth)')
+        .eq('tenant_id', resolvedTenantId)
+        .eq('role', 'student'),
+    ])
 
     type MemberWithProfile = { user_id: string; profiles: { date_of_birth: string | null } | null }
     const minorIds = (studentMembers ?? [])
@@ -161,22 +163,17 @@ export async function getComplianceStatus(): Promise<{ data: ComplianceStatus | 
       minorsWithoutConsent = minorIds.filter((id: string) => !consentedSet.has(id)).length
     }
 
-    // Run Canadian compliance checks
-    let pipedaChecks: CanadianComplianceCheckItem[] = []
-    try {
-      pipedaChecks = await runCanadianComplianceCheck()
-    } catch {
-      // Canadian checks are non-blocking
-    }
-
-    // Get most recent audit log date
-    const { data: latestAudit } = await supabase
-      .from('audit_logs')
-      .select('created_at')
-      .eq('tenant_id', resolvedTenantId)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single()
+    // PIPEDA checks and latest audit date are independent — run in parallel
+    const [pipedaChecks, { data: latestAudit }] = await Promise.all([
+      runCanadianComplianceCheck().catch(() => [] as CanadianComplianceCheckItem[]),
+      supabase
+        .from('audit_logs')
+        .select('created_at')
+        .eq('tenant_id', resolvedTenantId)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single(),
+    ])
 
     const ferpaChecks: ComplianceCheckItem[] = [
       {

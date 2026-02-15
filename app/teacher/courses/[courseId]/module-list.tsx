@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback, memo } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { deleteModule } from '@/app/actions/modules'
@@ -44,6 +44,88 @@ interface ModuleListProps {
   courseId: string
 }
 
+function statusColor(status: string) {
+  switch (status) {
+    case 'published':
+      return 'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]'
+    case 'draft':
+      return 'bg-[#FFAA00]/10 text-[#D97706] dark:bg-[#FFAA00]/10 dark:text-[#D97706]'
+    case 'archived':
+      return 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
+    default:
+      return 'bg-gray-100 text-gray-700'
+  }
+}
+
+// Extracted to top-level and wrapped with React.memo so it keeps a stable
+// identity across parent re-renders.
+interface LessonRowProps {
+  lesson: Lesson
+  index: number
+  courseId: string
+  deletingLesson: string | null
+  onDeleteLesson: (lessonId: string, title: string) => void
+}
+
+const LessonRow = memo(function LessonRow({
+  lesson,
+  index,
+  courseId,
+  deletingLesson,
+  onDeleteLesson,
+}: LessonRowProps) {
+  return (
+    <div className="flex items-center gap-3 p-3 border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors group">
+      <GripVertical className="h-4 w-4 text-muted-foreground/40 shrink-0" />
+      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">
+        {index + 1}
+      </div>
+      <Link
+        href={`/teacher/courses/${courseId}/lessons/${lesson.id}/edit`}
+        className="flex-1 min-w-0 group/link"
+      >
+        <div className="flex items-center gap-2">
+          <h4 className="font-medium text-foreground text-sm truncate group-hover/link:text-primary transition-colors">
+            {lesson.title}
+          </h4>
+          <span
+            className={`inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${statusColor(lesson.status)}`}
+          >
+            {lesson.status}
+          </span>
+        </div>
+        {lesson.description && (
+          <p className="mt-0.5 text-xs text-muted-foreground truncate">
+            {lesson.description}
+          </p>
+        )}
+      </Link>
+      {lesson.duration_minutes && (
+        <span className="shrink-0 flex items-center gap-1 text-xs text-muted-foreground">
+          <Clock className="h-3 w-3" />
+          {lesson.duration_minutes}m
+        </span>
+      )}
+      <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+        <Link href={`/teacher/courses/${courseId}/lessons/${lesson.id}/edit`}>
+          <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+            <Pencil className="h-3.5 w-3.5" />
+          </Button>
+        </Link>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-7 w-7 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30"
+          onClick={() => onDeleteLesson(lesson.id, lesson.title)}
+          disabled={deletingLesson === lesson.id}
+        >
+          <Trash2 className="h-3.5 w-3.5" />
+        </Button>
+      </div>
+    </div>
+  )
+})
+
 export function ModuleList({ modules, lessons, courseId }: ModuleListProps) {
   const router = useRouter()
   const [expandedModules, setExpandedModules] = useState<Set<string>>(
@@ -54,7 +136,7 @@ export function ModuleList({ modules, lessons, courseId }: ModuleListProps) {
   // Track which module's inline "Add Lesson" dialog is open
   const [addLessonModuleId, setAddLessonModuleId] = useState<string | null>(null)
 
-  const toggleModule = (moduleId: string) => {
+  const toggleModule = useCallback((moduleId: string) => {
     setExpandedModules((prev) => {
       const next = new Set(prev)
       if (next.has(moduleId)) {
@@ -64,9 +146,9 @@ export function ModuleList({ modules, lessons, courseId }: ModuleListProps) {
       }
       return next
     })
-  }
+  }, [])
 
-  async function handleDeleteModule(moduleId: string, title: string) {
+  const handleDeleteModule = useCallback(async (moduleId: string, title: string) => {
     if (!confirm(`Delete module "${title}"? Lessons in this module will become uncategorized.`)) return
     setDeletingModule(moduleId)
     const result = await deleteModule(moduleId)
@@ -77,9 +159,9 @@ export function ModuleList({ modules, lessons, courseId }: ModuleListProps) {
       router.refresh()
     }
     setDeletingModule(null)
-  }
+  }, [router])
 
-  async function handleDeleteLesson(lessonId: string, title: string) {
+  const handleDeleteLesson = useCallback(async (lessonId: string, title: string) => {
     if (!confirm(`Delete lesson "${title}"? This cannot be undone.`)) return
     setDeletingLesson(lessonId)
     const result = await deleteLesson(lessonId)
@@ -90,78 +172,12 @@ export function ModuleList({ modules, lessons, courseId }: ModuleListProps) {
       router.refresh()
     }
     setDeletingLesson(null)
-  }
-
-  const statusColor = (status: string) => {
-    switch (status) {
-      case 'published':
-        return 'bg-[#00BFFF]/10 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:text-[#00BFFF]'
-      case 'draft':
-        return 'bg-[#FFAA00]/10 text-[#D97706] dark:bg-[#FFAA00]/10 dark:text-[#D97706]'
-      case 'archived':
-        return 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
-      default:
-        return 'bg-gray-100 text-gray-700'
-    }
-  }
+  }, [router])
 
   const uncategorizedLessons = lessons.filter((l) => !l.module_id)
 
   // Module list for the selector (id + title only)
   const moduleOptions = modules.map((m) => ({ id: m.id, title: m.title }))
-
-  function LessonRow({ lesson, index }: { lesson: Lesson; index: number }) {
-    return (
-      <div className="flex items-center gap-3 p-3 border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors group">
-        <GripVertical className="h-4 w-4 text-muted-foreground/40 shrink-0" />
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">
-          {index + 1}
-        </div>
-        <Link
-          href={`/teacher/courses/${courseId}/lessons/${lesson.id}/edit`}
-          className="flex-1 min-w-0 group/link"
-        >
-          <div className="flex items-center gap-2">
-            <h4 className="font-medium text-foreground text-sm truncate group-hover/link:text-primary transition-colors">
-              {lesson.title}
-            </h4>
-            <span
-              className={`inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${statusColor(lesson.status)}`}
-            >
-              {lesson.status}
-            </span>
-          </div>
-          {lesson.description && (
-            <p className="mt-0.5 text-xs text-muted-foreground truncate">
-              {lesson.description}
-            </p>
-          )}
-        </Link>
-        {lesson.duration_minutes && (
-          <span className="shrink-0 flex items-center gap-1 text-xs text-muted-foreground">
-            <Clock className="h-3 w-3" />
-            {lesson.duration_minutes}m
-          </span>
-        )}
-        <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-          <Link href={`/teacher/courses/${courseId}/lessons/${lesson.id}/edit`}>
-            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-              <Pencil className="h-3.5 w-3.5" />
-            </Button>
-          </Link>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-7 w-7 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30"
-            onClick={() => handleDeleteLesson(lesson.id, lesson.title)}
-            disabled={deletingLesson === lesson.id}
-          >
-            <Trash2 className="h-3.5 w-3.5" />
-          </Button>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="space-y-3">
@@ -234,7 +250,14 @@ export function ModuleList({ modules, lessons, courseId }: ModuleListProps) {
             {isExpanded && moduleLessons.length > 0 && (
               <div className="border-t border-border bg-muted/20">
                 {moduleLessons.map((lesson, index) => (
-                  <LessonRow key={lesson.id} lesson={lesson} index={index} />
+                  <LessonRow
+                    key={lesson.id}
+                    lesson={lesson}
+                    index={index}
+                    courseId={courseId}
+                    deletingLesson={deletingLesson}
+                    onDeleteLesson={handleDeleteLesson}
+                  />
                 ))}
               </div>
             )}
@@ -290,7 +313,14 @@ export function ModuleList({ modules, lessons, courseId }: ModuleListProps) {
           </div>
           <div className="border-t border-border">
             {uncategorizedLessons.map((lesson, index) => (
-              <LessonRow key={lesson.id} lesson={lesson} index={index} />
+              <LessonRow
+                key={lesson.id}
+                lesson={lesson}
+                index={index}
+                courseId={courseId}
+                deletingLesson={deletingLesson}
+                onDeleteLesson={handleDeleteLesson}
+              />
             ))}
           </div>
         </div>

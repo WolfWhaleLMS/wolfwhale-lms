@@ -102,9 +102,24 @@ export default function CalendarClient({ initialEvents, initialMonth }: Calendar
     return eachDayOfInterval({ start: calStart, end: calEnd })
   }, [currentMonth])
 
+  // Pre-compute a Map<dateString, CalendarEvent[]> so we do a single pass
+  // over all events instead of filtering inside every calendar cell (up to 42x).
+  const eventsByDate = useMemo(() => {
+    const map = new Map<string, CalendarEvent[]>()
+    for (const evt of events) {
+      const existing = map.get(evt.date)
+      if (existing) {
+        existing.push(evt)
+      } else {
+        map.set(evt.date, [evt])
+      }
+    }
+    return map
+  }, [events])
+
   function getEventsForDate(date: Date): CalendarEvent[] {
     const dateStr = format(date, 'yyyy-MM-dd')
-    return events.filter((e) => e.date === dateStr)
+    return eventsByDate.get(dateStr) || []
   }
 
   const selectedDateEvents = selectedDate ? getEventsForDate(selectedDate) : []
