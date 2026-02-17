@@ -26,6 +26,7 @@ export function LoadingScreen({
         src={BG_MAP[variant]}
         alt=""
         fill
+        sizes="100vw"
         className="object-cover"
         priority
       />

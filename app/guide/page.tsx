@@ -316,7 +316,7 @@ export default function GuidePage() {
       <div className="fixed inset-0 z-0">
         {/* Chrome texture base */}
         <div className="absolute inset-0">
-          <Image src="/chrome-bg-2.jpg" alt="" fill className="object-cover opacity-20" priority />
+          <Image src="/chrome-bg-2.jpg" alt="" fill sizes="100vw" className="object-cover opacity-20" priority />
         </div>
         <div className="absolute inset-0 bg-gradient-to-br from-[#E8F8FF]/85 via-[#D0F0FF]/80 to-[#B0E8FF]/85" />
         <div
@@ -355,6 +355,7 @@ export default function GuidePage() {
               alt="WolfWhale"
               width={48}
               height={48}
+              sizes="48px"
               className="rounded-xl object-contain shadow-lg border-2 border-black"
             />
             <div>

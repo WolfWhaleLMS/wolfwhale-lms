@@ -300,6 +300,7 @@ export default async function HelpCenterPage({ searchParams }: PageProps) {
               alt="WolfWhale"
               width={48}
               height={48}
+              sizes="48px"
               className="rounded-xl object-contain shadow-lg border-2 border-black"
             />
             <div>

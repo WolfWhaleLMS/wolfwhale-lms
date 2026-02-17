@@ -10,7 +10,20 @@ const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
   experimental: {
-    optimizePackageImports: ['lucide-react', 'date-fns', '@sentry/nextjs'],
+    optimizePackageImports: [
+      'lucide-react',
+      'date-fns',
+      '@sentry/nextjs',
+      '@radix-ui/react-avatar',
+      '@radix-ui/react-checkbox',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-label',
+      '@radix-ui/react-popover',
+      '@radix-ui/react-progress',
+      '@radix-ui/react-select',
+      '@radix-ui/react-tabs',
+    ],
   },
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -42,6 +55,19 @@ const nextConfig = {
       {
         source: '/info',
         headers: [{ key: 'Cache-Control', value: 'public, s-maxage=3600, stale-while-revalidate=86400' }],
+      },
+      {
+        // Long-lived cache for static images (they're fingerprinted by Next.js Image)
+        source: '/:path*.png',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+      {
+        source: '/:path*.jpg',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+      {
+        source: '/:path*.svg',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
       },
       {
         source: '/:path*',

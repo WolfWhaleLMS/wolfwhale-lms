@@ -232,7 +232,7 @@ export default function InfoPage() {
                 </div>
               </div>
               <div className="relative">
-                <Image src="/screenshots/student-dashboard.png" alt="Student Dashboard — performance gauges, courses, tasks, XP, and virtual pets" width={1440} height={900} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-auto" />
+                <Image src="/screenshots/student-dashboard.png" alt="Student Dashboard — performance gauges, courses, tasks, XP, and virtual pets" width={1440} height={900} sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" className="w-full h-auto" />
               </div>
             </div>
 

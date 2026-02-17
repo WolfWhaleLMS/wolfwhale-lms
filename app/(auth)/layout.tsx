@@ -1,37 +1,20 @@
-'use client'
-
-import { useEffect, useLayoutEffect, useState } from 'react'
 import Image from 'next/image'
-import { useTheme } from 'next-themes'
+
+import { AuthDarkModeScript } from './AuthDarkModeScript'
 
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const [mounted, setMounted] = useState(false)
-  const { setTheme } = useTheme()
-
-  // Force dark mode immediately before paint — prevents light flash
-  useLayoutEffect(() => {
-    document.documentElement.classList.remove('light')
-    document.documentElement.classList.add('dark')
-    document.documentElement.style.colorScheme = 'dark'
-  }, [])
-
-  // Keep next-themes state in sync so it persists correctly
-  useEffect(() => {
-    setMounted(true)
-    setTheme('dark')
-  }, [setTheme])
-
   return (
     <div className="min-h-screen relative overflow-hidden bg-[#0A0E1A]">
+      <AuthDarkModeScript />
       {/* Dark Neon Background */}
       <div className="fixed inset-0 z-0">
         {/* Chrome texture base — dark */}
         <div className="absolute inset-0">
-          <Image src="/chrome-bg.jpg" alt="" fill className="object-cover opacity-8" priority />
+          <Image src="/chrome-bg.jpg" alt="" fill sizes="100vw" className="object-cover opacity-8" priority />
         </div>
         {/* Base gradient — deep ocean dark */}
         <div
@@ -72,38 +55,7 @@ export default function AuthLayout({
         </p>
       </footer>
 
-      {/* Animation keyframes */}
-      <style jsx>{`
-        @keyframes ocean-pulse {
-          0%, 100% { transform: scale(1) translateY(0); opacity: 0.4; }
-          50% { transform: scale(1.1) translateY(-5%); opacity: 0.5; }
-        }
-        @keyframes ocean-drift {
-          0%, 100% { transform: translateX(0) scale(1); }
-          50% { transform: translateX(10%) scale(1.05); }
-        }
-      `}</style>
-
-      {/* Fish swim styles */}
-      <style jsx global>{`
-        @keyframes fish-swim-right {
-          0%, 100% { transform: translateX(0) translateY(0) scaleX(1); }
-          25% { transform: translateX(30px) translateY(-15px) scaleX(1); }
-          50% { transform: translateX(50px) translateY(5px) scaleX(1); }
-          75% { transform: translateX(20px) translateY(-10px) scaleX(1); }
-        }
-        @keyframes fish-swim-left {
-          0%, 100% { transform: translateX(0) translateY(0) scaleX(-1); }
-          25% { transform: translateX(-25px) translateY(-12px) scaleX(-1); }
-          50% { transform: translateX(-45px) translateY(8px) scaleX(-1); }
-          75% { transform: translateX(-15px) translateY(-8px) scaleX(-1); }
-        }
-        @keyframes fish-bob {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          33% { transform: translateY(-8px) rotate(3deg); }
-          66% { transform: translateY(5px) rotate(-2deg); }
-        }
-      `}</style>
+      {/* Animation keyframes -- uses ocean-pulse-ambient and ocean-drift-ambient from globals.css */}
     </div>
   )
 }

@@ -2499,6 +2499,17 @@ button:focus-visible {
   50% { transform: translateX(10%) scale(1.05); }
 }
 
+/* Aliases used by auth layout + homepage inline styles */
+@keyframes ocean-pulse {
+  0%, 100% { transform: scale(1) translateY(0); opacity: 0.4; }
+  50% { transform: scale(1.1) translateY(-5%); opacity: 0.5; }
+}
+
+@keyframes ocean-drift {
+  0%, 100% { transform: translateX(0) scale(1); }
+  50% { transform: translateX(10%) scale(1.05); }
+}
+
 /* ── Hub: Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   .hub-button-ring:hover .hub-button-outer,

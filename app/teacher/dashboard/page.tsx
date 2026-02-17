@@ -29,12 +29,25 @@ export default async function TeacherDashboardPage() {
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
 
-  // Fetch teacher profile
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('first_name, last_name, full_name')
-    .eq('id', user.id)
-    .single()
+  // Fetch teacher profile and courses in parallel to eliminate waterfall
+  const [profileResult, courseDataResult] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('first_name, last_name, full_name')
+      .eq('id', user.id)
+      .single(),
+    tenantId
+      ? supabase
+          .from('courses')
+          .select('id, name, status, subject')
+          .eq('tenant_id', tenantId)
+          .eq('created_by', user.id)
+          .neq('status', 'archived')
+          .order('created_at', { ascending: false })
+      : Promise.resolve({ data: null }),
+  ])
+
+  const profile = profileResult.data
 
   const teacherName =
     profile?.full_name ||
@@ -47,22 +60,12 @@ export default async function TeacherDashboardPage() {
     hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
 
   // Fetch real data if tenant context exists
-  let courses: any[] = []
+  let courses: any[] = courseDataResult.data || []
   let totalStudents = 0
   let pendingGrading = 0
   let recentSubmissions: any[] = []
 
   if (tenantId) {
-    // Get teacher's courses
-    const { data: courseData } = await supabase
-      .from('courses')
-      .select('id, name, status, subject')
-      .eq('tenant_id', tenantId)
-      .eq('created_by', user.id)
-      .neq('status', 'archived')
-      .order('created_at', { ascending: false })
-
-    courses = courseData || []
     const courseIds = courses.map((c) => c.id)
 
     if (courseIds.length > 0) {

@@ -10,6 +10,7 @@ import {
   Command,
 } from "lucide-react";
 
+import dynamic from "next/dynamic";
 import { ToolPanel } from "./ToolPanel";
 import { SystemStatus } from "./SystemStatus";
 import { QuickLinks } from "./QuickLinks";
@@ -17,7 +18,21 @@ import { DeployLog } from "./DeployLog";
 import { DatabaseStats } from "./DatabaseStats";
 import { Scratchpad } from "./Scratchpad";
 import { CommandPalette } from "./CommandPalette";
-import { AgentOffice } from "./AgentOffice";
+
+// Lazy-load the 620-line animated AgentOffice component — not needed for initial paint
+const AgentOffice = dynamic(
+  () => import("./AgentOffice").then((m) => ({ default: m.AgentOffice })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="agent-office">
+        <div className="office-header">
+          <span className="text-sm text-[#64748b]">Loading Agent Floor...</span>
+        </div>
+      </div>
+    ),
+  },
+);
 
 function Clock() {
   const [time, setTime] = useState("");

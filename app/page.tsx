@@ -42,7 +42,7 @@ export default function EdTechHubPage() {
       <div className="fixed inset-0 z-0">
         {/* Chrome texture base — very light */}
         <div className="absolute inset-0">
-          <Image src="/chrome-bg-2.jpg" alt="" fill className="object-cover opacity-10" priority />
+          <Image src="/chrome-bg-2.jpg" alt="" fill sizes="100vw" className="object-cover opacity-10" priority />
         </div>
         {/* Base gradient — Bright airy ocean */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#E8F8FF] via-[#F0FAFF] to-[#E0F4FF]" />

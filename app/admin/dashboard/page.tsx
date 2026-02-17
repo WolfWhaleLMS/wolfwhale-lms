@@ -83,71 +83,64 @@ export default async function AdminDashboardPage() {
   const greeting =
     hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
 
-  // Fetch dashboard data with error handling
-  let stats: {
+  // Type definitions for dashboard data
+  type DashboardStats = {
     totalUsers: number
     roleCounts: Record<string, number>
     totalCourses: number
     totalStudents: number
     weeklyLogins: number
-  } | null = null
+  }
 
-  let attendance: {
+  type AttendanceData = {
     total: number
     present: number
     absent: number
     tardy: number
     attendanceRate: number
-  } | null = null
-
-  let auditLogs: any[] = []
-
-  try {
-    ;[stats, attendance] = await Promise.all([
-      getDashboardStats(),
-      getAttendanceReport(),
-    ])
-  } catch {
-    // Role check may fail - proceed with null data
   }
 
-  // Fetch recent audit logs directly
-  if (tenantId) {
-    try {
-      const { data: rawLogs } = await supabase
-        .from('audit_logs')
-        .select('id, action, details, created_at, user_id')
-        .eq('tenant_id', tenantId)
-        .order('created_at', { ascending: false })
-        .limit(10)
+  // Fetch all dashboard data in parallel to eliminate waterfall
+  // Task 1: Dashboard stats + attendance
+  const statsPromise = Promise.all([getDashboardStats(), getAttendanceReport()])
+    .catch(() => [null, null] as const)
 
-      // Fetch profiles separately (PostgREST cannot follow audit_logs.user_id -> profiles)
-      const logUserIds = [...new Set((rawLogs ?? []).map((l: any) => l.user_id).filter(Boolean))]
-      const logProfilesMap: Record<string, any> = {}
-      if (logUserIds.length > 0) {
-        const { data: logProfiles } = await supabase
-          .from('profiles')
-          .select('id, full_name')
-          .in('id', logUserIds)
-        for (const p of logProfiles ?? []) {
-          logProfilesMap[p.id] = p
+  // Task 2: Audit logs (with nested profile lookup)
+  const auditLogsPromise = tenantId
+    ? (async () => {
+        try {
+          const { data: rawLogs } = await supabase
+            .from('audit_logs')
+            .select('id, action, details, created_at, user_id')
+            .eq('tenant_id', tenantId)
+            .order('created_at', { ascending: false })
+            .limit(10)
+
+          const logUserIds = [...new Set((rawLogs ?? []).map((l: any) => l.user_id).filter(Boolean))]
+          const logProfilesMap: Record<string, any> = {}
+          if (logUserIds.length > 0) {
+            const { data: logProfiles } = await supabase
+              .from('profiles')
+              .select('id, full_name')
+              .in('id', logUserIds)
+            for (const p of logProfiles ?? []) {
+              logProfilesMap[p.id] = p
+            }
+          }
+
+          return (rawLogs ?? []).map((l: any) => ({
+            ...l,
+            profiles: logProfilesMap[l.user_id] ?? null,
+          }))
+        } catch {
+          return [] as any[]
         }
-      }
+      })()
+    : Promise.resolve([] as any[])
 
-      auditLogs = (rawLogs ?? []).map((l: any) => ({
-        ...l,
-        profiles: logProfilesMap[l.user_id] ?? null,
-      }))
-    } catch {
-      // Audit logs may not be available
-    }
-  }
-
-  // Fetch seat usage for current tenant
-  let seatUsage = { currentUsers: 0, maxUsers: 50 }
-  if (tenantId) {
-    try {
-      const [tenantResult, countResult] = await Promise.all([
+  // Task 3: Seat usage
+  const seatUsagePromise = tenantId
+    ? Promise.all([
         supabase
           .from('tenants')
           .select('max_users')
@@ -158,45 +151,58 @@ export default async function AdminDashboardPage() {
           .select('id', { count: 'exact', head: true })
           .eq('tenant_id', tenantId),
       ])
-      seatUsage = {
-        currentUsers: countResult.count ?? 0,
-        maxUsers: tenantResult.data?.max_users ?? 50,
-      }
-    } catch {
-      // Seat usage may fail silently
-    }
-  }
+        .then(([tenantResult, countResult]) => ({
+          currentUsers: countResult.count ?? 0,
+          maxUsers: tenantResult.data?.max_users ?? 50,
+        }))
+        .catch(() => ({ currentUsers: 0, maxUsers: 50 }))
+    : Promise.resolve({ currentUsers: 0, maxUsers: 50 })
 
-  // Fetch all schools for super_admin overview
-  let allSchools: any[] = []
-  let schoolMemberCounts: Record<string, number> = {}
-  if (isSuperAdmin) {
-    try {
-      const { data: tenants } = await supabase
-        .from('tenants')
-        .select('id, name, slug, subscription_plan, max_users, status, created_at')
-        .order('created_at', { ascending: false })
+  // Task 4: Schools overview (super_admin only)
+  const schoolsPromise = isSuperAdmin
+    ? (async () => {
+        try {
+          const { data: tenants } = await supabase
+            .from('tenants')
+            .select('id, name, slug, subscription_plan, max_users, status, created_at')
+            .order('created_at', { ascending: false })
 
-      allSchools = tenants ?? []
+          const schools = tenants ?? []
+          const counts: Record<string, number> = {}
 
-      if (allSchools.length > 0) {
-        const tenantIds = allSchools.map((t: any) => t.id)
-        const { data: memberships } = await supabase
-          .from('tenant_memberships')
-          .select('tenant_id')
-          .in('tenant_id', tenantIds)
+          if (schools.length > 0) {
+            const tenantIds = schools.map((t: any) => t.id)
+            const { data: memberships } = await supabase
+              .from('tenant_memberships')
+              .select('tenant_id')
+              .in('tenant_id', tenantIds)
 
-        if (memberships) {
-          for (const m of memberships) {
-            const tid = (m as any).tenant_id
-            schoolMemberCounts[tid] = (schoolMemberCounts[tid] || 0) + 1
+            if (memberships) {
+              for (const m of memberships) {
+                const tid = (m as any).tenant_id
+                counts[tid] = (counts[tid] || 0) + 1
+              }
+            }
           }
+
+          return { schools, counts }
+        } catch {
+          return { schools: [] as any[], counts: {} as Record<string, number> }
         }
-      }
-    } catch {
-      // Schools data may fail silently
-    }
-  }
+      })()
+    : Promise.resolve({ schools: [] as any[], counts: {} as Record<string, number> })
+
+  // Wait for all parallel tasks to complete
+  const [statsResult, auditLogs, seatUsage, schoolsResult] = await Promise.all([
+    statsPromise,
+    auditLogsPromise,
+    seatUsagePromise,
+    schoolsPromise,
+  ])
+
+  const [stats, attendance] = statsResult as [DashboardStats | null, AttendanceData | null]
+  const allSchools = schoolsResult.schools
+  const schoolMemberCounts = schoolsResult.counts
 
   const studentCount = stats?.roleCounts?.student ?? 0
   const teacherCount = stats?.roleCounts?.teacher ?? 0

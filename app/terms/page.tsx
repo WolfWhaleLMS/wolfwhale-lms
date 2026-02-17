@@ -628,6 +628,7 @@ export default async function TermsOfServicePage({ searchParams }: PageProps) {
               alt="WolfWhale Logo"
               width={48}
               height={48}
+              sizes="48px"
               className="rounded-xl object-contain border-2 border-black"
             />
             <div>
