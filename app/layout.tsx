@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Orbitron, Share_Tech_Mono } from "next/font/google";
+import { Orbitron, Share_Tech_Mono, Dela_Gothic_One } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
@@ -29,6 +29,13 @@ const orbitron = Orbitron({
 
 const shareTechMono = Share_Tech_Mono({
   variable: "--font-share-tech-mono",
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+});
+
+const delaGothic = Dela_Gothic_One({
+  variable: "--font-dela-gothic",
   subsets: ["latin"],
   display: "swap",
   weight: "400",
@@ -170,11 +177,11 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${shareTechMono.variable} antialiased min-h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${shareTechMono.variable} ${delaGothic.variable} antialiased min-h-screen`}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem={false}
           disableTransitionOnChange
         >
