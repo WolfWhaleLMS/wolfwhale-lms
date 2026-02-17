@@ -403,6 +403,55 @@
   opacity: 0.6;
 }
 
+/* ── Progress bar (workstation) ──────────────────────── */
+
+.ws-progress-track {
+  width: 44px;
+  height: 3px;
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 2px;
+  margin-top: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(30, 41, 59, 0.5);
+}
+
+.ws-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease-out;
+}
+
+.ws-progress-active {
+  background: var(--ag);
+  box-shadow: 0 0 6px var(--ag-glow);
+}
+
+.ws-progress-busy {
+  background: var(--mc-amber);
+  box-shadow: 0 0 6px rgba(255, 191, 0, 0.3);
+}
+
+.ws-progress-idle {
+  background: #475569;
+}
+
+/* ── Completed badge ─────────────────────────────────── */
+
+.ws-completed-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  font-size: 7px;
+  font-weight: bold;
+  color: var(--mc-green);
+  background: rgba(51, 255, 51, 0.08);
+  border: 1px solid rgba(51, 255, 51, 0.2);
+  border-radius: 4px;
+  padding: 0 3px;
+  line-height: 14px;
+  letter-spacing: 0.03em;
+}
+
 /* ── Labels ──────────────────────────────────────────── */
 
 .ws-label {
@@ -424,6 +473,62 @@
   font-size: 7px;
   color: var(--mc-text-dim);
   letter-spacing: 0.05em;
+}
+
+.ws-meta {
+  font-size: 7px;
+  color: var(--mc-text-dim);
+  letter-spacing: 0.03em;
+  margin-top: 1px;
+  opacity: 0.7;
+}
+
+.ws-elapsed {
+  margin-left: 4px;
+  opacity: 0.6;
+}
+
+/* ── Idle character state ────────────────────────────── */
+
+.ws-char-idle {
+  opacity: 0.45;
+  animation: none !important;
+}
+
+/* ── Status badges (detail panel) ────────────────────── */
+
+.ws-status-badge-active {
+  color: var(--mc-green);
+  border-color: rgba(51, 255, 51, 0.3);
+  background: rgba(51, 255, 51, 0.08);
+}
+
+.ws-status-badge-busy {
+  color: var(--mc-amber);
+  border-color: rgba(255, 191, 0, 0.3);
+  background: rgba(255, 191, 0, 0.08);
+}
+
+.ws-status-badge-idle {
+  color: #64748b;
+  border-color: rgba(100, 116, 139, 0.3);
+  background: rgba(100, 116, 139, 0.08);
+}
+
+/* ── Detail panel progress bar ───────────────────────── */
+
+.ws-detail-progress-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.ws-detail-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease-out;
 }
 
 /* ── Detail panel ────────────────────────────────────── */

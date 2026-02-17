@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   X,
   Shield,
@@ -14,12 +14,22 @@ import {
   Monitor,
   FlaskConical,
   Users,
+  Clock,
+  CheckCircle2,
   type LucideIcon,
 } from "lucide-react";
 
-/* ── Agent definitions ─────────────────────────────────── */
+/* ── Types ───────────────────────────────────────────── */
 
-interface Agent {
+type Status = "active" | "idle" | "busy";
+
+interface Task {
+  label: string;
+  progress: number; /* 0–100 */
+  startedAt: number; /* timestamp ms */
+}
+
+interface AgentDef {
   id: string;
   name: string;
   role: string;
@@ -27,10 +37,18 @@ interface Agent {
   icon: LucideIcon;
   description: string;
   skills: string[];
-  activities: string[];
+  taskPool: string[]; /* pool of possible tasks */
 }
 
-const AGENTS: Agent[] = [
+interface AgentState {
+  status: Status;
+  currentTask: Task;
+  completedCount: number;
+}
+
+/* ── Agent definitions ─────────────────────────────────── */
+
+const AGENTS: AgentDef[] = [
   {
     id: "code-reviewer",
     name: "REX",
@@ -40,11 +58,15 @@ const AGENTS: Agent[] = [
     description:
       "Conducts comprehensive code reviews. Catches bugs, enforces SOLID principles, and ensures code quality before merge.",
     skills: ["Code Quality", "Security Scan", "SOLID Patterns", "PR Reviews"],
-    activities: [
-      "Reviewing PR #42",
-      "Scanning imports",
-      "Checking types",
-      "Linting rules",
+    taskPool: [
+      "Reviewing PR #42 — auth refactor",
+      "Scanning import cycles in /lib",
+      "Type-checking new API routes",
+      "Linting mission-control module",
+      "Reviewing dashboard components",
+      "Checking error boundary coverage",
+      "Auditing server action types",
+      "Reviewing Supabase client usage",
     ],
   },
   {
@@ -56,11 +78,15 @@ const AGENTS: Agent[] = [
     description:
       "Designs APIs, microservice boundaries, and database schemas. Optimizes for scalability and performance.",
     skills: ["API Design", "REST/GraphQL", "Schema Design", "Scaling"],
-    activities: [
-      "Designing API",
-      "Schema review",
-      "Optimizing queries",
-      "Planning routes",
+    taskPool: [
+      "Designing /api/reports endpoint",
+      "Schema review for pixel_pets",
+      "Optimizing dashboard queries",
+      "Planning REST route structure",
+      "Evaluating caching strategy",
+      "Designing webhook system",
+      "API rate-limit architecture",
+      "Planning data export pipeline",
     ],
   },
   {
@@ -72,11 +98,15 @@ const AGENTS: Agent[] = [
     description:
       "Builds React/Next.js frontends with TypeScript, responsive design, and comprehensive testing.",
     skills: ["React/Next.js", "TypeScript", "Tailwind CSS", "Testing"],
-    activities: [
-      "Building UI",
-      "Styling components",
-      "Fixing layout",
-      "Adding tests",
+    taskPool: [
+      "Building Mission Control UI",
+      "Styling agent floor grid",
+      "Fixing mobile layout breakpoints",
+      "Adding progress bar animations",
+      "Implementing command palette",
+      "Building hub screen buttons",
+      "Responsive sidebar navigation",
+      "Dark theme token system",
     ],
   },
   {
@@ -88,11 +118,15 @@ const AGENTS: Agent[] = [
     description:
       "Performs security audits, compliance assessments, and vulnerability analysis across the stack.",
     skills: ["Vuln Analysis", "OWASP Top 10", "Compliance", "Pen Testing"],
-    activities: [
-      "Scanning vulns",
-      "Checking auth",
-      "Auditing RLS",
-      "Testing CORS",
+    taskPool: [
+      "Scanning XSS vectors in forms",
+      "Auditing RLS policies",
+      "Checking auth token flow",
+      "Testing CORS configuration",
+      "Reviewing API input validation",
+      "FERPA compliance scan",
+      "Checking session management",
+      "Auditing file upload paths",
     ],
   },
   {
@@ -104,11 +138,15 @@ const AGENTS: Agent[] = [
     description:
       "Profiles applications, optimizes bottlenecks, and implements caching. Handles load testing and query optimization.",
     skills: ["Profiling", "Caching", "Load Testing", "Query Tuning"],
-    activities: [
-      "Profiling app",
-      "Optimizing bundle",
-      "Caching layer",
-      "Load test #7",
+    taskPool: [
+      "Profiling dashboard load time",
+      "Optimizing bundle size — 340kB",
+      "Implementing edge caching",
+      "Load test: 500 concurrent users",
+      "Analyzing Supabase query plans",
+      "Lazy-loading heavy components",
+      "Image optimization audit",
+      "Measuring TTFB on /student",
     ],
   },
   {
@@ -120,11 +158,15 @@ const AGENTS: Agent[] = [
     description:
       "CI/CD specialist. Manages deployment automation, infrastructure provisioning, and monitoring.",
     skills: ["CI/CD", "Docker", "Monitoring", "Cloud Ops"],
-    activities: [
-      "Building CI",
-      "Deploying v2.1",
-      "Checking logs",
-      "Scaling pods",
+    taskPool: [
+      "Building CI pipeline v2.1",
+      "Deploying to Vercel production",
+      "Checking Sentry error logs",
+      "Configuring preview deploys",
+      "Setting up health monitors",
+      "Optimizing build cache",
+      "Reviewing Vercel edge config",
+      "Setting up deploy webhooks",
     ],
   },
   {
@@ -136,11 +178,15 @@ const AGENTS: Agent[] = [
     description:
       "Designs Supabase schemas, migration plans, and Row Level Security policies.",
     skills: ["Supabase", "Migrations", "RLS Policies", "Indexing"],
-    activities: [
-      "Writing migration",
-      "Adding index",
-      "RLS policy",
-      "Schema update",
+    taskPool: [
+      "Writing migration: pixel_pets",
+      "Adding index on enrollments",
+      "RLS policy for announcements",
+      "Schema update: user_profiles",
+      "Planning grade_items migration",
+      "Optimizing join on courses",
+      "Reviewing foreign key cascade",
+      "Designing attendance schema",
     ],
   },
   {
@@ -152,11 +198,15 @@ const AGENTS: Agent[] = [
     description:
       "Provides research-backed design feedback. Specializes in usability, accessibility, and distinctive design direction.",
     skills: ["Usability", "A11y", "Design Systems", "User Research"],
-    activities: [
-      "Reviewing layout",
-      "A11y check",
-      "Color contrast",
-      "Design tokens",
+    taskPool: [
+      "Reviewing hub button layout",
+      "A11y audit: contrast ratios",
+      "Color system token review",
+      "Design critique: agent floor",
+      "Mobile navigation patterns",
+      "Typography scale refinement",
+      "Icon consistency check",
+      "Touch target size audit",
     ],
   },
   {
@@ -168,11 +218,15 @@ const AGENTS: Agent[] = [
     description:
       "Test automation specialist. Builds test strategies, coverage analysis, and CI/CD testing pipelines.",
     skills: ["E2E Tests", "Unit Tests", "Coverage", "CI Testing"],
-    activities: [
-      "Running suite",
-      "Writing e2e",
-      "Coverage: 87%",
-      "Fixing flaky",
+    taskPool: [
+      "Running full test suite",
+      "Writing e2e: login flow",
+      "Coverage analysis: 87% -> 92%",
+      "Fixing flaky calendar test",
+      "Integration test: messaging",
+      "Testing offline sync logic",
+      "API route smoke tests",
+      "Snapshot tests: dashboard",
     ],
   },
   {
@@ -184,58 +238,133 @@ const AGENTS: Agent[] = [
     description:
       "Fast codebase exploration specialist. Finds files, searches code, and maps project architecture.",
     skills: ["Code Search", "File Patterns", "Architecture", "Deep Research"],
-    activities: [
-      "Scanning files",
-      "Mapping deps",
-      "Finding refs",
-      "Tracing flow",
+    taskPool: [
+      "Scanning 284 source files",
+      "Mapping dependency graph",
+      "Finding unused exports",
+      "Tracing auth middleware flow",
+      "Indexing component tree",
+      "Searching for TODO markers",
+      "Analyzing import patterns",
+      "Documenting API endpoints",
     ],
   },
 ];
 
-/* ── Component ─────────────────────────────────────────── */
+/* ── Helpers ──────────────────────────────────────────── */
 
-type Status = "active" | "idle" | "busy";
+function pickRandom<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function randomBetween(min: number, max: number) {
+  return min + Math.random() * (max - min);
+}
+
+function formatElapsed(ms: number): string {
+  const sec = Math.floor(ms / 1000);
+  if (sec < 60) return `${sec}s`;
+  const min = Math.floor(sec / 60);
+  const remSec = sec % 60;
+  return `${min}m ${remSec}s`;
+}
+
+function newTask(agent: AgentDef): Task {
+  return {
+    label: pickRandom(agent.taskPool),
+    progress: 0,
+    startedAt: Date.now(),
+  };
+}
+
+/* ── Component ─────────────────────────────────────────── */
 
 export function AgentOffice() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [activities, setActivities] = useState<Record<string, string>>({});
-  const [statuses, setStatuses] = useState<Record<string, Status>>({});
+  const [agents, setAgents] = useState<Record<string, AgentState>>({});
+  const [now, setNow] = useState(Date.now());
+  const initialized = useRef(false);
 
-  /* seed initial statuses */
+  /* seed initial states */
   useEffect(() => {
-    const init: Record<string, Status> = {};
+    if (initialized.current) return;
+    initialized.current = true;
+
+    const init: Record<string, AgentState> = {};
     AGENTS.forEach((a) => {
       const r = Math.random();
-      init[a.id] = r > 0.55 ? "active" : r > 0.25 ? "busy" : "idle";
+      const status: Status = r > 0.55 ? "active" : r > 0.25 ? "busy" : "idle";
+      init[a.id] = {
+        status,
+        currentTask: {
+          label: pickRandom(a.taskPool),
+          progress: Math.floor(randomBetween(5, 65)),
+          startedAt: Date.now() - randomBetween(5000, 120000),
+        },
+        completedCount: Math.floor(randomBetween(2, 18)),
+      };
     });
-    setStatuses(init);
+    setAgents(init);
   }, []);
 
-  /* rotate activities + statuses on a timer */
+  /* tick: advance progress, cycle tasks, shift statuses */
   useEffect(() => {
     const iv = setInterval(() => {
-      setActivities((prev) => {
+      setNow(Date.now());
+      setAgents((prev) => {
         const next = { ...prev };
-        const count = 2 + Math.floor(Math.random() * 2);
-        for (let i = 0; i < count; i++) {
-          const a = AGENTS[Math.floor(Math.random() * AGENTS.length)];
-          next[a.id] =
-            a.activities[Math.floor(Math.random() * a.activities.length)];
-        }
+
+        AGENTS.forEach((def) => {
+          const state = next[def.id];
+          if (!state) return;
+          const copy = { ...state, currentTask: { ...state.currentTask } };
+
+          if (copy.status === "idle") {
+            /* idle agents occasionally wake up */
+            if (Math.random() > 0.85) {
+              copy.status = "active";
+              copy.currentTask = newTask(def);
+            }
+          } else {
+            /* advance progress */
+            const rate =
+              copy.status === "active"
+                ? randomBetween(1.5, 4.5)
+                : randomBetween(0.5, 2);
+            copy.currentTask.progress = Math.min(
+              100,
+              copy.currentTask.progress + rate,
+            );
+
+            /* task complete? */
+            if (copy.currentTask.progress >= 100) {
+              copy.completedCount += 1;
+              /* brief idle then new task */
+              if (Math.random() > 0.3) {
+                copy.currentTask = newTask(def);
+                copy.status = Math.random() > 0.4 ? "active" : "busy";
+              } else {
+                copy.status = "idle";
+                copy.currentTask = {
+                  ...copy.currentTask,
+                  label: "Awaiting assignment",
+                  progress: 0,
+                };
+              }
+            }
+          }
+
+          /* random status jitter */
+          if (Math.random() > 0.95 && copy.status !== "idle") {
+            copy.status = copy.status === "active" ? "busy" : "active";
+          }
+
+          next[def.id] = copy;
+        });
+
         return next;
       });
-
-      if (Math.random() > 0.4) {
-        setStatuses((prev) => {
-          const next = { ...prev };
-          const a = AGENTS[Math.floor(Math.random() * AGENTS.length)];
-          const opts: Status[] = ["active", "idle", "busy"];
-          next[a.id] = opts[Math.floor(Math.random() * opts.length)];
-          return next;
-        });
-      }
-    }, 2800);
+    }, 800);
 
     return () => clearInterval(iv);
   }, []);
@@ -243,11 +372,14 @@ export function AgentOffice() {
   const selected = selectedId
     ? AGENTS.find((a) => a.id === selectedId) ?? null
     : null;
+  const selectedState = selectedId ? agents[selectedId] : null;
 
-  const counts = Object.values(statuses);
-  const activeCount = counts.filter((s) => s === "active").length;
-  const busyCount = counts.filter((s) => s === "busy").length;
-  const idleCount = counts.filter((s) => s === "idle").length;
+  /* header counts */
+  const states = Object.values(agents);
+  const activeCount = states.filter((s) => s.status === "active").length;
+  const busyCount = states.filter((s) => s.status === "busy").length;
+  const idleCount = states.filter((s) => s.status === "idle").length;
+  const totalCompleted = states.reduce((s, a) => s + a.completedCount, 0);
 
   return (
     <div className="agent-office">
@@ -267,6 +399,11 @@ export function AgentOffice() {
         </div>
         <div className="flex items-center gap-3 text-[10px] text-[#64748b]">
           <span className="flex items-center gap-1">
+            <CheckCircle2 className="w-3 h-3 text-[#33ff33]" />
+            {totalCompleted} done
+          </span>
+          <span className="text-[#1e293b]">|</span>
+          <span className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-[#33ff33] inline-block" />
             {activeCount}
           </span>
@@ -284,8 +421,13 @@ export function AgentOffice() {
       {/* ── Office floor grid ───────────────────── */}
       <div className="office-floor">
         {AGENTS.map((agent, i) => {
-          const status = statuses[agent.id] || "idle";
-          const activity = activities[agent.id] || agent.activities[0];
+          const state = agents[agent.id];
+          const status = state?.status || "idle";
+          const task = state?.currentTask;
+          const activity = task?.label || agent.taskPool[0];
+          const progress = task?.progress ?? 0;
+          const elapsed = task ? now - task.startedAt : 0;
+          const completed = state?.completedCount ?? 0;
           const isSel = selectedId === agent.id;
 
           return (
@@ -316,7 +458,9 @@ export function AgentOffice() {
               </div>
 
               {/* Character */}
-              <div className="ws-character">
+              <div
+                className={`ws-character${status === "idle" ? " ws-char-idle" : ""}`}
+              >
                 <div className="ws-char-head">
                   <agent.icon className="w-3.5 h-3.5" />
                 </div>
@@ -331,18 +475,43 @@ export function AgentOffice() {
               {/* Chair */}
               <div className="ws-chair" />
 
-              {/* Label */}
+              {/* Progress bar */}
+              <div className="ws-progress-track">
+                <div
+                  className={`ws-progress-fill ws-progress-${status}`}
+                  style={{ width: `${Math.round(progress)}%` }}
+                />
+              </div>
+
+              {/* Label + info */}
               <div className="ws-label">
                 <span className="ws-name">{agent.name}</span>
                 <span className="ws-role">{agent.role}</span>
+                <span className="ws-meta">
+                  {status === "idle" ? (
+                    "idle"
+                  ) : (
+                    <>
+                      {Math.round(progress)}%
+                      <span className="ws-elapsed">
+                        {formatElapsed(elapsed)}
+                      </span>
+                    </>
+                  )}
+                </span>
               </div>
+
+              {/* Completed badge */}
+              {completed > 0 && (
+                <span className="ws-completed-badge">{completed}</span>
+              )}
             </button>
           );
         })}
       </div>
 
       {/* ── Detail panel ────────────────────────── */}
-      {selected && (
+      {selected && selectedState && (
         <div className="agent-detail mc-animate-in">
           <div className="agent-detail-header">
             <div className="flex items-center gap-2.5">
@@ -368,18 +537,68 @@ export function AgentOffice() {
                 <p className="text-[10px] text-[#64748b]">{selected.role}</p>
               </div>
             </div>
-            <button
-              onClick={() => setSelectedId(null)}
-              className="text-[#64748b] hover:text-[#e2e8f0] transition-colors p-1"
-            >
-              <X className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-3">
+              <span
+                className={`text-[10px] px-2 py-0.5 rounded-full border ws-status-badge-${selectedState.status}`}
+              >
+                {selectedState.status.toUpperCase()}
+              </span>
+              <button
+                onClick={() => setSelectedId(null)}
+                className="text-[#64748b] hover:text-[#e2e8f0] transition-colors p-1"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
           <p className="text-xs text-[#94a3b8] mb-3 leading-relaxed">
             {selected.description}
           </p>
 
+          {/* Current task detail */}
+          <div
+            className="mb-3 p-2.5 rounded-lg"
+            style={{
+              background: selected.color + "08",
+              border: `1px solid ${selected.color}20`,
+            }}
+          >
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[10px] text-[#64748b] uppercase tracking-wider">
+                Current Task
+              </span>
+              <div className="flex items-center gap-2 text-[10px] text-[#64748b]">
+                <Clock className="w-3 h-3" />
+                {formatElapsed(now - selectedState.currentTask.startedAt)}
+              </div>
+            </div>
+            <p
+              className="text-xs mb-2"
+              style={{ color: selected.color + "cc" }}
+            >
+              {selectedState.currentTask.label}
+            </p>
+            <div className="ws-detail-progress-track">
+              <div
+                className={`ws-detail-progress-fill ws-progress-${selectedState.status}`}
+                style={{
+                  width: `${Math.round(selectedState.currentTask.progress)}%`,
+                }}
+              />
+            </div>
+            <div className="flex items-center justify-between mt-1">
+              <span className="text-[10px] text-[#64748b]">
+                {Math.round(selectedState.currentTask.progress)}% complete
+              </span>
+              <span className="text-[10px] text-[#64748b]">
+                <CheckCircle2 className="w-3 h-3 inline mr-0.5 -mt-px" />
+                {selectedState.completedCount} tasks done
+              </span>
+            </div>
+          </div>
+
+          {/* Skills */}
           <div className="flex flex-wrap gap-1.5">
             {selected.skills.map((skill) => (
               <span
