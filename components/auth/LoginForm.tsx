@@ -113,14 +113,14 @@ export function LoginForm() {
                 <FormLabel className="text-[#0A2540]/70">Username</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#00BFFF]/40" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#00BFFF]/60" />
                     <Input
                       type="text"
                       placeholder="student"
                       autoComplete="username"
                       autoFocus
                       disabled={isLoading}
-                      className="pl-10 bg-white/80 border-[#00BFFF]/20 text-[#0A2540] placeholder:text-[#0A2540]/30 focus:border-[#00BFFF] focus:ring-[#00BFFF]/30"
+                      className="pl-10 bg-white/80 border-[#00BFFF]/20 text-[#0A2540] placeholder:text-[#0A2540]/50 focus:border-[#00BFFF] focus:ring-[#00BFFF]/30"
                       {...field}
                     />
                   </div>
@@ -146,13 +146,13 @@ export function LoginForm() {
                 </div>
                 <FormControl>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#00BFFF]/40" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#00BFFF]/60" />
                     <Input
                       type="password"
                       placeholder="••••••••"
                       autoComplete="current-password"
                       disabled={isLoading}
-                      className="pl-10 bg-white/80 border-[#00BFFF]/20 text-[#0A2540] placeholder:text-[#0A2540]/30 focus:border-[#00BFFF] focus:ring-[#00BFFF]/30"
+                      className="pl-10 bg-white/80 border-[#00BFFF]/20 text-[#0A2540] placeholder:text-[#0A2540]/50 focus:border-[#00BFFF] focus:ring-[#00BFFF]/30"
                       {...field}
                     />
                   </div>

@@ -67,7 +67,7 @@ export default function AuthLayout({
 
       {/* Footer — minimal */}
       <footer className="fixed bottom-0 left-0 right-0 z-10 p-4 text-center">
-        <p className="text-xs text-white/20">
+        <p className="text-xs text-white/40">
           &copy; {new Date().getFullYear()} WolfWhale Inc.
         </p>
       </footer>

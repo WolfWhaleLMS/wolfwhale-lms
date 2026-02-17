@@ -170,7 +170,7 @@ export function Sidebar({ role, tenantName, tenantLogo, onClose }: SidebarProps)
                     <Icon
                       className={cn(
                         'h-5 w-5 flex-shrink-0 relative z-10',
-                        isActive ? 'text-[#33FF33] drop-shadow-[0_0_8px_rgba(51,255,51,0.7)]' : 'text-sidebar-foreground/50'
+                        isActive ? 'text-[#33FF33] drop-shadow-[0_0_8px_rgba(51,255,51,0.7)]' : 'text-sidebar-foreground/60'
                       )}
                     />
                     <span className="truncate relative z-10">{item.label}</span>

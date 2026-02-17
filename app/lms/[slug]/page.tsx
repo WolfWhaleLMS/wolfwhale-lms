@@ -219,7 +219,7 @@ export default async function LandingPage({
               <span className="text-xl font-display font-bold text-[#0A2540] block tracking-wider uppercase">
                 WolfWhale LMS
               </span>
-              <span className="text-xs text-[#0A2540]/60 font-display font-semibold tracking-widest uppercase">
+              <span className="text-xs text-[#0A2540]/70 font-display font-semibold tracking-widest uppercase">
                 Learning Management System
               </span>
             </div>
@@ -283,7 +283,7 @@ export default async function LandingPage({
               <p className="text-sm font-bold text-[#0A2540]">
                 100% Canadian Owned &amp; Built
               </p>
-              <p className="text-xs text-[#0A2540]/60">
+              <p className="text-xs text-[#0A2540]/70">
                 Student data stays in Canada
               </p>
             </div>
@@ -318,7 +318,7 @@ export default async function LandingPage({
                 ? `Everything ${page.city} Schools Need`
                 : 'Everything Your School Needs'}
             </h2>
-            <p className="text-lg text-[#0A2540]/60 max-w-2xl mx-auto">
+            <p className="text-lg text-[#0A2540]/70 max-w-2xl mx-auto">
               A complete learning platform with features no other LMS can match
             </p>
           </div>
@@ -354,7 +354,7 @@ export default async function LandingPage({
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Why WolfWhale LMS?
             </h2>
-            <p className="text-lg text-[#0A2540]/60 max-w-2xl mx-auto">
+            <p className="text-lg text-[#0A2540]/70 max-w-2xl mx-auto">
               The only learning management system with built-in spaced
               repetition flashcards
             </p>
@@ -421,25 +421,25 @@ export default async function LandingPage({
               <div className="grid grid-cols-2 gap-4">
                 <div className="rounded-xl p-5 liquid-glass text-center">
                   <p className="text-3xl font-bold text-[#00BFFF]">200%</p>
-                  <p className="text-xs text-[#0A2540]/60 mt-1">
+                  <p className="text-xs text-[#0A2540]/70 mt-1">
                     Better Retention
                   </p>
                 </div>
                 <div className="rounded-xl p-5 liquid-glass text-center">
                   <p className="text-3xl font-bold text-[#00BFFF]">100%</p>
-                  <p className="text-xs text-[#0A2540]/60 mt-1">
+                  <p className="text-xs text-[#0A2540]/70 mt-1">
                     Canadian Hosted
                   </p>
                 </div>
                 <div className="rounded-xl p-5 liquid-glass text-center">
                   <p className="text-3xl font-bold text-[#00BFFF]">K-12+</p>
-                  <p className="text-xs text-[#0A2540]/60 mt-1">
+                  <p className="text-xs text-[#0A2540]/70 mt-1">
                     All Grade Levels
                   </p>
                 </div>
                 <div className="rounded-xl p-5 liquid-glass text-center">
                   <p className="text-3xl font-bold text-[#00BFFF]">$12</p>
-                  <p className="text-xs text-[#0A2540]/60 mt-1">
+                  <p className="text-xs text-[#0A2540]/70 mt-1">
                     CAD / User / Mo
                   </p>
                 </div>
@@ -459,7 +459,7 @@ export default async function LandingPage({
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 WolfWhale vs {page.competitor}
               </h2>
-              <p className="text-lg text-[#0A2540]/60 max-w-2xl mx-auto">
+              <p className="text-lg text-[#0A2540]/70 max-w-2xl mx-auto">
                 See how WolfWhale LMS compares to {page.competitor} on the
                 features that matter most to Canadian schools
               </p>
@@ -517,7 +517,7 @@ export default async function LandingPage({
                 ? `Ready to Transform Learning in ${page.city}?`
                 : 'Ready to Transform Your School?'}
             </h2>
-            <p className="text-lg text-[#0A2540]/60 mb-8 max-w-xl mx-auto">
+            <p className="text-lg text-[#0A2540]/70 mb-8 max-w-xl mx-auto">
               Join the growing number of Canadian schools choosing WolfWhale
               LMS. Start with a free account today.
             </p>
@@ -536,7 +536,7 @@ export default async function LandingPage({
                 Request a Demo
               </a>
             </div>
-            <p className="text-sm text-[#0A2540]/50 mt-6">
+            <p className="text-sm text-[#0A2540]/60 mt-6">
               $12 CAD per user per month. All features included. No hidden
               fees.
             </p>
@@ -561,16 +561,16 @@ export default async function LandingPage({
                   <span className="font-display font-bold block tracking-wider uppercase">
                     WolfWhale LMS
                   </span>
-                  <span className="text-xs text-[#0A2540]/60 font-display font-semibold tracking-widest uppercase">
+                  <span className="text-xs text-[#0A2540]/70 font-display font-semibold tracking-widest uppercase">
                     Modern K-12 &amp; Post-Secondary Learning Platform
                   </span>
                 </div>
               </div>
-              <p className="text-sm text-[#0A2540]/60 max-w-md mb-3">
+              <p className="text-sm text-[#0A2540]/70 max-w-md mb-3">
                 Canadian-built learning management system with built-in spaced
                 repetition flashcards. FERPA, COPPA, and PIPEDA compliant.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 text-sm text-[#0A2540]/60">
+              <div className="flex flex-col sm:flex-row gap-3 text-sm text-[#0A2540]/70">
                 <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1.5 hover:text-[#00BFFF] transition-colors">
                   <Mail className="h-3.5 w-3.5" /> info@wolfwhale.ca
                 </a>
@@ -582,7 +582,7 @@ export default async function LandingPage({
 
             <div>
               <h4 className="font-semibold mb-3 text-sm">Product</h4>
-              <ul className="space-y-2 text-sm text-[#0A2540]/60">
+              <ul className="space-y-2 text-sm text-[#0A2540]/70">
                 <li>
                   <Link
                     href="/info"
@@ -620,7 +620,7 @@ export default async function LandingPage({
 
             <div>
               <h4 className="font-semibold mb-3 text-sm">Legal</h4>
-              <ul className="space-y-2 text-sm text-[#0A2540]/60">
+              <ul className="space-y-2 text-sm text-[#0A2540]/70">
                 <li>
                   <Link
                     href="/privacy"
@@ -649,7 +649,7 @@ export default async function LandingPage({
             </div>
           </div>
 
-          <div className="pt-8 border-t border-[#0A2540]/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#0A2540]/50">
+          <div className="pt-8 border-t border-[#0A2540]/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#0A2540]/60">
             <p>&copy; 2026 WolfWhale LMS. All rights reserved.</p>
             <div className="flex items-center gap-2">
               <img
@@ -657,7 +657,7 @@ export default async function LandingPage({
                 alt="Coat of Arms of Canada"
                 className="h-12 w-auto object-contain"
               />
-              <span className="text-xs font-semibold text-[#0A2540]/60">
+              <span className="text-xs font-semibold text-[#0A2540]/70">
                 100% Canadian Owned &amp; Built
               </span>
             </div>

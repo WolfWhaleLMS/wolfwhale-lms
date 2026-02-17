@@ -520,7 +520,7 @@ export default async function AdminDashboardPage() {
           icon={<Clock className="h-6 w-6 text-amber-500" />}
         >
           <div className="flex flex-col items-center justify-center py-8 text-center">
-            <Clock className="mb-3 h-12 w-12 text-muted-foreground/30" />
+            <Clock className="mb-3 h-12 w-12 text-muted-foreground/40" />
             <p className="text-muted-foreground">No active alerts.</p>
             <p className="mt-1 text-sm text-muted-foreground">
               System alerts and important notifications will appear here.

@@ -359,7 +359,7 @@ export default function EdTechHubPage() {
                     { icon: BarChart3, text: 'Analytics & grade tracking' },
                     { icon: Shield, text: 'FERPA & PIPEDA compliant' },
                   ].map(({ icon: Icon, text }) => (
-                    <li key={text} className="flex items-center gap-2 text-[#0A2040]/65 text-sm">
+                    <li key={text} className="flex items-center gap-2 text-[#0A2040]/70 text-sm">
                       <Icon className="h-4 w-4 text-[#0077B6] shrink-0" />
                       {text}
                     </li>
@@ -436,20 +436,20 @@ export default function EdTechHubPage() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex flex-col gap-1.5">
                 <p className="text-sm font-semibold text-[#0A2040]/70">WolfWhale Inc.</p>
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#0A2040]/55">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#0A2040]/60">
                   <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Vancouver, BC, Canada</span>
                   <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1 hover:text-[#0077B6] transition-colors"><Mail className="h-3 w-3" /> info@wolfwhale.ca</a>
                   <a href="tel:+13069815926" className="flex items-center gap-1 hover:text-[#0077B6] transition-colors"><Phone className="h-3 w-3" /> +1 (306) 981-5926</a>
                 </div>
               </div>
               <div className="flex gap-6">
-                <Link href="/privacy" className="text-sm text-[#0A2040]/55 hover:text-[#0077B6] transition-colors">
+                <Link href="/privacy" className="text-sm text-[#0A2040]/60 hover:text-[#0077B6] transition-colors">
                   Privacy
                 </Link>
-                <Link href="/terms" className="text-sm text-[#0A2040]/55 hover:text-[#0077B6] transition-colors">
+                <Link href="/terms" className="text-sm text-[#0A2040]/60 hover:text-[#0077B6] transition-colors">
                   Terms
                 </Link>
-                <Link href="/help" className="text-sm text-[#0A2040]/55 hover:text-[#0077B6] transition-colors">
+                <Link href="/help" className="text-sm text-[#0A2040]/60 hover:text-[#0077B6] transition-colors">
                   Help
                 </Link>
               </div>

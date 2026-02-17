@@ -17,15 +17,15 @@ function LoginFormSkeleton() {
 
 export default function LoginPage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] px-6">
-      {/* Title — Evangelion-style, black, bold */}
+    <div className="flex flex-col items-center justify-center min-h-screen px-6">
+      {/* Title — Evangelion-style, bold */}
       <h1
         className="text-6xl sm:text-7xl md:text-8xl font-[var(--font-dela-gothic)] text-white tracking-tight leading-none mb-4"
       >
         WOLFWHALE
       </h1>
 
-      <p className="text-white/70 text-sm tracking-[0.3em] uppercase mb-20">
+      <p className="text-white/80 text-sm tracking-[0.3em] uppercase mb-16">
         Learning Management System
       </p>
 
@@ -35,23 +35,23 @@ export default function LoginPage() {
           <LoginForm />
         </Suspense>
 
-        <p className="text-center text-white/60 text-xs">
+        <p className="text-center text-white/70 text-sm">
           Need access? Contact your school administrator
         </p>
       </div>
 
       {/* Bottom links — spaced, minimal */}
-      <div className="flex gap-8 mt-20">
+      <div className="flex gap-8 mt-16">
         <Link
           href="/info"
-          className="flex items-center gap-2 text-white/70 hover:text-white text-sm transition-colors group"
+          className="flex items-center gap-2 text-white/80 hover:text-white text-sm transition-colors group"
         >
           <span>Learn More</span>
           <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
         </Link>
         <Link
           href="/guide"
-          className="flex items-center gap-2 text-white/70 hover:text-white text-sm transition-colors group"
+          className="flex items-center gap-2 text-white/80 hover:text-white text-sm transition-colors group"
         >
           <span>User Guide</span>
           <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />

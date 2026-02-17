@@ -634,7 +634,7 @@ export default async function TermsOfServicePage({ searchParams }: PageProps) {
               <h1 className="text-lg sm:text-xl font-display font-bold text-[#0A2540] group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase">
                 WolfWhale
               </h1>
-              <p className="text-[10px] sm:text-xs text-[#0A2540]/50 font-display font-semibold tracking-widest uppercase">Learning Management System</p>
+              <p className="text-[10px] sm:text-xs text-[#0A2540]/70 font-display font-semibold tracking-widest uppercase">Learning Management System</p>
             </div>
           </Link>
 
@@ -648,7 +648,7 @@ export default async function TermsOfServicePage({ searchParams }: PageProps) {
         {/* Back Link */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-sm text-[#0A2540]/70 hover:text-[#00BFFF] transition-colors mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           {t.backToHome}
@@ -660,13 +660,13 @@ export default async function TermsOfServicePage({ searchParams }: PageProps) {
             <span className="text-white font-bold text-3xl">W</span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-[#0A2540]">{t.title}</h1>
-          <p className="text-lg sm:text-xl text-[#0A2540]/60 mb-2">{t.subtitle}</p>
-          <p className="text-sm text-[#0A2540]/40">{t.lastUpdated}</p>
+          <p className="text-lg sm:text-xl text-[#0A2540]/70 mb-2">{t.subtitle}</p>
+          <p className="text-sm text-[#0A2540]/60">{t.lastUpdated}</p>
         </div>
 
         {/* Table of Contents */}
         <nav className="liquid-glass rounded-2xl p-5 sm:p-6 border border-[#0A2540]/10 mb-10 sm:mb-12">
-          <h2 className="text-sm font-semibold text-[#0A2540]/50 uppercase tracking-wider mb-4">
+          <h2 className="text-sm font-semibold text-[#0A2540]/70 uppercase tracking-wider mb-4">
             {lang === 'en' ? 'Table of Contents' : 'Table des mati\u00e8res'}
           </h2>
           <ol className="space-y-1.5">
@@ -708,7 +708,7 @@ export default async function TermsOfServicePage({ searchParams }: PageProps) {
             <div className="flex gap-6">
               <Link
                 href={`/privacy?lang=${lang}`}
-                className="text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors"
+                className="text-sm text-[#0A2540]/60 hover:text-[#00BFFF] transition-colors"
               >
                 {lang === 'en' ? 'Privacy' : 'Confidentialit\u00e9'}
               </Link>
@@ -720,7 +720,7 @@ export default async function TermsOfServicePage({ searchParams }: PageProps) {
               </Link>
               <Link
                 href={`/help?lang=${lang}`}
-                className="text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors"
+                className="text-sm text-[#0A2540]/60 hover:text-[#00BFFF] transition-colors"
               >
                 {lang === 'en' ? 'Help' : 'Aide'}
               </Link>

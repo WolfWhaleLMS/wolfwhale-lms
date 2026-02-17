@@ -637,7 +637,7 @@ export default function GuidePage() {
             <p className="text-sm text-[#0A2540]/50">
               &copy; {new Date().getFullYear()} WolfWhale Inc. All rights reserved.
             </p>
-            <div className="flex items-center gap-4 text-sm text-[#0A2540]/60">
+            <div className="flex items-center gap-4 text-sm text-[#0A2540]/70">
               <a
                 href="mailto:info@wolfwhale.ca"
                 className="flex items-center gap-1.5 hover:text-[#00BFFF] transition-colors"

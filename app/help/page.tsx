@@ -306,7 +306,7 @@ export default async function HelpCenterPage({ searchParams }: PageProps) {
               <span className="text-lg sm:text-xl font-display font-bold text-[#0A2540] group-hover:text-[#00BFFF] transition-colors block tracking-wider uppercase">
                 WolfWhale
               </span>
-              <span className="text-xs text-[#0A2540]/60 block font-display font-semibold tracking-widest uppercase">
+              <span className="text-xs text-[#0A2540]/70 block font-display font-semibold tracking-widest uppercase">
                 Learning Management System
               </span>
             </div>
@@ -322,7 +322,7 @@ export default async function HelpCenterPage({ searchParams }: PageProps) {
         {/* Back Link */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-sm text-[#0A2540]/70 hover:text-[#00BFFF] transition-colors mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           {t.backToHome}
@@ -416,13 +416,13 @@ export default async function HelpCenterPage({ searchParams }: PageProps) {
             <div className="flex gap-6">
               <Link
                 href={`/privacy?lang=${lang}`}
-                className="text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors"
+                className="text-sm text-[#0A2540]/60 hover:text-[#00BFFF] transition-colors"
               >
                 {lang === 'en' ? 'Privacy' : 'Confidentialit\u00e9'}
               </Link>
               <Link
                 href={`/terms?lang=${lang}`}
-                className="text-sm text-[#0A2540]/50 hover:text-[#00BFFF] transition-colors"
+                className="text-sm text-[#0A2540]/60 hover:text-[#00BFFF] transition-colors"
               >
                 {lang === 'en' ? 'Terms' : 'Conditions'}
               </Link>

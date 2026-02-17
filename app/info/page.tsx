@@ -488,7 +488,7 @@ export default function InfoPage() {
           </div>
 
           <div className="mt-10 text-center">
-            <p className="text-sm text-[#0A2540]/60 max-w-2xl mx-auto italic">
+            <p className="text-sm text-[#0A2540]/70 max-w-2xl mx-auto italic">
               WolfWhale is committed to supporting reconciliation through technology. We believe every student deserves access to education that honors Indigenous ways of knowing and learning.
             </p>
           </div>
