@@ -1,0 +1,276 @@
+# PR Agent Loop
+#
+# Implements a deterministic, staged gate system for every pull request.
+# The flow is:
+#
+#   PR opened / synchronized
+#     └─> risk-policy-gate     — classify risk tier, compute required checks,
+#                                 enforce preflight policy rules
+#           └─> wait-for-review   — poll until the code-review agent posts its
+#                                   result on the current head SHA
+#                 └─> (findings?) remediation agent runs, pushes fix commit,
+#                                 triggers a fresh synchronize event (loop again)
+#                 └─> (clean)   resolve-stale-threads — dismiss outdated bot comments
+#                               ci                    — parallel lint / type / test / build
+#                                     └─> merge-gate  — final all-or-nothing status check
+#
+# Each job guards the next via `needs:` + `if:` expressions so the loop only
+# advances when the previous stage is provably clean.
+
+name: PR Agent Loop
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+# Least-privilege permissions scoped to what each job actually needs:
+#   contents: write   — remediation agent may push a fix commit
+#   pull-requests: write — bot can post / resolve review threads
+#   checks: read      — wait-for-review polls check runs
+#   statuses: write   — merge-gate writes a commit status
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+  statuses: write
+
+jobs:
+
+  # ---------------------------------------------------------------------------
+  # Job 1 — Risk classification + policy gate preflight
+  #
+  # Runs first on every PR event. Inspects the changed file set, assigns a
+  # risk tier (low / medium / high / critical), and evaluates branch-protection
+  # policy rules (e.g. no direct pushes to main, migration files require DBA
+  # sign-off, secrets must not appear in diffs). Outputs consumed by every
+  # downstream job so nothing runs if the gate fails.
+  # ---------------------------------------------------------------------------
+  risk-policy-gate:
+    name: Risk classification and policy gate
+    runs-on: ubuntu-latest
+    outputs:
+      # One of: low | medium | high | critical
+      risk_tier: ${{ steps.gate.outputs.risk_tier }}
+      # JSON array of check names that must pass for this PR's changed files
+      required_checks: ${{ steps.gate.outputs.required_checks }}
+      # 'true' when the risk tier warrants a code-review agent pass
+      needs_review_agent: ${{ steps.gate.outputs.needs_review_agent }}
+      # 'true' only when all preflight policy rules are satisfied
+      gate_passed: ${{ steps.gate.outputs.gate_passed }}
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          # Full history so the script can diff against the merge base
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run policy gate
+        id: gate
+        # scripts/pr-policy-gate.ts reads the PR diff via the GitHub API,
+        # classifies risk, applies policy rules, and writes GitHub Actions
+        # outputs for each of the four values declared above.
+        run: npx tsx scripts/pr-policy-gate.ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+  # ---------------------------------------------------------------------------
+  # Job 2 — Wait for code review agent
+  #
+  # Polls the GitHub Checks API until the code-review agent check run completes
+  # on the current head SHA. The agent is expected to run as a separate workflow
+  # (or external service) and post its verdict as a check run named
+  # "code-review-agent". If findings exist the agent will have left inline
+  # review comments; this job surfaces that as review_clean=false so the
+  # remediation path can be taken. Skipped entirely for low-risk tiers where
+  # a full agent review is not required.
+  # ---------------------------------------------------------------------------
+  wait-for-review:
+    name: Wait for code review agent
+    needs: risk-policy-gate
+    # Only wait when the policy gate says this tier warrants an agent review
+    if: needs.risk-policy-gate.outputs.needs_review_agent == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      # 'true' when the review agent found no actionable findings
+      review_clean: ${{ steps.review.outputs.review_clean }}
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Wait for review agent
+        id: review
+        # scripts/wait-for-review.ts polls the Checks API with exponential
+        # back-off (max 15 min), then inspects the agent's conclusion and any
+        # unresolved review threads to set review_clean. On findings it exits 1
+        # so this job fails and triggers the synchronize event after the
+        # remediation agent pushes its fix commit, restarting the loop.
+        run: npx tsx scripts/wait-for-review.ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+  # ---------------------------------------------------------------------------
+  # Job 3 — Auto-resolve bot-only stale threads
+  #
+  # After a clean review (or when no review agent run was required) this job
+  # walks all open review threads on the PR and resolves any that were opened
+  # exclusively by bot accounts. This keeps the PR clean when a fix commit has
+  # addressed a previous round of findings without requiring human dismissal.
+  # Runs with always() so a skipped wait-for-review does not block it.
+  # ---------------------------------------------------------------------------
+  resolve-stale-threads:
+    name: Resolve bot-only stale threads
+    needs: [risk-policy-gate, wait-for-review]
+    if: >
+      always() && (
+        needs.wait-for-review.result == 'success' ||
+        needs.risk-policy-gate.outputs.needs_review_agent == 'false'
+      )
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve bot-only threads
+        # scripts/resolve-bot-threads.ts calls the GraphQL API to list all
+        # review threads, filters to those where every comment author is a bot
+        # (login ends with [bot] or is in a known bot allow-list), and resolves
+        # them. Human threads are left untouched.
+        run: npx tsx scripts/resolve-bot-threads.ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+  # ---------------------------------------------------------------------------
+  # Job 4 — CI fanout (lint, typecheck, test, build)
+  #
+  # Runs in a matrix so all four checks execute in parallel, minimising wall
+  # time. Gated on both the policy gate passing AND the review agent being
+  # clean (or not required) so expensive CI capacity is never consumed on a PR
+  # that is already known to need rework. The build check passes all required
+  # Supabase and Sentry secrets for a production-equivalent build.
+  # ---------------------------------------------------------------------------
+  ci:
+    name: CI — ${{ matrix.check }}
+    needs: [risk-policy-gate, wait-for-review]
+    if: >
+      always() &&
+      needs.risk-policy-gate.outputs.gate_passed == 'true' && (
+        needs.wait-for-review.result == 'success' ||
+        needs.risk-policy-gate.outputs.needs_review_agent == 'false'
+      )
+    runs-on: ubuntu-latest
+    strategy:
+      # Run all matrix legs even if one fails so developers get a full picture
+      # of everything that needs fixing in a single PR cycle.
+      fail-fast: false
+      matrix:
+        check: [lint, typecheck, test, build]
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Each step is conditionally activated by its matrix leg so the job
+      # definition stays in one place while runners execute only one command.
+
+      - name: Lint
+        if: matrix.check == 'lint'
+        run: npm run lint
+
+      - name: Type check
+        if: matrix.check == 'typecheck'
+        run: npx tsc --noEmit
+
+      - name: Test
+        if: matrix.check == 'test'
+        run: npm test
+
+      - name: Build
+        if: matrix.check == 'build'
+        run: npm run build
+        env:
+          # Supabase connection — required by Next.js at build time
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          # Sentry source-map upload — required by @sentry/nextjs during build
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+
+  # ---------------------------------------------------------------------------
+  # Job 5 — Merge gate
+  #
+  # The single required status check that branch protection should be
+  # configured to enforce. It is an explicit all-or-nothing verdict: if either
+  # the policy gate or any CI leg failed this job exits 1, preventing merge.
+  # Running with always() ensures it always reports a definitive status even
+  # when upstream jobs were skipped or cancelled.
+  # ---------------------------------------------------------------------------
+  merge-gate:
+    name: Merge gate
+    needs: [risk-policy-gate, ci]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check all required gates
+        run: |
+          echo "Risk tier:   ${{ needs.risk-policy-gate.outputs.risk_tier }}"
+          echo "Gate passed: ${{ needs.risk-policy-gate.outputs.gate_passed }}"
+          echo "CI result:   ${{ needs.ci.result }}"
+
+          # Policy gate must have passed
+          if [ "${{ needs.risk-policy-gate.outputs.gate_passed }}" != "true" ]; then
+            echo "::error::Policy gate failed — PR does not satisfy preflight rules for the '${{ needs.risk-policy-gate.outputs.risk_tier }}' risk tier"
+            exit 1
+          fi
+
+          # All CI matrix legs must have succeeded
+          if [ "${{ needs.ci.result }}" != "success" ]; then
+            echo "::error::One or more CI checks failed — see individual job logs for details"
+            exit 1
+          fi
+
+          echo "All gates passed. PR is clear for human review and merge (risk tier: ${{ needs.risk-policy-gate.outputs.risk_tier }})"

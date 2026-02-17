@@ -1,0 +1,41 @@
+# CODEOWNERS — WolfWhale LMS
+#
+# Owners listed here are automatically requested for review when a PR touches
+# the matching path. Adjust @WolfWhaleLMS to your actual GitHub team or
+# replace with individual GitHub usernames (e.g. @your-github-handle).
+#
+# Rules are evaluated last-match-wins (bottom overrides top).
+# Paths without an owner listed here fall through to no required reviewer.
+
+# --- Default: no required owner ---
+*
+
+# --- Auth & identity ---
+/middleware.ts                        @WolfWhaleLMS
+/app/(auth)/                          @WolfWhaleLMS
+/lib/auth/                            @WolfWhaleLMS
+
+# --- Database & migrations ---
+/supabase/migrations/                 @WolfWhaleLMS
+/supabase/seed.sql                    @WolfWhaleLMS
+
+# --- API routes ---
+/app/api/                             @WolfWhaleLMS
+
+# --- Server actions (data-mutating) ---
+/app/actions/                         @WolfWhaleLMS
+
+# --- Rate limiting & security primitives ---
+/lib/rate-limit.ts                    @WolfWhaleLMS
+/lib/rate-limit-action.ts             @WolfWhaleLMS
+/lib/sanitize.ts                      @WolfWhaleLMS
+/lib/turnstile.ts                     @WolfWhaleLMS
+
+# --- Compliance & policy contract ---
+/lib/compliance/                      @WolfWhaleLMS
+
+# --- CI/CD workflows ---
+/.github/workflows/                   @WolfWhaleLMS
+
+# --- This file itself ---
+/CODEOWNERS                           @WolfWhaleLMS

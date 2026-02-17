@@ -1,0 +1,111 @@
+{
+  "version": "1",
+  "description": "Machine-readable PR policy contract for wolfwhale-lms. All workflow files, scripts, and gate logic read from this single source of truth.",
+
+  "riskTierRules": {
+    "critical": [
+      "lib/auth/**",
+      "lib/supabase/middleware.ts",
+      "middleware.ts",
+      "supabase/migrations/**",
+      "next.config.js",
+      ".github/workflows/**",
+      ".pr-policy.json"
+    ],
+    "high": [
+      "app/api/**",
+      "app/actions/**",
+      "lib/supabase/**",
+      "lib/scheduled-posts/**",
+      "scripts/**"
+    ],
+    "medium": [
+      "app/admin/**",
+      "app/teacher/**",
+      "components/layout/**",
+      "components/auth/**",
+      "lib/**"
+    ],
+    "low": [
+      "**"
+    ]
+  },
+
+  "mergePolicy": {
+    "critical": {
+      "requiredChecks": [
+        "risk-policy-gate",
+        "code-review-agent",
+        "ci / lint",
+        "ci / typecheck",
+        "ci / test",
+        "ci / build"
+      ],
+      "requiredHumanReviewers": 1,
+      "evidenceRequired": ["browser-screenshot", "test-output"],
+      "autoMerge": false
+    },
+    "high": {
+      "requiredChecks": [
+        "risk-policy-gate",
+        "code-review-agent",
+        "ci / lint",
+        "ci / typecheck",
+        "ci / test",
+        "ci / build"
+      ],
+      "requiredHumanReviewers": 1,
+      "evidenceRequired": ["test-output"],
+      "autoMerge": false
+    },
+    "medium": {
+      "requiredChecks": [
+        "risk-policy-gate",
+        "code-review-agent",
+        "ci / lint",
+        "ci / typecheck",
+        "ci / build"
+      ],
+      "requiredHumanReviewers": 0,
+      "evidenceRequired": [],
+      "autoMerge": true
+    },
+    "low": {
+      "requiredChecks": [
+        "risk-policy-gate",
+        "ci / lint",
+        "ci / build"
+      ],
+      "requiredHumanReviewers": 0,
+      "evidenceRequired": [],
+      "autoMerge": true
+    }
+  },
+
+  "docsDriftRules": [
+    {
+      "trigger": [".pr-policy.json", ".github/workflows/**"],
+      "requireUpdated": ["docs/pr-agent-loop.md"],
+      "message": "Control-plane files changed — update docs/pr-agent-loop.md"
+    },
+    {
+      "trigger": ["supabase/migrations/**"],
+      "requireUpdated": ["types/database.types.ts"],
+      "message": "Migration added — regenerate types with npm run db:types"
+    }
+  ],
+
+  "reviewAgent": {
+    "provider": "greptile",
+    "checkRunName": "greptile-code-review",
+    "timeoutMinutes": 20,
+    "rerunMarker": "<!-- pr-agent-loop-rerun -->",
+    "rerunCommand": "/greptile review"
+  },
+
+  "shaPolicy": {
+    "requireCurrentHead": true,
+    "staleAfterPushEvents": ["synchronize"],
+    "maxRerunsPerSha": 3
+  }
+}

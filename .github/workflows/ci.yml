@@ -1,9 +1,15 @@
+# CI — Push-to-main pipeline
+#
+# Runs on direct pushes to main (post-merge). PRs are handled by
+# pr-agent-loop.yml which gates CI behind the risk policy preflight.
+#
+# This workflow covers the same lint/typecheck/test/build checks but
+# only fires on push, ensuring main stays green after merge.
+
 name: CI
 
 on:
   push:
-    branches: [main]
-  pull_request:
     branches: [main]
 
 jobs:
@@ -26,6 +32,9 @@ jobs:
 
       - name: Type check
         run: npx tsc --noEmit
+
+      - name: Test
+        run: npm test
 
       - name: Build
         run: npm run build

@@ -14,6 +14,7 @@ import {
   Building2,
   Globe,
   Calendar,
+  CalendarClock,
 } from 'lucide-react'
 import { AnnouncementBanner } from '@/components/announcements/AnnouncementBanner'
 
@@ -527,6 +528,26 @@ export default async function AdminDashboardPage() {
           </div>
         </DashboardCard>
       </div>
+
+      {/* Scheduled Posts */}
+      <DashboardCard
+        title="Scheduled Posts"
+        icon={<CalendarClock className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />}
+        className="w-full"
+      >
+        <p className="text-sm text-muted-foreground mb-4">
+          Automatically publish announcements about LMS features, Indigenous Education, and community updates on a daily schedule.
+        </p>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin/scheduled-posts"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary/10 px-4 py-2 text-sm font-medium text-primary hover:bg-primary/20 transition-colors"
+          >
+            <CalendarClock className="h-4 w-4" />
+            Manage Scheduled Posts
+          </Link>
+        </div>
+      </DashboardCard>
 
       {/* Schools Overview (Super Admin only) */}
       {isSuperAdmin && (

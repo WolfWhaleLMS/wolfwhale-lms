@@ -1,0 +1,159 @@
+./app/robots.ts
+./app/calendar/CalendarClient.tsx
+./app/calendar/layout.tsx
+./app/calendar/loading.tsx
+./app/calendar/page.tsx
+./app/privacy/layout.tsx
+./app/privacy/page.tsx
+./app/lms/[slug]/loading.tsx
+./app/lms/[slug]/page.tsx
+./app/terms/layout.tsx
+./app/terms/page.tsx
+./app/student/attendance/page.tsx
+./app/student/grades/page.tsx
+./app/student/tools/chess/page.tsx
+./app/student/tools/loading.tsx
+./app/student/tools/page.tsx
+./app/student/tools/mini-games/[gameSlug]/loading.tsx
+./app/student/tools/mini-games/[gameSlug]/page.tsx
+./app/student/tools/mini-games/page.tsx
+./app/student/assignments/[assignmentId]/page.tsx
+./app/student/assignments/page.tsx
+./app/student/flashcards/loading.tsx
+./app/student/flashcards/[deckId]/study/loading.tsx
+./app/student/flashcards/[deckId]/study/page.tsx
+./app/student/flashcards/[deckId]/loading.tsx
+./app/student/flashcards/page.tsx
+./app/student/achievements/filters.tsx
+./app/student/achievements/page.tsx
+./app/student/leaderboard/period-tabs.tsx
+./app/student/leaderboard/page.tsx
+./app/student/skill-tree/loading.tsx
+./app/student/skill-tree/page.tsx
+./app/student/skill-tree/[treeId]/skill-tree-renderer.tsx
+./app/student/skill-tree/[treeId]/loading.tsx
+./app/student/skill-tree/[treeId]/page.tsx
+./app/student/skill-tree/[treeId]/skill-tree-client.tsx
+./app/student/dashboard/loading.tsx
+./app/student/dashboard/page.tsx
+./app/student/courses/join-course-dialog.tsx
+./app/student/courses/[courseId]/lessons/[lessonId]/page.tsx
+./app/student/courses/[courseId]/loading.tsx
+./app/student/courses/[courseId]/page.tsx
+./app/student/courses/[courseId]/quizzes/page.tsx
+./app/student/courses/[courseId]/quizzes/[quizId]/page.tsx
+./app/student/courses/loading.tsx
+./app/student/courses/page.tsx
+./app/student/study-mode/page.tsx
+./app/student/layout.tsx
+./app/student/error.tsx
+./app/student/loading.tsx
+./node_modules/next/dist/next-devtools/dev-overlay/components/tooltip/tooltip.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/devtools-indicator/next-logo.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/devtools-indicator/status-indicator.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/devtools-indicator/hooks/use-measure-width.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/devtools-indicator/hooks/use-minimum-loading-time-multiple.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/devtools-indicator/hooks/use-update-animation.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/devtools-indicator/devtools-indicator.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/copy-button/index.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/toast/toast.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/toast/index.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/terminal/editor-link.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/terminal/terminal.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/terminal/index.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/call-stack/call-stack.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/dialog/dialog-header.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/dialog/dialog.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/dialog/styles.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/dialog/dialog-content.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/dialog/dialog-body.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/dialog/index.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/devtools-panel/resize/resize-provider.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/devtools-panel/resize/resize-handle.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/resizer/index.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/fader/index.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/code-frame/parse-code-frame.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/code-frame/code-frame.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/version-staleness-info/version-staleness-info.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/errors/error-overlay-bottom-stack/index.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/errors/environment-name-label/environment-name-label.d.ts
+./node_modules/next/dist/next-devtools/dev-overlay/components/errors/dev-tools-indicator/draggable.d.ts
+./node_modules/zod/lib/standard-schema.d.ts
+./node_modules/zod/lib/locales/en.d.ts
+./node_modules/zod/lib/errors.d.ts
+./node_modules/zod/lib/types.d.ts
+./node_modules/zod/lib/ZodError.d.ts
+./node_modules/zod/lib/__tests__/Mocker.d.ts
+./node_modules/zod/lib/benchmarks/primitives.d.ts
+./node_modules/zod/lib/benchmarks/datetime.d.ts
+./node_modules/zod/lib/benchmarks/realworld.d.ts
+./node_modules/zod/lib/benchmarks/ipv4.d.ts
+./node_modules/zod/lib/benchmarks/discriminatedUnion.d.ts
+./node_modules/zod/lib/benchmarks/string.d.ts
+./node_modules/zod/lib/benchmarks/object.d.ts
+./node_modules/zod/lib/benchmarks/index.d.ts
+./node_modules/zod/lib/benchmarks/union.d.ts
+./node_modules/zod/lib/external.d.ts
+./node_modules/zod/lib/index.d.ts
+./node_modules/zod/lib/helpers/errorUtil.d.ts
+./node_modules/zod/lib/helpers/typeAliases.d.ts
+./node_modules/zod/lib/helpers/enumUtil.d.ts
+./node_modules/zod/lib/helpers/parseUtil.d.ts
+./node_modules/zod/lib/helpers/partialUtil.d.ts
+./node_modules/zod/lib/helpers/util.d.ts
+./node_modules/@types/pg/lib/type-overrides.d.ts
+./node_modules/@types/pg/lib/connection-parameters.d.ts
+./node_modules/@types/trusted-types/lib/index.d.ts
+./node_modules/next/dist/esm/shared/lib/dset.d.ts
+./node_modules/next/dist/esm/shared/lib/isomorphic/path.d.ts
+./node_modules/next/dist/esm/shared/lib/modern-browserslist-target.d.ts
+./node_modules/next/dist/esm/shared/lib/styled-jsx.d.ts
+=== PROJECT STRUCTURE ===
+total 2352
+drwxr-xr-x   47 wolfwhale  staff    1504 Feb 11 01:55 .
+drwxr-x---+  47 wolfwhale  staff    1504 Feb 11 01:44 ..
+drwxr-xr-x@   3 wolfwhale  staff      96 Feb  9 21:35 .claude
+-rw-r--r--@   1 wolfwhale  staff     590 Feb  9 20:45 .env.example
+-rw-r--r--@   1 wolfwhale  staff    2264 Feb 10 10:47 .env.local
+drwxr-xr-x   16 wolfwhale  staff     512 Feb 11 01:54 .git
+drwxr-xr-x@   3 wolfwhale  staff      96 Feb 10 23:59 .github
+-rw-r--r--@   1 wolfwhale  staff     601 Feb 10 10:52 .gitignore
+drwxr-xr-x   26 wolfwhale  staff     832 Feb 11 00:12 .next
+-rw-r--r--@   1 wolfwhale  staff      22 Feb  9 20:45 .npmrc
+drwxr-xr-x    4 wolfwhale  staff     128 Jan 30 19:57 .vercel
+-rw-r--r--@   1 wolfwhale  staff    2845 Feb 10 23:12 CLAUDE.md
+-rw-r--r--@   1 wolfwhale  staff   16823 Feb  9 20:45 COMPONENT_GUIDE.md
+-rw-r--r--@   1 wolfwhale  staff   10533 Feb  9 20:45 GAMIFICATION_GUIDE.md
+-rw-r--r--@   1 wolfwhale  staff   11860 Feb  9 20:45 GAMIFICATION_QUICK_START.md
+-rw-r--r--@   1 wolfwhale  staff   14403 Feb  9 20:45 IMPLEMENTATION_COMPLETE.md
+-rw-r--r--@   1 wolfwhale  staff   29051 Feb 10 15:33 PLAN-liquid-glass.md
+-rw-r--r--@   1 wolfwhale  staff   51240 Feb 10 15:35 PLAN-skill-tree.md
+-rw-r--r--@   1 wolfwhale  staff   97260 Feb 10 16:03 PLAN-virtual-plaza.md
+-rw-r--r--@   1 wolfwhale  staff    7634 Feb  9 20:45 QUICK_START.md
+-rw-r--r--@   1 wolfwhale  staff   10791 Feb  9 20:45 README.md
+-rw-r--r--@   1 wolfwhale  staff   18963 Feb 10 16:10 REFERENCE-sk-curriculum-outcomes.md
+-rw-r--r--@   1 wolfwhale  staff    6332 Feb  9 20:45 SETUP_GUIDE.md
+-rw-r--r--@   1 wolfwhale  staff   11757 Feb  9 20:45 UI_SYSTEM_SUMMARY.md
+drwxr-xr-x@  28 wolfwhale  staff     896 Feb 11 01:39 app
+-rw-r--r--    1 wolfwhale  staff    6108 Feb 11 01:55 codebase-overview.txt
+drwxr-xr-x@  12 wolfwhale  staff     384 Feb 10 23:29 components
+drwxr-xr-x@   3 wolfwhale  staff      96 Feb  9 20:45 docs
+-rw-r--r--@   1 wolfwhale  staff     374 Feb 11 00:00 eslint.config.mjs
+drwxr-xr-x@   9 wolfwhale  staff     288 Feb 10 19:20 hooks
+-rw-r--r--@   1 wolfwhale  staff     389 Feb 10 14:28 instrumentation.ts
+drwxr-xr-x@  18 wolfwhale  staff     576 Feb 11 01:39 lib
+-rw-r--r--    1 wolfwhale  staff   13136 Feb 11 01:39 middleware.ts
+-rw-r--r--@   1 wolfwhale  staff     247 Feb 10 20:05 next-env.d.ts
+-rw-r--r--    1 wolfwhale  staff    2640 Feb 11 01:39 next.config.js
+drwxr-xr-x  556 wolfwhale  staff   17792 Feb 10 21:12 node_modules
+-rw-r--r--@   1 wolfwhale  staff  439559 Feb 10 21:12 package-lock.json
+-rw-r--r--    1 wolfwhale  staff    2615 Feb 11 01:39 package.json
+-rw-r--r--@   1 wolfwhale  staff      72 Feb  9 21:09 postcss.config.js
+drwxr-xr-x@  18 wolfwhale  staff     576 Feb 10 20:39 public
+drwxr-xr-x@  13 wolfwhale  staff     416 Feb 10 21:23 scripts
+-rw-r--r--@   1 wolfwhale  staff     257 Feb 10 14:28 sentry.client.config.ts
+-rw-r--r--@   1 wolfwhale  staff     193 Feb 10 14:28 sentry.edge.config.ts
+-rw-r--r--@   1 wolfwhale  staff     193 Feb 10 14:28 sentry.server.config.ts
+drwxr-xr-x    8 wolfwhale  staff     256 Feb 10 11:14 supabase
+-rw-r--r--@   1 wolfwhale  staff     775 Feb 10 10:49 tsconfig.json
+-rw-r--r--@   1 wolfwhale  staff  364921 Feb 11 00:12 tsconfig.tsbuildinfo

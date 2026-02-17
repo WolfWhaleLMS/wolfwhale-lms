@@ -224,6 +224,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Audit Logs',     href: '/admin/audit-logs',       icon: 'FileText' },
       { label: 'Calendar',       href: '/calendar',               icon: 'Calendar' },
       { label: 'Announcements',  href: '/announcements',          icon: 'Megaphone' },
+      { label: 'Scheduled Posts', href: '/admin/scheduled-posts',  icon: 'Clock' },
     ],
 
     super_admin: [
@@ -241,6 +242,7 @@ export function getRoleMenuItems(role: UserRole): MenuItem[] {
       { label: 'Audit Logs',    href: '/admin/audit-logs',       icon: 'FileText' },
       { label: 'Calendar',      href: '/calendar',               icon: 'Calendar' },
       { label: 'Announcements', href: '/announcements',          icon: 'Megaphone' },
+      { label: 'Scheduled Posts', href: '/admin/scheduled-posts', icon: 'Clock' },
     ],
   }
 

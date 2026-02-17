@@ -1,0 +1,35 @@
+SPAWN MULTI-AGENT TEAMS FOR LMS DEVELOPMENT:
+
+AGENT TEAM 1 - SECURITY AUDITORS:
+- Auth security specialist
+- Data protection auditor  
+- Compliance checker
+
+AGENT TEAM 2 - PERFORMANCE ENGINEERS:
+- Database optimization expert
+- Frontend performance analyst
+- Scalability architect
+
+AGENT TEAM 3 - FEATURE DEVELOPERS:
+- Mobile app developer
+- UI/UX implementer
+- Integration specialist
+
+AGENT TEAM 4 - QUALITY ASSURANCE:
+- Test automation engineer
+- Bug detection specialist
+- User experience tester
+
+WORK IN PARALLEL ON:
+1. Security vulnerabilities (Team 1)
+2. Performance bottlenecks (Team 2)  
+3. Missing industry features (Team 3)
+4. Code quality issues (Team 4)
+
+PRIORITY ORDER:
+1. Fix critical security issues first
+2. Optimize database queries for 10K+ users
+3. Build missing enterprise features
+4. Improve code quality and testing
+
+Always deploy fixes immediately after testing.
