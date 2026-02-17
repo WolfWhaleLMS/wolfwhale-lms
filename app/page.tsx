@@ -1,11 +1,43 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { GraduationCap, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield } from 'lucide-react'
+import { GraduationCap, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield, Mail, Phone, MapPin } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 
 export default function EdTechHubPage() {
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ background: '#E8F8FF' }}>
+      {/* LocalBusiness schema for local SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          "name": "WolfWhale Inc.",
+          "description": "Canadian learning management system for K-12 and post-secondary schools with built-in spaced repetition flashcards.",
+          "url": "https://wolfwhale.ca",
+          "logo": "https://wolfwhale.ca/logo.png",
+          "email": "info@wolfwhale.ca",
+          "telephone": "+1-306-981-5926",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Vancouver",
+            "addressRegion": "BC",
+            "addressCountry": "CA"
+          },
+          "areaServed": [
+            { "@type": "Country", "name": "Canada" },
+            { "@type": "City", "name": "Vancouver" },
+            { "@type": "City", "name": "Toronto" },
+            { "@type": "City", "name": "Calgary" },
+            { "@type": "City", "name": "Ottawa" },
+            { "@type": "City", "name": "Edmonton" },
+            { "@type": "City", "name": "Montreal" },
+            { "@type": "City", "name": "Winnipeg" },
+            { "@type": "City", "name": "Halifax" }
+          ],
+          "priceRange": "$$"
+        }) }}
+      />
       {/* Bright Ocean Background */}
       <div className="fixed inset-0 z-0">
         {/* Chrome texture base — very light */}
@@ -397,24 +429,34 @@ export default function EdTechHubPage() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 p-6">
+      <footer className="relative z-10 p-6 pb-8">
         <div className="max-w-6xl mx-auto">
           <div className="h-px bg-[#0077B6]/15 mb-6" />
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-[#0A2040]/55">
-              &copy; 2026 WolfWhale EdTech. All rights reserved.
-            </p>
-            <div className="flex gap-6">
-              <Link href="/privacy" className="text-sm text-[#0A2040]/55 hover:text-[#0077B6] transition-colors">
-                Privacy
-              </Link>
-              <Link href="/terms" className="text-sm text-[#0A2040]/55 hover:text-[#0077B6] transition-colors">
-                Terms
-              </Link>
-              <Link href="/help" className="text-sm text-[#0A2040]/55 hover:text-[#0077B6] transition-colors">
-                Help
-              </Link>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div className="flex flex-col gap-1.5">
+                <p className="text-sm font-semibold text-[#0A2040]/70">WolfWhale Inc.</p>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#0A2040]/55">
+                  <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Vancouver, BC, Canada</span>
+                  <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1 hover:text-[#0077B6] transition-colors"><Mail className="h-3 w-3" /> info@wolfwhale.ca</a>
+                  <a href="tel:+13069815926" className="flex items-center gap-1 hover:text-[#0077B6] transition-colors"><Phone className="h-3 w-3" /> +1 (306) 981-5926</a>
+                </div>
+              </div>
+              <div className="flex gap-6">
+                <Link href="/privacy" className="text-sm text-[#0A2040]/55 hover:text-[#0077B6] transition-colors">
+                  Privacy
+                </Link>
+                <Link href="/terms" className="text-sm text-[#0A2040]/55 hover:text-[#0077B6] transition-colors">
+                  Terms
+                </Link>
+                <Link href="/help" className="text-sm text-[#0A2040]/55 hover:text-[#0077B6] transition-colors">
+                  Help
+                </Link>
+              </div>
             </div>
+            <p className="text-xs text-[#0A2040]/40">
+              &copy; {new Date().getFullYear()} WolfWhale EdTech. All rights reserved. Canadian-built LMS for K-12 &amp; post-secondary schools.
+            </p>
           </div>
         </div>
       </footer>

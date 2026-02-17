@@ -94,7 +94,7 @@ export const PAGES: Record<string, PageData> = {
   toronto: {
     city: 'Toronto',
     province: 'Ontario',
-    title: 'LMS for Schools in Toronto',
+    title: 'LMS for Schools in Toronto | WolfWhale',
     h1: 'The Best Learning Management System for Toronto Schools',
     description:
       'WolfWhale LMS is the Canadian-built learning management system trusted by Toronto schools. FERPA-secure with built-in spaced repetition flashcards, interactive courses, quizzes, and certificates.',
@@ -121,7 +121,7 @@ export const PAGES: Record<string, PageData> = {
   vancouver: {
     city: 'Vancouver',
     province: 'British Columbia',
-    title: 'LMS for Schools in Vancouver',
+    title: 'LMS for Schools in Vancouver | WolfWhale',
     h1: 'The Leading Learning Management System for Vancouver Schools',
     description:
       'WolfWhale LMS helps Vancouver schools deliver engaging digital learning. Canadian-hosted, PIPEDA compliant, with spaced repetition flashcards that no other LMS offers.',
@@ -149,7 +149,7 @@ export const PAGES: Record<string, PageData> = {
   calgary: {
     city: 'Calgary',
     province: 'Alberta',
-    title: 'LMS for Schools in Calgary',
+    title: 'LMS for Schools in Calgary | WolfWhale',
     h1: 'Calgary Schools Choose WolfWhale LMS',
     description:
       'The modern Canadian LMS for Calgary schools. FERPA & PIPEDA compliant with built-in spaced repetition flashcards, quizzes, gradebook, and parent portal.',
@@ -177,7 +177,7 @@ export const PAGES: Record<string, PageData> = {
   ottawa: {
     city: 'Ottawa',
     province: 'Ontario',
-    title: 'LMS for Schools in Ottawa',
+    title: 'LMS for Schools in Ottawa | WolfWhale',
     h1: 'Ottawa Schools Trust WolfWhale LMS',
     description:
       'WolfWhale LMS is the Canadian learning management system built for Ottawa schools. Bilingual support, PIPEDA compliance, and built-in spaced repetition flashcards.',
@@ -205,7 +205,7 @@ export const PAGES: Record<string, PageData> = {
   edmonton: {
     city: 'Edmonton',
     province: 'Alberta',
-    title: 'LMS for Schools in Edmonton',
+    title: 'LMS for Schools in Edmonton | WolfWhale',
     h1: 'Edmonton Schools Powered by WolfWhale LMS',
     description:
       'The Canadian-built LMS for Edmonton schools. Features spaced repetition flashcards, real-time grading, parent portal, and full PIPEDA compliance.',
@@ -233,7 +233,7 @@ export const PAGES: Record<string, PageData> = {
   montreal: {
     city: 'Montreal',
     province: 'Quebec',
-    title: 'LMS for Schools in Montreal',
+    title: 'LMS for Schools in Montreal | WolfWhale',
     h1: 'Montreal Schools Embrace WolfWhale LMS',
     description:
       'WolfWhale LMS serves Montreal schools with a Canadian-built, PIPEDA-compliant platform. Built-in spaced repetition flashcards, interactive courses, and bilingual support.',
@@ -261,7 +261,7 @@ export const PAGES: Record<string, PageData> = {
   winnipeg: {
     city: 'Winnipeg',
     province: 'Manitoba',
-    title: 'LMS for Schools in Winnipeg',
+    title: 'LMS for Schools in Winnipeg | WolfWhale',
     h1: 'Winnipeg Schools Thrive with WolfWhale LMS',
     description:
       'WolfWhale LMS is the Canadian learning platform for Winnipeg schools. Spaced repetition flashcards, PIPEDA compliance, interactive courses, and a built-in parent portal.',
@@ -289,7 +289,7 @@ export const PAGES: Record<string, PageData> = {
   halifax: {
     city: 'Halifax',
     province: 'Nova Scotia',
-    title: 'LMS for Schools in Halifax',
+    title: 'LMS for Schools in Halifax | WolfWhale',
     h1: 'Halifax Schools Discover WolfWhale LMS',
     description:
       'Canadian-built LMS for Halifax schools. WolfWhale features spaced repetition flashcards, PIPEDA compliance, interactive courses, quizzes, and certificates for Nova Scotia educators.',
@@ -317,7 +317,7 @@ export const PAGES: Record<string, PageData> = {
   // ========== USE-CASE PAGES ==========
 
   'k-12': {
-    title: 'Best LMS for K-12 Schools in Canada',
+    title: 'K-12 LMS for Canadian Schools | WolfWhale',
     h1: 'K-12 Learning Management System Built for Canadian Schools',
     description:
       'WolfWhale LMS is purpose-built for K-12 education in Canada. Age-adaptive UI, spaced repetition flashcards, gamification, parent portal, and full FERPA/PIPEDA compliance.',
@@ -343,7 +343,7 @@ export const PAGES: Record<string, PageData> = {
   },
 
   'post-secondary': {
-    title: 'LMS for Post-Secondary Education in Canada',
+    title: 'Post-Secondary LMS for Canadian Colleges | WolfWhale',
     h1: 'The Modern LMS for Canadian Colleges and Universities',
     description:
       'WolfWhale LMS empowers post-secondary institutions with interactive courses, spaced repetition flashcards, certificates, and compliance-ready architecture. Canadian-built and hosted.',
@@ -369,7 +369,7 @@ export const PAGES: Record<string, PageData> = {
   },
 
   'canvas-alternative': {
-    title: 'Best Canvas Alternative for Canadian Schools',
+    title: 'Canvas Alternative for Canadian Schools | WolfWhale',
     h1: 'Why Canadian Schools Are Switching from Canvas to WolfWhale',
     description:
       'Looking for a Canvas alternative? WolfWhale LMS offers Canadian data sovereignty, built-in spaced repetition flashcards, and PIPEDA compliance that Canvas cannot match.',
@@ -396,7 +396,7 @@ export const PAGES: Record<string, PageData> = {
   },
 
   'moodle-alternative': {
-    title: 'Best Moodle Alternative for Schools',
+    title: 'Moodle Alternative - Modern Cloud LMS | WolfWhale',
     h1: 'A Modern Moodle Alternative That Teachers Actually Enjoy',
     description:
       'Tired of Moodle? WolfWhale LMS is a modern, cloud-hosted alternative with built-in spaced repetition flashcards, gamification, and zero server maintenance.',
@@ -424,7 +424,7 @@ export const PAGES: Record<string, PageData> = {
   },
 
   'brightspace-alternative': {
-    title: 'Brightspace Alternative - WolfWhale LMS',
+    title: 'Brightspace Alternative for Canadian Schools | WolfWhale',
     h1: 'The Brightspace Alternative Built for Canadian Schools',
     description:
       'Considering a Brightspace alternative? WolfWhale LMS offers built-in spaced repetition flashcards, Canadian data sovereignty, gamification, and a modern interface at a competitive price.',
@@ -451,7 +451,7 @@ export const PAGES: Record<string, PageData> = {
   },
 
   'spaced-repetition-lms': {
-    title: 'The Only LMS with Built-in Spaced Repetition Flashcards',
+    title: 'LMS with Built-in Spaced Repetition Flashcards | WolfWhale',
     h1: 'Finally: An LMS with Built-in Spaced Repetition',
     description:
       'WolfWhale is the only learning management system with built-in spaced repetition flashcards. Stop losing knowledge to the forgetting curve. Backed by decades of cognitive science.',
@@ -478,7 +478,7 @@ export const PAGES: Record<string, PageData> = {
   },
 
   'teacher-collaboration': {
-    title: 'Teacher Collaboration Tools for K-12 Schools | WolfWhale LMS',
+    title: 'Teacher Collaboration Tools for K-12 | WolfWhale',
     h1: 'Teacher Collaboration Tools That Actually Change Instruction Quality',
     description:
       'Great instruction doesn\'t happen in isolation. WolfWhale LMS gives K-12 teachers built-in collaboration tools for aligned curriculum, shared lesson planning, peer feedback, and consistent student support — all in one platform.',
@@ -506,7 +506,7 @@ export const PAGES: Record<string, PageData> = {
   },
 
   'edsby-alternative': {
-    title: 'Best Edsby Alternative for Canadian Schools | WolfWhale LMS',
+    title: 'Edsby Alternative for Canadian Schools | WolfWhale',
     h1: 'The Edsby Alternative with Spaced Repetition and Modern UX',
     description:
       'Looking for an Edsby alternative? WolfWhale LMS offers built-in spaced repetition flashcards, gamification, real-time messaging, and a modern interface that teachers and students actually enjoy using.',
@@ -534,7 +534,7 @@ export const PAGES: Record<string, PageData> = {
   },
 
   'ferpa-compliant-lms': {
-    title: 'FERPA Compliant LMS for Canadian Schools',
+    title: 'FERPA & PIPEDA Compliant LMS | WolfWhale',
     h1: 'FERPA, COPPA, and PIPEDA Compliant Learning Management System',
     description:
       'WolfWhale LMS meets FERPA, COPPA, and PIPEDA compliance standards. Canadian-hosted with row-level security, audit logging, and full data export capabilities.',

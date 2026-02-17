@@ -45,11 +45,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wolfwhale.ca";
 
 export const metadata: Metadata = {
   title: {
-    default: "WolfWhale - Learning Management System",
+    default: "Canadian LMS for Schools | WolfWhale",
     template: "%s | WolfWhale",
   },
   description:
-    "WolfWhale is a Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, gamification, and complete course management for K-12 and post-secondary schools.",
+    "Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
   keywords: [
     "LMS",
     "learning management system",
@@ -86,9 +86,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "WolfWhale EdTech",
-    title: "WolfWhale - Learning Management System",
+    title: "Canadian LMS for K-12 & Post-Secondary Schools | WolfWhale",
     description:
-      "Canadian learning management system with spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
+      "Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
     images: [
       {
         url: "/ww-card.png",
@@ -100,9 +100,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "WolfWhale - Learning Management System",
+    title: "Canadian LMS for K-12 & Post-Secondary Schools | WolfWhale",
     description:
-      "Canadian learning management system with spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
+      "Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
     images: ["/ww-card.png"],
     creator: "@wolfwhale",
   },
