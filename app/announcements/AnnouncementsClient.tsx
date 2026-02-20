@@ -245,7 +245,7 @@ export default function AnnouncementsClient({
                       {a.content}
                     </div>
                     <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                      <span>{(a.profiles as any)?.full_name ?? 'Staff'}</span>
+                      <span>{a.profiles?.full_name ?? 'Staff'}</span>
                       <span>{formatDate(a.published_at || a.created_at)}</span>
                       {courseName ? (
                         <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 dark:bg-blue-950/50 px-2 py-0.5 text-blue-700 dark:text-blue-300 font-medium">

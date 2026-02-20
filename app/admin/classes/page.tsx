@@ -2,6 +2,24 @@ import { getTenantClasses } from '@/app/actions/school-admin'
 import { BookOpen, Users, GraduationCap, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
+interface TenantClass {
+  id: string
+  name: string
+  subject?: string
+  grade_level?: string
+  status: string
+  created_at: string
+  created_by: string
+  tenant_id: string
+  profiles?: {
+    full_name: string
+    avatar_url?: string
+  } | null
+  course_enrollments?: Array<{
+    count: number
+  }>
+}
+
 function statusColor(status: string) {
   switch (status) {
     case 'active':
@@ -17,7 +35,7 @@ function statusColor(status: string) {
 }
 
 export default async function AdminClassesPage() {
-  let classes: any[] = []
+  let classes: TenantClass[] = []
   try {
     classes = await getTenantClasses()
   } catch {
@@ -61,7 +79,7 @@ export default async function AdminClassesPage() {
         <div className="ocean-card rounded-2xl p-3 sm:p-5 text-center col-span-2 sm:col-span-1">
           <Users className="mx-auto mb-1 h-5 w-5 sm:h-6 sm:w-6 text-purple-500" />
           <p className="text-xl sm:text-2xl font-bold text-foreground">
-            {classes.reduce((sum: number, c: any) => sum + (c.course_enrollments?.[0]?.count ?? 0), 0)}
+            {classes.reduce((sum: number, c: TenantClass) => sum + (c.course_enrollments?.[0]?.count ?? 0), 0)}
           </p>
           <p className="text-xs sm:text-sm text-muted-foreground">Total Enrollments</p>
         </div>
@@ -100,7 +118,7 @@ export default async function AdminClassesPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {classes.map((cls: any) => (
+                {classes.map((cls: TenantClass) => (
                   <tr key={cls.id} className="transition-colors hover:bg-muted/30">
                     <td className="px-4 py-3">
                       <div>

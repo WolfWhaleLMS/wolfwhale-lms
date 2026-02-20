@@ -4,6 +4,18 @@ import { Shield, Eye, Clock, ArrowLeft, AlertTriangle } from 'lucide-react'
 import { getAuditLogs } from '@/lib/compliance/audit-logger'
 import { AuditLogTable } from './audit-log-table'
 
+interface AuditLogEntry {
+  id: string
+  created_at: string
+  user_id: string
+  action: string
+  resource_type?: string | null
+  resource_id?: string | null
+  ip_address?: string | null
+  details?: Record<string, unknown> | null
+  profiles?: { full_name?: string | null; avatar_url?: string | null } | null
+}
+
 interface AuditLogsPageProps {
   searchParams: Promise<{
     user?: string
@@ -23,7 +35,7 @@ export default async function AuditLogsPage({ searchParams }: AuditLogsPageProps
     limit: 50,
   }
 
-  let logs: any[] = []
+  let logs: AuditLogEntry[] = []
   let fetchError = false
 
   try {
@@ -33,8 +45,8 @@ export default async function AuditLogsPage({ searchParams }: AuditLogsPageProps
   }
 
   // Aggregate quick stats from returned data
-  const uniqueUsers = new Set(logs.map((l: any) => l.user_id)).size
-  const todayCount = logs.filter((l: any) => {
+  const uniqueUsers = new Set(logs.map((l) => l.user_id)).size
+  const todayCount = logs.filter((l) => {
     const d = new Date(l.created_at)
     const now = new Date()
     return (

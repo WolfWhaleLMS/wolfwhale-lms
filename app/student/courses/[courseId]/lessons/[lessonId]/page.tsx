@@ -27,7 +27,7 @@ interface LessonData {
   course_id: string
   title: string
   description: string | null
-  content: any
+  content: unknown
   learning_objectives: string[] | null
   duration_minutes: number | null
   status: string
@@ -152,8 +152,21 @@ export default function StudentLessonViewerPage({
   }, [lessonId])
 
   // Helper to resolve block data - supports both flat (block.xxx) and nested (block.data.xxx) formats
-  function d(block: any, field: string): any {
-    return block.data?.[field] ?? block[field]
+  // Returns string for safe rendering in JSX; callers that need other types should cast explicitly
+  function d(block: Record<string, unknown>, field: string): string {
+    const data = block.data as Record<string, unknown> | undefined
+    const value = data?.[field] ?? block[field]
+    if (value == null) return ''
+    if (typeof value === 'string') return value
+    return String(value)
+  }
+
+  // Helper to resolve block data as an array (e.g. quiz options, list items)
+  function dArray(block: Record<string, unknown>, field: string): string[] {
+    const data = block.data as Record<string, unknown> | undefined
+    const value = data?.[field] ?? block[field]
+    if (Array.isArray(value)) return value as string[]
+    return []
   }
 
   // Validate URLs from lesson content to prevent javascript: and other dangerous protocols
@@ -168,7 +181,7 @@ export default function StudentLessonViewerPage({
   }
 
   // Render content blocks from JSONB content
-  function renderContent(content: any) {
+  function renderContent(content: unknown) {
     if (!content) return null
 
     // If it is a string, render as HTML
@@ -194,23 +207,25 @@ export default function StudentLessonViewerPage({
 
       return (
         <div className="space-y-4">
-          {content.map((block: any, index: number) => {
-            const blockKey = block.id || `block-${index}`
-
-            if (typeof block === 'string') {
+          {(content as unknown[]).map((rawBlock, index: number) => {
+            // Handle raw string blocks (legacy content format)
+            if (typeof rawBlock === 'string') {
               return (
                 <div
-                  key={blockKey}
+                  key={`block-${index}`}
                   className="prose prose-slate dark:prose-invert max-w-none"
-                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(block) }}
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(rawBlock) }}
                 />
               )
             }
 
+            const block = rawBlock as Record<string, unknown>
+            const blockKey = (block.id as string) || `block-${index}`
+
             switch (block.type) {
               case 'heading': {
                 const text = d(block, 'text') || d(block, 'content')
-                const level = d(block, 'level') || 2
+                const level = Number(d(block, 'level')) || 2
                 const Tag = level === 3 ? 'h3' : level === 4 ? 'h4' : 'h2'
                 const sizeClass = level === 3 ? 'text-lg' : level === 4 ? 'text-base' : 'text-xl'
                 return (
@@ -345,7 +360,7 @@ export default function StudentLessonViewerPage({
                     key={blockKey}
                     className="list-disc space-y-1 pl-6 text-foreground"
                   >
-                    {(block.items || []).map(
+                    {dArray(block, 'items').map(
                       (item: string, i: number) => (
                         <li key={`${blockKey}-item-${i}`}>{item}</li>
                       )
@@ -378,7 +393,7 @@ export default function StudentLessonViewerPage({
               }
               case 'quiz': {
                 const question = d(block, 'question')
-                const options = d(block, 'options') || []
+                const options = dArray(block, 'options')
                 return (
                   <div
                     key={blockKey}
@@ -513,7 +528,7 @@ export default function StudentLessonViewerPage({
                           </span>
                         )}
                         {docSize && (
-                          <span>{formatFileSize(docSize)}</span>
+                          <span>{formatFileSize(Number(docSize))}</span>
                         )}
                       </div>
                     </div>
@@ -549,15 +564,20 @@ export default function StudentLessonViewerPage({
     }
 
     // If it is an object with a text/content property
-    if (typeof content === 'object' && (content.text || content.content)) {
-      return (
-        <div
-          className="prose prose-slate dark:prose-invert max-w-none"
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(content.text || content.content),
-          }}
-        />
-      )
+    if (typeof content === 'object' && content !== null) {
+      const obj = content as Record<string, unknown>
+      const textVal = typeof obj.text === 'string' ? obj.text : ''
+      const contentVal = typeof obj.content === 'string' ? obj.content : ''
+      if (textVal || contentVal) {
+        return (
+          <div
+            className="prose prose-slate dark:prose-invert max-w-none"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(textVal || contentVal),
+            }}
+          />
+        )
+      }
     }
 
     return null

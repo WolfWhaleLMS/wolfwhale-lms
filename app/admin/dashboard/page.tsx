@@ -84,7 +84,7 @@ export default async function AdminDashboardPage() {
     hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
 
   // Type definitions for dashboard data
-  type DashboardStats = {
+  interface DashboardStats {
     totalUsers: number
     roleCounts: Record<string, number>
     totalCourses: number
@@ -92,12 +92,34 @@ export default async function AdminDashboardPage() {
     weeklyLogins: number
   }
 
-  type AttendanceData = {
+  interface AttendanceData {
     total: number
     present: number
     absent: number
     tardy: number
     attendanceRate: number
+  }
+
+  interface AuditLogRow {
+    id: string
+    action: string
+    details: Record<string, unknown> | null
+    created_at: string
+    user_id: string
+  }
+
+  interface AuditLogWithProfile extends AuditLogRow {
+    profiles: { id: string; full_name: string | null } | null
+  }
+
+  interface TenantSchool {
+    id: string
+    name: string | null
+    slug: string | null
+    subscription_plan: string | null
+    max_users: number | null
+    status: string | null
+    created_at: string | null
   }
 
   // Fetch all dashboard data in parallel to eliminate waterfall
@@ -106,7 +128,7 @@ export default async function AdminDashboardPage() {
     .catch(() => [null, null] as const)
 
   // Task 2: Audit logs (with nested profile lookup)
-  const auditLogsPromise = tenantId
+  const auditLogsPromise: Promise<AuditLogWithProfile[]> = tenantId
     ? (async () => {
         try {
           const { data: rawLogs } = await supabase
@@ -116,8 +138,9 @@ export default async function AdminDashboardPage() {
             .order('created_at', { ascending: false })
             .limit(10)
 
-          const logUserIds = [...new Set((rawLogs ?? []).map((l: any) => l.user_id).filter(Boolean))]
-          const logProfilesMap: Record<string, any> = {}
+          const logs = (rawLogs ?? []) as AuditLogRow[]
+          const logUserIds = [...new Set(logs.map((l) => l.user_id).filter(Boolean))]
+          const logProfilesMap: Record<string, { id: string; full_name: string | null }> = {}
           if (logUserIds.length > 0) {
             const { data: logProfiles } = await supabase
               .from('profiles')
@@ -128,15 +151,15 @@ export default async function AdminDashboardPage() {
             }
           }
 
-          return (rawLogs ?? []).map((l: any) => ({
+          return logs.map((l) => ({
             ...l,
             profiles: logProfilesMap[l.user_id] ?? null,
           }))
         } catch {
-          return [] as any[]
+          return [] as AuditLogWithProfile[]
         }
       })()
-    : Promise.resolve([] as any[])
+    : Promise.resolve([] as AuditLogWithProfile[])
 
   // Task 3: Seat usage
   const seatUsagePromise = tenantId
@@ -159,7 +182,7 @@ export default async function AdminDashboardPage() {
     : Promise.resolve({ currentUsers: 0, maxUsers: 50 })
 
   // Task 4: Schools overview (super_admin only)
-  const schoolsPromise = isSuperAdmin
+  const schoolsPromise: Promise<{ schools: TenantSchool[]; counts: Record<string, number> }> = isSuperAdmin
     ? (async () => {
         try {
           const { data: tenants } = await supabase
@@ -167,11 +190,11 @@ export default async function AdminDashboardPage() {
             .select('id, name, slug, subscription_plan, max_users, status, created_at')
             .order('created_at', { ascending: false })
 
-          const schools = tenants ?? []
+          const schools = (tenants ?? []) as TenantSchool[]
           const counts: Record<string, number> = {}
 
           if (schools.length > 0) {
-            const tenantIds = schools.map((t: any) => t.id)
+            const tenantIds = schools.map((t) => t.id)
             const { data: memberships } = await supabase
               .from('tenant_memberships')
               .select('tenant_id')
@@ -179,7 +202,7 @@ export default async function AdminDashboardPage() {
 
             if (memberships) {
               for (const m of memberships) {
-                const tid = (m as any).tenant_id
+                const tid = (m as { tenant_id: string }).tenant_id
                 counts[tid] = (counts[tid] || 0) + 1
               }
             }
@@ -187,10 +210,10 @@ export default async function AdminDashboardPage() {
 
           return { schools, counts }
         } catch {
-          return { schools: [] as any[], counts: {} as Record<string, number> }
+          return { schools: [] as TenantSchool[], counts: {} as Record<string, number> }
         }
       })()
-    : Promise.resolve({ schools: [] as any[], counts: {} as Record<string, number> })
+    : Promise.resolve({ schools: [] as TenantSchool[], counts: {} as Record<string, number> })
 
   // Wait for all parallel tasks to complete
   const [statsResult, auditLogs, seatUsage, schoolsResult] = await Promise.all([
@@ -609,7 +632,7 @@ export default async function AdminDashboardPage() {
                       </td>
                     </tr>
                   ) : (
-                    allSchools.map((school: any) => {
+                    allSchools.map((school) => {
                       const members = schoolMemberCounts[school.id] ?? 0
                       const max = school.max_users ?? 50
                       const plan = school.subscription_plan ?? 'starter'
@@ -717,12 +740,12 @@ export default async function AdminDashboardPage() {
               No recent activity to display.
             </p>
           ) : (
-            auditLogs.map((log: any) => {
+            auditLogs.map((log) => {
               const actionLabel = (log.action ?? '')
                 .replace(/\./g, ' ')
                 .replace(/_/g, ' ')
               const userName =
-                (log.profiles as any)?.full_name ?? 'Unknown User'
+                log.profiles?.full_name ?? 'Unknown User'
               const actionType = (log.action ?? '').split('.')[0] ?? 'system'
               const timeAgo = formatTimeAgo(log.created_at)
 
@@ -774,12 +797,12 @@ export default async function AdminDashboardPage() {
                     </td>
                   </tr>
                 ) : (
-                  auditLogs.map((log: any) => {
+                  auditLogs.map((log) => {
                     const actionLabel = (log.action ?? '')
                       .replace(/\./g, ' ')
                       .replace(/_/g, ' ')
                     const userName =
-                      (log.profiles as any)?.full_name ?? 'Unknown User'
+                      log.profiles?.full_name ?? 'Unknown User'
                     const actionType = (log.action ?? '').split('.')[0] ?? 'system'
                     const timeAgo = formatTimeAgo(log.created_at)
 

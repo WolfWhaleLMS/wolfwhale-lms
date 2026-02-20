@@ -1,9 +1,22 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
+import { rateLimit } from '@/lib/rate-limit'
+import { headers } from 'next/headers'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
+  // Rate limit by IP to prevent abuse
+  const headersList = await headers()
+  const ip = headersList.get('x-forwarded-for')?.split(',')[0] ?? 'anonymous'
+  const rl = await rateLimit(ip, 'api')
+  if (!rl.success) {
+    return NextResponse.json(
+      { status: 'rate_limited', message: 'Too many requests' },
+      { status: 429 }
+    )
+  }
+
   const start = Date.now()
   const checks: Record<string, { status: string; latency?: number }> = {}
 

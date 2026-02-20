@@ -31,7 +31,8 @@ export function NotificationBell() {
     setInitialLoaded(true)
 
     Promise.all([getNotifications(10), getUnreadCount()]).then(([notifs, count]) => {
-      setNotifications(notifs as any)
+      // Supabase select('*') returns all columns; cast to the shape the hook expects
+      setNotifications(notifs as { id: string; type: string; title: string; body: string; link?: string; read: boolean; created_at: string }[])
       setUnreadCount(count)
     })
   }, [userId, initialLoaded, setNotifications, setUnreadCount])

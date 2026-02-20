@@ -45,7 +45,7 @@ export async function AnnouncementBanner() {
               {a.content}
             </p>
             <p className="mt-1 text-xs text-amber-600/70 dark:text-amber-400/60">
-              {(a.profiles as any)?.full_name ?? 'Staff'} &middot;{' '}
+              {(a.profiles as unknown as { full_name: string | null } | null)?.full_name ?? 'Staff'} &middot;{' '}
               {new Date(a.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
             </p>
           </div>

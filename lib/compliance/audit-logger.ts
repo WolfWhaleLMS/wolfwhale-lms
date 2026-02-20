@@ -3,10 +3,12 @@ import { headers } from 'next/headers'
 
 export type AuditAction =
   | 'user.login'
+  | 'user.login_failed'
   | 'user.logout'
   | 'user.create'
   | 'user.update'
   | 'user.delete'
+  | 'role.change'
   | 'grade.create'
   | 'grade.update'
   | 'grade.delete'
@@ -23,6 +25,7 @@ export type AuditAction =
   | 'settings.update'
   | 'data.export'
   | 'data.access'
+  | 'data.delete'
   | 'admin.action'
 
 interface AuditLogEntry {
@@ -115,8 +118,8 @@ export async function getAuditLogs(filters?: {
 
     // Fetch profiles for user_ids (PostgREST cannot follow audit_logs.user_id -> profiles
     // because the FK points to auth.users, not profiles)
-    const userIds = [...new Set(logs.map((l: any) => l.user_id).filter(Boolean))]
-    const profilesMap: Record<string, any> = {}
+    const userIds = [...new Set(logs.map((l) => l.user_id).filter(Boolean))]
+    const profilesMap: Record<string, { id: string; full_name: string | null; avatar_url: string | null }> = {}
 
     if (userIds.length > 0) {
       const { data: profiles } = await supabase
@@ -129,7 +132,7 @@ export async function getAuditLogs(filters?: {
       }
     }
 
-    return logs.map((l: any) => ({
+    return logs.map((l) => ({
       ...l,
       profiles: profilesMap[l.user_id] ?? null,
     }))

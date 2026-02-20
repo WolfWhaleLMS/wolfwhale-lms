@@ -10,6 +10,14 @@ export default function AuthLayout({
   return (
     <div className="min-h-screen relative overflow-hidden bg-[#0A0E1A]">
       <AuthDarkModeScript />
+      {/* Skip to main content link */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-[#00BFFF] focus:px-4 focus:py-2 focus:text-white focus:shadow-lg focus:outline-none"
+      >
+        Skip to main content
+      </a>
+
       {/* Dark Neon Background */}
       <div className="fixed inset-0 z-0">
         {/* Chrome texture base — dark */}
@@ -44,7 +52,7 @@ export default function AuthLayout({
       </div>
 
       {/* Main Content — full screen, children handle layout */}
-      <main className="relative z-10 min-h-screen">
+      <main id="main-content" className="relative z-10 min-h-screen">
         {children}
       </main>
 

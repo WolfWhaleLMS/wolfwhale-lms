@@ -60,10 +60,25 @@ import { createClient } from '@/lib/supabase/client'
 // Type Definitions
 // ---------------------------------------------------------------------------
 
+// Block data is schemaless JSON — each block type stores different fields.
+type BlockData = Record<string, unknown>
+
+/** Safely read a string field from block data, returning '' when missing/non-string */
+function bd(data: BlockData, key: string): string {
+  const v = data[key]
+  return typeof v === 'string' ? v : v != null ? String(v) : ''
+}
+
+/** Safely read a numeric field from block data, returning 0 when missing */
+function bdNum(data: BlockData, key: string): number {
+  const v = data[key]
+  return typeof v === 'number' ? v : 0
+}
+
 type ContentBlock = {
   id: string
   type: 'heading' | 'text' | 'image' | 'video' | 'file' | 'divider' | 'callout' | 'quiz' | 'link' | 'pdf' | 'document'
-  data: Record<string, any>
+  data: BlockData
 }
 
 type Lesson = {
@@ -243,14 +258,14 @@ const blockTypes = [
 // Block Editor Components
 // ---------------------------------------------------------------------------
 
-function HeadingBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: any) => void }) {
+function HeadingBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: BlockData) => void }) {
   return (
     <div className="space-y-3">
       <div className="flex gap-4">
         <div className="flex-1">
           <Label>Heading Text</Label>
           <Input
-            value={block.data.text || ''}
+            value={bd(block.data, 'text')}
             onChange={(e) => onChange({ ...block.data, text: e.target.value })}
             placeholder="Enter heading text..."
             className="mt-1"
@@ -259,7 +274,7 @@ function HeadingBlockEditor({ block, onChange }: { block: ContentBlock; onChange
         <div className="w-32">
           <Label>Level</Label>
           <Select
-            value={String(block.data.level || 2)}
+            value={String(bdNum(block.data, 'level') || 2)}
             onValueChange={(value) => onChange({ ...block.data, level: Number(value) })}
           >
             <SelectTrigger className="mt-1">
@@ -277,12 +292,12 @@ function HeadingBlockEditor({ block, onChange }: { block: ContentBlock; onChange
   )
 }
 
-function TextBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: any) => void }) {
+function TextBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: BlockData) => void }) {
   return (
     <div className="space-y-3">
       <Label>Text Content</Label>
       <Textarea
-        value={block.data.text || ''}
+        value={bd(block.data, 'text')}
         onChange={(e) => onChange({ ...block.data, text: e.target.value })}
         placeholder="Enter your text content here..."
         className="min-h-[120px]"
@@ -297,7 +312,7 @@ function ImageBlockEditor({
   lessonId,
 }: {
   block: ContentBlock
-  onChange: (data: any) => void
+  onChange: (data: BlockData) => void
   lessonId: string
 }) {
   const { uploadFile, uploading, progress } = useSupabaseUpload(lessonId)
@@ -316,7 +331,7 @@ function ImageBlockEditor({
         <Label>Image URL</Label>
         <div className="flex gap-2 mt-1">
           <Input
-            value={block.data.url || ''}
+            value={bd(block.data, 'url')}
             onChange={(e) => onChange({ ...block.data, url: e.target.value })}
             placeholder="https://example.com/image.jpg"
             className="flex-1"
@@ -333,7 +348,7 @@ function ImageBlockEditor({
       <div>
         <Label>Alt Text</Label>
         <Input
-          value={block.data.alt || ''}
+          value={bd(block.data, 'alt')}
           onChange={(e) => onChange({ ...block.data, alt: e.target.value })}
           placeholder="Description of the image"
           className="mt-1"
@@ -342,17 +357,17 @@ function ImageBlockEditor({
       <div>
         <Label>Caption (optional)</Label>
         <Input
-          value={block.data.caption || ''}
+          value={bd(block.data, 'caption')}
           onChange={(e) => onChange({ ...block.data, caption: e.target.value })}
           placeholder="Figure caption..."
           className="mt-1"
         />
       </div>
-      {block.data.url && (
+      {bd(block.data, 'url') && (
         <div className="relative mt-3 rounded-lg border border-border p-2">
           <Image
-            src={block.data.url}
-            alt={block.data.alt || ''}
+            src={bd(block.data, 'url')}
+            alt={bd(block.data, 'alt')}
             width={400}
             height={192}
             sizes="400px"
@@ -400,12 +415,12 @@ function VideoBlockEditor({
   lessonId,
 }: {
   block: ContentBlock
-  onChange: (data: any) => void
+  onChange: (data: BlockData) => void
   lessonId: string
 }) {
   const { uploadFile, uploading, progress } = useSupabaseUpload(lessonId)
-  const source: 'youtube' | 'url' = block.data.source || 'youtube'
-  const videoId = block.data.videoId || null
+  const source: 'youtube' | 'url' = (bd(block.data, 'source') || 'youtube') as 'youtube' | 'url'
+  const videoId = bd(block.data, 'videoId') || null
 
   const handleSourceChange = (newSource: string) => {
     onChange({ ...block.data, source: newSource, url: '', videoId: undefined })
@@ -450,12 +465,12 @@ function VideoBlockEditor({
           <div>
             <Label>YouTube URL</Label>
             <Input
-              value={block.data.url || ''}
+              value={bd(block.data, 'url')}
               onChange={(e) => handleYouTubeUrlChange(e.target.value)}
               placeholder="https://youtube.com/watch?v=... or https://youtu.be/..."
               className="mt-1"
             />
-            {block.data.url && !videoId && (
+            {bd(block.data, 'url') && !videoId && (
               <p className="mt-1 text-xs text-destructive">
                 Could not extract a YouTube video ID from this URL. Please check the link.
               </p>
@@ -491,7 +506,7 @@ function VideoBlockEditor({
             <Label>Video URL</Label>
             <div className="flex gap-2 mt-1">
               <Input
-                value={block.data.url || ''}
+                value={bd(block.data, 'url')}
                 onChange={(e) => onChange({ ...block.data, source: 'url', url: e.target.value })}
                 placeholder="https://example.com/video.mp4"
                 className="flex-1"
@@ -510,10 +525,10 @@ function VideoBlockEditor({
           </div>
 
           {/* Direct video preview */}
-          {block.data.url && (
+          {bd(block.data, 'url') && (
             <div className="mt-3 rounded-lg border border-border overflow-hidden">
               <video
-                src={block.data.url}
+                src={bd(block.data, 'url')}
                 controls
                 className="w-full aspect-video bg-black"
                 preload="metadata"
@@ -529,7 +544,7 @@ function VideoBlockEditor({
       <div>
         <Label>Title (optional)</Label>
         <Input
-          value={block.data.title || ''}
+          value={bd(block.data, 'title')}
           onChange={(e) => onChange({ ...block.data, title: e.target.value })}
           placeholder="Video title..."
           className="mt-1"
@@ -545,7 +560,7 @@ function FileBlockEditor({
   lessonId,
 }: {
   block: ContentBlock
-  onChange: (data: any) => void
+  onChange: (data: BlockData) => void
   lessonId: string
 }) {
   const { uploadFile, uploading, progress } = useSupabaseUpload(lessonId)
@@ -569,7 +584,7 @@ function FileBlockEditor({
         <Label>File URL</Label>
         <div className="flex gap-2 mt-1">
           <Input
-            value={block.data.url || ''}
+            value={bd(block.data, 'url')}
             onChange={(e) => onChange({ ...block.data, url: e.target.value })}
             placeholder="https://example.com/document.pdf"
             className="flex-1"
@@ -586,7 +601,7 @@ function FileBlockEditor({
         <div>
           <Label>Filename</Label>
           <Input
-            value={block.data.filename || ''}
+            value={bd(block.data, 'filename')}
             onChange={(e) => onChange({ ...block.data, filename: e.target.value })}
             placeholder="document.pdf"
             className="mt-1"
@@ -595,7 +610,7 @@ function FileBlockEditor({
         <div>
           <Label>Size (optional)</Label>
           <Input
-            value={block.data.size || ''}
+            value={bd(block.data, 'size')}
             onChange={(e) => onChange({ ...block.data, size: e.target.value })}
             placeholder="2.4 MB"
             className="mt-1"
@@ -615,13 +630,13 @@ function DividerBlockEditor() {
   )
 }
 
-function CalloutBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: any) => void }) {
+function CalloutBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: BlockData) => void }) {
   return (
     <div className="space-y-3">
       <div>
         <Label>Callout Type</Label>
         <Select
-          value={block.data.variant || 'info'}
+          value={bd(block.data, 'variant') || 'info'}
           onValueChange={(value) => onChange({ ...block.data, variant: value })}
         >
           <SelectTrigger className="mt-1">
@@ -638,22 +653,22 @@ function CalloutBlockEditor({ block, onChange }: { block: ContentBlock; onChange
       <div>
         <Label>Text</Label>
         <Textarea
-          value={block.data.text || ''}
+          value={bd(block.data, 'text')}
           onChange={(e) => onChange({ ...block.data, text: e.target.value })}
           placeholder="Enter callout text..."
           className="mt-1 min-h-[80px]"
         />
       </div>
-      {block.data.text && (
+      {bd(block.data, 'text') && (
         <div className={`mt-3 rounded-lg p-4 ${
-          block.data.variant === 'warning' ? 'bg-[#FFAA00]/5 border-[#FFAA00]/20 text-[#D97706] dark:bg-[#FFAA00]/10 dark:border-[#FFAA00]/20 dark:text-[#D97706]' :
-          block.data.variant === 'tip' ? 'bg-[#00BFFF]/5 border-[#00BFFF]/20 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:border-[#00BFFF]/20 dark:text-[#00BFFF]' :
-          block.data.variant === 'success' ? 'bg-[#33FF33]/5 border-[#33FF33]/20 text-[#059669] dark:bg-[#33FF33]/10 dark:border-[#33FF33]/20 dark:text-[#059669]' :
+          bd(block.data, 'variant') === 'warning' ? 'bg-[#FFAA00]/5 border-[#FFAA00]/20 text-[#D97706] dark:bg-[#FFAA00]/10 dark:border-[#FFAA00]/20 dark:text-[#D97706]' :
+          bd(block.data, 'variant') === 'tip' ? 'bg-[#00BFFF]/5 border-[#00BFFF]/20 text-[#00BFFF] dark:bg-[#00BFFF]/10 dark:border-[#00BFFF]/20 dark:text-[#00BFFF]' :
+          bd(block.data, 'variant') === 'success' ? 'bg-[#33FF33]/5 border-[#33FF33]/20 text-[#059669] dark:bg-[#33FF33]/10 dark:border-[#33FF33]/20 dark:text-[#059669]' :
           'bg-[#00BFFF]/5 border-[#00BFFF]/10 text-[#0A2540] dark:bg-[#00BFFF]/5 dark:border-[#00BFFF]/10 dark:text-[#E8F8FF]'
         } border`}>
           <div className="flex gap-2">
             <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
-            <p className="text-sm">{block.data.text}</p>
+            <p className="text-sm">{bd(block.data, 'text')}</p>
           </div>
         </div>
       )}
@@ -661,8 +676,9 @@ function CalloutBlockEditor({ block, onChange }: { block: ContentBlock; onChange
   )
 }
 
-function QuizBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: any) => void }) {
-  const options = block.data.options || ['', '', '', '']
+function QuizBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: BlockData) => void }) {
+  const options = (Array.isArray(block.data.options) ? block.data.options : ['', '', '', '']) as string[]
+  const correctIdx = bdNum(block.data, 'correctIndex')
 
   const updateOption = (index: number, value: string) => {
     const newOptions = [...options]
@@ -679,12 +695,11 @@ function QuizBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (
       toast.error('Quiz must have at least 2 options')
       return
     }
-    const newOptions = options.filter((_: any, i: number) => i !== index)
-    const correctIndex = block.data.correctIndex
+    const newOptions = options.filter((_: unknown, i: number) => i !== index)
     onChange({
       ...block.data,
       options: newOptions,
-      correctIndex: correctIndex === index ? 0 : correctIndex > index ? correctIndex - 1 : correctIndex,
+      correctIndex: correctIdx === index ? 0 : correctIdx > index ? correctIdx - 1 : correctIdx,
     })
   }
 
@@ -693,7 +708,7 @@ function QuizBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (
       <div>
         <Label>Question</Label>
         <Input
-          value={block.data.question || ''}
+          value={bd(block.data, 'question')}
           onChange={(e) => onChange({ ...block.data, question: e.target.value })}
           placeholder="Enter quiz question..."
           className="mt-1"
@@ -708,12 +723,12 @@ function QuizBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (
               <div className="flex-1 flex gap-2 items-center">
                 <Button
                   type="button"
-                  variant={block.data.correctIndex === index ? 'default' : 'outline'}
+                  variant={correctIdx === index ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => onChange({ ...block.data, correctIndex: index })}
                   className="shrink-0"
                 >
-                  {block.data.correctIndex === index ? <Check className="h-4 w-4" /> : String.fromCharCode(65 + index)}
+                  {correctIdx === index ? <Check className="h-4 w-4" /> : String.fromCharCode(65 + index)}
                 </Button>
                 <Input
                   value={option}
@@ -749,7 +764,7 @@ function QuizBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (
       <div>
         <Label>Explanation (optional)</Label>
         <Textarea
-          value={block.data.explanation || ''}
+          value={bd(block.data, 'explanation')}
           onChange={(e) => onChange({ ...block.data, explanation: e.target.value })}
           placeholder="Explain the correct answer..."
           className="mt-1"
@@ -763,7 +778,7 @@ function QuizBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (
 // NEW Block Editors: Link, PDF, Document
 // ---------------------------------------------------------------------------
 
-function LinkBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: any) => void }) {
+function LinkBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (data: BlockData) => void }) {
   const [urlError, setUrlError] = useState('')
 
   const validateUrl = (url: string) => {
@@ -784,7 +799,7 @@ function LinkBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (
       <div>
         <Label>URL</Label>
         <Input
-          value={block.data.url || ''}
+          value={bd(block.data, 'url')}
           onChange={(e) => {
             onChange({ ...block.data, url: e.target.value })
             validateUrl(e.target.value)
@@ -799,7 +814,7 @@ function LinkBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (
       <div>
         <Label>Title</Label>
         <Input
-          value={block.data.title || ''}
+          value={bd(block.data, 'title')}
           onChange={(e) => onChange({ ...block.data, title: e.target.value })}
           placeholder="Link title..."
           className="mt-1"
@@ -808,25 +823,25 @@ function LinkBlockEditor({ block, onChange }: { block: ContentBlock; onChange: (
       <div>
         <Label>Description (optional)</Label>
         <Input
-          value={block.data.description || ''}
+          value={bd(block.data, 'description')}
           onChange={(e) => onChange({ ...block.data, description: e.target.value })}
           placeholder="Brief description of the linked resource..."
           className="mt-1"
         />
       </div>
       {/* Preview */}
-      {block.data.url && block.data.title && (
+      {bd(block.data, 'url') && bd(block.data, 'title') && (
         <div className="mt-3 rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors">
           <div className="flex items-start gap-3">
             <div className="shrink-0 rounded-lg bg-primary/10 p-2">
               <ExternalLink className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-sm text-foreground truncate">{block.data.title}</p>
-              {block.data.description && (
-                <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{block.data.description}</p>
+              <p className="font-medium text-sm text-foreground truncate">{bd(block.data, 'title')}</p>
+              {bd(block.data, 'description') && (
+                <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{bd(block.data, 'description')}</p>
               )}
-              <p className="text-xs text-primary/70 mt-1 truncate">{block.data.url}</p>
+              <p className="text-xs text-primary/70 mt-1 truncate">{bd(block.data, 'url')}</p>
             </div>
           </div>
         </div>
@@ -841,7 +856,7 @@ function PdfBlockEditor({
   lessonId,
 }: {
   block: ContentBlock
-  onChange: (data: any) => void
+  onChange: (data: BlockData) => void
   lessonId: string
 }) {
   const { uploadFile, uploading, progress } = useSupabaseUpload(lessonId)
@@ -856,7 +871,7 @@ function PdfBlockEditor({
       onChange({
         ...block.data,
         url,
-        title: block.data.title || file.name.replace(/\.pdf$/i, ''),
+        title: bd(block.data, 'title') || file.name.replace(/\.pdf$/i, ''),
       })
       toast.success('PDF uploaded successfully')
     }
@@ -868,7 +883,7 @@ function PdfBlockEditor({
         <Label>PDF URL</Label>
         <div className="flex gap-2 mt-1">
           <Input
-            value={block.data.url || ''}
+            value={bd(block.data, 'url')}
             onChange={(e) => onChange({ ...block.data, url: e.target.value })}
             placeholder="https://example.com/document.pdf"
             className="flex-1"
@@ -886,7 +901,7 @@ function PdfBlockEditor({
         <div>
           <Label>Title</Label>
           <Input
-            value={block.data.title || ''}
+            value={bd(block.data, 'title')}
             onChange={(e) => onChange({ ...block.data, title: e.target.value })}
             placeholder="Document title..."
             className="mt-1"
@@ -896,7 +911,7 @@ function PdfBlockEditor({
           <Label>Page Count (optional)</Label>
           <Input
             type="number"
-            value={block.data.pageCount || ''}
+            value={bd(block.data, 'pageCount')}
             onChange={(e) => onChange({ ...block.data, pageCount: e.target.value ? Number(e.target.value) : undefined })}
             placeholder="e.g., 12"
             className="mt-1"
@@ -904,18 +919,18 @@ function PdfBlockEditor({
         </div>
       </div>
       {/* Preview */}
-      {block.data.url && (
+      {bd(block.data, 'url') && (
         <div className="mt-3 rounded-lg border border-border overflow-hidden">
           <div className="bg-muted/50 px-4 py-2 flex items-center justify-between border-b border-border">
             <div className="flex items-center gap-2">
               <FileText className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium">{block.data.title || 'PDF Document'}</span>
-              {block.data.pageCount && (
-                <span className="text-xs text-muted-foreground">({block.data.pageCount} pages)</span>
+              <span className="text-sm font-medium">{bd(block.data, 'title') || 'PDF Document'}</span>
+              {bd(block.data, 'pageCount') && (
+                <span className="text-xs text-muted-foreground">({bd(block.data, 'pageCount')} pages)</span>
               )}
             </div>
             <a
-              href={block.data.url}
+              href={bd(block.data, 'url')}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-primary hover:underline"
@@ -924,9 +939,9 @@ function PdfBlockEditor({
             </a>
           </div>
           <iframe
-            src={block.data.url}
+            src={bd(block.data, 'url')}
             className="w-full h-64 bg-white"
-            title={block.data.title || 'PDF Preview'}
+            title={bd(block.data, 'title') || 'PDF Preview'}
           />
         </div>
       )}
@@ -940,7 +955,7 @@ function DocumentBlockEditor({
   lessonId,
 }: {
   block: ContentBlock
-  onChange: (data: any) => void
+  onChange: (data: BlockData) => void
   lessonId: string
 }) {
   const { uploadFile, uploading, progress } = useSupabaseUpload(lessonId)
@@ -965,7 +980,7 @@ function DocumentBlockEditor({
         <Label>Document File</Label>
         <div className="flex gap-2 mt-1">
           <Input
-            value={block.data.url || ''}
+            value={bd(block.data, 'url')}
             onChange={(e) => onChange({ ...block.data, url: e.target.value })}
             placeholder="https://example.com/document.docx"
             className="flex-1"
@@ -983,7 +998,7 @@ function DocumentBlockEditor({
         <div>
           <Label>File Name</Label>
           <Input
-            value={block.data.fileName || ''}
+            value={bd(block.data, 'fileName')}
             onChange={(e) => onChange({ ...block.data, fileName: e.target.value })}
             placeholder="document.docx"
             className="mt-1"
@@ -992,33 +1007,33 @@ function DocumentBlockEditor({
         <div>
           <Label>File Type</Label>
           <Input
-            value={block.data.fileType || ''}
+            value={bd(block.data, 'fileType')}
             onChange={(e) => onChange({ ...block.data, fileType: e.target.value })}
             placeholder="application/pdf"
             className="mt-1"
           />
         </div>
       </div>
-      {block.data.fileSize && (
+      {bdNum(block.data, 'fileSize') > 0 && (
         <p className="text-xs text-muted-foreground">
-          Size: {formatFileSize(block.data.fileSize)}
+          Size: {formatFileSize(bdNum(block.data, 'fileSize'))}
         </p>
       )}
       {/* Preview Card */}
-      {block.data.url && block.data.fileName && (
+      {bd(block.data, 'url') && bd(block.data, 'fileName') && (
         <div className="mt-3 rounded-lg border border-border p-4">
           <div className="flex items-center gap-3">
             <div className="shrink-0 rounded-lg bg-primary/10 p-3">
               <File className="h-6 w-6 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-sm text-foreground truncate">{block.data.fileName}</p>
+              <p className="font-medium text-sm text-foreground truncate">{bd(block.data, 'fileName')}</p>
               <div className="flex items-center gap-2 mt-1">
-                {block.data.fileType && (
-                  <span className="text-xs text-muted-foreground">{block.data.fileType.split('/').pop()?.toUpperCase()}</span>
+                {bd(block.data, 'fileType') && (
+                  <span className="text-xs text-muted-foreground">{bd(block.data, 'fileType').split('/').pop()?.toUpperCase()}</span>
                 )}
-                {block.data.fileSize && (
-                  <span className="text-xs text-muted-foreground">{formatFileSize(block.data.fileSize)}</span>
+                {bdNum(block.data, 'fileSize') > 0 && (
+                  <span className="text-xs text-muted-foreground">{formatFileSize(bdNum(block.data, 'fileSize'))}</span>
                 )}
               </div>
             </div>
@@ -1045,7 +1060,7 @@ function BlockEditor({
   lessonId,
 }: {
   block: ContentBlock
-  onUpdate: (data: any) => void
+  onUpdate: (data: BlockData) => void
   onDelete: () => void
   onMoveUp: () => void
   onMoveDown: () => void
@@ -1347,7 +1362,7 @@ export default function LessonEditorPage() {
   }
 
   // Update block data
-  const updateBlock = (id: string, data: any) => {
+  const updateBlock = (id: string, data: BlockData) => {
     setBlocks(blocks.map((block) => (block.id === id ? { ...block, data } : block)))
   }
 

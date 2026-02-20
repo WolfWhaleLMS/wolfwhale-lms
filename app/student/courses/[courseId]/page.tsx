@@ -129,7 +129,17 @@ export default async function StudentCourseDetailPage({
       .eq('status', 'published'),
   ])
 
-  const lessons = lessonResult.data || []
+  // Supabase query includes module_id; assert the shape for type safety
+  const lessons = (lessonResult.data || []) as Array<{
+    id: string
+    title: string
+    description: string | null
+    order_index: number
+    status: string
+    duration_minutes: number | null
+    learning_objectives: string[] | null
+    module_id: string | null
+  }>
   const teacher = teacherResult.data
   const progressData = progressResult.data || []
   const modules = moduleResult.data || []
@@ -478,7 +488,7 @@ export default async function StudentCourseDetailPage({
           /* Module-grouped lessons */
           <div className="space-y-6">
             {publishedModules.map((mod) => {
-              const moduleLessons = lessons.filter((l) => (l as any).module_id === mod.id)
+              const moduleLessons = lessons.filter((l) => l.module_id === mod.id)
               if (moduleLessons.length === 0) return null
 
               const moduleCompletedCount = moduleLessons.filter((l) =>
@@ -506,7 +516,7 @@ export default async function StudentCourseDetailPage({
 
             {/* Lessons without a module */}
             {(() => {
-              const unmoduled = lessons.filter((l) => !(l as any).module_id)
+              const unmoduled = lessons.filter((l) => !l.module_id)
               if (unmoduled.length === 0) return null
               return (
                 <div className="space-y-2">

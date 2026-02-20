@@ -212,15 +212,18 @@ export async function runCanadianComplianceCheck(): Promise<CanadianComplianceCh
   const tenantProvince = tenant?.state ?? undefined
 
   // Identify minors who need consent
-  const minors = (students ?? []).filter((s: any) => {
-    if (!s.profiles?.date_of_birth) return false
-    return isMinorRequiringConsent(s.profiles.date_of_birth, tenantProvince)
+  // Supabase !inner join returns profiles as a nested object with date_of_birth
+  type StudentWithProfile = { user_id: string; profiles: { date_of_birth: string | null } }
+  const minors = (students ?? []).filter((s) => {
+    const student = s as unknown as StudentWithProfile
+    if (!student.profiles?.date_of_birth) return false
+    return isMinorRequiringConsent(student.profiles.date_of_birth, tenantProvince)
   })
 
   // Check which minors have consent on file
   let minorsWithoutConsent = 0
   if (minors.length > 0) {
-    const minorIds = minors.map((m: any) => m.user_id)
+    const minorIds = minors.map((m) => (m as unknown as StudentWithProfile).user_id)
     const { data: consentRecords } = await supabase
       .from('consent_records')
       .select('student_id')
@@ -229,8 +232,8 @@ export async function runCanadianComplianceCheck(): Promise<CanadianComplianceCh
       .eq('consent_given', true)
       .in('student_id', minorIds)
 
-    const consentedIds = new Set((consentRecords ?? []).map((r: any) => r.student_id))
-    minorsWithoutConsent = minorIds.filter((id: string) => !consentedIds.has(id)).length
+    const consentedIds = new Set((consentRecords ?? []).map((r) => (r as { student_id: string }).student_id))
+    minorsWithoutConsent = minorIds.filter((id) => !consentedIds.has(id)).length
   }
 
   const consentAge = tenantProvince && QUEBEC_PROVINCES.includes(tenantProvince)

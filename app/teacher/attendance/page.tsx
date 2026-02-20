@@ -42,7 +42,7 @@ export default async function TeacherAttendanceOverviewPage() {
   const courseIds = courseList.map((c) => c.id)
 
   // Fetch student counts per course
-  let enrollments: any[] = []
+  let enrollments: { course_id: string }[] = []
   if (courseIds.length > 0) {
     const { data: enrollmentData } = await supabase
       .from('course_enrollments')
@@ -50,7 +50,7 @@ export default async function TeacherAttendanceOverviewPage() {
       .in('course_id', courseIds)
       .eq('status', 'active')
 
-    enrollments = enrollmentData || []
+    enrollments = (enrollmentData || []) as { course_id: string }[]
   }
 
   // Build student count map

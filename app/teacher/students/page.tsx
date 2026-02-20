@@ -42,7 +42,12 @@ export default async function TeacherAllStudentsPage() {
   const courseMap = new Map(courseList.map((c) => [c.id, c.name]))
 
   // Fetch all active enrollments for those courses
-  let enrollments: any[] = []
+  interface Enrollment {
+    student_id: string
+    course_id: string
+  }
+
+  let enrollments: Enrollment[] = []
   if (courseIds.length > 0) {
     const { data: enrollmentData } = await supabase
       .from('course_enrollments')
@@ -50,7 +55,7 @@ export default async function TeacherAllStudentsPage() {
       .in('course_id', courseIds)
       .eq('status', 'active')
 
-    enrollments = enrollmentData || []
+    enrollments = (enrollmentData || []) as Enrollment[]
   }
 
   // Build a map of student_id -> list of course names
@@ -67,7 +72,18 @@ export default async function TeacherAllStudentsPage() {
   const studentIds = Array.from(studentCourseMap.keys())
 
   // Fetch student profiles
-  let studentProfiles: any[] = []
+  interface StudentWithMeta {
+    id: string
+    first_name: string | null
+    last_name: string | null
+    avatar_url: string | null
+    grade_level: string | null
+    fullName: string
+    enrolledCourses: string[]
+    courseCount: number
+  }
+
+  let studentProfiles: StudentWithMeta[] = []
   if (studentIds.length > 0) {
     const { data: profiles } = await supabase
       .from('profiles')

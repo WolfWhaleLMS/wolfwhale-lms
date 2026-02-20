@@ -36,7 +36,7 @@ interface GradebookData {
   assignments: Assignment[]
   students: Student[]
   grades: Record<string, Record<string, GradeCell>>
-  studentOveralls: Record<string, { percentage: number; letterGrade: string }>
+  studentOveralls?: Record<string, { percentage: number; letterGrade: string }>
 }
 
 function gradeColorClass(percentage: number): string {
@@ -194,7 +194,7 @@ export default function GradebookClient({
                   </thead>
                   <tbody className="divide-y divide-border">
                     {gradebook.students.map((student) => {
-                      const overall = gradebook.studentOveralls[student.id]
+                      const overall = gradebook.studentOveralls?.[student.id]
                       return (
                         <tr key={student.id} className="transition-colors hover:bg-muted/20">
                           <td className="sticky left-0 z-10 bg-background/80 px-4 py-3 backdrop-blur-sm">
@@ -253,7 +253,7 @@ export default function GradebookClient({
                   <span className="text-muted-foreground">
                     Class Average:{' '}
                     {(() => {
-                      const overalls = Object.values(gradebook.studentOveralls).filter(
+                      const overalls = Object.values(gradebook.studentOveralls ?? {}).filter(
                         (o) => o.letterGrade !== '--'
                       )
                       if (overalls.length === 0) return '--'

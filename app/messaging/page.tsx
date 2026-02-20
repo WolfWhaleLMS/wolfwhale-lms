@@ -93,7 +93,15 @@ export default async function MessagingPage() {
           </div>
         ) : (
           conversations.map((item) => {
-            const conversation = item.conversations as any
+            // Supabase join returns conversations as a nested object;
+            // PostgREST typing infers an array but it's a single object for FK joins
+            const conversation = item.conversations as unknown as {
+              id: string
+              type: string
+              title?: string | null
+              subject?: string | null
+              messages: { id: string; content: string; created_at: string }[]
+            } | null
             if (!conversation) return null
 
             const messages = conversation.messages ?? []

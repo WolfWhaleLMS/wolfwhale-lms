@@ -60,10 +60,30 @@ export default async function TeacherDashboardPage() {
     hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
 
   // Fetch real data if tenant context exists
-  let courses: any[] = courseDataResult.data || []
+  interface TeacherCourse {
+    id: string
+    name: string
+    status: string
+    subject: string | null
+    studentCount?: number
+    lessonCount?: number
+  }
+
+  interface RecentSubmission {
+    id: string
+    studentName: string
+    assignmentTitle: string
+    courseName: string
+    submittedAt: string
+    status: string
+    assignmentId: string
+    courseId: string | undefined
+  }
+
+  let courses: TeacherCourse[] = (courseDataResult.data || []) as TeacherCourse[]
   let totalStudents = 0
   let pendingGrading = 0
-  let recentSubmissions: any[] = []
+  let recentSubmissions: RecentSubmission[] = []
 
   if (tenantId) {
     const courseIds = courses.map((c) => c.id)
@@ -219,7 +239,7 @@ export default async function TeacherDashboardPage() {
           <div className="rounded-xl border border-border bg-muted/30 p-3 sm:p-4 text-center">
             <Clock className="mx-auto mb-1 h-4 w-4 sm:h-5 sm:w-5 text-[#059669]" />
             <p className="text-2xl sm:text-3xl font-bold text-[#059669] dark:text-[#059669]">
-              {courses.reduce((s: number, c: any) => s + (c.lessonCount || 0), 0)}
+              {courses.reduce((s, c) => s + (c.lessonCount || 0), 0)}
             </p>
             <p className="mt-1 text-xs sm:text-sm text-muted-foreground">Total Lessons</p>
           </div>
@@ -326,7 +346,7 @@ export default async function TeacherDashboardPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {courses.slice(0, 6).map((course: any) => (
+            {courses.slice(0, 6).map((course) => (
               <Link
                 key={course.id}
                 href={`/teacher/courses/${course.id}`}
@@ -367,7 +387,7 @@ export default async function TeacherDashboardPage() {
           </h2>
           {/* Mobile card view */}
           <div className="space-y-3 sm:hidden">
-            {recentSubmissions.map((sub: any) => (
+            {recentSubmissions.map((sub) => (
               <div
                 key={sub.id}
                 className="rounded-xl border border-border p-3"
@@ -419,7 +439,7 @@ export default async function TeacherDashboardPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {recentSubmissions.map((sub: any) => (
+                  {recentSubmissions.map((sub) => (
                     <tr
                       key={sub.id}
                       className="transition-colors hover:bg-muted/30"

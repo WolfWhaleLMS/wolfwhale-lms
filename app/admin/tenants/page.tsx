@@ -79,7 +79,7 @@ export default async function AdminTenantsPage() {
 
   if (tenants && tenants.length > 0) {
     try {
-      const tenantIds = tenants.map((t: any) => t.id)
+      const tenantIds = tenants.map((t) => t.id)
       const { data: memberships } = await supabase
         .from('tenant_memberships')
         .select('tenant_id')
@@ -87,7 +87,7 @@ export default async function AdminTenantsPage() {
 
       if (memberships) {
         for (const m of memberships) {
-          const tid = (m as any).tenant_id
+          const tid = (m as { tenant_id: string }).tenant_id
           memberCounts[tid] = (memberCounts[tid] || 0) + 1
         }
       }
@@ -146,7 +146,7 @@ export default async function AdminTenantsPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {tenantList.map((tenant: any) => {
+          {tenantList.map((tenant) => {
             const status = tenant.status ?? 'active'
             const plan = tenant.subscription_plan ?? 'free'
             const members = memberCounts[tenant.id] ?? 0

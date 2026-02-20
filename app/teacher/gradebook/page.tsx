@@ -2,12 +2,20 @@ import { createClient } from '@/lib/supabase/server'
 import { getGradebook } from '@/app/actions/grades'
 import GradebookClient from './GradebookClient'
 
+interface GradebookPageData {
+  course: { id: string; name: string }
+  assignments: { id: string; title: string; type: string; max_points: number; due_date: string | null }[]
+  students: { id: string; name: string }[]
+  grades: Record<string, Record<string, { pointsEarned: number; percentage: number; letterGrade: string }>>
+  studentOveralls?: Record<string, { percentage: number; letterGrade: string }>
+}
+
 export default async function TeacherGradebookPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   let courses: { id: string; name: string }[] = []
-  let initialGradebook = null
+  let initialGradebook: GradebookPageData | null = null
   let initialError: string | null = null
 
   if (user) {
@@ -34,7 +42,7 @@ export default async function TeacherGradebookPage() {
   return (
     <GradebookClient
       courses={courses}
-      initialGradebook={initialGradebook as any}
+      initialGradebook={initialGradebook}
       initialError={initialError}
     />
   )

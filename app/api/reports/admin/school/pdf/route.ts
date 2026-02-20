@@ -34,7 +34,9 @@ export async function GET() {
       })
     )
 
-    const buffer = await renderToBuffer(doc as any)
+    // renderToBuffer expects ReactElement<DocumentProps>; createElement returns a wider type
+    // when multiple children are passed — cast through unknown to satisfy the constraint
+    const buffer = await renderToBuffer(doc as unknown as React.ReactElement<import('@react-pdf/renderer').DocumentProps>)
 
     return new NextResponse(buffer, {
       headers: {

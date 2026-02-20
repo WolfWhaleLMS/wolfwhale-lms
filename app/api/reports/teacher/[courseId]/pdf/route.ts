@@ -51,7 +51,9 @@ export async function GET(
       React.createElement(Table, { columns, rows })
     )
 
-    const buffer = await renderToBuffer(doc as any)
+    // renderToBuffer expects ReactElement<DocumentProps>; createElement returns a wider type
+    // when multiple children are passed — cast through unknown to satisfy the constraint
+    const buffer = await renderToBuffer(doc as unknown as React.ReactElement<import('@react-pdf/renderer').DocumentProps>)
     const filename = `${report.course.name.replace(/[^a-zA-Z0-9]/g, '_')}_report.pdf`
 
     return new NextResponse(buffer, {

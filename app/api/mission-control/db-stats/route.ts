@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { readdirSync } from "fs";
 import { join } from "path";
 
@@ -19,11 +20,24 @@ const TABLES = [
   "announcements",
 ];
 
-export async function GET(request: Request) {
-  // Require admin auth — reject unauthenticated requests
-  const authHeader = request.headers.get('x-user-role')
-  if (authHeader !== 'admin' && authHeader !== 'super_admin') {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+export async function GET() {
+  // Real Supabase auth — verify session + admin role via tenant_memberships
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { data: membership } = await supabase
+    .from("tenant_memberships")
+    .select("role")
+    .eq("user_id", user.id)
+    .in("role", ["admin", "super_admin"])
+    .limit(1)
+    .single();
+
+  if (!membership) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const admin = createAdminClient();

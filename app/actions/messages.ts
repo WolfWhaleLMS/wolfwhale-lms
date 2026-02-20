@@ -88,7 +88,8 @@ export async function createDirectMessage(recipientId: string) {
   // Filter for conversations that also include the recipient
   if (existing) {
     for (const conv of existing) {
-      const members = (conv as any).conversation_members as { user_id: string }[]
+      // Supabase !inner join returns conversation_members as a nested array
+      const members = (conv as unknown as { id: string; conversation_members: { user_id: string }[] }).conversation_members
       if (members.some((m) => m.user_id === recipientId)) {
         return conv.id
       }

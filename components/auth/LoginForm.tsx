@@ -120,6 +120,8 @@ export function LoginForm() {
                       autoComplete="username"
                       autoFocus
                       disabled={isLoading}
+                      aria-required="true"
+                      aria-invalid={!!form.formState.errors.email}
                       className="pl-10 bg-white/80 border-[#00BFFF]/20 text-[#0A2540] placeholder:text-[#0A2540]/50 focus:border-[#00BFFF] focus:ring-[#00BFFF]/30"
                       {...field}
                     />
@@ -152,6 +154,8 @@ export function LoginForm() {
                       placeholder="••••••••"
                       autoComplete="current-password"
                       disabled={isLoading}
+                      aria-required="true"
+                      aria-invalid={!!form.formState.errors.password}
                       className="pl-10 bg-white/80 border-[#00BFFF]/20 text-[#0A2540] placeholder:text-[#0A2540]/50 focus:border-[#00BFFF] focus:ring-[#00BFFF]/30"
                       {...field}
                     />
@@ -163,7 +167,7 @@ export function LoginForm() {
           />
 
           {error && (
-            <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-200 p-3 rounded-lg">
+            <div role="alert" className="flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-200 p-3 rounded-lg">
               <AlertCircle className="h-4 w-4 shrink-0" />
               <span>{error}</span>
             </div>

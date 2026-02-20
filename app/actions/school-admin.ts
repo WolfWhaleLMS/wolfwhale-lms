@@ -72,27 +72,31 @@ export async function getTenantUsers(filters?: {
   if (!memberships || memberships.length === 0) return []
 
   // Fetch profiles for the user_ids we got
-  const userIds = memberships.map((m: any) => m.user_id).filter(Boolean)
+  const userIds = memberships.map((m) => (m as { user_id: string }).user_id).filter(Boolean)
   const { data: profiles } = await supabase
     .from('profiles')
     .select('id, full_name, first_name, last_name, avatar_url, grade_level')
     .in('id', userIds)
 
-  const profilesMap: Record<string, any> = {}
+  type ProfileRecord = { id: string; full_name: string | null; first_name: string | null; last_name: string | null; avatar_url: string | null; grade_level: string | null }
+  const profilesMap: Record<string, ProfileRecord> = {}
   for (const p of profiles ?? []) {
     profilesMap[p.id] = p
   }
 
   // Merge and apply search filter (search is done in JS since it spans two tables)
-  let results = memberships.map((m: any) => ({
-    ...m,
-    profiles: profilesMap[m.user_id] ?? null,
-  }))
+  let results = memberships.map((m) => {
+    const membership = m as { user_id: string; [key: string]: unknown }
+    return {
+      ...membership,
+      profiles: profilesMap[membership.user_id] ?? null,
+    }
+  })
 
   if (filters?.search) {
     const search = filters.search.toLowerCase()
-    results = results.filter((r: any) => {
-      const name = (r.profiles?.full_name || '').toLowerCase()
+    results = results.filter((r) => {
+      const name = ((r.profiles as ProfileRecord | null)?.full_name || '').toLowerCase()
       return name.includes(search)
     })
   }

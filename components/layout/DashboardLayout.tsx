@@ -54,6 +54,14 @@ export function DashboardLayout({
 
   return (
     <div className="relative flex h-screen overflow-hidden bg-background max-w-[100vw]" data-role={role}>
+      {/* Skip to main content link */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:shadow-lg focus:outline-none"
+      >
+        Skip to main content
+      </a>
+
       {/* Chrome texture background */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
@@ -136,7 +144,7 @@ export function DashboardLayout({
 
         <OfflineStatusBar />
 
-        <main className="relative flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-4 md:p-6 lg:p-8">
+        <main id="main-content" className="relative flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-4 md:p-6 lg:p-8">
           {/* Subtle glass reflection gradient overlay */}
           <div className="glass-reflection pointer-events-none absolute inset-0 z-0" aria-hidden="true" />
           <div className="relative z-10">

@@ -101,8 +101,8 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
   }
 
   // Fetch profiles for the user_ids we got from memberships
-  const userIds = (memberships ?? []).map((m: any) => m.user_id).filter(Boolean)
-  let profilesMap: Record<string, any> = {}
+  const userIds = (memberships ?? []).map((m) => (m as { user_id: string }).user_id).filter(Boolean)
+  const profilesMap: Record<string, { id: string; full_name: string | null; avatar_url: string | null; grade_level: string | null }> = {}
 
   if (userIds.length > 0) {
     const { data: profiles } = await supabase
@@ -117,19 +117,20 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
 
   // Merge memberships with profile data
   const users = (memberships ?? [])
-    .map((m: any) => {
-      const profile = profilesMap[m.user_id]
+    .map((m) => {
+      const membership = m as { user_id: string; role: string; status: string; joined_at: string }
+      const profile = profilesMap[membership.user_id]
       return {
-        id: m.user_id,
+        id: membership.user_id,
         full_name: profile?.full_name ?? null,
         avatar_url: profile?.avatar_url ?? null,
         grade_level: profile?.grade_level ?? null,
-        role: m.role ?? 'student',
-        is_active: m.status === 'active',
-        created_at: m.joined_at,
+        role: membership.role ?? 'student',
+        is_active: membership.status === 'active',
+        created_at: membership.joined_at,
       }
     })
-    .filter((u: any) => {
+    .filter((u) => {
       if (!search) return true
       const name = (u.full_name || '').toLowerCase()
       return name.includes(search.toLowerCase())

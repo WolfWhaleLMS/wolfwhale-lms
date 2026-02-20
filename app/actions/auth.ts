@@ -33,6 +33,18 @@ export async function loginUser(formData: z.infer<typeof loginSchema>) {
   })
 
   if (error) {
+    // Log failed login attempt for security auditing
+    try {
+      const { createAdminClient } = await import('@/lib/supabase/admin')
+      const admin = createAdminClient()
+      await admin.from('audit_logs').insert({
+        action: 'user.login_failed',
+        details: { email: formData.email, reason: error.message },
+      })
+    } catch {
+      // Don't block login flow if audit logging fails
+      console.error('[auth] Failed to log failed login attempt')
+    }
     return { error: error.message }
   }
 

@@ -12,9 +12,9 @@ import { getActionContext, requireTeacher } from '@/lib/actions/context'
 
 function sanitizeLessonContent(content: unknown[]): unknown[] {
   if (!Array.isArray(content)) return []
-  return content.map((block: any) => {
+  return content.map((block) => {
     if (!block || typeof block !== 'object') return block
-    const sanitized = { ...block }
+    const sanitized = { ...(block as Record<string, unknown>) }
     // Sanitize any HTML content
     if (typeof sanitized.content === 'string') {
       sanitized.content = sanitizeRichText(sanitized.content)
@@ -194,7 +194,7 @@ export async function getLessonWithNavigation(lessonId: string, courseId: string
 interface CreateLessonInput {
   title: string
   description?: string
-  content?: any
+  content?: unknown[]
   learning_objectives?: string[]
   duration_minutes?: number
   status?: string

@@ -12,6 +12,17 @@ import {
   BarChart3,
 } from 'lucide-react'
 
+interface AttendanceRecord {
+  id: string
+  attendance_date: string | null
+  status: string | null
+  notes: string | null
+  student_id: string
+  course_id: string
+  profiles: { full_name: string | null } | null
+  courses: { name: string | null } | null
+}
+
 const STATUS_STYLES: Record<string, string> = {
   present:
     'bg-green-100 text-green-700 dark:bg-green-950/50 dark:text-green-400',
@@ -51,7 +62,7 @@ export default async function AdminAttendancePage() {
   }
 
   // Fetch recent attendance records directly
-  let recentRecords: any[] = []
+  let recentRecords: AttendanceRecord[] = []
 
   if (tenantId) {
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
@@ -69,7 +80,7 @@ export default async function AdminAttendancePage() {
         .order('attendance_date', { ascending: false })
         .limit(50)
 
-      recentRecords = data ?? []
+      recentRecords = (data ?? []) as unknown as AttendanceRecord[]
     } catch {
       // Table may not exist or be empty
     }
@@ -267,11 +278,11 @@ export default async function AdminAttendancePage() {
                   </td>
                 </tr>
               ) : (
-                recentRecords.map((record: any) => {
+                recentRecords.map((record) => {
                   const studentName =
-                    (record.profiles as any)?.full_name ?? 'Unknown Student'
+                    record.profiles?.full_name ?? 'Unknown Student'
                   const courseName =
-                    (record.courses as any)?.name ?? 'Unknown Course'
+                    record.courses?.name ?? 'Unknown Course'
                   const status = record.status ?? 'unknown'
                   const statusStyle =
                     STATUS_STYLES[status] ?? 'bg-muted text-muted-foreground'

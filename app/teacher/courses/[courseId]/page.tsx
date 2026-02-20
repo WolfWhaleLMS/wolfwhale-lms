@@ -84,14 +84,21 @@ export default async function TeacherCourseDetailPage({
   const assignmentCount = assignments.length
 
   // Get student profiles
+  interface StudentProfile {
+    id: string
+    first_name: string | null
+    last_name: string | null
+    avatar_url: string | null
+  }
+
   const studentIds = enrollments.map((e) => e.student_id)
-  let studentProfiles: any[] = []
+  let studentProfiles: StudentProfile[] = []
   if (studentIds.length > 0) {
     const { data: profiles } = await supabase
       .from('profiles')
       .select('id, first_name, last_name, avatar_url')
       .in('id', studentIds)
-    studentProfiles = profiles || []
+    studentProfiles = (profiles || []) as StudentProfile[]
   }
 
   const enrolledStudents = enrollments.map((enrollment) => {

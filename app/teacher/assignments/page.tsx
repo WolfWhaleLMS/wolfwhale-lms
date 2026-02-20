@@ -45,7 +45,20 @@ export default async function TeacherAllAssignmentsPage() {
   const courseMap = new Map(courseList.map((c) => [c.id, c.name]))
 
   // Fetch all assignments for those courses with submission counts
-  let assignments: any[] = []
+  interface AssignmentWithMeta {
+    id: string
+    title: string
+    course_id: string
+    type: string
+    due_date: string | null
+    max_points: number
+    status: string
+    created_at: string
+    courseName: string
+    submissionCount: number
+  }
+
+  let assignments: AssignmentWithMeta[] = []
 
   if (courseIds.length > 0) {
     const { data: assignmentData } = await supabase
@@ -66,14 +79,21 @@ export default async function TeacherAllAssignmentsPage() {
       .order('due_date', { ascending: false, nullsFirst: false })
 
     assignments = (assignmentData || []).map((a) => ({
-      ...a,
+      id: a.id,
+      title: a.title,
+      course_id: a.course_id,
+      type: a.type,
+      due_date: a.due_date,
+      max_points: a.max_points,
+      status: a.status,
+      created_at: a.created_at,
       courseName: courseMap.get(a.course_id) || 'Unknown Course',
-      submissionCount: a.submissions?.[0]?.count ?? 0,
+      submissionCount: (a.submissions as unknown as { count: number }[])?.[0]?.count ?? 0,
     }))
   }
 
   // Determine assignment display status
-  function getAssignmentStatus(assignment: any) {
+  function getAssignmentStatus(assignment: AssignmentWithMeta) {
     if (assignment.status === 'draft') return 'draft'
     if (!assignment.due_date) return 'published'
     const now = new Date()

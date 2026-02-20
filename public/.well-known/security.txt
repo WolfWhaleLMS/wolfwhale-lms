@@ -1,0 +1,6 @@
+# WolfWhale LMS Security Contact (RFC 9116)
+# https://securitytxt.org/
+
+Contact: mailto:security@wolfwhale.ca
+Preferred-Languages: en
+Expires: 2027-02-19T00:00:00.000Z

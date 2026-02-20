@@ -15,6 +15,11 @@ export interface UserDataExport {
   enrollments: Record<string, unknown>[]
   consentRecords: Record<string, unknown>[]
   auditLogs: Record<string, unknown>[]
+  quizAttempts: Record<string, unknown>[]
+  lessonProgress: Record<string, unknown>[]
+  skillTreeProgress: Record<string, unknown>[]
+  achievements: Record<string, unknown>[]
+  gamificationData: Record<string, unknown>[]
 }
 
 /**
@@ -46,6 +51,11 @@ export async function exportUserData(
     enrollmentsResult,
     consentRecordsResult,
     auditLogsResult,
+    quizAttemptsResult,
+    lessonProgressResult,
+    skillTreeProgressResult,
+    achievementsResult,
+    xpDataResult,
   ] = await Promise.all([
     // Profile
     supabase
@@ -115,6 +125,41 @@ export async function exportUserData(
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
       .limit(500),
+
+    // Quiz attempts (with answers)
+    supabase
+      .from('quiz_attempts')
+      .select('*')
+      .eq('student_id', userId)
+      .order('started_at', { ascending: false }),
+
+    // Lesson progress
+    supabase
+      .from('lesson_progress')
+      .select('*')
+      .eq('user_id', userId)
+      .order('last_accessed_at', { ascending: false }),
+
+    // Skill tree progress
+    supabase
+      .from('student_skill_progress')
+      .select('*')
+      .eq('student_id', userId)
+      .order('updated_at', { ascending: false }),
+
+    // Achievements
+    supabase
+      .from('student_achievements')
+      .select('*')
+      .eq('student_id', userId)
+      .order('unlocked_at', { ascending: false }),
+
+    // Gamification data (XP, coins, pets, transactions)
+    supabase
+      .from('student_xp')
+      .select('*')
+      .eq('student_id', userId)
+      .single(),
   ])
 
   return {
@@ -131,6 +176,11 @@ export async function exportUserData(
     enrollments: enrollmentsResult.data ?? [],
     consentRecords: (consentRecordsResult.data ?? []) as Record<string, unknown>[],
     auditLogs: (auditLogsResult.data ?? []) as Record<string, unknown>[],
+    quizAttempts: quizAttemptsResult.data ?? [],
+    lessonProgress: lessonProgressResult.data ?? [],
+    skillTreeProgress: skillTreeProgressResult.data ?? [],
+    achievements: achievementsResult.data ?? [],
+    gamificationData: xpDataResult.data ? [xpDataResult.data] : [],
   }
 }
 

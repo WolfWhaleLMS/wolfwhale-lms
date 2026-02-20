@@ -49,13 +49,25 @@ export default async function StudentCoursesPage() {
     .eq('status', 'active')
     .order('enrolled_at', { ascending: false })
 
+  // Supabase returns courses as a nested join object; cast to expected shape
   const courseData = (enrollments || [])
     .filter((e) => e.courses)
-    .map((e) => ({
-      enrollment_id: e.id,
-      enrolled_at: e.enrolled_at,
-      ...(e.courses as any),
-    }))
+    .map((e) => {
+      const course = e.courses as unknown as {
+        id: string
+        name: string
+        description: string | null
+        subject: string | null
+        grade_level: string | null
+        created_by: string
+        status: string
+      }
+      return {
+        enrollment_id: e.id,
+        enrolled_at: e.enrolled_at,
+        ...course,
+      }
+    })
 
   // Get teacher names, lesson counts, and progress
   const teacherIds = [...new Set(courseData.map((c) => c.created_by))]

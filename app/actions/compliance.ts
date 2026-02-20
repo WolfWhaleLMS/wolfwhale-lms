@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { headers } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { exportUserData } from '@/lib/compliance/data-export'
@@ -474,6 +475,50 @@ export async function processDataRequest(
 ): Promise<{ success: boolean; error: string | null }> {
   try {
     const { supabase, user, tenantId } = await requireAdmin()
+
+    // If completing a deletion request, cascade delete user data
+    if (status === 'completed') {
+      // First, get the request to check its type
+      const { data: request } = await supabase
+        .from('data_deletion_requests')
+        .select('request_type, target_user_id')
+        .eq('id', requestId)
+        .eq('tenant_id', tenantId)
+        .single()
+
+      if (request?.request_type === 'deletion') {
+        const targetUserId = request.target_user_id
+        // Delete user data across all tables (order matters for FK constraints)
+        // These should use the admin client to bypass RLS
+        const adminDb = createAdminClient()
+
+        await Promise.all([
+          adminDb.from('quiz_attempts').delete().eq('student_id', targetUserId),
+          adminDb.from('submissions').delete().eq('student_id', targetUserId),
+          adminDb.from('grades').delete().eq('student_id', targetUserId),
+          adminDb.from('attendance_records').delete().eq('student_id', targetUserId),
+          adminDb.from('lesson_progress').delete().eq('user_id', targetUserId),
+          adminDb.from('course_enrollments').delete().eq('student_id', targetUserId),
+          adminDb.from('notifications').delete().eq('user_id', targetUserId),
+          adminDb.from('messages').delete().eq('sender_id', targetUserId),
+          adminDb.from('student_achievements').delete().eq('student_id', targetUserId),
+          adminDb.from('student_skill_progress').delete().eq('student_id', targetUserId),
+          adminDb.from('student_xp').delete().eq('student_id', targetUserId),
+          adminDb.from('xp_transactions').delete().eq('student_id', targetUserId),
+          adminDb.from('coin_transactions').delete().eq('student_id', targetUserId),
+          adminDb.from('student_pets').delete().eq('student_id', targetUserId),
+          adminDb.from('consent_records').delete().eq('student_id', targetUserId),
+        ])
+
+        // Log the deletion
+        await logAuditEvent({
+          action: 'data.delete',
+          resourceType: 'user_data',
+          resourceId: targetUserId,
+          details: { deletion_type: 'full_cascade', request_id: requestId },
+        })
+      }
+    }
 
     const { error } = await supabase
       .from('data_deletion_requests')
