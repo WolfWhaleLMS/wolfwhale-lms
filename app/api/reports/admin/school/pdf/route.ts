@@ -1,3 +1,5 @@
+export const maxDuration = 30
+
 import React from 'react'
 import { NextResponse } from 'next/server'
 import { getAdminSchoolReport } from '@/app/actions/reports'

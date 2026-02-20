@@ -2,7 +2,7 @@
 
 import { z } from 'zod'
 import { randomBytes } from 'crypto'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
 import { sanitizeText } from '@/lib/sanitize'
 import { rateLimitAction } from '@/lib/rate-limit-action'
 import { getActionContext, requireTeacher } from '@/lib/actions/context'
@@ -309,6 +309,8 @@ export async function createCourse(input: CreateCourseInput) {
   })
 
   revalidatePath('/teacher/courses')
+  updateTag('dashboard-stats')
+  updateTag('teacher-dashboard')
   return { success: true, courseId: course.id }
 }
 
@@ -366,6 +368,7 @@ export async function updateCourse(
 
   revalidatePath(`/teacher/courses/${courseId}`)
   revalidatePath('/teacher/courses')
+  updateTag('teacher-dashboard')
   return { success: true }
 }
 
@@ -401,6 +404,8 @@ export async function deleteCourse(courseId: string) {
   }
 
   revalidatePath('/teacher/courses')
+  updateTag('dashboard-stats')
+  updateTag('teacher-dashboard')
   return { success: true }
 }
 
@@ -511,6 +516,8 @@ export async function enrollWithCode(code: string) {
   }
 
   revalidatePath('/student/courses')
+  updateTag('dashboard-stats')
+  updateTag('teacher-dashboard')
   return { success: true, courseId: classCode.course_id }
 }
 

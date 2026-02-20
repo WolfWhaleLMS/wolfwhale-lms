@@ -1,7 +1,7 @@
 'use server'
 
 import { z } from 'zod'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
 import { getLetterGrade } from '@/lib/config/constants'
 import { sanitizeText, sanitizeRichText } from '@/lib/sanitize'
 import { logAuditEvent } from '@/lib/compliance/audit-logger'
@@ -382,6 +382,8 @@ export async function gradeSubmission(
   revalidatePath(`/teacher/courses/${assignmentData.course_id}/assignments/${submission.assignment_id}/submissions`)
   revalidatePath('/teacher/gradebook')
   revalidatePath('/student/assignments')
+  updateTag('dashboard-stats')
+  updateTag('teacher-dashboard')
 
   return { success: true, data: result }
 }
@@ -447,6 +449,7 @@ export async function returnSubmission(submissionId: string, feedback: string) {
   revalidatePath(`/teacher/courses/${assignmentData.course_id}/assignments/${submission.assignment_id}/submissions`)
   revalidatePath('/student/assignments')
   revalidatePath(`/student/assignments/${submission.assignment_id}`)
+  updateTag('teacher-dashboard')
 
   return { success: true }
 }

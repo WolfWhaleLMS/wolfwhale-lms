@@ -4,7 +4,8 @@ import { z } from 'zod'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
+import { cachedQuery } from '@/lib/cache'
 import { rateLimitAction } from '@/lib/rate-limit-action'
 import { logAuditEvent } from '@/lib/compliance/audit-logger'
 import { sanitizeText } from '@/lib/sanitize'
@@ -173,6 +174,7 @@ export async function updateUserRole(userId: string, newRole: string) {
   })
 
   revalidatePath('/admin/users')
+  updateTag('dashboard-stats')
 }
 
 export async function deactivateUser(userId: string) {
@@ -201,6 +203,7 @@ export async function deactivateUser(userId: string) {
   })
 
   revalidatePath('/admin/users')
+  updateTag('dashboard-stats')
 }
 
 export async function getSeatUsage() {
@@ -357,6 +360,7 @@ export async function createUser(formData: {
 
   revalidatePath('/admin/users')
   revalidatePath('/admin/dashboard')
+  updateTag('dashboard-stats')
 
   return {
     success: true,
@@ -406,72 +410,79 @@ export async function getTenantClasses(filters?: {
 // ---------------------------------------------------------------------------
 
 export async function getDashboardStats() {
-  const { supabase, tenantId } = await getAdminContext()
+  const { tenantId } = await getAdminContext()
 
-  const [
-    studentCount,
-    teacherCount,
-    parentCount,
-    adminCount,
-    totalUserCount,
-    courseCountResult,
-    recentLoginsResult,
-  ] = await Promise.all([
-    supabase
-      .from('tenant_memberships')
-      .select('id', { count: 'exact', head: true })
-      .eq('tenant_id', tenantId)
-      .eq('role', 'student')
-      .eq('status', 'active'),
-    supabase
-      .from('tenant_memberships')
-      .select('id', { count: 'exact', head: true })
-      .eq('tenant_id', tenantId)
-      .eq('role', 'teacher')
-      .eq('status', 'active'),
-    supabase
-      .from('tenant_memberships')
-      .select('id', { count: 'exact', head: true })
-      .eq('tenant_id', tenantId)
-      .eq('role', 'parent')
-      .eq('status', 'active'),
-    supabase
-      .from('tenant_memberships')
-      .select('id', { count: 'exact', head: true })
-      .eq('tenant_id', tenantId)
-      .in('role', ['admin', 'super_admin'])
-      .eq('status', 'active'),
-    supabase
-      .from('tenant_memberships')
-      .select('id', { count: 'exact', head: true })
-      .eq('tenant_id', tenantId),
-    supabase
-      .from('courses')
-      .select('id', { count: 'exact', head: true })
-      .eq('tenant_id', tenantId),
-    supabase
-      .from('audit_logs')
-      .select('id', { count: 'exact', head: true })
-      .eq('tenant_id', tenantId)
-      .eq('action', 'user.login')
-      .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
-  ])
+  return cachedQuery(
+    async () => {
+      const supabase = createAdminClient()
 
-  // Build role counts from individual count queries (no unbounded fetch)
-  const roleCounts: Record<string, number> = {
-    student: studentCount.count ?? 0,
-    teacher: teacherCount.count ?? 0,
-    parent: parentCount.count ?? 0,
-    admin: adminCount.count ?? 0,
-  }
+      const [
+        studentCount,
+        teacherCount,
+        parentCount,
+        adminCount,
+        totalUserCount,
+        courseCountResult,
+        recentLoginsResult,
+      ] = await Promise.all([
+        supabase
+          .from('tenant_memberships')
+          .select('id', { count: 'exact', head: true })
+          .eq('tenant_id', tenantId)
+          .eq('role', 'student')
+          .eq('status', 'active'),
+        supabase
+          .from('tenant_memberships')
+          .select('id', { count: 'exact', head: true })
+          .eq('tenant_id', tenantId)
+          .eq('role', 'teacher')
+          .eq('status', 'active'),
+        supabase
+          .from('tenant_memberships')
+          .select('id', { count: 'exact', head: true })
+          .eq('tenant_id', tenantId)
+          .eq('role', 'parent')
+          .eq('status', 'active'),
+        supabase
+          .from('tenant_memberships')
+          .select('id', { count: 'exact', head: true })
+          .eq('tenant_id', tenantId)
+          .in('role', ['admin', 'super_admin'])
+          .eq('status', 'active'),
+        supabase
+          .from('tenant_memberships')
+          .select('id', { count: 'exact', head: true })
+          .eq('tenant_id', tenantId),
+        supabase
+          .from('courses')
+          .select('id', { count: 'exact', head: true })
+          .eq('tenant_id', tenantId),
+        supabase
+          .from('audit_logs')
+          .select('id', { count: 'exact', head: true })
+          .eq('tenant_id', tenantId)
+          .eq('action', 'user.login')
+          .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
+      ])
 
-  return {
-    totalUsers: totalUserCount.count ?? 0,
-    roleCounts,
-    totalCourses: courseCountResult.count ?? 0,
-    totalStudents: studentCount.count ?? 0,
-    weeklyLogins: recentLoginsResult.count ?? 0,
-  }
+      const roleCounts: Record<string, number> = {
+        student: studentCount.count ?? 0,
+        teacher: teacherCount.count ?? 0,
+        parent: parentCount.count ?? 0,
+        admin: adminCount.count ?? 0,
+      }
+
+      return {
+        totalUsers: totalUserCount.count ?? 0,
+        roleCounts,
+        totalCourses: courseCountResult.count ?? 0,
+        totalStudents: studentCount.count ?? 0,
+        weeklyLogins: recentLoginsResult.count ?? 0,
+      }
+    },
+    ['dashboard-stats', tenantId],
+    { revalidate: 60, tags: ['dashboard-stats'] }
+  )
 }
 
 export async function getEnrollmentTrends() {
@@ -498,29 +509,36 @@ export async function getEnrollmentTrends() {
 }
 
 export async function getAttendanceReport() {
-  const { supabase, tenantId } = await getAdminContext()
+  const { tenantId } = await getAdminContext()
 
-  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+  return cachedQuery(
+    async () => {
+      const supabase = createAdminClient()
+      const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
 
-  const { data } = await supabase
-    .from('attendance_records')
-    .select('status, attendance_date')
-    .eq('tenant_id', tenantId)
-    .gte('attendance_date', sevenDaysAgo)
+      const { data } = await supabase
+        .from('attendance_records')
+        .select('status, attendance_date')
+        .eq('tenant_id', tenantId)
+        .gte('attendance_date', sevenDaysAgo)
 
-  const records = data ?? []
-  const total = records.length
-  const present = records.filter((r) => r.status === 'present' || r.status === 'online').length
-  const absent = records.filter((r) => r.status === 'absent').length
-  const tardy = records.filter((r) => r.status === 'tardy').length
+      const records = data ?? []
+      const total = records.length
+      const present = records.filter((r) => r.status === 'present' || r.status === 'online').length
+      const absent = records.filter((r) => r.status === 'absent').length
+      const tardy = records.filter((r) => r.status === 'tardy').length
 
-  return {
-    total,
-    present,
-    absent,
-    tardy,
-    attendanceRate: total > 0 ? Math.round((present / total) * 100) : 0,
-  }
+      return {
+        total,
+        present,
+        absent,
+        tardy,
+        attendanceRate: total > 0 ? Math.round((present / total) * 100) : 0,
+      }
+    },
+    ['attendance-report', tenantId],
+    { revalidate: 60, tags: ['attendance-report'] }
+  )
 }
 
 // ---------------------------------------------------------------------------

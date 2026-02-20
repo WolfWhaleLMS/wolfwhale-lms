@@ -3,6 +3,8 @@ import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { cachedQuery } from '@/lib/cache'
 import {
   BookOpen,
   Users,
@@ -29,23 +31,12 @@ export default async function TeacherDashboardPage() {
   const headersList = await headers()
   const tenantId = headersList.get('x-tenant-id')
 
-  // Fetch teacher profile and courses in parallel to eliminate waterfall
-  const [profileResult, courseDataResult] = await Promise.all([
-    supabase
-      .from('profiles')
-      .select('first_name, last_name, full_name')
-      .eq('id', user.id)
-      .single(),
-    tenantId
-      ? supabase
-          .from('courses')
-          .select('id, name, status, subject')
-          .eq('tenant_id', tenantId)
-          .eq('created_by', user.id)
-          .neq('status', 'archived')
-          .order('created_at', { ascending: false })
-      : Promise.resolve({ data: null }),
-  ])
+  // Fetch teacher profile (uncached — lightweight single row)
+  const profileResult = await supabase
+    .from('profiles')
+    .select('first_name, last_name, full_name')
+    .eq('id', user.id)
+    .single()
 
   const profile = profileResult.data
 
@@ -59,7 +50,7 @@ export default async function TeacherDashboardPage() {
   const greeting =
     hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
 
-  // Fetch real data if tenant context exists
+  // Fetch dashboard data with caching (uses admin client to avoid request-scoped cookies)
   interface TeacherCourse {
     id: string
     name: string
@@ -80,102 +71,118 @@ export default async function TeacherDashboardPage() {
     courseId: string | undefined
   }
 
-  let courses: TeacherCourse[] = (courseDataResult.data || []) as TeacherCourse[]
-  let totalStudents = 0
-  let pendingGrading = 0
-  let recentSubmissions: RecentSubmission[] = []
+  const dashboardData = tenantId
+    ? await cachedQuery(
+        async () => {
+          const admin = createAdminClient()
 
-  if (tenantId) {
-    const courseIds = courses.map((c) => c.id)
-
-    if (courseIds.length > 0) {
-      // Get student counts, submissions, and grades in parallel
-      const [enrollmentResult, submissionResult, lessonResult] =
-        await Promise.all([
-          supabase
-            .from('course_enrollments')
-            .select('id, course_id')
-            .in('course_id', courseIds)
-            .eq('status', 'active'),
-          supabase
-            .from('submissions')
-            .select(
-              'id, assignment_id, student_id, status, submitted_at, content'
-            )
+          const { data: courseData } = await admin
+            .from('courses')
+            .select('id, name, status, subject')
             .eq('tenant_id', tenantId)
-            .in('course_id', courseIds)
-            .order('submitted_at', { ascending: false })
-            .limit(10),
-          supabase
-            .from('lessons')
-            .select('id, course_id')
-            .in('course_id', courseIds),
-        ])
+            .eq('created_by', user.id)
+            .neq('status', 'archived')
+            .order('created_at', { ascending: false })
 
-      const enrollments = enrollmentResult.data || []
-      totalStudents = new Set(enrollments.map((e) => e.id)).size
+          let courses: TeacherCourse[] = (courseData || []) as TeacherCourse[]
+          let totalStudents = 0
+          let pendingGrading = 0
+          let recentSubmissions: RecentSubmission[] = []
 
-      // Enrich courses with counts
-      const lessons = lessonResult.data || []
-      courses = courses.map((c) => ({
-        ...c,
-        studentCount: enrollments.filter((e) => e.course_id === c.id).length,
-        lessonCount: lessons.filter((l) => l.course_id === c.id).length,
-      }))
+          const courseIds = courses.map((c) => c.id)
 
-      // Count ungraded submissions
-      const submissions = submissionResult.data || []
-      pendingGrading = submissions.filter(
-        (s) => s.status === 'submitted'
-      ).length
+          if (courseIds.length > 0) {
+            const [enrollmentResult, submissionResult, lessonResult] =
+              await Promise.all([
+                admin
+                  .from('course_enrollments')
+                  .select('id, course_id')
+                  .in('course_id', courseIds)
+                  .eq('status', 'active'),
+                admin
+                  .from('submissions')
+                  .select(
+                    'id, assignment_id, student_id, status, submitted_at, content'
+                  )
+                  .eq('tenant_id', tenantId)
+                  .in('course_id', courseIds)
+                  .order('submitted_at', { ascending: false })
+                  .limit(10),
+                admin
+                  .from('lessons')
+                  .select('id, course_id')
+                  .in('course_id', courseIds),
+              ])
 
-      // Batch-fetch student profiles and assignment info in parallel
-      const studentIds = [
-        ...new Set(submissions.map((s) => s.student_id)),
-      ]
-      const assignmentIds = [
-        ...new Set(submissions.map((s) => s.assignment_id)),
-      ]
-      if (studentIds.length > 0) {
-        const [{ data: profiles }, { data: assignments }] = await Promise.all([
-          supabase
-            .from('profiles')
-            .select('id, first_name, last_name')
-            .in('id', studentIds),
-          supabase
-            .from('assignments')
-            .select('id, title, course_id')
-            .in('id', assignmentIds),
-        ])
+            const enrollments = enrollmentResult.data || []
+            totalStudents = new Set(enrollments.map((e) => e.id)).size
 
-        const profileMap = new Map(
-          (profiles || []).map((p) => [
-            p.id,
-            `${p.first_name || ''} ${p.last_name || ''}`.trim() || 'Student',
-          ])
-        )
+            const lessons = lessonResult.data || []
+            courses = courses.map((c) => ({
+              ...c,
+              studentCount: enrollments.filter((e) => e.course_id === c.id).length,
+              lessonCount: lessons.filter((l) => l.course_id === c.id).length,
+            }))
 
-        const assignmentMap = new Map(
-          (assignments || []).map((a) => [a.id, a])
-        )
-        const courseMap = new Map(courses.map((c) => [c.id, c.name]))
+            const submissions = submissionResult.data || []
+            pendingGrading = submissions.filter(
+              (s) => s.status === 'submitted'
+            ).length
 
-        recentSubmissions = submissions.slice(0, 5).map((s) => {
-          const assignment = assignmentMap.get(s.assignment_id)
-          return {
-            id: s.id,
-            studentName: profileMap.get(s.student_id) || 'Student',
-            assignmentTitle: assignment?.title || 'Assignment',
-            courseName: courseMap.get(assignment?.course_id) || 'Course',
-            submittedAt: s.submitted_at,
-            status: s.status,
-            assignmentId: s.assignment_id,
-            courseId: assignment?.course_id,
+            const studentIds = [
+              ...new Set(submissions.map((s) => s.student_id)),
+            ]
+            const assignmentIds = [
+              ...new Set(submissions.map((s) => s.assignment_id)),
+            ]
+            if (studentIds.length > 0) {
+              const [{ data: profiles }, { data: assignments }] = await Promise.all([
+                admin
+                  .from('profiles')
+                  .select('id, first_name, last_name')
+                  .in('id', studentIds),
+                admin
+                  .from('assignments')
+                  .select('id, title, course_id')
+                  .in('id', assignmentIds),
+              ])
+
+              const profileMap = new Map(
+                (profiles || []).map((p) => [
+                  p.id,
+                  `${p.first_name || ''} ${p.last_name || ''}`.trim() || 'Student',
+                ])
+              )
+
+              const assignmentMap = new Map(
+                (assignments || []).map((a) => [a.id, a])
+              )
+              const courseMap = new Map(courses.map((c) => [c.id, c.name]))
+
+              recentSubmissions = submissions.slice(0, 5).map((s) => {
+                const assignment = assignmentMap.get(s.assignment_id)
+                return {
+                  id: s.id,
+                  studentName: profileMap.get(s.student_id) || 'Student',
+                  assignmentTitle: assignment?.title || 'Assignment',
+                  courseName: courseMap.get(assignment?.course_id) || 'Course',
+                  submittedAt: s.submitted_at,
+                  status: s.status,
+                  assignmentId: s.assignment_id,
+                  courseId: assignment?.course_id,
+                }
+              })
+            }
           }
-        })
-      }
-    }
-  }
+
+          return { courses, totalStudents, pendingGrading, recentSubmissions }
+        },
+        ['teacher-dashboard', tenantId, user.id],
+        { revalidate: 30, tags: ['teacher-dashboard'] }
+      )
+    : { courses: [] as TeacherCourse[], totalStudents: 0, pendingGrading: 0, recentSubmissions: [] as RecentSubmission[] }
+
+  const { courses, totalStudents, pendingGrading, recentSubmissions } = dashboardData
 
   function formatTimeAgo(dateStr: string) {
     const date = new Date(dateStr)

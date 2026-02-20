@@ -1,3 +1,5 @@
+export const maxDuration = 30
+
 import React from 'react'
 import { NextRequest, NextResponse } from 'next/server'
 import { getParentProgressReport } from '@/app/actions/reports'

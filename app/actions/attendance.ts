@@ -2,7 +2,7 @@
 
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
 import { logAuditEvent } from '@/lib/compliance/audit-logger'
 import { rateLimitAction } from '@/lib/rate-limit-action'
 import { getActionContext } from '@/lib/actions/context'
@@ -83,6 +83,8 @@ export async function recordAttendance(
   })
 
   revalidatePath('/teacher/attendance')
+  updateTag('dashboard-stats')
+  updateTag('attendance-report')
 }
 
 // ---------------------------------------------------------------------------
