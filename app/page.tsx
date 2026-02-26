@@ -234,8 +234,8 @@ export default function LMSHubPage() {
               <GlowingLogo size={160} className="hidden sm:inline-flex" />
             </div>
 
-            {/* Heading */}
-            <div className="space-y-2 sm:space-y-3">
+            {/* Heading — relative z-10 so glow renders BEHIND the text */}
+            <div className="relative z-10 space-y-2 sm:space-y-3">
               <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white tracking-wide sm:tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                 WolfWhale
               </h1>
@@ -245,7 +245,7 @@ export default function LMSHubPage() {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col items-center gap-4 pt-4 sm:pt-6">
+            <div className="relative z-10 flex flex-col items-center gap-4 pt-4 sm:pt-6">
               <a
                 href="#features"
                 className="inline-flex items-center gap-2 px-8 py-3.5 sm:px-10 sm:py-4 rounded-xl btn-chrome-3d-dark text-white text-sm sm:text-base font-semibold"
