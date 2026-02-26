@@ -8,7 +8,7 @@ import { FAQAccordion } from '@/components/ui/FAQAccordion'
 
 export default function LMSHubPage() {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-white dark:bg-black">
+    <div className="min-h-screen relative overflow-x-hidden bg-white dark:bg-black">
       {/* Force scroll to top on every page load */}
       <script dangerouslySetInnerHTML={{ __html: `
         if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
