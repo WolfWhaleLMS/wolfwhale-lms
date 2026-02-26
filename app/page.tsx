@@ -6,12 +6,11 @@ import { GlowingLogo } from '@/components/ui/glowing-logo'
 export default function LMSHubPage() {
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ background: '#000000' }}>
-      {/* Scroll to top on load — prevents hash anchors from scrolling down on refresh */}
+      {/* Force scroll to top on every page load */}
       <script dangerouslySetInnerHTML={{ __html: `
-        if (window.location.hash) {
-          history.replaceState(null, '', window.location.pathname);
-          window.scrollTo(0, 0);
-        }
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
+        if (window.location.hash) history.replaceState(null, '', window.location.pathname);
       `}} />
       {/* LocalBusiness schema for local SEO */}
       <script
