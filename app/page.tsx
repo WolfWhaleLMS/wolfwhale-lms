@@ -47,125 +47,133 @@ export default function LMSHubPage() {
           "priceRange": "$$"
         }) }}
       />
-      {/* Corinthian Pillar Borders — Blueprint Schematic Style */}
-      <div className="fixed inset-y-0 left-0 w-[60px] sm:w-[80px] z-[5] pointer-events-none hidden sm:block text-gray-400 dark:text-white" aria-hidden="true">
-        <svg viewBox="0 0 80 1200" preserveAspectRatio="none" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="pillar-flute-l" x="0" y="0" width="8" height="20" patternUnits="userSpaceOnUse">
-              <path d="M4 0 Q0 10 4 20 Q8 10 4 0Z" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.15"/>
-            </pattern>
-          </defs>
-          {/* Base / Plinth */}
-          <rect x="5" y="1140" width="70" height="60" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.12"/>
-          <rect x="10" y="1145" width="60" height="10" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
-          <rect x="8" y="1155" width="64" height="5" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
-          {/* Torus molding base */}
-          <ellipse cx="40" cy="1140" rx="32" ry="4" fill="none" stroke="currentColor" strokeWidth="0.6" opacity="0.12"/>
-          <ellipse cx="40" cy="1135" rx="28" ry="3" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
-          {/* Column shaft with fluting */}
-          <rect x="15" y="180" width="50" height="955" fill="url(#pillar-flute-l)" opacity="0.5"/>
-          <line x1="15" y1="180" x2="15" y2="1135" stroke="currentColor" strokeWidth="0.6" opacity="0.12"/>
-          <line x1="65" y1="180" x2="65" y2="1135" stroke="currentColor" strokeWidth="0.6" opacity="0.12"/>
-          {/* Entasis lines (subtle curve of shaft) */}
-          <path d="M15 180 Q12 657 15 1135" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.08"/>
-          <path d="M65 180 Q68 657 65 1135" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.08"/>
-          {/* Fluting detail lines */}
-          {[20, 25, 30, 35, 40, 45, 50, 55, 60].map((x) => (
-            <line key={x} x1={x} y1="180" x2={x} y2="1135" stroke="currentColor" strokeWidth="0.2" opacity="0.06"/>
-          ))}
-          {/* Necking ring */}
-          <ellipse cx="40" cy="180" rx="26" ry="3" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.12"/>
-          <ellipse cx="40" cy="175" rx="24" ry="2.5" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.10"/>
-          {/* Capital — Acanthus leaf row 1 */}
-          <path d="M14 170 Q20 150 28 160 Q32 148 40 155 Q48 148 52 160 Q60 150 66 170" fill="none" stroke="currentColor" strokeWidth="0.6" opacity="0.14"/>
-          {/* Acanthus leaf details */}
-          <path d="M20 165 Q22 155 28 160" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
-          <path d="M32 162 Q35 152 40 155" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
-          <path d="M48 162 Q51 152 52 160" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
-          <path d="M56 165 Q58 155 62 165" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
-          {/* Capital — Acanthus leaf row 2 (taller) */}
-          <path d="M10 155 Q18 125 28 140 Q34 120 40 130 Q46 120 52 140 Q62 125 70 155" fill="none" stroke="currentColor" strokeWidth="0.6" opacity="0.14"/>
-          {/* Acanthus leaf inner veins */}
-          <path d="M18 145 Q22 132 28 140" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
-          <path d="M34 138 Q37 126 40 130" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
-          <path d="M46 138 Q49 126 52 140" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
-          <path d="M58 145 Q60 132 64 148" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
-          {/* Volutes (spiral scrolls) */}
-          <path d="M8 120 Q5 110 10 105 Q18 98 22 108 Q24 115 18 118 Q14 120 12 115" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.14"/>
-          <path d="M72 120 Q75 110 70 105 Q62 98 58 108 Q56 115 62 118 Q66 120 68 115" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.14"/>
-          {/* Volute center dots */}
-          <circle cx="14" cy="113" r="1.5" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.12"/>
-          <circle cx="66" cy="113" r="1.5" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.12"/>
-          {/* Helices (center flower) */}
-          <path d="M30 110 Q35 95 40 100 Q45 95 50 110" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.12"/>
-          <circle cx="40" cy="102" r="3" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.10"/>
-          {/* Abacus (top slab) */}
-          <rect x="3" y="90" width="74" height="12" fill="none" stroke="currentColor" strokeWidth="0.7" opacity="0.14"/>
-          <rect x="5" y="92" width="70" height="8" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.08"/>
-          {/* Entablature */}
-          <rect x="0" y="60" width="80" height="30" fill="none" stroke="currentColor" strokeWidth="0.7" opacity="0.12"/>
-          <line x1="0" y1="72" x2="80" y2="72" stroke="currentColor" strokeWidth="0.4" opacity="0.08"/>
-          <line x1="0" y1="80" x2="80" y2="80" stroke="currentColor" strokeWidth="0.4" opacity="0.08"/>
+      {/* Corinthian Pillar Borders — Colossal Blueprint Style */}
+      {/* Left Pillar — half off-screen for massive effect */}
+      <div className="fixed inset-y-0 -left-[80px] sm:-left-[60px] lg:-left-[40px] w-[200px] sm:w-[220px] lg:w-[240px] z-[5] pointer-events-none hidden md:flex flex-col opacity-[0.35] dark:opacity-[0.18]" aria-hidden="true">
+        {/* Capital (top) — fixed height */}
+        <svg viewBox="0 0 200 180" preserveAspectRatio="xMidYMin meet" className="w-full flex-shrink-0" style={{ height: '180px' }}>
+          {/* Cornice / Architrave */}
+          <rect x="0" y="0" width="200" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500 dark:text-white"/>
+          <line x1="0" y1="0" x2="200" y2="0" stroke="currentColor" strokeWidth="2.5" className="text-gray-500 dark:text-white"/>
+          <rect x="0" y="18" width="200" height="14" fill="none" stroke="currentColor" strokeWidth="1" className="text-gray-400 dark:text-white"/>
           {/* Dentil molding */}
-          {[5, 15, 25, 35, 45, 55, 65].map((x) => (
-            <rect key={x} x={x} y="74" width="5" height="5" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
+          {[5, 18, 31, 44, 57, 70, 83, 96, 109, 122, 135, 148, 161, 174, 187].map((x) => (
+            <rect key={x} x={x} y="34" width="8" height="8" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
           ))}
-          {/* Cornice top */}
-          <rect x="0" y="40" width="80" height="20" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
-          <path d="M0 40 L80 40" stroke="currentColor" strokeWidth="0.8" opacity="0.12"/>
-          {/* Blueprint dimension lines */}
-          <line x1="40" y1="40" x2="40" y2="1200" stroke="currentColor" strokeWidth="0.15" opacity="0.04" strokeDasharray="4 8"/>
+          {/* Abacus slab */}
+          <rect x="10" y="48" width="180" height="10" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500 dark:text-white"/>
+          {/* Volutes (large spiral scrolls) */}
+          <path d="M10 78 Q2 64 14 58 Q28 50 34 62 Q38 72 28 76 Q20 78 16 70" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500 dark:text-white"/>
+          <path d="M190 78 Q198 64 186 58 Q172 50 166 62 Q162 72 172 76 Q180 78 184 70" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500 dark:text-white"/>
+          {/* Volute eyes */}
+          <circle cx="20" cy="68" r="3" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          <circle cx="180" cy="68" r="3" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          {/* Center helices / rosette */}
+          <path d="M70 70 Q85 50 100 58 Q115 50 130 70" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gray-400 dark:text-white"/>
+          <circle cx="100" cy="60" r="5" fill="none" stroke="currentColor" strokeWidth="1" className="text-gray-400 dark:text-white"/>
+          <circle cx="100" cy="60" r="2" fill="currentColor" className="text-gray-300 dark:text-white"/>
+          {/* Acanthus leaves — row 2 (tall) */}
+          <path d="M14 100 Q30 60 50 80 Q65 48 80 68 Q90 48 100 58 Q110 48 120 68 Q135 48 150 80 Q170 60 186 100" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500 dark:text-white"/>
+          {/* Leaf veins */}
+          <path d="M30 88 Q38 68 50 80" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
+          <path d="M65 74 Q72 56 80 68" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
+          <path d="M90 62 Q95 52 100 58" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
+          <path d="M120 74 Q128 56 135 68" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
+          <path d="M160 88 Q168 68 175 90" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
+          {/* Acanthus leaves — row 1 */}
+          <path d="M24 120 Q36 96 54 108 Q64 90 80 100 Q92 90 100 96 Q108 90 120 100 Q136 90 146 108 Q164 96 176 120" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gray-400 dark:text-white"/>
+          {/* Astragal / necking rings */}
+          <ellipse cx="100" cy="135" rx="68" ry="6" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          <ellipse cx="100" cy="142" rx="62" ry="5" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
+          {/* Top of shaft */}
+          <line x1="38" y1="147" x2="38" y2="180" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          <line x1="162" y1="147" x2="162" y2="180" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+        </svg>
+        {/* Shaft — stretches full height */}
+        <div className="flex-1 relative">
+          <svg viewBox="0 0 200 100" preserveAspectRatio="none" className="w-full h-full">
+            {/* Main shaft outlines */}
+            <line x1="38" y1="0" x2="38" y2="100" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+            <line x1="162" y1="0" x2="162" y2="100" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+            {/* Fluting channels */}
+            {[50, 62, 74, 86, 100, 114, 126, 138, 150].map((x) => (
+              <line key={x} x1={x} y1="0" x2={x} y2="100" stroke="currentColor" strokeWidth="0.5" className="text-gray-300 dark:text-white"/>
+            ))}
+            {/* Entasis curves (subtle column bulge) */}
+            <path d="M38 0 Q32 50 38 100" fill="none" stroke="currentColor" strokeWidth="0.4" className="text-gray-300 dark:text-white"/>
+            <path d="M162 0 Q168 50 162 100" fill="none" stroke="currentColor" strokeWidth="0.4" className="text-gray-300 dark:text-white"/>
+            {/* Blueprint center line */}
+            <line x1="100" y1="0" x2="100" y2="100" stroke="currentColor" strokeWidth="0.3" strokeDasharray="1 3" className="text-gray-300 dark:text-white"/>
+          </svg>
+        </div>
+        {/* Base / Plinth — fixed height */}
+        <svg viewBox="0 0 200 80" preserveAspectRatio="xMidYMax meet" className="w-full flex-shrink-0" style={{ height: '80px' }}>
+          {/* Shaft ends */}
+          <line x1="38" y1="0" x2="38" y2="12" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          <line x1="162" y1="0" x2="162" y2="12" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          {/* Torus moldings */}
+          <ellipse cx="100" cy="12" rx="66" ry="6" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          <ellipse cx="100" cy="20" rx="72" ry="5" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
+          {/* Scotia groove */}
+          <ellipse cx="100" cy="28" rx="70" ry="3" fill="none" stroke="currentColor" strokeWidth="0.6" className="text-gray-300 dark:text-white"/>
+          {/* Plinth blocks */}
+          <rect x="16" y="32" width="168" height="12" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          <rect x="8" y="44" width="184" height="14" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500 dark:text-white"/>
+          <rect x="0" y="58" width="200" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500 dark:text-white"/>
+          <line x1="0" y1="68" x2="200" y2="68" stroke="currentColor" strokeWidth="0.6" className="text-gray-400 dark:text-white"/>
         </svg>
       </div>
-      <div className="fixed inset-y-0 right-0 w-[60px] sm:w-[80px] z-[5] pointer-events-none hidden sm:block text-gray-400 dark:text-white" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
-        <svg viewBox="0 0 80 1200" preserveAspectRatio="none" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="pillar-flute-r" x="0" y="0" width="8" height="20" patternUnits="userSpaceOnUse">
-              <path d="M4 0 Q0 10 4 20 Q8 10 4 0Z" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.15"/>
-            </pattern>
-          </defs>
-          <rect x="5" y="1140" width="70" height="60" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.12"/>
-          <rect x="10" y="1145" width="60" height="10" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
-          <rect x="8" y="1155" width="64" height="5" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
-          <ellipse cx="40" cy="1140" rx="32" ry="4" fill="none" stroke="currentColor" strokeWidth="0.6" opacity="0.12"/>
-          <ellipse cx="40" cy="1135" rx="28" ry="3" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
-          <rect x="15" y="180" width="50" height="955" fill="url(#pillar-flute-r)" opacity="0.5"/>
-          <line x1="15" y1="180" x2="15" y2="1135" stroke="currentColor" strokeWidth="0.6" opacity="0.12"/>
-          <line x1="65" y1="180" x2="65" y2="1135" stroke="currentColor" strokeWidth="0.6" opacity="0.12"/>
-          <path d="M15 180 Q12 657 15 1135" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.08"/>
-          <path d="M65 180 Q68 657 65 1135" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.08"/>
-          {[20, 25, 30, 35, 40, 45, 50, 55, 60].map((x) => (
-            <line key={x} x1={x} y1="180" x2={x} y2="1135" stroke="currentColor" strokeWidth="0.2" opacity="0.06"/>
+      {/* Right Pillar — mirrored colossal */}
+      <div className="fixed inset-y-0 -right-[80px] sm:-right-[60px] lg:-right-[40px] w-[200px] sm:w-[220px] lg:w-[240px] z-[5] pointer-events-none hidden md:flex flex-col opacity-[0.35] dark:opacity-[0.18]" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
+        <svg viewBox="0 0 200 180" preserveAspectRatio="xMidYMin meet" className="w-full flex-shrink-0" style={{ height: '180px' }}>
+          <rect x="0" y="0" width="200" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500 dark:text-white"/>
+          <line x1="0" y1="0" x2="200" y2="0" stroke="currentColor" strokeWidth="2.5" className="text-gray-500 dark:text-white"/>
+          <rect x="0" y="18" width="200" height="14" fill="none" stroke="currentColor" strokeWidth="1" className="text-gray-400 dark:text-white"/>
+          {[5, 18, 31, 44, 57, 70, 83, 96, 109, 122, 135, 148, 161, 174, 187].map((x) => (
+            <rect key={x} x={x} y="34" width="8" height="8" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
           ))}
-          <ellipse cx="40" cy="180" rx="26" ry="3" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.12"/>
-          <ellipse cx="40" cy="175" rx="24" ry="2.5" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.10"/>
-          <path d="M14 170 Q20 150 28 160 Q32 148 40 155 Q48 148 52 160 Q60 150 66 170" fill="none" stroke="currentColor" strokeWidth="0.6" opacity="0.14"/>
-          <path d="M20 165 Q22 155 28 160" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
-          <path d="M32 162 Q35 152 40 155" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
-          <path d="M48 162 Q51 152 52 160" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
-          <path d="M56 165 Q58 155 62 165" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
-          <path d="M10 155 Q18 125 28 140 Q34 120 40 130 Q46 120 52 140 Q62 125 70 155" fill="none" stroke="currentColor" strokeWidth="0.6" opacity="0.14"/>
-          <path d="M18 145 Q22 132 28 140" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
-          <path d="M34 138 Q37 126 40 130" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
-          <path d="M46 138 Q49 126 52 140" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
-          <path d="M58 145 Q60 132 64 148" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
-          <path d="M8 120 Q5 110 10 105 Q18 98 22 108 Q24 115 18 118 Q14 120 12 115" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.14"/>
-          <path d="M72 120 Q75 110 70 105 Q62 98 58 108 Q56 115 62 118 Q66 120 68 115" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.14"/>
-          <circle cx="14" cy="113" r="1.5" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.12"/>
-          <circle cx="66" cy="113" r="1.5" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.12"/>
-          <path d="M30 110 Q35 95 40 100 Q45 95 50 110" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.12"/>
-          <circle cx="40" cy="102" r="3" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.10"/>
-          <rect x="3" y="90" width="74" height="12" fill="none" stroke="currentColor" strokeWidth="0.7" opacity="0.14"/>
-          <rect x="5" y="92" width="70" height="8" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.08"/>
-          <rect x="0" y="60" width="80" height="30" fill="none" stroke="currentColor" strokeWidth="0.7" opacity="0.12"/>
-          <line x1="0" y1="72" x2="80" y2="72" stroke="currentColor" strokeWidth="0.4" opacity="0.08"/>
-          <line x1="0" y1="80" x2="80" y2="80" stroke="currentColor" strokeWidth="0.4" opacity="0.08"/>
-          {[5, 15, 25, 35, 45, 55, 65].map((x) => (
-            <rect key={x} x={x} y="74" width="5" height="5" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
-          ))}
-          <rect x="0" y="40" width="80" height="20" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
-          <path d="M0 40 L80 40" stroke="currentColor" strokeWidth="0.8" opacity="0.12"/>
-          <line x1="40" y1="40" x2="40" y2="1200" stroke="currentColor" strokeWidth="0.15" opacity="0.04" strokeDasharray="4 8"/>
+          <rect x="10" y="48" width="180" height="10" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500 dark:text-white"/>
+          <path d="M10 78 Q2 64 14 58 Q28 50 34 62 Q38 72 28 76 Q20 78 16 70" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500 dark:text-white"/>
+          <path d="M190 78 Q198 64 186 58 Q172 50 166 62 Q162 72 172 76 Q180 78 184 70" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500 dark:text-white"/>
+          <circle cx="20" cy="68" r="3" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          <circle cx="180" cy="68" r="3" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          <path d="M70 70 Q85 50 100 58 Q115 50 130 70" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gray-400 dark:text-white"/>
+          <circle cx="100" cy="60" r="5" fill="none" stroke="currentColor" strokeWidth="1" className="text-gray-400 dark:text-white"/>
+          <circle cx="100" cy="60" r="2" fill="currentColor" className="text-gray-300 dark:text-white"/>
+          <path d="M14 100 Q30 60 50 80 Q65 48 80 68 Q90 48 100 58 Q110 48 120 68 Q135 48 150 80 Q170 60 186 100" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500 dark:text-white"/>
+          <path d="M30 88 Q38 68 50 80" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
+          <path d="M65 74 Q72 56 80 68" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
+          <path d="M90 62 Q95 52 100 58" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
+          <path d="M120 74 Q128 56 135 68" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
+          <path d="M160 88 Q168 68 175 90" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
+          <path d="M24 120 Q36 96 54 108 Q64 90 80 100 Q92 90 100 96 Q108 90 120 100 Q136 90 146 108 Q164 96 176 120" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gray-400 dark:text-white"/>
+          <ellipse cx="100" cy="135" rx="68" ry="6" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          <ellipse cx="100" cy="142" rx="62" ry="5" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
+          <line x1="38" y1="147" x2="38" y2="180" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          <line x1="162" y1="147" x2="162" y2="180" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+        </svg>
+        <div className="flex-1 relative">
+          <svg viewBox="0 0 200 100" preserveAspectRatio="none" className="w-full h-full">
+            <line x1="38" y1="0" x2="38" y2="100" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+            <line x1="162" y1="0" x2="162" y2="100" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+            {[50, 62, 74, 86, 100, 114, 126, 138, 150].map((x) => (
+              <line key={x} x1={x} y1="0" x2={x} y2="100" stroke="currentColor" strokeWidth="0.5" className="text-gray-300 dark:text-white"/>
+            ))}
+            <path d="M38 0 Q32 50 38 100" fill="none" stroke="currentColor" strokeWidth="0.4" className="text-gray-300 dark:text-white"/>
+            <path d="M162 0 Q168 50 162 100" fill="none" stroke="currentColor" strokeWidth="0.4" className="text-gray-300 dark:text-white"/>
+            <line x1="100" y1="0" x2="100" y2="100" stroke="currentColor" strokeWidth="0.3" strokeDasharray="1 3" className="text-gray-300 dark:text-white"/>
+          </svg>
+        </div>
+        <svg viewBox="0 0 200 80" preserveAspectRatio="xMidYMax meet" className="w-full flex-shrink-0" style={{ height: '80px' }}>
+          <line x1="38" y1="0" x2="38" y2="12" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          <line x1="162" y1="0" x2="162" y2="12" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          <ellipse cx="100" cy="12" rx="66" ry="6" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          <ellipse cx="100" cy="20" rx="72" ry="5" fill="none" stroke="currentColor" strokeWidth="0.8" className="text-gray-400 dark:text-white"/>
+          <ellipse cx="100" cy="28" rx="70" ry="3" fill="none" stroke="currentColor" strokeWidth="0.6" className="text-gray-300 dark:text-white"/>
+          <rect x="16" y="32" width="168" height="12" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-gray-500 dark:text-white"/>
+          <rect x="8" y="44" width="184" height="14" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500 dark:text-white"/>
+          <rect x="0" y="58" width="200" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500 dark:text-white"/>
+          <line x1="0" y1="68" x2="200" y2="68" stroke="currentColor" strokeWidth="0.6" className="text-gray-400 dark:text-white"/>
         </svg>
       </div>
 
