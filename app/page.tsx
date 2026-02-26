@@ -1,7 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Shield, Mail, Phone, MapPin, Brain, WifiOff, Gamepad2, Bot, Smartphone, Monitor, Tablet, CheckCircle2, X as XIcon, Minus, Paintbrush, Flag, Globe, Heart, Code, Palette, Layers, Accessibility, Zap } from 'lucide-react'
+import { ArrowRight, Shield, Mail, Phone, MapPin, Brain, WifiOff, Gamepad2, Bot, Smartphone, Monitor, Tablet, CheckCircle2, X as XIcon, Minus, Paintbrush, Flag, Globe, Heart, Code, Palette, Layers, Accessibility, Zap, Linkedin, Twitter, ChevronDown, Feather, BookOpen, Users } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
+import { ContactForm } from '@/components/landing/ContactForm'
+import { FAQAccordion } from '@/components/ui/FAQAccordion'
 
 export default function LMSHubPage() {
   return (
@@ -139,8 +141,8 @@ export default function LMSHubPage() {
       </div>
 
       {/* Header / Nav */}
-      <header className="relative z-10 px-4 py-4 sm:px-6 sm:py-5">
-        <nav className="flex items-center justify-between">
+      <header className="sticky top-0 z-50 px-4 py-4 sm:px-6 sm:py-5 backdrop-blur-xl bg-black/80 border-b border-white/5">
+        <nav className="flex items-center justify-between max-w-6xl mx-auto">
           <Link href="/" className="inline-flex flex-col group shrink-0">
             <span className="text-sm sm:text-lg font-bold text-white group-hover:text-[#00BFFF] transition-colors tracking-normal uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
               WolfWhale
@@ -160,6 +162,12 @@ export default function LMSHubPage() {
             <a href="#about" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
               About
             </a>
+            <a href="#faq" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+              FAQ
+            </a>
+            <Link href="/sign-in" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+              Sign In
+            </Link>
             <a
               href="#contact"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl btn-chrome-3d-dark text-white text-sm font-semibold"
@@ -169,16 +177,21 @@ export default function LMSHubPage() {
           </div>
 
           {/* Mobile CTA */}
-          <a
-            href="#contact"
-            className="sm:hidden inline-flex items-center gap-2 px-3 py-2 rounded-xl btn-chrome-3d-dark text-white text-xs font-semibold"
-          >
-            Contact
-          </a>
+          <div className="sm:hidden flex items-center gap-3">
+            <Link href="/sign-in" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+              Sign In
+            </Link>
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl btn-chrome-3d-dark text-white text-xs font-semibold"
+            >
+              Contact
+            </a>
+          </div>
         </nav>
 
         {/* Mobile nav links */}
-        <div className="flex sm:hidden items-center justify-center gap-4 mt-3">
+        <div className="flex sm:hidden items-center justify-center gap-4 mt-3 max-w-6xl mx-auto">
           <a href="#features" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
             Features
           </a>
@@ -187,6 +200,9 @@ export default function LMSHubPage() {
           </a>
           <a href="#about" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
             About
+          </a>
+          <a href="#faq" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            FAQ
           </a>
         </div>
       </header>
@@ -320,6 +336,46 @@ export default function LMSHubPage() {
           </div>
         </section>
 
+        {/* Social Proof / Trust Section */}
+        <section id="trust" className="px-4 py-12 sm:py-20">
+          <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
+            <div className="text-center space-y-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
+                BUILT FOR EDUCATORS
+              </h2>
+              <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto">
+                Pilot program launching 2025 — we&apos;re partnering with forward-thinking schools across Canada.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+              {[
+                { stat: 'K-12 & Post-Secondary', label: 'Designed for all levels of education' },
+                { stat: 'Canadian Hosted', label: 'All data stays on Canadian soil' },
+                { stat: 'Free for Students', label: 'No cost barrier to learning' },
+              ].map(({ stat, label }) => (
+                <div
+                  key={stat}
+                  className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 text-center"
+                >
+                  <p className="text-lg sm:text-xl font-bold text-[#00BFFF] mb-1">{stat}</p>
+                  <p className="text-xs sm:text-sm text-white/60">{label}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl btn-chrome-3d-dark text-white text-sm font-semibold"
+              >
+                Join the Pilot Program
+                <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </section>
+
         {/* App Screenshots Section */}
         <section id="screenshots" className="px-4 py-12 sm:py-20">
           <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
@@ -421,66 +477,71 @@ export default function LMSHubPage() {
               </p>
             </div>
 
-            {/* Comparison Table */}
+            {/* Comparison Table — scrollable on mobile */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
-              {/* Table Header */}
-              <div className="grid grid-cols-6 gap-0 text-center border-b border-white/10">
-                <div className="p-3 sm:p-4 text-left text-xs sm:text-sm font-bold text-white/60 uppercase tracking-wider">
-                  Feature
-                </div>
-                <div className="p-3 sm:p-4 text-xs sm:text-sm font-normal text-[#8B5CF6] border-l border-white/5 bg-[#8B5CF6]/5 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
-                  WolfWhale
-                </div>
-                <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
-                  Canvas
-                </div>
-                <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
-                  Brightspace
-                </div>
-                <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
-                  Edsby
-                </div>
-                <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
-                  Moodle
-                </div>
-              </div>
-
-              {/* Table Rows */}
-              {[
-                { feature: 'Spaced Repetition Flashcards', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-                { feature: 'AI Tutoring', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-                { feature: 'Offline Learning', wolfwhale: true, canvas: 'partial', brightspace: false, edsby: false, moodle: 'partial' },
-                { feature: 'Native iOS App', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: 'partial' },
-                { feature: 'Gamification & Streaks', wolfwhale: true, canvas: false, brightspace: false, edsby: 'partial', moodle: 'partial' },
-                { feature: 'Canadian Data Hosting', wolfwhale: true, canvas: false, brightspace: true, edsby: true, moodle: 'partial' },
-                { feature: 'PIPEDA Compliant', wolfwhale: true, canvas: 'partial', brightspace: true, edsby: true, moodle: 'partial' },
-                { feature: 'Built-in Quiz Builder', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: true },
-                { feature: 'Real-time Collaboration', wolfwhale: true, canvas: true, brightspace: 'partial', edsby: 'partial', moodle: false },
-                { feature: 'Free for Students', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: true },
-              ].map(({ feature, wolfwhale, canvas, brightspace, edsby, moodle }, idx) => (
-                <div
-                  key={feature}
-                  className={`grid grid-cols-6 gap-0 text-center ${idx % 2 === 0 ? 'bg-white/[0.02]' : ''} ${idx < 9 ? 'border-b border-white/5' : ''}`}
-                >
-                  <div className="p-3 sm:p-4 text-left text-xs sm:text-sm text-white/80">
-                    {feature}
+              <div className="overflow-x-auto">
+                <div className="min-w-[600px]">
+                  {/* Table Header */}
+                  <div className="grid grid-cols-6 gap-0 text-center border-b border-white/10">
+                    <div className="p-3 sm:p-4 text-left text-xs sm:text-sm font-bold text-white/60 uppercase tracking-wider">
+                      Feature
+                    </div>
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-normal text-[#8B5CF6] border-l border-white/5 bg-[#8B5CF6]/5 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                      WolfWhale
+                    </div>
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
+                      Canvas
+                    </div>
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
+                      Brightspace
+                    </div>
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
+                      Edsby
+                    </div>
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
+                      Moodle
+                    </div>
                   </div>
-                  {[wolfwhale, canvas, brightspace, edsby, moodle].map((val, i) => (
+
+                  {/* Table Rows */}
+                  {[
+                    { feature: 'Spaced Repetition Flashcards', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+                    { feature: 'AI Tutoring', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+                    { feature: 'Offline Learning', wolfwhale: true, canvas: 'partial', brightspace: false, edsby: false, moodle: 'partial' },
+                    { feature: 'Native iOS App', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: 'partial' },
+                    { feature: 'Gamification & Streaks', wolfwhale: true, canvas: false, brightspace: false, edsby: 'partial', moodle: 'partial' },
+                    { feature: 'Canadian Data Hosting', wolfwhale: true, canvas: false, brightspace: true, edsby: true, moodle: 'partial' },
+                    { feature: 'PIPEDA Compliant', wolfwhale: true, canvas: 'partial', brightspace: true, edsby: true, moodle: 'partial' },
+                    { feature: 'Built-in Quiz Builder', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: true },
+                    { feature: 'Real-time Collaboration', wolfwhale: true, canvas: true, brightspace: 'partial', edsby: 'partial', moodle: false },
+                    { feature: 'Free for Students', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: true },
+                  ].map(({ feature, wolfwhale, canvas, brightspace, edsby, moodle }, idx) => (
                     <div
-                      key={i}
-                      className={`p-3 sm:p-4 flex items-center justify-center border-l border-white/5 ${i === 0 ? 'bg-[#8B5CF6]/5' : ''}`}
+                      key={feature}
+                      className={`grid grid-cols-6 gap-0 text-center ${idx % 2 === 0 ? 'bg-white/[0.02]' : ''} ${idx < 9 ? 'border-b border-white/5' : ''}`}
                     >
-                      {val === true ? (
-                        <CheckCircle2 className={`h-4 w-4 sm:h-5 sm:w-5 ${i === 0 ? 'text-[#8B5CF6]' : 'text-green-400/70'}`} />
-                      ) : val === 'partial' ? (
-                        <Minus className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400/60" />
-                      ) : (
-                        <XIcon className="h-4 w-4 sm:h-5 sm:w-5 text-white/20" />
-                      )}
+                      <div className="p-3 sm:p-4 text-left text-xs sm:text-sm text-white/80">
+                        {feature}
+                      </div>
+                      {[wolfwhale, canvas, brightspace, edsby, moodle].map((val, i) => (
+                        <div
+                          key={i}
+                          className={`p-3 sm:p-4 flex items-center justify-center border-l border-white/5 ${i === 0 ? 'bg-[#8B5CF6]/5' : ''}`}
+                        >
+                          {val === true ? (
+                            <CheckCircle2 className={`h-4 w-4 sm:h-5 sm:w-5 ${i === 0 ? 'text-[#8B5CF6]' : 'text-green-400/70'}`} />
+                          ) : val === 'partial' ? (
+                            <Minus className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400/60" />
+                          ) : (
+                            <XIcon className="h-4 w-4 sm:h-5 sm:w-5 text-white/20" />
+                          )}
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </div>
-              ))}
+              </div>
+              <p className="text-[10px] text-white/30 text-center py-2 sm:hidden">Swipe to see all competitors →</p>
             </div>
 
             <div className="text-center space-y-6">
@@ -531,10 +592,6 @@ export default function LMSHubPage() {
                   <div className="rounded-lg overflow-hidden border border-white/10 shadow-lg">
                     <Image src="/canada-flag.png" alt="Canadian Flag" width={256} height={128} className="w-24 sm:w-32 h-auto" />
                   </div>
-                  {/* Treaty 6 Territory Flag */}
-                  <div className="rounded-lg overflow-hidden border border-white/10 shadow-lg">
-                    <Image src="/treaty6-flag.png" alt="Treaty 6 Territory Flag" width={256} height={128} className="w-24 sm:w-32 h-auto" />
-                  </div>
                   <span className="text-xs text-white/40 tracking-widest uppercase">Est. 2024</span>
                 </div>
 
@@ -573,22 +630,170 @@ export default function LMSHubPage() {
           </div>
         </section>
 
-        {/* Contact CTA */}
-        <section id="contact" className="px-4 py-12 sm:py-16">
-          <div className="max-w-3xl mx-auto text-center space-y-4 sm:space-y-6">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white tracking-wider">
-              GET IN TOUCH
-            </h2>
-            <p className="text-sm sm:text-base text-white/70 max-w-lg mx-auto">
-              Interested in WolfWhale for your school or institution? We&apos;d love to hear from you.
+        {/* TRC Calls to Action Section */}
+        <section id="trc" className="px-4 py-12 sm:py-20">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gradient-to-br from-amber-900/10 to-orange-900/5 backdrop-blur-xl border border-amber-500/10 rounded-2xl p-6 sm:p-10 md:p-14 space-y-6 sm:space-y-8">
+              <div className="space-y-3 text-center">
+                <div className="inline-flex p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 mx-auto">
+                  <Feather className="h-6 w-6 text-amber-400" />
+                </div>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                  Responding to the TRC Calls to Action
+                </h2>
+                <p className="text-sm sm:text-base text-white/60 max-w-2xl mx-auto">
+                  The Truth and Reconciliation Commission&apos;s Calls to Action challenge all Canadians to build a more equitable education system. WolfWhale is designed with these commitments in mind.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                {[
+                  {
+                    icon: BookOpen,
+                    title: 'Indigenous Language Support',
+                    desc: 'Our platform supports curriculum delivery in Indigenous languages, responding to Calls #14-15 which call for preserving and revitalizing Indigenous languages through education.',
+                  },
+                  {
+                    icon: Users,
+                    title: 'Culturally Responsive Design',
+                    desc: 'Built to support culturally appropriate curricula as called for in Calls #10 and #62, with flexible content frameworks that respect diverse knowledge systems.',
+                  },
+                  {
+                    icon: WifiOff,
+                    title: 'Remote & Northern Access',
+                    desc: 'Offline learning ensures students in remote and northern communities have equal access to education, addressing the equity gaps highlighted in Calls #7-8.',
+                  },
+                  {
+                    icon: Heart,
+                    title: 'Partnership-Ready',
+                    desc: 'Designed to support partnerships with Indigenous education authorities and communities, aligned with Calls #9-12 on Indigenous control of Indigenous education.',
+                  },
+                ].map(({ icon: Icon, title, desc }) => (
+                  <div
+                    key={title}
+                    className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 sm:p-5"
+                  >
+                    <div className="inline-flex p-2 rounded-lg bg-amber-500/10 border border-amber-500/15 mb-3">
+                      <Icon className="h-4 w-4 text-amber-400" />
+                    </div>
+                    <h3 className="text-sm sm:text-base font-semibold text-white mb-1.5">{title}</h3>
+                    <p className="text-xs sm:text-sm text-white/55 leading-relaxed">{desc}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="text-center pt-2">
+                <a
+                  href="https://www2.gov.bc.ca/assets/gov/british-columbians-our-governments/indigenous-people/aboriginal-peoples-documents/calls_to_action_english2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm text-amber-400/80 hover:text-amber-400 transition-colors font-medium"
+                >
+                  Read the full TRC Calls to Action
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section id="faq" className="px-4 py-12 sm:py-20">
+          <div className="max-w-3xl mx-auto space-y-8 sm:space-y-12">
+            <div className="text-center space-y-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
+                FREQUENTLY ASKED QUESTIONS
+              </h2>
+              <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto">
+                Everything you need to know about WolfWhale LMS.
+              </p>
+            </div>
+
+            <FAQAccordion
+              sections={[
+                {
+                  id: 'pricing',
+                  heading: 'Pricing & Plans',
+                  items: [
+                    { q: 'Is WolfWhale free for students?', a: 'Yes. Students always access WolfWhale for free. We never charge learners to use our platform, including all core features like spaced repetition flashcards, AI tutoring, and offline learning.' },
+                    { q: 'How does institutional licensing work?', a: 'Schools and institutions pay a per-seat annual license that covers all teachers and administrative features. Volume pricing is available for school boards and districts. Contact us for a custom quote.' },
+                    { q: 'Is there a free trial?', a: 'Yes — we offer a full-featured pilot program so your school can evaluate WolfWhale before committing. Request a demo and we\'ll set you up.' },
+                    { q: 'Are there any hidden fees?', a: 'No. Your license includes all features, updates, Canadian hosting, and standard support. There are no add-on charges for core functionality.' },
+                  ],
+                },
+                {
+                  id: 'privacy',
+                  heading: 'Data & Privacy',
+                  items: [
+                    { q: 'Where is student data stored?', a: 'All data is stored exclusively on Canadian servers. We never transfer student data outside of Canada.' },
+                    { q: 'Is WolfWhale PIPEDA and FERPA compliant?', a: 'Yes. WolfWhale is fully compliant with PIPEDA (Canada\'s federal privacy law) and FERPA (U.S. student privacy standards). We undergo regular privacy audits.' },
+                    { q: 'Do you sell student data to third parties?', a: 'Absolutely not. Student data is never sold, shared, or used for advertising. Period. Your data belongs to you.' },
+                    { q: 'How is data encrypted?', a: 'All data is encrypted in transit (TLS 1.3) and at rest (AES-256). We follow industry best practices for data security and access controls.' },
+                  ],
+                },
+                {
+                  id: 'getting-started',
+                  heading: 'Getting Started',
+                  items: [
+                    { q: 'How long does onboarding take?', a: 'Most schools are fully onboarded within 2-4 weeks, including teacher training and content migration. Our team handles the heavy lifting.' },
+                    { q: 'Do you provide training for teachers?', a: 'Yes. Every license includes onboarding training sessions for educators. We also provide ongoing support documentation and video tutorials.' },
+                    { q: 'Can we migrate from our existing LMS?', a: 'Yes. We support migration from Canvas, Brightspace, Moodle, and other major platforms. Our team will help transfer your courses and data.' },
+                    { q: 'What support is available?', a: 'All institutions get email support with a 24-hour response time. Priority support with a dedicated account manager is available on enterprise plans.' },
+                  ],
+                },
+                {
+                  id: 'technical',
+                  heading: 'Technical',
+                  items: [
+                    { q: 'Does offline learning really work?', a: 'Yes. Students can download courses and study materials to their device for fully offline access. Progress syncs automatically when they reconnect.' },
+                    { q: 'What browsers are supported?', a: 'WolfWhale works on all modern browsers — Chrome, Safari, Firefox, and Edge. Our native iOS app is available for iPhone and iPad.' },
+                    { q: 'Is there an API for integrations?', a: 'Yes. We provide a REST API for integrating WolfWhale with your existing school systems, SIS platforms, and other tools.' },
+                    { q: 'What about Android support?', a: 'Our web app works great on Android devices through the browser. A dedicated Android app is on our roadmap.' },
+                  ],
+                },
+              ]}
+            />
+
+            {/* FAQ Schema for SEO */}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                  { "@type": "Question", "name": "Is WolfWhale free for students?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Students always access WolfWhale for free." } },
+                  { "@type": "Question", "name": "Where is student data stored?", "acceptedAnswer": { "@type": "Answer", "text": "All data is stored exclusively on Canadian servers." } },
+                  { "@type": "Question", "name": "Is WolfWhale PIPEDA and FERPA compliant?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. WolfWhale is fully compliant with PIPEDA and FERPA." } },
+                  { "@type": "Question", "name": "How long does onboarding take?", "acceptedAnswer": { "@type": "Answer", "text": "Most schools are fully onboarded within 2-4 weeks." } },
+                  { "@type": "Question", "name": "Does offline learning really work?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Students can download courses for fully offline access." } },
+                ]
+              }) }}
+            />
+          </div>
+        </section>
+
+        {/* Contact Form */}
+        <section id="contact" className="px-4 py-12 sm:py-20">
+          <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8">
+            <div className="text-center space-y-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
+                GET IN TOUCH
+              </h2>
+              <p className="text-sm sm:text-base text-white/70 max-w-lg mx-auto">
+                Interested in WolfWhale for your school or institution? Fill out the form below and we&apos;ll get back to you within 1-2 business days.
+              </p>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-8">
+              <ContactForm />
+            </div>
+
+            <p className="text-center text-xs text-white/40">
+              Or email us directly at{' '}
+              <a href="mailto:info@wolfwhale.ca" className="text-[#00BFFF]/70 hover:text-[#00BFFF] transition-colors">
+                info@wolfwhale.ca
+              </a>
             </p>
-            <a
-              href="mailto:info@wolfwhale.ca"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl btn-chrome-3d-dark text-white font-semibold"
-            >
-              <Mail className="h-5 w-5" />
-              info@wolfwhale.ca
-            </a>
           </div>
         </section>
       </main>
@@ -597,7 +802,7 @@ export default function LMSHubPage() {
       <footer className="relative z-10 p-6 pb-8">
         <div className="max-w-6xl mx-auto">
           <div className="h-px bg-white/10 mb-6" />
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-5">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex flex-col gap-1.5">
                 <p className="text-sm font-normal text-white/70 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>WolfWhale Inc.</p>
@@ -607,16 +812,29 @@ export default function LMSHubPage() {
                   <a href="tel:+13069815926" className="flex items-center gap-1 hover:text-[#00BFFF] transition-colors"><Phone className="h-3 w-3" /> +1 (306) 981-5926</a>
                 </div>
               </div>
-              <div className="flex gap-6">
-                <Link href="/privacy" className="text-sm text-white/60 hover:text-[#00BFFF] transition-colors">
-                  Privacy
-                </Link>
-                <Link href="/terms" className="text-sm text-white/60 hover:text-[#00BFFF] transition-colors">
-                  Terms
-                </Link>
-                <Link href="/help" className="text-sm text-white/60 hover:text-[#00BFFF] transition-colors">
-                  Help
-                </Link>
+              <div className="flex items-center gap-6">
+                <div className="flex gap-6">
+                  <Link href="/privacy" className="text-sm text-white/60 hover:text-[#00BFFF] transition-colors">
+                    Privacy
+                  </Link>
+                  <Link href="/terms" className="text-sm text-white/60 hover:text-[#00BFFF] transition-colors">
+                    Terms
+                  </Link>
+                  <Link href="/help" className="text-sm text-white/60 hover:text-[#00BFFF] transition-colors">
+                    Help
+                  </Link>
+                  <Link href="/sign-in" className="text-sm text-white/60 hover:text-[#00BFFF] transition-colors">
+                    Sign In
+                  </Link>
+                </div>
+                <div className="flex items-center gap-3">
+                  <a href="https://linkedin.com/company/wolfwhale" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-[#00BFFF] transition-colors" aria-label="LinkedIn">
+                    <Linkedin className="h-4 w-4" />
+                  </a>
+                  <a href="https://x.com/wolfwhale" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-[#00BFFF] transition-colors" aria-label="X (Twitter)">
+                    <Twitter className="h-4 w-4" />
+                  </a>
+                </div>
               </div>
             </div>
             <p className="text-xs text-white/40">
