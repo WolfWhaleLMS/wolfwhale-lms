@@ -236,8 +236,8 @@ export default function LMSHubPage() {
 
             {/* Heading */}
             <div className="space-y-2 sm:space-y-3">
-              <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white tracking-wide sm:tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
-                WOLFWHALE
+              <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white tracking-wide sm:tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                WolfWhale
               </h1>
               <p className="text-sm sm:text-lg md:text-xl text-white/90 tracking-[0.2em] uppercase font-medium">
                 Learning Management System
@@ -545,7 +545,7 @@ export default function LMSHubPage() {
           <div className="max-w-3xl mx-auto">
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg shadow-[#8B5CF6]/5 rounded-2xl p-5 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white tracking-wider">
-                ABOUT WOLFWHALE
+                About WolfWhale
               </h2>
               <div className="space-y-3 sm:space-y-4 text-sm sm:text-base text-white/75 leading-relaxed">
                 <p>

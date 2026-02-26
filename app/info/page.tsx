@@ -155,7 +155,7 @@ export default function InfoPage() {
               filter: 'drop-shadow(0 3px 12px rgba(139,92,246,0.3))',
             }}
           >
-            WOLFWHALE
+            WolfWhale
           </h1>
 
           <p className="text-lg md:text-xl text-white/80 mb-6 tracking-[0.15em] uppercase font-display font-bold">
