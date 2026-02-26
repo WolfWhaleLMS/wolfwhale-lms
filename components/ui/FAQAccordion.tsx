@@ -16,12 +16,12 @@ interface FAQSection {
 
 function AccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: boolean; onToggle: () => void }) {
   return (
-    <div className="border border-white/10 rounded-xl overflow-hidden transition-all">
+    <div className="border border-gray-200 dark:border-white/10 rounded-xl overflow-hidden transition-all">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-white/[0.03] transition-colors"
+        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-gray-50 dark:hover:bg-white/[0.03] transition-colors"
       >
-        <span className="font-semibold text-white text-sm sm:text-base">{item.q}</span>
+        <span className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">{item.q}</span>
         <ChevronDown
           className={`h-5 w-5 text-[#00BFFF] flex-shrink-0 transition-transform duration-300 ${
             isOpen ? 'rotate-180' : ''
@@ -33,7 +33,7 @@ function AccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: bool
           isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="px-5 pb-4 text-sm sm:text-base text-white/65 leading-relaxed">
+        <div className="px-5 pb-4 text-sm sm:text-base text-gray-600 dark:text-white/65 leading-relaxed">
           {item.a}
         </div>
       </div>
@@ -52,14 +52,14 @@ export function FAQAccordion({ sections }: { sections: FAQSection[] }) {
     <div className="space-y-8 sm:space-y-10">
       {sections.map((section) => (
         <div key={section.id}>
-          <h3 className="text-base sm:text-lg font-semibold text-white/90 mb-4 border-b border-white/10 pb-3">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-white/90 mb-4 border-b border-gray-200 dark:border-white/10 pb-3">
             {section.heading}
           </h3>
           <div className="space-y-3">
             {section.items.map((item, idx) => {
               const key = `${section.id}-${idx}`
               return (
-                <div key={key} className="bg-white/[0.03] rounded-xl">
+                <div key={key} className="bg-gray-50 dark:bg-white/[0.03] rounded-xl">
                   <AccordionItem
                     item={item}
                     isOpen={!!openItems[key]}

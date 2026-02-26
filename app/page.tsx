@@ -3,11 +3,12 @@ import Image from 'next/image'
 import { ArrowRight, Shield, Mail, Phone, MapPin, Brain, WifiOff, Gamepad2, Bot, Smartphone, Monitor, Tablet, CheckCircle2, X as XIcon, Minus, Paintbrush, Flag, Globe, Heart, Code, Palette, Layers, Accessibility, Zap, Linkedin, Twitter, ChevronDown, Feather, BookOpen, Users } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 import { ContactForm } from '@/components/landing/ContactForm'
+import { ThemeToggle } from '@/components/landing/ThemeToggle'
 import { FAQAccordion } from '@/components/ui/FAQAccordion'
 
 export default function LMSHubPage() {
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ background: '#000000' }}>
+    <div className="min-h-screen relative overflow-hidden bg-white dark:bg-black">
       {/* Force scroll to top on every page load */}
       <script dangerouslySetInnerHTML={{ __html: `
         if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -46,8 +47,8 @@ export default function LMSHubPage() {
           "priceRange": "$$"
         }) }}
       />
-      {/* Dark Background with subtle neon glows */}
-      <div className="fixed inset-0 z-0">
+      {/* Background with subtle neon glows (dark mode only) */}
+      <div className="fixed inset-0 z-0 hidden dark:block">
         {/* Pure black base */}
         <div className="absolute inset-0 bg-black" />
 
@@ -141,33 +142,34 @@ export default function LMSHubPage() {
       </div>
 
       {/* Header / Nav */}
-      <header className="sticky top-0 z-50 px-4 py-4 sm:px-6 sm:py-5 backdrop-blur-xl bg-black/80 border-b border-white/5">
+      <header className="sticky top-0 z-50 px-4 py-4 sm:px-6 sm:py-5 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-gray-200 dark:border-white/5">
         <nav className="flex items-center justify-between max-w-6xl mx-auto">
           <Link href="/" className="inline-flex flex-col group shrink-0">
-            <span className="text-sm sm:text-lg font-bold text-white group-hover:text-[#00BFFF] transition-colors tracking-normal uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+            <span className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-[#00BFFF] transition-colors tracking-normal uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
               WolfWhale
             </span>
-            <span className="text-[9px] sm:text-xs text-white/60 tracking-[0.15em] uppercase font-medium -mt-0.5">
+            <span className="text-[9px] sm:text-xs text-gray-500 dark:text-white/60 tracking-[0.15em] uppercase font-medium -mt-0.5">
               Learning Management System
             </span>
           </Link>
 
           <div className="hidden sm:flex items-center gap-6">
-            <a href="#features" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            <a href="#features" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
               Features
             </a>
-            <a href="#compare" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            <a href="#compare" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
               Compare
             </a>
-            <a href="#about" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            <a href="#about" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
               About
             </a>
-            <a href="#faq" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            <a href="#faq" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
               FAQ
             </a>
-            <Link href="/sign-in" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            <Link href="/sign-in" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
               Sign In
             </Link>
+            <ThemeToggle />
             <a
               href="#contact"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl btn-chrome-3d-dark text-white text-sm font-semibold"
@@ -178,7 +180,8 @@ export default function LMSHubPage() {
 
           {/* Mobile CTA */}
           <div className="sm:hidden flex items-center gap-3">
-            <Link href="/sign-in" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            <ThemeToggle />
+            <Link href="/sign-in" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
               Sign In
             </Link>
             <a
@@ -192,16 +195,16 @@ export default function LMSHubPage() {
 
         {/* Mobile nav links */}
         <div className="flex sm:hidden items-center justify-center gap-4 mt-3 max-w-6xl mx-auto">
-          <a href="#features" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+          <a href="#features" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
             Features
           </a>
-          <a href="#compare" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+          <a href="#compare" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
             Compare
           </a>
-          <a href="#about" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+          <a href="#about" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
             About
           </a>
-          <a href="#faq" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+          <a href="#faq" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
             FAQ
           </a>
         </div>
@@ -218,10 +221,10 @@ export default function LMSHubPage() {
 
             {/* Heading — relative z-10 so glow renders BEHIND the text */}
             <div className="relative z-10 space-y-1 sm:space-y-2">
-              <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-normal text-white tracking-[0.03em] sm:tracking-[0.05em] uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+              <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-normal text-gray-900 dark:text-white tracking-[0.03em] sm:tracking-[0.05em] uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                 WolfWhale
               </h1>
-              <p className="text-sm sm:text-lg md:text-xl text-white/70 tracking-[0.25em] uppercase font-normal">
+              <p className="text-sm sm:text-lg md:text-xl text-gray-500 dark:text-white/70 tracking-[0.25em] uppercase font-normal">
                 Learning Management System
               </p>
             </div>
@@ -239,7 +242,7 @@ export default function LMSHubPage() {
               {/* Secondary CTA — explore features */}
               <a
                 href="#features"
-                className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-[#00BFFF] transition-colors font-medium"
+                className="inline-flex items-center gap-1.5 text-sm text-gray-400 dark:text-white/50 hover:text-[#00BFFF] transition-colors font-medium"
               >
                 See Features
                 <ArrowRight className="h-4 w-4" />
@@ -268,10 +271,10 @@ export default function LMSHubPage() {
         <section id="features" className="px-4 py-12 sm:py-20">
           <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
                 KEY FEATURES
               </h2>
-              <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-xl mx-auto">
                 Everything educators and students need — built into one powerful platform.
               </p>
             </div>
@@ -317,7 +320,7 @@ export default function LMSHubPage() {
               ].map(({ icon: Icon, title, desc, color }) => (
                 <div
                   key={title}
-                  className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 hover:border-white/20 transition-all group"
+                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 sm:p-6 hover:border-gray-300 dark:hover:border-white/20 transition-all group"
                 >
                   <div
                     className="inline-flex p-3 rounded-xl mb-4 border transition-colors"
@@ -328,8 +331,8 @@ export default function LMSHubPage() {
                   >
                     <Icon className="h-6 w-6" style={{ color }} />
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
-                  <p className="text-sm text-white/65 leading-relaxed">{desc}</p>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-white/65 leading-relaxed">{desc}</p>
                 </div>
               ))}
             </div>
@@ -340,10 +343,10 @@ export default function LMSHubPage() {
         <section id="trust" className="px-4 py-12 sm:py-20">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
                 BUILT FOR EDUCATORS
               </h2>
-              <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-xl mx-auto">
                 Pilot program launching 2025 — we&apos;re partnering with forward-thinking schools across Canada.
               </p>
             </div>
@@ -356,10 +359,10 @@ export default function LMSHubPage() {
               ].map(({ stat, label }) => (
                 <div
                   key={stat}
-                  className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 text-center"
+                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 sm:p-6 text-center"
                 >
                   <p className="text-lg sm:text-xl font-bold text-[#00BFFF] mb-1">{stat}</p>
-                  <p className="text-xs sm:text-sm text-white/60">{label}</p>
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-white/60">{label}</p>
                 </div>
               ))}
             </div>
@@ -380,10 +383,10 @@ export default function LMSHubPage() {
         <section id="screenshots" className="px-4 py-12 sm:py-20">
           <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
                 APP PREVIEW
               </h2>
-              <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-xl mx-auto">
                 See WolfWhale LMS in action across all your devices.
               </p>
             </div>
@@ -391,39 +394,39 @@ export default function LMSHubPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
               {/* Screenshot 1 — Mobile */}
               <div className="flex flex-col items-center gap-4">
-                <div className="w-full aspect-[9/16] max-w-[280px] bg-white/5 border border-white/10 rounded-3xl overflow-hidden flex items-center justify-center">
+                <div className="w-full aspect-[9/16] max-w-[280px] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-3xl overflow-hidden flex items-center justify-center">
                   {/* Replace src with actual screenshot */}
                   <div className="text-center p-6 space-y-3">
-                    <Smartphone className="h-12 w-12 text-white/20 mx-auto" />
-                    <p className="text-xs text-white/30 uppercase tracking-wider">Mobile View</p>
+                    <Smartphone className="h-12 w-12 text-gray-300 dark:text-white/20 mx-auto" />
+                    <p className="text-xs text-gray-400 dark:text-white/30 uppercase tracking-wider">Mobile View</p>
                     <p className="text-[10px] text-white/20">Screenshot coming soon</p>
                   </div>
                 </div>
-                <p className="text-sm text-white/60 font-medium">iPhone</p>
+                <p className="text-sm text-gray-500 dark:text-white/60 font-medium">iPhone</p>
               </div>
 
               {/* Screenshot 2 — Tablet */}
               <div className="flex flex-col items-center gap-4">
-                <div className="w-full aspect-[3/4] max-w-[360px] bg-white/5 border border-white/10 rounded-3xl overflow-hidden flex items-center justify-center">
+                <div className="w-full aspect-[3/4] max-w-[360px] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-3xl overflow-hidden flex items-center justify-center">
                   <div className="text-center p-6 space-y-3">
-                    <Tablet className="h-12 w-12 text-white/20 mx-auto" />
-                    <p className="text-xs text-white/30 uppercase tracking-wider">Tablet View</p>
+                    <Tablet className="h-12 w-12 text-gray-300 dark:text-white/20 mx-auto" />
+                    <p className="text-xs text-gray-400 dark:text-white/30 uppercase tracking-wider">Tablet View</p>
                     <p className="text-[10px] text-white/20">Screenshot coming soon</p>
                   </div>
                 </div>
-                <p className="text-sm text-white/60 font-medium">iPad</p>
+                <p className="text-sm text-gray-500 dark:text-white/60 font-medium">iPad</p>
               </div>
 
               {/* Screenshot 3 — Desktop */}
               <div className="flex flex-col items-center gap-4">
-                <div className="w-full aspect-[16/10] bg-white/5 border border-white/10 rounded-2xl overflow-hidden flex items-center justify-center">
+                <div className="w-full aspect-[16/10] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden flex items-center justify-center">
                   <div className="text-center p-6 space-y-3">
-                    <Monitor className="h-12 w-12 text-white/20 mx-auto" />
-                    <p className="text-xs text-white/30 uppercase tracking-wider">Desktop View</p>
+                    <Monitor className="h-12 w-12 text-gray-300 dark:text-white/20 mx-auto" />
+                    <p className="text-xs text-gray-400 dark:text-white/30 uppercase tracking-wider">Desktop View</p>
                     <p className="text-[10px] text-white/20">Screenshot coming soon</p>
                   </div>
                 </div>
-                <p className="text-sm text-white/60 font-medium">Web Dashboard</p>
+                <p className="text-sm text-gray-500 dark:text-white/60 font-medium">Web Dashboard</p>
               </div>
             </div>
           </div>
@@ -433,10 +436,10 @@ export default function LMSHubPage() {
         <section id="design" className="px-4 py-12 sm:py-20">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                 Built by Design
               </h2>
-              <p className="text-sm sm:text-base text-white/60 max-w-2xl mx-auto">
+              <p className="text-sm sm:text-base text-gray-500 dark:text-white/60 max-w-2xl mx-auto">
                 Every pixel, interaction, and feature is intentional. WolfWhale is crafted with obsessive attention to detail — not assembled from templates.
               </p>
             </div>
@@ -452,13 +455,13 @@ export default function LMSHubPage() {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 hover:border-[#8B5CF6]/30 hover:shadow-lg hover:shadow-[#8B5CF6]/10 transition-all"
+                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 sm:p-6 hover:border-[#8B5CF6]/30 hover:shadow-lg hover:shadow-[#8B5CF6]/10 transition-all"
                 >
                   <div className="inline-flex p-2.5 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 mb-4">
                     <item.icon className="h-5 w-5 text-[#8B5CF6]" />
                   </div>
-                  <h3 className="text-sm sm:text-base font-semibold text-white mb-2">{item.title}</h3>
-                  <p className="text-xs sm:text-sm text-white/60 leading-relaxed">{item.desc}</p>
+                  <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-2">{item.title}</h3>
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-white/60 leading-relaxed">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -469,16 +472,16 @@ export default function LMSHubPage() {
         <section id="compare" className="px-4 py-12 sm:py-20">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
                 HOW WE COMPARE
               </h2>
-              <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-xl mx-auto">
                 See how WolfWhale stacks up against other learning management systems used in Canadian schools.
               </p>
             </div>
 
             {/* Comparison Table — scrollable on mobile */}
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
+            <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden">
               <div className="overflow-x-auto">
                 <div className="min-w-[600px]">
                   {/* Table Header */}
@@ -486,19 +489,19 @@ export default function LMSHubPage() {
                     <div className="p-3 sm:p-4 text-left text-xs sm:text-sm font-bold text-white/60 uppercase tracking-wider">
                       Feature
                     </div>
-                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-normal text-[#8B5CF6] border-l border-white/5 bg-[#8B5CF6]/5 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-normal text-[#8B5CF6] border-l border-gray-100 dark:border-white/5 bg-[#8B5CF6]/5 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                       WolfWhale
                     </div>
-                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-gray-100 dark:border-white/5">
                       Canvas
                     </div>
-                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-gray-100 dark:border-white/5">
                       Brightspace
                     </div>
-                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-gray-100 dark:border-white/5">
                       Edsby
                     </div>
-                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-gray-100 dark:border-white/5">
                       Moodle
                     </div>
                   </div>
@@ -518,15 +521,15 @@ export default function LMSHubPage() {
                   ].map(({ feature, wolfwhale, canvas, brightspace, edsby, moodle }, idx) => (
                     <div
                       key={feature}
-                      className={`grid grid-cols-6 gap-0 text-center ${idx % 2 === 0 ? 'bg-white/[0.02]' : ''} ${idx < 9 ? 'border-b border-white/5' : ''}`}
+                      className={`grid grid-cols-6 gap-0 text-center ${idx % 2 === 0 ? 'bg-white/[0.02]' : ''} ${idx < 9 ? 'border-b border-gray-100 dark:border-white/5' : ''}`}
                     >
-                      <div className="p-3 sm:p-4 text-left text-xs sm:text-sm text-white/80">
+                      <div className="p-3 sm:p-4 text-left text-xs sm:text-sm text-gray-700 dark:text-white/80">
                         {feature}
                       </div>
                       {[wolfwhale, canvas, brightspace, edsby, moodle].map((val, i) => (
                         <div
                           key={i}
-                          className={`p-3 sm:p-4 flex items-center justify-center border-l border-white/5 ${i === 0 ? 'bg-[#8B5CF6]/5' : ''}`}
+                          className={`p-3 sm:p-4 flex items-center justify-center border-l border-gray-100 dark:border-white/5 ${i === 0 ? 'bg-[#8B5CF6]/5' : ''}`}
                         >
                           {val === true ? (
                             <CheckCircle2 className={`h-4 w-4 sm:h-5 sm:w-5 ${i === 0 ? 'text-[#8B5CF6]' : 'text-green-400/70'}`} />
@@ -545,7 +548,7 @@ export default function LMSHubPage() {
             </div>
 
             <div className="text-center space-y-6">
-              <p className="text-xs text-white/40">
+              <p className="text-xs text-gray-400 dark:text-white/40">
                 Comparison based on publicly available feature lists as of 2025. Partial (—) indicates limited or plugin-dependent support.
               </p>
               <a
@@ -563,10 +566,10 @@ export default function LMSHubPage() {
         <section id="about" className="px-4 py-12 sm:py-20">
           <div className="max-w-3xl mx-auto">
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg shadow-[#8B5CF6]/5 rounded-2xl p-5 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-normal text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-normal text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                 About WolfWhale
               </h2>
-              <div className="space-y-3 sm:space-y-4 text-sm sm:text-base text-white/75 leading-relaxed">
+              <div className="space-y-3 sm:space-y-4 text-sm sm:text-base text-gray-600 dark:text-white/75 leading-relaxed">
                 <p>
                   WolfWhale is a Canadian education technology company on a mission to make powerful, accessible learning tools available to every student and educator.
                 </p>
@@ -592,14 +595,14 @@ export default function LMSHubPage() {
                   <div className="rounded-lg overflow-hidden border border-white/10 shadow-lg">
                     <Image src="/canada-flag.png" alt="Canadian Flag" width={256} height={128} className="w-24 sm:w-32 h-auto" />
                   </div>
-                  <span className="text-xs text-white/40 tracking-widest uppercase">Est. 2024</span>
+                  <span className="text-xs text-gray-400 dark:text-white/40 tracking-widest uppercase">Est. 2024</span>
                 </div>
 
                 <div className="space-y-4 sm:space-y-5 text-center md:text-left">
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                     Proudly Built in Canada
                   </h2>
-                  <div className="space-y-3 text-sm sm:text-base text-white/70 leading-relaxed">
+                  <div className="space-y-3 text-sm sm:text-base text-gray-600 dark:text-white/70 leading-relaxed">
                     <p>
                       WolfWhale is a Canadian company headquartered in Vancouver, BC. Our team designs, develops, and hosts everything on Canadian soil.
                     </p>
@@ -617,7 +620,7 @@ export default function LMSHubPage() {
                     ].map((badge, i) => (
                       <div
                         key={i}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-white/60"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-xs text-gray-500 dark:text-white/60"
                       >
                         <badge.icon className="h-3 w-3 text-red-400" />
                         {badge.label}
@@ -638,10 +641,10 @@ export default function LMSHubPage() {
                 <div className="inline-flex p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 mx-auto">
                   <Feather className="h-6 w-6 text-amber-400" />
                 </div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                   Responding to the TRC Calls to Action
                 </h2>
-                <p className="text-sm sm:text-base text-white/60 max-w-2xl mx-auto">
+                <p className="text-sm sm:text-base text-gray-500 dark:text-white/60 max-w-2xl mx-auto">
                   The Truth and Reconciliation Commission&apos;s Calls to Action challenge all Canadians to build a more equitable education system. WolfWhale is designed with these commitments in mind.
                 </p>
               </div>
@@ -676,8 +679,8 @@ export default function LMSHubPage() {
                     <div className="inline-flex p-2 rounded-lg bg-amber-500/10 border border-amber-500/15 mb-3">
                       <Icon className="h-4 w-4 text-amber-400" />
                     </div>
-                    <h3 className="text-sm sm:text-base font-semibold text-white mb-1.5">{title}</h3>
-                    <p className="text-xs sm:text-sm text-white/55 leading-relaxed">{desc}</p>
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-1.5">{title}</h3>
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-white/55 leading-relaxed">{desc}</p>
                   </div>
                 ))}
               </div>
@@ -701,10 +704,10 @@ export default function LMSHubPage() {
         <section id="faq" className="px-4 py-12 sm:py-20">
           <div className="max-w-3xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
                 FREQUENTLY ASKED QUESTIONS
               </h2>
-              <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-xl mx-auto">
                 Everything you need to know about WolfWhale LMS.
               </p>
             </div>
@@ -776,7 +779,7 @@ export default function LMSHubPage() {
         <section id="contact" className="px-4 py-12 sm:py-20">
           <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8">
             <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
                 GET IN TOUCH
               </h2>
               <p className="text-sm sm:text-base text-white/70 max-w-lg mx-auto">
@@ -784,11 +787,11 @@ export default function LMSHubPage() {
               </p>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-8">
+            <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 sm:p-8">
               <ContactForm />
             </div>
 
-            <p className="text-center text-xs text-white/40">
+            <p className="text-center text-xs text-gray-400 dark:text-white/40">
               Or email us directly at{' '}
               <a href="mailto:info@wolfwhale.ca" className="text-[#00BFFF]/70 hover:text-[#00BFFF] transition-colors">
                 info@wolfwhale.ca
@@ -801,12 +804,12 @@ export default function LMSHubPage() {
       {/* Footer */}
       <footer className="relative z-10 p-6 pb-8">
         <div className="max-w-6xl mx-auto">
-          <div className="h-px bg-white/10 mb-6" />
+          <div className="h-px bg-gray-200 dark:bg-white/10 mb-6" />
           <div className="flex flex-col gap-5">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex flex-col gap-1.5">
-                <p className="text-sm font-normal text-white/70 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>WolfWhale Inc.</p>
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/60">
+                <p className="text-sm font-normal text-gray-700 dark:text-white/70 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>WolfWhale Inc.</p>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-white/60">
                   <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Vancouver, BC, Canada</span>
                   <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1 hover:text-[#00BFFF] transition-colors"><Mail className="h-3 w-3" /> info@wolfwhale.ca</a>
                   <a href="tel:+13069815926" className="flex items-center gap-1 hover:text-[#00BFFF] transition-colors"><Phone className="h-3 w-3" /> +1 (306) 981-5926</a>
@@ -814,30 +817,30 @@ export default function LMSHubPage() {
               </div>
               <div className="flex items-center gap-6">
                 <div className="flex gap-6">
-                  <Link href="/privacy" className="text-sm text-white/60 hover:text-[#00BFFF] transition-colors">
+                  <Link href="/privacy" className="text-sm text-gray-500 dark:text-white/60 hover:text-[#00BFFF] transition-colors">
                     Privacy
                   </Link>
-                  <Link href="/terms" className="text-sm text-white/60 hover:text-[#00BFFF] transition-colors">
+                  <Link href="/terms" className="text-sm text-gray-500 dark:text-white/60 hover:text-[#00BFFF] transition-colors">
                     Terms
                   </Link>
-                  <Link href="/help" className="text-sm text-white/60 hover:text-[#00BFFF] transition-colors">
+                  <Link href="/help" className="text-sm text-gray-500 dark:text-white/60 hover:text-[#00BFFF] transition-colors">
                     Help
                   </Link>
-                  <Link href="/sign-in" className="text-sm text-white/60 hover:text-[#00BFFF] transition-colors">
+                  <Link href="/sign-in" className="text-sm text-gray-500 dark:text-white/60 hover:text-[#00BFFF] transition-colors">
                     Sign In
                   </Link>
                 </div>
                 <div className="flex items-center gap-3">
-                  <a href="https://linkedin.com/company/wolfwhale" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-[#00BFFF] transition-colors" aria-label="LinkedIn">
+                  <a href="https://linkedin.com/company/wolfwhale" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-white/40 hover:text-[#00BFFF] transition-colors" aria-label="LinkedIn">
                     <Linkedin className="h-4 w-4" />
                   </a>
-                  <a href="https://x.com/wolfwhale" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-[#00BFFF] transition-colors" aria-label="X (Twitter)">
+                  <a href="https://x.com/wolfwhale" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-white/40 hover:text-[#00BFFF] transition-colors" aria-label="X (Twitter)">
                     <Twitter className="h-4 w-4" />
                   </a>
                 </div>
               </div>
             </div>
-            <p className="text-xs text-white/40">
+            <p className="text-xs text-gray-400 dark:text-white/40">
               &copy; {new Date().getFullYear()} WolfWhale Learning Management System. All rights reserved. Canadian-built LMS for K-12 &amp; post-secondary schools.
             </p>
           </div>
