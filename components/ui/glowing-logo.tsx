@@ -42,11 +42,11 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
           rx={borderRadius}
           ry={borderRadius}
           fill="none"
-          stroke="#33FF33"
+          stroke="#8B5CF6"
           strokeWidth={strokeWidth}
           opacity={0.12}
         />
-        {/* Animated green line tracing the edges */}
+        {/* Animated purple line tracing the edges */}
         <rect
           x={rectOffset}
           y={rectOffset}
@@ -60,7 +60,7 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
           strokeLinecap="round"
           strokeDasharray={`${lineLength} ${gapLength}`}
           style={{
-            filter: 'drop-shadow(0 0 6px #33FF33) drop-shadow(0 0 2px #33FF33)',
+            filter: 'drop-shadow(0 0 6px #8B5CF6) drop-shadow(0 0 2px #8B5CF6)',
             animation: `hub-trace-edge ${duration}s linear infinite`,
           }}
         />
@@ -73,12 +73,12 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
           rx={borderRadius}
           ry={borderRadius}
           fill="none"
-          stroke="#AAFFAA"
+          stroke="#C4B5FD"
           strokeWidth={strokeWidth + 1}
           strokeLinecap="round"
           strokeDasharray={`${perimeter * 0.03} ${perimeter * 0.97}`}
           style={{
-            filter: 'drop-shadow(0 0 10px #33FF33) drop-shadow(0 0 4px #FFFFFF)',
+            filter: 'drop-shadow(0 0 10px #8B5CF6) drop-shadow(0 0 4px #FFFFFF)',
             animation: `hub-trace-edge ${duration}s linear infinite`,
           }}
         />
@@ -91,7 +91,7 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
           rx={borderRadius}
           ry={borderRadius}
           fill="none"
-          stroke="#33FF33"
+          stroke="#8B5CF6"
           strokeWidth={1.5}
           style={{
             animation: `hub-pulse-burst ${duration}s ease-out infinite`,
@@ -99,16 +99,16 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
         />
         <defs>
           <linearGradient id="hubEdgeGlow" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#33FF33" stopOpacity="0.15" />
-            <stop offset="60%" stopColor="#33FF33" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#AAFFAA" stopOpacity="1" />
+            <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.15" />
+            <stop offset="60%" stopColor="#8B5CF6" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#C4B5FD" stopOpacity="1" />
           </linearGradient>
         </defs>
       </svg>
 
       {/* Logo image */}
       <div
-        className="rounded-xl overflow-hidden bg-white border-2 border-black shadow-lg"
+        className="rounded-xl overflow-hidden bg-black shadow-lg shadow-purple-500/20"
         style={{ width: size, height: size }}
       >
         <Image

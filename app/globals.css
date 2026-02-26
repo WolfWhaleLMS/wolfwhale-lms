@@ -4,8 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================
-   WOLFWHALE LMS — AQUA NEON Design System
-   Futuristic Chrome · Neon Glow · Glass Surfaces
+   WOLFWHALE — BLACK GLASS Design System
+   Sleek · Academic · Sophisticated Y2K
    ============================================ */
 
 @theme inline {
@@ -57,10 +57,10 @@
   --color-neon-green: #33FF33;
   --color-neon-cyan: #00FFFF;
   --color-neon-amber: #FFAA00;
-  --color-chrome: #C0D8E8;
-  --color-midnight: #041428;
-  --color-ice: #E8F8FF;
-  --color-navy: #0A2540;
+  --color-chrome: #2A2A3A;
+  --color-midnight: #000000;
+  --color-ice: #0A0A0A;
+  --color-navy: #FFFFFF;
   --color-gold: #FFD700;
   --color-success: #33FF33;
   --color-warning: #FFAA00;
@@ -69,8 +69,7 @@
 }
 
 /* ============================================
-   GLOBAL CHROME BACKGROUND — Frutiger Aero
-   Holographic liquid-metal texture behind all pages
+   GLOBAL BACKGROUND — Pure Black
    ============================================ */
 
 body::before {
@@ -78,78 +77,75 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background-image: url('/chrome-bg.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: #000000;
   pointer-events: none;
 }
 
 /* ============================================
-   ROOT — Aqua Neon Bright Mode
-   Luminous ice-blue, chrome, neon accents
+   ROOT — Black Glass Theme
+   Pure black, frosted glass, white text, neon accents
    ============================================ */
 
 :root {
   --radius: 0.75rem;
 
-  /* Base Theme — Bright Aqua Futuristic */
-  --background: #E8F8FF;
-  --foreground: #0A2540;
-  --card: rgba(255, 255, 255, 0.88);
-  --card-foreground: #0A2540;
-  --popover: rgba(255, 255, 255, 0.95);
-  --popover-foreground: #0A2540;
+  /* Base Theme — Black Glass */
+  --background: #000000;
+  --foreground: #FFFFFF;
+  --card: rgba(255, 255, 255, 0.05);
+  --card-foreground: #FFFFFF;
+  --popover: rgba(10, 10, 10, 0.95);
+  --popover-foreground: #FFFFFF;
   --primary: #00BFFF;
-  --primary-foreground: #ffffff;
-  --secondary: #00FFFF;
-  --secondary-foreground: #0A2540;
-  --muted: #D0E8F4;
-  --muted-foreground: #3D5A6E;
-  --accent: #33FF33;
-  --accent-foreground: #0A2540;
+  --primary-foreground: #000000;
+  --secondary: #8B5CF6;
+  --secondary-foreground: #FFFFFF;
+  --muted: #111111;
+  --muted-foreground: rgba(255, 255, 255, 0.60);
+  --accent: #8B5CF6;
+  --accent-foreground: #FFFFFF;
   --destructive: #FF3366;
-  --border: rgba(0, 191, 255, 0.20);
-  --input: rgba(0, 191, 255, 0.10);
-  --ring: #00BFFF;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.05);
+  --ring: #8B5CF6;
   --chart-1: #00BFFF;
-  --chart-2: #33FF33;
+  --chart-2: #8B5CF6;
   --chart-3: #00FFFF;
   --chart-4: #FFD700;
   --chart-5: #FF3366;
-  --sidebar: rgba(255, 255, 255, 0.85);
-  --sidebar-foreground: #0A2540;
-  --sidebar-primary: #00BFFF;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: rgba(0, 191, 255, 0.08);
-  --sidebar-accent-foreground: #0A2540;
-  --sidebar-border: rgba(0, 191, 255, 0.15);
-  --sidebar-ring: #00BFFF;
+  --sidebar: rgba(0, 0, 0, 0.92);
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #8B5CF6;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: rgba(139, 92, 246, 0.08);
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #8B5CF6;
 
-  /* Liquid Glass — Light mode surfaces */
-  --glass-bg:             rgba(255, 255, 255, 0.88);
-  --glass-bg-elevated:    rgba(255, 255, 255, 0.95);
-  --glass-bg-heavy:       rgba(255, 255, 255, 0.92);
-  --glass-border:         rgba(0, 191, 255, 0.22);
-  --glass-border-subtle:  rgba(0, 191, 255, 0.12);
-  --glass-highlight:      rgba(255, 255, 255, 0.70);
-  --glass-shadow:         rgba(0, 191, 255, 0.08);
-  --glass-shadow-heavy:   rgba(0, 60, 120, 0.12);
+  /* Liquid Glass — Dark glass surfaces */
+  --glass-bg:             rgba(255, 255, 255, 0.04);
+  --glass-bg-elevated:    rgba(255, 255, 255, 0.06);
+  --glass-bg-heavy:       rgba(255, 255, 255, 0.08);
+  --glass-border:         rgba(255, 255, 255, 0.10);
+  --glass-border-subtle:  rgba(255, 255, 255, 0.06);
+  --glass-highlight:      rgba(255, 255, 255, 0.05);
+  --glass-shadow:         rgba(0, 0, 0, 0.40);
+  --glass-shadow-heavy:   rgba(0, 0, 0, 0.60);
   --glass-blur-sm:        6px;
   --glass-blur-md:        8px;
   --glass-blur-lg:        12px;
   --glass-blur-xl:        20px;
-  --glass-saturate:       200%;
+  --glass-saturate:       150%;
 
-  /* Neon glow tokens */
-  --glow-blue:   0 0 20px rgba(0, 191, 255, 0.35), 0 0 40px rgba(0, 191, 255, 0.15);
-  --glow-green:  0 0 20px rgba(51, 255, 51, 0.35), 0 0 40px rgba(51, 255, 51, 0.15);
-  --glow-cyan:   0 0 20px rgba(0, 255, 255, 0.35), 0 0 40px rgba(0, 255, 255, 0.15);
-  --glow-chrome: 0 0 15px rgba(192, 216, 232, 0.40), 0 0 30px rgba(0, 191, 255, 0.15);
+  /* Neon glow tokens — vivid on black */
+  --glow-blue:   0 0 25px rgba(0, 191, 255, 0.40), 0 0 50px rgba(0, 191, 255, 0.15);
+  --glow-green:  0 0 25px rgba(51, 255, 51, 0.40), 0 0 50px rgba(51, 255, 51, 0.15);
+  --glow-cyan:   0 0 25px rgba(0, 255, 255, 0.40), 0 0 50px rgba(0, 255, 255, 0.15);
+  --glow-chrome: 0 0 20px rgba(139, 92, 246, 0.30), 0 0 40px rgba(139, 92, 246, 0.15);
 
-  /* Chrome surface gradient */
-  --chrome-gradient: linear-gradient(180deg, #F0F8FF 0%, #C0D8E8 30%, #E8F4FF 50%, #A8C8E0 70%, #E0F0FF 100%);
-  --chrome-gradient-horizontal: linear-gradient(90deg, #E0F0FF 0%, #A0C8E8 25%, #E8F4FF 50%, #A0C8E8 75%, #E0F0FF 100%);
+  /* Chrome surface gradient — dark glass variant */
+  --chrome-gradient: linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 30%, #1a1a2e 50%, #0d0d1a 70%, #1a1a2e 100%);
+  --chrome-gradient-horizontal: linear-gradient(90deg, #1a1a2e 0%, #0d0d1a 25%, #1a1a2e 50%, #0d0d1a 75%, #1a1a2e 100%);
 
   /* Age Variant Defaults (age-68 balanced) */
   --font-size-base: 17px;
@@ -160,68 +156,67 @@ body::before {
 }
 
 /* ============================================
-   DARK MODE — Deep Ocean Neon
-   Bioluminescent glow, vivid neon accents
+   DARK MODE — Same as root (site is always dark)
    ============================================ */
 
 .dark {
-  /* Liquid Glass — Dark mode surfaces */
-  --glass-bg:             rgba(0, 40, 80, 0.85);
-  --glass-bg-elevated:    rgba(0, 50, 100, 0.95);
-  --glass-bg-heavy:       rgba(0, 35, 70, 0.92);
-  --glass-border:         rgba(0, 191, 255, 0.25);
-  --glass-border-subtle:  rgba(0, 191, 255, 0.12);
-  --glass-highlight:      rgba(0, 191, 255, 0.08);
-  --glass-shadow:         rgba(0, 0, 0, 0.30);
-  --glass-shadow-heavy:   rgba(0, 0, 0, 0.50);
+  /* Liquid Glass — same dark glass */
+  --glass-bg:             rgba(255, 255, 255, 0.04);
+  --glass-bg-elevated:    rgba(255, 255, 255, 0.06);
+  --glass-bg-heavy:       rgba(255, 255, 255, 0.08);
+  --glass-border:         rgba(255, 255, 255, 0.10);
+  --glass-border-subtle:  rgba(255, 255, 255, 0.06);
+  --glass-highlight:      rgba(255, 255, 255, 0.05);
+  --glass-shadow:         rgba(0, 0, 0, 0.40);
+  --glass-shadow-heavy:   rgba(0, 0, 0, 0.60);
   --glass-blur-sm:        6px;
   --glass-blur-md:        8px;
   --glass-blur-lg:        12px;
   --glass-blur-xl:        20px;
-  --glass-saturate:       220%;
+  --glass-saturate:       150%;
 
-  /* Neon glow tokens — more vivid in dark */
+  /* Neon glow tokens — vivid on black */
   --glow-blue:   0 0 25px rgba(0, 191, 255, 0.50), 0 0 50px rgba(0, 191, 255, 0.20);
   --glow-green:  0 0 25px rgba(51, 255, 51, 0.50), 0 0 50px rgba(51, 255, 51, 0.20);
   --glow-cyan:   0 0 25px rgba(0, 255, 255, 0.50), 0 0 50px rgba(0, 255, 255, 0.20);
-  --glow-chrome: 0 0 20px rgba(192, 216, 232, 0.30), 0 0 40px rgba(0, 191, 255, 0.20);
+  --glow-chrome: 0 0 20px rgba(139, 92, 246, 0.30), 0 0 40px rgba(139, 92, 246, 0.20);
 
-  /* Chrome gradient — darker variant */
-  --chrome-gradient: linear-gradient(180deg, #1A3A5C 0%, #0A2A4A 30%, #1A3A5C 50%, #0A2A4A 70%, #1A3A5C 100%);
-  --chrome-gradient-horizontal: linear-gradient(90deg, #1A3A5C 0%, #0A2A4A 25%, #1A3A5C 50%, #0A2A4A 75%, #1A3A5C 100%);
+  /* Chrome gradient — dark glass */
+  --chrome-gradient: linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 30%, #1a1a2e 50%, #0d0d1a 70%, #1a1a2e 100%);
+  --chrome-gradient-horizontal: linear-gradient(90deg, #1a1a2e 0%, #0d0d1a 25%, #1a1a2e 50%, #0d0d1a 75%, #1a1a2e 100%);
 
-  /* Base Theme — Deep Ocean Neon */
-  --background: #041428;
-  --foreground: #E8F8FF;
-  --card: rgba(0, 40, 80, 0.85);
-  --card-foreground: #E8F8FF;
-  --popover: rgba(0, 35, 70, 0.95);
-  --popover-foreground: #E8F8FF;
+  /* Base Theme — Pure Black */
+  --background: #000000;
+  --foreground: #FFFFFF;
+  --card: rgba(255, 255, 255, 0.05);
+  --card-foreground: #FFFFFF;
+  --popover: rgba(10, 10, 10, 0.95);
+  --popover-foreground: #FFFFFF;
   --primary: #00BFFF;
-  --primary-foreground: #041428;
-  --secondary: #00FFFF;
-  --secondary-foreground: #041428;
-  --muted: rgba(0, 60, 120, 0.50);
-  --muted-foreground: #B0D0E0;
-  --accent: #33FF33;
-  --accent-foreground: #041428;
+  --primary-foreground: #000000;
+  --secondary: #8B5CF6;
+  --secondary-foreground: #FFFFFF;
+  --muted: #111111;
+  --muted-foreground: rgba(255, 255, 255, 0.60);
+  --accent: #8B5CF6;
+  --accent-foreground: #FFFFFF;
   --destructive: #FF3366;
-  --border: rgba(0, 191, 255, 0.25);
-  --input: rgba(0, 191, 255, 0.12);
-  --ring: #00BFFF;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.05);
+  --ring: #8B5CF6;
   --chart-1: #00BFFF;
-  --chart-2: #33FF33;
+  --chart-2: #8B5CF6;
   --chart-3: #00FFFF;
   --chart-4: #FFD700;
   --chart-5: #FF3366;
-  --sidebar: rgba(4, 20, 40, 0.92);
-  --sidebar-foreground: #E8F8FF;
-  --sidebar-primary: #00BFFF;
-  --sidebar-primary-foreground: #041428;
-  --sidebar-accent: rgba(0, 191, 255, 0.10);
-  --sidebar-accent-foreground: #E8F8FF;
-  --sidebar-border: rgba(0, 191, 255, 0.20);
-  --sidebar-ring: #00BFFF;
+  --sidebar: rgba(0, 0, 0, 0.92);
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #8B5CF6;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: rgba(139, 92, 246, 0.08);
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #8B5CF6;
 }
 
 /* ============================================
@@ -833,58 +828,53 @@ body::before {
 
 @layer utilities {
   .liquid-glass {
-    background: var(--glass-bg);
+    background: rgba(255, 255, 255, 0.04);
     backdrop-filter: blur(var(--glass-blur-lg));
     -webkit-backdrop-filter: blur(var(--glass-blur-lg));
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow:
-      0 8px 32px var(--glass-shadow),
-      0 0 12px rgba(0, 191, 255, 0.06),
-      inset 0 1px 0 var(--glass-highlight);
+      0 8px 32px rgba(0, 0, 0, 0.40),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .liquid-glass-elevated {
-    background: var(--glass-bg-elevated);
+    background: rgba(255, 255, 255, 0.06);
     backdrop-filter: blur(var(--glass-blur-xl));
     -webkit-backdrop-filter: blur(var(--glass-blur-xl));
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(255, 255, 255, 0.10);
     box-shadow:
-      0 16px 48px var(--glass-shadow-heavy),
-      0 4px 12px var(--glass-shadow),
-      0 0 18px rgba(0, 191, 255, 0.08),
-      inset 0 1px 0 var(--glass-highlight);
+      0 16px 48px rgba(0, 0, 0, 0.50),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .liquid-glass-heavy {
-    background: var(--glass-bg-heavy);
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(var(--glass-blur-xl));
     -webkit-backdrop-filter: blur(var(--glass-blur-xl));
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(255, 255, 255, 0.10);
     box-shadow:
-      0 8px 32px var(--glass-shadow-heavy),
-      0 0 15px rgba(0, 191, 255, 0.06),
-      inset 0 1px 0 var(--glass-highlight);
+      0 8px 32px rgba(0, 0, 0, 0.50),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .liquid-glass-hover:hover {
     transform: translateY(-3px) scale(1.005);
-    border-color: rgba(0, 191, 255, 0.40);
+    border-color: rgba(139, 92, 246, 0.25);
     box-shadow:
-      0 20px 60px var(--glass-shadow-heavy),
-      0 8px 24px var(--glass-shadow),
-      0 0 25px rgba(0, 191, 255, 0.12),
-      inset 0 1px 0 var(--glass-highlight);
+      0 20px 60px rgba(0, 0, 0, 0.50),
+      0 0 25px rgba(139, 92, 246, 0.10),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 
   .dark .liquid-glass-hover:hover {
-    border-color: rgba(0, 191, 255, 0.35);
+    border-color: rgba(139, 92, 246, 0.25);
     box-shadow:
-      0 20px 60px var(--glass-shadow-heavy),
-      0 0 30px rgba(0, 191, 255, 0.15),
-      inset 0 1px 0 var(--glass-highlight);
+      0 20px 60px rgba(0, 0, 0, 0.50),
+      0 0 30px rgba(139, 92, 246, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 
   .transition-glass {
@@ -992,38 +982,33 @@ body::before {
   z-index: 1;
 }
 
-/* Ocean card chrome texture — subtle holographic shimmer on card borders */
+/* Ocean card — dark glass surface */
 .ocean-card {
   border-image: none;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
 }
 
 .ocean-card::after {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url('/chrome-bg.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.06;
+  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 50%, rgba(139,92,246,0.02) 100%);
   pointer-events: none;
   z-index: 0;
-  mix-blend-mode: luminosity;
   border-radius: inherit;
 }
 
-.dark .ocean-card::after {
-  opacity: 0.04;
-  mix-blend-mode: soft-light;
+.ocean-card:hover {
+  border-color: rgba(139, 92, 246, 0.20);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.08);
 }
 
 .ocean-card:hover::after {
-  opacity: 0.10;
-  transition: opacity 0.3s ease;
-}
-
-.dark .ocean-card:hover::after {
-  opacity: 0.07;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%, rgba(139,92,246,0.04) 100%);
+  transition: background 0.3s ease;
 }
 
 /* ============================================
