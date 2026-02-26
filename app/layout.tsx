@@ -95,9 +95,9 @@ export const metadata: Metadata = {
       "Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
     images: [
       {
-        url: "/ww-card.png",
-        width: 1200,
-        height: 630,
+        url: "/logo.png",
+        width: 952,
+        height: 895,
         alt: "WolfWhale LMS - Canadian Learning Management System",
       },
     ],
@@ -107,7 +107,7 @@ export const metadata: Metadata = {
     title: "Canadian LMS for K-12 & Post-Secondary Schools | WolfWhale",
     description:
       "Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
-    images: ["/ww-card.png"],
+    images: ["/logo.png"],
     creator: "@wolfwhale",
   },
   robots: {

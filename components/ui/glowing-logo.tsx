@@ -56,13 +56,14 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
           width: tileSize,
           height: tileSize,
           borderRadius,
+          padding: tileSize * 0.1,
           boxShadow: `
             0 0 0 3px #000000,
             0 4px 24px rgba(0,0,0,0.7)
           `,
         }}
       >
-        {/* Logo image — fills the tile */}
+        {/* Logo image — with black border padding around it */}
         <Image
           src="/logo.png"
           alt="WolfWhale"
