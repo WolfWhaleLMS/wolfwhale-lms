@@ -14,21 +14,32 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
 
   return (
     <div className={`relative inline-flex items-center justify-center ${className}`}>
-      {/* App tile — glow is box-shadow ON the tile so it ONLY radiates outward */}
+      {/* Glow layer — sits BEHIND the tile */}
       <div
-        className="overflow-hidden bg-black flex items-center justify-center"
+        className="absolute inset-0 m-auto"
+        style={{
+          width: tileSize,
+          height: tileSize,
+          borderRadius,
+          zIndex: 0,
+          boxShadow: `
+            0 0 ${g * 0.4}px ${g * 0.15}px rgba(139, 92, 246, 0.7),
+            0 0 ${g * 0.8}px ${g * 0.4}px rgba(139, 92, 246, 0.45),
+            0 0 ${g * 1.2}px ${g * 0.6}px rgba(139, 92, 246, 0.25),
+            0 0 ${g * 2}px ${g * 1}px rgba(139, 92, 246, 0.12)
+          `,
+        }}
+      />
+      {/* App tile — sits ON TOP of the glow */}
+      <div
+        className="relative overflow-hidden bg-black flex items-center justify-center"
         style={{
           width: tileSize,
           height: tileSize,
           borderRadius,
           padding: tileSize * 0.05,
-          boxShadow: `
-            0 0 ${g * 0.4}px ${g * 0.15}px rgba(139, 92, 246, 0.7),
-            0 0 ${g * 0.8}px ${g * 0.4}px rgba(139, 92, 246, 0.45),
-            0 0 ${g * 1.2}px ${g * 0.6}px rgba(139, 92, 246, 0.25),
-            0 0 ${g * 2}px ${g * 1}px rgba(139, 92, 246, 0.12),
-            0 4px 24px rgba(0,0,0,0.7)
-          `,
+          zIndex: 1,
+          boxShadow: '0 4px 24px rgba(0,0,0,0.7)',
         }}
       >
         <Image
