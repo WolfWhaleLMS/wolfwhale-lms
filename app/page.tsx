@@ -136,35 +136,6 @@ export default function LMSHubPage() {
           />
         </div>
 
-        {/* Floating sparkle particles — bright neon on black */}
-        <div className="absolute inset-0" style={{ zIndex: 2 }}>
-          {[...Array(40)].map((_, i) => {
-            const leftPos = (i * 2.5) % 100;
-            const isNearBeam = (
-              (leftPos > 12 && leftPos < 22) ||
-              (leftPos > 38 && leftPos < 45) ||
-              (leftPos > 55 && leftPos < 65) ||
-              (leftPos > 28 && leftPos < 34)
-            );
-            const baseOpacity = (i % 4) * 0.08 + 0.12;
-            return (
-              <div
-                key={i}
-                className={`absolute rounded-full ${isNearBeam ? 'animate-twinkle-bright' : 'animate-twinkle'}`}
-                style={{
-                  left: `${leftPos}%`,
-                  top: `${(i * 1.25) % 50}%`,
-                  width: isNearBeam ? '2px' : '3px',
-                  height: isNearBeam ? '2px' : '3px',
-                  backgroundColor: isNearBeam ? '#8B5CF6' : '#00BFFF',
-                  boxShadow: isNearBeam ? '0 0 8px 2px rgba(139,92,246,0.4)' : '0 0 6px 2px rgba(0,191,255,0.3)',
-                  animationDelay: `${(i * 0.125) % 5}s`,
-                  opacity: isNearBeam ? baseOpacity + 0.15 : baseOpacity,
-                }}
-              />
-            );
-          })}
-        </div>
       </div>
 
       {/* Header / Nav */}
@@ -667,20 +638,6 @@ export default function LMSHubPage() {
           0%, 100% { transform: translateX(0) translateY(0); }
           33% { transform: translateX(-5%) translateY(3%); }
           66% { transform: translateX(5%) translateY(-3%); }
-        }
-        @keyframes twinkle {
-          0%, 100% { opacity: 0.1; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.2); }
-        }
-        .animate-twinkle {
-          animation: twinkle 3s ease-in-out infinite;
-        }
-        @keyframes twinkle-bright {
-          0%, 100% { opacity: 0.15; transform: scale(1); }
-          50% { opacity: 0.7; transform: scale(1.5); }
-        }
-        .animate-twinkle-bright {
-          animation: twinkle-bright 2.5s ease-in-out infinite;
         }
         @keyframes sunbeam-sway-1 {
           0%, 100% { transform: rotate(8deg) scaleX(1); opacity: 1; }
