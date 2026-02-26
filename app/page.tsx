@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Shield, Mail, Phone, MapPin, Brain, WifiOff, Gamepad2, Bot, Smartphone, CheckCircle2, X as XIcon, Minus, Paintbrush, Flag, Globe, Heart, Code, Palette, Layers, Accessibility, Zap, Linkedin, Twitter, ChevronDown, Feather, BookOpen, Users } from 'lucide-react'
+import { ArrowRight, Shield, Mail, Phone, MapPin, Brain, WifiOff, Gamepad2, Bot, Smartphone, CheckCircle2, X as XIcon, Minus, Paintbrush, Flag, Globe, Heart, Code, Palette, Layers, Accessibility, Zap, Linkedin, Twitter, ChevronDown, Feather, BookOpen, Users, Fingerprint, MessageCircle, GraduationCap, Music, Activity, Trophy, Wrench, Eye } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 import { ContactForm } from '@/components/landing/ContactForm'
 import { ThemeToggle } from '@/components/landing/ThemeToggle'
@@ -227,7 +227,7 @@ export default function LMSHubPage() {
                 WolfWhale
               </h1>
               <p className="text-sm sm:text-lg md:text-xl text-gray-500 dark:text-white/70 tracking-[0.25em] uppercase font-normal">
-                Learning Management System
+                Learning Management System for iOS
               </p>
             </div>
 
@@ -275,49 +275,85 @@ export default function LMSHubPage() {
           <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
-                KEY FEATURES
+                106+ FEATURES
               </h2>
               <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-xl mx-auto">
-                Everything educators and students need — built into one powerful platform.
+                122,000 lines of native Swift. 30 Apple frameworks. One powerful platform.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {[
                 {
+                  icon: Bot,
+                  title: 'On-Device AI Tutor',
+                  desc: 'Powered by Apple Intelligence via FoundationModels. Personalized study assistant that runs entirely on-device — student data never leaves the phone.',
+                  color: '#00BFFF',
+                },
+                {
                   icon: Brain,
                   title: 'Spaced Repetition',
-                  desc: 'Built-in flashcard system using scientifically proven spaced repetition algorithms for long-term knowledge retention.',
+                  desc: 'Built-in flashcard creator with classic flip mode and quiz mode. Scientifically proven algorithms for long-term knowledge retention.',
                   color: '#8B5CF6',
                 },
                 {
-                  icon: Bot,
-                  title: 'AI Tutoring',
-                  desc: 'Intelligent AI tutor that adapts to each student\'s learning pace, providing personalized explanations and feedback.',
-                  color: '#00BFFF',
+                  icon: Wrench,
+                  title: '25+ Learning Tools',
+                  desc: 'Interactive Periodic Table, Fraction Builder, Geometry Explorer, French Conjugation, Canadian History Timeline, Typing Tutor, Document Scanner, and more.',
+                  color: '#FF6B9D',
+                },
+                {
+                  icon: Gamepad2,
+                  title: 'Gamification & XP',
+                  desc: 'XP leveling system with 5 tiers, 10 achievement badge types with 4 rarity levels, virtual aquarium with animated fish, study pet companion, and retro sound effects.',
+                  color: '#FFD700',
                 },
                 {
                   icon: WifiOff,
                   title: 'Offline Learning',
-                  desc: 'Download courses and study materials for offline access. Perfect for students in areas with limited connectivity.',
+                  desc: 'AES-GCM encrypted local storage with per-user Keychain keys. 8 cached entity types. Automatic conflict resolution and sync on reconnect.',
                   color: '#33FF33',
-                },
-                {
-                  icon: Gamepad2,
-                  title: 'Gamification',
-                  desc: 'Points, streaks, leaderboards, and achievements keep students motivated and engaged throughout their learning journey.',
-                  color: '#FFD700',
-                },
-                {
-                  icon: Shield,
-                  title: 'Privacy First',
-                  desc: 'FERPA and PIPEDA compliant. Student data is encrypted, stored in Canada, and never sold to third parties.',
-                  color: '#00FFFF',
                 },
                 {
                   icon: Smartphone,
                   title: 'Native iOS App',
-                  desc: 'Beautiful native iOS experience designed specifically for iPhone and iPad — not just a website wrapper.',
+                  desc: 'True SwiftUI app using 30 Apple frameworks — Siri Shortcuts, Home Screen Widgets, Spotlight Search, Apple Wallet school ID, SharePlay, and Live Activities.',
+                  color: '#FF6B9D',
+                },
+                {
+                  icon: MessageCircle,
+                  title: 'Real-Time Collaboration',
+                  desc: 'Supabase Realtime WebSocket messaging with typing indicators, SharePlay study sessions via FaceTime, MultipeerConnectivity for P2P study groups, and VoIP calls.',
+                  color: '#00BFFF',
+                },
+                {
+                  icon: GraduationCap,
+                  title: 'Teacher Command Center',
+                  desc: 'Full gradebook with weighted calculations, NFC attendance scanning, plagiarism detection, rubric builder, standards mastery tracking, and Live Activity for class sessions.',
+                  color: '#8B5CF6',
+                },
+                {
+                  icon: Users,
+                  title: 'Parent Portal',
+                  desc: 'Server-verified parent-child links with real-time grade alerts, attendance tracking, conference scheduling with teachers, and weekly digest reports.',
+                  color: '#33FF33',
+                },
+                {
+                  icon: Fingerprint,
+                  title: 'Biometric Security',
+                  desc: 'Face ID, Touch ID, and Optic ID with auto-lock. TLS certificate pinning, COPPA age verification, audit logging, and role-based access on 42+ database tables.',
+                  color: '#00FFFF',
+                },
+                {
+                  icon: Eye,
+                  title: 'AR Experiences',
+                  desc: 'AR Library with 8 subject categories and 4 experience types. Human Cell AR experience. Grade-level tagging for age-appropriate content.',
+                  color: '#FFD700',
+                },
+                {
+                  icon: Activity,
+                  title: 'Health & Wellness',
+                  desc: 'HealthKit integration tracking steps, heart rate, sleep, and calories. Wellness score (0-100), workout tracking, hydration tracker, and weekly step charts.',
                   color: '#FF6B9D',
                 },
               ].map(({ icon: Icon, title, desc, color }) => (
@@ -354,17 +390,18 @@ export default function LMSHubPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
               {[
-                { stat: 'K-12 & Post-Secondary', label: 'Designed for all levels of education' },
-                { stat: 'Canadian Hosted', label: 'All data stays on Canadian soil' },
-                { stat: '$12 / User / Month', label: 'Simple, transparent pricing' },
+                { stat: '106+', label: 'Features' },
+                { stat: '122K', label: 'Lines of Swift' },
+                { stat: '30', label: 'Apple Frameworks' },
+                { stat: '42+', label: 'Database Tables with RLS' },
               ].map(({ stat, label }) => (
                 <div
                   key={stat}
                   className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 sm:p-6 text-center"
                 >
-                  <p className="text-lg sm:text-xl font-bold text-[#00BFFF] mb-1">{stat}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-[#00BFFF] mb-1">{stat}</p>
                   <p className="text-xs sm:text-sm text-gray-500 dark:text-white/60">{label}</p>
                 </div>
               ))}
@@ -445,7 +482,7 @@ export default function LMSHubPage() {
                 Built by Design
               </h2>
               <p className="text-sm sm:text-base text-gray-500 dark:text-white/60 max-w-2xl mx-auto">
-                Every pixel, interaction, and feature is intentional. WolfWhale is crafted with obsessive attention to detail — not assembled from templates.
+                Built natively with Apple&apos;s SDKs to maximize the iPhone for education, mobility, and accessibility. 30 Apple frameworks. 122,000 lines of Swift. Zero compromises.
               </p>
             </div>
 
@@ -513,20 +550,26 @@ export default function LMSHubPage() {
 
                   {/* Table Rows */}
                   {[
+                    { feature: 'On-Device AI Tutor (Apple Intelligence)', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
                     { feature: 'Spaced Repetition Flashcards', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-                    { feature: 'AI Tutoring', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-                    { feature: 'Offline Learning', wolfwhale: true, canvas: 'partial', brightspace: false, edsby: false, moodle: 'partial' },
-                    { feature: 'Native iOS App', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: 'partial' },
-                    { feature: 'Gamification & Streaks', wolfwhale: true, canvas: false, brightspace: false, edsby: 'partial', moodle: 'partial' },
+                    { feature: '25+ Interactive Learning Tools', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: 'partial' },
+                    { feature: 'AR Learning Experiences', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+                    { feature: 'Gamification & Virtual Aquarium', wolfwhale: true, canvas: false, brightspace: false, edsby: 'partial', moodle: 'partial' },
+                    { feature: 'Offline Learning (AES-GCM Encrypted)', wolfwhale: true, canvas: 'partial', brightspace: false, edsby: false, moodle: 'partial' },
+                    { feature: 'Native iOS App (30 Apple Frameworks)', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: 'partial' },
+                    { feature: 'SharePlay & P2P Study Groups', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+                    { feature: 'NFC Attendance Scanning', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+                    { feature: 'Built-in Plagiarism Detection', wolfwhale: true, canvas: true, brightspace: true, edsby: false, moodle: 'partial' },
+                    { feature: 'Siri Shortcuts & Widgets', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+                    { feature: 'Digital School ID (Apple Wallet)', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+                    { feature: 'Parent Portal & Conferences', wolfwhale: true, canvas: 'partial', brightspace: 'partial', edsby: true, moodle: false },
+                    { feature: 'HealthKit Wellness Dashboard', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
                     { feature: 'Canadian Data Hosting', wolfwhale: true, canvas: false, brightspace: true, edsby: true, moodle: 'partial' },
-                    { feature: 'PIPEDA Compliant', wolfwhale: true, canvas: 'partial', brightspace: true, edsby: true, moodle: 'partial' },
-                    { feature: 'Built-in Quiz Builder', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: true },
-                    { feature: 'Real-time Collaboration', wolfwhale: true, canvas: true, brightspace: 'partial', edsby: 'partial', moodle: false },
-                    { feature: 'Transparent Per-User Pricing', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: true },
+                    { feature: 'PIPEDA & FERPA Compliant', wolfwhale: true, canvas: 'partial', brightspace: true, edsby: true, moodle: 'partial' },
                   ].map(({ feature, wolfwhale, canvas, brightspace, edsby, moodle }, idx) => (
                     <div
                       key={feature}
-                      className={`grid grid-cols-6 gap-0 text-center ${idx % 2 === 0 ? 'bg-white/[0.02]' : ''} ${idx < 9 ? 'border-b border-gray-100 dark:border-white/5' : ''}`}
+                      className={`grid grid-cols-6 gap-0 text-center ${idx % 2 === 0 ? 'bg-white/[0.02]' : ''} ${idx < 15 ? 'border-b border-gray-100 dark:border-white/5' : ''}`}
                     >
                       <div className="p-3 sm:p-4 text-left text-xs sm:text-sm text-gray-700 dark:text-white/80">
                         {feature}
@@ -554,7 +597,7 @@ export default function LMSHubPage() {
 
             <div className="text-center space-y-6">
               <p className="text-xs text-gray-400 dark:text-white/40">
-                Comparison based on publicly available feature lists as of 2025. Partial (—) indicates limited or plugin-dependent support.
+                Comparison based on publicly available feature lists as of 2026. Partial (—) indicates limited or plugin-dependent support.
               </p>
               <a
                 href="#contact"
@@ -597,16 +640,20 @@ export default function LMSHubPage() {
 
                 <ul className="relative space-y-3 text-left">
                   {[
-                    'Unlimited courses & content',
+                    'All 106+ features included',
+                    'On-device AI tutor (Apple Intelligence)',
                     'Spaced repetition flashcards',
-                    'AI tutoring for every student',
-                    'Offline learning & sync',
-                    'Gamification & leaderboards',
-                    'Built-in quiz builder',
-                    'Canadian data hosting',
-                    'PIPEDA & FERPA compliant',
-                    'Onboarding & teacher training',
-                    'Email support (24hr response)',
+                    '25+ interactive learning tools',
+                    'Gamification, XP & virtual aquarium',
+                    'Offline learning with AES-GCM encryption',
+                    'Real-time messaging & SharePlay',
+                    'Teacher gradebook & NFC attendance',
+                    'Parent portal & conference scheduling',
+                    'AR experiences & document scanner',
+                    'Siri, Widgets, Apple Wallet & Spotlight',
+                    'Canadian data hosting (PIPEDA & FERPA)',
+                    'Onboarding & teacher training included',
+                    'Priority email support',
                   ].map((feature) => (
                     <li key={feature} className="flex items-start gap-2.5 text-sm text-gray-700 dark:text-white/75">
                       <CheckCircle2 className="h-4 w-4 text-[#8B5CF6] shrink-0 mt-0.5" />
@@ -641,13 +688,13 @@ export default function LMSHubPage() {
               </h2>
               <div className="space-y-3 sm:space-y-4 text-sm sm:text-base text-gray-600 dark:text-white/75 leading-relaxed">
                 <p>
-                  WolfWhale is a Canadian education technology company on a mission to make powerful, accessible learning tools available to every student and educator.
+                  WolfWhale is a Canadian education technology company building the most powerful native iOS learning management system available. With 106+ features, 355 Swift files, and 122,000 lines of code, WolfWhale LMS is engineered from the ground up for Apple&apos;s ecosystem.
                 </p>
                 <p>
-                  Our flagship product, WolfWhale LMS, is the only learning management system with spaced repetition technology built in — giving students a scientifically proven advantage in long-term knowledge retention. We serve K-12 schools, post-secondary institutions, and training organizations across Canada.
+                  Our philosophy is simple: maximize the iPhone for education, mobility, and accessibility. By deeply integrating 30 Apple frameworks — from FoundationModels for on-device AI to HealthKit for student wellness — we deliver experiences that web-based platforms simply cannot match. SharePlay study sessions, NFC attendance scanning, Siri Shortcuts, Apple Wallet school IDs, and AR learning experiences are just the beginning.
                 </p>
                 <p>
-                  We believe technology should amplify great teaching, not replace it. Every product we build is designed with educators and learners at the center.
+                  We serve K-12 schools, post-secondary institutions, and training organizations across Canada. Every feature is built with Canadian values — privacy (PIPEDA &amp; FERPA compliant), accessibility, bilingual support, and a commitment to reconciliation.
                 </p>
               </div>
             </div>
@@ -818,10 +865,11 @@ export default function LMSHubPage() {
                   id: 'technical',
                   heading: 'Technical',
                   items: [
-                    { q: 'Does offline learning really work?', a: 'Yes. Students can download courses and study materials to their device for fully offline access. Progress syncs automatically when they reconnect.' },
-                    { q: 'What browsers are supported?', a: 'WolfWhale works on all modern browsers — Chrome, Safari, Firefox, and Edge. Our native iOS app is available for iPhone and iPad.' },
-                    { q: 'Is there an API for integrations?', a: 'Yes. We provide a REST API for integrating WolfWhale with your existing school systems, SIS platforms, and other tools.' },
-                    { q: 'What about Android support?', a: 'Our web app works great on Android devices through the browser. A dedicated Android app is on our roadmap.' },
+                    { q: 'Does offline learning really work?', a: 'Yes. All offline data is encrypted with AES-GCM and stored with per-user Keychain keys. 8 entity types are cached locally. Progress syncs automatically with server-wins conflict resolution when connectivity is restored.' },
+                    { q: 'What Apple frameworks do you use?', a: 'WolfWhale uses 30 Apple frameworks including SwiftUI, WidgetKit, ActivityKit, HealthKit, MusicKit, CoreNFC, GroupActivities (SharePlay), MultipeerConnectivity, PassKit (Apple Wallet), App Intents (Siri), CoreSpotlight, Vision, ARKit, PencilKit, and FoundationModels for on-device AI.' },
+                    { q: 'Is there Siri and widget support?', a: "Yes. 4 Siri Shortcuts are built in — Check Assignments, Check Grades, Open Courses, and Today's Schedule. Home Screen widgets show grades, schedule, and assignments. Courses and assignments are indexed in Spotlight Search." },
+                    { q: 'What about Android support?', a: "WolfWhale is built exclusively for iOS using native SwiftUI. Our philosophy is to maximize the iPhone for education, mobility, and accessibility by deeply integrating with Apple's ecosystem. A web companion is planned for desktop access." },
+                    { q: 'How many features does WolfWhale have?', a: 'Over 106 features across 355 Swift files and 122,000 lines of code. This includes a full student portal, teacher command center, parent dashboard, admin console, 25+ interactive learning tools, AR experiences, real-time messaging, and deep Apple ecosystem integration.' },
                   ],
                 },
               ]}
