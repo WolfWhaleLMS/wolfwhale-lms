@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { GraduationCap, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield, Mail, Phone, MapPin } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 
-export default function EdTechHubPage() {
+export default function LMSHubPage() {
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ background: '#000000' }}>
       {/* LocalBusiness schema for local SEO */}
@@ -167,7 +167,7 @@ export default function EdTechHubPage() {
           <Link href="/" className="inline-flex items-center gap-2 sm:gap-3 group shrink-0">
             <GlowingLogo size={40} className="hidden sm:inline-flex" />
             <span className="text-sm sm:text-lg font-display font-bold text-white group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase">
-              WolfWhale EdTech
+              WolfWhale LMS
             </span>
           </Link>
 
@@ -223,7 +223,7 @@ export default function EdTechHubPage() {
             {/* Heading */}
             <div className="space-y-3 sm:space-y-4">
               <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-[#00BFFF] via-[#8B5CF6] to-[#00BFFF] bg-clip-text text-transparent tracking-wide sm:tracking-wider drop-shadow-sm">
-                WOLFWHALE EDTECH
+                WOLFWHALE LMS
               </h1>
               <p className="text-base sm:text-xl md:text-2xl text-white/80 max-w-2xl mx-auto leading-relaxed font-medium">
                 Building the future of education technology &mdash; coming soon to the App Store
@@ -321,11 +321,11 @@ export default function EdTechHubPage() {
           <div className="max-w-3xl mx-auto">
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg shadow-[#8B5CF6]/5 rounded-2xl p-5 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white tracking-wider">
-                ABOUT WOLFWHALE EDTECH
+                ABOUT WOLFWHALE
               </h2>
               <div className="space-y-3 sm:space-y-4 text-sm sm:text-base text-white/75 leading-relaxed">
                 <p>
-                  WolfWhale EdTech is a Canadian education technology company on a mission to make powerful, accessible learning tools available to every student and educator.
+                  WolfWhale is a Canadian education technology company on a mission to make powerful, accessible learning tools available to every student and educator.
                 </p>
                 <p>
                   Our flagship product, WolfWhale LMS, is the only learning management system with spaced repetition technology built in — giving students a scientifically proven advantage in long-term knowledge retention. We serve K-12 schools, post-secondary institutions, and training organizations across Canada.
@@ -384,7 +384,7 @@ export default function EdTechHubPage() {
               </div>
             </div>
             <p className="text-xs text-white/40">
-              &copy; {new Date().getFullYear()} WolfWhale EdTech. All rights reserved. Canadian-built LMS for K-12 &amp; post-secondary schools.
+              &copy; {new Date().getFullYear()} WolfWhale Learning Management System. All rights reserved. Canadian-built LMS for K-12 &amp; post-secondary schools.
             </p>
           </div>
         </div>

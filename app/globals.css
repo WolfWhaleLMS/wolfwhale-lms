@@ -11,7 +11,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: 'Times New Roman', Times, Georgia, serif;
   --font-mono: var(--font-geist-mono);
   --font-display: var(--font-orbitron);
   --font-data: var(--font-share-tech-mono);
@@ -568,9 +568,9 @@ body::before {
     text-wrap: pretty;
   }
 
-  /* Futuristic display font (Orbitron) */
+  /* Display font — Times New Roman for academic sophistication */
   .font-display {
-    font-family: var(--font-orbitron), 'Orbitron', sans-serif;
+    font-family: 'Times New Roman', Times, Georgia, serif;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }

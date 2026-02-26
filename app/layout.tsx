@@ -89,7 +89,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "WolfWhale EdTech",
+    siteName: "WolfWhale LMS",
     title: "Canadian LMS for K-12 & Post-Secondary Schools | WolfWhale",
     description:
       "Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
