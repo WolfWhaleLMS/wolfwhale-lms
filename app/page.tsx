@@ -47,6 +47,128 @@ export default function LMSHubPage() {
           "priceRange": "$$"
         }) }}
       />
+      {/* Corinthian Pillar Borders — Blueprint Schematic Style */}
+      <div className="fixed inset-y-0 left-0 w-[60px] sm:w-[80px] z-[5] pointer-events-none hidden sm:block text-gray-400 dark:text-white" aria-hidden="true">
+        <svg viewBox="0 0 80 1200" preserveAspectRatio="none" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="pillar-flute-l" x="0" y="0" width="8" height="20" patternUnits="userSpaceOnUse">
+              <path d="M4 0 Q0 10 4 20 Q8 10 4 0Z" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.15"/>
+            </pattern>
+          </defs>
+          {/* Base / Plinth */}
+          <rect x="5" y="1140" width="70" height="60" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.12"/>
+          <rect x="10" y="1145" width="60" height="10" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
+          <rect x="8" y="1155" width="64" height="5" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
+          {/* Torus molding base */}
+          <ellipse cx="40" cy="1140" rx="32" ry="4" fill="none" stroke="currentColor" strokeWidth="0.6" opacity="0.12"/>
+          <ellipse cx="40" cy="1135" rx="28" ry="3" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
+          {/* Column shaft with fluting */}
+          <rect x="15" y="180" width="50" height="955" fill="url(#pillar-flute-l)" opacity="0.5"/>
+          <line x1="15" y1="180" x2="15" y2="1135" stroke="currentColor" strokeWidth="0.6" opacity="0.12"/>
+          <line x1="65" y1="180" x2="65" y2="1135" stroke="currentColor" strokeWidth="0.6" opacity="0.12"/>
+          {/* Entasis lines (subtle curve of shaft) */}
+          <path d="M15 180 Q12 657 15 1135" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.08"/>
+          <path d="M65 180 Q68 657 65 1135" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.08"/>
+          {/* Fluting detail lines */}
+          {[20, 25, 30, 35, 40, 45, 50, 55, 60].map((x) => (
+            <line key={x} x1={x} y1="180" x2={x} y2="1135" stroke="currentColor" strokeWidth="0.2" opacity="0.06"/>
+          ))}
+          {/* Necking ring */}
+          <ellipse cx="40" cy="180" rx="26" ry="3" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.12"/>
+          <ellipse cx="40" cy="175" rx="24" ry="2.5" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.10"/>
+          {/* Capital — Acanthus leaf row 1 */}
+          <path d="M14 170 Q20 150 28 160 Q32 148 40 155 Q48 148 52 160 Q60 150 66 170" fill="none" stroke="currentColor" strokeWidth="0.6" opacity="0.14"/>
+          {/* Acanthus leaf details */}
+          <path d="M20 165 Q22 155 28 160" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
+          <path d="M32 162 Q35 152 40 155" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
+          <path d="M48 162 Q51 152 52 160" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
+          <path d="M56 165 Q58 155 62 165" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
+          {/* Capital — Acanthus leaf row 2 (taller) */}
+          <path d="M10 155 Q18 125 28 140 Q34 120 40 130 Q46 120 52 140 Q62 125 70 155" fill="none" stroke="currentColor" strokeWidth="0.6" opacity="0.14"/>
+          {/* Acanthus leaf inner veins */}
+          <path d="M18 145 Q22 132 28 140" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
+          <path d="M34 138 Q37 126 40 130" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
+          <path d="M46 138 Q49 126 52 140" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
+          <path d="M58 145 Q60 132 64 148" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
+          {/* Volutes (spiral scrolls) */}
+          <path d="M8 120 Q5 110 10 105 Q18 98 22 108 Q24 115 18 118 Q14 120 12 115" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.14"/>
+          <path d="M72 120 Q75 110 70 105 Q62 98 58 108 Q56 115 62 118 Q66 120 68 115" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.14"/>
+          {/* Volute center dots */}
+          <circle cx="14" cy="113" r="1.5" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.12"/>
+          <circle cx="66" cy="113" r="1.5" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.12"/>
+          {/* Helices (center flower) */}
+          <path d="M30 110 Q35 95 40 100 Q45 95 50 110" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.12"/>
+          <circle cx="40" cy="102" r="3" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.10"/>
+          {/* Abacus (top slab) */}
+          <rect x="3" y="90" width="74" height="12" fill="none" stroke="currentColor" strokeWidth="0.7" opacity="0.14"/>
+          <rect x="5" y="92" width="70" height="8" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.08"/>
+          {/* Entablature */}
+          <rect x="0" y="60" width="80" height="30" fill="none" stroke="currentColor" strokeWidth="0.7" opacity="0.12"/>
+          <line x1="0" y1="72" x2="80" y2="72" stroke="currentColor" strokeWidth="0.4" opacity="0.08"/>
+          <line x1="0" y1="80" x2="80" y2="80" stroke="currentColor" strokeWidth="0.4" opacity="0.08"/>
+          {/* Dentil molding */}
+          {[5, 15, 25, 35, 45, 55, 65].map((x) => (
+            <rect key={x} x={x} y="74" width="5" height="5" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
+          ))}
+          {/* Cornice top */}
+          <rect x="0" y="40" width="80" height="20" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
+          <path d="M0 40 L80 40" stroke="currentColor" strokeWidth="0.8" opacity="0.12"/>
+          {/* Blueprint dimension lines */}
+          <line x1="40" y1="40" x2="40" y2="1200" stroke="currentColor" strokeWidth="0.15" opacity="0.04" strokeDasharray="4 8"/>
+        </svg>
+      </div>
+      <div className="fixed inset-y-0 right-0 w-[60px] sm:w-[80px] z-[5] pointer-events-none hidden sm:block text-gray-400 dark:text-white" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
+        <svg viewBox="0 0 80 1200" preserveAspectRatio="none" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="pillar-flute-r" x="0" y="0" width="8" height="20" patternUnits="userSpaceOnUse">
+              <path d="M4 0 Q0 10 4 20 Q8 10 4 0Z" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.15"/>
+            </pattern>
+          </defs>
+          <rect x="5" y="1140" width="70" height="60" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.12"/>
+          <rect x="10" y="1145" width="60" height="10" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
+          <rect x="8" y="1155" width="64" height="5" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
+          <ellipse cx="40" cy="1140" rx="32" ry="4" fill="none" stroke="currentColor" strokeWidth="0.6" opacity="0.12"/>
+          <ellipse cx="40" cy="1135" rx="28" ry="3" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
+          <rect x="15" y="180" width="50" height="955" fill="url(#pillar-flute-r)" opacity="0.5"/>
+          <line x1="15" y1="180" x2="15" y2="1135" stroke="currentColor" strokeWidth="0.6" opacity="0.12"/>
+          <line x1="65" y1="180" x2="65" y2="1135" stroke="currentColor" strokeWidth="0.6" opacity="0.12"/>
+          <path d="M15 180 Q12 657 15 1135" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.08"/>
+          <path d="M65 180 Q68 657 65 1135" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.08"/>
+          {[20, 25, 30, 35, 40, 45, 50, 55, 60].map((x) => (
+            <line key={x} x1={x} y1="180" x2={x} y2="1135" stroke="currentColor" strokeWidth="0.2" opacity="0.06"/>
+          ))}
+          <ellipse cx="40" cy="180" rx="26" ry="3" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.12"/>
+          <ellipse cx="40" cy="175" rx="24" ry="2.5" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.10"/>
+          <path d="M14 170 Q20 150 28 160 Q32 148 40 155 Q48 148 52 160 Q60 150 66 170" fill="none" stroke="currentColor" strokeWidth="0.6" opacity="0.14"/>
+          <path d="M20 165 Q22 155 28 160" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
+          <path d="M32 162 Q35 152 40 155" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
+          <path d="M48 162 Q51 152 52 160" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
+          <path d="M56 165 Q58 155 62 165" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
+          <path d="M10 155 Q18 125 28 140 Q34 120 40 130 Q46 120 52 140 Q62 125 70 155" fill="none" stroke="currentColor" strokeWidth="0.6" opacity="0.14"/>
+          <path d="M18 145 Q22 132 28 140" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
+          <path d="M34 138 Q37 126 40 130" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
+          <path d="M46 138 Q49 126 52 140" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
+          <path d="M58 145 Q60 132 64 148" fill="none" stroke="currentColor" strokeWidth="0.25" opacity="0.08"/>
+          <path d="M8 120 Q5 110 10 105 Q18 98 22 108 Q24 115 18 118 Q14 120 12 115" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.14"/>
+          <path d="M72 120 Q75 110 70 105 Q62 98 58 108 Q56 115 62 118 Q66 120 68 115" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.14"/>
+          <circle cx="14" cy="113" r="1.5" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.12"/>
+          <circle cx="66" cy="113" r="1.5" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.12"/>
+          <path d="M30 110 Q35 95 40 100 Q45 95 50 110" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.12"/>
+          <circle cx="40" cy="102" r="3" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.10"/>
+          <rect x="3" y="90" width="74" height="12" fill="none" stroke="currentColor" strokeWidth="0.7" opacity="0.14"/>
+          <rect x="5" y="92" width="70" height="8" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.08"/>
+          <rect x="0" y="60" width="80" height="30" fill="none" stroke="currentColor" strokeWidth="0.7" opacity="0.12"/>
+          <line x1="0" y1="72" x2="80" y2="72" stroke="currentColor" strokeWidth="0.4" opacity="0.08"/>
+          <line x1="0" y1="80" x2="80" y2="80" stroke="currentColor" strokeWidth="0.4" opacity="0.08"/>
+          {[5, 15, 25, 35, 45, 55, 65].map((x) => (
+            <rect key={x} x={x} y="74" width="5" height="5" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.10"/>
+          ))}
+          <rect x="0" y="40" width="80" height="20" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.10"/>
+          <path d="M0 40 L80 40" stroke="currentColor" strokeWidth="0.8" opacity="0.12"/>
+          <line x1="40" y1="40" x2="40" y2="1200" stroke="currentColor" strokeWidth="0.15" opacity="0.04" strokeDasharray="4 8"/>
+        </svg>
+      </div>
+
       {/* Background with subtle neon glows (dark mode only) */}
       <div className="fixed inset-0 z-0 hidden dark:block">
         {/* Pure black base */}
