@@ -255,14 +255,15 @@ export default function LMSHubPage() {
                 aria-label="Coming soon to the App Store"
                 title="Coming soon"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" className="h-11 sm:h-12">
-                  <rect width="120" height="40" rx="6" fill="#000" stroke="#333" strokeWidth="0.8" />
-                  <g fill="#fff">
-                    <path d="M24.77 20.3a4.95 4.95 0 0 1 2.36-4.15 5.07 5.07 0 0 0-3.99-2.16c-1.68-.18-3.31 1.01-4.17 1.01-.87 0-2.19-.99-3.61-.96a5.31 5.31 0 0 0-4.47 2.73c-1.93 3.34-.49 8.27 1.36 10.97.93 1.33 2.01 2.82 3.43 2.76 1.39-.06 1.91-.88 3.59-.88 1.67 0 2.15.88 3.6.85 1.49-.02 2.42-1.33 3.32-2.67a11 11 0 0 0 1.52-3.09 4.79 4.79 0 0 1-2.94-4.41zM22.04 12.21a4.87 4.87 0 0 0 1.12-3.49 4.96 4.96 0 0 0-3.21 1.66 4.64 4.64 0 0 0-1.15 3.36 4.1 4.1 0 0 0 3.24-1.53z" />
-                    <text x="38" y="15" fontSize="7" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="400" letterSpacing="0.02em" fill="#fff">Download on the</text>
-                    <text x="38" y="27" fontSize="12" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="600" letterSpacing="0.01em" fill="#fff">App Store</text>
-                  </g>
-                </svg>
+                <div className="bg-black rounded-lg border border-gray-700 px-4 py-2 flex items-center gap-2.5">
+                  <svg viewBox="0 0 24 24" className="h-7 w-7 fill-white flex-shrink-0">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                  </svg>
+                  <div className="flex flex-col">
+                    <span className="text-[10px] text-white/90 leading-none">Download on the</span>
+                    <span className="text-base font-semibold text-white leading-tight">App Store</span>
+                  </div>
+                </div>
                 <p className="text-[10px] text-gray-400 dark:text-white/30 mt-1 text-center tracking-wider uppercase">Coming Soon</p>
               </div>
             </div>
