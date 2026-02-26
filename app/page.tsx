@@ -142,7 +142,7 @@ export default function LMSHubPage() {
       </div>
 
       {/* Header / Nav */}
-      <header className="sticky top-0 z-50 px-4 py-4 sm:px-6 sm:py-5 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-gray-200 dark:border-white/5">
+      <header className="fixed top-0 left-0 right-0 z-50 px-4 py-4 sm:px-6 sm:py-5 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-gray-200 dark:border-white/5">
         <nav className="flex items-center justify-between max-w-6xl mx-auto">
           <Link href="/" className="inline-flex flex-col group shrink-0">
             <span className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-[#00BFFF] transition-colors tracking-normal uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
@@ -209,6 +209,8 @@ export default function LMSHubPage() {
           </a>
         </div>
       </header>
+      {/* Spacer for fixed header */}
+      <div className="h-[72px] sm:h-[84px]" />
 
       {/* Hero Section */}
       <main className="relative z-10">
