@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Shield, Mail, Phone, MapPin, Brain, WifiOff, Gamepad2, Bot, Smartphone, Monitor, Tablet, CheckCircle2, X as XIcon, Minus, Paintbrush, Flag, Globe, Heart, Code, Palette, Layers, Accessibility, Zap, Linkedin, Twitter, ChevronDown, Feather, BookOpen, Users } from 'lucide-react'
+import { ArrowRight, Shield, Mail, Phone, MapPin, Brain, WifiOff, Gamepad2, Bot, Smartphone, CheckCircle2, X as XIcon, Minus, Paintbrush, Flag, Globe, Heart, Code, Palette, Layers, Accessibility, Zap, Linkedin, Twitter, ChevronDown, Feather, BookOpen, Users } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 import { ContactForm } from '@/components/landing/ContactForm'
 import { ThemeToggle } from '@/components/landing/ThemeToggle'
@@ -381,52 +381,57 @@ export default function LMSHubPage() {
 
         {/* App Screenshots Section */}
         <section id="screenshots" className="px-4 py-12 sm:py-20">
-          <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
+          <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
                 APP PREVIEW
               </h2>
               <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-xl mx-auto">
-                See WolfWhale LMS in action across all your devices.
+                Beautiful on every device. Built for iOS from day one.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-              {/* Screenshot 1 — Mobile */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
+              {/* Screenshot 1 — Sign In (Light Mode) */}
               <div className="flex flex-col items-center gap-4">
-                <div className="w-full aspect-[9/16] max-w-[280px] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-3xl overflow-hidden flex items-center justify-center">
-                  {/* Replace src with actual screenshot */}
+                <div className="w-full max-w-[260px] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
+                  <Image
+                    src="/screenshot-iphone-light.png"
+                    alt="WolfWhale LMS Sign In — Light Mode on iPhone"
+                    width={1170}
+                    height={2532}
+                    className="w-full h-auto"
+                    priority
+                  />
+                </div>
+                <p className="text-sm text-gray-500 dark:text-white/60 font-medium">Sign In — Light Mode</p>
+              </div>
+
+              {/* Screenshot 2 — Sign In (Dark Mode) */}
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-full max-w-[260px] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 sm:scale-110 sm:z-10">
+                  <Image
+                    src="/screenshot-iphone-dark.png"
+                    alt="WolfWhale LMS Sign In — Dark Mode on iPhone"
+                    width={1170}
+                    height={2532}
+                    className="w-full h-auto"
+                    priority
+                  />
+                </div>
+                <p className="text-sm text-gray-500 dark:text-white/60 font-medium sm:mt-4">Sign In — Dark Mode</p>
+              </div>
+
+              {/* Screenshot 3 — Placeholder for future screenshot */}
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 flex items-center justify-center">
                   <div className="text-center p-6 space-y-3">
                     <Smartphone className="h-12 w-12 text-gray-300 dark:text-white/20 mx-auto" />
-                    <p className="text-xs text-gray-400 dark:text-white/30 uppercase tracking-wider">Mobile View</p>
-                    <p className="text-[10px] text-white/20">Screenshot coming soon</p>
+                    <p className="text-xs text-gray-400 dark:text-white/30 uppercase tracking-wider">Dashboard</p>
+                    <p className="text-[10px] text-gray-300 dark:text-white/20">Screenshot coming soon</p>
                   </div>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-white/60 font-medium">iPhone</p>
-              </div>
-
-              {/* Screenshot 2 — Tablet */}
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-full aspect-[3/4] max-w-[360px] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-3xl overflow-hidden flex items-center justify-center">
-                  <div className="text-center p-6 space-y-3">
-                    <Tablet className="h-12 w-12 text-gray-300 dark:text-white/20 mx-auto" />
-                    <p className="text-xs text-gray-400 dark:text-white/30 uppercase tracking-wider">Tablet View</p>
-                    <p className="text-[10px] text-white/20">Screenshot coming soon</p>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-500 dark:text-white/60 font-medium">iPad</p>
-              </div>
-
-              {/* Screenshot 3 — Desktop */}
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-full aspect-[16/10] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden flex items-center justify-center">
-                  <div className="text-center p-6 space-y-3">
-                    <Monitor className="h-12 w-12 text-gray-300 dark:text-white/20 mx-auto" />
-                    <p className="text-xs text-gray-400 dark:text-white/30 uppercase tracking-wider">Desktop View</p>
-                    <p className="text-[10px] text-white/20">Screenshot coming soon</p>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-500 dark:text-white/60 font-medium">Web Dashboard</p>
+                <p className="text-sm text-gray-500 dark:text-white/60 font-medium">Student Dashboard</p>
               </div>
             </div>
           </div>
