@@ -189,9 +189,6 @@ export default function LMSHubPage() {
             <a href="#about" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
               About
             </a>
-            <a href="#contact" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
-              Contact
-            </a>
             <a
               href="#contact"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl btn-chrome-3d-dark text-white text-sm font-semibold"
