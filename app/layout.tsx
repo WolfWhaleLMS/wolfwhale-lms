@@ -45,7 +45,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wolfwhale.ca";
 
 export const metadata: Metadata = {
   title: {
-    default: "Canadian Learning App for Schools | WolfWhale",
+    default: "WolfWhale | Learning Management System",
     template: "%s | WolfWhale",
   },
   description:
@@ -90,7 +90,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "WolfWhale LMS",
-    title: "Canadian LMS for K-12 & Post-Secondary Schools | WolfWhale",
+    title: "WolfWhale | Learning Management System",
     description:
       "Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
     images: [
@@ -104,7 +104,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Canadian LMS for K-12 & Post-Secondary Schools | WolfWhale",
+    title: "WolfWhale | Learning Management System",
     description:
       "Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
     images: ["/logo.png"],
