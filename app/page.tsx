@@ -223,7 +223,7 @@ export default function LMSHubPage() {
 
             {/* Heading — relative z-10 so glow renders BEHIND the text */}
             <div className="relative z-10 space-y-1 sm:space-y-2">
-              <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-normal text-gray-900 dark:text-white tracking-[0.03em] sm:tracking-[0.05em] uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+              <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-normal text-gray-900 dark:text-white tracking-[-0.03em] sm:tracking-[-0.04em] uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                 WolfWhale
               </h1>
               <p className="text-sm sm:text-lg md:text-xl text-gray-500 dark:text-white/70 tracking-[0.25em] uppercase font-normal">
