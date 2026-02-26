@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { GraduationCap, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield, Mail, Phone, MapPin } from 'lucide-react'
+import { GraduationCap, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield, Mail, Phone, MapPin, Brain, Wifi, WifiOff, Gamepad2, Bot, Smartphone, Monitor, Tablet, CheckCircle2, X as XIcon, Minus } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 
 export default function LMSHubPage() {
@@ -178,8 +178,11 @@ export default function LMSHubPage() {
           </Link>
 
           <div className="hidden sm:flex items-center gap-6">
-            <a href="#products" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
-              Products
+            <a href="#features" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+              Features
+            </a>
+            <a href="#compare" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+              Compare
             </a>
             <a href="#about" className="text-sm text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
               About
@@ -206,8 +209,11 @@ export default function LMSHubPage() {
 
         {/* Mobile nav links */}
         <div className="flex sm:hidden items-center justify-center gap-4 mt-3">
-          <a href="#products" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
-            Products
+          <a href="#features" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            Features
+          </a>
+          <a href="#compare" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            Compare
           </a>
           <a href="#about" className="text-xs text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
             About
@@ -233,9 +239,6 @@ export default function LMSHubPage() {
               </h1>
               <p className="text-sm sm:text-lg md:text-xl text-white/90 tracking-[0.2em] uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                 Learning Management System
-              </p>
-              <p className="text-base sm:text-xl md:text-2xl text-white/80 max-w-2xl mx-auto leading-relaxed font-medium pt-2">
-                Building the future of education technology &mdash; coming soon to the App Store
               </p>
             </div>
 
@@ -321,6 +324,213 @@ export default function LMSHubPage() {
                 </div>
               </div>
 
+            </div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section id="features" className="px-4 py-12 sm:py-20">
+          <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
+            <div className="text-center space-y-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
+                KEY FEATURES
+              </h2>
+              <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto">
+                Everything educators and students need — built into one powerful platform.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {[
+                {
+                  icon: Brain,
+                  title: 'Spaced Repetition',
+                  desc: 'Built-in flashcard system using scientifically proven spaced repetition algorithms for long-term knowledge retention.',
+                  color: '#8B5CF6',
+                },
+                {
+                  icon: Bot,
+                  title: 'AI Tutoring',
+                  desc: 'Intelligent AI tutor that adapts to each student\'s learning pace, providing personalized explanations and feedback.',
+                  color: '#00BFFF',
+                },
+                {
+                  icon: WifiOff,
+                  title: 'Offline Learning',
+                  desc: 'Download courses and study materials for offline access. Perfect for students in areas with limited connectivity.',
+                  color: '#33FF33',
+                },
+                {
+                  icon: Gamepad2,
+                  title: 'Gamification',
+                  desc: 'Points, streaks, leaderboards, and achievements keep students motivated and engaged throughout their learning journey.',
+                  color: '#FFD700',
+                },
+                {
+                  icon: Shield,
+                  title: 'Privacy First',
+                  desc: 'FERPA and PIPEDA compliant. Student data is encrypted, stored in Canada, and never sold to third parties.',
+                  color: '#00FFFF',
+                },
+                {
+                  icon: Smartphone,
+                  title: 'Native iOS App',
+                  desc: 'Beautiful native iOS experience designed specifically for iPhone and iPad — not just a website wrapper.',
+                  color: '#FF6B9D',
+                },
+              ].map(({ icon: Icon, title, desc, color }) => (
+                <div
+                  key={title}
+                  className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 hover:border-white/20 transition-all group"
+                >
+                  <div
+                    className="inline-flex p-3 rounded-xl mb-4 border transition-colors"
+                    style={{
+                      backgroundColor: `${color}10`,
+                      borderColor: `${color}30`,
+                    }}
+                  >
+                    <Icon className="h-6 w-6" style={{ color }} />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
+                  <p className="text-sm text-white/65 leading-relaxed">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* App Screenshots Section */}
+        <section id="screenshots" className="px-4 py-12 sm:py-20">
+          <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
+            <div className="text-center space-y-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
+                APP PREVIEW
+              </h2>
+              <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto">
+                See WolfWhale LMS in action across all your devices.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+              {/* Screenshot 1 — Mobile */}
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-full aspect-[9/16] max-w-[280px] bg-white/5 border border-white/10 rounded-3xl overflow-hidden flex items-center justify-center">
+                  {/* Replace src with actual screenshot */}
+                  <div className="text-center p-6 space-y-3">
+                    <Smartphone className="h-12 w-12 text-white/20 mx-auto" />
+                    <p className="text-xs text-white/30 uppercase tracking-wider">Mobile View</p>
+                    <p className="text-[10px] text-white/20">Screenshot coming soon</p>
+                  </div>
+                </div>
+                <p className="text-sm text-white/60 font-medium">iPhone</p>
+              </div>
+
+              {/* Screenshot 2 — Tablet */}
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-full aspect-[3/4] max-w-[360px] bg-white/5 border border-white/10 rounded-3xl overflow-hidden flex items-center justify-center">
+                  <div className="text-center p-6 space-y-3">
+                    <Tablet className="h-12 w-12 text-white/20 mx-auto" />
+                    <p className="text-xs text-white/30 uppercase tracking-wider">Tablet View</p>
+                    <p className="text-[10px] text-white/20">Screenshot coming soon</p>
+                  </div>
+                </div>
+                <p className="text-sm text-white/60 font-medium">iPad</p>
+              </div>
+
+              {/* Screenshot 3 — Desktop */}
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-full aspect-[16/10] bg-white/5 border border-white/10 rounded-2xl overflow-hidden flex items-center justify-center">
+                  <div className="text-center p-6 space-y-3">
+                    <Monitor className="h-12 w-12 text-white/20 mx-auto" />
+                    <p className="text-xs text-white/30 uppercase tracking-wider">Desktop View</p>
+                    <p className="text-[10px] text-white/20">Screenshot coming soon</p>
+                  </div>
+                </div>
+                <p className="text-sm text-white/60 font-medium">Web Dashboard</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* LMS Comparison Section */}
+        <section id="compare" className="px-4 py-12 sm:py-20">
+          <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
+            <div className="text-center space-y-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
+                HOW WE COMPARE
+              </h2>
+              <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto">
+                See how WolfWhale stacks up against other learning management systems used in Canadian schools.
+              </p>
+            </div>
+
+            {/* Comparison Table */}
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
+              {/* Table Header */}
+              <div className="grid grid-cols-6 gap-0 text-center border-b border-white/10">
+                <div className="p-3 sm:p-4 text-left text-xs sm:text-sm font-bold text-white/60 uppercase tracking-wider">
+                  Feature
+                </div>
+                <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-[#8B5CF6] border-l border-white/5 bg-[#8B5CF6]/5">
+                  WolfWhale
+                </div>
+                <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
+                  Canvas
+                </div>
+                <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
+                  Brightspace
+                </div>
+                <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
+                  Edsby
+                </div>
+                <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
+                  Moodle
+                </div>
+              </div>
+
+              {/* Table Rows */}
+              {[
+                { feature: 'Spaced Repetition Flashcards', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+                { feature: 'AI Tutoring', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+                { feature: 'Offline Learning', wolfwhale: true, canvas: 'partial', brightspace: false, edsby: false, moodle: 'partial' },
+                { feature: 'Native iOS App', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: 'partial' },
+                { feature: 'Gamification & Streaks', wolfwhale: true, canvas: false, brightspace: false, edsby: 'partial', moodle: 'partial' },
+                { feature: 'Canadian Data Hosting', wolfwhale: true, canvas: false, brightspace: true, edsby: true, moodle: 'partial' },
+                { feature: 'PIPEDA Compliant', wolfwhale: true, canvas: 'partial', brightspace: true, edsby: true, moodle: 'partial' },
+                { feature: 'Built-in Quiz Builder', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: true },
+                { feature: 'Real-time Collaboration', wolfwhale: true, canvas: true, brightspace: 'partial', edsby: 'partial', moodle: false },
+                { feature: 'Free for Students', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: true },
+              ].map(({ feature, wolfwhale, canvas, brightspace, edsby, moodle }, idx) => (
+                <div
+                  key={feature}
+                  className={`grid grid-cols-6 gap-0 text-center ${idx % 2 === 0 ? 'bg-white/[0.02]' : ''} ${idx < 9 ? 'border-b border-white/5' : ''}`}
+                >
+                  <div className="p-3 sm:p-4 text-left text-xs sm:text-sm text-white/80">
+                    {feature}
+                  </div>
+                  {[wolfwhale, canvas, brightspace, edsby, moodle].map((val, i) => (
+                    <div
+                      key={i}
+                      className={`p-3 sm:p-4 flex items-center justify-center border-l border-white/5 ${i === 0 ? 'bg-[#8B5CF6]/5' : ''}`}
+                    >
+                      {val === true ? (
+                        <CheckCircle2 className={`h-4 w-4 sm:h-5 sm:w-5 ${i === 0 ? 'text-[#8B5CF6]' : 'text-green-400/70'}`} />
+                      ) : val === 'partial' ? (
+                        <Minus className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400/60" />
+                      ) : (
+                        <XIcon className="h-4 w-4 sm:h-5 sm:w-5 text-white/20" />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <p className="text-xs text-white/40">
+                Comparison based on publicly available feature lists as of 2025. Partial (—) indicates limited or plugin-dependent support.
+              </p>
             </div>
           </div>
         </section>

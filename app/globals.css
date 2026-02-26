@@ -11,7 +11,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: 'Times New Roman', Times, Georgia, serif;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono);
   --font-display: var(--font-orbitron);
   --font-data: var(--font-share-tech-mono);
