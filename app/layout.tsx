@@ -45,7 +45,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wolfwhale.ca";
 
 export const metadata: Metadata = {
   title: {
-    default: "Canadian LMS for Schools | WolfWhale",
+    default: "Canadian Learning App for Schools | WolfWhale",
     template: "%s | WolfWhale",
   },
   description:
@@ -62,8 +62,12 @@ export const metadata: Metadata = {
     "certificates",
     "interactive learning",
     "Canadian LMS",
+    "iOS education app",
+    "learning app",
     "K-12 learning platform",
     "post-secondary LMS",
+    "mobile learning",
+    "App Store",
     "FERPA compliant",
     "PIPEDA compliant",
     "Canvas alternative",

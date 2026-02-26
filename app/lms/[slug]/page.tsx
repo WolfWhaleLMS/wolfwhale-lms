@@ -232,7 +232,7 @@ export default async function LandingPage({
               Features
             </Link>
             <Link
-              href="/login"
+              href="mailto:info@wolfwhale.ca"
               className="px-6 py-2.5 rounded-lg bg-[#0A2540] text-white hover:bg-[#00BFFF] transition-all text-sm font-medium shadow-md"
             >
               Login
@@ -291,7 +291,7 @@ export default async function LandingPage({
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/login"
+              href="mailto:info@wolfwhale.ca"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#00BFFF] to-[#33FF33] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] transition-all font-semibold text-white text-white-outlined group neon-glow-blue"
             >
               Get Started Free
@@ -523,7 +523,7 @@ export default async function LandingPage({
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href="/login"
+                href="mailto:info@wolfwhale.ca"
                 className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#00BFFF] to-[#33FF33] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] transition-all font-semibold text-white text-white-outlined group neon-glow-blue"
               >
                 Get Started Free
@@ -593,7 +593,7 @@ export default async function LandingPage({
                 </li>
                 <li>
                   <Link
-                    href="/login"
+                    href="mailto:info@wolfwhale.ca"
                     className="hover:text-[#00BFFF] transition-colors"
                   >
                     Login

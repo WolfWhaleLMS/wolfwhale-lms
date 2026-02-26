@@ -252,21 +252,21 @@ export default function EdTechHubPage() {
             <a href="#contact" className="text-sm text-[#0A2040]/70 hover:text-[#0077B6] transition-colors font-medium">
               Contact
             </a>
-            <Link
-              href="/login"
+            <a
+              href="#contact"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl btn-chrome-3d-blue text-white text-sm font-semibold transition-all hover:scale-105"
             >
-              Sign In
-            </Link>
+              Get in Touch
+            </a>
           </div>
 
-          {/* Mobile sign-in */}
-          <Link
-            href="/login"
+          {/* Mobile CTA */}
+          <a
+            href="#contact"
             className="sm:hidden inline-flex items-center gap-2 px-3 py-2 rounded-xl btn-chrome-3d-blue text-white text-xs font-semibold"
           >
-            Sign In
-          </Link>
+            Contact
+          </a>
         </nav>
 
         {/* Mobile nav links */}
@@ -297,7 +297,7 @@ export default function EdTechHubPage() {
                 WOLFWHALE EDTECH
               </h1>
               <p className="text-base sm:text-xl md:text-2xl text-[#0A2040]/80 max-w-2xl mx-auto leading-relaxed font-medium">
-                Building the future of education technology
+                Building the future of education technology &mdash; coming soon to the App Store
               </p>
             </div>
 
@@ -310,12 +310,12 @@ export default function EdTechHubPage() {
                 Explore Our Products
                 <ArrowRight className="h-5 w-5" />
               </a>
-              <Link
-                href="/login"
+              <a
+                href="#contact"
                 className="inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl border-2 border-[#0077B6]/30 text-[#0A2040] text-sm sm:text-base font-semibold hover:border-[#0077B6] hover:bg-[#0077B6]/5 transition-all w-full sm:w-auto justify-center"
               >
-                Sign In to LMS
-              </Link>
+                Get in Touch
+              </a>
             </div>
           </div>
         </section>
@@ -340,14 +340,14 @@ export default function EdTechHubPage() {
                   <div className="inline-flex p-3 rounded-xl bg-[#00BFFF]/10 border border-[#00BFFF]/20 group-hover:bg-[#00BFFF]/15 transition-colors">
                     <GraduationCap className="h-7 w-7 text-[#0077B6]" />
                   </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#22C55E]/15 text-[#16A34A] border border-[#22C55E]/25">
-                    Live
+                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#00BFFF]/15 text-[#0077B6] border border-[#00BFFF]/25">
+                    Coming to iOS
                   </span>
                 </div>
 
                 <h3 className="text-xl font-bold text-[#0A2040] mb-3">WolfWhale LMS</h3>
                 <p className="text-[#0A2040]/70 text-sm leading-relaxed mb-5">
-                  Canada&apos;s modern learning management system with built-in spaced repetition flashcards. Designed for K-12 and post-secondary education.
+                  Canada&apos;s modern learning app with built-in spaced repetition flashcards. Designed for K-12 and post-secondary education. Now in TestFlight, coming soon to the App Store.
                 </p>
 
                 {/* Feature bullets */}
@@ -374,12 +374,12 @@ export default function EdTechHubPage() {
                   >
                     Learn More
                   </Link>
-                  <Link
-                    href="/login"
+                  <a
+                    href="#contact"
                     className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-blue text-white text-sm font-semibold transition-all hover:scale-105"
                   >
-                    Sign In
-                  </Link>
+                    Get in Touch
+                  </a>
                 </div>
               </div>
 

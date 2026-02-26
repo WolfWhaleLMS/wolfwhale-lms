@@ -21,10 +21,10 @@ export default function NotFound() {
             Go home
           </Link>
           <Link
-            href="/login"
+            href="/info"
             className="px-6 py-3 border border-[#00BFFF]/30 text-[#0A2540] dark:text-white rounded-lg hover:border-[#00BFFF] hover:bg-[#00BFFF]/5 transition-all font-medium"
           >
-            Sign in
+            Learn More
           </Link>
         </div>
       </div>

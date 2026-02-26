@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { DemoLoginButtons } from '@/components/auth/DemoLoginButtons'
 import {
   BookOpen,
   ClipboardCheck,
@@ -140,12 +139,12 @@ export default function InfoPage() {
               <p className="text-xs text-[#0A2540]/80 font-display font-semibold tracking-widest uppercase">Learning Management System</p>
             </div>
           </div>
-          <Link
-            href="/login"
+          <a
+            href="mailto:info@wolfwhale.ca"
             className="px-6 py-2.5 rounded-lg btn-chrome-3d-blue text-white transition-all text-sm font-bold"
           >
-            Login
-          </Link>
+            Contact Us
+          </a>
         </div>
       </header>
 
@@ -191,12 +190,12 @@ export default function InfoPage() {
               Request a Demo
               <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </a>
-            <Link
-              href="/login"
+            <a
+              href="mailto:info@wolfwhale.ca"
               className="px-8 py-4 rounded-xl btn-chrome-3d-silver transition-all font-bold"
             >
-              Login to Your School
-            </Link>
+              Contact Us
+            </a>
           </div>
 
         </div>
@@ -211,10 +210,17 @@ export default function InfoPage() {
               Tailored experiences for students, teachers, parents, and administrators
             </p>
 
-            {/* One-Click Demo Accounts */}
+            {/* Contact CTA */}
             <div className="max-w-2xl mx-auto">
               <div className="rounded-2xl p-6 ocean-card">
-                <DemoLoginButtons />
+                <p className="text-sm text-[#0A2540]/80 mb-4">Want to see the platform in action?</p>
+                <a
+                  href="mailto:info@wolfwhale.ca?subject=WolfWhale%20LMS%20-%20Demo%20Request"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg btn-chrome-3d-blue text-white transition-all text-sm font-bold"
+                >
+                  Request a Demo
+                  <ChevronRight className="h-4 w-4" />
+                </a>
               </div>
             </div>
           </div>
@@ -643,7 +649,7 @@ export default function InfoPage() {
                 <li><a href="#" className="hover:text-[#0077B6] transition-colors">Features</a></li>
                 <li><a href="#pricing" className="hover:text-[#0077B6] transition-colors">Pricing</a></li>
                 <li><a href="#" className="hover:text-[#0077B6] transition-colors">Documentation</a></li>
-                <li><Link href="/login" className="hover:text-[#0077B6] transition-colors">Login</Link></li>
+                <li><a href="mailto:info@wolfwhale.ca" className="hover:text-[#0077B6] transition-colors">Contact</a></li>
               </ul>
             </div>
 
