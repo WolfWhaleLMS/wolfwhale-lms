@@ -229,12 +229,7 @@ export default function LMSHubPage() {
           <div className="w-full max-w-5xl text-center space-y-6 sm:space-y-8 animate-fade-in-up">
             {/* Logo app tile */}
             <div className="mb-16 sm:mb-24">
-              <div className="sm:hidden">
-                <GlowingLogo size={96} />
-              </div>
-              <div className="hidden sm:block">
-                <GlowingLogo size={160} />
-              </div>
+              <GlowingLogo size={96} />
             </div>
 
             {/* Heading — relative z-10 so glow renders BEHIND the text */}
