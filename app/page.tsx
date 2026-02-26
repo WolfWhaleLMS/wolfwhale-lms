@@ -196,7 +196,7 @@ export default function LMSHubPage() {
         <section className="flex items-center justify-center min-h-[60vh] sm:min-h-[calc(100vh-200px)] px-4 py-10 sm:py-16">
           <div className="w-full max-w-5xl text-center space-y-6 sm:space-y-8 animate-fade-in-up">
             {/* Logo app tile */}
-            <div className="mb-16 sm:mb-24">
+            <div className="mb-8 sm:mb-16">
               <GlowingLogo size={96} />
             </div>
 
@@ -211,23 +211,30 @@ export default function LMSHubPage() {
             </div>
 
             {/* CTA Buttons */}
-            <div className="relative z-10 flex flex-col items-center gap-4 pt-4 sm:pt-6">
+            <div className="relative z-10 flex flex-col items-center gap-3 sm:gap-4 pt-4 sm:pt-6">
+              {/* Primary CTA — conversion action */}
               <a
-                href="#features"
+                href="#contact"
                 className="inline-flex items-center gap-2 px-8 py-3.5 sm:px-10 sm:py-4 rounded-xl btn-chrome-3d-dark text-white text-sm sm:text-base font-semibold"
               >
-                Product Features
+                Request a Demo
                 <ArrowRight className="h-5 w-5" />
               </a>
-              {/* App Store Badge */}
+              {/* Secondary CTA — explore features */}
               <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mt-2 opacity-90 hover:opacity-100 transition-opacity"
-                aria-label="Download on the App Store"
+                href="#features"
+                className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-[#00BFFF] transition-colors font-medium"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" className="h-14 sm:h-16">
+                See Features
+                <ArrowRight className="h-4 w-4" />
+              </a>
+              {/* App Store Badge */}
+              <div
+                className="inline-block mt-3 opacity-60 cursor-default"
+                aria-label="Coming soon to the App Store"
+                title="Coming soon"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" className="h-11 sm:h-12">
                   <rect width="120" height="40" rx="6" fill="#000" stroke="#fff" strokeWidth="0.8" />
                   <g fill="#fff">
                     <path d="M24.77 20.3a4.95 4.95 0 0 1 2.36-4.15 5.07 5.07 0 0 0-3.99-2.16c-1.68-.18-3.31 1.01-4.17 1.01-.87 0-2.19-.99-3.61-.96a5.31 5.31 0 0 0-4.47 2.73c-1.93 3.34-.49 8.27 1.36 10.97.93 1.33 2.01 2.82 3.43 2.76 1.39-.06 1.91-.88 3.59-.88 1.67 0 2.15.88 3.6.85 1.49-.02 2.42-1.33 3.32-2.67a11 11 0 0 0 1.52-3.09 4.79 4.79 0 0 1-2.94-4.41zM22.04 12.21a4.87 4.87 0 0 0 1.12-3.49 4.96 4.96 0 0 0-3.21 1.66 4.64 4.64 0 0 0-1.15 3.36 4.1 4.1 0 0 0 3.24-1.53z" />
@@ -235,7 +242,8 @@ export default function LMSHubPage() {
                     <text x="38" y="27" fontSize="12" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="600" letterSpacing="0.01em" fill="#fff">App Store</text>
                   </g>
                 </svg>
-              </a>
+                <p className="text-[10px] text-white/30 mt-1 text-center tracking-wider uppercase">Coming Soon</p>
+              </div>
             </div>
           </div>
         </section>
@@ -475,10 +483,17 @@ export default function LMSHubPage() {
               ))}
             </div>
 
-            <div className="text-center">
+            <div className="text-center space-y-6">
               <p className="text-xs text-white/40">
                 Comparison based on publicly available feature lists as of 2025. Partial (—) indicates limited or plugin-dependent support.
               </p>
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl btn-chrome-3d-dark text-white text-sm font-semibold"
+              >
+                Ready to switch?
+                <ArrowRight className="h-4 w-4" />
+              </a>
             </div>
           </div>
         </section>
@@ -518,20 +533,7 @@ export default function LMSHubPage() {
                   </div>
                   {/* Treaty 6 Territory Flag */}
                   <div className="rounded-lg overflow-hidden border border-white/10 shadow-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" className="w-24 sm:w-32 h-auto">
-                      <rect width="240" height="120" fill="#1a3a6b"/>
-                      {/* Sun / Circle of Treaty */}
-                      <circle cx="120" cy="60" r="30" fill="#FFD700" opacity="0.9"/>
-                      <circle cx="120" cy="60" r="22" fill="#1a3a6b"/>
-                      <circle cx="120" cy="60" r="18" fill="#FFD700" opacity="0.3"/>
-                      {/* Four directions */}
-                      <rect x="116" y="20" width="8" height="16" rx="2" fill="#FFD700" opacity="0.7"/>
-                      <rect x="116" y="84" width="8" height="16" rx="2" fill="#FFD700" opacity="0.7"/>
-                      <rect x="80" y="56" width="16" height="8" rx="2" fill="#FFD700" opacity="0.7"/>
-                      <rect x="144" y="56" width="16" height="8" rx="2" fill="#FFD700" opacity="0.7"/>
-                      {/* Text */}
-                      <text x="120" y="112" textAnchor="middle" fontSize="8" fill="#FFD700" fontFamily="system-ui, sans-serif" letterSpacing="0.1em" opacity="0.8">TREATY 6 TERRITORY</text>
-                    </svg>
+                    <Image src="/treaty6-flag.png" alt="Treaty 6 Territory Flag" width={256} height={128} className="w-24 sm:w-32 h-auto" />
                   </div>
                   <span className="text-xs text-white/40 tracking-widest uppercase">Est. 2024</span>
                 </div>
