@@ -174,8 +174,10 @@ export default function RootLayout({
               "WolfWhale LMS is a Canadian LMS built for K-12 and post-secondary education. Features include interactive courses, quizzes, spaced repetition flashcards, certificates, and FERPA compliant data handling.",
             offers: {
               "@type": "Offer",
-              price: "0",
+              price: "12",
               priceCurrency: "CAD",
+              billingIncrement: "month",
+              description: "$12/user/month, minimum 1-year contract",
             },
           }}
         />

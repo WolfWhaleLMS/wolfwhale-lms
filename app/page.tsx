@@ -160,8 +160,8 @@ export default function LMSHubPage() {
             <a href="#compare" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
               Compare
             </a>
-            <a href="#about" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
-              About
+            <a href="#pricing" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+              Pricing
             </a>
             <a href="#faq" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
               FAQ
@@ -201,8 +201,8 @@ export default function LMSHubPage() {
           <a href="#compare" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
             Compare
           </a>
-          <a href="#about" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
-            About
+          <a href="#pricing" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
+            Pricing
           </a>
           <a href="#faq" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
             FAQ
@@ -355,7 +355,7 @@ export default function LMSHubPage() {
               {[
                 { stat: 'K-12 & Post-Secondary', label: 'Designed for all levels of education' },
                 { stat: 'Canadian Hosted', label: 'All data stays on Canadian soil' },
-                { stat: 'Free for Students', label: 'No cost barrier to learning' },
+                { stat: '$12 / User / Month', label: 'Simple, transparent pricing' },
               ].map(({ stat, label }) => (
                 <div
                   key={stat}
@@ -517,7 +517,7 @@ export default function LMSHubPage() {
                     { feature: 'PIPEDA Compliant', wolfwhale: true, canvas: 'partial', brightspace: true, edsby: true, moodle: 'partial' },
                     { feature: 'Built-in Quiz Builder', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: true },
                     { feature: 'Real-time Collaboration', wolfwhale: true, canvas: true, brightspace: 'partial', edsby: 'partial', moodle: false },
-                    { feature: 'Free for Students', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: true },
+                    { feature: 'Transparent Per-User Pricing', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: true },
                   ].map(({ feature, wolfwhale, canvas, brightspace, edsby, moodle }, idx) => (
                     <div
                       key={feature}
@@ -558,6 +558,71 @@ export default function LMSHubPage() {
                 Ready to switch?
                 <ArrowRight className="h-4 w-4" />
               </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Pricing Section */}
+        <section id="pricing" className="px-4 py-12 sm:py-20">
+          <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
+            <div className="text-center space-y-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
+                SIMPLE PRICING
+              </h2>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-xl mx-auto">
+                One plan. Everything included. No hidden fees.
+              </p>
+            </div>
+
+            <div className="max-w-md mx-auto">
+              <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-8 text-center space-y-6 relative overflow-hidden">
+                {/* Accent glow */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#8B5CF6]/5 to-[#00BFFF]/5 pointer-events-none" />
+
+                <div className="relative space-y-2">
+                  <p className="text-xs text-gray-500 dark:text-white/50 uppercase tracking-widest font-medium">Per User Account</p>
+                  <div className="flex items-baseline justify-center gap-1">
+                    <span className="text-5xl sm:text-6xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>$12</span>
+                    <span className="text-lg text-gray-500 dark:text-white/50 font-medium">/ month</span>
+                  </div>
+                  <p className="text-xs text-gray-400 dark:text-white/40">Minimum 1-year contract</p>
+                </div>
+
+                <div className="relative h-px bg-gray-200 dark:bg-white/10" />
+
+                <ul className="relative space-y-3 text-left">
+                  {[
+                    'Unlimited courses & content',
+                    'Spaced repetition flashcards',
+                    'AI tutoring for every student',
+                    'Offline learning & sync',
+                    'Gamification & leaderboards',
+                    'Built-in quiz builder',
+                    'Canadian data hosting',
+                    'PIPEDA & FERPA compliant',
+                    'Onboarding & teacher training',
+                    'Email support (24hr response)',
+                  ].map((feature) => (
+                    <li key={feature} className="flex items-start gap-2.5 text-sm text-gray-700 dark:text-white/75">
+                      <CheckCircle2 className="h-4 w-4 text-[#8B5CF6] shrink-0 mt-0.5" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="relative pt-2 space-y-3">
+                  <a
+                    href="#contact"
+                    className="w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl btn-chrome-3d-dark text-white text-sm font-semibold"
+                  >
+                    Request a Demo
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
+                  <p className="text-xs text-gray-400 dark:text-white/40">
+                    Volume discounts available for school boards and districts.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -718,8 +783,8 @@ export default function LMSHubPage() {
                   id: 'pricing',
                   heading: 'Pricing & Plans',
                   items: [
-                    { q: 'Is WolfWhale free for students?', a: 'Yes. Students always access WolfWhale for free. We never charge learners to use our platform, including all core features like spaced repetition flashcards, AI tutoring, and offline learning.' },
-                    { q: 'How does institutional licensing work?', a: 'Schools and institutions pay a per-seat annual license that covers all teachers and administrative features. Volume pricing is available for school boards and districts. Contact us for a custom quote.' },
+                    { q: 'How much does WolfWhale cost?', a: 'WolfWhale is $12 per user account per month, with a minimum 1-year contract. This includes all features — spaced repetition flashcards, AI tutoring, offline learning, gamification, and more. No hidden fees.' },
+                    { q: 'Are there volume discounts?', a: 'Yes. School boards and districts with large deployments qualify for volume pricing. Contact us for a custom quote tailored to your institution.' },
                     { q: 'Is there a free trial?', a: 'Yes — we offer a full-featured pilot program so your school can evaluate WolfWhale before committing. Request a demo and we\'ll set you up.' },
                     { q: 'Are there any hidden fees?', a: 'No. Your license includes all features, updates, Canadian hosting, and standard support. There are no add-on charges for core functionality.' },
                   ],
@@ -764,7 +829,7 @@ export default function LMSHubPage() {
                 "@context": "https://schema.org",
                 "@type": "FAQPage",
                 "mainEntity": [
-                  { "@type": "Question", "name": "Is WolfWhale free for students?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Students always access WolfWhale for free." } },
+                  { "@type": "Question", "name": "How much does WolfWhale cost?", "acceptedAnswer": { "@type": "Answer", "text": "WolfWhale is $12 per user account per month, with a minimum 1-year contract." } },
                   { "@type": "Question", "name": "Where is student data stored?", "acceptedAnswer": { "@type": "Answer", "text": "All data is stored exclusively on Canadian servers." } },
                   { "@type": "Question", "name": "Is WolfWhale PIPEDA and FERPA compliant?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. WolfWhale is fully compliant with PIPEDA and FERPA." } },
                   { "@type": "Question", "name": "How long does onboarding take?", "acceptedAnswer": { "@type": "Answer", "text": "Most schools are fully onboarded within 2-4 weeks." } },
