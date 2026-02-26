@@ -276,13 +276,13 @@ export default function LMSHubPage() {
                     <GraduationCap className="h-7 w-7 text-[#00BFFF]" />
                   </div>
                   <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#8B5CF6]/15 text-[#C4B5FD] border border-[#8B5CF6]/25">
-                    Coming to iOS
+                    Available on iOS
                   </span>
                 </div>
 
                 <h3 className="text-xl font-bold text-white mb-3">WolfWhale LMS</h3>
                 <p className="text-white/70 text-sm leading-relaxed mb-5">
-                  Canada&apos;s modern learning app with built-in spaced repetition flashcards. Designed for K-12 and post-secondary education. Now in TestFlight, coming soon to the App Store.
+                  Canada&apos;s modern learning app with built-in spaced repetition flashcards. Designed for K-12 and post-secondary education. Available now on the App Store.
                 </p>
 
                 {/* Feature bullets */}
@@ -302,19 +302,28 @@ export default function LMSHubPage() {
                 </ul>
 
                 {/* Buttons */}
-                <div className="flex gap-3">
-                  <Link
-                    href="/info"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-silver text-sm font-semibold"
-                  >
-                    Learn More
-                  </Link>
+                <div className="flex flex-col gap-3">
                   <a
-                    href="#contact"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-dark text-white text-sm font-semibold"
+                    href="#"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl btn-chrome-3d-dark text-white text-sm font-semibold w-full"
                   >
-                    Contact
+                    <Smartphone className="h-4 w-4" />
+                    Download on App Store
                   </a>
+                  <div className="flex gap-3">
+                    <Link
+                      href="/info"
+                      className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-silver text-sm font-semibold"
+                    >
+                      Learn More
+                    </Link>
+                    <a
+                      href="#contact"
+                      className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-silver text-sm font-semibold"
+                    >
+                      Contact
+                    </a>
+                  </div>
                 </div>
               </div>
 
