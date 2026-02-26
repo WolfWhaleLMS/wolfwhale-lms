@@ -221,11 +221,14 @@ export default function LMSHubPage() {
             <GlowingLogo size={160} className="hidden sm:inline-flex" />
 
             {/* Heading */}
-            <div className="space-y-3 sm:space-y-4">
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-[#00BFFF] via-[#8B5CF6] to-[#00BFFF] bg-clip-text text-transparent tracking-wide sm:tracking-wider drop-shadow-sm">
-                WOLFWHALE LMS
+            <div className="space-y-2 sm:space-y-3">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white tracking-wide sm:tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                WolfWhale
               </h1>
-              <p className="text-base sm:text-xl md:text-2xl text-white/80 max-w-2xl mx-auto leading-relaxed font-medium">
+              <p className="text-sm sm:text-lg md:text-xl text-white/60 tracking-[0.2em] uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                Learning Management System
+              </p>
+              <p className="text-base sm:text-xl md:text-2xl text-white/80 max-w-2xl mx-auto leading-relaxed font-medium pt-2">
                 Building the future of education technology &mdash; coming soon to the App Store
               </p>
             </div>
