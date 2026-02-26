@@ -241,7 +241,7 @@ export default function LMSHubPage() {
               <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-normal text-white tracking-[0.15em] sm:tracking-[0.2em] uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                 WolfWhale
               </h1>
-              <p className="text-xs sm:text-sm md:text-base text-white/70 tracking-[0.25em] uppercase font-normal">
+              <p className="text-sm sm:text-lg md:text-xl text-white/70 tracking-[0.25em] uppercase font-normal">
                 Learning Management System
               </p>
             </div>
