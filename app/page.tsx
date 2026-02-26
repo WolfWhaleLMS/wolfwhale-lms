@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { GraduationCap, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield, Mail, Phone, MapPin, Brain, Wifi, WifiOff, Gamepad2, Bot, Smartphone, Monitor, Tablet, CheckCircle2, X as XIcon, Minus } from 'lucide-react'
+import { GraduationCap, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield, Mail, Phone, MapPin, Brain, Wifi, WifiOff, Gamepad2, Bot, Smartphone, Monitor, Tablet, CheckCircle2, X as XIcon, Minus, Paintbrush, Flag, Globe, Heart, Leaf, Code, Palette, Layers, Accessibility, Zap } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 
 export default function LMSHubPage() {
@@ -576,6 +576,113 @@ export default function LMSHubPage() {
                 <p>
                   We believe technology should amplify great teaching, not replace it. Every product we build is designed with educators and learners at the center.
                 </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Built by Design Section */}
+        <section id="design" className="px-4 py-12 sm:py-20">
+          <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
+            <div className="text-center space-y-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                Built by Design
+              </h2>
+              <p className="text-sm sm:text-base text-white/60 max-w-2xl mx-auto">
+                Every pixel, interaction, and feature is intentional. WolfWhale is crafted with obsessive attention to detail — not assembled from templates.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {[
+                { icon: Palette, title: 'Design-First Approach', desc: 'Interface designed from the ground up for clarity and focus. No clutter, no distractions — just learning.' },
+                { icon: Layers, title: 'Consistent Experience', desc: 'Unified design language across iOS, web, and tablet. Learn anywhere with the same intuitive interface.' },
+                { icon: Zap, title: 'Performance Obsessed', desc: 'Sub-second load times and instant interactions. Built on modern architecture that never makes you wait.' },
+                { icon: Accessibility, title: 'Accessible to All', desc: 'WCAG compliant, screen reader compatible, and designed for every learner regardless of ability.' },
+                { icon: Code, title: 'Native, Not Wrapped', desc: 'True native iOS app — not a web wrapper. Built with platform-specific APIs for the best possible experience.' },
+                { icon: Paintbrush, title: 'Refined Aesthetics', desc: 'Dark mode by default. Thoughtful typography, spacing, and motion that makes learning feel premium.' },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 hover:border-[#8B5CF6]/30 hover:shadow-lg hover:shadow-[#8B5CF6]/10 transition-all"
+                >
+                  <div className="inline-flex p-2.5 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 mb-4">
+                    <item.icon className="h-5 w-5 text-[#8B5CF6]" />
+                  </div>
+                  <h3 className="text-sm sm:text-base font-semibold text-white mb-2">{item.title}</h3>
+                  <p className="text-xs sm:text-sm text-white/60 leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Built in Canada Section */}
+        <section id="canada" className="px-4 py-12 sm:py-20">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg shadow-[#8B5CF6]/5 rounded-2xl p-6 sm:p-10 md:p-14">
+              <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                {/* Flags */}
+                <div className="shrink-0 flex flex-col items-center gap-4">
+                  {/* Canadian Flag */}
+                  <div className="rounded-lg overflow-hidden border border-white/10 shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" className="w-24 sm:w-32 h-auto">
+                      <rect width="1200" height="600" fill="#fff"/>
+                      <rect width="300" height="600" fill="#FF0000"/>
+                      <rect x="900" width="300" height="600" fill="#FF0000"/>
+                      <path d="M600 75 L615 150 L570 180 L600 165 L585 225 L540 195 L555 225 L480 195 L510 240 L495 240 L600 345 L705 240 L690 240 L720 195 L645 225 L660 195 L615 225 L600 165 L630 180 L585 150Z" fill="#FF0000"/>
+                    </svg>
+                  </div>
+                  {/* Treaty 6 Territory Flag */}
+                  <div className="rounded-lg overflow-hidden border border-white/10 shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" className="w-24 sm:w-32 h-auto">
+                      <rect width="240" height="120" fill="#1a3a6b"/>
+                      {/* Sun / Circle of Treaty */}
+                      <circle cx="120" cy="60" r="30" fill="#FFD700" opacity="0.9"/>
+                      <circle cx="120" cy="60" r="22" fill="#1a3a6b"/>
+                      <circle cx="120" cy="60" r="18" fill="#FFD700" opacity="0.3"/>
+                      {/* Four directions */}
+                      <rect x="116" y="20" width="8" height="16" rx="2" fill="#FFD700" opacity="0.7"/>
+                      <rect x="116" y="84" width="8" height="16" rx="2" fill="#FFD700" opacity="0.7"/>
+                      <rect x="80" y="56" width="16" height="8" rx="2" fill="#FFD700" opacity="0.7"/>
+                      <rect x="144" y="56" width="16" height="8" rx="2" fill="#FFD700" opacity="0.7"/>
+                      {/* Text */}
+                      <text x="120" y="112" textAnchor="middle" fontSize="8" fill="#FFD700" fontFamily="system-ui, sans-serif" letterSpacing="0.1em" opacity="0.8">TREATY 6 TERRITORY</text>
+                    </svg>
+                  </div>
+                  <span className="text-xs text-white/40 tracking-widest uppercase">Est. 2024</span>
+                </div>
+
+                <div className="space-y-4 sm:space-y-5 text-center md:text-left">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                    Proudly Built in Canada
+                  </h2>
+                  <div className="space-y-3 text-sm sm:text-base text-white/70 leading-relaxed">
+                    <p>
+                      WolfWhale is a Canadian company headquartered in Vancouver, BC. Our team designs, develops, and hosts everything on Canadian soil.
+                    </p>
+                    <p>
+                      We believe Canadian students and educators deserve world-class tools built with Canadian values — privacy, accessibility, and bilingual support at the core.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap justify-center md:justify-start gap-3 pt-2">
+                    {[
+                      { icon: Flag, label: 'Canadian Owned' },
+                      { icon: Shield, label: 'PIPEDA Compliant' },
+                      { icon: Globe, label: 'Hosted in Canada' },
+                      { icon: Heart, label: 'Built for Canadians' },
+                    ].map((badge, i) => (
+                      <div
+                        key={i}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-white/60"
+                      >
+                        <badge.icon className="h-3 w-3 text-red-400" />
+                        {badge.label}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
