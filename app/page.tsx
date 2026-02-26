@@ -170,10 +170,12 @@ export default function LMSHubPage() {
       {/* Header / Nav */}
       <header className="relative z-10 px-4 py-4 sm:p-6">
         <nav className="max-w-6xl mx-auto flex items-center justify-between">
-          <Link href="/" className="inline-flex items-center gap-2 sm:gap-3 group shrink-0">
-            <GlowingLogo size={40} className="hidden sm:inline-flex" />
-            <span className="text-sm sm:text-lg font-display font-bold text-white group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase">
-              WolfWhale LMS
+          <Link href="/" className="inline-flex flex-col group shrink-0">
+            <span className="text-sm sm:text-lg font-bold text-white group-hover:text-[#00BFFF] transition-colors tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+              WolfWhale
+            </span>
+            <span className="text-[9px] sm:text-xs text-white/60 tracking-[0.15em] uppercase font-medium -mt-0.5">
+              Learning Management System
             </span>
           </Link>
 
@@ -261,7 +263,7 @@ export default function LMSHubPage() {
                 className="inline-block mt-2 opacity-90 hover:opacity-100 transition-opacity"
                 aria-label="Download on the App Store"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" className="h-10 sm:h-12">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" className="h-14 sm:h-16">
                   <rect width="120" height="40" rx="6" fill="#000" stroke="#fff" strokeWidth="0.8" />
                   <g fill="#fff">
                     <path d="M24.77 20.3a4.95 4.95 0 0 1 2.36-4.15 5.07 5.07 0 0 0-3.99-2.16c-1.68-.18-3.31 1.01-4.17 1.01-.87 0-2.19-.99-3.61-.96a5.31 5.31 0 0 0-4.47 2.73c-1.93 3.34-.49 8.27 1.36 10.97.93 1.33 2.01 2.82 3.43 2.76 1.39-.06 1.91-.88 3.59-.88 1.67 0 2.15.88 3.6.85 1.49-.02 2.42-1.33 3.32-2.67a11 11 0 0 0 1.52-3.09 4.79 4.79 0 0 1-2.94-4.41zM22.04 12.21a4.87 4.87 0 0 0 1.12-3.49 4.96 4.96 0 0 0-3.21 1.66 4.64 4.64 0 0 0-1.15 3.36 4.1 4.1 0 0 0 3.24-1.53z" />
