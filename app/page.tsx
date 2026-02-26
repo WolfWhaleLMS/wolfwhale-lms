@@ -171,7 +171,7 @@ export default function LMSHubPage() {
       <header className="relative z-10 px-4 py-4 sm:p-6">
         <nav className="max-w-6xl mx-auto flex items-center justify-between">
           <Link href="/" className="inline-flex flex-col group shrink-0">
-            <span className="text-sm sm:text-lg font-bold text-white group-hover:text-[#00BFFF] transition-colors tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+            <span className="text-sm sm:text-lg font-normal text-white group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
               WolfWhale
             </span>
             <span className="text-[9px] sm:text-xs text-white/60 tracking-[0.15em] uppercase font-medium -mt-0.5">
@@ -237,11 +237,11 @@ export default function LMSHubPage() {
             </div>
 
             {/* Heading — relative z-10 so glow renders BEHIND the text */}
-            <div className="relative z-10 space-y-2 sm:space-y-3">
-              <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white tracking-wide sm:tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+            <div className="relative z-10 space-y-1 sm:space-y-2">
+              <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-normal text-white tracking-[0.15em] sm:tracking-[0.2em] uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                 WolfWhale
               </h1>
-              <p className="text-sm sm:text-lg md:text-xl text-white/90 tracking-[0.2em] uppercase font-medium">
+              <p className="text-xs sm:text-sm md:text-base text-white/70 tracking-[0.25em] uppercase font-normal">
                 Learning Management System
               </p>
             </div>
@@ -301,7 +301,7 @@ export default function LMSHubPage() {
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-3">WolfWhale LMS</h3>
+                <h3 className="text-xl font-normal text-white mb-3 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>WolfWhale LMS</h3>
                 <p className="text-white/70 text-sm leading-relaxed mb-5">
                   Canada&apos;s modern learning app with built-in spaced repetition flashcards. Designed for K-12 and post-secondary education. Available now on the App Store.
                 </p>
@@ -496,7 +496,7 @@ export default function LMSHubPage() {
                 <div className="p-3 sm:p-4 text-left text-xs sm:text-sm font-bold text-white/60 uppercase tracking-wider">
                   Feature
                 </div>
-                <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-[#8B5CF6] border-l border-white/5 bg-[#8B5CF6]/5">
+                <div className="p-3 sm:p-4 text-xs sm:text-sm font-normal text-[#8B5CF6] border-l border-white/5 bg-[#8B5CF6]/5 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                   WolfWhale
                 </div>
                 <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-white/5">
@@ -563,7 +563,7 @@ export default function LMSHubPage() {
         <section id="about" className="px-4 py-12 sm:py-20">
           <div className="max-w-3xl mx-auto">
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg shadow-[#8B5CF6]/5 rounded-2xl p-5 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white tracking-wider">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-normal text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                 About WolfWhale
               </h2>
               <div className="space-y-3 sm:space-y-4 text-sm sm:text-base text-white/75 leading-relaxed">
@@ -608,7 +608,7 @@ export default function LMSHubPage() {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex flex-col gap-1.5">
-                <p className="text-sm font-semibold text-white/70">WolfWhale Inc.</p>
+                <p className="text-sm font-normal text-white/70 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>WolfWhale Inc.</p>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/60">
                   <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Vancouver, BC, Canada</span>
                   <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1 hover:text-[#00BFFF] transition-colors"><Mail className="h-3 w-3" /> info@wolfwhale.ca</a>
