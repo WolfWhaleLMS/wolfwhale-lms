@@ -392,34 +392,31 @@ export default function LMSHubPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
-              {/* Screenshot 1 — Sign In (Light Mode) */}
+              {/* Screenshot 1 — Sign In */}
               <div className="flex flex-col items-center gap-4">
-                <div className="w-full max-w-[260px] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
+                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
                   <Image
                     src="/screenshot-iphone-light.png"
-                    alt="WolfWhale LMS Sign In — Light Mode on iPhone"
+                    alt="WolfWhale LMS Sign In on iPhone"
                     width={1170}
                     height={2532}
-                    className="w-full h-auto"
+                    className="w-full h-full object-cover object-top"
                     priority
                   />
                 </div>
-                <p className="text-sm text-gray-500 dark:text-white/60 font-medium">Sign In — Light Mode</p>
+                <p className="text-sm text-gray-500 dark:text-white/60 font-medium">Sign In</p>
               </div>
 
-              {/* Screenshot 2 — Sign In (Dark Mode) */}
+              {/* Screenshot 2 — Placeholder */}
               <div className="flex flex-col items-center gap-4">
-                <div className="w-full max-w-[260px] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 sm:scale-110 sm:z-10">
-                  <Image
-                    src="/screenshot-iphone-dark.png"
-                    alt="WolfWhale LMS Sign In — Dark Mode on iPhone"
-                    width={1170}
-                    height={2532}
-                    className="w-full h-auto"
-                    priority
-                  />
+                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 flex items-center justify-center">
+                  <div className="text-center p-6 space-y-3">
+                    <Smartphone className="h-12 w-12 text-gray-300 dark:text-white/20 mx-auto" />
+                    <p className="text-xs text-gray-400 dark:text-white/30 uppercase tracking-wider">Courses</p>
+                    <p className="text-[10px] text-gray-300 dark:text-white/20">Screenshot coming soon</p>
+                  </div>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-white/60 font-medium sm:mt-4">Sign In — Dark Mode</p>
+                <p className="text-sm text-gray-500 dark:text-white/60 font-medium">Course Browser</p>
               </div>
 
               {/* Screenshot 3 — Placeholder for future screenshot */}
