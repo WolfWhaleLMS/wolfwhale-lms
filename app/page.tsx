@@ -623,12 +623,7 @@ export default function LMSHubPage() {
                 <div className="shrink-0 flex flex-col items-center gap-4">
                   {/* Canadian Flag */}
                   <div className="rounded-lg overflow-hidden border border-white/10 shadow-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" className="w-24 sm:w-32 h-auto">
-                      <rect width="1200" height="600" fill="#fff"/>
-                      <rect width="300" height="600" fill="#FF0000"/>
-                      <rect x="900" width="300" height="600" fill="#FF0000"/>
-                      <path d="M600 75 L615 150 L570 180 L600 165 L585 225 L540 195 L555 225 L480 195 L510 240 L495 240 L600 345 L705 240 L690 240 L720 195 L645 225 L660 195 L615 225 L600 165 L630 180 L585 150Z" fill="#FF0000"/>
-                    </svg>
+                    <Image src="/canada-flag.png" alt="Canadian Flag" width={256} height={128} className="w-24 sm:w-32 h-auto" />
                   </div>
                   {/* Treaty 6 Territory Flag */}
                   <div className="rounded-lg overflow-hidden border border-white/10 shadow-lg">
