@@ -192,16 +192,16 @@ export default function LMSHubPage() {
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl btn-chrome-3d-blue text-white text-sm font-semibold transition-all hover:scale-105"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl btn-chrome-3d-dark text-white text-sm font-semibold"
             >
-              Get in Touch
+              Contact
             </a>
           </div>
 
           {/* Mobile CTA */}
           <a
             href="#contact"
-            className="sm:hidden inline-flex items-center gap-2 px-3 py-2 rounded-xl btn-chrome-3d-blue text-white text-xs font-semibold"
+            className="sm:hidden inline-flex items-center gap-2 px-3 py-2 rounded-xl btn-chrome-3d-dark text-white text-xs font-semibold"
           >
             Contact
           </a>
@@ -242,20 +242,14 @@ export default function LMSHubPage() {
               </p>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center pt-2 sm:pt-4">
+            {/* CTA Button */}
+            <div className="flex justify-center pt-4 sm:pt-6">
               <a
-                href="#products"
-                className="inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl btn-chrome-3d-blue text-white text-sm sm:text-base font-semibold transition-all hover:scale-105 w-full sm:w-auto justify-center"
+                href="#features"
+                className="inline-flex items-center gap-2 px-8 py-3.5 sm:px-10 sm:py-4 rounded-xl btn-chrome-3d-dark text-white text-sm sm:text-base font-semibold"
               >
-                Explore Our Products
+                Product Features
                 <ArrowRight className="h-5 w-5" />
-              </a>
-              <a
-                href="#contact"
-                className="inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl border-2 border-white/20 text-white text-sm sm:text-base font-semibold hover:border-[#00BFFF] hover:bg-[#00BFFF]/5 transition-all w-full sm:w-auto justify-center"
-              >
-                Get in Touch
               </a>
             </div>
           </div>
@@ -311,15 +305,15 @@ export default function LMSHubPage() {
                 <div className="flex gap-3">
                   <Link
                     href="/info"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-silver text-sm font-semibold transition-all hover:scale-105"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-silver text-sm font-semibold"
                   >
                     Learn More
                   </Link>
                   <a
                     href="#contact"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-blue text-white text-sm font-semibold transition-all hover:scale-105"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-dark text-white text-sm font-semibold"
                   >
-                    Get in Touch
+                    Contact
                   </a>
                 </div>
               </div>
@@ -568,8 +562,9 @@ export default function LMSHubPage() {
             </p>
             <a
               href="mailto:info@wolfwhale.ca"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl btn-chrome-3d-blue text-white font-semibold transition-all hover:scale-105"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl btn-chrome-3d-dark text-white font-semibold"
             >
+              <Mail className="h-5 w-5" />
               info@wolfwhale.ca
             </a>
           </div>

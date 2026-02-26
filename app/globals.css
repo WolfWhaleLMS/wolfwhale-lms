@@ -1137,12 +1137,73 @@ body::before {
   .btn-chrome-3d-blue,
   .btn-chrome-3d-red,
   .btn-chrome-3d-green,
-  .btn-chrome-3d-silver {
+  .btn-chrome-3d-silver,
+  .btn-chrome-3d-dark {
     position: relative;
     border-radius: 12px;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     -webkit-font-smoothing: antialiased;
+    user-select: none;
+  }
+
+  /* ─── DARK CHROME (primary CTA on black bg) ─── */
+  .btn-chrome-3d-dark {
+    background: linear-gradient(
+      180deg,
+      #606080 0%,
+      #4A4A6A 8%,
+      #3A3A5A 25%,
+      #2A2A4A 50%,
+      #1A1A3A 75%,
+      #12122A 92%,
+      #2A2A4A 100%
+    );
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    color: #FFFFFF;
+    box-shadow:
+      0 6px 18px rgba(0, 0, 0, 0.50),
+      0 2px 4px rgba(0, 0, 0, 0.30),
+      0 0 20px rgba(139, 92, 246, 0.10),
+      inset 0 2px 1px rgba(255, 255, 255, 0.20),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.30);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.60);
+  }
+  .btn-chrome-3d-dark:hover {
+    background: linear-gradient(
+      180deg,
+      #7070A0 0%,
+      #5A5A8A 8%,
+      #4A4A7A 25%,
+      #3A3A6A 50%,
+      #2A2A5A 75%,
+      #1A1A40 92%,
+      #3A3A6A 100%
+    );
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow:
+      0 8px 28px rgba(0, 0, 0, 0.60),
+      0 3px 6px rgba(0, 0, 0, 0.30),
+      0 0 30px rgba(139, 92, 246, 0.20),
+      inset 0 2px 1px rgba(255, 255, 255, 0.25),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.30);
+    transform: translateY(-2px);
+  }
+  .btn-chrome-3d-dark:active {
+    background: linear-gradient(
+      180deg,
+      #12122A 0%,
+      #1A1A3A 15%,
+      #2A2A4A 50%,
+      #3A3A5A 85%,
+      #4A4A6A 100%
+    );
+    border-color: rgba(139, 92, 246, 0.4);
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.40),
+      inset 0 4px 8px rgba(0, 0, 0, 0.40),
+      inset 0 2px 3px rgba(0, 0, 0, 0.25);
+    transform: translateY(3px);
   }
 
   /* ─── BLUE ─── */
