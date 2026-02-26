@@ -228,9 +228,11 @@ export default function LMSHubPage() {
       <main className="relative z-10">
         <section className="flex items-center justify-center min-h-[60vh] sm:min-h-[calc(100vh-200px)] px-4 py-10 sm:py-16">
           <div className="w-full max-w-5xl text-center space-y-6 sm:space-y-8 animate-fade-in-up">
-            {/* Logo with purple edge-tracing glow */}
-            <GlowingLogo size={96} className="sm:hidden" />
-            <GlowingLogo size={160} className="hidden sm:inline-flex" />
+            {/* Logo app tile */}
+            <div className="mb-6 sm:mb-10">
+              <GlowingLogo size={96} className="sm:hidden" />
+              <GlowingLogo size={160} className="hidden sm:inline-flex" />
+            </div>
 
             {/* Heading */}
             <div className="space-y-2 sm:space-y-3">
