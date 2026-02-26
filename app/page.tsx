@@ -168,8 +168,8 @@ export default function LMSHubPage() {
       </div>
 
       {/* Header / Nav */}
-      <header className="relative z-10 px-4 py-4 sm:p-6">
-        <nav className="max-w-6xl mx-auto flex items-center justify-between">
+      <header className="relative z-10 px-4 py-4 sm:px-6 sm:py-5">
+        <nav className="flex items-center justify-between">
           <Link href="/" className="inline-flex flex-col group shrink-0">
             <span className="text-sm sm:text-lg font-normal text-white group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
               WolfWhale
