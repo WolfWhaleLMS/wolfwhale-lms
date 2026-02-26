@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { GraduationCap, ArrowRight, Sparkles, BookOpen, Users, BarChart3, Shield, Mail, Phone, MapPin, Brain, Wifi, WifiOff, Gamepad2, Bot, Smartphone, Monitor, Tablet, CheckCircle2, X as XIcon, Minus, Paintbrush, Flag, Globe, Heart, Leaf, Code, Palette, Layers, Accessibility, Zap } from 'lucide-react'
+import { ArrowRight, Shield, Mail, Phone, MapPin, Brain, WifiOff, Gamepad2, Bot, Smartphone, Monitor, Tablet, CheckCircle2, X as XIcon, Minus, Paintbrush, Flag, Globe, Heart, Code, Palette, Layers, Accessibility, Zap } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 
 export default function LMSHubPage() {
@@ -171,7 +171,7 @@ export default function LMSHubPage() {
       <header className="relative z-10 px-4 py-4 sm:px-6 sm:py-5">
         <nav className="flex items-center justify-between">
           <Link href="/" className="inline-flex flex-col group shrink-0">
-            <span className="text-sm sm:text-lg font-normal text-white group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+            <span className="text-sm sm:text-lg font-bold text-white group-hover:text-[#00BFFF] transition-colors tracking-normal uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
               WolfWhale
             </span>
             <span className="text-[9px] sm:text-xs text-white/60 tracking-[0.15em] uppercase font-medium -mt-0.5">
@@ -235,7 +235,7 @@ export default function LMSHubPage() {
 
             {/* Heading — relative z-10 so glow renders BEHIND the text */}
             <div className="relative z-10 space-y-1 sm:space-y-2">
-              <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-normal text-white tracking-[0.15em] sm:tracking-[0.2em] uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+              <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-normal text-white tracking-[0.03em] sm:tracking-[0.05em] uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                 WolfWhale
               </h1>
               <p className="text-sm sm:text-lg md:text-xl text-white/70 tracking-[0.25em] uppercase font-normal">
@@ -269,82 +269,6 @@ export default function LMSHubPage() {
                   </g>
                 </svg>
               </a>
-            </div>
-          </div>
-        </section>
-
-        {/* Products Grid */}
-        <section id="products" className="px-4 py-12 sm:py-20">
-          <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
-            <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white tracking-wider">
-                OUR PRODUCTS
-              </h2>
-              <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto">
-                Education technology solutions designed to transform how students learn and educators teach.
-              </p>
-            </div>
-
-            <div className="max-w-lg mx-auto">
-              {/* Product 1: WolfWhale LMS */}
-              <div className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg shadow-[#8B5CF6]/5 rounded-2xl p-5 sm:p-8 group hover:border-[#00BFFF]/30 hover:shadow-xl hover:shadow-[#00BFFF]/10 transition-all flex flex-col">
-                {/* Status Badge */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="inline-flex p-3 rounded-xl bg-[#00BFFF]/10 border border-[#00BFFF]/20 group-hover:bg-[#00BFFF]/15 transition-colors">
-                    <GraduationCap className="h-7 w-7 text-[#00BFFF]" />
-                  </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#8B5CF6]/15 text-[#C4B5FD] border border-[#8B5CF6]/25">
-                    Available on iOS
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-normal text-white mb-3 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>WolfWhale LMS</h3>
-                <p className="text-white/70 text-sm leading-relaxed mb-5">
-                  Canada&apos;s modern learning app with built-in spaced repetition flashcards. Designed for K-12 and post-secondary education. Available now on the App Store.
-                </p>
-
-                {/* Feature bullets */}
-                <ul className="space-y-2 mb-6 flex-1">
-                  {[
-                    { icon: Sparkles, text: 'Spaced repetition flashcards' },
-                    { icon: BookOpen, text: 'Interactive courses & quizzes' },
-                    { icon: Users, text: 'Real-time collaboration' },
-                    { icon: BarChart3, text: 'Analytics & grade tracking' },
-                    { icon: Shield, text: 'FERPA & PIPEDA compliant' },
-                  ].map(({ icon: Icon, text }) => (
-                    <li key={text} className="flex items-center gap-2 text-white/70 text-sm">
-                      <Icon className="h-4 w-4 text-[#00BFFF] shrink-0" />
-                      {text}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Buttons */}
-                <div className="flex flex-col gap-3">
-                  <a
-                    href="#"
-                    className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl btn-chrome-3d-dark text-white text-sm font-semibold w-full"
-                  >
-                    <Smartphone className="h-4 w-4" />
-                    Download on App Store
-                  </a>
-                  <div className="flex gap-3">
-                    <Link
-                      href="/info"
-                      className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-silver text-sm font-semibold"
-                    >
-                      Learn More
-                    </Link>
-                    <a
-                      href="#contact"
-                      className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-chrome-3d-silver text-sm font-semibold"
-                    >
-                      Contact
-                    </a>
-                  </div>
-                </div>
-              </div>
-
             </div>
           </div>
         </section>
@@ -474,6 +398,42 @@ export default function LMSHubPage() {
           </div>
         </section>
 
+        {/* Built by Design Section */}
+        <section id="design" className="px-4 py-12 sm:py-20">
+          <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
+            <div className="text-center space-y-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                Built by Design
+              </h2>
+              <p className="text-sm sm:text-base text-white/60 max-w-2xl mx-auto">
+                Every pixel, interaction, and feature is intentional. WolfWhale is crafted with obsessive attention to detail — not assembled from templates.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {[
+                { icon: Palette, title: 'Design-First Approach', desc: 'Interface designed from the ground up for clarity and focus. No clutter, no distractions — just learning.' },
+                { icon: Layers, title: 'Consistent Experience', desc: 'Unified design language across iOS, web, and tablet. Learn anywhere with the same intuitive interface.' },
+                { icon: Zap, title: 'Performance Obsessed', desc: 'Sub-second load times and instant interactions. Built on modern architecture that never makes you wait.' },
+                { icon: Accessibility, title: 'Accessible to All', desc: 'WCAG compliant, screen reader compatible, and designed for every learner regardless of ability.' },
+                { icon: Code, title: 'Native, Not Wrapped', desc: 'True native iOS app — not a web wrapper. Built with platform-specific APIs for the best possible experience.' },
+                { icon: Paintbrush, title: 'Refined Aesthetics', desc: 'Dark mode by default. Thoughtful typography, spacing, and motion that makes learning feel premium.' },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 hover:border-[#8B5CF6]/30 hover:shadow-lg hover:shadow-[#8B5CF6]/10 transition-all"
+                >
+                  <div className="inline-flex p-2.5 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 mb-4">
+                    <item.icon className="h-5 w-5 text-[#8B5CF6]" />
+                  </div>
+                  <h3 className="text-sm sm:text-base font-semibold text-white mb-2">{item.title}</h3>
+                  <p className="text-xs sm:text-sm text-white/60 leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* LMS Comparison Section */}
         <section id="compare" className="px-4 py-12 sm:py-20">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
@@ -574,42 +534,6 @@ export default function LMSHubPage() {
                   We believe technology should amplify great teaching, not replace it. Every product we build is designed with educators and learners at the center.
                 </p>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Built by Design Section */}
-        <section id="design" className="px-4 py-12 sm:py-20">
-          <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
-            <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
-                Built by Design
-              </h2>
-              <p className="text-sm sm:text-base text-white/60 max-w-2xl mx-auto">
-                Every pixel, interaction, and feature is intentional. WolfWhale is crafted with obsessive attention to detail — not assembled from templates.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {[
-                { icon: Palette, title: 'Design-First Approach', desc: 'Interface designed from the ground up for clarity and focus. No clutter, no distractions — just learning.' },
-                { icon: Layers, title: 'Consistent Experience', desc: 'Unified design language across iOS, web, and tablet. Learn anywhere with the same intuitive interface.' },
-                { icon: Zap, title: 'Performance Obsessed', desc: 'Sub-second load times and instant interactions. Built on modern architecture that never makes you wait.' },
-                { icon: Accessibility, title: 'Accessible to All', desc: 'WCAG compliant, screen reader compatible, and designed for every learner regardless of ability.' },
-                { icon: Code, title: 'Native, Not Wrapped', desc: 'True native iOS app — not a web wrapper. Built with platform-specific APIs for the best possible experience.' },
-                { icon: Paintbrush, title: 'Refined Aesthetics', desc: 'Dark mode by default. Thoughtful typography, spacing, and motion that makes learning feel premium.' },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 hover:border-[#8B5CF6]/30 hover:shadow-lg hover:shadow-[#8B5CF6]/10 transition-all"
-                >
-                  <div className="inline-flex p-2.5 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 mb-4">
-                    <item.icon className="h-5 w-5 text-[#8B5CF6]" />
-                  </div>
-                  <h3 className="text-sm sm:text-base font-semibold text-white mb-2">{item.title}</h3>
-                  <p className="text-xs sm:text-sm text-white/60 leading-relaxed">{item.desc}</p>
-                </div>
-              ))}
             </div>
           </div>
         </section>
