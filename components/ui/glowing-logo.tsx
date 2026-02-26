@@ -62,15 +62,14 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
           `,
         }}
       >
-        {/* Logo image — stays at original `size` */}
+        {/* Logo image — fills the tile */}
         <Image
           src="/logo.png"
           alt="WolfWhale"
-          width={Math.round(size)}
-          height={Math.round(size)}
-          sizes={`${Math.round(size)}px`}
-          className="object-contain"
-          style={{ width: size, height: size }}
+          width={Math.round(tileSize)}
+          height={Math.round(tileSize)}
+          sizes={`${Math.round(tileSize)}px`}
+          className="w-full h-full object-contain"
         />
       </div>
     </div>
