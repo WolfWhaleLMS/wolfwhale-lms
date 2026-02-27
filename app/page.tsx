@@ -48,20 +48,20 @@ export default function LMSHubPage() {
         }) }}
       />
       {/* Corinthian Pillar Borders — Real Marble Image */}
-      {/* Left Pillar — slightly wider container + offset so inner edge isn't cropped */}
-      <div className="fixed top-0 bottom-0 -left-[15px] w-[150px] sm:w-[180px] lg:w-[210px] z-[5] pointer-events-none hidden md:block" aria-hidden="true">
+      {/* Left Pillar — extended below viewport so shaft reaches the bottom */}
+      <div className="fixed -top-[10px] -bottom-[150px] -left-[15px] w-[150px] sm:w-[180px] lg:w-[210px] z-[5] pointer-events-none hidden md:block overflow-hidden" aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
-          className="w-full h-full object-cover object-center mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
+          className="w-full h-full object-cover object-top mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
         />
       </div>
       {/* Right Pillar — mirrored */}
-      <div className="fixed top-0 bottom-0 -right-[15px] w-[150px] sm:w-[180px] lg:w-[210px] z-[5] pointer-events-none hidden md:block" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
+      <div className="fixed -top-[10px] -bottom-[150px] -right-[15px] w-[150px] sm:w-[180px] lg:w-[210px] z-[5] pointer-events-none hidden md:block overflow-hidden" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
-          className="w-full h-full object-cover object-center mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
+          className="w-full h-full object-cover object-top mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
         />
       </div>
 
