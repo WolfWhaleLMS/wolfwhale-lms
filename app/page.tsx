@@ -496,7 +496,7 @@ export default function LMSHubPage() {
         <section id="design" className="px-4 py-12 sm:py-20">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                 Built by Design
               </h2>
               <p className="text-sm sm:text-base text-gray-500 dark:text-white/60 max-w-2xl mx-auto">
@@ -701,7 +701,7 @@ export default function LMSHubPage() {
         <section id="about" className="px-4 py-12 sm:py-20">
           <div className="max-w-3xl mx-auto">
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg shadow-[#8B5CF6]/5 rounded-2xl p-5 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-normal text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                 About WolfWhale
               </h2>
               <div className="space-y-3 sm:space-y-4 text-sm sm:text-base text-gray-600 dark:text-white/75 leading-relaxed">
@@ -734,7 +734,7 @@ export default function LMSHubPage() {
                 </div>
 
                 <div className="space-y-4 sm:space-y-5 text-center md:text-left">
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                     Proudly Built in Canada
                   </h2>
                   <div className="space-y-3 text-sm sm:text-base text-gray-600 dark:text-white/70 leading-relaxed">
@@ -776,7 +776,7 @@ export default function LMSHubPage() {
                 <div className="inline-flex p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 mx-auto">
                   <Feather className="h-6 w-6 text-amber-400" />
                 </div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                   Responding to the TRC Calls to Action
                 </h2>
                 <p className="text-sm sm:text-base text-gray-500 dark:text-white/60 max-w-2xl mx-auto">
