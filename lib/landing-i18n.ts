@@ -111,7 +111,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     appStore: 'App Store',
     comingSoon: 'Coming Soon',
     featuresTitle: '106+ FEATURES',
-    featuresSubtitle: '122,000 lines of native Swift. 30 Apple frameworks. One powerful platform.',
+    featuresSubtitle: '',
     features: [
       { icon: Bot, title: 'On-Device AI Tutor', points: ['Apple Intelligence powered', 'Runs entirely on-device', 'Data never leaves the phone'], color: '#00BFFF' },
       { icon: Eye, title: 'AR Experiences', points: ['8 subject categories', '4 experience types', 'Grade-level tagging'], color: '#FFD700' },
@@ -202,7 +202,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     appStore: 'App Store',
     comingSoon: 'Bient\u00f4t disponible',
     featuresTitle: '106+ FONCTIONNALIT\u00c9S',
-    featuresSubtitle: '122\u00a0000 lignes de Swift natif. 30 frameworks Apple. Une plateforme puissante.',
+    featuresSubtitle: '',
     features: [
       { icon: Bot, title: 'Tuteur IA sur l\u2019appareil', points: ['Propuls\u00e9 par Apple Intelligence', 'Fonctionne enti\u00e8rement sur l\u2019appareil', 'Les donn\u00e9es ne quittent jamais le t\u00e9l\u00e9phone'], color: '#00BFFF' },
       { icon: Eye, title: 'Exp\u00e9riences RA', points: ['8 cat\u00e9gories de mati\u00e8res', '4 types d\u2019exp\u00e9riences', 'Balisage par niveau scolaire'], color: '#FFD700' },
