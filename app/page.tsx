@@ -49,7 +49,7 @@ export default function LMSHubPage() {
       />
       {/* Corinthian Pillar Borders — Real Marble Image */}
       {/* Left Pillar — starts just below header, extends past viewport bottom to eliminate gap */}
-      <div className="fixed top-[42px] -bottom-[60px] left-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" aria-hidden="true">
+      <div className="fixed top-[50px] sm:top-[56px] -bottom-[60px] left-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
@@ -57,7 +57,7 @@ export default function LMSHubPage() {
         />
       </div>
       {/* Right Pillar — mirrored */}
-      <div className="fixed top-[42px] -bottom-[60px] right-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
+      <div className="fixed top-[50px] sm:top-[56px] -bottom-[60px] right-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
@@ -160,7 +160,7 @@ export default function LMSHubPage() {
       </div>
 
       {/* Header / Nav */}
-      <header className="fixed top-0 left-0 right-0 z-50 px-3 py-2 sm:px-4 sm:py-3 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-gray-200 dark:border-white/5">
+      <header className="fixed top-0 left-0 right-0 z-50 px-3 py-3 sm:px-4 sm:py-4 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-gray-200 dark:border-white/5">
         <nav className="flex items-center justify-between">
           <Link href="/" className="inline-flex flex-col group shrink-0">
             <span className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-[#00BFFF] transition-colors tracking-normal uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
@@ -228,7 +228,7 @@ export default function LMSHubPage() {
         </div>
       </header>
       {/* Spacer for fixed header */}
-      <div className="h-[56px] sm:h-[64px]" />
+      <div className="h-[50px] sm:h-[56px]" />
 
       {/* Hero Section */}
       <main className="relative z-10">
