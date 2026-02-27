@@ -49,7 +49,7 @@ export default function LMSHubPage() {
       />
       {/* Corinthian Pillar Borders — Real Marble Image */}
       {/* Left Pillar — absolute positioned so inner edge + top + bottom all visible */}
-      <div className="fixed top-0 bottom-0 left-0 w-[150px] sm:w-[180px] lg:w-[210px] z-[5] pointer-events-none hidden md:block overflow-hidden" aria-hidden="true">
+      <div className="fixed top-0 bottom-0 left-0 w-[60px] sm:w-[100px] md:w-[150px] lg:w-[210px] z-[5] pointer-events-none overflow-hidden" aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
@@ -57,7 +57,7 @@ export default function LMSHubPage() {
         />
       </div>
       {/* Right Pillar — mirrored */}
-      <div className="fixed top-0 bottom-0 right-0 w-[150px] sm:w-[180px] lg:w-[210px] z-[5] pointer-events-none hidden md:block overflow-hidden" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
+      <div className="fixed top-0 bottom-0 right-0 w-[60px] sm:w-[100px] md:w-[150px] lg:w-[210px] z-[5] pointer-events-none overflow-hidden" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
@@ -245,7 +245,7 @@ export default function LMSHubPage() {
                 WolfWhale
               </h1>
               <p className="text-sm sm:text-lg md:text-xl text-gray-500 dark:text-white/70 tracking-[0.25em] uppercase font-normal">
-                Learning Management System for iOS
+                Learning Management System
               </p>
             </div>
 
