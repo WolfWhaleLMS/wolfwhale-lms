@@ -602,17 +602,9 @@ export default function LMSHubPage() {
               <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                 About WolfWhale
               </h2>
-              <div className="space-y-3 sm:space-y-4 text-sm sm:text-base text-gray-600 dark:text-white/75 leading-relaxed">
-                <p>
-                  WolfWhale is a Canadian education technology company building the most powerful native iOS learning management system available. With 106+ features, 355 Swift files, and 122,000 lines of code, WolfWhale LMS is engineered from the ground up for Apple&apos;s ecosystem.
-                </p>
-                <p>
-                  Our philosophy is simple: maximize the iPhone for education, mobility, and accessibility. By deeply integrating 30 Apple frameworks — from FoundationModels for on-device AI to HealthKit for student wellness — we deliver experiences that web-based platforms simply cannot match. SharePlay study sessions, NFC attendance scanning, Siri Shortcuts, Apple Wallet school IDs, and AR learning experiences are just the beginning.
-                </p>
-                <p>
-                  We serve K-12 schools, post-secondary institutions, and training organizations across Canada. Every feature is built with Canadian values — privacy (PIPEDA &amp; FERPA compliant), accessibility, bilingual support, and a commitment to reconciliation.
-                </p>
-              </div>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-white/75 leading-relaxed">
+                Canadian edtech company building the most powerful native iOS LMS. 106+ features across 122K lines of Swift, deeply integrated with 30 Apple frameworks. Built for K-12, post-secondary, and training organizations with Canadian values — privacy, accessibility, and bilingual support.
+              </p>
             </div>
           </div>
         </section>
@@ -635,14 +627,9 @@ export default function LMSHubPage() {
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                     Proudly Built in Canada
                   </h2>
-                  <div className="space-y-3 text-sm sm:text-base text-gray-600 dark:text-white/70 leading-relaxed">
-                    <p>
-                      WolfWhale is a Canadian company headquartered in Vancouver, BC. Our team designs, develops, and hosts everything on Canadian soil.
-                    </p>
-                    <p>
-                      We believe Canadian students and educators deserve world-class tools built with Canadian values — privacy, accessibility, and bilingual support at the core.
-                    </p>
-                  </div>
+                  <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 leading-relaxed">
+                    Headquartered in Vancouver, BC. Designed, developed, and hosted entirely on Canadian soil.
+                  </p>
 
                   <div className="flex flex-wrap justify-center md:justify-start gap-3 pt-2">
                     {[
@@ -678,7 +665,7 @@ export default function LMSHubPage() {
                   Responding to the TRC Calls to Action
                 </h2>
                 <p className="text-sm sm:text-base text-gray-500 dark:text-white/60 max-w-2xl mx-auto">
-                  The Truth and Reconciliation Commission&apos;s Calls to Action challenge all Canadians to build a more equitable education system. WolfWhale is designed with these commitments in mind.
+                  Building a more equitable education system aligned with the TRC Calls to Action.
                 </p>
               </div>
 
@@ -687,22 +674,22 @@ export default function LMSHubPage() {
                   {
                     icon: BookOpen,
                     title: 'Indigenous Language Support',
-                    desc: 'Our platform supports curriculum delivery in Indigenous languages, responding to Calls #14-15 which call for preserving and revitalizing Indigenous languages through education.',
+                    desc: 'Curriculum delivery in Indigenous languages (Calls #14-15)',
                   },
                   {
                     icon: Users,
                     title: 'Culturally Responsive Design',
-                    desc: 'Built to support culturally appropriate curricula as called for in Calls #10 and #62, with flexible content frameworks that respect diverse knowledge systems.',
+                    desc: 'Flexible content respecting diverse knowledge systems (Calls #10, #62)',
                   },
                   {
                     icon: WifiOff,
                     title: 'Remote & Northern Access',
-                    desc: 'Offline learning ensures students in remote and northern communities have equal access to education, addressing the equity gaps highlighted in Calls #7-8.',
+                    desc: 'Offline learning for equal access in remote communities (Calls #7-8)',
                   },
                   {
                     icon: Heart,
                     title: 'Partnership-Ready',
-                    desc: 'Designed to support partnerships with Indigenous education authorities and communities, aligned with Calls #9-12 on Indigenous control of Indigenous education.',
+                    desc: 'Supporting Indigenous education authorities (Calls #9-12)',
                   },
                 ].map(({ icon: Icon, title, desc }) => (
                   <div
@@ -748,44 +735,13 @@ export default function LMSHubPage() {
             <FAQAccordion
               sections={[
                 {
-                  id: 'pricing',
-                  heading: 'Pricing & Plans',
+                  id: 'top',
+                  heading: '',
                   items: [
-                    { q: 'How much does WolfWhale cost?', a: 'WolfWhale is $12 per user account per month, with a minimum 1-year contract. This includes all features — spaced repetition flashcards, AI tutoring, offline learning, gamification, and more. No hidden fees.' },
-                    { q: 'Are there volume discounts?', a: 'Yes. School boards and districts with large deployments qualify for volume pricing. Contact us for a custom quote tailored to your institution.' },
-                    { q: 'Is there a free trial?', a: 'Yes — we offer a full-featured pilot program so your school can evaluate WolfWhale before committing. Request a demo and we\'ll set you up.' },
-                    { q: 'Are there any hidden fees?', a: 'No. Your license includes all features, updates, Canadian hosting, and standard support. There are no add-on charges for core functionality.' },
-                  ],
-                },
-                {
-                  id: 'privacy',
-                  heading: 'Data & Privacy',
-                  items: [
-                    { q: 'Where is student data stored?', a: 'All data is stored exclusively on Canadian servers. We never transfer student data outside of Canada.' },
-                    { q: 'Is WolfWhale PIPEDA and FERPA compliant?', a: 'Yes. WolfWhale is fully compliant with PIPEDA (Canada\'s federal privacy law) and FERPA (U.S. student privacy standards). We undergo regular privacy audits.' },
-                    { q: 'Do you sell student data to third parties?', a: 'Absolutely not. Student data is never sold, shared, or used for advertising. Period. Your data belongs to you.' },
-                    { q: 'How is data encrypted?', a: 'All data is encrypted in transit (TLS 1.3) and at rest (AES-256). We follow industry best practices for data security and access controls.' },
-                  ],
-                },
-                {
-                  id: 'getting-started',
-                  heading: 'Getting Started',
-                  items: [
-                    { q: 'How long does onboarding take?', a: 'Most schools are fully onboarded within 2-4 weeks, including teacher training and content migration. Our team handles the heavy lifting.' },
-                    { q: 'Do you provide training for teachers?', a: 'Yes. Every license includes onboarding training sessions for educators. We also provide ongoing support documentation and video tutorials.' },
-                    { q: 'Can we migrate from our existing LMS?', a: 'Yes. We support migration from Canvas, Brightspace, Moodle, and other major platforms. Our team will help transfer your courses and data.' },
-                    { q: 'What support is available?', a: 'All institutions get email support with a 24-hour response time. Priority support with a dedicated account manager is available on enterprise plans.' },
-                  ],
-                },
-                {
-                  id: 'technical',
-                  heading: 'Technical',
-                  items: [
-                    { q: 'Does offline learning really work?', a: 'Yes. All offline data is encrypted with AES-GCM and stored with per-user Keychain keys. 8 entity types are cached locally. Progress syncs automatically with server-wins conflict resolution when connectivity is restored.' },
-                    { q: 'What Apple frameworks do you use?', a: 'WolfWhale uses 30 Apple frameworks including SwiftUI, WidgetKit, ActivityKit, HealthKit, MusicKit, CoreNFC, GroupActivities (SharePlay), MultipeerConnectivity, PassKit (Apple Wallet), App Intents (Siri), CoreSpotlight, Vision, ARKit, PencilKit, and FoundationModels for on-device AI.' },
-                    { q: 'Is there Siri and widget support?', a: "Yes. 4 Siri Shortcuts are built in — Check Assignments, Check Grades, Open Courses, and Today's Schedule. Home Screen widgets show grades, schedule, and assignments. Courses and assignments are indexed in Spotlight Search." },
-                    { q: 'What about Android support?', a: "WolfWhale is built exclusively for iOS using native SwiftUI. Our philosophy is to maximize the iPhone for education, mobility, and accessibility by deeply integrating with Apple's ecosystem. A web companion is planned for desktop access." },
-                    { q: 'How many features does WolfWhale have?', a: 'Over 106 features across 355 Swift files and 122,000 lines of code. This includes a full student portal, teacher command center, parent dashboard, admin console, 100+ interactive learning tools, AR experiences, real-time messaging, and deep Apple ecosystem integration.' },
+                    { q: 'How much does WolfWhale cost?', a: '$12/user/month with a 1-year contract. All features included, no hidden fees. Volume discounts available for school boards.' },
+                    { q: 'Is there a free trial?', a: 'Yes — we offer a full-featured pilot program. Request a demo and we\'ll set your school up.' },
+                    { q: 'Where is student data stored?', a: 'Exclusively on Canadian servers. PIPEDA & FERPA compliant. Data is never sold or shared. Encrypted with TLS 1.3 and AES-256.' },
+                    { q: 'What about Android support?', a: 'WolfWhale is built exclusively for iOS using native SwiftUI. A web companion is planned for desktop access.' },
                   ],
                 },
               ]}
