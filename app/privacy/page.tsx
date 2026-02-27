@@ -2,7 +2,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft } from 'lucide-react'
 import { LanguageToggle } from '@/components/ui/LanguageToggle'
-import { AmbientParticles } from '@/components/ui/AmbientParticles'
 
 type Lang = 'en' | 'fr'
 
@@ -695,12 +694,12 @@ function renderMarkdown(text: string) {
       return (
         <div key={`p-${pIdx}`} className="mb-4">
           {intro && (
-            <p className="mb-2 text-[#0A2540]/70" dangerouslySetInnerHTML={{ __html: formatInline(intro) }} />
+            <p className="mb-2 text-gray-600 dark:text-white/70" dangerouslySetInnerHTML={{ __html: formatInline(intro) }} />
           )}
           <ul className="space-y-1.5 ml-1">
             {items.map((item, iIdx) => (
-              <li key={`p-${pIdx}-li-${iIdx}`} className="flex items-start gap-2 text-[#0A2540]/70">
-                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#00BFFF] flex-shrink-0" />
+              <li key={`p-${pIdx}-li-${iIdx}`} className="flex items-start gap-2 text-gray-600 dark:text-white/70">
+                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-gray-400 dark:bg-white/40 flex-shrink-0" />
                 <span dangerouslySetInnerHTML={{ __html: formatInline(item.slice(2)) }} />
               </li>
             ))}
@@ -714,8 +713,8 @@ function renderMarkdown(text: string) {
       return (
         <ul key={`p-${pIdx}`} className="space-y-1.5 ml-1 mb-4">
           {items.map((item, iIdx) => (
-            <li key={`p-${pIdx}-li-${iIdx}`} className="flex items-start gap-2 text-[#0A2540]/70">
-              <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#00BFFF] flex-shrink-0" />
+            <li key={`p-${pIdx}-li-${iIdx}`} className="flex items-start gap-2 text-gray-600 dark:text-white/70">
+              <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-gray-400 dark:bg-white/40 flex-shrink-0" />
               <span dangerouslySetInnerHTML={{ __html: formatInline(item.slice(2)) }} />
             </li>
           ))}
@@ -726,7 +725,7 @@ function renderMarkdown(text: string) {
     return (
       <p
         key={`p-${pIdx}`}
-        className="mb-4 text-[#0A2540]/70 leading-relaxed"
+        className="mb-4 text-gray-600 dark:text-white/70 leading-relaxed"
         dangerouslySetInnerHTML={{ __html: formatInline(paragraph) }}
       />
     )
@@ -734,14 +733,14 @@ function renderMarkdown(text: string) {
 }
 
 function formatInline(text: string): string {
-  let result = text.replace(/\*\*(.+?)\*\*/g, '<strong class="text-[#0A2540] font-semibold">$1</strong>')
+  let result = text.replace(/\*\*(.+?)\*\*/g, '<strong class="text-gray-900 dark:text-white font-semibold">$1</strong>')
   result = result.replace(
     /(https?:\/\/[^\s<]+)/g,
-    '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-[#00BFFF] hover:underline">$1</a>'
+    '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-gray-900 dark:text-white underline hover:opacity-70 transition-opacity">$1</a>'
   )
   result = result.replace(
     /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
-    '<a href="mailto:$1" class="text-[#00BFFF] hover:underline">$1</a>'
+    '<a href="mailto:$1" class="text-gray-900 dark:text-white underline hover:opacity-70 transition-opacity">$1</a>'
   )
   return result
 }
@@ -756,27 +755,17 @@ export default async function PrivacyPolicyPage({ searchParams }: PageProps) {
   const t = content[lang]
 
   return (
-    <div
-      className="min-h-screen text-[#0A2540]"
-      style={{ background: 'linear-gradient(135deg, #E8F8FF 0%, #D0F0FF 25%, #B0E8FF 50%, #D0F0FF 75%, #E8F8FF 100%)' }}
-    >
-      {/* Ambient Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <AmbientParticles count={20} color="rgba(0,191,255,0.12)" />
-        <div className="absolute inset-0 opacity-40" style={{ background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(0,191,255,0.15) 0%, transparent 60%)' }} />
-        <div className="absolute inset-0 opacity-25" style={{ background: 'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(51,255,51,0.06) 0%, transparent 50%)' }} />
-      </div>
-
+    <div className="min-h-screen bg-white dark:bg-black">
       {/* Header */}
-      <header className="relative z-10 border-b border-[#0A2540]/10">
+      <header className="sticky top-0 z-10 bg-white dark:bg-black border-b border-gray-200 dark:border-white/5">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <Image src="/logo.png" alt="WolfWhale" width={48} height={48} sizes="48px" className="rounded-xl object-contain shadow-lg border-2 border-black" />
+            <Image src="/logo.png" alt="WolfWhale" width={48} height={48} sizes="48px" className="rounded-xl object-contain shadow-lg border-2 border-black dark:border-white/10" />
             <div>
-              <h1 className="text-lg sm:text-xl font-display font-bold text-[#0A2540] group-hover:text-[#00BFFF] transition-colors tracking-wider uppercase">
+              <h1 className="text-lg sm:text-xl font-display font-bold text-gray-900 dark:text-white group-hover:opacity-70 transition-opacity tracking-wider uppercase">
                 WolfWhale
               </h1>
-              <p className="text-[10px] sm:text-xs text-[#0A2540]/70 font-display font-semibold tracking-widest uppercase">Learning Management System</p>
+              <p className="text-[10px] sm:text-xs text-gray-500 dark:text-white/50 font-display font-semibold tracking-widest uppercase">Learning Management System</p>
             </div>
           </Link>
 
@@ -786,11 +775,11 @@ export default async function PrivacyPolicyPage({ searchParams }: PageProps) {
       </header>
 
       {/* Main Content */}
-      <main className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Back Link */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-[#0A2540]/70 hover:text-[#00BFFF] transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           {t.backToHome}
@@ -798,17 +787,14 @@ export default async function PrivacyPolicyPage({ searchParams }: PageProps) {
 
         {/* Title Block */}
         <div className="mb-10 sm:mb-12">
-          <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-[#00BFFF] to-[#33FF33] shadow-2xl mb-6 text-white-outlined">
-            <span className="text-white font-bold text-3xl">W</span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-[#0A2540]">{t.title}</h1>
-          <p className="text-lg sm:text-xl text-[#0A2540]/70 mb-2">{t.subtitle}</p>
-          <p className="text-sm text-[#0A2540]/60">{t.lastUpdated}</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-gray-900 dark:text-white">{t.title}</h1>
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-white/70 mb-2">{t.subtitle}</p>
+          <p className="text-sm text-gray-500 dark:text-white/40">{t.lastUpdated}</p>
         </div>
 
         {/* Table of Contents */}
-        <nav className="liquid-glass rounded-2xl p-5 sm:p-6 border border-[#0A2540]/10 mb-10 sm:mb-12">
-          <h2 className="text-sm font-semibold text-[#0A2540]/70 uppercase tracking-wider mb-4">
+        <nav className="rounded-2xl p-5 sm:p-6 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 mb-10 sm:mb-12">
+          <h2 className="text-sm font-semibold text-gray-500 dark:text-white/50 uppercase tracking-wider mb-4">
             {lang === 'en' ? 'Table of Contents' : 'Table des mati\u00e8res'}
           </h2>
           <ol className="space-y-1.5">
@@ -816,7 +802,7 @@ export default async function PrivacyPolicyPage({ searchParams }: PageProps) {
               <li key={`toc-${section.id}`}>
                 <a
                   href={`#${section.id}`}
-                  className="text-sm text-[#0A2540]/70 hover:text-[#00BFFF] transition-colors block py-0.5"
+                  className="text-sm text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white transition-colors block py-0.5"
                 >
                   {section.heading}
                 </a>
@@ -829,7 +815,7 @@ export default async function PrivacyPolicyPage({ searchParams }: PageProps) {
         <div className="space-y-10 sm:space-y-12">
           {t.sections.map((section) => (
             <section key={section.id} id={section.id} className="scroll-mt-24">
-              <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5 text-[#0A2540] border-b border-[#0A2540]/10 pb-3">
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5 text-gray-900 dark:text-white border-b border-gray-200 dark:border-white/10 pb-3">
                 {section.heading}
               </h2>
               <div className="text-sm sm:text-base leading-relaxed">
@@ -841,28 +827,28 @@ export default async function PrivacyPolicyPage({ searchParams }: PageProps) {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-[#0A2540]/10 mt-16 sm:mt-20">
+      <footer className="border-t border-gray-200 dark:border-white/5 mt-16 sm:mt-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-[#0A2540]/40">
+            <p className="text-sm text-gray-400 dark:text-white/30">
               &copy; 2026 WolfWhale LMS. {lang === 'en' ? 'All rights reserved.' : 'Tous droits r\u00e9serv\u00e9s.'}
             </p>
             <div className="flex gap-6">
               <Link
                 href={`/privacy?lang=${lang}`}
-                className="text-sm text-[#00BFFF] font-medium"
+                className="text-sm text-gray-900 dark:text-white font-medium"
               >
                 {lang === 'en' ? 'Privacy' : 'Confidentialit\u00e9'}
               </Link>
               <Link
                 href={`/terms?lang=${lang}`}
-                className="text-sm text-[#0A2540]/60 hover:text-[#00BFFF] transition-colors"
+                className="text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
                 {lang === 'en' ? 'Terms' : 'Conditions'}
               </Link>
               <Link
                 href={`/help?lang=${lang}`}
-                className="text-sm text-[#0A2540]/60 hover:text-[#00BFFF] transition-colors"
+                className="text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
                 {lang === 'en' ? 'Help' : 'Aide'}
               </Link>
