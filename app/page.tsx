@@ -49,19 +49,19 @@ export default function LMSHubPage() {
       />
       {/* Corinthian Pillar Borders — Real Marble Image */}
       {/* Left Pillar — absolute positioned so inner edge + top + bottom all visible */}
-      <div className="fixed top-0 bottom-0 left-0 w-[60px] sm:w-[100px] md:w-[150px] lg:w-[210px] z-[5] pointer-events-none overflow-hidden" aria-hidden="true">
+      <div className="fixed inset-y-0 left-0 w-[60px] sm:w-[100px] md:w-[150px] lg:w-[210px] z-[5] pointer-events-none" aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
-          className="absolute top-0 right-0 h-[calc(100%+120px)] w-auto max-w-none mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
+          className="block w-full h-full object-cover mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
         />
       </div>
       {/* Right Pillar — mirrored */}
-      <div className="fixed top-0 bottom-0 right-0 w-[60px] sm:w-[100px] md:w-[150px] lg:w-[210px] z-[5] pointer-events-none overflow-hidden" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
+      <div className="fixed inset-y-0 right-0 w-[60px] sm:w-[100px] md:w-[150px] lg:w-[210px] z-[5] pointer-events-none" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
-          className="absolute top-0 right-0 h-[calc(100%+120px)] w-auto max-w-none mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
+          className="block w-full h-full object-cover mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
         />
       </div>
 
