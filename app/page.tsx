@@ -305,19 +305,24 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               </div>
             </div>
 
-            {/* Landscape Screenshots */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 justify-items-center mt-10 sm:mt-14">
-              <div className="flex flex-col items-center gap-4 w-full">
-                <div className="w-full max-w-[400px] aspect-[19.5/9] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[1.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 flex items-center justify-center">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 flex items-center justify-center">
                   <p className="text-xs text-gray-400 dark:text-white/30 tracking-wider uppercase">{t.screenshotSoon}</p>
                 </div>
-                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.landscapeLabel1}</p>
+                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.screenshotLabel4}</p>
               </div>
-              <div className="flex flex-col items-center gap-4 w-full">
-                <div className="w-full max-w-[400px] aspect-[19.5/9] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[1.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 flex items-center justify-center">
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 flex items-center justify-center">
                   <p className="text-xs text-gray-400 dark:text-white/30 tracking-wider uppercase">{t.screenshotSoon}</p>
                 </div>
-                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.landscapeLabel2}</p>
+                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.screenshotLabel5}</p>
+              </div>
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 flex items-center justify-center">
+                  <p className="text-xs text-gray-400 dark:text-white/30 tracking-wider uppercase">{t.screenshotSoon}</p>
+                </div>
+                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.screenshotLabel6}</p>
               </div>
             </div>
           </div>
