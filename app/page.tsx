@@ -104,45 +104,6 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           }}
         />
 
-        {/* Subtle light beams — purple/blue on black */}
-        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
-          <div
-            className="absolute sunbeam"
-            style={{
-              top: '-5%', left: '15%', width: '180px', height: '120%',
-              background: 'linear-gradient(180deg, rgba(139,92,246,0.15) 0%, rgba(0,191,255,0.04) 40%, transparent 85%)',
-              transform: 'rotate(8deg)', transformOrigin: 'top center',
-              animation: 'sunbeam-sway-1 18s ease-in-out infinite', filter: 'blur(20px)',
-            }}
-          />
-          <div
-            className="absolute sunbeam"
-            style={{
-              top: '-5%', left: '40%', width: '90px', height: '110%',
-              background: 'linear-gradient(180deg, rgba(139,92,246,0.18) 0%, rgba(0,191,255,0.06) 35%, transparent 75%)',
-              transform: 'rotate(-3deg)', transformOrigin: 'top center',
-              animation: 'sunbeam-sway-2 22s ease-in-out infinite', filter: 'blur(12px)',
-            }}
-          />
-          <div
-            className="absolute sunbeam"
-            style={{
-              top: '-5%', left: '58%', width: '140px', height: '115%',
-              background: 'linear-gradient(180deg, rgba(0,191,255,0.10) 0%, rgba(139,92,246,0.04) 45%, transparent 80%)',
-              transform: 'rotate(5deg)', transformOrigin: 'top center',
-              animation: 'sunbeam-sway-3 25s ease-in-out infinite', filter: 'blur(18px)',
-            }}
-          />
-          <div
-            className="absolute sunbeam"
-            style={{
-              top: '-5%', left: '78%', width: '200px', height: '120%',
-              background: 'linear-gradient(180deg, rgba(139,92,246,0.08) 0%, rgba(0,191,255,0.03) 50%, transparent 90%)',
-              transform: 'rotate(-6deg)', transformOrigin: 'top center',
-              animation: 'sunbeam-sway-5 28s ease-in-out infinite', filter: 'blur(25px)',
-            }}
-          />
-        </div>
 
       </div>
 
@@ -692,29 +653,6 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           0%, 100% { transform: translateX(0) translateY(0); }
           33% { transform: translateX(-5%) translateY(3%); }
           66% { transform: translateX(5%) translateY(-3%); }
-        }
-        @keyframes sunbeam-sway-1 {
-          0%, 100% { transform: rotate(8deg) scaleX(1); opacity: 1; }
-          25% { transform: rotate(5deg) scaleX(1.1); opacity: 0.8; }
-          50% { transform: rotate(10deg) scaleX(0.9); opacity: 1; }
-          75% { transform: rotate(6deg) scaleX(1.05); opacity: 0.85; }
-        }
-        @keyframes sunbeam-sway-2 {
-          0%, 100% { transform: rotate(-3deg) scaleX(1); opacity: 1; }
-          30% { transform: rotate(-6deg) scaleX(1.15); opacity: 0.9; }
-          60% { transform: rotate(0deg) scaleX(0.85); opacity: 1; }
-          80% { transform: rotate(-4deg) scaleX(1.05); opacity: 0.95; }
-        }
-        @keyframes sunbeam-sway-3 {
-          0%, 100% { transform: rotate(5deg) scaleX(1); opacity: 1; }
-          35% { transform: rotate(8deg) scaleX(0.9); opacity: 0.85; }
-          65% { transform: rotate(3deg) scaleX(1.1); opacity: 1; }
-        }
-        @keyframes sunbeam-sway-5 {
-          0%, 100% { transform: rotate(-6deg) scaleX(1); opacity: 1; }
-          20% { transform: rotate(-3deg) scaleX(1.08); opacity: 0.85; }
-          50% { transform: rotate(-8deg) scaleX(0.92); opacity: 1; }
-          80% { transform: rotate(-5deg) scaleX(1.05); opacity: 0.9; }
         }
       `}</style>
     </div>
