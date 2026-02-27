@@ -330,7 +330,7 @@ export default function LMSHubPage() {
                   icon: WifiOff,
                   title: 'Offline Learning',
                   desc: 'AES-GCM encrypted local storage with per-user Keychain keys. 8 cached entity types. Automatic conflict resolution and sync on reconnect.',
-                  color: '#33FF33',
+                  color: '#34D399',
                 },
                 {
                   icon: Smartphone,
@@ -354,13 +354,13 @@ export default function LMSHubPage() {
                   icon: Users,
                   title: 'Parent Portal',
                   desc: 'Server-verified parent-child links with real-time grade alerts, attendance tracking, conference scheduling with teachers, and weekly digest reports.',
-                  color: '#33FF33',
+                  color: '#34D399',
                 },
                 {
                   icon: Fingerprint,
                   title: 'Biometric Security',
                   desc: 'Face ID, Touch ID, and Optic ID with auto-lock. TLS certificate pinning, COPPA age verification, audit logging, and role-based access on 42+ database tables.',
-                  color: '#00FFFF',
+                  color: '#67E8F9',
                 },
                 {
                   icon: Eye,
@@ -598,9 +598,9 @@ export default function LMSHubPage() {
                           className={`p-3 sm:p-4 flex items-center justify-center border-l border-gray-100 dark:border-white/5 ${i === 0 ? 'bg-[#8B5CF6]/5' : ''}`}
                         >
                           {val === true ? (
-                            <CheckCircle2 className={`h-4 w-4 sm:h-5 sm:w-5 ${i === 0 ? 'text-[#8B5CF6]' : 'text-green-400/70'}`} />
+                            <CheckCircle2 className={`h-4 w-4 sm:h-5 sm:w-5 ${i === 0 ? 'text-[#8B5CF6]' : 'text-emerald-300'}`} />
                           ) : val === 'partial' ? (
-                            <Minus className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400/60" />
+                            <Minus className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-300" />
                           ) : (
                             <XIcon className="h-4 w-4 sm:h-5 sm:w-5 text-white/20" />
                           )}
