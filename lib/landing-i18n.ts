@@ -52,7 +52,8 @@ export interface LandingContent {
   // Screenshots
   appPreview: string
   appPreviewSub: string
-  signInLabel: string
+  signInLight: string
+  signInDark: string
   myCoursesLabel: string
   dashboardLabel: string
   screenshotLabel4: string
@@ -124,7 +125,8 @@ export const landingContent: Record<Lang, LandingContent> = {
     ],
     appPreview: 'APP PREVIEW',
     appPreviewSub: 'Beautiful on every device. Built for iOS from day one.',
-    signInLabel: 'Sign In',
+    signInLight: 'Sign In (Light Mode)',
+    signInDark: 'Sign In (Dark Mode)',
     myCoursesLabel: 'My Courses',
     dashboardLabel: 'Student Dashboard',
     screenshotLabel4: 'Progress Report',
@@ -217,7 +219,8 @@ export const landingContent: Record<Lang, LandingContent> = {
     ],
     appPreview: 'APER\u00c7U DE L\u2019APPLICATION',
     appPreviewSub: 'Magnifique sur chaque appareil. Con\u00e7u pour iOS d\u00e8s le premier jour.',
-    signInLabel: 'Connexion',
+    signInLight: 'Connexion (mode clair)',
+    signInDark: 'Connexion (mode sombre)',
     myCoursesLabel: 'Mes cours',
     dashboardLabel: 'Tableau de bord \u00e9l\u00e8ve',
     screenshotLabel4: 'Rapport de progrès',

@@ -284,12 +284,18 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 justify-items-center">
               <div className="flex flex-col items-center gap-4">
                 <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                  <Image src="/screenshot-iphone-light.png" alt="WolfWhale LMS Sign In on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" priority />
+                  <Image src="/screenshot-iphone-light.png" alt="WolfWhale LMS Sign In Light Mode on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" priority />
                 </div>
-                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.signInLabel}</p>
+                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.signInLight}</p>
+              </div>
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
+                  <Image src="/screenshot-iphone-dark.png" alt="WolfWhale LMS Sign In Dark Mode on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" />
+                </div>
+                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.signInDark}</p>
               </div>
               <div className="flex flex-col items-center gap-4">
                 <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
