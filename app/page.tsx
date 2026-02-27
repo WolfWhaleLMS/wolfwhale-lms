@@ -309,10 +309,10 @@ export default function LMSHubPage() {
                   color: '#00BFFF',
                 },
                 {
-                  icon: Brain,
-                  title: 'Spaced Repetition',
-                  desc: 'Built-in flashcard creator with classic flip mode and quiz mode. Scientifically proven algorithms for long-term knowledge retention.',
-                  color: '#8B5CF6',
+                  icon: Eye,
+                  title: 'AR Experiences',
+                  desc: 'AR Library with 8 subject categories and 4 experience types. Human Cell AR experience. Grade-level tagging for age-appropriate content.',
+                  color: '#FFD700',
                 },
                 {
                   icon: Wrench,
@@ -321,28 +321,10 @@ export default function LMSHubPage() {
                   color: '#FF6B9D',
                 },
                 {
-                  icon: Gamepad2,
-                  title: 'Gamification & XP',
-                  desc: 'XP leveling system with 5 tiers, 10 achievement badge types with 4 rarity levels, virtual aquarium with animated fish, study pet companion, and retro sound effects.',
-                  color: '#FFD700',
-                },
-                {
                   icon: WifiOff,
                   title: 'Offline Learning',
                   desc: 'AES-GCM encrypted local storage with per-user Keychain keys. 8 cached entity types. Automatic conflict resolution and sync on reconnect.',
                   color: '#34D399',
-                },
-                {
-                  icon: Smartphone,
-                  title: 'Native iOS App',
-                  desc: 'True SwiftUI app using 30 Apple frameworks — Siri Shortcuts, Home Screen Widgets, Spotlight Search, Apple Wallet school ID, SharePlay, and Live Activities.',
-                  color: '#FF6B9D',
-                },
-                {
-                  icon: MessageCircle,
-                  title: 'Real-Time Collaboration',
-                  desc: 'Supabase Realtime WebSocket messaging with typing indicators, SharePlay study sessions via FaceTime, MultipeerConnectivity for P2P study groups, and VoIP calls.',
-                  color: '#00BFFF',
                 },
                 {
                   icon: GraduationCap,
@@ -351,10 +333,16 @@ export default function LMSHubPage() {
                   color: '#8B5CF6',
                 },
                 {
-                  icon: Users,
-                  title: 'Parent Portal',
-                  desc: 'Server-verified parent-child links with real-time grade alerts, attendance tracking, conference scheduling with teachers, and weekly digest reports.',
-                  color: '#34D399',
+                  icon: Gamepad2,
+                  title: 'Gamification & XP',
+                  desc: 'XP leveling system with 5 tiers, 10 achievement badge types with 4 rarity levels, virtual aquarium with animated fish, study pet companion, and retro sound effects.',
+                  color: '#FFD700',
+                },
+                {
+                  icon: MessageCircle,
+                  title: 'Real-Time Collaboration',
+                  desc: 'Supabase Realtime WebSocket messaging with typing indicators, SharePlay study sessions via FaceTime, MultipeerConnectivity for P2P study groups, and VoIP calls.',
+                  color: '#00BFFF',
                 },
                 {
                   icon: Fingerprint,
@@ -363,10 +351,22 @@ export default function LMSHubPage() {
                   color: '#67E8F9',
                 },
                 {
-                  icon: Eye,
-                  title: 'AR Experiences',
-                  desc: 'AR Library with 8 subject categories and 4 experience types. Human Cell AR experience. Grade-level tagging for age-appropriate content.',
-                  color: '#FFD700',
+                  icon: Smartphone,
+                  title: 'Native iOS App',
+                  desc: 'True SwiftUI app using 30 Apple frameworks — Siri Shortcuts, Home Screen Widgets, Spotlight Search, Apple Wallet school ID, SharePlay, and Live Activities.',
+                  color: '#FF6B9D',
+                },
+                {
+                  icon: Users,
+                  title: 'Parent Portal',
+                  desc: 'Server-verified parent-child links with real-time grade alerts, attendance tracking, conference scheduling with teachers, and weekly digest reports.',
+                  color: '#34D399',
+                },
+                {
+                  icon: Brain,
+                  title: 'Spaced Repetition',
+                  desc: 'Built-in flashcard creator with classic flip mode and quiz mode. Scientifically proven algorithms for long-term knowledge retention.',
+                  color: '#8B5CF6',
                 },
                 {
                   icon: Activity,
