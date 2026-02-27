@@ -305,40 +305,40 @@ export default function LMSHubPage() {
                 {
                   icon: Bot,
                   title: 'On-Device AI Tutor',
-                  desc: 'Apple Intelligence powered \u00b7 Runs entirely on-device \u00b7 Data never leaves the phone',
+                  points: ['Apple Intelligence powered', 'Runs entirely on-device', 'Data never leaves the phone'],
                   color: '#00BFFF',
                 },
                 {
                   icon: Eye,
                   title: 'AR Experiences',
-                  desc: '8 subject categories \u00b7 4 experience types \u00b7 Grade-level tagging',
+                  points: ['8 subject categories', '4 experience types', 'Grade-level tagging'],
                   color: '#FFD700',
                 },
                 {
                   icon: Wrench,
                   title: '100+ Learning Tools',
-                  desc: 'Periodic Table \u00b7 Fraction Builder \u00b7 Geometry Explorer \u00b7 Typing Tutor \u00b7 and more',
+                  points: ['Periodic Table', 'Fraction Builder', 'Geometry Explorer', 'Typing Tutor', 'and more'],
                   color: '#FF6B9D',
                 },
                 {
                   icon: WifiOff,
                   title: 'Offline Learning',
-                  desc: 'AES-GCM encrypted storage \u00b7 8 cached entity types \u00b7 Auto sync on reconnect',
+                  points: ['AES-GCM encrypted storage', '8 cached entity types', 'Auto sync on reconnect'],
                   color: '#34D399',
                 },
                 {
                   icon: GraduationCap,
                   title: 'Teacher Command Center',
-                  desc: 'Gradebook \u00b7 NFC attendance \u00b7 Plagiarism detection \u00b7 Rubric builder \u00b7 Live Activity',
+                  points: ['Gradebook', 'NFC attendance', 'Plagiarism detection', 'Rubric builder', 'Live Activity'],
                   color: '#8B5CF6',
                 },
                 {
                   icon: Gamepad2,
                   title: 'Gamification & XP',
-                  desc: '5 XP tiers \u00b7 10 badge types \u00b7 Virtual aquarium \u00b7 Study pet \u00b7 Retro sound effects',
+                  points: ['5 XP tiers', '10 badge types', 'Virtual aquarium', 'Study pet', 'Retro sound effects'],
                   color: '#FFD700',
                 },
-              ].map(({ icon: Icon, title, desc, color }) => (
+              ].map(({ icon: Icon, title, points, color }) => (
                 <div
                   key={title}
                   className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 sm:p-6 hover:border-gray-300 dark:hover:border-white/20 transition-all group"
@@ -353,7 +353,14 @@ export default function LMSHubPage() {
                     <Icon className="h-6 w-6" style={{ color }} />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
-                  <p className="text-sm text-gray-600 dark:text-white/65 leading-relaxed">{desc}</p>
+                  <ul className="space-y-1">
+                    {points.map((pt) => (
+                      <li key={pt} className="text-sm text-gray-600 dark:text-white/65 flex items-start gap-2">
+                        <span className="mt-1.5 h-1 w-1 rounded-full shrink-0" style={{ backgroundColor: color }} />
+                        {pt}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ))}
             </div>
