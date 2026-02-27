@@ -48,20 +48,20 @@ export default function LMSHubPage() {
         }) }}
       />
       {/* Corinthian Pillar Borders — Real Marble Image */}
-      {/* Left Pillar — starts below header toolbar */}
-      <div className="fixed top-[56px] sm:top-[64px] bottom-0 left-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" aria-hidden="true">
+      {/* Left Pillar — top-0 so it tucks behind the header (z-5 < header z-50), visible part starts at toolbar edge */}
+      <div className="fixed top-0 bottom-0 left-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
-          className="block w-full h-full object-cover object-top mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
+          className="block w-full h-full object-cover mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
         />
       </div>
-      {/* Right Pillar — mirrored, starts below header toolbar */}
-      <div className="fixed top-[56px] sm:top-[64px] bottom-0 right-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
+      {/* Right Pillar — mirrored */}
+      <div className="fixed top-0 bottom-0 right-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
-          className="block w-full h-full object-cover object-top mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
+          className="block w-full h-full object-cover mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
         />
       </div>
 
