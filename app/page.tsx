@@ -423,6 +423,25 @@ export default function LMSHubPage() {
                 <p className="text-sm text-gray-900 dark:text-white/80 font-medium">Student Dashboard</p>
               </div>
             </div>
+
+            {/* Landscape Screenshots */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 justify-items-center mt-10 sm:mt-14">
+              {/* Landscape Screenshot 1 */}
+              <div className="flex flex-col items-center gap-4 w-full">
+                <div className="w-full max-w-[400px] aspect-[19.5/9] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[1.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 flex items-center justify-center">
+                  <p className="text-xs text-gray-400 dark:text-white/30 tracking-wider uppercase">Screenshot Coming Soon</p>
+                </div>
+                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">Landscape View 1</p>
+              </div>
+
+              {/* Landscape Screenshot 2 */}
+              <div className="flex flex-col items-center gap-4 w-full">
+                <div className="w-full max-w-[400px] aspect-[19.5/9] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[1.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 flex items-center justify-center">
+                  <p className="text-xs text-gray-400 dark:text-white/30 tracking-wider uppercase">Screenshot Coming Soon</p>
+                </div>
+                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">Landscape View 2</p>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -466,26 +485,18 @@ export default function LMSHubPage() {
 
                   {/* Table Rows */}
                   {[
-                    { feature: 'On-Device AI Tutor (Apple Intelligence)', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-                    { feature: 'Spaced Repetition Flashcards', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-                    { feature: '100+ Interactive Learning Tools', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: 'partial' },
-                    { feature: 'AR Learning Experiences', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-                    { feature: 'Gamification & Virtual Aquarium', wolfwhale: true, canvas: false, brightspace: false, edsby: 'partial', moodle: 'partial' },
-                    { feature: 'Offline Learning (AES-GCM Encrypted)', wolfwhale: true, canvas: 'partial', brightspace: false, edsby: false, moodle: 'partial' },
-                    { feature: 'Native iOS App (30 Apple Frameworks)', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: 'partial' },
-                    { feature: 'SharePlay & P2P Study Groups', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-                    { feature: 'NFC Attendance Scanning', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-                    { feature: 'Built-in Plagiarism Detection', wolfwhale: true, canvas: true, brightspace: true, edsby: false, moodle: 'partial' },
-                    { feature: 'Siri Shortcuts & Widgets', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-                    { feature: 'Digital School ID (Apple Wallet)', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-                    { feature: 'Parent Portal & Conferences', wolfwhale: true, canvas: 'partial', brightspace: 'partial', edsby: true, moodle: false },
-                    { feature: 'HealthKit Wellness Dashboard', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+                    { feature: 'On-Device AI Tutor', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+                    { feature: '100+ Learning Tools', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: 'partial' },
+                    { feature: 'AR Experiences', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+                    { feature: 'Offline Learning', wolfwhale: true, canvas: 'partial', brightspace: false, edsby: false, moodle: 'partial' },
+                    { feature: 'Gamification & XP', wolfwhale: true, canvas: false, brightspace: false, edsby: 'partial', moodle: 'partial' },
+                    { feature: 'Native iOS App', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: 'partial' },
+                    { feature: 'Parent Portal', wolfwhale: true, canvas: 'partial', brightspace: 'partial', edsby: true, moodle: false },
                     { feature: 'Canadian Data Hosting', wolfwhale: true, canvas: false, brightspace: true, edsby: true, moodle: 'partial' },
-                    { feature: 'PIPEDA & FERPA Compliant', wolfwhale: true, canvas: 'partial', brightspace: true, edsby: true, moodle: 'partial' },
                   ].map(({ feature, wolfwhale, canvas, brightspace, edsby, moodle }, idx) => (
                     <div
                       key={feature}
-                      className={`grid grid-cols-6 gap-0 text-center ${idx % 2 === 0 ? 'bg-white/[0.02]' : ''} ${idx < 15 ? 'border-b border-gray-100 dark:border-white/5' : ''}`}
+                      className={`grid grid-cols-6 gap-0 text-center ${idx % 2 === 0 ? 'bg-white/[0.02]' : ''} ${idx < 7 ? 'border-b border-gray-100 dark:border-white/5' : ''}`}
                     >
                       <div className="p-3 sm:p-4 text-left text-xs sm:text-sm text-gray-700 dark:text-white/80">
                         {feature}
@@ -557,19 +568,11 @@ export default function LMSHubPage() {
                 <ul className="relative space-y-3 text-left">
                   {[
                     'All 106+ features included',
-                    'On-device AI tutor (Apple Intelligence)',
-                    'Spaced repetition flashcards',
-                    '100+ interactive learning tools',
-                    'Gamification, XP & virtual aquarium',
-                    'Offline learning with AES-GCM encryption',
-                    'Real-time messaging & SharePlay',
-                    'Teacher gradebook & NFC attendance',
-                    'Parent portal & conference scheduling',
-                    'AR experiences & document scanner',
-                    'Siri, Widgets, Apple Wallet & Spotlight',
-                    'Canadian data hosting (PIPEDA & FERPA)',
-                    'Onboarding & teacher training included',
-                    'Priority email support',
+                    'On-device AI tutor',
+                    '100+ learning tools & AR',
+                    'Offline learning & gamification',
+                    'Canadian hosting (PIPEDA & FERPA)',
+                    'Onboarding & priority support',
                   ].map((feature) => (
                     <li key={feature} className="flex items-start gap-2.5 text-sm text-gray-700 dark:text-white/75">
                       <CheckCircle2 className="h-4 w-4 text-[#8B5CF6] shrink-0 mt-0.5" />

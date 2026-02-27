@@ -756,6 +756,14 @@ export default async function PrivacyPolicyPage({ searchParams }: PageProps) {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black">
+      {/* Corinthian Pillar Borders */}
+      <div className="fixed top-[15px] -bottom-[60px] left-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" aria-hidden="true">
+        <img src="/pillar.jpg" alt="" className="block w-full h-full object-cover object-top mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40" />
+      </div>
+      <div className="fixed top-[15px] -bottom-[60px] right-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
+        <img src="/pillar.jpg" alt="" className="block w-full h-full object-cover object-top mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40" />
+      </div>
+
       {/* Header */}
       <header className="sticky top-0 z-10 bg-white dark:bg-black border-b border-gray-200 dark:border-white/5">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">

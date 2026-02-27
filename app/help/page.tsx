@@ -2,7 +2,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft, Mail, Phone, Clock } from 'lucide-react'
 import { LanguageToggle } from '@/components/ui/LanguageToggle'
-import { AmbientParticles } from '@/components/ui/AmbientParticles'
 import { FAQAccordion } from '@/components/ui/FAQAccordion'
 
 type Lang = 'en' | 'fr'
@@ -134,17 +133,17 @@ const content = {
   },
   fr: {
     title: 'Centre d\'aide',
-    subtitle: 'Trouvez des r\u00e9ponses, obtenez de l\'aide et tirez le meilleur parti de WolfWhale LMS.',
-    backToHome: 'Retour \u00e0 l\u2019accueil',
+    subtitle: 'Trouvez des réponses, obtenez de l\'aide et tirez le meilleur parti de WolfWhale LMS.',
+    backToHome: 'Retour à l\u2019accueil',
     quickContactTitle: 'Contact rapide',
     emailLabel: 'Courriel',
     emailValue: 'info@wolfwhale.ca',
-    phoneLabel: 'T\u00e9l\u00e9phone',
+    phoneLabel: 'Téléphone',
     phoneValue: '+1 (306) 981-5926',
-    responseLabel: 'D\u00e9lai de r\u00e9ponse',
+    responseLabel: 'Délai de réponse',
     responseValue: 'Dans les 24 heures ouvrables',
     stillNeedHelp: 'Vous avez encore besoin d\'aide\u00a0?',
-    stillNeedHelpDesc: 'Notre \u00e9quipe de soutien est l\u00e0 pour vous. Envoyez-nous un courriel et nous vous r\u00e9pondrons dans les plus brefs d\u00e9lais.',
+    stillNeedHelpDesc: 'Notre équipe de soutien est là pour vous. Envoyez-nous un courriel et nous vous répondrons dans les plus brefs délais.',
     contactUs: 'Nous contacter',
     sections: [
       {
@@ -153,25 +152,25 @@ const content = {
         items: [
           {
             q: 'Comment puis-je me connecter\u00a0?',
-            a: 'Utilisez l\'adresse courriel et le mot de passe fournis par l\'administrateur de votre \u00e9cole. Rendez-vous sur la page de connexion et entrez vos identifiants. Si vous avez oubli\u00e9 votre mot de passe, contactez votre administrateur.',
+            a: 'Utilisez l\'adresse courriel et le mot de passe fournis par l\'administrateur de votre école. Rendez-vous sur la page de connexion et entrez vos identifiants. Si vous avez oublié votre mot de passe, contactez votre administrateur.',
           },
           {
-            q: 'Quels r\u00f4les sont disponibles\u00a0?',
-            a: 'WolfWhale LMS prend en charge quatre r\u00f4les d\'utilisateur\u00a0: \u00c9l\u00e8ve, Enseignant, Parent et Administrateur. Chaque r\u00f4le dispose d\'un tableau de bord personnalis\u00e9 avec des outils et fonctionnalit\u00e9s pertinents.',
+            q: 'Quels rôles sont disponibles\u00a0?',
+            a: 'WolfWhale LMS prend en charge quatre rôles d\'utilisateur\u00a0: Élève, Enseignant, Parent et Administrateur. Chaque rôle dispose d\'un tableau de bord personnalisé avec des outils et fonctionnalités pertinents.',
           },
           {
             q: 'WolfWhale est-il disponible sur mobile\u00a0?',
-            a: 'Oui\u00a0! WolfWhale LMS est enti\u00e8rement adaptatif et fonctionne sur les t\u00e9l\u00e9phones intelligents, les tablettes et les ordinateurs de bureau via tout navigateur Web moderne.',
+            a: 'Oui\u00a0! WolfWhale LMS est entièrement adaptatif et fonctionne sur les téléphones intelligents, les tablettes et les ordinateurs de bureau via tout navigateur Web moderne.',
           },
         ],
       },
       {
         id: 'for-students',
-        heading: 'Pour les \u00e9l\u00e8ves',
+        heading: 'Pour les élèves',
         items: [
           {
             q: 'Comment puis-je consulter mes notes\u00a0?',
-            a: 'Acc\u00e9dez au carnet de notes depuis la barre lat\u00e9rale de votre tableau de bord. Vous verrez tous vos cours avec les notes actuelles, les scores de chaque devoir et les tendances de vos r\u00e9sultats.',
+            a: 'Accédez au carnet de notes depuis la barre latérale de votre tableau de bord. Vous verrez tous vos cours avec les notes actuelles, les scores de chaque devoir et les tendances de vos résultats.',
           },
         ],
       },
@@ -180,16 +179,16 @@ const content = {
         heading: 'Pour les enseignants',
         items: [
           {
-            q: 'Comment cr\u00e9er un cours\u00a0?',
-            a: 'Allez sur votre tableau de bord et cliquez sur \u00ab\u00a0Cr\u00e9er un cours\u00a0\u00bb. Remplissez les d\u00e9tails du cours (nom, mati\u00e8re, niveau scolaire, description) et vous \u00eates pr\u00eat \u00e0 ajouter du contenu.',
+            q: 'Comment créer un cours\u00a0?',
+            a: 'Allez sur votre tableau de bord et cliquez sur \u00ab\u00a0Créer un cours\u00a0\u00bb. Remplissez les détails du cours (nom, matière, niveau scolaire, description) et vous êtes prêt à ajouter du contenu.',
           },
           {
             q: 'Comment noter les devoirs\u00a0?',
-            a: 'Ouvrez le cours, acc\u00e9dez au devoir et cliquez sur les soumissions des \u00e9l\u00e8ves. Vous pouvez entrer des notes, laisser des commentaires et publier les r\u00e9sultats aux \u00e9l\u00e8ves et aux parents.',
+            a: 'Ouvrez le cours, accédez au devoir et cliquez sur les soumissions des élèves. Vous pouvez entrer des notes, laisser des commentaires et publier les résultats aux élèves et aux parents.',
           },
           {
-            q: 'Comment prendre les pr\u00e9sences\u00a0?',
-            a: 'Ouvrez votre cours et s\u00e9lectionnez \u00ab\u00a0Pr\u00e9sences\u00a0\u00bb. Vous pouvez marquer les \u00e9l\u00e8ves comme pr\u00e9sents, absents, en retard ou excus\u00e9s pour chaque s\u00e9ance de cours.',
+            q: 'Comment prendre les présences\u00a0?',
+            a: 'Ouvrez votre cours et sélectionnez \u00ab\u00a0Présences\u00a0\u00bb. Vous pouvez marquer les élèves comme présents, absents, en retard ou excusés pour chaque séance de cours.',
           },
         ],
       },
@@ -198,12 +197,12 @@ const content = {
         heading: 'Pour les parents',
         items: [
           {
-            q: 'Comment voir les progr\u00e8s de mon enfant\u00a0?',
-            a: 'Connectez-vous avec vos identifiants de parent et vous verrez le tableau de bord de votre enfant avec ses notes, ses pr\u00e9sences, ses devoirs \u00e0 venir et les messages de ses enseignants.',
+            q: 'Comment voir les progrès de mon enfant\u00a0?',
+            a: 'Connectez-vous avec vos identifiants de parent et vous verrez le tableau de bord de votre enfant avec ses notes, ses présences, ses devoirs à venir et les messages de ses enseignants.',
           },
           {
             q: 'Comment contacter l\'enseignant de mon enfant\u00a0?',
-            a: 'Utilisez la fonctionnalit\u00e9 de messagerie dans votre tableau de bord pour envoyer des messages directement aux enseignants de votre enfant.',
+            a: 'Utilisez la fonctionnalité de messagerie dans votre tableau de bord pour envoyer des messages directement aux enseignants de votre enfant.',
           },
         ],
       },
@@ -216,12 +215,12 @@ const content = {
             a: 'Allez dans Tableau de bord administratif > Gestion des utilisateurs. Vous pouvez ajouter des utilisateurs individuellement ou les importer en masse via un fichier CSV.',
           },
           {
-            q: 'Comment g\u00e9rer les cours\u00a0?',
-            a: 'Acc\u00e9dez \u00e0 Tableau de bord administratif > Gestion des cours. Vous pouvez cr\u00e9er des cours, assigner des enseignants, inscrire des \u00e9l\u00e8ves et g\u00e9rer les horaires.',
+            q: 'Comment gérer les cours\u00a0?',
+            a: 'Accédez à Tableau de bord administratif > Gestion des cours. Vous pouvez créer des cours, assigner des enseignants, inscrire des élèves et gérer les horaires.',
           },
           {
-            q: 'Comment consulter les analyses de l\'\u00e9cole\u00a0?',
-            a: 'La page d\'accueil de votre tableau de bord administratif affiche les indicateurs cl\u00e9s. Pour des rapports d\u00e9taill\u00e9s, consultez la section Analyses dans la barre lat\u00e9rale.',
+            q: 'Comment consulter les analyses de l\'école\u00a0?',
+            a: 'La page d\'accueil de votre tableau de bord administratif affiche les indicateurs clés. Pour des rapports détaillés, consultez la section Analyses dans la barre latérale.',
           },
         ],
       },
@@ -231,15 +230,15 @@ const content = {
         items: [
           {
             q: 'Quels navigateurs sont pris en charge\u00a0?',
-            a: 'WolfWhale LMS fonctionne de mani\u00e8re optimale avec les derni\u00e8res versions de Chrome, Firefox, Safari et Edge. Nous recommandons de garder votre navigateur \u00e0 jour.',
+            a: 'WolfWhale LMS fonctionne de manière optimale avec les dernières versions de Chrome, Firefox, Safari et Edge. Nous recommandons de garder votre navigateur à jour.',
           },
           {
-            q: 'J\'ai un probl\u00e8me technique. Que dois-je faire\u00a0?',
-            a: 'Essayez d\'abord de rafra\u00eechir la page ou de vider le cache de votre navigateur. Si le probl\u00e8me persiste, contactez l\'administrateur de votre \u00e9cole ou envoyez-nous un courriel \u00e0 info@wolfwhale.ca avec une description du probl\u00e8me.',
+            q: 'J\'ai un problème technique. Que dois-je faire\u00a0?',
+            a: 'Essayez d\'abord de rafraîchir la page ou de vider le cache de votre navigateur. Si le problème persiste, contactez l\'administrateur de votre école ou envoyez-nous un courriel à info@wolfwhale.ca avec une description du problème.',
           },
           {
-            q: 'Mes donn\u00e9es sont-elles s\u00e9curis\u00e9es\u00a0?',
-            a: 'Oui. WolfWhale utilise un chiffrement de niveau entreprise, la s\u00e9curit\u00e9 au niveau des lignes et une architecture multi-locataire pour prot\u00e9ger toutes les donn\u00e9es. Consultez notre Politique de confidentialit\u00e9 pour tous les d\u00e9tails.',
+            q: 'Mes données sont-elles sécurisées\u00a0?',
+            a: 'Oui. WolfWhale utilise un chiffrement de niveau entreprise, la sécurité au niveau des lignes et une architecture multi-locataire pour protéger toutes les données. Consultez notre Politique de confidentialité pour tous les détails.',
           },
         ],
       },
@@ -257,42 +256,17 @@ export default async function HelpCenterPage({ searchParams }: PageProps) {
   const t = content[lang]
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-[#f0f4f8]">
-      {/* Light Ocean Background */}
-      <div className="fixed inset-0 z-0">
-        {/* Base gradient */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'linear-gradient(135deg, #E8F8FF 0%, #D0F0FF 25%, #B0E8FF 50%, #D0F0FF 75%, #E8F8FF 100%)',
-          }}
-        />
-
-        {/* Ambient teal glow */}
-        <div
-          className="absolute inset-0 opacity-40"
-          style={{
-            background:
-              'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(20,184,166,0.15) 0%, transparent 60%)',
-            animation: 'ocean-pulse-ambient 8s ease-in-out infinite',
-          }}
-        />
-        <div
-          className="absolute inset-0 opacity-25"
-          style={{
-            background:
-              'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(26,42,78,0.08) 0%, transparent 50%)',
-            animation: 'ocean-drift-ambient 12s ease-in-out infinite',
-          }}
-        />
-
-        {/* Floating particles (client component) */}
-        <AmbientParticles count={20} color="rgba(26,42,78,0.12)" />
+    <div className="min-h-screen bg-white dark:bg-black">
+      {/* Corinthian Pillar Borders */}
+      <div className="fixed top-[15px] -bottom-[60px] left-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" aria-hidden="true">
+        <img src="/pillar.jpg" alt="" className="block w-full h-full object-cover object-top mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40" />
+      </div>
+      <div className="fixed top-[15px] -bottom-[60px] right-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
+        <img src="/pillar.jpg" alt="" className="block w-full h-full object-cover object-top mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40" />
       </div>
 
       {/* Header */}
-      <header className="relative z-10 border-b border-[#0A2540]/10 bg-white/30 backdrop-blur-sm">
+      <header className="sticky top-0 z-10 bg-white dark:bg-black border-b border-gray-200 dark:border-white/5">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
             <Image
@@ -301,15 +275,13 @@ export default async function HelpCenterPage({ searchParams }: PageProps) {
               width={48}
               height={48}
               sizes="48px"
-              className="rounded-xl object-contain shadow-lg border-2 border-black"
+              className="rounded-xl object-contain shadow-lg border-2 border-black dark:border-white/10"
             />
             <div>
-              <span className="text-lg sm:text-xl font-display font-bold text-[#0A2540] group-hover:text-[#00BFFF] transition-colors block tracking-wider uppercase">
+              <h1 className="text-lg sm:text-xl font-display font-bold text-gray-900 dark:text-white group-hover:opacity-70 transition-opacity tracking-wider uppercase">
                 WolfWhale
-              </span>
-              <span className="text-xs text-[#0A2540]/70 block font-display font-semibold tracking-widest uppercase">
-                Learning Management System
-              </span>
+              </h1>
+              <p className="text-[10px] sm:text-xs text-gray-500 dark:text-white/50 font-display font-semibold tracking-widest uppercase">Learning Management System</p>
             </div>
           </Link>
 
@@ -319,11 +291,11 @@ export default async function HelpCenterPage({ searchParams }: PageProps) {
       </header>
 
       {/* Main Content */}
-      <main className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Back Link */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-[#0A2540]/70 hover:text-[#00BFFF] transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           {t.backToHome}
@@ -331,55 +303,55 @@ export default async function HelpCenterPage({ searchParams }: PageProps) {
 
         {/* Hero Section */}
         <div className="mb-10 sm:mb-12 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0A2540] mb-3">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-3">
             {t.title}
           </h1>
-          <p className="text-base sm:text-lg text-[#0A2540]/70 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 dark:text-white/70 max-w-2xl mx-auto">
             {t.subtitle}
           </p>
         </div>
 
         {/* Quick Contact Card */}
-        <div className="liquid-glass rounded-2xl p-6 sm:p-8 border border-[#0A2540]/10 mb-10 sm:mb-12">
-          <h2 className="text-lg sm:text-xl font-bold text-[#0A2540] mb-5">
+        <div className="rounded-2xl p-6 sm:p-8 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 mb-10 sm:mb-12">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-5">
             {t.quickContactTitle}
           </h2>
           <div className="grid sm:grid-cols-3 gap-4">
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-[#00BFFF]/10 flex-shrink-0">
-                <Mail className="h-5 w-5 text-[#00BFFF]" />
+              <div className="p-2 rounded-lg bg-gray-100 dark:bg-white/10 flex-shrink-0">
+                <Mail className="h-5 w-5 text-gray-600 dark:text-white/70" />
               </div>
               <div>
-                <p className="text-sm font-medium text-[#0A2540]/70">{t.emailLabel}</p>
+                <p className="text-sm font-medium text-gray-500 dark:text-white/50">{t.emailLabel}</p>
                 <a
                   href="mailto:info@wolfwhale.ca"
-                  className="text-[#00BFFF] font-semibold hover:underline"
+                  className="text-gray-900 dark:text-white font-semibold hover:opacity-70 transition-opacity"
                 >
                   {t.emailValue}
                 </a>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-[#00BFFF]/10 flex-shrink-0">
-                <Phone className="h-5 w-5 text-[#00BFFF]" />
+              <div className="p-2 rounded-lg bg-gray-100 dark:bg-white/10 flex-shrink-0">
+                <Phone className="h-5 w-5 text-gray-600 dark:text-white/70" />
               </div>
               <div>
-                <p className="text-sm font-medium text-[#0A2540]/70">{t.phoneLabel}</p>
+                <p className="text-sm font-medium text-gray-500 dark:text-white/50">{t.phoneLabel}</p>
                 <a
                   href="tel:+13069815926"
-                  className="text-[#00BFFF] font-semibold hover:underline"
+                  className="text-gray-900 dark:text-white font-semibold hover:opacity-70 transition-opacity"
                 >
                   {t.phoneValue}
                 </a>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-[#00BFFF]/10 flex-shrink-0">
-                <Clock className="h-5 w-5 text-[#00BFFF]" />
+              <div className="p-2 rounded-lg bg-gray-100 dark:bg-white/10 flex-shrink-0">
+                <Clock className="h-5 w-5 text-gray-600 dark:text-white/70" />
               </div>
               <div>
-                <p className="text-sm font-medium text-[#0A2540]/70">{t.responseLabel}</p>
-                <p className="text-[#0A2540] font-semibold">{t.responseValue}</p>
+                <p className="text-sm font-medium text-gray-500 dark:text-white/50">{t.responseLabel}</p>
+                <p className="text-gray-900 dark:text-white font-semibold">{t.responseValue}</p>
               </div>
             </div>
           </div>
@@ -389,16 +361,16 @@ export default async function HelpCenterPage({ searchParams }: PageProps) {
         <FAQAccordion sections={t.sections} />
 
         {/* Still Need Help CTA */}
-        <div className="mt-12 sm:mt-16 liquid-glass rounded-2xl p-8 sm:p-10 border border-[#0A2540]/10 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#0A2540] mb-3">
+        <div className="mt-12 sm:mt-16 rounded-2xl p-8 sm:p-10 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">
             {t.stillNeedHelp}
           </h2>
-          <p className="text-[#0A2540]/70 mb-6 max-w-lg mx-auto">
+          <p className="text-gray-600 dark:text-white/70 mb-6 max-w-lg mx-auto">
             {t.stillNeedHelpDesc}
           </p>
           <a
             href="mailto:info@wolfwhale.ca"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#0A2540] to-[#00BFFF] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-black font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all"
           >
             <Mail className="h-5 w-5" />
             {t.contactUs}
@@ -407,29 +379,29 @@ export default async function HelpCenterPage({ searchParams }: PageProps) {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-[#0A2540]/10 mt-16 sm:mt-20">
+      <footer className="border-t border-gray-200 dark:border-white/5 mt-16 sm:mt-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-[#0A2540]/40">
+            <p className="text-sm text-gray-400 dark:text-white/30">
               &copy; 2026 WolfWhale LMS.{' '}
-              {lang === 'en' ? 'All rights reserved.' : 'Tous droits r\u00e9serv\u00e9s.'}
+              {lang === 'en' ? 'All rights reserved.' : 'Tous droits réservés.'}
             </p>
             <div className="flex gap-6">
               <Link
                 href={`/privacy?lang=${lang}`}
-                className="text-sm text-[#0A2540]/60 hover:text-[#00BFFF] transition-colors"
+                className="text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
-                {lang === 'en' ? 'Privacy' : 'Confidentialit\u00e9'}
+                {lang === 'en' ? 'Privacy' : 'Confidentialité'}
               </Link>
               <Link
                 href={`/terms?lang=${lang}`}
-                className="text-sm text-[#0A2540]/60 hover:text-[#00BFFF] transition-colors"
+                className="text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
                 {lang === 'en' ? 'Terms' : 'Conditions'}
               </Link>
               <Link
                 href={`/help?lang=${lang}`}
-                className="text-sm text-[#00BFFF] font-medium"
+                className="text-sm text-gray-900 dark:text-white font-medium"
               >
                 {lang === 'en' ? 'Help' : 'Aide'}
               </Link>
@@ -437,7 +409,6 @@ export default async function HelpCenterPage({ searchParams }: PageProps) {
           </div>
         </div>
       </footer>
-
     </div>
   )
 }
