@@ -58,6 +58,7 @@ export interface LandingContent {
   screenshotLabel4: string
   screenshotLabel5: string
   screenshotLabel6: string
+  screenshotLabel7: string
   screenshotSoon: string
   // Compare
   compareTitle: string
@@ -128,7 +129,8 @@ export const landingContent: Record<Lang, LandingContent> = {
     dashboardLabel: 'Student Dashboard',
     screenshotLabel4: 'Progress Report',
     screenshotLabel5: 'Create Course (Teacher)',
-    screenshotLabel6: 'Screenshot Coming Soon',
+    screenshotLabel6: 'Flashcard Creator',
+    screenshotLabel7: 'Create Quiz (Teacher)',
     screenshotSoon: 'Screenshot Coming Soon',
     compareTitle: 'HOW WE COMPARE',
     compareSub: 'See how WolfWhale stacks up against other learning management systems used in Canadian schools.',
@@ -220,7 +222,8 @@ export const landingContent: Record<Lang, LandingContent> = {
     dashboardLabel: 'Tableau de bord \u00e9l\u00e8ve',
     screenshotLabel4: 'Rapport de progrès',
     screenshotLabel5: 'Créer un cours (enseignant)',
-    screenshotLabel6: 'Capture d\u2019\u00e9cran \u00e0 venir',
+    screenshotLabel6: 'Créateur de cartes mémoire',
+    screenshotLabel7: 'Créer un quiz (enseignant)',
     screenshotSoon: 'Capture d\u2019\u00e9cran \u00e0 venir',
     compareTitle: 'COMMENT NOUS NOUS COMPARONS',
     compareSub: 'D\u00e9couvrez comment WolfWhale se compare aux autres syst\u00e8mes de gestion de l\u2019apprentissage utilis\u00e9s dans les \u00e9coles canadiennes.',

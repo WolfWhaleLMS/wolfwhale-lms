@@ -319,10 +319,19 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                 <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.screenshotLabel5}</p>
               </div>
               <div className="flex flex-col items-center gap-4">
-                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 flex items-center justify-center">
-                  <p className="text-xs text-gray-400 dark:text-white/30 tracking-wider uppercase">{t.screenshotSoon}</p>
+                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
+                  <Image src="/screenshot-flashcards-light.png" alt="WolfWhale LMS Flashcard Creator on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" />
                 </div>
                 <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.screenshotLabel6}</p>
+              </div>
+            </div>
+
+            <div className="flex justify-center gap-6 sm:gap-8">
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
+                  <Image src="/screenshot-quiz-light.png" alt="WolfWhale LMS Create Quiz Teacher View on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" />
+                </div>
+                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.screenshotLabel7}</p>
               </div>
             </div>
           </div>
