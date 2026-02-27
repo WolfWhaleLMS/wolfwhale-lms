@@ -622,7 +622,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                   </Link>
                 </div>
                 <div className="flex items-center gap-3">
-                  <a href="https://linkedin.com/company/wolfwhale" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-white/40 hover:text-[#00BFFF] transition-colors" aria-label="LinkedIn">
+                  <a href="https://linkedin.com/company/wolfwhale-learning" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-white/40 hover:text-[#00BFFF] transition-colors" aria-label="LinkedIn">
                     <Linkedin className="h-4 w-4" />
                   </a>
                   <a href="https://x.com/wolfwhale" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-white/40 hover:text-[#00BFFF] transition-colors" aria-label="X (Twitter)">
