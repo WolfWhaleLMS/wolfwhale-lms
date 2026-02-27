@@ -462,23 +462,23 @@ export default function LMSHubPage() {
               <div className="overflow-x-auto">
                 <div className="min-w-[600px]">
                   {/* Table Header */}
-                  <div className="grid grid-cols-6 gap-0 text-center border-b border-white/10">
-                    <div className="p-3 sm:p-4 text-left text-xs sm:text-sm font-bold text-white/60 uppercase tracking-wider">
+                  <div className="grid grid-cols-6 gap-0 text-center border-b border-gray-200 dark:border-white/10">
+                    <div className="p-3 sm:p-4 text-left text-xs sm:text-sm font-bold text-gray-500 dark:text-white/60 uppercase tracking-wider">
                       Feature
                     </div>
                     <div className="p-3 sm:p-4 text-xs sm:text-sm font-normal text-[#8B5CF6] border-l border-gray-100 dark:border-white/5 bg-[#8B5CF6]/5 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                       WolfWhale
                     </div>
-                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-gray-100 dark:border-white/5">
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-gray-500 dark:text-white/60 border-l border-gray-100 dark:border-white/5">
                       Canvas
                     </div>
-                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-gray-100 dark:border-white/5">
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-gray-500 dark:text-white/60 border-l border-gray-100 dark:border-white/5">
                       Brightspace
                     </div>
-                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-gray-100 dark:border-white/5">
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-gray-500 dark:text-white/60 border-l border-gray-100 dark:border-white/5">
                       Edsby
                     </div>
-                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-white/60 border-l border-gray-100 dark:border-white/5">
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-gray-500 dark:text-white/60 border-l border-gray-100 dark:border-white/5">
                       Moodle
                     </div>
                   </div>
@@ -507,11 +507,11 @@ export default function LMSHubPage() {
                           className={`p-3 sm:p-4 flex items-center justify-center border-l border-gray-100 dark:border-white/5 ${i === 0 ? 'bg-[#8B5CF6]/5' : ''}`}
                         >
                           {val === true ? (
-                            <CheckCircle2 className={`h-4 w-4 sm:h-5 sm:w-5 ${i === 0 ? 'text-[#8B5CF6]' : 'text-emerald-300'}`} />
+                            <CheckCircle2 className={`h-4 w-4 sm:h-5 sm:w-5 ${i === 0 ? 'text-[#8B5CF6]' : 'text-emerald-600 dark:text-emerald-300'}`} />
                           ) : val === 'partial' ? (
-                            <Minus className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-300" />
+                            <Minus className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500 dark:text-yellow-300" />
                           ) : (
-                            <XIcon className="h-4 w-4 sm:h-5 sm:w-5 text-white/20" />
+                            <XIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-300 dark:text-white/20" />
                           )}
                         </div>
                       ))}
@@ -519,7 +519,7 @@ export default function LMSHubPage() {
                   ))}
                 </div>
               </div>
-              <p className="text-[10px] text-white/30 text-center py-2 sm:hidden">Swipe to see all competitors →</p>
+              <p className="text-[10px] text-gray-400 dark:text-white/30 text-center py-2 sm:hidden">Swipe to see all competitors →</p>
             </div>
 
             <div className="text-center space-y-6">
