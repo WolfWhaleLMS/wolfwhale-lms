@@ -367,47 +367,6 @@ export default function LMSHubPage() {
           </div>
         </section>
 
-        {/* Social Proof / Trust Section */}
-        <section id="trust" className="px-4 py-12 sm:py-20">
-          <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
-            <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
-                BUILT FOR EDUCATORS
-              </h2>
-              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-xl mx-auto">
-                Pilot program launching 2025 — we&apos;re partnering with forward-thinking schools across Canada.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
-              {[
-                { stat: '106+', label: 'Features' },
-                { stat: '122K', label: 'Lines of Swift' },
-                { stat: '30', label: 'Apple Frameworks' },
-                { stat: '42+', label: 'Database Tables with RLS' },
-              ].map(({ stat, label }) => (
-                <div
-                  key={stat}
-                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 sm:p-6 text-center"
-                >
-                  <p className="text-2xl sm:text-3xl font-bold text-[#00BFFF] mb-1">{stat}</p>
-                  <p className="text-xs sm:text-sm text-gray-500 dark:text-white/60">{label}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="text-center">
-              <a
-                href="#contact"
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl btn-chrome-3d-dark text-white text-sm font-semibold"
-              >
-                Join the Pilot Program
-                <ArrowRight className="h-4 w-4" />
-              </a>
-            </div>
-          </div>
-        </section>
-
         {/* App Screenshots Section */}
         <section id="screenshots" className="px-4 py-12 sm:py-20">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
