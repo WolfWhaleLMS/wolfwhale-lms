@@ -456,42 +456,6 @@ export default function LMSHubPage() {
           </div>
         </section>
 
-        {/* Built by Design Section */}
-        <section id="design" className="px-4 py-12 sm:py-20">
-          <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
-            <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
-                Built by Design
-              </h2>
-              <p className="text-sm sm:text-base text-gray-500 dark:text-white/60 max-w-2xl mx-auto">
-                Built natively with Apple&apos;s SDKs to maximize the iPhone for education, mobility, and accessibility. 30 Apple frameworks. 122,000 lines of Swift. Zero compromises.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {[
-                { icon: Palette, title: 'Design-First Approach', desc: 'Interface designed from the ground up for clarity and focus. No clutter, no distractions — just learning.' },
-                { icon: Layers, title: 'Consistent Experience', desc: 'Unified design language across iOS, web, and tablet. Learn anywhere with the same intuitive interface.' },
-                { icon: Zap, title: 'Performance Obsessed', desc: 'Sub-second load times and instant interactions. Built on modern architecture that never makes you wait.' },
-                { icon: Accessibility, title: 'Accessible to All', desc: 'WCAG compliant, screen reader compatible, and designed for every learner regardless of ability.' },
-                { icon: Code, title: 'Native, Not Wrapped', desc: 'True native iOS app — not a web wrapper. Built with platform-specific APIs for the best possible experience.' },
-                { icon: Paintbrush, title: 'Refined Aesthetics', desc: 'Dark mode by default. Thoughtful typography, spacing, and motion that makes learning feel premium.' },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 sm:p-6 hover:border-[#8B5CF6]/30 hover:shadow-lg hover:shadow-[#8B5CF6]/10 transition-all"
-                >
-                  <div className="inline-flex p-2.5 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 mb-4">
-                    <item.icon className="h-5 w-5 text-[#8B5CF6]" />
-                  </div>
-                  <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-2">{item.title}</h3>
-                  <p className="text-xs sm:text-sm text-gray-500 dark:text-white/60 leading-relaxed">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* LMS Comparison Section */}
         <section id="compare" className="px-4 py-12 sm:py-20">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
