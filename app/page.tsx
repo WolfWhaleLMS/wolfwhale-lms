@@ -49,19 +49,19 @@ export default function LMSHubPage() {
       />
       {/* Corinthian Pillar Borders — Real Marble Image */}
       {/* Left Pillar */}
-      <div className="fixed inset-y-0 left-0 w-[120px] sm:w-[150px] lg:w-[180px] z-[5] pointer-events-none hidden md:block" aria-hidden="true">
+      <div className="fixed top-0 bottom-0 left-0 w-[100px] sm:w-[130px] lg:w-[160px] z-[5] pointer-events-none hidden md:block" aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
-          className="h-full w-full object-cover object-top mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
+          className="w-full h-full object-fill mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
         />
       </div>
       {/* Right Pillar — mirrored */}
-      <div className="fixed inset-y-0 right-0 w-[120px] sm:w-[150px] lg:w-[180px] z-[5] pointer-events-none hidden md:block" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
+      <div className="fixed top-0 bottom-0 right-0 w-[100px] sm:w-[130px] lg:w-[160px] z-[5] pointer-events-none hidden md:block" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
-          className="h-full w-full object-cover object-top mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
+          className="w-full h-full object-fill mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
         />
       </div>
 
