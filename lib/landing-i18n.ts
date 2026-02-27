@@ -12,11 +12,11 @@ interface FeatureCard {
 
 interface CompareRow {
   feature: string
-  wolfwhale: boolean | 'partial'
-  canvas: boolean | 'partial'
-  brightspace: boolean | 'partial'
-  edsby: boolean | 'partial'
-  moodle: boolean | 'partial'
+  wolfwhale: boolean
+  canvas: boolean
+  brightspace: boolean
+  edsby: boolean
+  moodle: boolean
 }
 
 interface TRCCard {
@@ -133,13 +133,13 @@ export const landingContent: Record<Lang, LandingContent> = {
     featureLabel: 'Feature',
     compareRows: [
       { feature: 'On-Device AI Tutor', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-      { feature: '100+ Learning Tools', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: 'partial' },
+      { feature: '100+ Learning Tools', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
       { feature: 'AR Experiences', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-      { feature: 'Offline Learning', wolfwhale: true, canvas: 'partial', brightspace: false, edsby: false, moodle: 'partial' },
-      { feature: 'Gamification & XP', wolfwhale: true, canvas: false, brightspace: false, edsby: 'partial', moodle: 'partial' },
-      { feature: 'Native iOS App', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: 'partial' },
-      { feature: 'Parent Portal', wolfwhale: true, canvas: 'partial', brightspace: 'partial', edsby: true, moodle: false },
-      { feature: 'Canadian Data Hosting', wolfwhale: true, canvas: false, brightspace: true, edsby: true, moodle: 'partial' },
+      { feature: 'Offline Learning', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+      { feature: 'Gamification & XP', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+      { feature: 'Native iOS App', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: false },
+      { feature: 'Parent Portal', wolfwhale: true, canvas: false, brightspace: false, edsby: true, moodle: false },
+      { feature: 'Canadian Data Hosting', wolfwhale: true, canvas: false, brightspace: true, edsby: true, moodle: false },
     ],
     swipeHint: 'Swipe to see all competitors \u2192',
     compareDisclaimer: 'Comparison based on publicly available feature lists as of 2026. Partial (\u2014) indicates limited or plugin-dependent support.',
@@ -224,13 +224,13 @@ export const landingContent: Record<Lang, LandingContent> = {
     featureLabel: 'Fonctionnalit\u00e9',
     compareRows: [
       { feature: 'Tuteur IA sur l\u2019appareil', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-      { feature: '100+ outils d\u2019apprentissage', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: 'partial' },
+      { feature: '100+ outils d\u2019apprentissage', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
       { feature: 'Exp\u00e9riences RA', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-      { feature: 'Apprentissage hors ligne', wolfwhale: true, canvas: 'partial', brightspace: false, edsby: false, moodle: 'partial' },
-      { feature: 'Ludification et XP', wolfwhale: true, canvas: false, brightspace: false, edsby: 'partial', moodle: 'partial' },
-      { feature: 'App iOS native', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: 'partial' },
-      { feature: 'Portail parents', wolfwhale: true, canvas: 'partial', brightspace: 'partial', edsby: true, moodle: false },
-      { feature: 'H\u00e9bergement canadien', wolfwhale: true, canvas: false, brightspace: true, edsby: true, moodle: 'partial' },
+      { feature: 'Apprentissage hors ligne', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+      { feature: 'Ludification et XP', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
+      { feature: 'App iOS native', wolfwhale: true, canvas: true, brightspace: true, edsby: true, moodle: false },
+      { feature: 'Portail parents', wolfwhale: true, canvas: false, brightspace: false, edsby: true, moodle: false },
+      { feature: 'H\u00e9bergement canadien', wolfwhale: true, canvas: false, brightspace: true, edsby: true, moodle: false },
     ],
     swipeHint: 'Glissez pour voir tous les concurrents \u2192',
     compareDisclaimer: 'Comparaison fond\u00e9e sur les listes de fonctionnalit\u00e9s publiques de 2026. Partiel (\u2014) indique un soutien limit\u00e9 ou d\u00e9pendant de modules.',

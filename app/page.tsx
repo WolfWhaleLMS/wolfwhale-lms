@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Mail, Phone, MapPin, CheckCircle2, X as XIcon, Minus, Feather, Linkedin, Twitter } from 'lucide-react'
+import { ArrowRight, Mail, Phone, MapPin, CheckCircle2, X as XIcon, Feather, Linkedin, Twitter } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 import { ContactForm } from '@/components/landing/ContactForm'
 import { ThemeToggle } from '@/components/landing/ThemeToggle'
@@ -366,8 +366,6 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                         >
                           {val === true ? (
                             <CheckCircle2 className={`h-4 w-4 sm:h-5 sm:w-5 ${i === 0 ? 'text-[#8B5CF6]' : 'text-emerald-600 dark:text-emerald-300'}`} />
-                          ) : val === 'partial' ? (
-                            <Minus className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500 dark:text-yellow-300" />
                           ) : (
                             <XIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-300 dark:text-white/20" />
                           )}
