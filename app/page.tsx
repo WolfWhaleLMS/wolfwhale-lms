@@ -32,7 +32,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
-          "name": "WolfWhale Inc.",
+          "name": "Wolf Whale",
           "description": "Canadian learning management system for K-12 and post-secondary schools with built-in spaced repetition flashcards.",
           "url": "https://wolfwhale.ca",
           "logo": "https://wolfwhale.ca/logo.png",
@@ -601,7 +601,8 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           <div className="flex flex-col gap-5">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex flex-col gap-1.5">
-                <p className="text-sm font-normal text-gray-700 dark:text-white/70 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>WolfWhale Inc.</p>
+                <p className="text-sm font-normal text-gray-700 dark:text-white/70 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>Wolf Whale</p>
+                <p className="text-xs text-gray-500 dark:text-white/50 uppercase tracking-widest" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>Learning Management System</p>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-white/60">
                   <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Vancouver, BC, Canada</span>
                   <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1 hover:text-[#00BFFF] transition-colors"><Mail className="h-3 w-3" /> info@wolfwhale.ca</a>
