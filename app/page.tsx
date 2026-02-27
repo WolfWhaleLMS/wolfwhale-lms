@@ -49,7 +49,7 @@ export default function LMSHubPage() {
       />
       {/* Corinthian Pillar Borders — Real Marble Image */}
       {/* Left Pillar — starts below header toolbar */}
-      <div className="fixed top-[56px] sm:top-[64px] bottom-0 left-0 w-[60px] sm:w-[100px] md:w-[150px] lg:w-[210px] z-[5] pointer-events-none" aria-hidden="true">
+      <div className="fixed top-[56px] sm:top-[64px] bottom-0 left-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
@@ -57,7 +57,7 @@ export default function LMSHubPage() {
         />
       </div>
       {/* Right Pillar — mirrored, starts below header toolbar */}
-      <div className="fixed top-[56px] sm:top-[64px] bottom-0 right-0 w-[60px] sm:w-[100px] md:w-[150px] lg:w-[210px] z-[5] pointer-events-none" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
+      <div className="fixed top-[56px] sm:top-[64px] bottom-0 right-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
