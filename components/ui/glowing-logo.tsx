@@ -14,20 +14,15 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
 
   return (
     <div className={`relative inline-flex items-center justify-center ${className}`}>
-      {/* Glow layer — sits BEHIND the tile */}
+      {/* Glow layer — circular radial glow BEHIND the tile */}
       <div
-        className="absolute inset-0 m-auto"
+        className="absolute inset-0 m-auto rounded-full"
         style={{
-          width: tileSize,
-          height: tileSize,
-          borderRadius,
+          width: tileSize * 0.6,
+          height: tileSize * 0.6,
           zIndex: 0,
-          boxShadow: `
-            0 0 ${g * 0.4}px ${g * 0.15}px rgba(139, 92, 246, 0.7),
-            0 0 ${g * 0.8}px ${g * 0.4}px rgba(139, 92, 246, 0.45),
-            0 0 ${g * 1.2}px ${g * 0.6}px rgba(139, 92, 246, 0.25),
-            0 0 ${g * 2}px ${g * 1}px rgba(139, 92, 246, 0.12)
-          `,
+          background: 'radial-gradient(circle, rgba(139,92,246,0.5) 0%, rgba(139,92,246,0) 70%)',
+          filter: `blur(${g * 0.5}px)`,
         }}
       />
       {/* App tile — sits ON TOP of the glow */}
