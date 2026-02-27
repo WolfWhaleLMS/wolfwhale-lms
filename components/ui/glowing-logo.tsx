@@ -18,14 +18,14 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
       <div
         className="absolute rounded-full"
         style={{
-          width: tileSize * 1.8,
-          height: tileSize * 1.8,
+          width: tileSize * 3.6,
+          height: tileSize * 3.6,
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           zIndex: 0,
           background: 'radial-gradient(circle, rgba(139,92,246,0.7) 0%, rgba(139,92,246,0.35) 40%, rgba(139,92,246,0) 70%)',
-          filter: `blur(${g * 0.6}px)`,
+          filter: `blur(${g * 1.2}px)`,
         }}
       />
       {/* App tile — sits ON TOP of the glow */}
