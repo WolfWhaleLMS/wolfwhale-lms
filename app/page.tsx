@@ -160,7 +160,7 @@ export default function LMSHubPage() {
       </div>
 
       {/* Header / Nav */}
-      <header className="fixed top-0 left-0 right-0 z-50 px-3 py-3 sm:px-4 sm:py-4 backdrop-blur-xl bg-white dark:bg-black border-b border-gray-200 dark:border-white/5">
+      <header className="fixed top-0 left-0 right-0 z-50 px-3 py-2 sm:px-4 sm:py-2.5 backdrop-blur-xl bg-white dark:bg-black border-b border-gray-200 dark:border-white/5">
         <nav className="flex items-center justify-between">
           <Link href="/" className="inline-flex flex-col group shrink-0">
             <span className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-[#00BFFF] transition-colors tracking-normal uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
