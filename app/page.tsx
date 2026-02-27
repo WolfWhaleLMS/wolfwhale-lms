@@ -316,7 +316,7 @@ export default function LMSHubPage() {
                 },
                 {
                   icon: Wrench,
-                  title: '25+ Learning Tools',
+                  title: '100+ Learning Tools',
                   desc: 'Periodic Table \u00b7 Fraction Builder \u00b7 Geometry Explorer \u00b7 Typing Tutor \u00b7 and more',
                   color: '#FF6B9D',
                 },
@@ -498,7 +498,7 @@ export default function LMSHubPage() {
                   {[
                     { feature: 'On-Device AI Tutor (Apple Intelligence)', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
                     { feature: 'Spaced Repetition Flashcards', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
-                    { feature: '25+ Interactive Learning Tools', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: 'partial' },
+                    { feature: '100+ Interactive Learning Tools', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: 'partial' },
                     { feature: 'AR Learning Experiences', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
                     { feature: 'Gamification & Virtual Aquarium', wolfwhale: true, canvas: false, brightspace: false, edsby: 'partial', moodle: 'partial' },
                     { feature: 'Offline Learning (AES-GCM Encrypted)', wolfwhale: true, canvas: 'partial', brightspace: false, edsby: false, moodle: 'partial' },
@@ -589,7 +589,7 @@ export default function LMSHubPage() {
                     'All 106+ features included',
                     'On-device AI tutor (Apple Intelligence)',
                     'Spaced repetition flashcards',
-                    '25+ interactive learning tools',
+                    '100+ interactive learning tools',
                     'Gamification, XP & virtual aquarium',
                     'Offline learning with AES-GCM encryption',
                     'Real-time messaging & SharePlay',
@@ -815,7 +815,7 @@ export default function LMSHubPage() {
                     { q: 'What Apple frameworks do you use?', a: 'WolfWhale uses 30 Apple frameworks including SwiftUI, WidgetKit, ActivityKit, HealthKit, MusicKit, CoreNFC, GroupActivities (SharePlay), MultipeerConnectivity, PassKit (Apple Wallet), App Intents (Siri), CoreSpotlight, Vision, ARKit, PencilKit, and FoundationModels for on-device AI.' },
                     { q: 'Is there Siri and widget support?', a: "Yes. 4 Siri Shortcuts are built in — Check Assignments, Check Grades, Open Courses, and Today's Schedule. Home Screen widgets show grades, schedule, and assignments. Courses and assignments are indexed in Spotlight Search." },
                     { q: 'What about Android support?', a: "WolfWhale is built exclusively for iOS using native SwiftUI. Our philosophy is to maximize the iPhone for education, mobility, and accessibility by deeply integrating with Apple's ecosystem. A web companion is planned for desktop access." },
-                    { q: 'How many features does WolfWhale have?', a: 'Over 106 features across 355 Swift files and 122,000 lines of code. This includes a full student portal, teacher command center, parent dashboard, admin console, 25+ interactive learning tools, AR experiences, real-time messaging, and deep Apple ecosystem integration.' },
+                    { q: 'How many features does WolfWhale have?', a: 'Over 106 features across 355 Swift files and 122,000 lines of code. This includes a full student portal, teacher command center, parent dashboard, admin console, 100+ interactive learning tools, AR experiences, real-time messaging, and deep Apple ecosystem integration.' },
                   ],
                 },
               ]}
