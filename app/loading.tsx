@@ -1,5 +1,5 @@
 import { LoadingScreen } from '@/components/ui/loading-screen'
 
 export default function Loading() {
-  return <LoadingScreen variant={1} fullScreen />
+  return <LoadingScreen fullScreen />
 }
