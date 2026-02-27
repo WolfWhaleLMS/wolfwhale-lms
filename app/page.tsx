@@ -433,31 +433,35 @@ export default function LMSHubPage() {
                     priority
                   />
                 </div>
-                <p className="text-sm text-gray-500 dark:text-white/60 font-medium">Sign In</p>
+                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">Sign In</p>
               </div>
 
-              {/* Screenshot 2 — Placeholder */}
+              {/* Screenshot 2 — My Courses (Light Mode) */}
               <div className="flex flex-col items-center gap-4">
-                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 flex items-center justify-center">
-                  <div className="text-center p-6 space-y-3">
-                    <Smartphone className="h-12 w-12 text-gray-300 dark:text-white/20 mx-auto" />
-                    <p className="text-xs text-gray-400 dark:text-white/30 uppercase tracking-wider">Courses</p>
-                    <p className="text-[10px] text-gray-300 dark:text-white/20">Screenshot coming soon</p>
-                  </div>
+                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
+                  <Image
+                    src="/screenshot-courses-light.png"
+                    alt="WolfWhale LMS My Courses on iPhone"
+                    width={1170}
+                    height={2532}
+                    className="w-full h-full object-cover object-top"
+                  />
                 </div>
-                <p className="text-sm text-gray-500 dark:text-white/60 font-medium">Course Browser</p>
+                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">My Courses</p>
               </div>
 
-              {/* Screenshot 3 — Placeholder for future screenshot */}
+              {/* Screenshot 3 — Home Dashboard (Dark Mode) */}
               <div className="flex flex-col items-center gap-4">
-                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 flex items-center justify-center">
-                  <div className="text-center p-6 space-y-3">
-                    <Smartphone className="h-12 w-12 text-gray-300 dark:text-white/20 mx-auto" />
-                    <p className="text-xs text-gray-400 dark:text-white/30 uppercase tracking-wider">Dashboard</p>
-                    <p className="text-[10px] text-gray-300 dark:text-white/20">Screenshot coming soon</p>
-                  </div>
+                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
+                  <Image
+                    src="/screenshot-home-dark.png"
+                    alt="WolfWhale LMS Student Dashboard on iPhone"
+                    width={1170}
+                    height={2532}
+                    className="w-full h-full object-cover object-top"
+                  />
                 </div>
-                <p className="text-sm text-gray-500 dark:text-white/60 font-medium">Student Dashboard</p>
+                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">Student Dashboard</p>
               </div>
             </div>
           </div>
