@@ -171,9 +171,6 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             <a href="#faq" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
               {t.nav.faq}
             </a>
-            <Link href="/sign-in" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors font-medium">
-              {t.nav.signIn}
-            </Link>
             <LanguageToggle lang={lang} />
             <ThemeToggle />
             <a
@@ -662,9 +659,6 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                   </Link>
                   <Link href={`/help${lp}`} className="text-sm text-gray-500 dark:text-white/60 hover:text-[#00BFFF] transition-colors">
                     {t.help}
-                  </Link>
-                  <Link href="/sign-in" className="text-sm text-gray-500 dark:text-white/60 hover:text-[#00BFFF] transition-colors">
-                    {t.nav.signIn}
                   </Link>
                 </div>
                 <div className="flex items-center gap-3">
