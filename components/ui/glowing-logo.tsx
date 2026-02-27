@@ -16,10 +16,13 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
     <div className={`relative inline-flex items-center justify-center ${className}`}>
       {/* Glow layer — large circular purple glow BEHIND the tile */}
       <div
-        className="absolute inset-0 m-auto rounded-full"
+        className="absolute rounded-full"
         style={{
           width: tileSize * 1.8,
           height: tileSize * 1.8,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
           zIndex: 0,
           background: 'radial-gradient(circle, rgba(139,92,246,0.7) 0%, rgba(139,92,246,0.35) 40%, rgba(139,92,246,0) 70%)',
           filter: `blur(${g * 0.6}px)`,
