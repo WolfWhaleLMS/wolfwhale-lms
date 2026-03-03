@@ -57,6 +57,24 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         }) }}
       />
 
+      {/* Corinthian Pillar Borders — Real Marble Image */}
+      {/* Left Pillar */}
+      <div className="fixed top-[15px] -bottom-[60px] left-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" aria-hidden="true">
+        <img
+          src="/pillar.jpg"
+          alt=""
+          className="block w-full h-full object-cover object-top mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
+        />
+      </div>
+      {/* Right Pillar — mirrored */}
+      <div className="fixed top-[15px] -bottom-[60px] right-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
+        <img
+          src="/pillar.jpg"
+          alt=""
+          className="block w-full h-full object-cover object-top mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
+        />
+      </div>
+
       {/* Principle 13: cmd+k command palette */}
       <CommandPalette items={[
         { label: t.nav.features, href: '#features' },
