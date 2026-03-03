@@ -1,6 +1,7 @@
 'use server'
 
 import { z } from 'zod'
+import { Resend } from 'resend'
 
 const contactSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100),
@@ -33,16 +34,41 @@ export async function submitContactForm(
     return { success: false, error: parsed.error.errors[0]?.message || 'Invalid form data' }
   }
 
+  const { name, email, school, role, message } = parsed.data
+
   try {
-    // TODO: Wire up to Supabase or email service (Resend, etc.)
-    // For now, log the submission server-side
-    console.log('[Contact Form Submission]', {
-      ...parsed.data,
-      timestamp: new Date().toISOString(),
+    const apiKey = process.env.RESEND_API_KEY
+
+    if (!apiKey) {
+      console.error('[Contact Form] RESEND_API_KEY not set')
+      // Still log submission so it's not lost
+      console.log('[Contact Form Submission]', { name, email, school, role, message, timestamp: new Date().toISOString() })
+      return { success: true }
+    }
+
+    const resend = new Resend(apiKey)
+
+    await resend.emails.send({
+      from: 'WolfWhale Contact Form <onboarding@resend.dev>',
+      to: 'info@wolfwhale.ca',
+      replyTo: email,
+      subject: `New inquiry from ${name}${school ? ` — ${school}` : ''}`,
+      text: [
+        `Name: ${name}`,
+        `Email: ${email}`,
+        school ? `School: ${school}` : null,
+        role ? `Role: ${role}` : null,
+        '',
+        'Message:',
+        message,
+        '',
+        `Sent from wolfwhale.ca contact form at ${new Date().toISOString()}`,
+      ].filter(Boolean).join('\n'),
     })
 
     return { success: true }
-  } catch {
+  } catch (err) {
+    console.error('[Contact Form Error]', err)
     return { success: false, error: 'Something went wrong. Please try again or email us directly.' }
   }
 }
