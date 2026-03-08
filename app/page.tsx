@@ -207,6 +207,16 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           </div>
         </section>
 
+        {/* What is an LMS? */}
+        <section className="px-4 py-10 sm:py-16">
+          <div className="max-w-2xl mx-auto rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 backdrop-blur-sm px-6 py-5 text-left">
+            <p className="text-xs text-gray-400 dark:text-white/40 uppercase tracking-widest font-display mb-2">What is an LMS?</p>
+            <p className="text-sm text-gray-600 dark:text-white/70 leading-relaxed">
+              A <span className="text-gray-900 dark:text-white font-medium">Learning Management System</span> is the software schools use to deliver courses, track grades, assign work, and communicate with students and parents — it&apos;s the digital backbone of a classroom. WolfWhale reimagines the LMS around cognitive load theory, on-device AI, and original textbooks so every interaction is designed for how students actually learn.
+            </p>
+          </div>
+        </section>
+
         {/* Features Section */}
         <section id="features" className="px-4 py-12 sm:py-20">
           <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
