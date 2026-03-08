@@ -131,9 +131,13 @@ export default function InfoPage() {
             Improving the most important tool in education
           </p>
 
-          <p className="text-base md:text-lg text-white/60 mb-10 max-w-2xl leading-relaxed">
-            Every lesson, textbook, and builder is designed around cognitive load theory — the science of how students actually absorb information. On-device AI. 72 original textbooks. The only LMS built from the ground up for how students actually learn.
-          </p>
+          {/* What is an LMS? */}
+          <div className="max-w-2xl mb-10 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm px-6 py-5 text-left">
+            <p className="text-xs text-white/40 uppercase tracking-widest font-display mb-2">What is an LMS?</p>
+            <p className="text-sm text-white/70 leading-relaxed">
+              A <span className="text-white font-medium">Learning Management System</span> is the software schools use to deliver courses, track grades, assign work, and communicate with students and parents — it&apos;s the digital backbone of a classroom. WolfWhale reimagines the LMS around cognitive load theory, on-device AI, and original textbooks so every interaction is designed for how students actually learn.
+            </p>
+          </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 mb-12">
             <a
