@@ -525,11 +525,11 @@ export default async function FeatureDetailPage({ params, searchParams }: PagePr
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 px-3 py-2 sm:px-4 sm:py-2.5 backdrop-blur-xl bg-white dark:bg-black border-b border-gray-200 dark:border-white/5">
         <nav className="flex items-center justify-between max-w-6xl mx-auto">
-          <Link href={`/${lp}`} className="inline-flex flex-col group shrink-0">
+          <Link href={`/${lp}`} className="inline-flex flex-col group shrink-0 min-w-0">
             <span className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-[#00BFFF] transition-colors duration-100 tracking-normal uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
               WolfWhale
             </span>
-            <span className="text-[9px] sm:text-xs text-gray-500 dark:text-white/60 tracking-[0.15em] uppercase font-medium -mt-0.5">
+            <span className="hidden sm:block text-xs text-gray-500 dark:text-white/60 tracking-[0.15em] uppercase font-medium -mt-0.5">
               {t.lms}
             </span>
           </Link>

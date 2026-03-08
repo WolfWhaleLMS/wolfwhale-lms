@@ -144,7 +144,7 @@ export default function InfoPage() {
             <Image src="/logo.png" alt="WolfWhale" width={56} height={56} className="rounded-xl object-contain shadow-lg shadow-purple-500/20 w-10 h-10 sm:w-14 sm:h-14 shrink-0" />
             <div className="min-w-0">
               <h1 className="text-base sm:text-xl font-display font-bold text-white tracking-wider uppercase truncate">WolfWhale</h1>
-              <p className="text-[10px] sm:text-xs text-white/70 font-display font-semibold tracking-widest uppercase truncate">Learning Management System</p>
+              <p className="hidden sm:block text-xs text-white/70 font-display font-semibold tracking-widest uppercase truncate">Learning Management System</p>
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
