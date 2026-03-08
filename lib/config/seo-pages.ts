@@ -1382,6 +1382,828 @@ export const PAGES: Record<string, PageData> = {
       'Most LMS platforms send student data to US-based cloud AI services, creating FOIP compliance risks. WolfWhale uses Apple Intelligence for all AI features — processing happens entirely on the student\'s device. Zero student data is transmitted to external servers. Row-level security in PostgreSQL ensures each user only sees their own data.',
   },
 
+  // ========== EDUCATIONAL TECHNOLOGY KEYWORDS ==========
+
+  'educational-technology-saskatchewan': {
+    province: 'Saskatchewan',
+    title: 'Educational Technology for Saskatchewan Schools | WolfWhale',
+    h1: 'Educational Technology Built in Saskatchewan',
+    description:
+      'WolfWhale is Saskatchewan\'s own edtech platform. 72 textbooks, on-device AI, cognitive load theory lessons, offline learning. Built on Treaty 6 territory.',
+    keywords: [
+      'educational technology Saskatchewan',
+      'edtech Saskatchewan',
+      'school technology Saskatchewan',
+      'classroom technology Saskatchewan',
+      'education software Saskatchewan',
+    ],
+    heroText:
+      'Saskatchewan schools deserve educational technology built for Saskatchewan. WolfWhale is the province\'s own edtech platform — 72 textbooks aligned to every SK learning outcome, on-device AI, offline learning, and lessons built on cognitive load theory. Not adapted from American software. Built here.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Gamification & XP',
+      'Parent Portal',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'Most edtech used in Saskatchewan was built in Silicon Valley. WolfWhale was built in Saskatoon on Treaty 6 territory. That difference shows up in every feature — from curriculum alignment to Indigenous perspectives to offline mode for rural schools.',
+  },
+
+  'digital-learning-platform-saskatchewan': {
+    province: 'Saskatchewan',
+    title: 'Digital Learning Platform for SK Schools | WolfWhale',
+    h1: 'The Digital Learning Platform Saskatchewan Schools Need',
+    description:
+      'WolfWhale is a digital learning platform with 72 SK textbooks, on-device AI, gamification, and offline mode. Built in Saskatchewan for $12/student/year.',
+    keywords: [
+      'digital learning platform Saskatchewan',
+      'online learning platform Saskatchewan',
+      'digital classroom Saskatchewan',
+      'e-learning Saskatchewan schools',
+      'virtual learning Saskatchewan',
+    ],
+    heroText:
+      'Digital learning in Saskatchewan shouldn\'t mean adapting American platforms to Canadian classrooms. WolfWhale is a digital learning platform built here, with 72 textbooks written for SK curriculum, on-device AI that keeps data private, and offline mode for every community.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Interactive Courses & Quizzes',
+      'Gamification & XP',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'The pandemic showed every school division that digital learning is essential. But most platforms adopted during COVID were stopgaps. WolfWhale is purpose-built — designed from day one for K-12 with cognitive load theory, gamification, and content that covers every Saskatchewan learning outcome.',
+  },
+
+  'classroom-technology-saskatchewan': {
+    province: 'Saskatchewan',
+    title: 'Classroom Technology for Saskatchewan Teachers | WolfWhale',
+    h1: 'Classroom Technology That Saskatchewan Teachers Actually Want',
+    description:
+      'WolfWhale gives SK teachers 11 built-in tools: AI lesson converter, plan builder, gradebook, rubrics, seating chart. Plus 72 textbooks. $12/student/year.',
+    keywords: [
+      'classroom technology Saskatchewan',
+      'teacher technology Saskatchewan',
+      'classroom software Saskatchewan',
+      'teaching tools Saskatchewan',
+      'smart classroom Saskatchewan',
+    ],
+    heroText:
+      'Saskatchewan teachers are tired of juggling 5 different apps. WolfWhale puts 11 teacher tools in one platform — AI Lesson Converter, Lesson Plan Builder, Gradebook, Rubric Builder, Seating Chart, Weekly Planner, and more. Plus 72 textbooks you don\'t have to create yourself.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Gradebook & Analytics',
+      'Assignment & Testing',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'Teachers don\'t need more technology. They need better technology. WolfWhale combines everything — courses, textbooks, grading, communication, AI tools — into one platform so teachers spend less time managing tools and more time teaching.',
+  },
+
+  'student-engagement-technology': {
+    title: 'Student Engagement Technology for K-12 | WolfWhale',
+    h1: 'Technology That Actually Keeps Students Engaged',
+    description:
+      'WolfWhale uses gamification, XP, study pets, cognitive load theory, and interactive content to keep K-12 students engaged. Built for how students actually learn.',
+    keywords: [
+      'student engagement technology',
+      'student engagement platform',
+      'keep students engaged',
+      'gamification education',
+      'student motivation technology',
+      'interactive learning platform',
+    ],
+    heroText:
+      'Student engagement isn\'t about flashy animations. It\'s about designing learning around how the brain actually works. WolfWhale uses cognitive load theory for lesson structure, gamification with XP and study pets for motivation, and interactive textbooks with quizzes and activities to keep students in the zone.',
+    features: [
+      'Gamification & XP',
+      'Spaced Repetition Flashcards',
+      'Interactive Courses & Quizzes',
+      'Curriculum-Aligned Content',
+      'Built for Canadian Schools',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'Research shows that students learn best when content is broken into focused chunks (cognitive load theory), when they earn rewards for progress (gamification), and when they review at spaced intervals (spaced repetition). WolfWhale is the only LMS that combines all three into one platform.',
+  },
+
+  'blended-learning-saskatchewan': {
+    province: 'Saskatchewan',
+    title: 'Blended Learning Platform for SK Schools | WolfWhale',
+    h1: 'Blended Learning That Works for Saskatchewan Schools',
+    description:
+      'WolfWhale supports blended learning with offline mode, 72 SK textbooks, on-device AI, and teacher tools. Students learn anywhere — classroom or home.',
+    keywords: [
+      'blended learning Saskatchewan',
+      'hybrid learning Saskatchewan',
+      'blended learning platform',
+      'in-class and online learning',
+      'flexible learning Saskatchewan',
+    ],
+    heroText:
+      'Blended learning means students should be able to learn the same content in the classroom and at home. WolfWhale makes this seamless — 72 textbooks and all courses are available on their iPad whether they\'re at school or on the couch. Offline mode means no internet required.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Interactive Courses & Quizzes',
+      'Parent Portal',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'Saskatchewan\'s geography makes blended learning essential. Students in rural areas may not always make it to school due to weather or distance. WolfWhale ensures they don\'t miss a beat — same content, same progress tracking, same experience whether they\'re in class or at home.',
+  },
+
+  // ========== INDIGENOUS EDUCATION KEYWORDS ==========
+
+  'trc-education-technology': {
+    title: 'TRC Calls to Action Education Technology | WolfWhale',
+    h1: 'Technology That Supports TRC Calls to Action 6-12',
+    description:
+      'WolfWhale is First Nations-owned and supports TRC Calls to Action 6-12. Indigenous perspectives in all 72 textbooks. Built on Treaty 6 territory.',
+    keywords: [
+      'TRC education technology',
+      'Truth and Reconciliation education',
+      'TRC Calls to Action schools',
+      'reconciliation education tools',
+      'TRC compliant education',
+    ],
+    heroText:
+      'The Truth and Reconciliation Commission\'s Calls to Action 6-12 call on schools to integrate Indigenous knowledge and perspectives. WolfWhale is the only LMS that is First Nations-owned with Indigenous connections woven into all 72 textbooks — not as a module you can ignore, but as foundational content.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Gamification & XP',
+      'Parent Portal',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'Call to Action #10 asks for "culturally appropriate curricula." Most LMS platforms treat this as a checkbox. WolfWhale is different — we are First Nations-owned, built on Treaty 6 territory, with Indigenous perspectives in every textbook. Reconciliation isn\'t a feature we added. It\'s who we are.',
+  },
+
+  'first-nations-education-platform': {
+    title: 'First Nations Education Platform | WolfWhale',
+    h1: 'The First Nations-Owned Education Platform',
+    description:
+      'WolfWhale is First Nations-owned. Indigenous perspectives in 72 textbooks. On-device AI. Offline learning for remote communities. Built on Treaty 6 territory.',
+    keywords: [
+      'First Nations education platform',
+      'First Nations learning technology',
+      'Indigenous owned education company',
+      'First Nations school software',
+      'Indigenous LMS Canada',
+    ],
+    heroText:
+      'WolfWhale is the only education platform owned by a First Nations company. Built on Treaty 6 territory in Saskatoon, with Indigenous perspectives woven into all 72 textbooks. Offline learning works for remote First Nations communities. On-device AI keeps student data private.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Gamification & XP',
+      'Parent Portal',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'First Nations communities deserve education technology built by people who understand their context. WolfWhale is Indigenous-owned with content that respects and integrates First Nations, Métis, and Inuit knowledge. Our offline mode was designed specifically for remote communities where internet is unreliable.',
+  },
+
+  'metis-education-technology': {
+    title: 'Métis Education Technology | WolfWhale',
+    h1: 'Education Technology for Métis Communities',
+    description:
+      'WolfWhale includes Métis perspectives in all 72 textbooks. First Nations-owned, offline learning for remote communities, on-device AI. Built in Saskatchewan.',
+    keywords: [
+      'Métis education technology',
+      'Métis learning platform',
+      'Métis school resources',
+      'Métis education Saskatchewan',
+      'Indigenous education Métis',
+    ],
+    heroText:
+      'Saskatchewan has a proud Métis heritage — from Île-à-la-Crosse to Batoche to communities across the province. WolfWhale includes Métis perspectives in all 72 textbooks, with offline learning for communities with limited connectivity and on-device AI that keeps data private.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Gamification & XP',
+      'Parent Portal',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'Métis history and culture are integral to Saskatchewan\'s identity. WolfWhale ensures Métis perspectives appear throughout the curriculum — not in a separate section, but woven into every subject. As an Indigenous-owned company, this isn\'t an afterthought.',
+  },
+
+  'culturally-responsive-education-technology': {
+    title: 'Culturally Responsive Education Technology | WolfWhale',
+    h1: 'Culturally Responsive Technology for Canadian Schools',
+    description:
+      'WolfWhale integrates Indigenous, Métis, and Inuit perspectives across 72 textbooks. First Nations-owned. Supports TRC Calls to Action 6-12.',
+    keywords: [
+      'culturally responsive education technology',
+      'culturally responsive teaching tools',
+      'culturally responsive curriculum',
+      'inclusive education technology',
+      'diverse education platform Canada',
+    ],
+    heroText:
+      'Culturally responsive education means content that reflects the diversity of your students. WolfWhale is First Nations-owned with Indigenous, Métis, and Inuit perspectives integrated across all 72 textbooks — supporting TRC Calls to Action and making every student see themselves in what they learn.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Gamification & XP',
+      'Parent Portal',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'Most education platforms are culturally neutral at best — which really means they default to a narrow perspective. WolfWhale was built by an Indigenous-owned company with the explicit goal of making education more representative. Every textbook, every lesson format, every piece of content reflects this commitment.',
+  },
+
+  'treaty-6-education': {
+    province: 'Saskatchewan',
+    title: 'Treaty 6 Education Technology | WolfWhale',
+    h1: 'Education Technology Built on Treaty 6 Territory',
+    description:
+      'WolfWhale is built on Treaty 6 territory in Saskatoon. First Nations-owned with Indigenous education in 72 textbooks. Serving Treaty 6 schools and communities.',
+    keywords: [
+      'Treaty 6 education',
+      'Treaty 6 schools',
+      'Treaty 6 territory education',
+      'Treaty 6 learning resources',
+      'education technology Treaty 6',
+    ],
+    heroText:
+      'WolfWhale is built on Treaty 6 territory in Saskatoon by a First Nations-owned company. We serve schools across Treaty 6 — from Saskatoon to Prince Albert to the Battlefords and beyond — with 72 textbooks, on-device AI, and offline learning designed for this territory\'s communities.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Gamification & XP',
+      'Parent Portal',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'Treaty 6 territory spans central Saskatchewan and Alberta, home to dozens of First Nations and Métis communities. WolfWhale understands this territory because we\'re from here. Our textbooks include Treaty 6 perspectives, our offline mode serves remote communities, and our pricing works for every school budget.',
+  },
+
+  // ========== TEACHER & CLASSROOM KEYWORDS ==========
+
+  'ai-for-teachers': {
+    title: 'AI Tools for Teachers | WolfWhale',
+    h1: '6 AI Tools Built for Teachers — All On-Device',
+    description:
+      'WolfWhale gives teachers 6 AI tools that run on-device: Lesson Converter, Plan Builder, Report Card Comments, AI Tutor, Search, and recommendations. Student data stays private.',
+    keywords: [
+      'AI for teachers',
+      'AI teaching tools',
+      'AI lesson planning',
+      'artificial intelligence education',
+      'AI classroom tools',
+      'teacher AI assistant',
+    ],
+    heroText:
+      'WolfWhale gives teachers 6 AI tools that run entirely on-device through Apple Intelligence. Convert any text into structured lessons. Generate lesson plans. Write report card comments. Students get an AI Tutor with curriculum awareness. No student data ever leaves the device.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Gradebook & Analytics',
+      'FERPA & PIPEDA Compliant',
+      'Interactive Courses & Quizzes',
+    ],
+    whyExtra:
+      'Most AI tools for education send student data to cloud servers. WolfWhale is different — all AI processing happens on-device through Apple Intelligence. This means full AI functionality with zero privacy risk. Teachers get powerful tools and parents get peace of mind.',
+  },
+
+  'lesson-planning-software': {
+    title: 'AI Lesson Planning Software for Teachers | WolfWhale',
+    h1: 'Lesson Planning That Takes Minutes, Not Hours',
+    description:
+      'WolfWhale\'s AI Lesson Plan Builder and Micro-Lesson Converter help teachers create curriculum-aligned lessons in minutes. On-device AI. SK curriculum built in.',
+    keywords: [
+      'lesson planning software',
+      'lesson plan builder',
+      'AI lesson planner',
+      'lesson planning app teachers',
+      'curriculum aligned lesson plans',
+      'lesson planning tool',
+    ],
+    heroText:
+      'Teachers spend hours planning lessons. WolfWhale\'s AI Lesson Plan Builder generates curriculum-aligned plans in minutes. Our Micro-Lesson Converter (industry first) turns any text — handout, article, textbook excerpt — into structured cognitive load theory lessons with quizzes. All on-device. All private.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Interactive Courses & Quizzes',
+      'Gradebook & Analytics',
+      'FERPA & PIPEDA Compliant',
+      'Spaced Repetition Flashcards',
+    ],
+    whyExtra:
+      'The Micro-Lesson Converter is an industry first — no other platform can turn any text into a structured lesson with hooks, comparisons, and quiz questions. Teachers paste text, select grade level, tap convert. Done. The AI runs on-device so the content stays private.',
+  },
+
+  'gradebook-software-teachers': {
+    title: 'Gradebook Software for K-12 Teachers | WolfWhale',
+    h1: 'A Gradebook That Actually Saves Teachers Time',
+    description:
+      'WolfWhale includes a built-in gradebook with auto-grading, rubric builder, and analytics. No separate subscription. Included at $12/student/year.',
+    keywords: [
+      'gradebook software',
+      'teacher gradebook app',
+      'online gradebook',
+      'K-12 gradebook',
+      'auto grading software',
+      'gradebook LMS',
+    ],
+    heroText:
+      'WolfWhale\'s gradebook is built into the LMS — not a separate app, not an add-on. Auto-grading for quizzes, custom rubric builder, analytics to spot struggling students, and parent visibility. All included at $12/student/year.',
+    features: [
+      'Gradebook & Analytics',
+      'Assignment & Testing',
+      'Parent Portal',
+      'Built for Canadian Schools',
+      'FERPA & PIPEDA Compliant',
+      'Curriculum-Aligned Content',
+    ],
+    whyExtra:
+      'Most schools pay for a gradebook separately from their LMS. WolfWhale includes everything — gradebook, rubric builder, auto-grading, parent portal — in one platform at one price. No per-feature upsells.',
+  },
+
+  'report-card-comments-generator': {
+    title: 'AI Report Card Comments Generator | WolfWhale',
+    h1: 'Generate Report Card Comments in Seconds',
+    description:
+      'WolfWhale\'s on-device AI generates personalized report card comments based on student performance data. Private, fast, curriculum-aware.',
+    keywords: [
+      'report card comments generator',
+      'AI report card comments',
+      'report card writing tool',
+      'teacher report card helper',
+      'automated report card comments',
+    ],
+    heroText:
+      'Report card season doesn\'t have to mean late nights. WolfWhale\'s AI generates personalized comments based on each student\'s actual performance data — grades, participation, growth areas. On-device AI means student data stays completely private. Edit, customize, done.',
+    features: [
+      'Built for Canadian Schools',
+      'Gradebook & Analytics',
+      'FERPA & PIPEDA Compliant',
+      'Curriculum-Aligned Content',
+      'Parent Portal',
+      'Interactive Courses & Quizzes',
+    ],
+    whyExtra:
+      'Teachers write hundreds of report card comments per term. WolfWhale\'s AI generates drafts based on real student data — not generic templates. Because the AI runs on-device, student performance data never leaves the teacher\'s iPad.',
+  },
+
+  // ========== DIGITAL TEXTBOOK KEYWORDS ==========
+
+  'digital-textbooks-saskatchewan': {
+    province: 'Saskatchewan',
+    title: 'Digital Textbooks for Saskatchewan Schools | WolfWhale Books',
+    h1: '72 Digital Textbooks Written for Saskatchewan Curriculum',
+    description:
+      'WolfWhale Books: 72 original textbooks, 288+ chapters covering every SK K-12 learning outcome. Interactive content, flashcards, quizzes. Not adapted — written for SK.',
+    keywords: [
+      'digital textbooks Saskatchewan',
+      'Saskatchewan curriculum textbooks',
+      'K-12 textbooks Saskatchewan',
+      'interactive textbooks Saskatchewan',
+      'online textbooks Saskatchewan schools',
+      'Saskatchewan learning resources',
+    ],
+    heroText:
+      'WolfWhale Books is our publisher brand — 72 original textbooks with 288+ chapters covering every Saskatchewan K-12 learning outcome. These aren\'t American textbooks with a Canadian sticker on them. They were written from scratch using Saskatchewan\'s 682 curriculum outcomes as the blueprint.',
+    features: [
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Interactive Courses & Quizzes',
+      'Built for Canadian Schools',
+      'Gamification & XP',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'We took every Saskatchewan learning outcome — all 682 of them — and wrote textbooks that achieve each one. Math K-9, Science K-10, ELA K-9, Social Studies K-9, Health, Arts, PE, Career Ed, French, plus senior courses. Full coverage. Indigenous connections throughout. Interactive content blocks with flashcards, quizzes, and activities.',
+  },
+
+  'interactive-textbooks-k12': {
+    title: 'Interactive K-12 Textbooks | WolfWhale Books',
+    h1: 'Interactive Textbooks That Students Actually Read',
+    description:
+      'WolfWhale Books: 72 interactive textbooks with quizzes, flashcards, activities, and reading timers. Content designed around cognitive load theory.',
+    keywords: [
+      'interactive textbooks K-12',
+      'interactive digital textbooks',
+      'engaging textbooks students',
+      'multimedia textbooks education',
+      'interactive learning content',
+    ],
+    heroText:
+      'Traditional textbooks are passive. WolfWhale Books are interactive — every chapter includes quizzes, flashcards, activities, callout boxes, and reading timers. Content follows cognitive load theory: focused chunks that maximize comprehension instead of endless paragraphs students skim.',
+    features: [
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Interactive Courses & Quizzes',
+      'Gamification & XP',
+      'Built for Canadian Schools',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'Each textbook chapter uses content blocks: headings, text, callouts, quizzes, lists, images, code blocks, and activities. Six activity types keep students engaged. Built-in flashcards use spaced repetition for long-term retention. Reading timers ensure students actually read before taking the quiz.',
+  },
+
+  // ========== STUDENT LEARNING KEYWORDS ==========
+
+  'cognitive-load-theory-education': {
+    title: 'Cognitive Load Theory in Education Technology | WolfWhale',
+    h1: 'The Only LMS Designed Around Cognitive Load Theory',
+    description:
+      'WolfWhale applies cognitive load theory to every lesson: focused content chunks, reading timers, gated quizzes. Designed for how students actually learn.',
+    keywords: [
+      'cognitive load theory education',
+      'cognitive load theory LMS',
+      'evidence based learning platform',
+      'science of learning technology',
+      'research backed education',
+      'cognitive load theory classroom',
+    ],
+    heroText:
+      'Cognitive load theory is the science of how much information the brain can process at once. WolfWhale is the only LMS that applies this research to every lesson: content is broken into focused chunks (Hook → Lesson → Compare → Quiz), reading timers ensure comprehension, and gated quizzes only unlock when students are ready.',
+    features: [
+      'Spaced Repetition Flashcards',
+      'Interactive Courses & Quizzes',
+      'Curriculum-Aligned Content',
+      'Gamification & XP',
+      'Built for Canadian Schools',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'John Sweller\'s cognitive load theory has been validated by decades of research. The core insight: students learn more when information is presented in small, focused segments rather than long lectures or dense chapters. WolfWhale\'s lesson format is built entirely on this principle. Every lesson follows the same structure because the research says it works.',
+  },
+
+  'spaced-repetition-education': {
+    title: 'Spaced Repetition for Education | WolfWhale',
+    h1: 'Spaced Repetition Built Into Every Course',
+    description:
+      'WolfWhale includes built-in spaced repetition flashcards in every textbook and course. Students retain 200% more. No third-party apps needed.',
+    keywords: [
+      'spaced repetition education',
+      'spaced repetition school',
+      'flashcard LMS',
+      'spaced repetition K-12',
+      'forgetting curve education',
+      'active recall learning platform',
+    ],
+    heroText:
+      'Students forget 80% of new material within a week without reinforcement. WolfWhale\'s built-in spaced repetition flashcards combat the forgetting curve by scheduling reviews at scientifically optimal intervals. Every textbook chapter and course includes flashcards. No Anki, no Quizlet — it\'s built in.',
+    features: [
+      'Spaced Repetition Flashcards',
+      'Interactive Courses & Quizzes',
+      'Gamification & XP',
+      'Curriculum-Aligned Content',
+      'Built for Canadian Schools',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'Research shows spaced repetition can improve long-term retention by over 200%. Most schools rely on third-party apps like Anki or Quizlet for this. WolfWhale builds it directly into the LMS — teachers create flashcard decks alongside courses, and the system automatically schedules reviews.',
+  },
+
+  'gamification-education': {
+    title: 'Gamification in Education | WolfWhale',
+    h1: 'Gamification That Drives Real Learning Outcomes',
+    description:
+      'WolfWhale uses XP, streaks, leaderboards, study pets, and badge rarities to keep K-12 students motivated. Not gimmicks — research-backed engagement.',
+    keywords: [
+      'gamification education',
+      'gamification K-12',
+      'gamified learning platform',
+      'XP system education',
+      'student rewards system',
+      'game based learning LMS',
+    ],
+    heroText:
+      'Gamification isn\'t about turning school into a video game. It\'s about using proven motivational mechanics to keep students engaged. WolfWhale\'s XP system rewards progress, streaks encourage daily learning, leaderboards create healthy competition, and study pets give students something to care for as they learn.',
+    features: [
+      'Gamification & XP',
+      'Spaced Repetition Flashcards',
+      'Interactive Courses & Quizzes',
+      'Curriculum-Aligned Content',
+      'Built for Canadian Schools',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'WolfWhale\'s gamification includes: XP for every completed lesson and quiz. Daily streaks. Class and school leaderboards. Study Pet companions (a fish collection that grows with learning). Badge rarities from Common to Legendary. Chess, Kahoot-style games, spelling bees, and more.',
+  },
+
+  'offline-learning-platform': {
+    title: 'Offline Learning Platform for Schools | WolfWhale',
+    h1: 'Learning That Works Without Internet',
+    description:
+      'WolfWhale works fully offline. Students download textbooks and courses to their iPad, learn anywhere, and sync when back online. AES-GCM encrypted.',
+    keywords: [
+      'offline learning platform',
+      'LMS without internet',
+      'offline education app',
+      'no internet learning',
+      'offline school software',
+      'learning without wifi',
+    ],
+    heroText:
+      'Not every student has reliable internet at home. Not every school has perfect Wi-Fi. WolfWhale works fully offline — students download all 72 textbooks and course content to their iPad, learn anywhere, and sync automatically when they reconnect. AES-GCM encryption keeps data safe.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Gamification & XP',
+      'FERPA & PIPEDA Compliant',
+      'Parent Portal',
+    ],
+    whyExtra:
+      'Most LMS platforms require constant internet. That doesn\'t work for rural communities, bus rides, or homes without broadband. WolfWhale\'s offline-first architecture means the full learning experience is available on-device. When connectivity returns, progress syncs seamlessly.',
+  },
+
+  // ========== PARENT & ADMIN KEYWORDS ==========
+
+  'parent-portal-lms': {
+    title: 'Parent Portal for School LMS | WolfWhale',
+    h1: 'A Parent Portal That Actually Keeps Parents Informed',
+    description:
+      'WolfWhale\'s parent portal shows real-time grades, attendance, assignments, and progress. Parents see what their child is learning. Built into the LMS.',
+    keywords: [
+      'parent portal LMS',
+      'parent school app',
+      'parent student progress',
+      'school parent communication',
+      'parent engagement education',
+    ],
+    heroText:
+      'Parents shouldn\'t have to email teachers to know how their child is doing. WolfWhale\'s parent portal shows real-time grades, assignment status, learning progress, and attendance. Parents see exactly what their child is learning and where they need support.',
+    features: [
+      'Parent Portal',
+      'Gradebook & Analytics',
+      'Built for Canadian Schools',
+      'FERPA & PIPEDA Compliant',
+      'Curriculum-Aligned Content',
+      'Gamification & XP',
+    ],
+    whyExtra:
+      'Parent engagement is one of the strongest predictors of student success. WolfWhale makes it easy — parents see real-time data about their child\'s learning without installing a separate app or creating another account. One platform for students, teachers, and parents.',
+  },
+
+  'school-administration-software': {
+    title: 'School Administration Software | WolfWhale',
+    h1: 'School Administration in One Platform',
+    description:
+      'WolfWhale gives school administrators attendance tracking, analytics, user management, and multi-tenant control. No separate admin software needed.',
+    keywords: [
+      'school administration software',
+      'school management system',
+      'school admin software Canada',
+      'school administration platform',
+      'K-12 school management',
+    ],
+    heroText:
+      'School administrators need visibility across the entire school. WolfWhale provides attendance tracking, grade analytics, user management, and class section management — all in the same platform teachers and students already use. No separate admin software. No data silos.',
+    features: [
+      'Gradebook & Analytics',
+      'Attendance Tracking',
+      'Multi-Tenant Architecture',
+      'Role-Based Access Control',
+      'Built for Canadian Schools',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'Most schools run separate systems for LMS, gradebook, attendance, and administration. WolfWhale unifies everything. School admins see the whole picture. Super admins manage multiple schools from one dashboard. Multi-tenant architecture ensures each school\'s data stays separate.',
+  },
+
+  // ========== PRIVACY & COMPLIANCE KEYWORDS ==========
+
+  'student-data-privacy-canada': {
+    title: 'Student Data Privacy in Canada | WolfWhale',
+    h1: 'Student Data Privacy Done Right',
+    description:
+      'WolfWhale keeps student data in Canada. On-device AI means no cloud processing. PIPEDA, FOIP, LAFOIP compliant. Row-level security on every table.',
+    keywords: [
+      'student data privacy Canada',
+      'student privacy LMS',
+      'PIPEDA student data',
+      'Canadian student privacy',
+      'data privacy education Canada',
+      'student data protection',
+    ],
+    heroText:
+      'When an LMS sends student data to US cloud servers for AI processing, that data falls under US law — including the CLOUD Act. WolfWhale is different. All AI runs on-device. All data stays in Canada. Row-level security ensures users only see their own data. PIPEDA, FOIP, and LAFOIP compliant.',
+    features: [
+      'FERPA & PIPEDA Compliant',
+      'Canadian Data Sovereignty',
+      'Row-Level Security',
+      'Audit Logging',
+      'Built for Canadian Schools',
+      'Role-Based Access Control',
+    ],
+    whyExtra:
+      'Every AI trend in education involves sending student data to the cloud. WolfWhale rejects that model. Apple Intelligence runs locally on the device. Student essays, quiz answers, learning patterns — none of it leaves the iPad. This isn\'t just compliance. It\'s a fundamentally different approach to student privacy.',
+  },
+
+  'canadian-data-sovereignty-lms': {
+    title: 'Canadian Data Sovereignty LMS | WolfWhale',
+    h1: 'Your Students\' Data Stays in Canada. Period.',
+    description:
+      'WolfWhale is Canadian-owned, Canadian-hosted, with on-device AI. Student data never crosses the border. PIPEDA, FOIP, LAFOIP compliant.',
+    keywords: [
+      'Canadian data sovereignty LMS',
+      'Canadian hosted LMS',
+      'data sovereignty education',
+      'Canadian owned school software',
+      'data residency Canada LMS',
+    ],
+    heroText:
+      'American LMS platforms store Canadian student data on US servers subject to the CLOUD Act and Patriot Act. WolfWhale is Canadian-owned, Canadian-hosted, and uses on-device AI — student data never crosses the border. Built in Saskatoon, hosted in Canada.',
+    features: [
+      'Canadian Data Sovereignty',
+      'FERPA & PIPEDA Compliant',
+      'Row-Level Security',
+      'Audit Logging',
+      'Built for Canadian Schools',
+      'Role-Based Access Control',
+    ],
+    whyExtra:
+      'Data sovereignty matters because Canadian privacy law is different from American law. When a US company holds your students\' data, that data can be accessed under the US CLOUD Act without notifying you. WolfWhale eliminates this risk entirely — we\'re Canadian, our servers are Canadian, and our AI runs on-device.',
+  },
+
+  // ========== COMPETITOR COMPARISON KEYWORDS ==========
+
+  'google-classroom-alternative': {
+    title: 'Google Classroom Alternative for Canadian Schools | WolfWhale',
+    h1: 'Why Canadian Schools Are Moving Beyond Google Classroom',
+    description:
+      'Google Classroom is free but limited. WolfWhale is a full LMS with textbooks, AI tools, offline mode, and Canadian data sovereignty. $12/student/year.',
+    keywords: [
+      'Google Classroom alternative',
+      'Google Classroom alternative Canada',
+      'better than Google Classroom',
+      'Google Classroom replacement',
+      'Google Classroom vs WolfWhale',
+    ],
+    heroText:
+      'Google Classroom is free, but you get what you pay for. It\'s not a full LMS — no textbooks, no gradebook analytics, no offline mode, no AI tools, and student data goes to Google\'s servers. WolfWhale is a complete learning platform for $12/student/year with Canadian data sovereignty.',
+    features: [
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Canadian Data Sovereignty',
+      'Gamification & XP',
+      'Gradebook & Analytics',
+      'FERPA & PIPEDA Compliant',
+    ],
+    competitor: 'Google Classroom',
+    whyExtra:
+      'Google Classroom was designed as a lightweight assignment tool — not a comprehensive LMS. It doesn\'t have textbooks, doesn\'t support cognitive load theory lessons, doesn\'t work offline, and sends all student data to Google\'s US servers. WolfWhale is purpose-built for K-12 with everything included.',
+  },
+
+  'schoology-alternative': {
+    title: 'Schoology Alternative for Canadian Schools | WolfWhale',
+    h1: 'A Canadian Alternative to Schoology',
+    description:
+      'Looking for a Schoology alternative? WolfWhale offers Canadian data sovereignty, 72 textbooks, on-device AI, and cognitive load theory lessons. $12/student/year.',
+    keywords: [
+      'Schoology alternative',
+      'Schoology alternative Canada',
+      'Schoology replacement',
+      'PowerSchool Schoology alternative',
+      'Schoology vs WolfWhale',
+    ],
+    heroText:
+      'Schoology (now owned by PowerSchool, a US company) doesn\'t offer Canadian data sovereignty, original textbooks, or on-device AI. WolfWhale does — plus cognitive load theory lessons, gamification, and offline learning. All for $12/student/year.',
+    features: [
+      'Canadian Data Sovereignty',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Gamification & XP',
+      'FERPA & PIPEDA Compliant',
+      'Interactive Courses & Quizzes',
+    ],
+    competitor: 'Schoology',
+    whyExtra:
+      'Schoology was acquired by PowerSchool in 2019 — a US company. Canadian schools using Schoology are sending student data to American servers. WolfWhale keeps everything in Canada, provides 72 original textbooks that Schoology doesn\'t have, and uses on-device AI for privacy.',
+  },
+
+  // ========== iOS / MOBILE KEYWORDS ==========
+
+  'ios-education-app': {
+    title: 'iOS Education App for K-12 Schools | WolfWhale',
+    h1: 'The K-12 Education App Built Natively for iOS',
+    description:
+      'WolfWhale is built natively for iOS — not a web app in a wrapper. Apple Intelligence AI, offline storage, iPad optimization. The way education apps should work.',
+    keywords: [
+      'iOS education app',
+      'iPad learning app',
+      'education app iOS',
+      'school iPad app',
+      'K-12 iOS app',
+      'native education app Apple',
+    ],
+    heroText:
+      'Most "education apps" are web apps wrapped in a shell. WolfWhale is built natively for iOS using Swift and SwiftUI. That means Apple Intelligence for on-device AI, native offline storage, iPad multitasking support, and the performance students and teachers expect from a real app.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Gamification & XP',
+      'FERPA & PIPEDA Compliant',
+      'Interactive Courses & Quizzes',
+    ],
+    whyExtra:
+      'Native iOS development means WolfWhale takes full advantage of Apple\'s hardware and software. Apple Intelligence runs AI models directly on the device\'s Neural Engine. Offline storage uses iOS\'s encrypted file system. The UI follows Apple\'s Human Interface Guidelines. This isn\'t a compromise — it\'s how education software should be built.',
+  },
+
+  'ipad-classroom-app': {
+    title: 'iPad Classroom App for Schools | WolfWhale',
+    h1: 'The iPad App Built for Canadian Classrooms',
+    description:
+      'WolfWhale turns every iPad into a complete learning station. 72 textbooks, AI tools, gradebook, quizzes, flashcards — all offline. Built natively for iPad.',
+    keywords: [
+      'iPad classroom app',
+      'iPad school app',
+      'iPad learning management',
+      'classroom iPad solution',
+      'iPad education solution',
+      'Apple classroom LMS',
+    ],
+    heroText:
+      'Many Saskatchewan schools already have iPads. WolfWhale turns every one into a complete learning station — 72 textbooks, AI tutor, gradebook, quizzes, flashcards, gamification. Works offline. Built natively for iPad with Apple Intelligence.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Gamification & XP',
+      'Gradebook & Analytics',
+      'FERPA & PIPEDA Compliant',
+    ],
+    whyExtra:
+      'Schools that have already invested in iPads need software that takes full advantage of the hardware. WolfWhale is built natively for iOS — not a web app that happens to work on iPad. On-device AI, offline storage, and native performance make the most of every iPad in your school.',
+  },
+
+  // ========== PRICING / VALUE KEYWORDS ==========
+
+  'affordable-lms-schools': {
+    title: 'Affordable LMS for Schools | $12/Student/Year | WolfWhale',
+    h1: '$12 Per Student Per Year. Every Feature Included.',
+    description:
+      'WolfWhale costs $12/student/year with every feature included. No tiers, no per-feature pricing, no surprise invoices. 72 textbooks, AI tools, gradebook, gamification.',
+    keywords: [
+      'affordable LMS schools',
+      'cheap LMS education',
+      'low cost LMS',
+      'LMS pricing schools',
+      'best value LMS',
+      'budget LMS K-12',
+    ],
+    heroText:
+      'Enterprise LMS platforms charge thousands for setup plus per-feature pricing. WolfWhale is $12/student/year. That includes all 72 textbooks, all 6 AI tools, gradebook, gamification, parent portal, offline mode — everything. Unlimited teachers, parents, and admins. No tiers. No surprises.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Gamification & XP',
+      'FERPA & PIPEDA Compliant',
+      'Gradebook & Analytics',
+    ],
+    whyExtra:
+      'Compare: Canvas charges per-user with feature tiers. Brightspace requires enterprise sales calls. Moodle is "free" but costs thousands in hosting and IT. WolfWhale is transparent — $12/student/year, all features, volume discounts for districts. That\'s it.',
+  },
+
+  'lms-pricing-comparison': {
+    title: 'LMS Pricing Comparison for Canadian Schools | WolfWhale',
+    h1: 'How Much Should an LMS Cost? Less Than You Think.',
+    description:
+      'Compare LMS pricing: WolfWhale $12/student/year vs Canvas, Brightspace, Moodle, Schoology. All features included. No hidden costs.',
+    keywords: [
+      'LMS pricing comparison',
+      'LMS cost comparison',
+      'how much does an LMS cost',
+      'school LMS pricing',
+      'compare LMS prices',
+      'Canvas pricing vs',
+    ],
+    heroText:
+      'Most LMS platforms hide their pricing behind "contact sales" buttons. WolfWhale is transparent: $12/student/year. That includes everything — 72 textbooks, AI tools, gradebook, gamification, offline mode, parent portal. Unlimited teachers and admins. Volume discounts for districts.',
+    features: [
+      'Built for Canadian Schools',
+      'Curriculum-Aligned Content',
+      'Spaced Repetition Flashcards',
+      'Gamification & XP',
+      'FERPA & PIPEDA Compliant',
+      'Gradebook & Analytics',
+    ],
+    whyExtra:
+      'A school with 500 students pays $6,000/year for WolfWhale — every feature included. Compare that to enterprise LMS platforms that can cost $20,000+ with feature tiers and implementation fees. WolfWhale is built for school budgets, not enterprise budgets.',
+  },
+
   'ferpa-compliant-lms': {
     title: 'FERPA & PIPEDA Compliant LMS | WolfWhale',
     h1: 'FERPA, COPPA, and PIPEDA Compliant Learning Management System',
