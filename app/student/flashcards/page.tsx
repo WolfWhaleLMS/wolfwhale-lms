@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import Link from 'next/link'
 import { getStudentDecks, getTextbookFlashcardDecks } from '@/app/actions/flashcards'
 import { ArrowLeft, BookOpen, Clock, Layers, Library } from 'lucide-react'

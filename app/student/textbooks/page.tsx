@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { BookOpen } from 'lucide-react'
 import { getTextbooks, getMyTextbooks, getReadingProgress } from '@/app/actions/textbooks'
 import type { Textbook, StudentReadingProgress } from '@/lib/types/textbook'
