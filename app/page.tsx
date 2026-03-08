@@ -767,6 +767,18 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         }
         html::-webkit-scrollbar { display: none; }
       `}</style>
+
+      {/* Clear hash from URL after scrolling so refresh stays at top */}
+      <script dangerouslySetInnerHTML={{ __html: `
+        document.addEventListener('click', function(e) {
+          var a = e.target.closest('a[href^="#"]');
+          if (a) {
+            setTimeout(function() {
+              history.replaceState(null, '', window.location.pathname + window.location.search);
+            }, 800);
+          }
+        });
+      `}} />
     </div>
   )
 }
