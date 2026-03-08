@@ -132,10 +132,10 @@ export default function InfoPage() {
           </p>
 
           {/* What is an LMS? */}
-          <div className="max-w-2xl mb-10 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm px-6 py-5 text-left">
-            <p className="text-xs text-white/40 uppercase tracking-widest font-display mb-2">What is an LMS?</p>
-            <p className="text-sm text-white/70 leading-relaxed">
-              A <span className="text-white font-medium">Learning Management System</span> is the software schools use to deliver courses, track grades, assign work, and communicate with students and parents — it&apos;s the digital backbone of a classroom. WolfWhale reimagines the LMS around cognitive load theory, on-device AI, and original textbooks so every interaction is designed for how students actually learn.
+          <div className="max-w-3xl mb-10">
+            <h2 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-wider mb-3">What is an LMS?</h2>
+            <p className="text-base sm:text-lg text-white/70 leading-relaxed">
+              A Learning Management System is the digital backbone of a classroom — where courses are delivered, grades are tracked, and students learn. WolfWhale is the only one built from the ground up around how students actually absorb information.
             </p>
           </div>
 
