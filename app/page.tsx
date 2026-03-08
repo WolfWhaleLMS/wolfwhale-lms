@@ -57,9 +57,9 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         }) }}
       />
 
-      {/* Corinthian Pillar Borders — Real Marble Image */}
+      {/* Corinthian Pillar Borders — Real Marble Image (hidden on small mobile) */}
       {/* Left Pillar */}
-      <div className="fixed top-[15px] -bottom-[60px] left-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" aria-hidden="true">
+      <div className="fixed top-[15px] -bottom-[60px] left-0 w-[30px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none hidden sm:block" aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
@@ -67,7 +67,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         />
       </div>
       {/* Right Pillar — mirrored */}
-      <div className="fixed top-[15px] -bottom-[60px] right-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
+      <div className="fixed top-[15px] -bottom-[60px] right-0 w-[30px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none hidden sm:block" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
         <img
           src="/pillar.jpg"
           alt=""
@@ -121,12 +121,12 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           </div>
 
           {/* Mobile CTA */}
-          <div className="sm:hidden flex items-center gap-2">
+          <div className="sm:hidden flex items-center gap-1.5 shrink-0">
             <LanguageToggle lang={lang} />
             <ThemeToggle />
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 h-10 px-3 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-black text-xs font-semibold transition-all duration-100"
+              className="inline-flex items-center h-9 px-2.5 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-black text-[11px] font-semibold transition-all duration-100"
             >
               {t.nav.contact}
             </a>
@@ -716,8 +716,8 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                   <a href="tel:+13069815926" className="flex items-center gap-1 hover:text-[#00BFFF] transition-colors duration-100"><Phone className="h-3 w-3" /> +1 (306) 981-5926</a>
                 </div>
               </div>
-              <div className="flex items-center gap-6">
-                <div className="flex gap-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                <div className="flex flex-wrap gap-4 sm:gap-6">
                   <Link href="/brand" className="text-sm text-gray-500 dark:text-white/60 hover:text-[#00BFFF] transition-colors duration-100">
                     Brand
                   </Link>

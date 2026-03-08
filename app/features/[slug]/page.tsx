@@ -534,7 +534,7 @@ export default async function FeatureDetailPage({ params, searchParams }: PagePr
             </span>
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             <Link href={`/${lp}#features`} className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors duration-100 font-medium hidden sm:inline">
               {t.nav.features}
             </Link>
@@ -542,7 +542,7 @@ export default async function FeatureDetailPage({ params, searchParams }: PagePr
             <ThemeToggle />
             <a
               href={`/${lp}#contact`}
-              className="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-black text-xs sm:text-sm font-semibold transition-all duration-100 hover:bg-gray-800 dark:hover:bg-gray-100"
+              className="inline-flex items-center h-9 sm:h-10 px-2.5 sm:px-4 rounded-lg sm:rounded-xl bg-gray-900 dark:bg-white text-white dark:text-black text-[11px] sm:text-sm font-semibold transition-all duration-100 hover:bg-gray-800 dark:hover:bg-gray-100"
             >
               {t.nav.contact}
             </a>

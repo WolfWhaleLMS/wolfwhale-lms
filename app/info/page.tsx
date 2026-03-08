@@ -139,21 +139,21 @@ export default function InfoPage() {
 
       {/* Header Navigation */}
       <header className="relative z-10 border-b border-white/10 backdrop-blur-md bg-black/60">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Image src="/logo.png" alt="WolfWhale" width={56} height={56} className="rounded-xl object-contain shadow-lg shadow-purple-500/20" />
-            <div>
-              <h1 className="text-xl font-display font-bold text-white tracking-wider uppercase">WolfWhale</h1>
-              <p className="text-xs text-white/70 font-display font-semibold tracking-widest uppercase">Learning Management System</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <Image src="/logo.png" alt="WolfWhale" width={56} height={56} className="rounded-xl object-contain shadow-lg shadow-purple-500/20 w-10 h-10 sm:w-14 sm:h-14 shrink-0" />
+            <div className="min-w-0">
+              <h1 className="text-base sm:text-xl font-display font-bold text-white tracking-wider uppercase truncate">WolfWhale</h1>
+              <p className="text-[10px] sm:text-xs text-white/70 font-display font-semibold tracking-widest uppercase truncate">Learning Management System</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <Link href="/" className="px-4 py-2.5 rounded-lg text-white/70 hover:text-white transition-colors text-sm font-medium">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <Link href="/" className="px-2 sm:px-4 py-2 rounded-lg text-white/70 hover:text-white transition-colors text-xs sm:text-sm font-medium">
               Home
             </Link>
             <a
               href="mailto:info@wolfwhale.ca"
-              className="px-6 py-2.5 rounded-lg btn-chrome-3d-blue text-white transition-all text-sm font-bold"
+              className="px-3 sm:px-6 py-2 sm:py-2.5 rounded-lg btn-chrome-3d-blue text-white transition-all text-xs sm:text-sm font-bold whitespace-nowrap"
             >
               Contact Us
             </a>
@@ -170,7 +170,7 @@ export default function InfoPage() {
           </div>
 
           <h1
-            className="text-5xl md:text-7xl font-display font-extrabold mb-6 tracking-wider leading-tight"
+            className="text-4xl sm:text-5xl md:text-7xl font-display font-extrabold mb-6 tracking-wider leading-tight"
             style={{
               background: 'linear-gradient(to right, #00BFFF, #8B5CF6)',
               WebkitBackgroundClip: 'text',
@@ -184,11 +184,11 @@ export default function InfoPage() {
           <p className="text-lg md:text-xl text-white/80 mb-4 tracking-[0.15em] uppercase font-display font-bold">
             Learning Management System
           </p>
-          <p className="text-xl md:text-2xl text-white/80 mb-4 max-w-3xl mx-auto">
+          <p className="text-base sm:text-xl md:text-2xl text-white/80 mb-4 max-w-3xl mx-auto px-2">
             Cognitive load theory meets on-device AI. The only LMS with research-backed micro-lessons, 72 original textbooks, and AI-powered content conversion.
           </p>
 
-          <p className="text-base md:text-lg text-white/70 mb-6 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg text-white/70 mb-6 max-w-2xl mx-auto">
             5 user roles. 682 curriculum outcomes. Student data never leaves the device.
           </p>
 
