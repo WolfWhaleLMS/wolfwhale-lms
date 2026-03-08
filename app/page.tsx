@@ -220,10 +220,11 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {t.features.map(({ icon: Icon, title, points, color }) => (
-                <div
+              {t.features.map(({ icon: Icon, title, points, color, slug }) => (
+                <Link
                   key={title}
-                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 sm:p-6 hover:border-gray-300 dark:hover:border-white/20 transition-all duration-100 group"
+                  href={`/features/${slug}${lp}`}
+                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 sm:p-6 hover:border-gray-300 dark:hover:border-white/20 transition-all duration-100 group cursor-pointer"
                 >
                   <div
                     className="inline-flex p-3 rounded-xl mb-4 border transition-colors duration-100"
@@ -234,7 +235,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                   >
                     <Icon className="h-6 w-6" style={{ color }} />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-[#00BFFF] transition-colors duration-100">{title}</h3>
                   <ul className="space-y-1">
                     {points.map((pt) => (
                       <li key={pt} className="text-sm text-gray-600 dark:text-white/65 flex items-start gap-2">
@@ -243,7 +244,10 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                       </li>
                     ))}
                   </ul>
-                </div>
+                  <p className="text-xs text-gray-400 dark:text-white/30 mt-3 group-hover:text-[#00BFFF]/60 transition-colors duration-100 flex items-center gap-1">
+                    Learn more <ArrowRight className="h-3 w-3" />
+                  </p>
+                </Link>
               ))}
             </div>
           </div>

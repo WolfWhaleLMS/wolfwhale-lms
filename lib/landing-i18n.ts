@@ -8,6 +8,7 @@ interface FeatureCard {
   title: string
   points: string[]
   color: string
+  slug: string
 }
 
 interface CompareRow {
@@ -128,12 +129,12 @@ export const landingContent: Record<Lang, LandingContent> = {
     featuresTitle: 'POWERFUL FEATURES',
     featuresSubtitle: 'Everything a modern school needs, built into one native iOS app.',
     features: [
-      { icon: Brain, title: 'Micro-Lesson System', points: ['Research-backed cognitive load theory', 'Hook \u2192 Lesson \u2192 Compare \u2192 Quiz format', 'Reading timer ensures comprehension', 'Gated quizzes unlock after reading'], color: '#8B5CF6' },
-      { icon: Bot, title: 'On-Device AI (6 Tools)', points: ['AI Tutor with curriculum awareness', 'Micro-Lesson Converter (industry first)', 'Lesson Plan Builder', 'Report Card Comments', 'AI Search across all content', 'Apple Intelligence \u2014 data never leaves device'], color: '#00BFFF' },
-      { icon: BookOpen, title: '72 Original Textbooks', points: ['288+ chapters with interactive content', 'Full SK K-12 curriculum coverage', 'WolfWhale Books publisher brand', 'Flashcards, quizzes & activities built in'], color: '#FFD700' },
-      { icon: WifiOff, title: 'Offline Learning', points: ['AES-GCM encrypted storage', 'Full course & textbook access offline', 'Auto sync on reconnect'], color: '#34D399' },
-      { icon: GraduationCap, title: '11 Teacher Tools', points: ['Micro-Lesson Converter (AI)', 'Lesson Plan Builder', 'Gradebook & Rubric Builder', 'Seating Chart & Weekly Planner', 'Report Card Comments'], color: '#FF6B9D' },
-      { icon: Gamepad2, title: 'Gamification & XP', points: ['XP system with streaks & leaderboards', 'Study Pet companion (fish collection)', 'Chess, Kahoot, spelling bee & more', 'Common to Legendary badge rarity'], color: '#FFD700' },
+      { icon: Brain, title: 'Micro-Lesson System', slug: 'micro-lessons', points: ['Research-backed cognitive load theory', 'Hook \u2192 Lesson \u2192 Compare \u2192 Quiz format', 'Reading timer ensures comprehension', 'Gated quizzes unlock after reading'], color: '#8B5CF6' },
+      { icon: Bot, title: 'On-Device AI (6 Tools)', slug: 'ai-tools', points: ['AI Tutor with curriculum awareness', 'Micro-Lesson Converter (industry first)', 'Lesson Plan Builder', 'Report Card Comments', 'AI Search across all content', 'Apple Intelligence \u2014 data never leaves device'], color: '#00BFFF' },
+      { icon: BookOpen, title: '72 Original Textbooks', slug: 'textbooks', points: ['288+ chapters with interactive content', 'Full SK K-12 curriculum coverage', 'WolfWhale Books publisher brand', 'Flashcards, quizzes & activities built in'], color: '#FFD700' },
+      { icon: WifiOff, title: 'Offline Learning', slug: 'offline', points: ['AES-GCM encrypted storage', 'Full course & textbook access offline', 'Auto sync on reconnect'], color: '#34D399' },
+      { icon: GraduationCap, title: '11 Teacher Tools', slug: 'teacher-tools', points: ['Micro-Lesson Converter (AI)', 'Lesson Plan Builder', 'Gradebook & Rubric Builder', 'Seating Chart & Weekly Planner', 'Report Card Comments'], color: '#FF6B9D' },
+      { icon: Gamepad2, title: 'Gamification & XP', slug: 'gamification', points: ['XP system with streaks & leaderboards', 'Study Pet companion (fish collection)', 'Chess, Kahoot, spelling bee & more', 'Common to Legendary badge rarity'], color: '#FFD700' },
     ],
     appPreview: 'APP PREVIEW',
     appPreviewSub: 'Built for iOS. Beautiful everywhere.',
@@ -262,12 +263,12 @@ export const landingContent: Record<Lang, LandingContent> = {
     featuresTitle: 'FONCTIONNALIT\u00c9S PUISSANTES',
     featuresSubtitle: 'Tout ce dont une \u00e9cole moderne a besoin, int\u00e9gr\u00e9 dans une seule app iOS native.',
     features: [
-      { icon: Brain, title: 'Syst\u00e8me de micro-le\u00e7ons', points: ['Th\u00e9orie de la charge cognitive', 'Format : accroche \u2192 le\u00e7on \u2192 comparaison \u2192 quiz', 'Minuterie de lecture pour la compr\u00e9hension', 'Quiz verrouill\u00e9s jusqu\u2019\u00e0 la fin de la lecture'], color: '#8B5CF6' },
-      { icon: Bot, title: 'IA sur l\u2019appareil (6 outils)', points: ['Tuteur IA avec contexte du programme', 'Convertisseur de micro-le\u00e7ons (premi\u00e8re mondiale)', 'G\u00e9n\u00e9rateur de plans de cours', 'Commentaires de bulletins', 'Recherche IA dans tout le contenu', 'Apple Intelligence \u2014 donn\u00e9es sur l\u2019appareil'], color: '#00BFFF' },
-      { icon: BookOpen, title: '72 manuels originaux', points: ['288+ chapitres avec contenu interactif', 'Couverture compl\u00e8te du programme SK K-12', 'Marque \u00e9ditoriale WolfWhale Books', 'Cartes m\u00e9moire, quiz et activit\u00e9s int\u00e9gr\u00e9s'], color: '#FFD700' },
-      { icon: WifiOff, title: 'Apprentissage hors ligne', points: ['Stockage chiffr\u00e9 AES-GCM', 'Acc\u00e8s complet aux cours et manuels', 'Sync auto \u00e0 la reconnexion'], color: '#34D399' },
-      { icon: GraduationCap, title: '11 outils enseignant', points: ['Convertisseur de micro-le\u00e7ons (IA)', 'G\u00e9n\u00e9rateur de plans de cours', 'Carnet de notes et rubriques', 'Plan de classe et planificateur', 'Commentaires de bulletins'], color: '#FF6B9D' },
-      { icon: Gamepad2, title: 'Ludification et XP', points: ['Syst\u00e8me XP avec s\u00e9ries et classements', 'Compagnon d\u2019\u00e9tude (collection de poissons)', '\u00c9checs, Kahoot, quiz orthographe et plus', 'Badges de Commun \u00e0 L\u00e9gendaire'], color: '#FFD700' },
+      { icon: Brain, title: 'Syst\u00e8me de micro-le\u00e7ons', slug: 'micro-lessons', points: ['Th\u00e9orie de la charge cognitive', 'Format : accroche \u2192 le\u00e7on \u2192 comparaison \u2192 quiz', 'Minuterie de lecture pour la compr\u00e9hension', 'Quiz verrouill\u00e9s jusqu\u2019\u00e0 la fin de la lecture'], color: '#8B5CF6' },
+      { icon: Bot, title: 'IA sur l\u2019appareil (6 outils)', slug: 'ai-tools', points: ['Tuteur IA avec contexte du programme', 'Convertisseur de micro-le\u00e7ons (premi\u00e8re mondiale)', 'G\u00e9n\u00e9rateur de plans de cours', 'Commentaires de bulletins', 'Recherche IA dans tout le contenu', 'Apple Intelligence \u2014 donn\u00e9es sur l\u2019appareil'], color: '#00BFFF' },
+      { icon: BookOpen, title: '72 manuels originaux', slug: 'textbooks', points: ['288+ chapitres avec contenu interactif', 'Couverture compl\u00e8te du programme SK K-12', 'Marque \u00e9ditoriale WolfWhale Books', 'Cartes m\u00e9moire, quiz et activit\u00e9s int\u00e9gr\u00e9s'], color: '#FFD700' },
+      { icon: WifiOff, title: 'Apprentissage hors ligne', slug: 'offline', points: ['Stockage chiffr\u00e9 AES-GCM', 'Acc\u00e8s complet aux cours et manuels', 'Sync auto \u00e0 la reconnexion'], color: '#34D399' },
+      { icon: GraduationCap, title: '11 outils enseignant', slug: 'teacher-tools', points: ['Convertisseur de micro-le\u00e7ons (IA)', 'G\u00e9n\u00e9rateur de plans de cours', 'Carnet de notes et rubriques', 'Plan de classe et planificateur', 'Commentaires de bulletins'], color: '#FF6B9D' },
+      { icon: Gamepad2, title: 'Ludification et XP', slug: 'gamification', points: ['Syst\u00e8me XP avec s\u00e9ries et classements', 'Compagnon d\u2019\u00e9tude (collection de poissons)', '\u00c9checs, Kahoot, quiz orthographe et plus', 'Badges de Commun \u00e0 L\u00e9gendaire'], color: '#FFD700' },
     ],
     appPreview: 'APER\u00c7U DE L\u2019APPLICATION',
     appPreviewSub: 'Magnifique sur chaque appareil. Con\u00e7u pour iOS.',
