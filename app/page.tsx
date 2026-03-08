@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Mail, Phone, MapPin, CheckCircle2, X as XIcon, Feather, Linkedin, Twitter } from 'lucide-react'
+import { ArrowRight, Mail, Phone, MapPin, CheckCircle2, X as XIcon, Feather, Linkedin, Twitter, Brain, Sparkles, BookOpen } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 import { ContactForm } from '@/components/landing/ContactForm'
 import { ThemeToggle } from '@/components/landing/ThemeToggle'
@@ -243,6 +243,101 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                       </li>
                     ))}
                   </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* NEW: Micro-Lesson System Section */}
+        <section id="micro-lessons" className="px-4 py-12 sm:py-20">
+          <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
+            <div className="text-center space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-xs font-semibold text-purple-600 dark:text-purple-400 tracking-wider uppercase">
+                <Sparkles className="h-3 w-3" />
+                New — Industry First
+              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
+                {t.microLessonsTitle}
+              </h2>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-2xl mx-auto">
+                {t.microLessonsSub}
+              </p>
+            </div>
+
+            {/* Micro-lesson steps */}
+            <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
+              {t.microLessonsSteps.map(({ title, desc }, idx) => (
+                <div
+                  key={title}
+                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 text-center space-y-2 relative"
+                >
+                  <div className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-400 text-sm font-bold border border-purple-500/20">
+                    {idx + 1}
+                  </div>
+                  <h3 className="text-sm font-bold text-gray-900 dark:text-white">{title}</h3>
+                  <p className="text-xs text-gray-500 dark:text-white/60 leading-relaxed">{desc}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* AI Converter highlight */}
+            <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-purple-500/20 rounded-2xl p-6 sm:p-8 space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="inline-flex p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/20">
+                  <Brain className="h-5 w-5 text-purple-500" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t.microLessonsConverterTitle}</h3>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-white/70 leading-relaxed max-w-3xl">
+                {t.microLessonsConverterDesc}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* WolfWhale Books Section */}
+        <section id="textbooks" className="px-4 py-12 sm:py-20">
+          <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
+            <div className="text-center space-y-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
+                {t.textbooksTitle}
+              </h2>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-2xl mx-auto">
+                {t.textbooksSub}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {t.textbooksStats.map(({ value, label }) => (
+                <div
+                  key={label}
+                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 text-center space-y-1"
+                >
+                  <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>{value}</p>
+                  <p className="text-xs text-gray-500 dark:text-white/60 tracking-wider uppercase">{label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Key Differentiators Section */}
+        <section className="px-4 py-12 sm:py-20">
+          <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
+            <div className="text-center space-y-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
+                {lang === 'fr' ? 'POURQUOI WOLFWHALE' : 'WHY WOLFWHALE'}
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {t.differentiators.map(({ title, desc }) => (
+                <div
+                  key={title}
+                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 space-y-2 hover:border-gray-300 dark:hover:border-white/20 transition-all duration-100"
+                >
+                  <h3 className="text-sm font-bold text-gray-900 dark:text-white">{title}</h3>
+                  <p className="text-xs text-gray-500 dark:text-white/60 leading-relaxed">{desc}</p>
                 </div>
               ))}
             </div>
