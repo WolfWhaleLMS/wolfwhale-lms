@@ -1,27 +1,5 @@
 import type { MetadataRoute } from 'next'
-
-/** All programmatic SEO landing page slugs */
-const LANDING_PAGE_SLUGS = [
-  // City pages
-  'toronto',
-  'vancouver',
-  'calgary',
-  'ottawa',
-  'edmonton',
-  'montreal',
-  'winnipeg',
-  'halifax',
-  // Use-case pages
-  'k-12',
-  'post-secondary',
-  'canvas-alternative',
-  'moodle-alternative',
-  'brightspace-alternative',
-  'spaced-repetition-lms',
-  'ferpa-compliant-lms',
-  'teacher-collaboration',
-  'edsby-alternative',
-]
+import { PAGES } from '@/lib/config/seo-pages'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://wolfwhale.ca'
@@ -59,7 +37,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  const landingPages: MetadataRoute.Sitemap = LANDING_PAGE_SLUGS.map(
+  // Feature detail pages
+  const featurePages: MetadataRoute.Sitemap = [
+    'micro-lessons',
+    'ai-tools',
+    'textbooks',
+    'offline',
+    'teacher-tools',
+    'gamification',
+  ].map((slug) => ({
+    url: `${baseUrl}/features/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }))
+
+  // All SEO landing pages — auto-generated from PAGES config
+  const landingPages: MetadataRoute.Sitemap = Object.keys(PAGES).map(
     (slug) => ({
       url: `${baseUrl}/lms/${slug}`,
       lastModified: new Date(),
@@ -68,5 +62,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   )
 
-  return [...staticPages, ...landingPages]
+  return [...staticPages, ...featurePages, ...landingPages]
 }
