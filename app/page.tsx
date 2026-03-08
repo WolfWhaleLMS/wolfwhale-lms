@@ -212,7 +212,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           <div className="max-w-3xl mx-auto rounded-2xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 backdrop-blur-sm px-8 py-8 text-center">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider mb-4">What is an LMS?</h2>
             <p className="text-base sm:text-lg text-gray-600 dark:text-white/70 leading-relaxed">
-              A Learning Management System is the digital backbone of a classroom — where courses are delivered, grades are tracked, and students learn. WolfWhale is the only one built from the ground up around how students actually absorb information.
+              A <strong>Learning Management System</strong> is the digital backbone of a classroom — where courses are delivered, grades are tracked, and students learn. WolfWhale is the only one built from the ground up around how students actually absorb information.
             </p>
           </div>
         </section>
