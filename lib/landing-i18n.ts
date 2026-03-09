@@ -41,6 +41,7 @@ export interface LandingContent {
   lms: string
   nav: { features: string; compare: string; pricing: string; faq: string; signIn: string; contact: string }
   // Hero
+  heroTagline: string
   requestDemo: string
   seeFeatures: string
   downloadOn: string
@@ -61,6 +62,9 @@ export interface LandingContent {
   screenshotLabel5: string
   screenshotLabel6: string
   screenshotLabel7: string
+  ipadDashboardLabel: string
+  ipadTextbookLabel: string
+  macCoursesLabel: string
   screenshotSoon: string
   // Compare
   compareTitle: string
@@ -121,6 +125,7 @@ export const landingContent: Record<Lang, LandingContent> = {
   en: {
     lms: 'Learning Management System',
     nav: { features: 'Features', compare: 'Compare', pricing: 'Pricing', faq: 'FAQ', signIn: 'Sign In', contact: 'Contact' },
+    heroTagline: 'The only native iOS LMS built for Canadian schools. AI tutoring, 72 original textbooks, offline learning — one app, zero data leaving Canada.',
     requestDemo: 'Get a Demo',
     seeFeatures: 'See Features',
     downloadOn: 'Download on the',
@@ -132,13 +137,13 @@ export const landingContent: Record<Lang, LandingContent> = {
       { icon: Brain, title: 'Micro-Lesson System', slug: 'micro-lessons', points: ['Research-backed cognitive load theory', 'Hook \u2192 Lesson \u2192 Compare \u2192 Quiz format', 'Reading timer ensures comprehension', 'Gated quizzes unlock after reading'], color: '#8B5CF6' },
       { icon: Bot, title: 'On-Device AI (6 Tools)', slug: 'ai-tools', points: ['AI Tutor with curriculum awareness', 'Micro-Lesson Converter (industry first)', 'Lesson Plan Builder', 'Report Card Comments', 'AI Search across all content', 'Apple Intelligence \u2014 data never leaves device'], color: '#00BFFF' },
       { icon: BookOpen, title: '72 Original Textbooks', slug: 'textbooks', points: ['288+ chapters with interactive content', 'Full SK K-12 curriculum coverage', 'WolfWhale Books publisher brand', 'Flashcards, quizzes & activities built in'], color: '#FFD700' },
-      { icon: WifiOff, title: 'Offline Learning', slug: 'offline', points: ['AES-GCM encrypted storage', 'Full course & textbook access offline', 'Auto sync on reconnect'], color: '#34D399' },
+      { icon: WifiOff, title: 'Offline Learning', slug: 'offline', points: ['Works without internet — anywhere', 'Full courses & textbooks available offline', 'Syncs automatically when back online', 'All data encrypted on device'], color: '#34D399' },
       { icon: GraduationCap, title: '11 Teacher Tools', slug: 'teacher-tools', points: ['Micro-Lesson Converter (AI)', 'Lesson Plan Builder', 'Gradebook & Rubric Builder', 'Seating Chart & Weekly Planner', 'Report Card Comments'], color: '#FF6B9D' },
       { icon: Gamepad2, title: 'Gamification & XP', slug: 'gamification', points: ['XP system with streaks & leaderboards', 'Study Pet companion (fish collection)', 'Chess, Kahoot, spelling bee & more', 'Common to Legendary badge rarity'], color: '#FFD700' },
     ],
     appPreview: 'APP PREVIEW',
-    appPreviewSub: 'Built for iOS. Beautiful everywhere.',
-    signInLight: 'Sign In (Light Mode)',
+    appPreviewSub: 'iPhone, iPad, and Mac. Built native for every screen.',
+    signInLight: 'Sign In',
     signInDark: 'Sign In (Dark Mode)',
     myCoursesLabel: 'My Courses',
     dashboardLabel: 'Student Dashboard',
@@ -146,6 +151,9 @@ export const landingContent: Record<Lang, LandingContent> = {
     screenshotLabel5: 'Create Course (Teacher)',
     screenshotLabel6: 'Flashcard Creator',
     screenshotLabel7: 'Create Quiz (Teacher)',
+    ipadDashboardLabel: 'iPad — Student Dashboard',
+    ipadTextbookLabel: 'iPad — Dark Mode',
+    macCoursesLabel: 'Mac — Student Dashboard',
     screenshotSoon: 'Screenshot Coming Soon',
     compareTitle: 'HOW WE COMPARE',
     compareSub: 'WolfWhale vs every major Canadian LMS.',
@@ -183,7 +191,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     ],
     volumeDiscounts: 'Teachers get free access. Volume discounts for school boards.',
     aboutTitle: 'Why WolfWhale',
-    aboutText: 'WolfWhale is the only LMS that combines cognitive load theory, on-device AI, and 72 original textbooks into one native iOS app. Built for 5 user roles \u2014 Student, Teacher, Parent, Admin, and Super Admin \u2014 with 682 Saskatchewan curriculum outcomes mapped and expanding nationally. Every piece of content uses our research-backed micro-lesson format: hook, lesson, comparison, and gated quiz. Student data never leaves the device. Canadian values drive everything we ship \u2014 privacy, accessibility, Indigenous connections, and bilingual support.',
+    aboutText: 'WolfWhale is the only LMS that combines cognitive load theory, on-device AI, and 72 original textbooks into one native iOS app. Built for 5 user roles \u2014 Student, Teacher, Parent, Admin, and Super Admin \u2014 with 682 Saskatchewan curriculum outcomes mapped and expanding nationally. Student data never leaves the device. Canadian values drive everything we ship \u2014 privacy, accessibility, Indigenous connections, and bilingual support.',
     canadaTitle: 'Built in Canada',
     canadaSub: 'Vancouver, BC. Designed, developed, hosted here. Saskatchewan-first curriculum, expanding to all 13 provinces and territories.',
     canadaBadges: [
@@ -194,7 +202,7 @@ export const landingContent: Record<Lang, LandingContent> = {
       { icon: Heart, label: 'Built for Canadians' },
     ],
     trcTitle: 'TRC Calls to Action',
-    trcSub: 'We align with the TRC Calls to Action.',
+    trcSub: 'Education technology that honours reconciliation.',
     trcCards: [
       { icon: BookOpen, title: 'Indigenous Language Support', desc: 'Curriculum delivery in Indigenous languages (Calls #14-15)' },
       { icon: Users, title: 'Culturally Responsive Design', desc: 'Flexible content respecting diverse knowledge systems (Calls #10, #62)' },
@@ -213,6 +221,7 @@ export const landingContent: Record<Lang, LandingContent> = {
       { q: 'What subjects and grades are covered?', a: 'Full Saskatchewan K-12 coverage: Math K-12, Science K-10, ELA K-9, Social Studies K-9, Health 1-9, Arts, PE, Career Ed 6-9, French 1, plus senior Physics, Biology, and Chemistry. 682 curriculum outcomes mapped.' },
       { q: 'What about Android support?', a: 'WolfWhale is built exclusively for iOS/iPadOS using native SwiftUI. Requires iOS 17+, with AI features on iOS 26+.' },
       { q: 'What user roles are supported?', a: 'Five roles: Student, Teacher, Parent, Admin, and Super Admin. Each has a purpose-built dashboard and feature set.' },
+      { q: 'Can WolfWhale work in remote or northern communities?', a: 'Yes. Offline mode means students can learn anywhere \u2014 even without reliable internet. All content, textbooks, and tools are available offline with on-device encryption. Data syncs automatically when connectivity returns.' },
     ],
     contactTitle: 'TALK TO US',
     contactSub: 'We reply within two business days.',
@@ -255,6 +264,7 @@ export const landingContent: Record<Lang, LandingContent> = {
   fr: {
     lms: 'Syst\u00e8me de gestion de l\u2019apprentissage',
     nav: { features: 'Fonctionnalit\u00e9s', compare: 'Comparer', pricing: 'Tarifs', faq: 'FAQ', signIn: 'Connexion', contact: 'Contact' },
+    heroTagline: 'Le seul SGA iOS natif con\u00e7u pour les \u00e9coles canadiennes. Tutorat IA, 72 manuels originaux, apprentissage hors ligne \u2014 une seule app, aucune donn\u00e9e hors du Canada.',
     requestDemo: 'Demander une d\u00e9mo',
     seeFeatures: 'Voir les fonctionnalit\u00e9s',
     downloadOn: 'T\u00e9l\u00e9charger sur l\u2019',
@@ -266,13 +276,13 @@ export const landingContent: Record<Lang, LandingContent> = {
       { icon: Brain, title: 'Syst\u00e8me de micro-le\u00e7ons', slug: 'micro-lessons', points: ['Th\u00e9orie de la charge cognitive', 'Format : accroche \u2192 le\u00e7on \u2192 comparaison \u2192 quiz', 'Minuterie de lecture pour la compr\u00e9hension', 'Quiz verrouill\u00e9s jusqu\u2019\u00e0 la fin de la lecture'], color: '#8B5CF6' },
       { icon: Bot, title: 'IA sur l\u2019appareil (6 outils)', slug: 'ai-tools', points: ['Tuteur IA avec contexte du programme', 'Convertisseur de micro-le\u00e7ons (premi\u00e8re mondiale)', 'G\u00e9n\u00e9rateur de plans de cours', 'Commentaires de bulletins', 'Recherche IA dans tout le contenu', 'Apple Intelligence \u2014 donn\u00e9es sur l\u2019appareil'], color: '#00BFFF' },
       { icon: BookOpen, title: '72 manuels originaux', slug: 'textbooks', points: ['288+ chapitres avec contenu interactif', 'Couverture compl\u00e8te du programme SK K-12', 'Marque \u00e9ditoriale WolfWhale Books', 'Cartes m\u00e9moire, quiz et activit\u00e9s int\u00e9gr\u00e9s'], color: '#FFD700' },
-      { icon: WifiOff, title: 'Apprentissage hors ligne', slug: 'offline', points: ['Stockage chiffr\u00e9 AES-GCM', 'Acc\u00e8s complet aux cours et manuels', 'Sync auto \u00e0 la reconnexion'], color: '#34D399' },
+      { icon: WifiOff, title: 'Apprentissage hors ligne', slug: 'offline', points: ['Fonctionne sans internet \u2014 partout', 'Cours et manuels disponibles hors ligne', 'Synchronisation automatique au retour', 'Toutes les donn\u00e9es chiffr\u00e9es sur l\u2019appareil'], color: '#34D399' },
       { icon: GraduationCap, title: '11 outils enseignant', slug: 'teacher-tools', points: ['Convertisseur de micro-le\u00e7ons (IA)', 'G\u00e9n\u00e9rateur de plans de cours', 'Carnet de notes et rubriques', 'Plan de classe et planificateur', 'Commentaires de bulletins'], color: '#FF6B9D' },
       { icon: Gamepad2, title: 'Ludification et XP', slug: 'gamification', points: ['Syst\u00e8me XP avec s\u00e9ries et classements', 'Compagnon d\u2019\u00e9tude (collection de poissons)', '\u00c9checs, Kahoot, quiz orthographe et plus', 'Badges de Commun \u00e0 L\u00e9gendaire'], color: '#FFD700' },
     ],
     appPreview: 'APER\u00c7U DE L\u2019APPLICATION',
-    appPreviewSub: 'Magnifique sur chaque appareil. Con\u00e7u pour iOS.',
-    signInLight: 'Connexion (mode clair)',
+    appPreviewSub: 'iPhone, iPad et Mac. Natif sur chaque \u00e9cran.',
+    signInLight: 'Connexion',
     signInDark: 'Connexion (mode sombre)',
     myCoursesLabel: 'Mes cours',
     dashboardLabel: 'Tableau de bord \u00e9l\u00e8ve',
@@ -280,6 +290,9 @@ export const landingContent: Record<Lang, LandingContent> = {
     screenshotLabel5: 'Cr\u00e9er un cours (enseignant)',
     screenshotLabel6: 'Cr\u00e9ateur de cartes m\u00e9moire',
     screenshotLabel7: 'Cr\u00e9er un quiz (enseignant)',
+    ipadDashboardLabel: 'iPad \u2014 Tableau de bord',
+    ipadTextbookLabel: 'iPad \u2014 Mode sombre',
+    macCoursesLabel: 'Mac \u2014 Tableau de bord',
     screenshotSoon: 'Capture d\u2019\u00e9cran \u00e0 venir',
     compareTitle: 'COMMENT NOUS NOUS COMPARONS',
     compareSub: 'WolfWhale vs chaque SGA canadien majeur.',
@@ -317,7 +330,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     ],
     volumeDiscounts: 'Acc\u00e8s gratuit pour les enseignants. Rabais de volume pour les commissions scolaires.',
     aboutTitle: '\u00c0 propos de WolfWhale',
-    aboutText: 'WolfWhale est le seul SGA qui combine la th\u00e9orie de la charge cognitive, l\u2019IA sur l\u2019appareil et 72 manuels originaux dans une seule app iOS native. Con\u00e7u pour 5 r\u00f4les \u2014 \u00c9l\u00e8ve, Enseignant, Parent, Admin et Super Admin \u2014 avec 682 r\u00e9sultats du programme de la Saskatchewan. Chaque contenu utilise notre format de micro-le\u00e7on : accroche, le\u00e7on, comparaison et quiz. Les donn\u00e9es des \u00e9l\u00e8ves ne quittent jamais l\u2019appareil.',
+    aboutText: 'WolfWhale est le seul SGA qui combine la th\u00e9orie de la charge cognitive, l\u2019IA sur l\u2019appareil et 72 manuels originaux dans une seule app iOS native. Con\u00e7u pour 5 r\u00f4les \u2014 \u00c9l\u00e8ve, Enseignant, Parent, Admin et Super Admin \u2014 avec 682 r\u00e9sultats du programme de la Saskatchewan, en expansion nationale. Les donn\u00e9es des \u00e9l\u00e8ves ne quittent jamais l\u2019appareil. Les valeurs canadiennes guident tout ce que nous livrons \u2014 confidentialit\u00e9, accessibilit\u00e9, liens autochtones et soutien bilingue.',
     canadaTitle: 'Fi\u00e8rement construit au Canada',
     canadaSub: 'Vancouver, C.-B. Con\u00e7u, d\u00e9velopp\u00e9 et h\u00e9berg\u00e9 au Canada. Programme de la Saskatchewan d\u2019abord, expansion nationale.',
     canadaBadges: [
@@ -328,7 +341,7 @@ export const landingContent: Record<Lang, LandingContent> = {
       { icon: Heart, label: 'Con\u00e7u pour les Canadiens' },
     ],
     trcTitle: 'Appels \u00e0 l\u2019action de la CVR',
-    trcSub: 'Align\u00e9 sur les appels \u00e0 l\u2019action de la CVR.',
+    trcSub: 'Une technologie \u00e9ducative qui honore la r\u00e9conciliation.',
     trcCards: [
       { icon: BookOpen, title: 'Soutien aux langues autochtones', desc: 'Diffusion de programmes en langues autochtones (appels no 14-15)' },
       { icon: Users, title: 'Conception culturellement adapt\u00e9e', desc: 'Contenu flexible respectant les syst\u00e8mes de savoirs diversifi\u00e9s (appels no 10, 62)' },
@@ -347,6 +360,7 @@ export const landingContent: Record<Lang, LandingContent> = {
       { q: 'Quels sujets et niveaux\u00a0?', a: 'Couverture compl\u00e8te K-12 de la Saskatchewan : Math, Sciences, Fran\u00e7ais, \u00c9tudes sociales, Sant\u00e9, Arts, \u00c9d. physique, \u00c9d. aux carri\u00e8res, plus Physique, Bio et Chimie au secondaire.' },
       { q: 'Support Android\u00a0?', a: 'WolfWhale est con\u00e7u exclusivement pour iOS/iPadOS avec SwiftUI natif. iOS 17+ requis, fonctionnalit\u00e9s IA sur iOS 26+.' },
       { q: 'Quels r\u00f4les sont pris en charge\u00a0?', a: 'Cinq r\u00f4les : \u00c9l\u00e8ve, Enseignant, Parent, Admin et Super Admin. Chacun a son propre tableau de bord.' },
+      { q: 'WolfWhale fonctionne-t-il dans les communaut\u00e9s \u00e9loign\u00e9es ou nordiques\u00a0?', a: 'Oui. Le mode hors ligne permet aux \u00e9l\u00e8ves d\u2019apprendre partout \u2014 m\u00eame sans internet fiable. Tout le contenu, les manuels et les outils sont disponibles hors ligne avec chiffrement sur l\u2019appareil. Les donn\u00e9es se synchronisent automatiquement au retour de la connectivit\u00e9.' },
     ],
     contactTitle: 'NOUS JOINDRE',
     contactSub: 'Nous r\u00e9pondons sous deux jours ouvrables.',

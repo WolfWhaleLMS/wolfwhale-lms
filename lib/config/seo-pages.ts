@@ -17,6 +17,13 @@ import {
   Lock,
 } from 'lucide-react'
 
+import { INDIGENOUS_PAGES } from './seo-pages-indigenous'
+import { SUBJECT_PAGES } from './seo-pages-subjects'
+import { METHODOLOGY_PAGES } from './seo-pages-methodology'
+import { SOLUTION_PAGES } from './seo-pages-solutions'
+import { COMPETITOR_PAGES } from './seo-pages-competitors'
+import { BLACKBOARD_PAGES } from './seo-pages-blackboard'
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -2230,4 +2237,12 @@ export const PAGES: Record<string, PageData> = {
     whyExtra:
       'Many LMS platforms claim compliance but store data on US servers subject to the CLOUD Act and Patriot Act. WolfWhale is different. We are a Canadian company hosting on Canadian infrastructure. Row-level security in PostgreSQL ensures that users can only access their own data. Every action is audit-logged. And if you ever need to leave, full data export is available in standard formats.',
   },
+
+  // Merge all page sets
+  ...INDIGENOUS_PAGES,
+  ...SUBJECT_PAGES,
+  ...METHODOLOGY_PAGES,
+  ...SOLUTION_PAGES,
+  ...COMPETITOR_PAGES,
+  ...BLACKBOARD_PAGES,
 }

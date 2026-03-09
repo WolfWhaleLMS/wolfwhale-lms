@@ -169,6 +169,10 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               </p>
             </div>
 
+            <p className="text-base sm:text-lg text-gray-500 dark:text-white/60 max-w-2xl mx-auto">
+              {t.heroTagline}
+            </p>
+
             {/* Principle 17: L to R — primary CTA first */}
             <div className="relative z-10 flex flex-col items-center gap-3 sm:gap-4 pt-4 sm:pt-6">
               {/* Principle 11: larger hit targets — h-12 */}
@@ -218,7 +222,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="px-4 py-12 sm:py-20">
+        <section id="features" className="px-4 py-10 sm:py-16">
           <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
@@ -264,7 +268,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </section>
 
         {/* NEW: Micro-Lesson System Section */}
-        <section id="micro-lessons" className="px-4 py-12 sm:py-20">
+        <section id="micro-lessons" className="px-4 py-10 sm:py-16">
           <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-xs font-semibold text-purple-600 dark:text-purple-400 tracking-wider uppercase">
@@ -311,7 +315,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </section>
 
         {/* WolfWhale Books Section */}
-        <section id="textbooks" className="px-4 py-12 sm:py-20">
+        <section id="textbooks" className="px-4 py-10 sm:py-16">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
@@ -337,7 +341,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </section>
 
         {/* Key Differentiators Section */}
-        <section className="px-4 py-12 sm:py-20">
+        <section className="px-4 py-10 sm:py-16">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
@@ -359,7 +363,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </section>
 
         {/* App Screenshots Section */}
-        <section id="screenshots" className="px-4 py-12 sm:py-20">
+        <section id="screenshots" className="px-4 py-10 sm:py-16">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
@@ -370,67 +374,54 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 justify-items-center">
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                  <Image src="/screenshot-iphone-light.png" alt="WolfWhale LMS Sign In Light Mode on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" priority />
+            {/* iPhone — 3 key screens */}
+            <div>
+              <p className="text-xs text-gray-400 dark:text-white/30 tracking-widest uppercase text-center mb-6">iPhone</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="w-full max-w-[220px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
+                    <Image src="/screenshot-iphone-light.png" alt="WolfWhale LMS Sign In on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" priority />
+                  </div>
+                  <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.signInLight}</p>
                 </div>
-                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.signInLight}</p>
-              </div>
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                  <Image src="/screenshot-iphone-dark.png" alt="WolfWhale LMS Sign In Dark Mode on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" />
+                <div className="flex flex-col items-center gap-4">
+                  <div className="w-full max-w-[220px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
+                    <Image src="/screenshot-courses-light.png" alt="WolfWhale LMS My Courses on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" />
+                  </div>
+                  <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.myCoursesLabel}</p>
                 </div>
-                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.signInDark}</p>
-              </div>
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                  <Image src="/screenshot-courses-light.png" alt="WolfWhale LMS My Courses on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" />
+                <div className="flex flex-col items-center gap-4">
+                  <div className="w-full max-w-[220px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
+                    <Image src="/screenshot-home-dark.png" alt="WolfWhale LMS Student Dashboard on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" />
+                  </div>
+                  <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.dashboardLabel}</p>
                 </div>
-                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.myCoursesLabel}</p>
-              </div>
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                  <Image src="/screenshot-home-dark.png" alt="WolfWhale LMS Student Dashboard on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" />
-                </div>
-                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.dashboardLabel}</p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                  <Image src="/screenshot-progress-light.png" alt="WolfWhale LMS Progress Report on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" />
+            {/* Mac — 1 screen */}
+            <div>
+              <p className="text-xs text-gray-400 dark:text-white/30 tracking-widest uppercase text-center mb-6">Mac</p>
+              <div className="flex justify-center">
+                <div className="flex flex-col items-center gap-4 w-full max-w-[720px]">
+                  <div className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 relative">
+                    {/* Mac-style top bar */}
+                    <div className="h-7 bg-gray-100 dark:bg-white/[0.08] border-b border-gray-200 dark:border-white/10 flex items-center px-3 gap-1.5">
+                      <span className="h-2.5 w-2.5 rounded-full bg-red-400/60" />
+                      <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/60" />
+                      <span className="h-2.5 w-2.5 rounded-full bg-green-400/60" />
+                    </div>
+                    <Image src="/screenshot-mac-courses.png" alt="WolfWhale LMS on Mac" width={2064} height={2752} className="w-full object-cover object-top" style={{ maxHeight: '450px' }} />
+                  </div>
+                  <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.macCoursesLabel}</p>
                 </div>
-                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.screenshotLabel4}</p>
-              </div>
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                  <Image src="/screenshot-teacher-light.png" alt="WolfWhale LMS Create Course Teacher View on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" />
-                </div>
-                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.screenshotLabel5}</p>
-              </div>
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                  <Image src="/screenshot-flashcards-light.png" alt="WolfWhale LMS Flashcard Creator on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" />
-                </div>
-                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.screenshotLabel6}</p>
-              </div>
-            </div>
-
-            <div className="flex justify-center gap-6 sm:gap-8">
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-full max-w-[260px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                  <Image src="/screenshot-quiz-light.png" alt="WolfWhale LMS Create Quiz Teacher View on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" />
-                </div>
-                <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.screenshotLabel7}</p>
               </div>
             </div>
           </div>
         </section>
 
         {/* LMS Comparison Section */}
-        <section id="compare" className="px-4 py-12 sm:py-20">
+        <section id="compare" className="px-4 py-10 sm:py-16">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
@@ -498,7 +489,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </section>
 
         {/* Pricing Section */}
-        <section id="pricing" className="px-4 py-12 sm:py-20">
+        <section id="pricing" className="px-4 py-10 sm:py-16">
           <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
@@ -544,7 +535,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </section>
 
         {/* About Section */}
-        <section id="about" className="px-4 py-12 sm:py-20">
+        <section id="about" className="px-4 py-10 sm:py-16">
           <div className="max-w-3xl mx-auto">
             <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
@@ -558,7 +549,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </section>
 
         {/* Built in Canada Section */}
-        <section id="canada" className="px-4 py-12 sm:py-20">
+        <section id="canada" className="px-4 py-10 sm:py-16">
           <div className="max-w-4xl mx-auto">
             <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-10 md:p-14">
               <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
@@ -593,7 +584,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </section>
 
         {/* TRC Calls to Action Section */}
-        <section id="trc" className="px-4 py-12 sm:py-20">
+        <section id="trc" className="px-4 py-10 sm:py-16">
           <div className="max-w-4xl mx-auto">
             <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-10 md:p-14 space-y-6 sm:space-y-8">
               <div className="space-y-3 text-center">
@@ -636,7 +627,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </section>
 
         {/* FAQ Section */}
-        <section id="faq" className="px-4 py-12 sm:py-20">
+        <section id="faq" className="px-4 py-10 sm:py-16">
           <div className="max-w-3xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
@@ -674,7 +665,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </section>
 
         {/* Contact Form — principle 10: copy email button */}
-        <section id="contact" className="px-4 py-12 sm:py-20">
+        <section id="contact" className="px-4 py-10 sm:py-16">
           <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8">
             <div className="text-center space-y-3">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
