@@ -384,11 +384,11 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               </p>
             </div>
 
-            {/* iPhone — 3 key screens (light/dark switch with theme) */}
+            {/* iPhone — 2 key screens (light/dark switch with theme) */}
             <div>
               <p className="text-xs text-gray-400 dark:text-white/30 tracking-widest uppercase text-center mb-6">iPhone</p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
-                {/* Sign In — has both light & dark */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 justify-items-center max-w-lg mx-auto">
+                {/* Sign In — light & dark */}
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-full max-w-[220px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
                     <Image src="/screenshot-iphone-light.png" alt="WolfWhale LMS Sign In on iPhone" width={1170} height={2532} className="block dark:hidden w-full h-full object-cover object-top" priority />
@@ -396,15 +396,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                   </div>
                   <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.signInLight}</p>
                 </div>
-                {/* My Courses — has both light & dark */}
-                <div className="flex flex-col items-center gap-4">
-                  <div className="w-full max-w-[220px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                    <Image src="/screenshot-courses-light.png" alt="WolfWhale LMS My Courses on iPhone" width={1170} height={2532} className="block dark:hidden w-full h-full object-cover object-top" />
-                    <Image src="/screenshot-courses-dark.png" alt="WolfWhale LMS My Courses on iPhone (Dark)" width={1170} height={2532} className="hidden dark:block w-full h-full object-cover object-top" />
-                  </div>
-                  <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.myCoursesLabel}</p>
-                </div>
-                {/* Dashboard — has both light & dark */}
+                {/* Student Dashboard — light & dark */}
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-full max-w-[220px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
                     <Image src="/screenshot-iphone-dashboard.png" alt="WolfWhale LMS Student Dashboard on iPhone" width={1170} height={2532} className="block dark:hidden w-full h-full object-cover object-top" />
