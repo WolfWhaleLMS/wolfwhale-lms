@@ -337,6 +337,16 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                 </div>
               ))}
             </div>
+
+            <div className="text-center pt-4">
+              <Link
+                href={`/features/textbooks${lp}`}
+                className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-white/50 hover:text-[#00BFFF] transition-colors duration-100 font-medium"
+              >
+                {lang === 'fr' ? 'En savoir plus sur WolfWhale Books' : 'Learn more about WolfWhale Books'}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -374,25 +384,31 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               </p>
             </div>
 
-            {/* iPhone — 3 key screens */}
+            {/* iPhone — 3 key screens (light/dark switch with theme) */}
             <div>
               <p className="text-xs text-gray-400 dark:text-white/30 tracking-widest uppercase text-center mb-6">iPhone</p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
+                {/* Sign In — has both light & dark */}
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-full max-w-[220px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                    <Image src="/screenshot-iphone-light.png" alt="WolfWhale LMS Sign In on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" priority />
+                    <Image src="/screenshot-iphone-light.png" alt="WolfWhale LMS Sign In on iPhone" width={1170} height={2532} className="block dark:hidden w-full h-full object-cover object-top" priority />
+                    <Image src="/screenshot-iphone-dark.png" alt="WolfWhale LMS Sign In on iPhone (Dark)" width={1170} height={2532} className="hidden dark:block w-full h-full object-cover object-top" />
                   </div>
                   <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.signInLight}</p>
                 </div>
+                {/* My Courses — has both light & dark */}
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-full max-w-[220px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                    <Image src="/screenshot-courses-light.png" alt="WolfWhale LMS My Courses on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" />
+                    <Image src="/screenshot-courses-light.png" alt="WolfWhale LMS My Courses on iPhone" width={1170} height={2532} className="block dark:hidden w-full h-full object-cover object-top" />
+                    <Image src="/screenshot-courses-dark.png" alt="WolfWhale LMS My Courses on iPhone (Dark)" width={1170} height={2532} className="hidden dark:block w-full h-full object-cover object-top" />
                   </div>
                   <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.myCoursesLabel}</p>
                 </div>
+                {/* Dashboard — has both light & dark */}
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-full max-w-[220px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                    <Image src="/screenshot-home-dark.png" alt="WolfWhale LMS Student Dashboard on iPhone" width={1170} height={2532} className="w-full h-full object-cover object-top" />
+                    <Image src="/screenshot-iphone-dashboard.png" alt="WolfWhale LMS Student Dashboard on iPhone" width={1170} height={2532} className="block dark:hidden w-full h-full object-cover object-top" />
+                    <Image src="/screenshot-home-dark.png" alt="WolfWhale LMS Student Dashboard on iPhone (Dark)" width={1170} height={2532} className="hidden dark:block w-full h-full object-cover object-top" />
                   </div>
                   <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.dashboardLabel}</p>
                 </div>
@@ -411,7 +427,8 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                       <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/60" />
                       <span className="h-2.5 w-2.5 rounded-full bg-green-400/60" />
                     </div>
-                    <Image src="/screenshot-mac-courses.png" alt="WolfWhale LMS on Mac" width={2064} height={2752} className="w-full object-cover object-top" style={{ maxHeight: '450px' }} />
+                    <Image src="/screenshot-mac-courses.png" alt="WolfWhale LMS on Mac" width={2064} height={2752} className="block dark:hidden w-full object-cover object-top" style={{ maxHeight: '450px' }} />
+                    <Image src="/screenshot-mac-courses-dark.png" alt="WolfWhale LMS on Mac (Dark)" width={2064} height={2752} className="hidden dark:block w-full object-cover object-top" style={{ maxHeight: '450px' }} />
                   </div>
                   <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.macCoursesLabel}</p>
                 </div>

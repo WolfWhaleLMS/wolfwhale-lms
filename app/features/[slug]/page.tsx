@@ -26,7 +26,7 @@ interface FeatureDetail {
 const featureDetails: Record<string, Record<Lang, FeatureDetail>> = {
   'micro-lessons': {
     en: {
-      headline: 'Research-Backed Micro-Lesson System',
+      headline: 'Research-Backed Micro-Lessons',
       description: 'WolfWhale uses cognitive load theory to structure every piece of content into bite-sized micro-lessons. Instead of overwhelming students with long chapters, content is broken into sequential sections that maximize comprehension and retention.',
       sections: [
         {
@@ -68,7 +68,7 @@ const featureDetails: Record<string, Record<Lang, FeatureDetail>> = {
       },
     },
     fr: {
-      headline: 'Systeme de micro-lecons base sur la recherche',
+      headline: 'Micro-le\u00e7ons bas\u00e9es sur la recherche',
       description: 'WolfWhale utilise la theorie de la charge cognitive pour structurer chaque contenu en micro-lecons. Au lieu de submerger les eleves avec de longs chapitres, le contenu est divise en sections sequentielles qui maximisent la comprehension.',
       sections: [
         {
@@ -187,8 +187,18 @@ const featureDetails: Record<string, Record<Lang, FeatureDetail>> = {
   'textbooks': {
     en: {
       headline: '72 Original Textbooks — WolfWhale Books',
-      description: 'WolfWhale Books is our own publishing brand — a division of WolfWhale EdTech. 72 original textbooks with 288+ chapters, all fully integrated with micro-lessons, flashcards, and interactive activities. Not links to external content.',
+      description: 'WolfWhale Books is our own publishing brand — a division of WolfWhale EdTech. 72 original textbooks with 288+ chapters, fully integrated with micro-lessons, flashcards, and interactive activities. No external links, no licensing fees — everything is built in.',
       sections: [
+        {
+          title: 'Replacing 19 Legacy Textbooks',
+          items: [
+            '19 textbooks from Nelson, McGraw-Hill Ryerson, and Glencoe have been fully replaced with WolfWhale originals',
+            'No more annual licensing fees or publisher dependencies',
+            'Content updated instantly — no waiting for new print editions',
+            'Every replacement covers the same curriculum outcomes with improved pedagogy',
+            'Schools save thousands per year on textbook costs',
+          ],
+        },
         {
           title: 'Full Saskatchewan K-12 Coverage',
           items: [
@@ -204,13 +214,34 @@ const featureDetails: Record<string, Record<Lang, FeatureDetail>> = {
           ],
         },
         {
+          title: 'Cognitive Load Theory Format',
+          items: [
+            'Every chapter uses the micro-lesson format: Hook, Lesson, This Is / This Is Not, Reading Timer, Gated Quiz',
+            '3-5 micro-lessons per chapter — students absorb one concept at a time',
+            'Reading timer ensures comprehension before quizzes unlock',
+            'Written in authoritative 1950s textbook prose with modern LMS enhancements',
+            'Key terms, Indigenous connections, quizzes, and activities woven into every chapter',
+          ],
+        },
+        {
           title: 'Content Architecture',
           items: [
             '70% pan-Canadian core (WNCP) — works across provinces',
             '30% Saskatchewan-specific content — local examples, Treaty education',
             'Indigenous connections woven throughout every subject',
             '682 Saskatchewan curriculum outcomes mapped to chapters',
-            'Content blocks: text, images, callouts, quizzes, activities, code blocks, videos, micro-lessons',
+            'Content blocks: text, images, callouts, quizzes, activities, code blocks, micro-lessons',
+          ],
+        },
+        {
+          title: 'Digital-First Features',
+          items: [
+            'Interactive content blocks — not static PDFs',
+            'Spaced repetition flashcards for every chapter with multiple study modes',
+            '"Explain" button on flashcards generates micro-lesson explanations via on-device AI',
+            'Reading progress tracking synced across devices via Supabase',
+            'Key terms sidebar for each chapter',
+            'Available offline — download textbooks for learning anywhere',
           ],
         },
         {
@@ -225,21 +256,34 @@ const featureDetails: Record<string, Record<Lang, FeatureDetail>> = {
           ],
         },
         {
-          title: 'Integrated Study Tools',
+          title: 'Teacher Integration',
           items: [
-            'Flashcards per chapter with multiple study modes (classic, card sheets, quiz)',
-            '"Explain" button on flashcards generates micro-lesson explanations',
-            'Reading progress tracking with Supabase sync',
-            'Key terms sidebar for each chapter',
-            'Micro-lessons built into every chapter (3-5 per chapter)',
+            'Insert textbook chapters directly into course lessons',
+            'Assign specific chapters as required reading with progress tracking',
+            'Track which students have completed each chapter',
+            'Use the AI Micro-Lesson Converter to create supplementary content from any text',
+            'Align textbook content with specific curriculum outcomes in the gradebook',
           ],
         },
       ],
+      callout: {
+        label: 'Only on WolfWhale',
+        text: 'WolfWhale is the only LMS with its own original textbook library. 72 textbooks, 288+ chapters, all built on cognitive load theory — not links to third-party publishers. Teachers and students get everything in one app, fully integrated with courses, grades, and AI tools.',
+      },
     },
     fr: {
       headline: '72 manuels originaux — WolfWhale Books',
-      description: 'WolfWhale Books est notre propre marque editoriale. 72 manuels originaux avec 288+ chapitres, integres avec micro-lecons, cartes memoire et activites interactives.',
+      description: 'WolfWhale Books est notre propre marque editoriale. 72 manuels originaux avec 288+ chapitres, integres avec micro-lecons, cartes memoire et activites interactives. Aucun lien externe, aucun frais de licence.',
       sections: [
+        {
+          title: 'Remplacement de 19 manuels traditionnels',
+          items: [
+            '19 manuels de Nelson, McGraw-Hill Ryerson et Glencoe remplaces par des originaux WolfWhale',
+            'Plus de frais de licence annuels',
+            'Contenu mis a jour instantanement — pas besoin d\'attendre de nouvelles editions imprimees',
+            'Les ecoles economisent des milliers de dollars par annee',
+          ],
+        },
         {
           title: 'Couverture complete K-12 de la Saskatchewan',
           items: [
@@ -251,12 +295,42 @@ const featureDetails: Record<string, Record<Lang, FeatureDetail>> = {
           ],
         },
         {
+          title: 'Format base sur la theorie de la charge cognitive',
+          items: [
+            'Chaque chapitre utilise le format micro-lecon : Accroche, Lecon, C\'est / Ce n\'est pas, Minuterie, Quiz',
+            '3-5 micro-lecons par chapitre',
+            'Les eleves absorbent un concept a la fois',
+          ],
+        },
+        {
+          title: 'Fonctionnalites numeriques',
+          items: [
+            'Blocs de contenu interactifs — pas de PDF statiques',
+            'Cartes memoire a repetition espacee pour chaque chapitre',
+            'Suivi de progression de lecture synchronise entre appareils',
+            'Disponible hors ligne',
+          ],
+        },
+        {
           title: '6 types d\'activites interactives',
           items: [
             'Appariement, Tri, Texte a trous, Etiquetage, Sequencage, Dessin',
           ],
         },
+        {
+          title: 'Integration enseignant',
+          items: [
+            'Inserez des chapitres directement dans les lecons de cours',
+            'Assignez des chapitres comme lecture obligatoire',
+            'Suivez la progression de lecture des eleves',
+            'Utilisez le convertisseur IA pour creer du contenu supplementaire',
+          ],
+        },
       ],
+      callout: {
+        label: 'Exclusif a WolfWhale',
+        text: 'WolfWhale est le seul SGA avec sa propre bibliotheque de manuels originaux. 72 manuels, 288+ chapitres, tous bases sur la theorie de la charge cognitive.',
+      },
     },
   },
   'offline': {

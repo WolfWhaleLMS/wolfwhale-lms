@@ -134,7 +134,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     featuresTitle: 'POWERFUL FEATURES',
     featuresSubtitle: 'Everything a modern school needs, built into one native iOS app.',
     features: [
-      { icon: Brain, title: 'Micro-Lesson System', slug: 'micro-lessons', points: ['Research-backed cognitive load theory', 'Hook \u2192 Lesson \u2192 Compare \u2192 Quiz format', 'Reading timer ensures comprehension', 'Gated quizzes unlock after reading'], color: '#8B5CF6' },
+      { icon: Brain, title: 'Micro-Lessons', slug: 'micro-lessons', points: ['Research-backed cognitive load theory', 'Hook \u2192 Lesson \u2192 Compare \u2192 Quiz format', 'Reading timer ensures comprehension', 'Gated quizzes unlock after reading'], color: '#8B5CF6' },
       { icon: Bot, title: 'On-Device AI (6 Tools)', slug: 'ai-tools', points: ['AI Tutor with curriculum awareness', 'Micro-Lesson Converter (industry first)', 'Lesson Plan Builder', 'Report Card Comments', 'AI Search across all content', 'Apple Intelligence \u2014 data never leaves device'], color: '#00BFFF' },
       { icon: BookOpen, title: '72 Original Textbooks', slug: 'textbooks', points: ['288+ chapters with interactive content', 'Full SK K-12 curriculum coverage', 'WolfWhale Books publisher brand', 'Flashcards, quizzes & activities built in'], color: '#FFD700' },
       { icon: WifiOff, title: 'Offline Learning', slug: 'offline', points: ['Works without internet — anywhere', 'Full courses & textbooks available offline', 'Syncs automatically when back online', 'All data encrypted on device'], color: '#34D399' },
@@ -191,7 +191,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     ],
     volumeDiscounts: 'Teachers get free access. Volume discounts for school boards.',
     aboutTitle: 'Why WolfWhale',
-    aboutText: 'WolfWhale is the only LMS that combines cognitive load theory, on-device AI, and 72 original textbooks into one native iOS app. Built for 5 user roles \u2014 Student, Teacher, Parent, Admin, and Super Admin \u2014 with 682 Saskatchewan curriculum outcomes mapped and expanding nationally. Student data never leaves the device. Canadian values drive everything we ship \u2014 privacy, accessibility, Indigenous connections, and bilingual support.',
+    aboutText: 'WolfWhale is the only LMS that combines cognitive load theory, on-device AI, and 72 original textbooks into one native iOS app. Built for 4 user roles \u2014 Student, Teacher, Parent, and Admin \u2014 with 682 Saskatchewan curriculum outcomes mapped and expanding nationally. Student data never leaves the device. Canadian values drive everything we ship \u2014 privacy, accessibility, Indigenous connections, and bilingual support.',
     canadaTitle: 'Built in Canada',
     canadaSub: 'Vancouver, BC. Designed, developed, hosted here. Saskatchewan-first curriculum, expanding to all 13 provinces and territories.',
     canadaBadges: [
@@ -220,7 +220,7 @@ export const landingContent: Record<Lang, LandingContent> = {
       { q: 'Where is student data stored?', a: 'All AI runs on-device using Apple Intelligence \u2014 student data never leaves the phone. Backend data is stored exclusively on Canadian servers. COPPA, FERPA, and PIPEDA compliant. Encrypted with TLS 1.3 and AES-256.' },
       { q: 'What subjects and grades are covered?', a: 'Full Saskatchewan K-12 coverage: Math K-12, Science K-10, ELA K-9, Social Studies K-9, Health 1-9, Arts, PE, Career Ed 6-9, French 1, plus senior Physics, Biology, and Chemistry. 682 curriculum outcomes mapped.' },
       { q: 'What about Android support?', a: 'WolfWhale is built exclusively for iOS/iPadOS using native SwiftUI. Requires iOS 17+, with AI features on iOS 26+.' },
-      { q: 'What user roles are supported?', a: 'Five roles: Student, Teacher, Parent, Admin, and Super Admin. Each has a purpose-built dashboard and feature set.' },
+      { q: 'What user roles are supported?', a: 'Four roles: Student, Teacher, Parent, and Admin. Each has a purpose-built dashboard and feature set.' },
       { q: 'Can WolfWhale work in remote or northern communities?', a: 'Yes. Offline mode means students can learn anywhere \u2014 even without reliable internet. All content, textbooks, and tools are available offline with on-device encryption. Data syncs automatically when connectivity returns.' },
     ],
     contactTitle: 'TALK TO US',
@@ -231,7 +231,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     terms: 'Terms',
     help: 'Help',
     // Micro-Lessons
-    microLessonsTitle: 'MICRO-LESSON SYSTEM',
+    microLessonsTitle: 'MICRO-LESSONS',
     microLessonsSub: 'Research-backed learning based on cognitive load theory. Every piece of content follows this format.',
     microLessonsSteps: [
       { title: 'Hook', desc: 'A 2-sentence relatable scenario that grabs attention' },
@@ -273,7 +273,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     featuresTitle: 'FONCTIONNALIT\u00c9S PUISSANTES',
     featuresSubtitle: 'Tout ce dont une \u00e9cole moderne a besoin, int\u00e9gr\u00e9 dans une seule app iOS native.',
     features: [
-      { icon: Brain, title: 'Syst\u00e8me de micro-le\u00e7ons', slug: 'micro-lessons', points: ['Th\u00e9orie de la charge cognitive', 'Format : accroche \u2192 le\u00e7on \u2192 comparaison \u2192 quiz', 'Minuterie de lecture pour la compr\u00e9hension', 'Quiz verrouill\u00e9s jusqu\u2019\u00e0 la fin de la lecture'], color: '#8B5CF6' },
+      { icon: Brain, title: 'Micro-le\u00e7ons', slug: 'micro-lessons', points: ['Th\u00e9orie de la charge cognitive', 'Format : accroche \u2192 le\u00e7on \u2192 comparaison \u2192 quiz', 'Minuterie de lecture pour la compr\u00e9hension', 'Quiz verrouill\u00e9s jusqu\u2019\u00e0 la fin de la lecture'], color: '#8B5CF6' },
       { icon: Bot, title: 'IA sur l\u2019appareil (6 outils)', slug: 'ai-tools', points: ['Tuteur IA avec contexte du programme', 'Convertisseur de micro-le\u00e7ons (premi\u00e8re mondiale)', 'G\u00e9n\u00e9rateur de plans de cours', 'Commentaires de bulletins', 'Recherche IA dans tout le contenu', 'Apple Intelligence \u2014 donn\u00e9es sur l\u2019appareil'], color: '#00BFFF' },
       { icon: BookOpen, title: '72 manuels originaux', slug: 'textbooks', points: ['288+ chapitres avec contenu interactif', 'Couverture compl\u00e8te du programme SK K-12', 'Marque \u00e9ditoriale WolfWhale Books', 'Cartes m\u00e9moire, quiz et activit\u00e9s int\u00e9gr\u00e9s'], color: '#FFD700' },
       { icon: WifiOff, title: 'Apprentissage hors ligne', slug: 'offline', points: ['Fonctionne sans internet \u2014 partout', 'Cours et manuels disponibles hors ligne', 'Synchronisation automatique au retour', 'Toutes les donn\u00e9es chiffr\u00e9es sur l\u2019appareil'], color: '#34D399' },
@@ -330,7 +330,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     ],
     volumeDiscounts: 'Acc\u00e8s gratuit pour les enseignants. Rabais de volume pour les commissions scolaires.',
     aboutTitle: '\u00c0 propos de WolfWhale',
-    aboutText: 'WolfWhale est le seul SGA qui combine la th\u00e9orie de la charge cognitive, l\u2019IA sur l\u2019appareil et 72 manuels originaux dans une seule app iOS native. Con\u00e7u pour 5 r\u00f4les \u2014 \u00c9l\u00e8ve, Enseignant, Parent, Admin et Super Admin \u2014 avec 682 r\u00e9sultats du programme de la Saskatchewan, en expansion nationale. Les donn\u00e9es des \u00e9l\u00e8ves ne quittent jamais l\u2019appareil. Les valeurs canadiennes guident tout ce que nous livrons \u2014 confidentialit\u00e9, accessibilit\u00e9, liens autochtones et soutien bilingue.',
+    aboutText: 'WolfWhale est le seul SGA qui combine la th\u00e9orie de la charge cognitive, l\u2019IA sur l\u2019appareil et 72 manuels originaux dans une seule app iOS native. Con\u00e7u pour 4 r\u00f4les \u2014 \u00c9l\u00e8ve, Enseignant, Parent et Admin \u2014 avec 682 r\u00e9sultats du programme de la Saskatchewan, en expansion nationale. Les donn\u00e9es des \u00e9l\u00e8ves ne quittent jamais l\u2019appareil. Les valeurs canadiennes guident tout ce que nous livrons \u2014 confidentialit\u00e9, accessibilit\u00e9, liens autochtones et soutien bilingue.',
     canadaTitle: 'Fi\u00e8rement construit au Canada',
     canadaSub: 'Vancouver, C.-B. Con\u00e7u, d\u00e9velopp\u00e9 et h\u00e9berg\u00e9 au Canada. Programme de la Saskatchewan d\u2019abord, expansion nationale.',
     canadaBadges: [
@@ -359,7 +359,7 @@ export const landingContent: Record<Lang, LandingContent> = {
       { q: 'O\u00f9 sont stock\u00e9es les donn\u00e9es\u00a0?', a: 'L\u2019IA fonctionne sur l\u2019appareil \u2014 les donn\u00e9es ne quittent jamais le t\u00e9l\u00e9phone. Les donn\u00e9es serveur sont exclusivement sur des serveurs canadiens. Conforme COPPA, FERPA et LPRPDE.' },
       { q: 'Quels sujets et niveaux\u00a0?', a: 'Couverture compl\u00e8te K-12 de la Saskatchewan : Math, Sciences, Fran\u00e7ais, \u00c9tudes sociales, Sant\u00e9, Arts, \u00c9d. physique, \u00c9d. aux carri\u00e8res, plus Physique, Bio et Chimie au secondaire.' },
       { q: 'Support Android\u00a0?', a: 'WolfWhale est con\u00e7u exclusivement pour iOS/iPadOS avec SwiftUI natif. iOS 17+ requis, fonctionnalit\u00e9s IA sur iOS 26+.' },
-      { q: 'Quels r\u00f4les sont pris en charge\u00a0?', a: 'Cinq r\u00f4les : \u00c9l\u00e8ve, Enseignant, Parent, Admin et Super Admin. Chacun a son propre tableau de bord.' },
+      { q: 'Quels r\u00f4les sont pris en charge\u00a0?', a: 'Quatre r\u00f4les : \u00c9l\u00e8ve, Enseignant, Parent et Admin. Chacun a son propre tableau de bord.' },
       { q: 'WolfWhale fonctionne-t-il dans les communaut\u00e9s \u00e9loign\u00e9es ou nordiques\u00a0?', a: 'Oui. Le mode hors ligne permet aux \u00e9l\u00e8ves d\u2019apprendre partout \u2014 m\u00eame sans internet fiable. Tout le contenu, les manuels et les outils sont disponibles hors ligne avec chiffrement sur l\u2019appareil. Les donn\u00e9es se synchronisent automatiquement au retour de la connectivit\u00e9.' },
     ],
     contactTitle: 'NOUS JOINDRE',
@@ -370,7 +370,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     terms: 'Conditions',
     help: 'Aide',
     // Micro-Lessons
-    microLessonsTitle: 'SYST\u00c8ME DE MICRO-LE\u00c7ONS',
+    microLessonsTitle: 'MICRO-LE\u00c7ONS',
     microLessonsSub: 'Apprentissage fond\u00e9 sur la th\u00e9orie de la charge cognitive. Chaque contenu suit ce format.',
     microLessonsSteps: [
       { title: 'Accroche', desc: 'Un sc\u00e9nario de 2 phrases qui capte l\u2019attention' },

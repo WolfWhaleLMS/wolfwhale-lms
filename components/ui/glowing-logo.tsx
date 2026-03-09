@@ -14,9 +14,23 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
 
   return (
     <div className={`relative inline-flex items-center justify-center ${className}`}>
-      {/* Glow layer — large circular purple glow BEHIND the tile */}
+      {/* Light mode glow — deeper indigo */}
       <div
-        className="absolute rounded-full"
+        className="absolute rounded-full dark:hidden"
+        style={{
+          width: tileSize * 3.6,
+          height: tileSize * 3.6,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 0,
+          background: 'radial-gradient(circle, rgba(79,70,229,0.55) 0%, rgba(79,70,229,0.25) 40%, rgba(79,70,229,0) 70%)',
+          filter: `blur(${g * 1.2}px)`,
+        }}
+      />
+      {/* Dark mode glow — purple */}
+      <div
+        className="absolute rounded-full hidden dark:block"
         style={{
           width: tileSize * 3.6,
           height: tileSize * 3.6,
