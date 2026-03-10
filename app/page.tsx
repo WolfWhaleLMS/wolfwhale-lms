@@ -15,9 +15,10 @@ interface PageProps {
 
 export default async function LMSHubPage({ searchParams }: PageProps) {
   const params = await searchParams
-  const lang: Lang = params.lang === 'fr' ? 'fr' : 'en'
+  const validLangs: Lang[] = ['en', 'fr', 'es', 'de', 'it', 'fr_fr', 'ca', 'cr_th', 'cr_y']
+  const lang: Lang = validLangs.includes(params.lang as Lang) ? (params.lang as Lang) : 'en'
   const t = landingContent[lang]
-  const lp = lang === 'fr' ? '?lang=fr' : ''
+  const lp = lang !== 'en' ? `?lang=${lang}` : ''
 
   return (
     <div className="min-h-screen relative overflow-x-hidden bg-white dark:bg-black">
