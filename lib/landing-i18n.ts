@@ -140,16 +140,16 @@ export interface LandingContent {
 
 export const landingContent: Record<Lang, LandingContent> = {
   en: {
-    lms: 'Learning Management System',
+    lms: 'School Platform',
     nav: { features: 'Features', compare: 'Compare', pricing: 'Pricing', faq: 'FAQ', signIn: 'Sign In', contact: 'Contact', divisions: 'Divisions' },
-    heroTagline: 'The only native iOS LMS built for Canadian schools. AI tutoring, 72 original textbooks, offline learning \u2014 one app, zero data leaving Canada.',
+    heroTagline: 'The complete school operating system for Canadian K\u201312. Attendance, gradebook, report cards, 72 original textbooks, AI tools \u2014 one app, zero data leaving Canada.',
     requestDemo: 'Get a Demo',
     seeFeatures: 'See Features',
     downloadOn: 'Download on the',
     appStore: 'App Store',
     comingSoon: 'Coming Soon',
     featuresTitle: 'POWERFUL FEATURES',
-    featuresSubtitle: 'Everything a modern school needs, built into one native iOS app.',
+    featuresSubtitle: 'LMS + SIS in one native iOS app. From micro-lessons to report cards — everything your school needs.',
     features: [
       { icon: Brain, title: 'Micro-Lessons', slug: 'micro-lessons', points: ['Research-backed cognitive load theory', 'Hook \u2192 Lesson \u2192 Compare \u2192 Quiz format', 'Reading timer ensures comprehension', 'Gated quizzes unlock after reading'], color: '#8B5CF6' },
       { icon: Bot, title: 'On-Device AI (6 Tools)', slug: 'ai-tools', points: ['AI Tutor with curriculum awareness', 'Micro-Lesson Converter (industry first)', 'Lesson Plan Builder', 'Report Card Comments', 'AI Search across all content', 'Apple Intelligence \u2014 data never leaves device'], color: '#00BFFF' },
@@ -176,7 +176,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     macCoursesLabel: 'Mac \u2014 Student Dashboard',
     screenshotSoon: 'Screenshot Coming Soon',
     compareTitle: 'HOW WE COMPARE',
-    compareSub: 'WolfWhale vs every major Canadian LMS.',
+    compareSub: 'WolfWhale vs every major Canadian school platform.',
     featureLabel: 'Feature',
     compareRows: [
       { feature: 'AI Micro-Lesson Converter', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
@@ -206,7 +206,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     ],
     volumeDiscounts: 'Teachers always free. Division pricing available for 500+ users.',
     aboutTitle: 'Why WolfWhale',
-    aboutText: 'WolfWhale is the only LMS that combines cognitive load theory, on-device AI, and 72 original textbooks into one native iOS app. Built for 4 user roles \u2014 Student, Teacher, Parent, and Admin \u2014 with 682 Saskatchewan curriculum outcomes mapped and expanding nationally. Student data never leaves the device. Canadian values drive everything we ship \u2014 privacy, accessibility, Indigenous connections, and bilingual support.',
+    aboutText: 'WolfWhale is the only school platform that combines cognitive load theory, on-device AI, and 72 original textbooks into one native iOS app. Built for 4 user roles \u2014 Student, Teacher, Parent, and Admin \u2014 with 682 Saskatchewan curriculum outcomes mapped and expanding nationally. Student data never leaves the device. Canadian values drive everything we ship \u2014 privacy, accessibility, Indigenous connections, and bilingual support.',
     canadaTitle: 'Built in Canada',
     canadaSub: 'Vancouver, BC. Designed, developed, hosted here. Saskatchewan-first curriculum, expanding to all 13 provinces and territories.',
     canadaBadges: [
@@ -226,7 +226,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     ],
     trcLink: 'Read the full TRC Calls to Action',
     faqTitle: 'FREQUENTLY ASKED QUESTIONS',
-    faqSub: 'Quick answers about WolfWhale LMS.',
+    faqSub: 'Quick answers about WolfWhale.',
     faqItems: [
       { q: 'How much does WolfWhale cost?', a: '$12/user/month with a 1-year contract. All features included. Teachers get free access. Volume discounts for school boards.' },
       { q: 'What are micro-lessons?', a: 'Research-backed bite-sized lessons using cognitive load theory. Each has a hook, a lesson, a comparison card, a reading timer, and gated quiz questions.' },
@@ -252,7 +252,7 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Gated Quiz', desc: '5 quiz questions per section, locked until the reading timer completes' },
     ],
     microLessonsConverterTitle: 'AI Micro-Lesson Converter',
-    microLessonsConverterDesc: 'No other LMS has this. Teachers paste any text \u2014 lesson notes, textbook excerpts, articles \u2014 and on-device AI converts it into structured micro-lessons instantly. Preview, edit, and assign in minutes.',
+    microLessonsConverterDesc: 'No other school platform has this. Teachers paste any text \u2014 lesson notes, textbook excerpts, articles \u2014 and on-device AI converts it into structured micro-lessons instantly. Preview, edit, and assign in minutes.',
     // Textbooks
     textbooksTitle: 'WOLFWHALE BOOKS',
     textbooksSub: '72 original textbooks published under our own brand. Not links to external content \u2014 fully integrated with micro-lessons, flashcards, and interactive activities.',
@@ -264,7 +264,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     ],
     // Key Differentiators
     differentiators: [
-      { title: 'Only LMS with AI micro-lesson conversion', desc: 'Teachers paste any text, get structured micro-lessons instantly' },
+      { title: 'Only school platform with AI micro-lesson conversion', desc: 'Teachers paste any text, get structured micro-lessons instantly' },
       { title: 'Cognitive load theory in every lesson', desc: 'Not just pretty UI \u2014 research-backed learning science' },
       { title: 'On-device AI, full privacy', desc: 'Student data never leaves the device' },
       { title: 'Visual curriculum constellation', desc: 'Gamified skill tree showing all 682+ learning outcomes' },
@@ -281,7 +281,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     ],
     missions: [
       { title: 'Mission 1', desc: 'Raise Indigenous graduation rates' },
-      { title: 'Mission 2', desc: 'Replace outdated LMS platforms' },
+      { title: 'Mission 2', desc: 'Replace outdated school platforms' },
     ],
     // IT Summit Banner
     itSummitBanner: 'See us at IT Summit 2026 \u2014 Saskatoon, May 28-29',
@@ -304,16 +304,16 @@ export const landingContent: Record<Lang, LandingContent> = {
     pilotSub: '30-day full-featured pilot for one school. No cost, no commitment.',
   },
   fr: {
-    lms: 'Syst\u00e8me de gestion de l\u2019apprentissage',
+    lms: 'Plateforme scolaire',
     nav: { features: 'Fonctionnalit\u00e9s', compare: 'Comparer', pricing: 'Tarifs', faq: 'FAQ', signIn: 'Connexion', contact: 'Contact', divisions: 'Divisions scolaires' },
-    heroTagline: 'Le seul SGA iOS natif con\u00e7u pour les \u00e9coles canadiennes. Tutorat IA, 72 manuels originaux, apprentissage hors ligne \u2014 une seule app, aucune donn\u00e9e hors du Canada.',
+    heroTagline: 'Le syst\u00e8me scolaire complet pour les \u00e9coles canadiennes K\u201312. Pr\u00e9sences, carnet de notes, bulletins, 72 manuels originaux, outils IA \u2014 une seule app, aucune donn\u00e9e hors du Canada.',
     requestDemo: 'Demander une d\u00e9mo',
     seeFeatures: 'Voir les fonctionnalit\u00e9s',
     downloadOn: 'T\u00e9l\u00e9charger sur l\u2019',
     appStore: 'App Store',
     comingSoon: 'Bient\u00f4t disponible',
     featuresTitle: 'FONCTIONNALIT\u00c9S PUISSANTES',
-    featuresSubtitle: 'Tout ce dont une \u00e9cole moderne a besoin, int\u00e9gr\u00e9 dans une seule app iOS native.',
+    featuresSubtitle: 'SGA + SIS dans une seule app iOS native. Des micro-le\u00e7ons aux bulletins \u2014 tout ce dont votre \u00e9cole a besoin.',
     features: [
       { icon: Brain, title: 'Micro-le\u00e7ons', slug: 'micro-lessons', points: ['Th\u00e9orie de la charge cognitive', 'Format : accroche \u2192 le\u00e7on \u2192 comparaison \u2192 quiz', 'Minuterie de lecture pour la compr\u00e9hension', 'Quiz verrouill\u00e9s jusqu\u2019\u00e0 la fin de la lecture'], color: '#8B5CF6' },
       { icon: Bot, title: 'IA sur l\u2019appareil (6 outils)', slug: 'ai-tools', points: ['Tuteur IA avec contexte du programme', 'Convertisseur de micro-le\u00e7ons (premi\u00e8re mondiale)', 'G\u00e9n\u00e9rateur de plans de cours', 'Commentaires de bulletins', 'Recherche IA dans tout le contenu', 'Apple Intelligence \u2014 donn\u00e9es sur l\u2019appareil'], color: '#00BFFF' },
@@ -340,7 +340,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     macCoursesLabel: 'Mac \u2014 Tableau de bord',
     screenshotSoon: 'Capture d\u2019\u00e9cran \u00e0 venir',
     compareTitle: 'COMMENT NOUS NOUS COMPARONS',
-    compareSub: 'WolfWhale vs chaque SGA canadien majeur.',
+    compareSub: 'WolfWhale vs chaque plateforme scolaire canadienne majeure.',
     featureLabel: 'Fonctionnalit\u00e9',
     compareRows: [
       { feature: 'Convertisseur de micro-le\u00e7ons IA', wolfwhale: true, canvas: false, brightspace: false, edsby: false, moodle: false },
@@ -375,7 +375,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     ],
     volumeDiscounts: 'Acc\u00e8s gratuit pour les enseignants. Rabais de volume pour les commissions scolaires.',
     aboutTitle: '\u00c0 propos de WolfWhale',
-    aboutText: 'WolfWhale est le seul SGA qui combine la th\u00e9orie de la charge cognitive, l\u2019IA sur l\u2019appareil et 72 manuels originaux dans une seule app iOS native. Con\u00e7u pour 4 r\u00f4les \u2014 \u00c9l\u00e8ve, Enseignant, Parent et Admin \u2014 avec 682 r\u00e9sultats du programme de la Saskatchewan, en expansion nationale. Les donn\u00e9es des \u00e9l\u00e8ves ne quittent jamais l\u2019appareil. Les valeurs canadiennes guident tout ce que nous livrons \u2014 confidentialit\u00e9, accessibilit\u00e9, liens autochtones et soutien bilingue.',
+    aboutText: 'WolfWhale est la seule plateforme scolaire qui combine la th\u00e9orie de la charge cognitive, l\u2019IA sur l\u2019appareil et 72 manuels originaux dans une seule app iOS native. Con\u00e7u pour 4 r\u00f4les \u2014 \u00c9l\u00e8ve, Enseignant, Parent et Admin \u2014 avec 682 r\u00e9sultats du programme de la Saskatchewan, en expansion nationale. Les donn\u00e9es des \u00e9l\u00e8ves ne quittent jamais l\u2019appareil. Les valeurs canadiennes guident tout ce que nous livrons \u2014 confidentialit\u00e9, accessibilit\u00e9, liens autochtones et soutien bilingue.',
     canadaTitle: 'Fi\u00e8rement construit au Canada',
     canadaSub: 'Vancouver, C.-B. Con\u00e7u, d\u00e9velopp\u00e9 et h\u00e9berg\u00e9 au Canada. Programme de la Saskatchewan d\u2019abord, expansion nationale.',
     canadaBadges: [
@@ -395,11 +395,11 @@ export const landingContent: Record<Lang, LandingContent> = {
     ],
     trcLink: 'Lire les appels \u00e0 l\u2019action de la CVR',
     faqTitle: 'FOIRE AUX QUESTIONS',
-    faqSub: 'Tout ce que vous devez savoir sur WolfWhale LMS.',
+    faqSub: 'Tout ce que vous devez savoir sur WolfWhale.',
     faqItems: [
       { q: 'Combien co\u00fbte WolfWhale\u00a0?', a: '12\u00a0$/utilisateur/mois avec un contrat d\u2019un an. Tout inclus \u2014 72 manuels, tuteur IA, micro-le\u00e7ons, ludification. Acc\u00e8s gratuit pour les enseignants. Rabais de volume pour les commissions scolaires.' },
       { q: 'Que sont les micro-le\u00e7ons\u00a0?', a: 'Les micro-le\u00e7ons sont notre format de contenu fond\u00e9 sur la th\u00e9orie de la charge cognitive. Chacune comprend une accroche, une le\u00e7on courte, une carte de comparaison, une minuterie de lecture et 5 questions de quiz.' },
-      { q: 'Les enseignants peuvent-ils cr\u00e9er leurs propres micro-le\u00e7ons\u00a0?', a: 'Oui \u2014 WolfWhale est le seul SGA avec un convertisseur de micro-le\u00e7ons IA. Collez n\u2019importe quel texte et l\u2019IA le convertit en micro-le\u00e7ons structur\u00e9es.' },
+      { q: 'Les enseignants peuvent-ils cr\u00e9er leurs propres micro-le\u00e7ons\u00a0?', a: 'Oui \u2014 WolfWhale est la seule plateforme scolaire avec un convertisseur de micro-le\u00e7ons IA. Collez n\u2019importe quel texte et l\u2019IA le convertit en micro-le\u00e7ons structur\u00e9es.' },
       { q: 'Y a-t-il un essai gratuit\u00a0?', a: 'Oui \u2014 nous offrons un programme pilote complet. Demandez une d\u00e9mo.' },
       { q: 'O\u00f9 sont stock\u00e9es les donn\u00e9es\u00a0?', a: 'L\u2019IA fonctionne sur l\u2019appareil \u2014 les donn\u00e9es ne quittent jamais le t\u00e9l\u00e9phone. Les donn\u00e9es serveur sont exclusivement sur des serveurs canadiens. Conforme COPPA, FERPA et LPRPDE.' },
       { q: 'Quels sujets et niveaux\u00a0?', a: 'Couverture compl\u00e8te K-12 de la Saskatchewan : Math, Sciences, Fran\u00e7ais, \u00c9tudes sociales, Sant\u00e9, Arts, \u00c9d. physique, \u00c9d. aux carri\u00e8res, plus Physique, Bio et Chimie au secondaire.' },
@@ -425,7 +425,7 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Quiz verrouill\u00e9', desc: '5 questions par section, d\u00e9verrouill\u00e9es apr\u00e8s la minuterie' },
     ],
     microLessonsConverterTitle: 'Convertisseur de micro-le\u00e7ons IA',
-    microLessonsConverterDesc: 'Aucun autre SGA n\u2019a cette fonctionnalit\u00e9. Les enseignants collent n\u2019importe quel texte et l\u2019IA le convertit en micro-le\u00e7ons structur\u00e9es.',
+    microLessonsConverterDesc: 'Aucune autre plateforme scolaire n\u2019a cette fonctionnalit\u00e9. Les enseignants collent n\u2019importe quel texte et l\u2019IA le convertit en micro-le\u00e7ons structur\u00e9es.',
     // Textbooks
     textbooksTitle: 'WOLFWHALE BOOKS',
     textbooksSub: '72 manuels originaux publi\u00e9s sous notre propre marque. Pas de liens vers du contenu externe \u2014 int\u00e9gr\u00e9s avec micro-le\u00e7ons, cartes m\u00e9moire et activit\u00e9s interactives.',
@@ -437,7 +437,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     ],
     // Key Differentiators
     differentiators: [
-      { title: 'Seul SGA avec conversion IA de micro-le\u00e7ons', desc: 'Les enseignants collent du texte, obtiennent des micro-le\u00e7ons' },
+      { title: 'Seule plateforme scolaire avec conversion IA de micro-le\u00e7ons', desc: 'Les enseignants collent du texte, obtiennent des micro-le\u00e7ons' },
       { title: 'Th\u00e9orie de la charge cognitive dans chaque le\u00e7on', desc: 'Science de l\u2019apprentissage fond\u00e9e sur la recherche' },
       { title: 'IA sur l\u2019appareil, confidentialit\u00e9 totale', desc: 'Les donn\u00e9es ne quittent jamais l\u2019appareil' },
       { title: 'Constellation du programme', desc: 'Arbre de comp\u00e9tences montrant les 682+ r\u00e9sultats' },
@@ -454,7 +454,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     ],
     missions: [
       { title: 'Mission 1', desc: 'Augmenter les taux de diplomation autochtones' },
-      { title: 'Mission 2', desc: 'Remplacer les plateformes SGA d\u00e9pass\u00e9es' },
+      { title: 'Mission 2', desc: 'Remplacer les plateformes scolaires d\u00e9pass\u00e9es' },
     ],
     // IT Summit Banner
     itSummitBanner: 'Visitez-nous au IT Summit 2026 \u2014 Saskatoon, 28-29 mai',

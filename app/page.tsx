@@ -41,7 +41,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
           "name": "Wolf Whale",
-          "description": "Canadian learning management system for K-12 and post-secondary schools with built-in spaced repetition flashcards.",
+          "description": "Complete school operating system for Canadian K-12. Combines LMS + SIS with 72 original textbooks, AI tools, attendance, gradebook, and report cards in one native iOS app.",
           "url": "https://wolfwhale.ca",
           "logo": "https://wolfwhale.ca/logo.png",
           "email": "info@wolfwhale.ca",
@@ -274,12 +274,12 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           </div>
         </section>
 
-        {/* What is an LMS? */}
+        {/* What is a School Platform? */}
         <section className="px-4 py-10 sm:py-16">
           <div className="max-w-3xl mx-auto rounded-2xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 backdrop-blur-sm px-8 py-8 text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider mb-4">What is an LMS?</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider mb-4">What is a School Platform?</h2>
             <p className="text-base sm:text-lg text-gray-600 dark:text-white/70 leading-relaxed">
-              A <strong>Learning Management System</strong> is the digital backbone of a classroom — where courses are delivered, grades are tracked, and students learn. WolfWhale is the only one built from the ground up around how students actually absorb information.
+              A <strong>school platform</strong> combines your LMS, student information system, textbooks, and classroom tools into one place — so teachers stop juggling six different logins. WolfWhale is the only one built from the ground up as a single native app for Canadian K-12.
             </p>
           </div>
         </section>
@@ -349,16 +349,16 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                 {/* Sign In — light & dark */}
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-full max-w-[220px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                    <Image src="/screenshot-iphone-light.png" alt="WolfWhale LMS Sign In on iPhone" width={1170} height={2532} className="block dark:hidden w-full h-full object-cover object-top" priority />
-                    <Image src="/screenshot-iphone-dark.png" alt="WolfWhale LMS Sign In on iPhone (Dark)" width={1170} height={2532} className="hidden dark:block w-full h-full object-cover object-top" />
+                    <Image src="/screenshot-iphone-light.png" alt="WolfWhale Sign In on iPhone" width={1170} height={2532} className="block dark:hidden w-full h-full object-cover object-top" priority />
+                    <Image src="/screenshot-iphone-dark.png" alt="WolfWhale Sign In on iPhone (Dark)" width={1170} height={2532} className="hidden dark:block w-full h-full object-cover object-top" />
                   </div>
                   <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.signInLight}</p>
                 </div>
                 {/* Student Dashboard — light & dark */}
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-full max-w-[220px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                    <Image src="/screenshot-iphone-dashboard.png" alt="WolfWhale LMS Student Dashboard on iPhone" width={1170} height={2532} className="block dark:hidden w-full h-full object-cover object-top" />
-                    <Image src="/screenshot-home-dark.png" alt="WolfWhale LMS Student Dashboard on iPhone (Dark)" width={1170} height={2532} className="hidden dark:block w-full h-full object-cover object-top" />
+                    <Image src="/screenshot-iphone-dashboard.png" alt="WolfWhale Student Dashboard on iPhone" width={1170} height={2532} className="block dark:hidden w-full h-full object-cover object-top" />
+                    <Image src="/screenshot-home-dark.png" alt="WolfWhale Student Dashboard on iPhone (Dark)" width={1170} height={2532} className="hidden dark:block w-full h-full object-cover object-top" />
                   </div>
                   <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.dashboardLabel}</p>
                 </div>
@@ -377,8 +377,8 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                       <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/60" />
                       <span className="h-2.5 w-2.5 rounded-full bg-green-400/60" />
                     </div>
-                    <Image src="/screenshot-mac-courses.png" alt="WolfWhale LMS on Mac" width={2064} height={2752} className="block dark:hidden w-full object-cover object-top" style={{ maxHeight: '450px' }} />
-                    <Image src="/screenshot-mac-courses-dark.png" alt="WolfWhale LMS on Mac (Dark)" width={2064} height={2752} className="hidden dark:block w-full object-cover object-top" style={{ maxHeight: '450px' }} />
+                    <Image src="/screenshot-mac-courses.png" alt="WolfWhale on Mac" width={2064} height={2752} className="block dark:hidden w-full object-cover object-top" style={{ maxHeight: '450px' }} />
+                    <Image src="/screenshot-mac-courses-dark.png" alt="WolfWhale on Mac (Dark)" width={2064} height={2752} className="hidden dark:block w-full object-cover object-top" style={{ maxHeight: '450px' }} />
                   </div>
                   <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.macCoursesLabel}</p>
                 </div>
@@ -387,7 +387,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           </div>
         </section>
 
-        {/* LMS Comparison Section */}
+        {/* School Platform Comparison Section */}
         <section id="compare" className="px-4 py-10 sm:py-16">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
@@ -501,6 +501,23 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           </div>
         </section>
 
+        {/* Ambassador Program Teaser */}
+        <section className="px-4 py-10 sm:py-16">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-8 text-center space-y-4">
+              <p className="text-xs text-gray-400 dark:text-white/40 tracking-widest uppercase font-medium">Ambassador Program</p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                Know a School That Needs WolfWhale?
+              </h2>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-2xl mx-auto">
+                Earn 5% of Year 1 revenue for every school you bring. Teachers, parents, community members — anyone can join.
+              </p>
+              <a href="/referrals" className="inline-flex items-center gap-2 h-10 px-6 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-black text-sm font-semibold transition-all duration-100 hover:bg-gray-800 dark:hover:bg-gray-100">
+                Learn More & Sign Up
+              </a>
+            </div>
+          </div>
+        </section>
 
         {/* For School Divisions */}
         <section id="divisions" className="px-4 py-10 sm:py-16">
@@ -686,7 +703,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           <div className="flex flex-col gap-5">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex flex-col gap-1.5">
-                <p className="text-sm font-normal text-gray-700 dark:text-white/70 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>WOLFWHALE <span className="text-gray-400 dark:text-white/30 mx-1">|</span> Learning Management System</p>
+                <p className="text-sm font-normal text-gray-700 dark:text-white/70 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>WOLFWHALE <span className="text-gray-400 dark:text-white/30 mx-1">|</span> School Platform</p>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-white/60">
                   <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Vancouver, BC, Canada</span>
                   <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1 hover:text-[#00BFFF] transition-colors duration-100"><Mail className="h-3 w-3" /> info@wolfwhale.ca</a>

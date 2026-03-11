@@ -64,7 +64,7 @@ const featureDetails: Record<string, Partial<Record<Lang, FeatureDetail>> & { en
       ],
       callout: {
         label: 'Industry First',
-        text: 'WolfWhale is the only LMS that structures ALL content using cognitive load theory. This isn\'t a feature bolted on — it\'s the foundation of how every piece of content is delivered.',
+        text: 'WolfWhale is the only school platform that structures ALL content using cognitive load theory. This isn\'t a feature bolted on — it\'s the foundation of how every piece of content is delivered.',
       },
     },
     fr: {
@@ -149,7 +149,7 @@ const featureDetails: Record<string, Partial<Record<Lang, FeatureDetail>> & { en
       ],
       callout: {
         label: 'Only on WolfWhale',
-        text: 'No other LMS offers AI-powered micro-lesson conversion. Teachers paste any text and get structured, research-backed micro-lessons in seconds.',
+        text: 'No other school platform offers AI-powered micro-lesson conversion. Teachers paste any text and get structured, research-backed micro-lessons in seconds.',
       },
     },
     fr: {
@@ -219,7 +219,7 @@ const featureDetails: Record<string, Partial<Record<Lang, FeatureDetail>> & { en
             'Every chapter uses the micro-lesson format: Hook, Lesson, This Is / This Is Not, Reading Timer, Gated Quiz',
             '3-5 micro-lessons per chapter — students absorb one concept at a time',
             'Reading timer ensures comprehension before quizzes unlock',
-            'Written in authoritative 1950s textbook prose with modern LMS enhancements',
+            'Written in authoritative 1950s textbook prose with modern school platform enhancements',
             'Key terms, Indigenous connections, quizzes, and activities woven into every chapter',
           ],
         },
@@ -268,7 +268,7 @@ const featureDetails: Record<string, Partial<Record<Lang, FeatureDetail>> & { en
       ],
       callout: {
         label: 'Only on WolfWhale',
-        text: 'WolfWhale is the only LMS with its own original textbook library. 72 textbooks, 288+ chapters, all built on cognitive load theory — not links to third-party publishers. Teachers and students get everything in one app, fully integrated with courses, grades, and AI tools.',
+        text: 'WolfWhale is the only school platform with its own original textbook library. 72 textbooks, 288+ chapters, all built on cognitive load theory — not links to third-party publishers. Teachers and students get everything in one app, fully integrated with courses, grades, and AI tools.',
       },
     },
     fr: {
@@ -400,15 +400,16 @@ const featureDetails: Record<string, Partial<Record<Lang, FeatureDetail>> & { en
   },
   'teacher-tools': {
     en: {
-      headline: '11 Specialized Teacher Tools',
-      description: 'WolfWhale gives teachers a complete hub of purpose-built tools — from AI-powered lesson planning to offline gradebooks. Every tool is designed to save time and improve teaching outcomes.',
+      headline: '12+ Specialized Teacher Tools',
+      description: 'WolfWhale gives teachers a complete hub of purpose-built tools — from AI-powered lesson planning to gradebooks, attendance tracking, and report card generation. Every tool is designed to save time, reduce admin work, and improve teaching outcomes.',
       sections: [
         {
           title: 'Daily Essentials',
           items: [
-            'Report Card Comments — AI-generated, customizable comments based on student data. Edit and approve before publishing.',
+            'Attendance Tracking — Mark daily or period-based attendance with one tap. Automatic parent alerts for absences and tardies. Pattern reporting for administrators.',
+            'Gradebook — Full-featured gradebook with category weighting, grade curves, standards-based grading, CSV import/export, and offline support.',
+            'Report Cards — Generate complete report cards with AI-assisted comments based on grades, attendance, and engagement data. Customize and approve before publishing.',
             'Lesson Plan Builder — AI-assisted, curriculum-aligned lesson plans. Select subject, grade, and outcomes to generate complete plans.',
-            'Offline Gradebook — Full gradebook that works without internet. Category weighting, grade curves, CSV import/export, SIS integration.',
             'Classroom Tools — Projection timer for activities, random student picker for fair participation.',
             'Micro-Lesson Converter (NEW) — AI auto-conversion of any text into structured micro-lessons. Industry first.',
           ],
@@ -432,13 +433,14 @@ const featureDetails: Record<string, Partial<Record<Lang, FeatureDetail>> & { en
         {
           title: 'Additional Capabilities',
           items: [
-            'Comprehensive gradebook with category weighting and grade curves',
+            'Report card generation with customizable templates and AI-assisted comments',
             'Assignment creation with templates and rubric attachment',
             'Peer review setup for student-to-student feedback',
-            'Student insights dashboard with engagement metrics',
-            'Attendance tracking and pattern reporting',
-            'Conference scheduling with parents',
+            'Student insights dashboard with engagement and attendance metrics',
+            'Attendance pattern reporting and absence trend analysis',
+            'Parent-teacher conference scheduling with in-app booking',
             'Standards mastery view across entire class',
+            'Grade and attendance data export for SIS compliance',
           ],
         },
       ],
@@ -589,27 +591,43 @@ const featureDetails: Record<string, Partial<Record<Lang, FeatureDetail>> & { en
   'connected': {
     en: {
       headline: 'Everyone Connected in One App',
-      description: 'Students, teachers, parents, and administrators all use the same app with purpose-built dashboards for each role. No separate portals, no switching between apps.',
+      description: 'WolfWhale is a complete school platform — not just a learning tool. Students, teachers, parents, and administrators all use the same app with purpose-built dashboards for each role. Built-in SIS features mean no separate portals, no switching between apps, and no third-party integrations required.',
       sections: [
         {
           title: 'Four User Roles',
           items: [
-            'Student — courses, grades, textbooks, flashcards, gamification',
-            'Teacher — gradebook, lesson planner, micro-lesson converter, rubrics, seating chart',
-            'Parent — track child\'s progress, view grades, receive announcements',
-            'Admin — school-wide dashboard, user management, analytics',
+            'Student — courses, grades, textbooks, flashcards, gamification, attendance history',
+            'Teacher — gradebook, attendance tracking, report cards, lesson planner, micro-lesson converter, rubrics, seating chart',
+            'Parent — track child\'s progress, view grades and report cards, receive alerts, schedule parent-teacher conferences',
+            'Admin — school-wide dashboard, enrollment management, user management, analytics, compliance reporting',
+          ],
+        },
+        {
+          title: 'Built-In SIS Features',
+          items: [
+            'Attendance Tracking — Daily and period-based attendance with absence alerts sent automatically to parents',
+            'Gradebook — Full-featured gradebook with category weighting, grade curves, and standards-based grading',
+            'Report Cards — Generate, customize, and publish report cards with AI-assisted comments',
+            'Parent Alerts — Automatic notifications for absences, missing assignments, grade changes, and announcements',
+            'Enrollment Management — Student enrollment, class rostering, and schedule management for administrators',
+            'Conference Scheduling — Parents book parent-teacher conferences directly in the app with calendar integration',
           ],
         },
         {
           title: 'Real-Time Communication',
           items: [
-            'Announcements from teachers and admins',
+            'Announcements from teachers and admins pushed to all connected users',
             'Assignment notifications and due date reminders',
-            'Progress updates for parents',
-            'All in one app — no email chains or separate portals',
+            'Absence and tardy alerts sent to parents in real time',
+            'Progress updates and grade change notifications for parents',
+            'All in one app — no email chains, no separate SIS portals, no third-party add-ons',
           ],
         },
       ],
+      callout: {
+        label: 'Complete School Platform',
+        text: 'Most schools juggle an LMS, a separate SIS, a parent portal, and a messaging tool. WolfWhale replaces all of them. Attendance, gradebook, report cards, enrollment, parent communication, and learning — all in one native iOS app.',
+      },
     },
   },
   'land-based': {
