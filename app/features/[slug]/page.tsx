@@ -679,7 +679,7 @@ interface PageProps {
 export default async function FeatureDetailPage({ params, searchParams }: PageProps) {
   const { slug } = await params
   const sp = await searchParams
-  const validLangs: Lang[] = ['en', 'fr', 'es', 'de', 'it', 'fr_fr', 'ca', 'cr_th', 'cr_y']
+  const validLangs: Lang[] = ['en', 'fr']
   const lang: Lang = validLangs.includes(sp.lang as Lang) ? (sp.lang as Lang) : 'en'
   const lp = lang !== 'en' ? `?lang=${lang}` : ''
 

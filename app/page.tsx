@@ -15,7 +15,7 @@ interface PageProps {
 
 export default async function LMSHubPage({ searchParams }: PageProps) {
   const params = await searchParams
-  const validLangs: Lang[] = ['en', 'fr', 'es', 'de', 'it', 'fr_fr', 'ca', 'cr_th', 'cr_y']
+  const validLangs: Lang[] = ['en', 'fr']
   const lang: Lang = validLangs.includes(params.lang as Lang) ? (params.lang as Lang) : 'en'
   const t = landingContent[lang]
   const lp = lang !== 'en' ? `?lang=${lang}` : ''
@@ -25,14 +25,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
       {/* Principle 4: persistent resumable scroll state */}
       <ScrollPersist />
 
-      {/* IT Summit 2026 Banner */}
-      <div className="fixed top-[49px] sm:top-[53px] left-0 right-0 z-40 bg-[#00BFFF]/10 dark:bg-[#00BFFF]/5 border-b border-[#00BFFF]/20 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto px-4 py-1.5 flex items-center justify-center gap-2 text-xs sm:text-sm">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00BFFF] animate-pulse" />
-          <span className="text-gray-700 dark:text-white/80 font-medium">{t.itSummitBanner}</span>
-          <a href="#contact" className="text-[#00BFFF] font-semibold hover:underline ml-1">Book a Meeting &rarr;</a>
-        </div>
-      </div>
+
 
       {/* LocalBusiness schema for local SEO */}
       <script
@@ -48,42 +41,27 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           "telephone": "+1-306-981-5926",
           "address": {
             "@type": "PostalAddress",
-            "addressLocality": "Vancouver",
-            "addressRegion": "BC",
+            "addressLocality": "Saskatoon",
+            "addressRegion": "SK",
             "addressCountry": "CA"
           },
           "areaServed": [
             { "@type": "Country", "name": "Canada" },
-            { "@type": "City", "name": "Vancouver" },
+            { "@type": "City", "name": "Saskatoon" },
+            { "@type": "City", "name": "Regina" },
             { "@type": "City", "name": "Toronto" },
             { "@type": "City", "name": "Calgary" },
             { "@type": "City", "name": "Ottawa" },
             { "@type": "City", "name": "Edmonton" },
             { "@type": "City", "name": "Montreal" },
             { "@type": "City", "name": "Winnipeg" },
-            { "@type": "City", "name": "Halifax" }
+            { "@type": "City", "name": "Halifax" },
+            { "@type": "City", "name": "Vancouver" }
           ],
           "priceRange": "$$"
         }) }}
       />
 
-      {/* Corinthian Pillar Borders — Real Marble Image (hidden on small mobile) */}
-      {/* Left Pillar */}
-      <div className="fixed top-[15px] -bottom-[60px] left-0 w-[30px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none hidden sm:block" aria-hidden="true">
-        <img
-          src="/pillar.jpg"
-          alt=""
-          className="block w-full h-full object-cover object-top mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
-        />
-      </div>
-      {/* Right Pillar — mirrored */}
-      <div className="fixed top-[15px] -bottom-[60px] right-0 w-[30px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none hidden sm:block" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
-        <img
-          src="/pillar.jpg"
-          alt=""
-          className="block w-full h-full object-cover object-top mix-blend-multiply dark:mix-blend-lighten dark:invert opacity-90 dark:opacity-40"
-        />
-      </div>
 
       {/* Principle 13: cmd+k command palette */}
       <CommandPalette items={[
@@ -255,7 +233,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             </div>
 
             {/* Missions */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
               {t.missions.map(({ title, desc }) => (
                 <div
                   key={title}
@@ -274,13 +252,43 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           </div>
         </section>
 
-        {/* What is a School Platform? */}
+
+        {/* LMS + SIS in One App */}
         <section className="px-4 py-10 sm:py-16">
-          <div className="max-w-3xl mx-auto rounded-2xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 backdrop-blur-sm px-8 py-8 text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider mb-4">What is a School Platform?</h2>
-            <p className="text-base sm:text-lg text-gray-600 dark:text-white/70 leading-relaxed">
-              A <strong>school platform</strong> combines your LMS, student information system, textbooks, and classroom tools into one place — so teachers stop juggling six different logins. WolfWhale is the only one built from the ground up as a single native app for Canadian K-12.
-            </p>
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-10 md:p-14">
+              <div className="text-center space-y-6">
+                <p className="text-xs text-gray-400 dark:text-white/40 tracking-widest uppercase font-medium">Why WolfWhale is Different</p>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                  LMS + SIS in One App
+                </h2>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-2xl mx-auto leading-relaxed">
+                  Most schools run a separate LMS for learning and a separate SIS for administration. WolfWhale combines both into a single native iOS app — micro-lessons, textbooks, attendance, gradebook, report cards, enrollment, parent portal, and scheduling. No more juggling six different logins.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto pt-4">
+                  <div className="bg-white/50 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] rounded-xl p-5 text-left">
+                    <p className="text-xs text-gray-400 dark:text-white/40 tracking-widest uppercase font-semibold mb-2">LMS Side</p>
+                    <ul className="space-y-1.5 text-sm text-gray-600 dark:text-white/70">
+                      <li className="flex items-start gap-2"><span className="mt-1.5 h-1 w-1 rounded-full bg-[#8B5CF6] shrink-0" />Micro-lessons &amp; textbooks</li>
+                      <li className="flex items-start gap-2"><span className="mt-1.5 h-1 w-1 rounded-full bg-[#8B5CF6] shrink-0" />AI tutor &amp; lesson converter</li>
+                      <li className="flex items-start gap-2"><span className="mt-1.5 h-1 w-1 rounded-full bg-[#8B5CF6] shrink-0" />Gamification &amp; XP</li>
+                      <li className="flex items-start gap-2"><span className="mt-1.5 h-1 w-1 rounded-full bg-[#8B5CF6] shrink-0" />Offline learning</li>
+                      <li className="flex items-start gap-2"><span className="mt-1.5 h-1 w-1 rounded-full bg-[#8B5CF6] shrink-0" />Curriculum constellation</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/50 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] rounded-xl p-5 text-left">
+                    <p className="text-xs text-gray-400 dark:text-white/40 tracking-widest uppercase font-semibold mb-2">SIS Side</p>
+                    <ul className="space-y-1.5 text-sm text-gray-600 dark:text-white/70">
+                      <li className="flex items-start gap-2"><span className="mt-1.5 h-1 w-1 rounded-full bg-[#00BFFF] shrink-0" />Attendance tracking</li>
+                      <li className="flex items-start gap-2"><span className="mt-1.5 h-1 w-1 rounded-full bg-[#00BFFF] shrink-0" />Gradebook &amp; report cards</li>
+                      <li className="flex items-start gap-2"><span className="mt-1.5 h-1 w-1 rounded-full bg-[#00BFFF] shrink-0" />Student enrollment &amp; records</li>
+                      <li className="flex items-start gap-2"><span className="mt-1.5 h-1 w-1 rounded-full bg-[#00BFFF] shrink-0" />Parent portal &amp; messaging</li>
+                      <li className="flex items-start gap-2"><span className="mt-1.5 h-1 w-1 rounded-full bg-[#00BFFF] shrink-0" />Timetable &amp; scheduling</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -330,58 +338,40 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           </div>
         </section>
 
-        {/* App Screenshots Section */}
-        <section id="screenshots" className="px-4 py-10 sm:py-16">
-          <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
-            <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
-                {t.appPreview}
+        {/* Download on the App Store */}
+        <section id="download" className="px-4 py-10 sm:py-16">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-10 md:p-14 text-center space-y-6">
+              <p className="text-xs text-gray-400 dark:text-white/40 tracking-widest uppercase font-medium">Available Now</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                Download WolfWhale
               </h2>
-              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-xl mx-auto">
-                {t.appPreviewSub}
+              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-2xl mx-auto leading-relaxed">
+                Native on iPhone, iPad, and Mac. One app for students, teachers, parents, and administrators.
               </p>
-            </div>
-
-            {/* iPhone — 2 key screens (light/dark switch with theme) */}
-            <div>
-              <p className="text-xs text-gray-400 dark:text-white/30 tracking-widest uppercase text-center mb-6">iPhone</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 justify-items-center max-w-lg mx-auto">
-                {/* Sign In — light & dark */}
-                <div className="flex flex-col items-center gap-4">
-                  <div className="w-full max-w-[220px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                    <Image src="/screenshot-iphone-light.png" alt="WolfWhale Sign In on iPhone" width={1170} height={2532} className="block dark:hidden w-full h-full object-cover object-top" priority />
-                    <Image src="/screenshot-iphone-dark.png" alt="WolfWhale Sign In on iPhone (Dark)" width={1170} height={2532} className="hidden dark:block w-full h-full object-cover object-top" />
-                  </div>
-                  <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.signInLight}</p>
-                </div>
-                {/* Student Dashboard — light & dark */}
-                <div className="flex flex-col items-center gap-4">
-                  <div className="w-full max-w-[220px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                    <Image src="/screenshot-iphone-dashboard.png" alt="WolfWhale Student Dashboard on iPhone" width={1170} height={2532} className="block dark:hidden w-full h-full object-cover object-top" />
-                    <Image src="/screenshot-home-dark.png" alt="WolfWhale Student Dashboard on iPhone (Dark)" width={1170} height={2532} className="hidden dark:block w-full h-full object-cover object-top" />
-                  </div>
-                  <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.dashboardLabel}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Mac — 1 screen */}
-            <div>
-              <p className="text-xs text-gray-400 dark:text-white/30 tracking-widest uppercase text-center mb-6">Mac</p>
-              <div className="flex justify-center">
-                <div className="flex flex-col items-center gap-4 w-full max-w-[720px]">
-                  <div className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30 relative">
-                    {/* Mac-style top bar */}
-                    <div className="h-7 bg-gray-100 dark:bg-white/[0.08] border-b border-gray-200 dark:border-white/10 flex items-center px-3 gap-1.5">
-                      <span className="h-2.5 w-2.5 rounded-full bg-red-400/60" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/60" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-green-400/60" />
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                <a
+                  href="https://apps.apple.com/app/id6759676805"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block"
+                >
+                  <div className="bg-black rounded-xl border border-gray-700 px-6 py-3 flex items-center gap-3 hover:bg-gray-900 transition-colors duration-100">
+                    <svg viewBox="0 0 24 24" className="h-8 w-8 fill-white flex-shrink-0">
+                      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                    </svg>
+                    <div className="flex flex-col text-left">
+                      <span className="text-[11px] text-white/90 leading-none">{t.downloadOn}</span>
+                      <span className="text-lg font-semibold text-white leading-tight">{t.appStore}</span>
                     </div>
-                    <Image src="/screenshot-mac-courses.png" alt="WolfWhale on Mac" width={2064} height={2752} className="block dark:hidden w-full object-cover object-top" style={{ maxHeight: '450px' }} />
-                    <Image src="/screenshot-mac-courses-dark.png" alt="WolfWhale on Mac (Dark)" width={2064} height={2752} className="hidden dark:block w-full object-cover object-top" style={{ maxHeight: '450px' }} />
                   </div>
-                  <p className="text-sm text-gray-900 dark:text-white/80 font-medium">{t.macCoursesLabel}</p>
-                </div>
+                </a>
+              </div>
+              <div className="flex flex-wrap justify-center gap-6 pt-4 text-xs text-gray-400 dark:text-white/30">
+                <span>iPhone</span>
+                <span>iPad</span>
+                <span>Mac (Apple Silicon)</span>
+                <span>iOS 17+</span>
               </div>
             </div>
           </div>
@@ -402,7 +392,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden">
               <div className="overflow-x-auto">
                 <div className="min-w-[600px]">
-                  <div className="grid grid-cols-6 gap-0 text-center border-b border-gray-200 dark:border-white/10">
+                  <div className="grid grid-cols-8 gap-0 text-center border-b border-gray-200 dark:border-white/10">
                     <div className="p-3 sm:p-4 text-left text-xs sm:text-sm font-bold text-gray-500 dark:text-white/60 uppercase tracking-wider">
                       {t.featureLabel}
                     </div>
@@ -413,17 +403,19 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                     <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-gray-500 dark:text-white/60 border-l border-gray-100 dark:border-white/5">Brightspace</div>
                     <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-gray-500 dark:text-white/60 border-l border-gray-100 dark:border-white/5">Edsby</div>
                     <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-gray-500 dark:text-white/60 border-l border-gray-100 dark:border-white/5">Moodle</div>
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-gray-500 dark:text-white/60 border-l border-gray-100 dark:border-white/5">Veracross</div>
+                    <div className="p-3 sm:p-4 text-xs sm:text-sm font-bold text-gray-500 dark:text-white/60 border-l border-gray-100 dark:border-white/5">PowerSchool</div>
                   </div>
 
-                  {t.compareRows.map(({ feature, wolfwhale, canvas, brightspace, edsby, moodle }, idx) => (
+                  {t.compareRows.map(({ feature, wolfwhale, canvas, brightspace, edsby, moodle, veracross, powerschool }, idx) => (
                     <div
                       key={feature}
-                      className={`grid grid-cols-6 gap-0 text-center ${idx % 2 === 0 ? 'bg-white/[0.02]' : ''} ${idx < t.compareRows.length - 1 ? 'border-b border-gray-100 dark:border-white/5' : ''}`}
+                      className={`grid grid-cols-8 gap-0 text-center ${idx % 2 === 0 ? 'bg-white/[0.02]' : ''} ${idx < t.compareRows.length - 1 ? 'border-b border-gray-100 dark:border-white/5' : ''}`}
                     >
                       <div className="p-3 sm:p-4 text-left text-xs sm:text-sm text-gray-700 dark:text-white/80">
                         {feature}
                       </div>
-                      {[wolfwhale, canvas, brightspace, edsby, moodle].map((val, i) => (
+                      {[wolfwhale, canvas, brightspace, edsby, moodle, veracross, powerschool].map((val, i) => (
                         <div
                           key={i}
                           className={`p-3 sm:p-4 flex items-center justify-center border-l border-gray-100 dark:border-white/5 ${i === 0 ? 'bg-gray-900/5 dark:bg-white/5' : ''}`}
@@ -450,6 +442,14 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               >
                 {t.readyToSwitch}
                 <ArrowRight className="h-4 w-4" />
+              </a>
+              <a
+                href="https://apps.apple.com/app/id6759676805"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-gray-400 dark:text-white/40 hover:text-[#00BFFF] transition-colors duration-100 mt-2"
+              >
+                Or download now on the App Store <ArrowRight className="h-3 w-3" />
               </a>
             </div>
           </div>
@@ -493,6 +493,14 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                   >
                     {t.requestDemo}
                     <ArrowRight className="h-4 w-4" />
+                  </a>
+                  <a
+                    href="https://apps.apple.com/app/id6759676805"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-2 h-10 text-sm text-gray-400 dark:text-white/40 hover:text-[#00BFFF] transition-colors duration-100"
+                  >
+                    Download on the App Store <ArrowRight className="h-3 w-3" />
                   </a>
                   <p className="text-xs text-gray-400 dark:text-white/40">{t.volumeDiscounts}</p>
                 </div>
@@ -557,6 +565,14 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                 <ArrowRight className="h-5 w-5 -mr-1" />
               </a>
               <p className="text-xs text-gray-400 dark:text-white/40 mt-3">{t.pilotSub}</p>
+              <a
+                href="https://apps.apple.com/app/id6759676805"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-xs text-gray-400 dark:text-white/30 hover:text-[#00BFFF] transition-colors duration-100 mt-1"
+              >
+                Available on the App Store <ArrowRight className="h-3 w-3" />
+              </a>
             </div>
           </div>
         </section>
@@ -705,7 +721,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               <div className="flex flex-col gap-1.5">
                 <p className="text-sm font-normal text-gray-700 dark:text-white/70 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>WOLFWHALE <span className="text-gray-400 dark:text-white/30 mx-1">|</span> School Platform</p>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-white/60">
-                  <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Vancouver, BC, Canada</span>
+                  <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Saskatoon, SK, Canada</span>
                   <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1 hover:text-[#00BFFF] transition-colors duration-100"><Mail className="h-3 w-3" /> info@wolfwhale.ca</a>
                   <a href="tel:+13069815926" className="flex items-center gap-1 hover:text-[#00BFFF] transition-colors duration-100"><Phone className="h-3 w-3" /> +1 (306) 981-5926</a>
                 </div>

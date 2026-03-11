@@ -4,18 +4,11 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { Globe, ChevronDown } from 'lucide-react'
 
-type Lang = 'en' | 'fr' | 'es' | 'de' | 'it' | 'fr_fr' | 'ca' | 'cr_th' | 'cr_y'
+type Lang = 'en' | 'fr'
 
 const langOptions: { code: Lang; flag: string; label: string; native: string }[] = [
-  { code: 'en', flag: '🇬🇧', label: 'English', native: 'English' },
-  { code: 'fr', flag: '🇨🇦', label: 'French (Canada)', native: 'Français (Canada)' },
-  { code: 'fr_fr', flag: '🇫🇷', label: 'French (France)', native: 'Français (France)' },
-  { code: 'es', flag: '🇪🇸', label: 'Spanish', native: 'Español' },
-  { code: 'de', flag: '🇩🇪', label: 'German', native: 'Deutsch' },
-  { code: 'it', flag: '🇮🇹', label: 'Italian', native: 'Italiano' },
-  { code: 'ca', flag: '🇦🇩', label: 'Catalan', native: 'Català' },
-  { code: 'cr_y', flag: '🪶', label: 'Plains Cree (Y-dialect)', native: 'nêhiyawêwin' },
-  { code: 'cr_th', flag: '🪶', label: 'Woods Cree (Th-dialect)', native: 'nîhithawîwin' },
+  { code: 'en', flag: '🇨🇦', label: 'English (Canada)', native: 'English' },
+  { code: 'fr', flag: '🇨🇦', label: 'French (Canada)', native: 'Français' },
 ]
 
 export function LanguageToggle({ lang }: { lang: Lang }) {

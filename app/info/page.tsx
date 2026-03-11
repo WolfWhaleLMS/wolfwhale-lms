@@ -96,13 +96,6 @@ export default function InfoPage() {
         <div className="absolute bottom-0 right-0 w-[600px] h-[400px] rounded-full bg-[#8B5CF6]/3 blur-[120px]" />
       </div>
 
-      {/* Corinthian Pillar Borders (hidden on small mobile) */}
-      <div className="fixed top-0 -bottom-[60px] left-0 w-[30px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none hidden sm:block" aria-hidden="true">
-        <img src="/pillar.jpg" alt="" className="block w-full h-full object-cover object-top invert opacity-40" />
-      </div>
-      <div className="fixed top-0 -bottom-[60px] right-0 w-[30px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none hidden sm:block" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
-        <img src="/pillar.jpg" alt="" className="block w-full h-full object-cover object-top invert opacity-40" />
-      </div>
 
       {/* Header Navigation */}
       <header className="relative z-10 border-b border-white/10 backdrop-blur-md bg-black/60">
