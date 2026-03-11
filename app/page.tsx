@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Mail, Phone, MapPin, CheckCircle2, X as XIcon, Feather, Linkedin, Twitter, Brain, Sparkles, BookOpen } from 'lucide-react'
+import { ArrowRight, Mail, Phone, MapPin, CheckCircle2, X as XIcon, Feather, Linkedin, Twitter, Brain, Sparkles, BookOpen, Target } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 import { ContactForm } from '@/components/landing/ContactForm'
 import { ThemeToggle } from '@/components/landing/ThemeToggle'
@@ -208,6 +208,55 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                 </div>
                 <p className="text-[10px] text-gray-400 dark:text-white/30 mt-1 text-center tracking-wider uppercase">{t.comingSoon}</p>
               </div>
+            </div>
+          </div>
+        </section>
+
+
+        {/* Mission & Impact Section */}
+        <section id="mission" className="px-4 py-10 sm:py-16">
+          <div className="max-w-4xl mx-auto space-y-8 sm:space-y-10">
+            <div className="text-center space-y-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
+                {t.missionTitle}
+              </h2>
+              <p className="text-base sm:text-lg text-gray-500 dark:text-white/60 italic">
+                {t.missionTagline}
+              </p>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto">
+              {t.missionStats.map(({ value, label, source }) => (
+                <div
+                  key={value}
+                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 text-center space-y-2"
+                >
+                  <p className="text-5xl sm:text-6xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                    {value}
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-white/70 leading-snug">{label}</p>
+                  <p className="text-[10px] text-gray-400 dark:text-white/30 tracking-wider">{source}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Missions */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+              {t.missions.map(({ title, desc }) => (
+                <div
+                  key={title}
+                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 flex items-start gap-3"
+                >
+                  <div className="inline-flex p-2 rounded-xl bg-[#00BFFF]/10 border border-[#00BFFF]/20 shrink-0 mt-0.5">
+                    <Target className="h-4 w-4 text-[#00BFFF]" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400 dark:text-white/40 uppercase tracking-widest font-semibold mb-1">{title}</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">{desc}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>

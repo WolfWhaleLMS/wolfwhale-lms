@@ -119,6 +119,11 @@ export interface LandingContent {
   textbooksStats: { value: string; label: string }[]
   // Key Differentiators
   differentiators: { title: string; desc: string }[]
+  // Mission & Impact
+  missionTitle: string
+  missionTagline: string
+  missionStats: { value: string; label: string; source: string }[]
+  missions: { title: string; desc: string }[]
 }
 
 export const landingContent: Record<Lang, LandingContent> = {
@@ -264,6 +269,17 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Canadian-first', desc: 'Built for Canadian curriculum with PIPEDA compliance' },
       { title: 'Free for all teachers', desc: '30+ classroom tools at no cost \u2014 teacher accounts are always free' },
     ],
+    // Mission & Impact
+    missionTitle: 'OUR MISSION',
+    missionTagline: "Advancing education's most important tool.",
+    missionStats: [
+      { value: '44%', label: 'Indigenous graduation rate in Canada', source: 'Statistics Canada, 2021' },
+      { value: '88%', label: 'Non-Indigenous graduation rate in Canada', source: 'Statistics Canada, 2021' },
+    ],
+    missions: [
+      { title: 'Mission 1', desc: 'Raise Indigenous graduation rates' },
+      { title: 'Mission 2', desc: 'Replace outdated LMS platforms' },
+    ],
   },
   fr: {
     lms: 'Syst\u00e8me de gestion de l\u2019apprentissage',
@@ -407,6 +423,17 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Canadien d\u2019abord', desc: 'Con\u00e7u pour le programme canadien, conforme LPRPDE' },
       { title: 'Gratuit pour tous les enseignants', desc: '30+ outils p\u00e9dagogiques sans frais \u2014 les comptes enseignants sont toujours gratuits' },
     ],
+    // Mission & Impact
+    missionTitle: 'NOTRE MISSION',
+    missionTagline: "Faire progresser l\u2019outil le plus important de l\u2019\u00e9ducation.",
+    missionStats: [
+      { value: '44%', label: 'Taux de diplomation autochtone au Canada', source: 'Statistique Canada, 2021' },
+      { value: '88%', label: 'Taux de diplomation non autochtone au Canada', source: 'Statistique Canada, 2021' },
+    ],
+    missions: [
+      { title: 'Mission 1', desc: 'Augmenter les taux de diplomation autochtones' },
+      { title: 'Mission 2', desc: 'Remplacer les plateformes SGA d\u00e9pass\u00e9es' },
+    ],
   },
   es: {
     lms: 'Sistema de Gestión del Aprendizaje',
@@ -546,6 +573,17 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: '72 libros de texto originales', desc: 'Con actividades interactivas, no solo enlaces a contenido externo' },
       { title: 'Canadá primero', desc: 'Diseñado para el currículo canadiense con conformidad PIPEDA' },
       { title: 'Gratis para todos los docentes', desc: '30+ herramientas para el aula sin costo — las cuentas de docentes son siempre gratuitas' },
+    ],
+    // Mission & Impact
+    missionTitle: 'NUESTRA MISI\u00d3N',
+    missionTagline: 'Avanzando la herramienta m\u00e1s importante de la educaci\u00f3n.',
+    missionStats: [
+      { value: '44%', label: 'Tasa de graduaci\u00f3n ind\u00edgena en Canad\u00e1', source: 'Statistics Canada, 2021' },
+      { value: '88%', label: 'Tasa de graduaci\u00f3n no ind\u00edgena en Canad\u00e1', source: 'Statistics Canada, 2021' },
+    ],
+    missions: [
+      { title: 'Misi\u00f3n 1', desc: 'Aumentar las tasas de graduaci\u00f3n ind\u00edgena' },
+      { title: 'Misi\u00f3n 2', desc: 'Reemplazar plataformas LMS obsoletas' },
     ],
   },
   de: {
@@ -687,6 +725,17 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Kanada zuerst', desc: 'Für den kanadischen Lehrplan mit PIPEDA-Konformität entwickelt' },
       { title: 'Kostenlos für alle Lehrer', desc: '30+ Unterrichtswerkzeuge ohne Kosten — Lehrerkonten sind immer kostenlos' },
     ],
+    // Mission & Impact
+    missionTitle: 'UNSERE MISSION',
+    missionTagline: 'Das wichtigste Werkzeug der Bildung voranbringen.',
+    missionStats: [
+      { value: '44%', label: 'Abschlussquote der Indigenen in Kanada', source: 'Statistics Canada, 2021' },
+      { value: '88%', label: 'Abschlussquote der Nicht-Indigenen in Kanada', source: 'Statistics Canada, 2021' },
+    ],
+    missions: [
+      { title: 'Mission 1', desc: 'Abschlussquoten der Indigenen erh\u00f6hen' },
+      { title: 'Mission 2', desc: 'Veraltete LMS-Plattformen ersetzen' },
+    ],
   },
   it: {
     lms: 'Sistema di Gestione dell\'Apprendimento',
@@ -826,6 +875,17 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: '72 libri di testo originali', desc: 'Con attività interattive, non solo link a contenuti esterni' },
       { title: 'Canada prima di tutto', desc: 'Progettato per il programma canadese con conformità PIPEDA' },
       { title: 'Gratuito per tutti i docenti', desc: '30+ strumenti per l\'aula senza costi — gli account docente sono sempre gratuiti' },
+    ],
+    // Mission & Impact
+    missionTitle: 'LA NOSTRA MISSIONE',
+    missionTagline: "Far progredire lo strumento pi\u00f9 importante dell'istruzione.",
+    missionStats: [
+      { value: '44%', label: 'Tasso di laurea indigena in Canada', source: 'Statistics Canada, 2021' },
+      { value: '88%', label: 'Tasso di laurea non indigena in Canada', source: 'Statistics Canada, 2021' },
+    ],
+    missions: [
+      { title: 'Missione 1', desc: 'Aumentare i tassi di laurea indigena' },
+      { title: 'Missione 2', desc: 'Sostituire le piattaforme LMS obsolete' },
     ],
   },
   fr_fr: {
@@ -967,6 +1027,17 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Le Canada d\'abord', desc: 'Conçu pour le programme canadien avec conformité PIPEDA' },
       { title: 'Gratuit pour tous les enseignants', desc: '30+ outils pédagogiques sans frais \u2014 les comptes enseignant sont toujours gratuits' },
     ],
+    // Mission & Impact
+    missionTitle: 'NOTRE MISSION',
+    missionTagline: "Faire progresser l\u2019outil le plus important de l\u2019\u00e9ducation.",
+    missionStats: [
+      { value: '44%', label: 'Taux de diplomation autochtone au Canada', source: 'Statistique Canada, 2021' },
+      { value: '88%', label: 'Taux de diplomation non autochtone au Canada', source: 'Statistique Canada, 2021' },
+    ],
+    missions: [
+      { title: 'Mission 1', desc: 'Augmenter les taux de diplomation autochtones' },
+      { title: 'Mission 2', desc: 'Remplacer les plateformes SGA d\u00e9pass\u00e9es' },
+    ],
   },
   ca: {
     lms: 'Sistema de Gestió de l\'Aprenentatge',
@@ -1107,6 +1178,17 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Canadà primer', desc: 'Dissenyat per al currículum canadenc amb conformitat PIPEDA' },
       { title: 'Gratuït per a tots els docents', desc: '30+ eines per a l\'aula sense cost \u2014 els comptes de docent són sempre gratuïts' },
     ],
+    // Mission & Impact
+    missionTitle: 'LA NOSTRA MISSI\u00d3',
+    missionTagline: "Avan\u00e7ant l'eina m\u00e9s important de l'educaci\u00f3.",
+    missionStats: [
+      { value: '44%', label: "Taxa de graduaci\u00f3 ind\u00edgena al Canad\u00e0", source: 'Statistics Canada, 2021' },
+      { value: '88%', label: "Taxa de graduaci\u00f3 no ind\u00edgena al Canad\u00e0", source: 'Statistics Canada, 2021' },
+    ],
+    missions: [
+      { title: 'Missi\u00f3 1', desc: 'Augmentar les taxes de graduaci\u00f3 ind\u00edgena' },
+      { title: 'Missi\u00f3 2', desc: 'Substituir les plataformes LMS obsoletes' },
+    ],
   },
   cr_y: {
     lms: 'kiskinwahamākēwin ōci-masinahikan',
@@ -1246,6 +1328,17 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: '72 masinahikana', desc: 'ē-atoskāhtāhk kīkwaya, namōya piko āhcipitēwina wāhyaw kīkway isi' },
       { title: 'Kanata-nistam', desc: 'Kanata kiskinwahamākēwin ōci ē-kī-osīhtāhk PIPEDA ē-nāspitohtēk' },
       { title: 'pākitinikewin kahkiyaw kiskinwahamākēwak ōci', desc: '30+ kiskinwahamātowikamik āpacihtāwina ēkā ē-itakihtēk — kiskinwahamākēw kīkway kākikē pākitinikewin' },
+    ],
+    // Mission & Impact
+    missionTitle: 'KITASKIWIN',
+    missionTagline: 'E-ispayik kiskin\u00f4hamaw\u00e2sowin.',
+    missionStats: [
+      { value: '44%', label: 'N\u00eahiyawak k\u00e2-k\u00ee-kiskin\u00f4ham\u00e2kosicik', source: 'Statistics Canada, 2021' },
+      { value: '88%', label: 'Namoya n\u00eahiyawak k\u00e2-k\u00ee-kiskin\u00f4ham\u00e2kosicik', source: 'Statistics Canada, 2021' },
+    ],
+    missions: [
+      { title: 'Kitaskiwin 1', desc: 'Ohci-ohpikinam n\u00eahiyaw kiskin\u00f4hamaw\u00e2sowin' },
+      { title: 'Kitaskiwin 2', desc: 'M\u00eascih\u00e2 kayasa LMS' },
     ],
   },
   cr_th: {
@@ -1389,6 +1482,17 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: '72 WolfWhale masinahikana', desc: 'māmawāpacihtāwina astēwa, namōtha poko ē-āsōkēhk wayawītimihk' },
       { title: 'Kanata nistam', desc: 'Kanata kiskinwahamākēwin-masinahikan ōci kā-osīhtāhk PIPEDA ē-nāspitohtēhk' },
       { title: 'poko kahkithaw kiskinwahamākēwak', desc: '30+ kiskinwahamākēw-āpacihtāwina poko — kiskinwahamākēw ayāwina tāpithaw poko' },
+    ],
+    // Mission & Impact
+    missionTitle: 'KITASKIWIN',
+    missionTagline: 'E-ispayik kiskino\u0302hama\u0302towin.',
+    missionStats: [
+      { value: '44%', label: 'Ni\u0302hithawak ka\u0302-ki\u0302-kiskino\u0302hama\u0302kosicik', source: 'Statistics Canada, 2021' },
+      { value: '88%', label: 'Namoya ni\u0302hithawak ka\u0302-ki\u0302-kiskino\u0302hama\u0302kosicik', source: 'Statistics Canada, 2021' },
+    ],
+    missions: [
+      { title: 'Kitaskiwin 1', desc: 'Ohci-ohpikinam ni\u0302hithaw kiskino\u0302hama\u0302towin' },
+      { title: 'Kitaskiwin 2', desc: 'Mi\u0302sciha\u0302 kayasa LMS' },
     ],
   },
 }
