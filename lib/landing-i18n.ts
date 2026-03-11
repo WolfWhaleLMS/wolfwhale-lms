@@ -39,7 +39,7 @@ interface Badge {
 export interface LandingContent {
   // Header
   lms: string
-  nav: { features: string; compare: string; pricing: string; faq: string; signIn: string; contact: string }
+  nav: { features: string; compare: string; pricing: string; faq: string; signIn: string; contact: string; divisions: string }
   // Hero
   heroTagline: string
   requestDemo: string
@@ -124,12 +124,24 @@ export interface LandingContent {
   missionTagline: string
   missionStats: { value: string; label: string; source: string }[]
   missions: { title: string; desc: string }[]
+  // IT Summit Banner
+  itSummitBanner: string
+  itSummitDate: string
+  itSummitLocation: string
+  // For School Divisions
+  divisionsTitle: string
+  divisionsSub: string
+  divisionsFeatures: { icon: string; title: string; desc: string }[]
+  divisionsCTA: string
+  // Pilot CTA
+  startPilot: string
+  pilotSub: string
 }
 
 export const landingContent: Record<Lang, LandingContent> = {
   en: {
     lms: 'Learning Management System',
-    nav: { features: 'Features', compare: 'Compare', pricing: 'Pricing', faq: 'FAQ', signIn: 'Sign In', contact: 'Contact' },
+    nav: { features: 'Features', compare: 'Compare', pricing: 'Pricing', faq: 'FAQ', signIn: 'Sign In', contact: 'Contact', divisions: 'Divisions' },
     heroTagline: 'The only native iOS LMS built for Canadian schools. AI tutoring, 72 original textbooks, offline learning \u2014 one app, zero data leaving Canada.',
     requestDemo: 'Get a Demo',
     seeFeatures: 'See Features',
@@ -192,7 +204,7 @@ export const landingContent: Record<Lang, LandingContent> = {
       'Canadian hosting (PIPEDA, FERPA & COPPA)',
       'Onboarding & priority support',
     ],
-    volumeDiscounts: 'Teachers get free access. Volume discounts for school boards.',
+    volumeDiscounts: 'Teachers always free. Division pricing available for 500+ users.',
     aboutTitle: 'Why WolfWhale',
     aboutText: 'WolfWhale is the only LMS that combines cognitive load theory, on-device AI, and 72 original textbooks into one native iOS app. Built for 4 user roles \u2014 Student, Teacher, Parent, and Admin \u2014 with 682 Saskatchewan curriculum outcomes mapped and expanding nationally. Student data never leaves the device. Canadian values drive everything we ship \u2014 privacy, accessibility, Indigenous connections, and bilingual support.',
     canadaTitle: 'Built in Canada',
@@ -271,10 +283,29 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Mission 1', desc: 'Raise Indigenous graduation rates' },
       { title: 'Mission 2', desc: 'Replace outdated LMS platforms' },
     ],
+    // IT Summit Banner
+    itSummitBanner: 'See us at IT Summit 2026 \u2014 Saskatoon, May 28-29',
+    itSummitDate: 'May 28-29, 2026',
+    itSummitLocation: 'TCU Place, Saskatoon',
+    // For School Divisions
+    divisionsTitle: 'FOR SCHOOL DIVISIONS',
+    divisionsSub: 'Enterprise-ready deployment for any Saskatchewan school division.',
+    divisionsFeatures: [
+      { icon: 'shield', title: 'SSO & Identity', desc: 'SAML 2.0, Google Workspace, and Microsoft 365 single sign-on. One login for every student and teacher.' },
+      { icon: 'server', title: 'Bulk Deployment', desc: 'Apple School Manager and MDM-ready. Push to every device in your division with zero-touch setup.' },
+      { icon: 'chart', title: 'Division Analytics', desc: 'Usage dashboards, engagement metrics, and outcome tracking across every school in your division.' },
+      { icon: 'users', title: 'Dedicated Onboarding', desc: 'White-glove setup for your division. Training for teachers, IT staff, and administrators included.' },
+      { icon: 'dollar', title: 'Volume Licensing', desc: 'Custom pricing for 500+ users. Multi-year contracts with predictable per-student costs.' },
+      { icon: 'lock', title: 'Data Sovereignty', desc: 'All data hosted in Canada. PIPEDA, COPPA, and FERPA compliant. Student data never leaves the country.' },
+    ],
+    divisionsCTA: 'Start a Free Pilot',
+    // Pilot CTA
+    startPilot: 'Start a Free Pilot',
+    pilotSub: '30-day full-featured pilot for one school. No cost, no commitment.',
   },
   fr: {
     lms: 'Syst\u00e8me de gestion de l\u2019apprentissage',
-    nav: { features: 'Fonctionnalit\u00e9s', compare: 'Comparer', pricing: 'Tarifs', faq: 'FAQ', signIn: 'Connexion', contact: 'Contact' },
+    nav: { features: 'Fonctionnalit\u00e9s', compare: 'Comparer', pricing: 'Tarifs', faq: 'FAQ', signIn: 'Connexion', contact: 'Contact', divisions: 'Divisions scolaires' },
     heroTagline: 'Le seul SGA iOS natif con\u00e7u pour les \u00e9coles canadiennes. Tutorat IA, 72 manuels originaux, apprentissage hors ligne \u2014 une seule app, aucune donn\u00e9e hors du Canada.',
     requestDemo: 'Demander une d\u00e9mo',
     seeFeatures: 'Voir les fonctionnalit\u00e9s',
@@ -425,10 +456,29 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Mission 1', desc: 'Augmenter les taux de diplomation autochtones' },
       { title: 'Mission 2', desc: 'Remplacer les plateformes SGA d\u00e9pass\u00e9es' },
     ],
+    // IT Summit Banner
+    itSummitBanner: 'Visitez-nous au IT Summit 2026 \u2014 Saskatoon, 28-29 mai',
+    itSummitDate: '28-29 mai 2026',
+    itSummitLocation: 'TCU Place, Saskatoon',
+    // For School Divisions
+    divisionsTitle: 'POUR LES DIVISIONS SCOLAIRES',
+    divisionsSub: 'D\u00e9ploiement pr\u00eat pour toute division scolaire de la Saskatchewan.',
+    divisionsFeatures: [
+      { icon: 'shield', title: 'SSO et identit\u00e9', desc: 'SAML 2.0, Google Workspace et Microsoft 365. Une seule connexion pour chaque \u00e9l\u00e8ve et enseignant.' },
+      { icon: 'server', title: 'D\u00e9ploiement en masse', desc: 'Compatible Apple School Manager et MDM. Installation sans contact sur tous les appareils.' },
+      { icon: 'chart', title: 'Analytique de division', desc: 'Tableaux de bord, m\u00e9triques d\u2019engagement et suivi des r\u00e9sultats pour chaque \u00e9cole.' },
+      { icon: 'users', title: 'Int\u00e9gration d\u00e9di\u00e9e', desc: 'Mise en place personnalis\u00e9e. Formation pour enseignants, personnel TI et administrateurs incluse.' },
+      { icon: 'dollar', title: 'Licences en volume', desc: 'Tarification personnalis\u00e9e pour 500+ utilisateurs. Contrats pluriannuels avec co\u00fbts pr\u00e9visibles.' },
+      { icon: 'lock', title: 'Souverainet\u00e9 des donn\u00e9es', desc: 'Toutes les donn\u00e9es h\u00e9berg\u00e9es au Canada. Conforme LPRPDE, COPPA et FERPA.' },
+    ],
+    divisionsCTA: 'D\u00e9marrer un essai gratuit',
+    // Pilot CTA
+    startPilot: 'D\u00e9marrer un essai gratuit',
+    pilotSub: 'Essai gratuit de 30 jours pour une \u00e9cole. Sans frais, sans engagement.',
   },
   es: {
     lms: 'Sistema de Gestión del Aprendizaje',
-    nav: { features: 'Funciones', compare: 'Comparar', pricing: 'Precios', faq: 'FAQ', signIn: 'Iniciar sesión', contact: 'Contacto' },
+    nav: { features: 'Funciones', compare: 'Comparar', pricing: 'Precios', faq: 'FAQ', signIn: 'Iniciar sesión', contact: 'Contacto', divisions: 'Divisions' },
     heroTagline: 'El único LMS iOS nativo diseñado para escuelas canadienses. Tutoría con IA, 72 libros de texto originales, aprendizaje sin conexión — una sola app, sin datos fuera de Canadá.',
     requestDemo: 'Solicitar una demo',
     seeFeatures: 'Ver funciones',
@@ -576,10 +626,29 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Misi\u00f3n 1', desc: 'Aumentar las tasas de graduaci\u00f3n ind\u00edgena' },
       { title: 'Misi\u00f3n 2', desc: 'Reemplazar plataformas LMS obsoletas' },
     ],
+    // IT Summit Banner
+    itSummitBanner: 'See us at IT Summit 2026 \u2014 Saskatoon, May 28-29',
+    itSummitDate: 'May 28-29, 2026',
+    itSummitLocation: 'TCU Place, Saskatoon',
+    // For School Divisions
+    divisionsTitle: 'FOR SCHOOL DIVISIONS',
+    divisionsSub: 'Enterprise-ready deployment for any Saskatchewan school division.',
+    divisionsFeatures: [
+      { icon: 'shield', title: 'SSO & Identity', desc: 'SAML 2.0, Google Workspace, and Microsoft 365 single sign-on. One login for every student and teacher.' },
+      { icon: 'server', title: 'Bulk Deployment', desc: 'Apple School Manager and MDM-ready. Push to every device in your division with zero-touch setup.' },
+      { icon: 'chart', title: 'Division Analytics', desc: 'Usage dashboards, engagement metrics, and outcome tracking across every school in your division.' },
+      { icon: 'users', title: 'Dedicated Onboarding', desc: 'White-glove setup for your division. Training for teachers, IT staff, and administrators included.' },
+      { icon: 'dollar', title: 'Volume Licensing', desc: 'Custom pricing for 500+ users. Multi-year contracts with predictable per-student costs.' },
+      { icon: 'lock', title: 'Data Sovereignty', desc: 'All data hosted in Canada. PIPEDA, COPPA, and FERPA compliant. Student data never leaves the country.' },
+    ],
+    divisionsCTA: 'Start a Free Pilot',
+    // Pilot CTA
+    startPilot: 'Start a Free Pilot',
+    pilotSub: '30-day full-featured pilot for one school. No cost, no commitment.',
   },
   de: {
     lms: 'Lernmanagementsystem',
-    nav: { features: 'Funktionen', compare: 'Vergleich', pricing: 'Preise', faq: 'FAQ', signIn: 'Anmelden', contact: 'Kontakt' },
+    nav: { features: 'Funktionen', compare: 'Vergleich', pricing: 'Preise', faq: 'FAQ', signIn: 'Anmelden', contact: 'Kontakt', divisions: 'Divisions' },
     heroTagline: 'Das einzige native iOS-LMS für kanadische Schulen. KI-Nachhilfe, 72 eigene Lehrbücher, Offline-Lernen — eine App, keine Daten außerhalb Kanadas.',
     requestDemo: 'Demo anfordern',
     seeFeatures: 'Funktionen ansehen',
@@ -727,10 +796,29 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Mission 1', desc: 'Abschlussquoten der Indigenen erh\u00f6hen' },
       { title: 'Mission 2', desc: 'Veraltete LMS-Plattformen ersetzen' },
     ],
+    // IT Summit Banner
+    itSummitBanner: 'See us at IT Summit 2026 \u2014 Saskatoon, May 28-29',
+    itSummitDate: 'May 28-29, 2026',
+    itSummitLocation: 'TCU Place, Saskatoon',
+    // For School Divisions
+    divisionsTitle: 'FOR SCHOOL DIVISIONS',
+    divisionsSub: 'Enterprise-ready deployment for any Saskatchewan school division.',
+    divisionsFeatures: [
+      { icon: 'shield', title: 'SSO & Identity', desc: 'SAML 2.0, Google Workspace, and Microsoft 365 single sign-on. One login for every student and teacher.' },
+      { icon: 'server', title: 'Bulk Deployment', desc: 'Apple School Manager and MDM-ready. Push to every device in your division with zero-touch setup.' },
+      { icon: 'chart', title: 'Division Analytics', desc: 'Usage dashboards, engagement metrics, and outcome tracking across every school in your division.' },
+      { icon: 'users', title: 'Dedicated Onboarding', desc: 'White-glove setup for your division. Training for teachers, IT staff, and administrators included.' },
+      { icon: 'dollar', title: 'Volume Licensing', desc: 'Custom pricing for 500+ users. Multi-year contracts with predictable per-student costs.' },
+      { icon: 'lock', title: 'Data Sovereignty', desc: 'All data hosted in Canada. PIPEDA, COPPA, and FERPA compliant. Student data never leaves the country.' },
+    ],
+    divisionsCTA: 'Start a Free Pilot',
+    // Pilot CTA
+    startPilot: 'Start a Free Pilot',
+    pilotSub: '30-day full-featured pilot for one school. No cost, no commitment.',
   },
   it: {
     lms: 'Sistema di Gestione dell\'Apprendimento',
-    nav: { features: 'Funzionalità', compare: 'Confronto', pricing: 'Prezzi', faq: 'FAQ', signIn: 'Accedi', contact: 'Contatti' },
+    nav: { features: 'Funzionalità', compare: 'Confronto', pricing: 'Prezzi', faq: 'FAQ', signIn: 'Accedi', contact: 'Contatti', divisions: 'Divisions' },
     heroTagline: 'L\'unico LMS iOS nativo progettato per le scuole canadesi. Tutoraggio IA, 72 libri di testo originali, apprendimento offline — un\'unica app, nessun dato fuori dal Canada.',
     requestDemo: 'Richiedi una demo',
     seeFeatures: 'Vedi le funzionalità',
@@ -878,10 +966,29 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Missione 1', desc: 'Aumentare i tassi di laurea indigena' },
       { title: 'Missione 2', desc: 'Sostituire le piattaforme LMS obsolete' },
     ],
+    // IT Summit Banner
+    itSummitBanner: 'See us at IT Summit 2026 \u2014 Saskatoon, May 28-29',
+    itSummitDate: 'May 28-29, 2026',
+    itSummitLocation: 'TCU Place, Saskatoon',
+    // For School Divisions
+    divisionsTitle: 'FOR SCHOOL DIVISIONS',
+    divisionsSub: 'Enterprise-ready deployment for any Saskatchewan school division.',
+    divisionsFeatures: [
+      { icon: 'shield', title: 'SSO & Identity', desc: 'SAML 2.0, Google Workspace, and Microsoft 365 single sign-on. One login for every student and teacher.' },
+      { icon: 'server', title: 'Bulk Deployment', desc: 'Apple School Manager and MDM-ready. Push to every device in your division with zero-touch setup.' },
+      { icon: 'chart', title: 'Division Analytics', desc: 'Usage dashboards, engagement metrics, and outcome tracking across every school in your division.' },
+      { icon: 'users', title: 'Dedicated Onboarding', desc: 'White-glove setup for your division. Training for teachers, IT staff, and administrators included.' },
+      { icon: 'dollar', title: 'Volume Licensing', desc: 'Custom pricing for 500+ users. Multi-year contracts with predictable per-student costs.' },
+      { icon: 'lock', title: 'Data Sovereignty', desc: 'All data hosted in Canada. PIPEDA, COPPA, and FERPA compliant. Student data never leaves the country.' },
+    ],
+    divisionsCTA: 'Start a Free Pilot',
+    // Pilot CTA
+    startPilot: 'Start a Free Pilot',
+    pilotSub: '30-day full-featured pilot for one school. No cost, no commitment.',
   },
   fr_fr: {
     lms: 'Système de gestion de l\'apprentissage',
-    nav: { features: 'Fonctionnalités', compare: 'Comparer', pricing: 'Tarifs', faq: 'FAQ', signIn: 'Se connecter', contact: 'Contact' },
+    nav: { features: 'Fonctionnalités', compare: 'Comparer', pricing: 'Tarifs', faq: 'FAQ', signIn: 'Se connecter', contact: 'Contact', divisions: 'Divisions' },
     heroTagline: 'Le seul LMS iOS natif conçu pour les écoles canadiennes. Tutorat IA, 72 manuels scolaires originaux, apprentissage hors ligne \u2014 une seule application, aucune donnée hors du Canada.',
     requestDemo: 'Demander une démonstration',
     seeFeatures: 'Voir les fonctionnalités',
@@ -1029,10 +1136,29 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Mission 1', desc: 'Augmenter les taux de diplomation autochtones' },
       { title: 'Mission 2', desc: 'Remplacer les plateformes SGA d\u00e9pass\u00e9es' },
     ],
+    // IT Summit Banner
+    itSummitBanner: 'See us at IT Summit 2026 \u2014 Saskatoon, May 28-29',
+    itSummitDate: 'May 28-29, 2026',
+    itSummitLocation: 'TCU Place, Saskatoon',
+    // For School Divisions
+    divisionsTitle: 'FOR SCHOOL DIVISIONS',
+    divisionsSub: 'Enterprise-ready deployment for any Saskatchewan school division.',
+    divisionsFeatures: [
+      { icon: 'shield', title: 'SSO & Identity', desc: 'SAML 2.0, Google Workspace, and Microsoft 365 single sign-on. One login for every student and teacher.' },
+      { icon: 'server', title: 'Bulk Deployment', desc: 'Apple School Manager and MDM-ready. Push to every device in your division with zero-touch setup.' },
+      { icon: 'chart', title: 'Division Analytics', desc: 'Usage dashboards, engagement metrics, and outcome tracking across every school in your division.' },
+      { icon: 'users', title: 'Dedicated Onboarding', desc: 'White-glove setup for your division. Training for teachers, IT staff, and administrators included.' },
+      { icon: 'dollar', title: 'Volume Licensing', desc: 'Custom pricing for 500+ users. Multi-year contracts with predictable per-student costs.' },
+      { icon: 'lock', title: 'Data Sovereignty', desc: 'All data hosted in Canada. PIPEDA, COPPA, and FERPA compliant. Student data never leaves the country.' },
+    ],
+    divisionsCTA: 'Start a Free Pilot',
+    // Pilot CTA
+    startPilot: 'Start a Free Pilot',
+    pilotSub: '30-day full-featured pilot for one school. No cost, no commitment.',
   },
   ca: {
     lms: 'Sistema de Gestió de l\'Aprenentatge',
-    nav: { features: 'Funcionalitats', compare: 'Comparar', pricing: 'Preus', faq: 'FAQ', signIn: 'Iniciar sessió', contact: 'Contacte' },
+    nav: { features: 'Funcionalitats', compare: 'Comparar', pricing: 'Preus', faq: 'FAQ', signIn: 'Iniciar sessió', contact: 'Contacte', divisions: 'Divisions' },
     heroTagline: 'L\'\u00fanic LMS iOS natiu dissenyat per a escoles canadenques. Tutoria IA, 72 llibres de text originals, aprenentatge fora de línia \u2014 una sola app, sense dades fora del Canadà.',
     requestDemo: 'Sol\u00b7licitar una demo',
     seeFeatures: 'Veure funcionalitats',
@@ -1180,10 +1306,29 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Missi\u00f3 1', desc: 'Augmentar les taxes de graduaci\u00f3 ind\u00edgena' },
       { title: 'Missi\u00f3 2', desc: 'Substituir les plataformes LMS obsoletes' },
     ],
+    // IT Summit Banner
+    itSummitBanner: 'See us at IT Summit 2026 \u2014 Saskatoon, May 28-29',
+    itSummitDate: 'May 28-29, 2026',
+    itSummitLocation: 'TCU Place, Saskatoon',
+    // For School Divisions
+    divisionsTitle: 'FOR SCHOOL DIVISIONS',
+    divisionsSub: 'Enterprise-ready deployment for any Saskatchewan school division.',
+    divisionsFeatures: [
+      { icon: 'shield', title: 'SSO & Identity', desc: 'SAML 2.0, Google Workspace, and Microsoft 365 single sign-on. One login for every student and teacher.' },
+      { icon: 'server', title: 'Bulk Deployment', desc: 'Apple School Manager and MDM-ready. Push to every device in your division with zero-touch setup.' },
+      { icon: 'chart', title: 'Division Analytics', desc: 'Usage dashboards, engagement metrics, and outcome tracking across every school in your division.' },
+      { icon: 'users', title: 'Dedicated Onboarding', desc: 'White-glove setup for your division. Training for teachers, IT staff, and administrators included.' },
+      { icon: 'dollar', title: 'Volume Licensing', desc: 'Custom pricing for 500+ users. Multi-year contracts with predictable per-student costs.' },
+      { icon: 'lock', title: 'Data Sovereignty', desc: 'All data hosted in Canada. PIPEDA, COPPA, and FERPA compliant. Student data never leaves the country.' },
+    ],
+    divisionsCTA: 'Start a Free Pilot',
+    // Pilot CTA
+    startPilot: 'Start a Free Pilot',
+    pilotSub: '30-day full-featured pilot for one school. No cost, no commitment.',
   },
   cr_y: {
     lms: 'kiskinwahamākēwin ōci-masinahikan',
-    nav: { features: 'kīkway ē-isinākwahk', compare: 'nanāhitāwin', pricing: 'tānisi ē-itakihtēk', faq: 'kakwēcihkēmowina', signIn: 'pīhtokē', contact: 'kīskisamāwinān' },
+    nav: { features: 'kīkway ē-isinākwahk', compare: 'nanāhitāwin', pricing: 'tānisi ē-itakihtēk', faq: 'kakwēcihkēmowina', signIn: 'pīhtokē', contact: 'kīskisamāwinān', divisions: 'Divisions' },
     heroTagline: 'pēyakwan iOS kiskinwahamākēwin ōci-masinahikan ē-kī-osīhtāhk Kanata kiskinwahamātowikamikwa ōci. mamāhtāwi-masinahikan kiskinwahamākēwin, 72 masinahikana, ēkā āpacihtāt māmawi-āpacihtāwin kiskinwahamākēwin — pēyak ōci-masinahikan, namōya wāhyaw itohtahāw kīkway.',
     requestDemo: 'natona kocihitāwin',
     seeFeatures: 'wāpahta kīkway ē-isinākwahk',
@@ -1331,10 +1476,29 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Kitaskiwin 1', desc: 'Ohci-ohpikinam n\u00eahiyaw kiskin\u00f4hamaw\u00e2sowin' },
       { title: 'Kitaskiwin 2', desc: 'M\u00eascih\u00e2 kayasa LMS' },
     ],
+    // IT Summit Banner
+    itSummitBanner: 'See us at IT Summit 2026 \u2014 Saskatoon, May 28-29',
+    itSummitDate: 'May 28-29, 2026',
+    itSummitLocation: 'TCU Place, Saskatoon',
+    // For School Divisions
+    divisionsTitle: 'FOR SCHOOL DIVISIONS',
+    divisionsSub: 'Enterprise-ready deployment for any Saskatchewan school division.',
+    divisionsFeatures: [
+      { icon: 'shield', title: 'SSO & Identity', desc: 'SAML 2.0, Google Workspace, and Microsoft 365 single sign-on. One login for every student and teacher.' },
+      { icon: 'server', title: 'Bulk Deployment', desc: 'Apple School Manager and MDM-ready. Push to every device in your division with zero-touch setup.' },
+      { icon: 'chart', title: 'Division Analytics', desc: 'Usage dashboards, engagement metrics, and outcome tracking across every school in your division.' },
+      { icon: 'users', title: 'Dedicated Onboarding', desc: 'White-glove setup for your division. Training for teachers, IT staff, and administrators included.' },
+      { icon: 'dollar', title: 'Volume Licensing', desc: 'Custom pricing for 500+ users. Multi-year contracts with predictable per-student costs.' },
+      { icon: 'lock', title: 'Data Sovereignty', desc: 'All data hosted in Canada. PIPEDA, COPPA, and FERPA compliant. Student data never leaves the country.' },
+    ],
+    divisionsCTA: 'Start a Free Pilot',
+    // Pilot CTA
+    startPilot: 'Start a Free Pilot',
+    pilotSub: '30-day full-featured pilot for one school. No cost, no commitment.',
   },
   cr_th: {
     lms: 'kiskinwahamakēwin ōchi-masinahikan',
-    nav: { features: 'kīkway ē-isinākwahk', compare: 'nānāhitawē', pricing: 'tānis ē-itakihtēk', faq: 'kākwēcihkēmowina', signIn: 'pīhtikwē', contact: 'kīskisamāwinān' },
+    nav: { features: 'kīkway ē-isinākwahk', compare: 'nānāhitawē', pricing: 'tānis ē-itakihtēk', faq: 'kākwēcihkēmowina', signIn: 'pīhtikwē', contact: 'kīskisamāwinān', divisions: 'Divisions' },
     heroTagline: 'pēyakwan ōma iOS kiskinwahamākēwin ōchi-masinahikan kā-osīhtāk Kanata kiskinwahamātowikamikwa ōci. mamāhtāwi-masinahikan kiskinwahamākēw, 72 masinahikana, kiskinwahamākēwin ēkā āpacihtāt māmawi-āpacihtāwin — pēyak ōchi-masinahikan, namōtha kīkway otinam Kanata ōci.',
     requestDemo: 'natona kocihtāwin',
     seeFeatures: 'wāpahta kīkway ē-isinākwahk',
@@ -1485,5 +1649,24 @@ export const landingContent: Record<Lang, LandingContent> = {
       { title: 'Kitaskiwin 1', desc: 'Ohci-ohpikinam ni\u0302hithaw kiskino\u0302hama\u0302towin' },
       { title: 'Kitaskiwin 2', desc: 'Mi\u0302sciha\u0302 kayasa LMS' },
     ],
+    // IT Summit Banner
+    itSummitBanner: 'See us at IT Summit 2026 \u2014 Saskatoon, May 28-29',
+    itSummitDate: 'May 28-29, 2026',
+    itSummitLocation: 'TCU Place, Saskatoon',
+    // For School Divisions
+    divisionsTitle: 'FOR SCHOOL DIVISIONS',
+    divisionsSub: 'Enterprise-ready deployment for any Saskatchewan school division.',
+    divisionsFeatures: [
+      { icon: 'shield', title: 'SSO & Identity', desc: 'SAML 2.0, Google Workspace, and Microsoft 365 single sign-on. One login for every student and teacher.' },
+      { icon: 'server', title: 'Bulk Deployment', desc: 'Apple School Manager and MDM-ready. Push to every device in your division with zero-touch setup.' },
+      { icon: 'chart', title: 'Division Analytics', desc: 'Usage dashboards, engagement metrics, and outcome tracking across every school in your division.' },
+      { icon: 'users', title: 'Dedicated Onboarding', desc: 'White-glove setup for your division. Training for teachers, IT staff, and administrators included.' },
+      { icon: 'dollar', title: 'Volume Licensing', desc: 'Custom pricing for 500+ users. Multi-year contracts with predictable per-student costs.' },
+      { icon: 'lock', title: 'Data Sovereignty', desc: 'All data hosted in Canada. PIPEDA, COPPA, and FERPA compliant. Student data never leaves the country.' },
+    ],
+    divisionsCTA: 'Start a Free Pilot',
+    // Pilot CTA
+    startPilot: 'Start a Free Pilot',
+    pilotSub: '30-day full-featured pilot for one school. No cost, no commitment.',
   },
 }

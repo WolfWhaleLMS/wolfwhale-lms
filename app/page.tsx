@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Mail, Phone, MapPin, CheckCircle2, X as XIcon, Feather, Linkedin, Twitter, Brain, Sparkles, BookOpen, Target } from 'lucide-react'
+import { ArrowRight, Mail, Phone, MapPin, CheckCircle2, X as XIcon, Feather, Linkedin, Twitter, Brain, Sparkles, BookOpen, Target, Building2, Server, BarChart3, Shield as ShieldIcon, DollarSign, Lock } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 import { ContactForm } from '@/components/landing/ContactForm'
 import { ThemeToggle } from '@/components/landing/ThemeToggle'
@@ -24,6 +24,15 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
     <div className="min-h-screen relative overflow-x-hidden bg-white dark:bg-black">
       {/* Principle 4: persistent resumable scroll state */}
       <ScrollPersist />
+
+      {/* IT Summit 2026 Banner */}
+      <div className="fixed top-[49px] sm:top-[53px] left-0 right-0 z-40 bg-[#00BFFF]/10 dark:bg-[#00BFFF]/5 border-b border-[#00BFFF]/20 backdrop-blur-sm">
+        <div className="max-w-6xl mx-auto px-4 py-1.5 flex items-center justify-center gap-2 text-xs sm:text-sm">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#00BFFF] animate-pulse" />
+          <span className="text-gray-700 dark:text-white/80 font-medium">{t.itSummitBanner}</span>
+          <a href="#contact" className="text-[#00BFFF] font-semibold hover:underline ml-1">Book a Meeting &rarr;</a>
+        </div>
+      </div>
 
       {/* LocalBusiness schema for local SEO */}
       <script
@@ -101,6 +110,9 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             <a href="#features" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors duration-100 font-medium">
               {t.nav.features}
             </a>
+            <Link href={`/${lp}#divisions`} className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors duration-100 font-medium hidden sm:inline">
+              Divisions
+            </Link>
             <a href="#compare" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors duration-100 font-medium">
               {t.nav.compare}
             </a>
@@ -151,7 +163,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </div>
       </header>
       {/* Spacer for fixed header */}
-      <div className="h-[50px] sm:h-[56px]" />
+      <div className="h-[80px] sm:h-[86px]" />
 
       {/* Hero Section */}
       <main className="relative z-10">
@@ -181,9 +193,10 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                 href="#contact"
                 className="inline-flex items-center gap-2 h-12 px-8 sm:px-10 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-black text-sm sm:text-base font-semibold transition-all duration-100 hover:bg-gray-800 dark:hover:bg-gray-100"
               >
-                {t.requestDemo}
+                {t.startPilot}
                 <ArrowRight className="h-5 w-5 -mr-1" />
               </a>
+              <p className="text-xs text-gray-400 dark:text-white/40">{t.pilotSub}</p>
               <a
                 href="#features"
                 className="inline-flex items-center gap-1.5 h-10 text-sm text-gray-400 dark:text-white/50 hover:text-[#00BFFF] transition-colors duration-100 font-medium"
@@ -488,6 +501,48 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           </div>
         </section>
 
+
+        {/* For School Divisions */}
+        <section id="divisions" className="px-4 py-10 sm:py-16">
+          <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
+            <div className="text-center space-y-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
+                {t.divisionsTitle}
+              </h2>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-xl mx-auto">
+                {t.divisionsSub}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {t.divisionsFeatures.map((f) => (
+                <div key={f.title} className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl p-5 space-y-2">
+                  <div className="flex items-center gap-2">
+                    {f.icon === 'shield' && <ShieldIcon className="h-5 w-5 text-[#00BFFF]" />}
+                    {f.icon === 'server' && <Server className="h-5 w-5 text-[#00BFFF]" />}
+                    {f.icon === 'chart' && <BarChart3 className="h-5 w-5 text-[#00BFFF]" />}
+                    {f.icon === 'users' && <Building2 className="h-5 w-5 text-[#00BFFF]" />}
+                    {f.icon === 'dollar' && <DollarSign className="h-5 w-5 text-[#00BFFF]" />}
+                    {f.icon === 'lock' && <Lock className="h-5 w-5 text-[#00BFFF]" />}
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{f.title}</h3>
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-white/60 leading-relaxed">{f.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2 h-12 px-8 sm:px-10 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-black text-sm sm:text-base font-semibold transition-all duration-100 hover:bg-gray-800 dark:hover:bg-gray-100"
+              >
+                {t.divisionsCTA}
+                <ArrowRight className="h-5 w-5 -mr-1" />
+              </a>
+              <p className="text-xs text-gray-400 dark:text-white/40 mt-3">{t.pilotSub}</p>
+            </div>
+          </div>
+        </section>
         {/* Built in Canada & Reconciliation Section */}
         <section id="canada" className="px-4 py-10 sm:py-16">
           <div className="max-w-4xl mx-auto space-y-8">
