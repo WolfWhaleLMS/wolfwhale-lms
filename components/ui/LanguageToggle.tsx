@@ -13,7 +13,7 @@ const langOptions: { code: Lang; flag: string; label: string; native: string }[]
   { code: 'es', flag: '🇪🇸', label: 'Spanish', native: 'Español' },
   { code: 'de', flag: '🇩🇪', label: 'German', native: 'Deutsch' },
   { code: 'it', flag: '🇮🇹', label: 'Italian', native: 'Italiano' },
-  { code: 'ca', flag: '🏴', label: 'Catalan', native: 'Català' },
+  { code: 'ca', flag: '🇦🇩', label: 'Catalan', native: 'Català' },
   { code: 'cr_y', flag: '🪶', label: 'Plains Cree (Y-dialect)', native: 'nêhiyawêwin' },
   { code: 'cr_th', flag: '🪶', label: 'Woods Cree (Th-dialect)', native: 'nîhithawîwin' },
 ]
