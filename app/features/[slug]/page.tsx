@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
@@ -641,29 +640,7 @@ const featureDetails: Record<string, Partial<Record<Lang, FeatureDetail>> & { en
   },
 }
 
-const featureScreenshots: Record<string, { iphone: string; iphoneDark?: string; mac?: string; macDark?: string; ipad?: string; ipadDark?: string }> = {
-  'micro-lessons': { iphone: '/screenshot-courses-light.png', iphoneDark: '/screenshot-courses-dark.png', mac: '/screenshot-mac-courses.png', macDark: '/screenshot-mac-courses-dark.png' },
-  'ai-tools': { iphone: '/screenshot-teacher-light.png', mac: '/screenshot-mac-courses.png', macDark: '/screenshot-mac-courses-dark.png' },
-  'textbooks': { iphone: '/screenshot-flashcards-light.png', mac: '/screenshot-mac-courses.png', macDark: '/screenshot-mac-courses-dark.png' },
-  'offline': { iphone: '/screenshot-iphone-dashboard.png', iphoneDark: '/screenshot-home-dark.png', ipad: '/screenshot-ipad-dashboard.png', ipadDark: '/screenshot-ipad-dashboard-dark.png' },
-  'teacher-tools': { iphone: '/screenshot-teacher-light.png', mac: '/screenshot-mac-courses.png', macDark: '/screenshot-mac-courses-dark.png' },
-  'gamification': { iphone: '/screenshot-progress-light.png', mac: '/screenshot-mac-courses.png', macDark: '/screenshot-mac-courses-dark.png' },
-  'liquid-glass': { iphone: '/screenshot-iphone-light.png', iphoneDark: '/screenshot-iphone-dark.png', ipad: '/screenshot-ipad-dashboard.png', ipadDark: '/screenshot-ipad-dashboard-dark.png', mac: '/screenshot-mac-courses.png', macDark: '/screenshot-mac-courses-dark.png' },
-  'connected': { iphone: '/screenshot-iphone-dashboard.png', iphoneDark: '/screenshot-home-dark.png', mac: '/screenshot-mac-courses.png', macDark: '/screenshot-mac-courses-dark.png' },
-  'land-based': { iphone: '/screenshot-courses-light.png', iphoneDark: '/screenshot-courses-dark.png' },
-}
 
-const featureVideos: Record<string, string> = {
-  'micro-lessons': '/demo-courses.mp4',
-  'ai-tools': '/demo-dashboard.mp4',
-  'textbooks': '/demo-textbooks.mp4',
-  'offline': '/demo-dashboard.mp4',
-  'teacher-tools': '/demo-courses.mp4',
-  'gamification': '/demo-grades.mp4',
-  'liquid-glass': '/demo-dashboard.mp4',
-  'connected': '/demo-more.mp4',
-  'land-based': '/demo-textbooks.mp4',
-}
 
 /* ============================================
    Static Params for SSG
@@ -773,88 +750,6 @@ export default async function FeatureDetailPage({ params, searchParams }: PagePr
             </div>
           ))}
         </div>
-
-        {/* App Preview */}
-        {featureScreenshots[slug] && (
-          <div className="mt-16 space-y-8">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tracking-wider uppercase text-center" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
-              See It in Action
-            </h2>
-
-            {/* iPhone */}
-            <div>
-              <p className="text-xs text-gray-400 dark:text-white/30 tracking-widest uppercase text-center mb-4">iPhone</p>
-              <div className="flex justify-center gap-6">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="w-full max-w-[180px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                    <Image src={featureScreenshots[slug].iphone} alt={`${content.headline} on iPhone`} width={1170} height={2532} className="block dark:hidden w-full h-full object-cover object-top" />
-                    {featureScreenshots[slug].iphoneDark && (
-                      <Image src={featureScreenshots[slug].iphoneDark!} alt={`${content.headline} on iPhone (Dark)`} width={1170} height={2532} className="hidden dark:block w-full h-full object-cover object-top" />
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* iPad */}
-            {featureScreenshots[slug].ipad && (
-              <div>
-                <p className="text-xs text-gray-400 dark:text-white/30 tracking-widest uppercase text-center mb-4">iPad</p>
-                <div className="flex justify-center">
-                  <div className="w-full max-w-[480px] aspect-[4/3] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                    <Image src={featureScreenshots[slug].ipad!} alt={`${content.headline} on iPad`} width={2048} height={1536} className="block dark:hidden w-full h-full object-cover object-top" />
-                    {featureScreenshots[slug].ipadDark && (
-                      <Image src={featureScreenshots[slug].ipadDark!} alt={`${content.headline} on iPad (Dark)`} width={2048} height={1536} className="hidden dark:block w-full h-full object-cover object-top" />
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Mac */}
-            {featureScreenshots[slug].mac && (
-              <div>
-                <p className="text-xs text-gray-400 dark:text-white/30 tracking-widest uppercase text-center mb-4">Mac</p>
-                <div className="flex justify-center">
-                  <div className="w-full max-w-[640px] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                    <div className="h-7 bg-gray-100 dark:bg-white/[0.08] border-b border-gray-200 dark:border-white/10 flex items-center px-3 gap-1.5">
-                      <span className="h-2.5 w-2.5 rounded-full bg-red-400/60" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/60" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-green-400/60" />
-                    </div>
-                    <Image src={featureScreenshots[slug].mac!} alt={`${content.headline} on Mac`} width={2064} height={2752} className="block dark:hidden w-full object-cover object-top" style={{ maxHeight: '400px' }} />
-                    {featureScreenshots[slug].macDark && (
-                      <Image src={featureScreenshots[slug].macDark!} alt={`${content.headline} on Mac (Dark)`} width={2064} height={2752} className="hidden dark:block w-full object-cover object-top" style={{ maxHeight: '400px' }} />
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Demo Video */}
-        {featureVideos[slug] && (
-          <div className="mt-16 space-y-4">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tracking-wider uppercase text-center" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
-              Watch the Demo
-            </h2>
-            <p className="text-xs text-gray-400 dark:text-white/30 tracking-widest uppercase text-center">Recorded on iPhone</p>
-            <div className="flex justify-center">
-              <div className="w-full max-w-[240px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
-                <video
-                  src={featureVideos[slug]}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover object-top"
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Callout box */}
         {content.callout && (
           <div className="mt-12 rounded-2xl p-6 sm:p-8 border" style={{ backgroundColor: `${color}08`, borderColor: `${color}20` }}>
