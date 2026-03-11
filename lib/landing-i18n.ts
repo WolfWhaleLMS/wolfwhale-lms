@@ -151,7 +151,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     appStore: 'App Store',
     comingSoon: 'Coming Soon',
     featuresTitle: 'POWERFUL FEATURES',
-    featuresSubtitle: 'LMS + SIS in one native iOS app. From micro-lessons to report cards — everything your school needs.',
+    featuresSubtitle: 'Learning Management System (LMS) + Student Information System (SIS) in one native iOS app. From micro-lessons to report cards — everything your school needs.',
     features: [
       { icon: Brain, title: 'Micro-Lessons', slug: 'micro-lessons', points: ['Research-backed cognitive load theory', 'Hook \u2192 Lesson \u2192 Compare \u2192 Quiz format', 'Reading timer ensures comprehension', 'Gated quizzes unlock after reading'], color: '#8B5CF6' },
       { icon: Bot, title: 'On-Device AI (6 Tools)', slug: 'ai-tools', points: ['AI Tutor with curriculum awareness', 'Micro-Lesson Converter (industry first)', 'Lesson Plan Builder', 'Report Card Comments', 'AI Search across all content', 'Apple Intelligence \u2014 data never leaves device'], color: '#00BFFF' },
@@ -323,7 +323,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     appStore: 'App Store',
     comingSoon: 'Bient\u00f4t disponible',
     featuresTitle: 'FONCTIONNALIT\u00c9S PUISSANTES',
-    featuresSubtitle: 'SGA + SIS dans une seule app iOS native. Des micro-le\u00e7ons aux bulletins \u2014 tout ce dont votre \u00e9cole a besoin.',
+    featuresSubtitle: 'Système de gestion de l’apprentissage (SGA) + Système d’information scolaire (SIS) dans une seule app iOS native. Des micro-le\u00e7ons aux bulletins \u2014 tout ce dont votre \u00e9cole a besoin.',
     features: [
       { icon: Brain, title: 'Micro-le\u00e7ons', slug: 'micro-lessons', points: ['Th\u00e9orie de la charge cognitive', 'Format : accroche \u2192 le\u00e7on \u2192 comparaison \u2192 quiz', 'Minuterie de lecture pour la compr\u00e9hension', 'Quiz verrouill\u00e9s jusqu\u2019\u00e0 la fin de la lecture'], color: '#8B5CF6' },
       { icon: Bot, title: 'IA sur l\u2019appareil (6 outils)', slug: 'ai-tools', points: ['Tuteur IA avec contexte du programme', 'Convertisseur de micro-le\u00e7ons (premi\u00e8re mondiale)', 'G\u00e9n\u00e9rateur de plans de cours', 'Commentaires de bulletins', 'Recherche IA dans tout le contenu', 'Apple Intelligence \u2014 donn\u00e9es sur l\u2019appareil'], color: '#00BFFF' },

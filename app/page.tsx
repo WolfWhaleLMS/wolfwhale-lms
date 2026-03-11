@@ -34,7 +34,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
           "name": "Wolf Whale",
-          "description": "Complete school operating system for Canadian K-12. Combines LMS + SIS with 72 original textbooks, AI tools, attendance, gradebook, and report cards in one native iOS app.",
+          "description": "Complete school operating system for Canadian K-12. Combines a Learning Management System (LMS) + Student Information System (SIS) with 72 original textbooks, AI tools, attendance, gradebook, and report cards in one native iOS app.",
           "url": "https://wolfwhale.ca",
           "logo": "https://wolfwhale.ca/logo.png",
           "email": "info@wolfwhale.ca",
@@ -253,17 +253,17 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </section>
 
 
-        {/* LMS + SIS in One App */}
+        {/* Learning Management System (LMS) + Student Information System (SIS) in One App */}
         <section className="px-4 py-10 sm:py-16">
           <div className="max-w-4xl mx-auto">
             <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-10 md:p-14">
               <div className="text-center space-y-6">
                 <p className="text-xs text-gray-400 dark:text-white/40 tracking-widest uppercase font-medium">Why WolfWhale is Different</p>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
-                  LMS + SIS in One App
+                  Learning Management System (LMS) + Student Information System (SIS) in One App
                 </h2>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-2xl mx-auto leading-relaxed">
-                  Most schools run a separate LMS for learning and a separate SIS for administration. WolfWhale combines both into a single native iOS app — micro-lessons, textbooks, attendance, gradebook, report cards, enrollment, parent portal, and scheduling. No more juggling six different logins.
+                  Most schools run a separate Learning Management System (LMS) for learning and a separate Student Information System (SIS) for administration. WolfWhale combines both into a single native iOS app — micro-lessons, textbooks, attendance, gradebook, report cards, enrollment, parent portal, and scheduling. No more juggling six different logins.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto pt-4">
                   <div className="bg-white/50 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] rounded-xl p-5 text-left">
