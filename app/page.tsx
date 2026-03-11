@@ -317,111 +317,6 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           </div>
         </section>
 
-        {/* NEW: Micro-Lesson System Section */}
-        <section id="micro-lessons" className="px-4 py-10 sm:py-16">
-          <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
-            <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-xs font-semibold text-purple-600 dark:text-purple-400 tracking-wider uppercase">
-                <Sparkles className="h-3 w-3" />
-                New — Industry First
-              </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
-                {t.microLessonsTitle}
-              </h2>
-              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-2xl mx-auto">
-                {t.microLessonsSub}
-              </p>
-            </div>
-
-            {/* Micro-lesson steps */}
-            <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
-              {t.microLessonsSteps.map(({ title, desc }, idx) => (
-                <div
-                  key={title}
-                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 text-center space-y-2 relative"
-                >
-                  <div className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-400 text-sm font-bold border border-purple-500/20">
-                    {idx + 1}
-                  </div>
-                  <h3 className="text-sm font-bold text-gray-900 dark:text-white">{title}</h3>
-                  <p className="text-xs text-gray-500 dark:text-white/60 leading-relaxed">{desc}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* AI Converter highlight */}
-            <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-purple-500/20 rounded-2xl p-6 sm:p-8 space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="inline-flex p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/20">
-                  <Brain className="h-5 w-5 text-purple-500" />
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t.microLessonsConverterTitle}</h3>
-              </div>
-              <p className="text-sm text-gray-600 dark:text-white/70 leading-relaxed max-w-3xl">
-                {t.microLessonsConverterDesc}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* WolfWhale Books Section */}
-        <section id="textbooks" className="px-4 py-10 sm:py-16">
-          <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
-            <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
-                {t.textbooksTitle}
-              </h2>
-              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-2xl mx-auto">
-                {t.textbooksSub}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {t.textbooksStats.map(({ value, label }) => (
-                <div
-                  key={label}
-                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 text-center space-y-1"
-                >
-                  <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>{value}</p>
-                  <p className="text-xs text-gray-500 dark:text-white/60 tracking-wider uppercase">{label}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="text-center pt-4">
-              <Link
-                href={`/features/textbooks${lp}`}
-                className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-white/50 hover:text-[#00BFFF] transition-colors duration-100 font-medium"
-              >
-                {lang === 'fr' ? 'En savoir plus sur WolfWhale Books' : 'Learn more about WolfWhale Books'}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Key Differentiators Section */}
-        <section className="px-4 py-10 sm:py-16">
-          <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
-            <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
-                {lang === 'fr' ? 'POURQUOI WOLFWHALE' : 'WHY WOLFWHALE'}
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {t.differentiators.map(({ title, desc }) => (
-                <div
-                  key={title}
-                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 space-y-2 hover:border-gray-300 dark:hover:border-white/20 transition-all duration-100"
-                >
-                  <h3 className="text-sm font-bold text-gray-900 dark:text-white">{title}</h3>
-                  <p className="text-xs text-gray-500 dark:text-white/60 leading-relaxed">{desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* App Screenshots Section */}
         <section id="screenshots" className="px-4 py-10 sm:py-16">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
@@ -593,23 +488,9 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           </div>
         </section>
 
-        {/* About Section */}
-        <section id="about" className="px-4 py-10 sm:py-16">
-          <div className="max-w-3xl mx-auto">
-            <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
-                {t.aboutTitle}
-              </h2>
-              <p className="text-sm sm:text-base text-gray-600 dark:text-white/75 leading-relaxed">
-                {t.aboutText}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Built in Canada Section */}
+        {/* Built in Canada & Reconciliation Section */}
         <section id="canada" className="px-4 py-10 sm:py-16">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto space-y-8">
             <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-10 md:p-14">
               <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
                 <div className="shrink-0 flex flex-col items-center gap-4">
@@ -639,23 +520,16 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* TRC Calls to Action Section */}
-        <section id="trc" className="px-4 py-10 sm:py-16">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-10 md:p-14 space-y-6 sm:space-y-8">
-              <div className="space-y-3 text-center">
-                <div className="inline-flex p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 mx-auto">
-                  <Feather className="h-6 w-6 text-amber-500" />
+            {/* TRC Calls to Action */}
+            <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-10 md:p-14 space-y-6">
+              <div className="flex items-center justify-center gap-3">
+                <div className="inline-flex p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                  <Feather className="h-5 w-5 text-amber-500" />
                 </div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tracking-wider uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
                   {t.trcTitle}
-                </h2>
-                <p className="text-sm sm:text-base text-gray-500 dark:text-white/60 max-w-2xl mx-auto">
-                  {t.trcSub}
-                </p>
+                </h3>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
@@ -668,18 +542,6 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                     <p className="text-xs sm:text-sm text-gray-500 dark:text-white/55 leading-relaxed">{desc}</p>
                   </div>
                 ))}
-              </div>
-
-              <div className="text-center pt-2">
-                <a
-                  href="https://www2.gov.bc.ca/assets/gov/british-columbians-our-governments/indigenous-people/aboriginal-peoples-documents/calls_to_action_english2.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-sm text-amber-600 dark:text-amber-400/80 hover:text-amber-700 dark:hover:text-amber-400 transition-colors duration-100 font-medium"
-                >
-                  {t.trcLink}
-                  <ArrowRight className="h-4 w-4" />
-                </a>
               </div>
             </div>
           </div>

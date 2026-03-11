@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "wolfwhale-web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "/Users/rylanddupre/Documents/wolfwhale-lms"],
+      "port": 3000
+    }
+  ]
+}
