@@ -23,7 +23,7 @@ interface FeatureDetail {
   }
 }
 
-const featureDetails: Record<string, Record<Lang, FeatureDetail>> = {
+const featureDetails: Record<string, Partial<Record<Lang, FeatureDetail>> & { en: FeatureDetail }> = {
   'micro-lessons': {
     en: {
       headline: 'Research-Backed Micro-Lessons',
@@ -582,7 +582,7 @@ export default async function FeatureDetailPage({ params, searchParams }: PagePr
   const { slug } = await params
   const sp = await searchParams
   const lang: Lang = sp.lang === 'fr' ? 'fr' : 'en'
-  const lp = lang === 'fr' ? '?lang=fr' : ''
+  const lp = lang !== 'en' ? `?lang=${lang}` : ''
 
   const detail = featureDetails[slug]
   if (!detail) notFound()
