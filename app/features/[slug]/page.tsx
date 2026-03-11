@@ -653,6 +653,18 @@ const featureScreenshots: Record<string, { iphone: string; iphoneDark?: string; 
   'land-based': { iphone: '/screenshot-courses-light.png', iphoneDark: '/screenshot-courses-dark.png' },
 }
 
+const featureVideos: Record<string, string> = {
+  'micro-lessons': '/demo-courses.mp4',
+  'ai-tools': '/demo-dashboard.mp4',
+  'textbooks': '/demo-textbooks.mp4',
+  'offline': '/demo-dashboard.mp4',
+  'teacher-tools': '/demo-courses.mp4',
+  'gamification': '/demo-grades.mp4',
+  'liquid-glass': '/demo-dashboard.mp4',
+  'connected': '/demo-more.mp4',
+  'land-based': '/demo-textbooks.mp4',
+}
+
 /* ============================================
    Static Params for SSG
    ============================================ */
@@ -818,6 +830,28 @@ export default async function FeatureDetailPage({ params, searchParams }: PagePr
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Demo Video */}
+        {featureVideos[slug] && (
+          <div className="mt-16 space-y-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tracking-wider uppercase text-center" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+              Watch the Demo
+            </h2>
+            <p className="text-xs text-gray-400 dark:text-white/30 tracking-widest uppercase text-center">Recorded on iPhone</p>
+            <div className="flex justify-center">
+              <div className="w-full max-w-[240px] aspect-[9/19.5] bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2rem] overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/30">
+                <video
+                  src={featureVideos[slug]}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+            </div>
           </div>
         )}
 
