@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { ArrowRight, Mail, Phone, MapPin, CheckCircle2, X as XIcon, Feather, Linkedin, Twitter, Brain, Sparkles, BookOpen, Target, Building2, Server, BarChart3, Shield as ShieldIcon, DollarSign, Lock } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 import { ContactForm } from '@/components/landing/ContactForm'
+import { Pictographs } from '@/components/landing/Pictographs'
 import { ThemeToggle } from '@/components/landing/ThemeToggle'
 import { FAQAccordion } from '@/components/ui/FAQAccordion'
 import { LanguageToggle } from '@/components/ui/LanguageToggle'
@@ -141,6 +142,9 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </div>
       </header>
       {/* Spacer for fixed header */}
+
+        {/* Woodland Cree pictograph decorations */}
+        <Pictographs />
       <div className="h-[80px] sm:h-[86px]" />
 
       {/* Hero Section */}
