@@ -342,7 +342,7 @@ export default async function DivisionDetailPage({ params, searchParams }: PageP
 
   const content = detail.en
   const t = landingContent[lang]
-  const color = '#00BFFF'
+  const color = '#0891B2'
 
   return (
     <div className="min-h-screen relative overflow-x-hidden bg-white dark:bg-black">
@@ -350,7 +350,7 @@ export default async function DivisionDetailPage({ params, searchParams }: PageP
       <header className="fixed top-0 left-0 right-0 z-50 px-3 py-2 sm:px-4 sm:py-2.5 backdrop-blur-xl bg-white dark:bg-black border-b border-gray-200 dark:border-white/5">
         <nav className="flex items-center justify-between max-w-6xl mx-auto">
           <Link href={`/${lp}`} className="inline-flex flex-col group shrink-0 min-w-0">
-            <span className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-[#00BFFF] transition-colors duration-100 tracking-normal uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+            <span className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-[#0891B2] transition-colors duration-100 tracking-normal uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
               WolfWhale
             </span>
             <span className="hidden sm:block text-xs text-gray-500 dark:text-white/60 tracking-[0.15em] uppercase font-medium -mt-0.5">
@@ -359,7 +359,7 @@ export default async function DivisionDetailPage({ params, searchParams }: PageP
           </Link>
 
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-            <Link href={`/${lp}#divisions`} className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors duration-100 font-medium hidden sm:inline">
+            <Link href={`/${lp}#divisions`} className="text-sm text-gray-600 dark:text-white/70 hover:text-[#0891B2] transition-colors duration-100 font-medium hidden sm:inline">
               {t.nav.divisions}
             </Link>
             <LanguageToggle lang={lang} />
@@ -379,7 +379,7 @@ export default async function DivisionDetailPage({ params, searchParams }: PageP
         {/* Back link */}
         <Link
           href={`/${lp}#divisions`}
-          className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-white/50 hover:text-[#00BFFF] transition-colors duration-100 mb-8"
+          className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-white/50 hover:text-[#0891B2] transition-colors duration-100 mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           {lang === 'fr' ? 'Retour aux divisions' : 'Back to Divisions'}
@@ -431,7 +431,7 @@ export default async function DivisionDetailPage({ params, searchParams }: PageP
                     href={ref.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm text-[#00BFFF] hover:underline"
+                    className="inline-flex items-center gap-1.5 text-sm text-[#0891B2] hover:underline"
                   >
                     <ExternalLink className="h-3.5 w-3.5 shrink-0" />
                     {ref.label}
@@ -462,7 +462,7 @@ export default async function DivisionDetailPage({ params, searchParams }: PageP
           </a>
           <Link
             href={`/${lp}#divisions`}
-            className="inline-flex items-center gap-1.5 h-12 px-6 text-sm text-gray-500 dark:text-white/50 hover:text-[#00BFFF] transition-colors duration-100 font-medium"
+            className="inline-flex items-center gap-1.5 h-12 px-6 text-sm text-gray-500 dark:text-white/50 hover:text-[#0891B2] transition-colors duration-100 font-medium"
           >
             {lang === 'fr' ? 'Voir toutes les capacités' : 'See all capabilities'}
             <ArrowRight className="h-4 w-4" />

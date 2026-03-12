@@ -39,7 +39,7 @@ const curriculumData: SubjectData[] = [
   },
   {
     subject: 'English Language Arts',
-    color: '#00BFFF',
+    color: '#0891B2',
     grades: [
       { grade: 'K', textbook: 'WolfWhale ELA K', chapters: 4, outcomes: ['CRK.1', 'CCK.1', 'CCK.2', 'CCK.3', 'CCK.4', 'ARK.1'] },
       { grade: '1', textbook: 'WolfWhale ELA 1', chapters: 4, outcomes: ['CR1.1', 'CR1.2', 'CR1.3', 'CR1.4', 'CC1.1', 'CC1.2', 'CC1.3', 'CC1.4', 'AR1.1', 'AR1.2'] },

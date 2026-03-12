@@ -18,7 +18,7 @@ interface SystemToggleProps {
 }
 
 const PURPLE = "#8B5CF6"
-const CYAN = "#00BFFF"
+const CYAN = "#0891B2"
 
 function FeatureCard({
   title,

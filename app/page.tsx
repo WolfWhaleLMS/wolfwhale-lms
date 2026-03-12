@@ -91,7 +91,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
       <header className="fixed top-0 left-0 right-0 z-50 px-3 py-2 sm:px-4 sm:py-2.5 backdrop-blur-xl bg-white dark:bg-black border-b border-gray-200 dark:border-white/5">
         <nav className="flex items-center justify-between">
           <Link href={`/${lp}`} className="inline-flex flex-col group shrink-0 min-w-0">
-            <span className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-[#00BFFF] transition-colors duration-100 tracking-normal uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+            <span className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-[#0891B2] transition-colors duration-100 tracking-normal uppercase" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
               WolfWhale
             </span>
             <span className="hidden sm:block text-xs text-gray-500 dark:text-white/60 tracking-[0.15em] uppercase font-medium -mt-0.5">
@@ -100,19 +100,19 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           </Link>
 
           <div className="hidden sm:flex items-center gap-4">
-            <a href="#features" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors duration-100 font-medium">
+            <a href="#features" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#0891B2] transition-colors duration-100 font-medium">
               {t.nav.features}
             </a>
-            <Link href={`/${lp}#divisions`} className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors duration-100 font-medium hidden sm:inline">
+            <Link href={`/${lp}#divisions`} className="text-sm text-gray-600 dark:text-white/70 hover:text-[#0891B2] transition-colors duration-100 font-medium hidden sm:inline">
               Divisions
             </Link>
-            <a href="#compare" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors duration-100 font-medium">
+            <a href="#compare" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#0891B2] transition-colors duration-100 font-medium">
               {t.nav.compare}
             </a>
-            <a href="#pricing" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors duration-100 font-medium">
+            <a href="#pricing" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#0891B2] transition-colors duration-100 font-medium">
               {t.nav.pricing}
             </a>
-            <a href="#faq" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors duration-100 font-medium">
+            <a href="#faq" className="text-sm text-gray-600 dark:text-white/70 hover:text-[#0891B2] transition-colors duration-100 font-medium">
               {t.nav.faq}
             </a>
             <LanguageToggle lang={lang} />
@@ -141,16 +141,16 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
 
         {/* Mobile nav links */}
         <div className="flex sm:hidden items-center justify-center gap-4 mt-3 max-w-6xl mx-auto">
-          <a href="#features" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors duration-100 font-medium">
+          <a href="#features" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#0891B2] transition-colors duration-100 font-medium">
             {t.nav.features}
           </a>
-          <a href="#compare" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors duration-100 font-medium">
+          <a href="#compare" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#0891B2] transition-colors duration-100 font-medium">
             {t.nav.compare}
           </a>
-          <a href="#pricing" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors duration-100 font-medium">
+          <a href="#pricing" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#0891B2] transition-colors duration-100 font-medium">
             {t.nav.pricing}
           </a>
-          <a href="#faq" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#00BFFF] transition-colors duration-100 font-medium">
+          <a href="#faq" className="text-xs text-gray-600 dark:text-white/70 hover:text-[#0891B2] transition-colors duration-100 font-medium">
             {t.nav.faq}
           </a>
         </div>
@@ -195,7 +195,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               <p className="text-xs text-gray-400 dark:text-white/40">{t.pilotSub}</p>
               <a
                 href="#features"
-                className="inline-flex items-center gap-1.5 h-10 text-sm text-gray-400 dark:text-white/50 hover:text-[#00BFFF] transition-colors duration-100 font-medium"
+                className="inline-flex items-center gap-1.5 h-10 text-sm text-gray-400 dark:text-white/50 hover:text-[#0891B2] transition-colors duration-100 font-medium"
               >
                 {t.seeFeatures}
                 <ArrowRight className="h-4 w-4" />
@@ -237,20 +237,23 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
 
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto">
-              {t.missionStats.map(({ value, label, source }) => (
-                <div
-                  key={value}
-                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 text-center space-y-2"
-                >
-                  <p className="text-5xl sm:text-6xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
-                    {/^\d/.test(value) ? (
-                      <AnimatedCounter target={parseInt(value.replace(/[^0-9]/g, ''))} suffix={value.replace(/[0-9,]/g, '')} className="" duration={1800} />
-                    ) : value}
-                  </p>
-                  <p className="text-sm text-gray-600 dark:text-white/70 leading-snug">{label}</p>
-                  <p className="text-[10px] text-gray-400 dark:text-white/30 tracking-wider">{source}</p>
-                </div>
-              ))}
+              {t.missionStats.map(({ value, label, source }, idx) => {
+                const statColor = idx === 0 ? 'text-red-600 dark:text-red-400' : 'text-emerald-600 dark:text-emerald-400'
+                return (
+                  <div
+                    key={value}
+                    className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 text-center space-y-2"
+                  >
+                    <p className={`text-5xl sm:text-6xl font-bold ${statColor}`} style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
+                      {/^\d/.test(value) ? (
+                        <AnimatedCounter target={parseInt(value.replace(/[^0-9]/g, ''))} suffix={value.replace(/[0-9,]/g, '')} className="" duration={1800} />
+                      ) : value}
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-white/70 leading-snug">{label}</p>
+                    <p className="text-[10px] text-gray-400 dark:text-white/30 tracking-wider">{source}</p>
+                  </div>
+                )
+              })}
             </div>
 
             {/* Missions */}
@@ -260,8 +263,8 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                   key={title}
                   className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-5 flex items-start gap-3"
                 >
-                  <div className="inline-flex p-2 rounded-xl bg-[#00BFFF]/10 border border-[#00BFFF]/20 shrink-0 mt-0.5">
-                    <Target className="h-4 w-4 text-[#00BFFF]" />
+                  <div className="inline-flex p-2 rounded-xl bg-[#0891B2]/10 border border-[#0891B2]/20 shrink-0 mt-0.5">
+                    <Target className="h-4 w-4 text-[#0891B2]" />
                   </div>
                   <div>
                     <p className="text-xs text-gray-400 dark:text-white/40 uppercase tracking-widest font-semibold mb-1">{title}</p>
@@ -345,7 +348,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                   >
                     <Icon className="h-6 w-6" style={{ color }} />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-[#00BFFF] transition-colors duration-100">{title}</h3>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-[#0891B2] transition-colors duration-100">{title}</h3>
                   <ul className="space-y-1">
                     {points.map((pt) => (
                       <li key={pt} className="text-sm text-gray-600 dark:text-white/65 flex items-start gap-2">
@@ -354,7 +357,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                       </li>
                     ))}
                   </ul>
-                  <p className="text-xs text-gray-400 dark:text-white/30 mt-3 group-hover:text-[#00BFFF]/60 transition-colors duration-100 flex items-center gap-1">
+                  <p className="text-xs text-gray-400 dark:text-white/30 mt-3 group-hover:text-[#0891B2]/60 transition-colors duration-100 flex items-center gap-1">
                     Learn more <ArrowRight className="h-3 w-3" />
                   </p>
                 </Link>
@@ -476,7 +479,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                 href="https://apps.apple.com/app/id6759676805"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-gray-400 dark:text-white/40 hover:text-[#00BFFF] transition-colors duration-100 mt-2"
+                className="inline-flex items-center gap-2 text-sm text-gray-400 dark:text-white/40 hover:text-[#0891B2] transition-colors duration-100 mt-2"
               >
                 Or download now on the App Store <ArrowRight className="h-3 w-3" />
               </a>
@@ -504,12 +507,12 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                   key={pkg.name}
                   className={`bg-gray-50 dark:bg-white/5 backdrop-blur-xl border rounded-2xl p-6 sm:p-8 flex flex-col transition-all duration-200 hover:shadow-lg hover:-translate-y-1 ${
                     idx === 1
-                      ? 'border-[#00BFFF]/40 ring-1 ring-[#00BFFF]/20'
+                      ? 'border-[#0891B2]/40 ring-1 ring-[#0891B2]/20'
                       : 'border-gray-200 dark:border-white/10'
                   }`}
                 >
                   {idx === 1 && (
-                    <span className="inline-block self-start text-[10px] uppercase tracking-widest font-semibold text-[#00BFFF] bg-[#00BFFF]/10 px-2.5 py-1 rounded-full mb-4">
+                    <span className="inline-block self-start text-[10px] uppercase tracking-widest font-semibold text-[#0891B2] bg-[#0891B2]/10 px-2.5 py-1 rounded-full mb-4">
                       Most Popular
                     </span>
                   )}
@@ -565,16 +568,16 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {t.divisionsFeatures.map((f) => (
-                <Link key={f.title} href={`/divisions/${f.slug}${lp}`} className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl p-5 space-y-2 group hover:border-[#00BFFF]/30 hover:bg-gray-100/80 dark:hover:bg-white/[0.07] transition-all duration-150">
+                <Link key={f.title} href={`/divisions/${f.slug}${lp}`} className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl p-5 space-y-2 group hover:border-[#0891B2]/30 hover:bg-gray-100/80 dark:hover:bg-white/[0.07] transition-all duration-150">
                   <div className="flex items-center gap-2">
-                    {f.icon === 'shield' && <ShieldIcon className="h-5 w-5 text-[#00BFFF]" />}
-                    {f.icon === 'server' && <Server className="h-5 w-5 text-[#00BFFF]" />}
-                    {f.icon === 'chart' && <BarChart3 className="h-5 w-5 text-[#00BFFF]" />}
-                    {f.icon === 'users' && <Building2 className="h-5 w-5 text-[#00BFFF]" />}
-                    {f.icon === 'dollar' && <DollarSign className="h-5 w-5 text-[#00BFFF]" />}
-                    {f.icon === 'lock' && <Lock className="h-5 w-5 text-[#00BFFF]" />}
+                    {f.icon === 'shield' && <ShieldIcon className="h-5 w-5 text-[#0891B2]" />}
+                    {f.icon === 'server' && <Server className="h-5 w-5 text-[#0891B2]" />}
+                    {f.icon === 'chart' && <BarChart3 className="h-5 w-5 text-[#0891B2]" />}
+                    {f.icon === 'users' && <Building2 className="h-5 w-5 text-[#0891B2]" />}
+                    {f.icon === 'dollar' && <DollarSign className="h-5 w-5 text-[#0891B2]" />}
+                    {f.icon === 'lock' && <Lock className="h-5 w-5 text-[#0891B2]" />}
                     <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{f.title}</h3>
-                    <ArrowRight className="h-3.5 w-3.5 text-gray-300 dark:text-white/20 ml-auto group-hover:text-[#00BFFF] transition-colors" />
+                    <ArrowRight className="h-3.5 w-3.5 text-gray-300 dark:text-white/20 ml-auto group-hover:text-[#0891B2] transition-colors" />
                   </div>
                   <p className="text-xs text-gray-500 dark:text-white/60 leading-relaxed">{f.desc}</p>
                 </Link>
@@ -594,7 +597,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                 href="https://apps.apple.com/app/id6759676805"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-xs text-gray-400 dark:text-white/30 hover:text-[#00BFFF] transition-colors duration-100 mt-1"
+                className="inline-flex items-center gap-2 text-xs text-gray-400 dark:text-white/30 hover:text-[#0891B2] transition-colors duration-100 mt-1"
               >
                 Available on the App Store <ArrowRight className="h-3 w-3" />
               </a>
@@ -659,7 +662,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <p className="text-xs text-gray-400 dark:text-white/40">
                 {t.emailDirect}{' '}
-                <a href="mailto:info@wolfwhale.ca" className="text-[#00BFFF]/70 hover:text-[#00BFFF] transition-colors duration-100">
+                <a href="mailto:info@wolfwhale.ca" className="text-[#0891B2]/70 hover:text-[#0891B2] transition-colors duration-100">
                   info@wolfwhale.ca
                 </a>
               </p>
@@ -734,23 +737,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </section>
         </AnimateOnScroll>
 
-        {/* Ambassador Program Teaser */}
-        <section className="px-4 py-10 sm:py-16">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-8 text-center space-y-4">
-              <p className="text-xs text-gray-400 dark:text-white/40 tracking-widest uppercase font-medium">Ambassador Program</p>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
-                Know a School That Needs WolfWhale?
-              </h2>
-              <p className="text-sm sm:text-base text-gray-600 dark:text-white/70 max-w-2xl mx-auto">
-                Earn 5% of Year 1 revenue for every school you bring. Teachers, parents, community members — anyone can join.
-              </p>
-              <a href="/referrals" className="inline-flex items-center gap-2 h-10 px-6 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-black text-sm font-semibold transition-all duration-100 hover:bg-gray-800 dark:hover:bg-gray-100">
-                Learn More & Sign Up
-              </a>
-            </div>
-          </div>
-        </section>
+
 
         {/* Principle 18: reassurance about loss */}
         <section className="px-4 py-10">
@@ -773,30 +760,30 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                 <p className="text-sm font-normal text-gray-700 dark:text-white/70 uppercase tracking-wider" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>WOLFWHALE <span className="text-gray-400 dark:text-white/30 mx-1">|</span> School Platform</p>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-white/60">
                   <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Saskatoon, SK, Canada</span>
-                  <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1 hover:text-[#00BFFF] transition-colors duration-100"><Mail className="h-3 w-3" /> info@wolfwhale.ca</a>
-                  <a href="tel:+13069815926" className="flex items-center gap-1 hover:text-[#00BFFF] transition-colors duration-100"><Phone className="h-3 w-3" /> +1 (306) 981-5926</a>
+                  <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1 hover:text-[#0891B2] transition-colors duration-100"><Mail className="h-3 w-3" /> info@wolfwhale.ca</a>
+                  <a href="tel:+13069815926" className="flex items-center gap-1 hover:text-[#0891B2] transition-colors duration-100"><Phone className="h-3 w-3" /> +1 (306) 981-5926</a>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
                 <div className="flex flex-wrap gap-4 sm:gap-6">
-                  <Link href="/brand" className="text-sm text-gray-500 dark:text-white/60 hover:text-[#00BFFF] transition-colors duration-100">
+                  <Link href="/brand" className="text-sm text-gray-500 dark:text-white/60 hover:text-[#0891B2] transition-colors duration-100">
                     Brand
                   </Link>
-                  <Link href={`/privacy${lp}`} className="text-sm text-gray-500 dark:text-white/60 hover:text-[#00BFFF] transition-colors duration-100">
+                  <Link href={`/privacy${lp}`} className="text-sm text-gray-500 dark:text-white/60 hover:text-[#0891B2] transition-colors duration-100">
                     {t.privacy}
                   </Link>
-                  <Link href={`/terms${lp}`} className="text-sm text-gray-500 dark:text-white/60 hover:text-[#00BFFF] transition-colors duration-100">
+                  <Link href={`/terms${lp}`} className="text-sm text-gray-500 dark:text-white/60 hover:text-[#0891B2] transition-colors duration-100">
                     {t.terms}
                   </Link>
-                  <Link href={`/help${lp}`} className="text-sm text-gray-500 dark:text-white/60 hover:text-[#00BFFF] transition-colors duration-100">
+                  <Link href={`/help${lp}`} className="text-sm text-gray-500 dark:text-white/60 hover:text-[#0891B2] transition-colors duration-100">
                     {t.help}
                   </Link>
                 </div>
                 <div className="flex items-center gap-3">
-                  <a href="https://linkedin.com/company/wolfwhale-learning" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-white/40 hover:text-[#00BFFF] transition-colors duration-100" aria-label="LinkedIn">
+                  <a href="https://linkedin.com/company/wolfwhale-learning" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-white/40 hover:text-[#0891B2] transition-colors duration-100" aria-label="LinkedIn">
                     <Linkedin className="h-4 w-4" />
                   </a>
-                  <a href="https://x.com/wolfwhale" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-white/40 hover:text-[#00BFFF] transition-colors duration-100" aria-label="X (Twitter)">
+                  <a href="https://x.com/wolfwhale" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-white/40 hover:text-[#0891B2] transition-colors duration-100" aria-label="X (Twitter)">
                     <Twitter className="h-4 w-4" />
                   </a>
                 </div>
