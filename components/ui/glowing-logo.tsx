@@ -55,7 +55,7 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
         }}
       >
         <Image
-          src="/logo.png"
+          src="/logo-teal.png"
           alt="WolfWhale"
           width={Math.round(tileSize)}
           height={Math.round(tileSize)}

@@ -37,7 +37,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           "name": "Wolf Whale",
           "description": "Complete school operating system for Canadian K-12. Combines a Learning Management System (LMS) + Student Information System (SIS) with 72 original textbooks, AI tools, attendance, gradebook, and report cards in one native iOS app.",
           "url": "https://wolfwhale.ca",
-          "logo": "https://wolfwhale.ca/logo.png",
+          "logo": "https://wolfwhale.ca/logo-teal.png",
           "email": "info@wolfwhale.ca",
           "telephone": "+1-306-981-5926",
           "address": {

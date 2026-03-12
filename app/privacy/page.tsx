@@ -762,7 +762,7 @@ export default async function PrivacyPolicyPage({ searchParams }: PageProps) {
       <header className="sticky top-0 z-10 bg-white dark:bg-black border-b border-gray-200 dark:border-white/5">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <Image src="/logo.png" alt="WolfWhale" width={48} height={48} sizes="48px" className="rounded-xl object-contain shadow-lg border-2 border-black dark:border-white/10" />
+            <Image src="/logo-teal.png" alt="WolfWhale" width={48} height={48} sizes="48px" className="rounded-xl object-contain shadow-lg border-2 border-black dark:border-white/10" />
             <div>
               <h1 className="text-lg sm:text-xl font-display font-bold text-gray-900 dark:text-white group-hover:opacity-70 transition-opacity tracking-wider uppercase">
                 WolfWhale
