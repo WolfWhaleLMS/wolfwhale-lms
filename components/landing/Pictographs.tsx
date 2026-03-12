@@ -191,7 +191,7 @@ export function Pictographs() {
   return (
     <>
       {/* Pictograph decorations — visible on all screen sizes */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+      <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden" aria-hidden="true">
         {placements.map((p, i) => {
           const motif = motifs[p.motifIndex]
           return (
@@ -200,9 +200,9 @@ export function Pictographs() {
               viewBox={motif.viewBox}
               className={`absolute stroke-current
                 w-7 h-7 sm:w-10 sm:h-10 lg:w-14 lg:h-14
-                text-gray-300/40 dark:text-white/[0.05]
-                sm:text-gray-300/50 sm:dark:text-white/[0.07]
-                lg:text-gray-300/60 lg:dark:text-white/[0.08]
+                text-gray-400/50 dark:text-white/[0.12]
+                sm:text-gray-400/50 sm:dark:text-white/[0.14]
+                lg:text-gray-400/60 lg:dark:text-white/[0.16]
               `}
               style={{
                 top: p.top,
