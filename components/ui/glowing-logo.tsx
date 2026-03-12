@@ -10,39 +10,39 @@ interface GlowingLogoProps {
 export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
   const tileSize = size * 2.08
   const borderRadius = tileSize * 0.22
-  const g = tileSize * 0.5
+  const g = tileSize * 0.35
 
   return (
     <div className={`relative inline-flex items-center justify-center ${className}`}>
-      {/* Light mode glow — deeper indigo */}
+      {/* Light mode glow — green */}
       <div
         className="absolute rounded-full dark:hidden"
         style={{
-          width: tileSize * 3.6,
-          height: tileSize * 3.6,
+          width: tileSize * 2.2,
+          height: tileSize * 2.2,
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           zIndex: 0,
-          background: 'radial-gradient(circle, rgba(16,185,129,0.55) 0%, rgba(16,185,129,0.25) 40%, rgba(16,185,129,0) 70%)',
-          filter: `blur(${g * 1.2}px)`,
+          background: 'radial-gradient(circle, rgba(16,185,129,0.5) 0%, rgba(16,185,129,0.2) 45%, rgba(16,185,129,0) 70%)',
+          filter: `blur(${g}px)`,
         }}
       />
-      {/* Dark mode glow — purple */}
+      {/* Dark mode glow — green */}
       <div
         className="absolute rounded-full hidden dark:block"
         style={{
-          width: tileSize * 3.6,
-          height: tileSize * 3.6,
+          width: tileSize * 2.2,
+          height: tileSize * 2.2,
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           zIndex: 0,
-          background: 'radial-gradient(circle, rgba(52,211,153,0.7) 0%, rgba(52,211,153,0.35) 40%, rgba(52,211,153,0) 70%)',
-          filter: `blur(${g * 1.2}px)`,
+          background: 'radial-gradient(circle, rgba(52,211,153,0.6) 0%, rgba(52,211,153,0.25) 45%, rgba(52,211,153,0) 70%)',
+          filter: `blur(${g}px)`,
         }}
       />
-      {/* App tile — sits ON TOP of the glow */}
+      {/* App tile */}
       <div
         className="relative overflow-hidden bg-white dark:bg-black flex items-center justify-center"
         style={{
