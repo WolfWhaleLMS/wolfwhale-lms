@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Mail, Phone, MapPin, CheckCircle2, X as XIcon, Feather, Linkedin, Twitter, Brain, Sparkles, BookOpen, Target, Building2, Server, BarChart3, Shield as ShieldIcon, DollarSign, Lock } from 'lucide-react'
+import { ArrowRight, Mail, Phone, MapPin, CheckCircle2, X as XIcon, Feather, Linkedin, Brain, Sparkles, BookOpen, Target, Building2, Server, BarChart3, Shield as ShieldIcon, DollarSign, Lock } from 'lucide-react'
 import { GlowingLogo } from '@/components/ui/glowing-logo'
 import { ContactForm } from '@/components/landing/ContactForm'
 import { Pictographs } from '@/components/landing/Pictographs'
@@ -769,9 +769,6 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                 <div className="flex items-center gap-3">
                   <a href="https://linkedin.com/company/wolfwhale-learning" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-white/40 hover:text-[#0891B2] transition-colors duration-100" aria-label="LinkedIn">
                     <Linkedin className="h-4 w-4" />
-                  </a>
-                  <a href="https://x.com/wolfwhale" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-white/40 hover:text-[#0891B2] transition-colors duration-100" aria-label="X (Twitter)">
-                    <Twitter className="h-4 w-4" />
                   </a>
                 </div>
               </div>
