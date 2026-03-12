@@ -130,7 +130,7 @@ export interface LandingContent {
   // For School Divisions
   divisionsTitle: string
   divisionsSub: string
-  divisionsFeatures: { icon: string; title: string; desc: string }[]
+  divisionsFeatures: { icon: string; title: string; desc: string; slug: string }[]
   divisionsCTA: string
   // Pilot CTA
   startPilot: string
@@ -323,12 +323,12 @@ export const landingContent: Record<Lang, LandingContent> = {
     divisionsTitle: 'FOR SCHOOL DIVISIONS',
     divisionsSub: 'Enterprise-ready deployment for any Saskatchewan school division.',
     divisionsFeatures: [
-      { icon: 'shield', title: 'SSO & Identity', desc: 'SAML 2.0, Google Workspace, and Microsoft 365 single sign-on. One login for every student and teacher.' },
-      { icon: 'server', title: 'Bulk Deployment', desc: 'Apple School Manager and MDM-ready. Push to every device in your division with zero-touch setup.' },
-      { icon: 'chart', title: 'Division Analytics', desc: 'Usage dashboards, engagement metrics, and outcome tracking across every school in your division.' },
-      { icon: 'users', title: 'Dedicated Onboarding', desc: 'White-glove setup for your division. Training for teachers, IT staff, and administrators included.' },
-      { icon: 'dollar', title: 'Volume Licensing', desc: 'Custom pricing for 500+ users. Multi-year contracts with predictable per-student costs.' },
-      { icon: 'lock', title: 'Data Sovereignty', desc: 'All data hosted in Canada. PIPEDA, COPPA, and FERPA compliant. Student data never leaves the country.' },
+      { icon: 'shield', title: 'SSO & Identity', desc: 'SAML 2.0, Google Workspace, and Microsoft 365 single sign-on. One login for every student and teacher.', slug: 'sso-identity' },
+      { icon: 'server', title: 'Bulk Deployment', desc: 'Apple School Manager and MDM-ready. Push to every device in your division with zero-touch setup.', slug: 'bulk-deployment' },
+      { icon: 'chart', title: 'Division Analytics', desc: 'Usage dashboards, engagement metrics, and outcome tracking across every school in your division.', slug: 'division-analytics' },
+      { icon: 'users', title: 'Dedicated Onboarding', desc: 'White-glove setup for your division. Training for teachers, IT staff, and administrators included.', slug: 'dedicated-onboarding' },
+      { icon: 'dollar', title: 'Volume Licensing', desc: 'Custom pricing for 500+ users. Multi-year contracts with predictable per-student costs.', slug: 'volume-licensing' },
+      { icon: 'lock', title: 'Data Sovereignty', desc: 'All data hosted in Canada. PIPEDA, COPPA, and FERPA compliant. Student data never leaves the country.', slug: 'data-sovereignty' },
     ],
     divisionsCTA: 'Start a Free Pilot',
     // Pilot CTA
@@ -524,12 +524,12 @@ export const landingContent: Record<Lang, LandingContent> = {
     divisionsTitle: 'POUR LES DIVISIONS SCOLAIRES',
     divisionsSub: 'D\u00e9ploiement pr\u00eat pour toute division scolaire de la Saskatchewan.',
     divisionsFeatures: [
-      { icon: 'shield', title: 'SSO et identit\u00e9', desc: 'SAML 2.0, Google Workspace et Microsoft 365. Une seule connexion pour chaque \u00e9l\u00e8ve et enseignant.' },
-      { icon: 'server', title: 'D\u00e9ploiement en masse', desc: 'Compatible Apple School Manager et MDM. Installation sans contact sur tous les appareils.' },
-      { icon: 'chart', title: 'Analytique de division', desc: 'Tableaux de bord, m\u00e9triques d\u2019engagement et suivi des r\u00e9sultats pour chaque \u00e9cole.' },
-      { icon: 'users', title: 'Int\u00e9gration d\u00e9di\u00e9e', desc: 'Mise en place personnalis\u00e9e. Formation pour enseignants, personnel TI et administrateurs incluse.' },
-      { icon: 'dollar', title: 'Licences en volume', desc: 'Tarification personnalis\u00e9e pour 500+ utilisateurs. Contrats pluriannuels avec co\u00fbts pr\u00e9visibles.' },
-      { icon: 'lock', title: 'Souverainet\u00e9 des donn\u00e9es', desc: 'Toutes les donn\u00e9es h\u00e9berg\u00e9es au Canada. Conforme LPRPDE, COPPA et FERPA.' },
+      { icon: 'shield', title: 'SSO et identit\u00e9', desc: 'SAML 2.0, Google Workspace et Microsoft 365. Une seule connexion pour chaque \u00e9l\u00e8ve et enseignant.' , slug: 'sso-identity' },
+      { icon: 'server', title: 'D\u00e9ploiement en masse', desc: 'Compatible Apple School Manager et MDM. Installation sans contact sur tous les appareils.' , slug: 'bulk-deployment' },
+      { icon: 'chart', title: 'Analytique de division', desc: 'Tableaux de bord, m\u00e9triques d\u2019engagement et suivi des r\u00e9sultats pour chaque \u00e9cole.' , slug: 'division-analytics' },
+      { icon: 'users', title: 'Int\u00e9gration d\u00e9di\u00e9e', desc: 'Mise en place personnalis\u00e9e. Formation pour enseignants, personnel TI et administrateurs incluse.' , slug: 'dedicated-onboarding' },
+      { icon: 'dollar', title: 'Licences en volume', desc: 'Tarification personnalis\u00e9e pour 500+ utilisateurs. Contrats pluriannuels avec co\u00fbts pr\u00e9visibles.' , slug: 'volume-licensing' },
+      { icon: 'lock', title: 'Souverainet\u00e9 des donn\u00e9es', desc: 'Toutes les donn\u00e9es h\u00e9berg\u00e9es au Canada. Conforme LPRPDE, COPPA et FERPA.' , slug: 'data-sovereignty' },
     ],
     divisionsCTA: 'D\u00e9marrer un essai gratuit',
     // Pilot CTA

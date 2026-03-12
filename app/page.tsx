@@ -552,7 +552,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {t.divisionsFeatures.map((f) => (
-                <div key={f.title} className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl p-5 space-y-2">
+                <Link key={f.title} href={`/divisions/${f.slug}${lp}`} className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl p-5 space-y-2 group hover:border-[#00BFFF]/30 hover:bg-gray-100/80 dark:hover:bg-white/[0.07] transition-all duration-150">
                   <div className="flex items-center gap-2">
                     {f.icon === 'shield' && <ShieldIcon className="h-5 w-5 text-[#00BFFF]" />}
                     {f.icon === 'server' && <Server className="h-5 w-5 text-[#00BFFF]" />}
@@ -561,9 +561,10 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                     {f.icon === 'dollar' && <DollarSign className="h-5 w-5 text-[#00BFFF]" />}
                     {f.icon === 'lock' && <Lock className="h-5 w-5 text-[#00BFFF]" />}
                     <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{f.title}</h3>
+                    <ArrowRight className="h-3.5 w-3.5 text-gray-300 dark:text-white/20 ml-auto group-hover:text-[#00BFFF] transition-colors" />
                   </div>
                   <p className="text-xs text-gray-500 dark:text-white/60 leading-relaxed">{f.desc}</p>
-                </div>
+                </Link>
               ))}
             </div>
 
