@@ -163,7 +163,7 @@ const divisionDetails: Record<string, { en: DivisionDetail }> = {
   'dedicated-onboarding': {
     en: {
       headline: 'Dedicated Onboarding & Professional Development',
-      description: 'Every division deployment includes hands-on training for teachers, IT staff, and administrators — aligned with STF professional development standards.',
+      description: 'Every division deployment includes hands-on training for teachers, IT staff, and administrators — because a platform is only as good as the training behind it.',
       sections: [
         {
           title: 'What Onboarding Includes',
@@ -176,13 +176,13 @@ const divisionDetails: Record<string, { en: DivisionDetail }> = {
           ],
         },
         {
-          title: 'Alignment with STF Standards',
+          title: 'Teacher-Centred Approach',
           items: [
-            'STF emphasizes that teachers need time and professional learning to use new technology effectively — WolfWhale onboarding is built around this principle',
-            'AI tools are presented as professional aids that support teacher autonomy, not replacements — aligning with STF President\'s position on ethical AI use',
-            'Training materials available for the STF\'s suggested approach: teachers as guides for responsible technology use in classrooms',
-            'Supports the STF Technology and Education Working Committee\'s mandate to examine how technology affects teachers\' working conditions',
+            'Teachers get dedicated time and professional learning to become confident with the platform before it reaches students',
+            'AI tools are presented as professional aids that support teacher autonomy — not replacements for teaching',
+            'Training covers responsible technology use in classrooms, with teachers as the guides',
             'Professional development hours from WolfWhale training can be documented for teacher growth plans',
+            'All training is practical and role-specific — no generic webinars',
           ],
         },
         {
@@ -196,8 +196,6 @@ const divisionDetails: Record<string, { en: DivisionDetail }> = {
         },
       ],
       references: [
-        { label: 'STF Technology and Education Working Committee', url: 'https://www.stf.sk.ca/about-stf/get-involved/technology-and-education-working-committee/' },
-        { label: 'STF on Guiding Ethical AI Use', url: 'https://www.stf.sk.ca/about-stf/news/guiding-ethical-ai-use/' },
         { label: 'Saskatchewan Teacher Innovation and Support Fund', url: 'https://www.saskatchewan.ca/residents/education-and-learning/prek-12-education-early-learning-and-schools/teacher-innovation-and-support-fund' },
       ],
       callout: {

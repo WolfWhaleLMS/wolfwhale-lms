@@ -8,6 +8,10 @@ import { ThemeToggle } from '@/components/landing/ThemeToggle'
 import { FAQAccordion } from '@/components/ui/FAQAccordion'
 import { LanguageToggle } from '@/components/ui/LanguageToggle'
 import { CommandPalette, CopyEmailButton, ScrollPersist } from '@/components/landing/LandingInteractions'
+import AnimateOnScroll from '@/components/landing/AnimateOnScroll'
+import AnimatedCounter from '@/components/landing/AnimatedCounter'
+import StickyNav from '@/components/landing/StickyNav'
+import { SystemToggle } from '@/components/landing/SystemToggle'
 import { landingContent, type Lang } from '@/lib/landing-i18n'
 
 interface PageProps {
@@ -25,6 +29,16 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
     <div className="min-h-screen relative overflow-x-hidden bg-white dark:bg-black">
       {/* Principle 4: persistent resumable scroll state */}
       <ScrollPersist />
+
+      {/* Sticky section navigation — appears after scrolling past hero */}
+      <StickyNav items={[
+        { label: t.nav.features, href: '#features' },
+        { label: t.nav.compare, href: '#compare' },
+        { label: t.nav.pricing, href: '#pricing' },
+        { label: t.nav.divisions, href: '#divisions' },
+        { label: t.nav.faq, href: '#faq' },
+        { label: t.nav.contact, href: '#contact' },
+      ]} />
 
 
 
@@ -209,6 +223,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
 
 
         {/* Mission & Impact Section */}
+        <AnimateOnScroll>
         <section id="mission" className="px-4 py-10 sm:py-16">
           <div className="max-w-4xl mx-auto space-y-8 sm:space-y-10">
             <div className="text-center space-y-3">
@@ -228,7 +243,9 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                   className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 text-center space-y-2"
                 >
                   <p className="text-5xl sm:text-6xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
-                    {value}
+                    {/^\d/.test(value) ? (
+                      <AnimatedCounter target={parseInt(value.replace(/[^0-9]/g, ''))} suffix={value.replace(/[0-9,]/g, '')} className="" duration={1800} />
+                    ) : value}
                   </p>
                   <p className="text-sm text-gray-600 dark:text-white/70 leading-snug">{label}</p>
                   <p className="text-[10px] text-gray-400 dark:text-white/30 tracking-wider">{source}</p>
@@ -255,9 +272,11 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             </div>
           </div>
         </section>
+        </AnimateOnScroll>
 
 
         {/* Learning Management System (LMS) + Student Information System (SIS) in One App */}
+        <AnimateOnScroll>
         <section className="px-4 py-10 sm:py-16">
           <div className="max-w-4xl mx-auto space-y-6">
             <div className="text-center space-y-3">
@@ -269,50 +288,36 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                 Most schools pay for two separate platforms. WolfWhale combines both into one.
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {/* LMS Card */}
-              <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-8 space-y-4">
-                <div className="inline-flex px-3 py-1 rounded-full bg-[#8B5CF6]/10 border border-[#8B5CF6]/20">
-                  <span className="text-xs font-semibold text-[#8B5CF6] tracking-widest uppercase">LMS</span>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
-                  Learning Management System
-                </h3>
-                <p className="text-sm text-gray-500 dark:text-white/60 leading-relaxed">
-                  The teaching and learning side — how students access lessons, textbooks, and assignments.
-                </p>
-                <ul className="space-y-2.5 text-sm text-gray-600 dark:text-white/70">
-                  <li className="flex items-start gap-2.5"><span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#8B5CF6] shrink-0" />Micro-lessons &amp; 72 digital textbooks</li>
-                  <li className="flex items-start gap-2.5"><span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#8B5CF6] shrink-0" />AI teacher tools &amp; lesson converter</li>
-                  <li className="flex items-start gap-2.5"><span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#8B5CF6] shrink-0" />Gamification, XP &amp; skill trees</li>
-                  <li className="flex items-start gap-2.5"><span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#8B5CF6] shrink-0" />Offline learning for remote schools</li>
-                  <li className="flex items-start gap-2.5"><span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#8B5CF6] shrink-0" />Curriculum constellation view</li>
-                </ul>
-              </div>
-              {/* SIS Card */}
-              <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-8 space-y-4">
-                <div className="inline-flex px-3 py-1 rounded-full bg-[#00BFFF]/10 border border-[#00BFFF]/20">
-                  <span className="text-xs font-semibold text-[#00BFFF] tracking-widest uppercase">SIS</span>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>
-                  Student Information System
-                </h3>
-                <p className="text-sm text-gray-500 dark:text-white/60 leading-relaxed">
-                  The administration side — how schools track students, grades, attendance, and records.
-                </p>
-                <ul className="space-y-2.5 text-sm text-gray-600 dark:text-white/70">
-                  <li className="flex items-start gap-2.5"><span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#00BFFF] shrink-0" />Attendance tracking &amp; calendar</li>
-                  <li className="flex items-start gap-2.5"><span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#00BFFF] shrink-0" />Weighted gradebook &amp; report cards</li>
-                  <li className="flex items-start gap-2.5"><span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#00BFFF] shrink-0" />Student enrollment &amp; records</li>
-                  <li className="flex items-start gap-2.5"><span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#00BFFF] shrink-0" />Parent portal &amp; weekly digests</li>
-                  <li className="flex items-start gap-2.5"><span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#00BFFF] shrink-0" />Timetable &amp; scheduling</li>
-                </ul>
-              </div>
-            </div>
+            <SystemToggle
+              lms={{
+                title: 'LMS',
+                description: 'Learning Management System',
+                items: [
+                  'Micro-lessons & 72 digital textbooks',
+                  'AI teacher tools & lesson converter',
+                  'Gamification, XP & skill trees',
+                  'Offline learning for remote schools',
+                  'Curriculum constellation view',
+                ],
+              }}
+              sis={{
+                title: 'SIS',
+                description: 'Student Information System',
+                items: [
+                  'Attendance tracking & calendar',
+                  'Weighted gradebook & report cards',
+                  'Student enrollment & records',
+                  'Parent portal & weekly digests',
+                  'Timetable & scheduling',
+                ],
+              }}
+            />
           </div>
         </section>
+        </AnimateOnScroll>
 
         {/* Features Section */}
+        <AnimateOnScroll>
         <section id="features" className="px-4 py-10 sm:py-16">
           <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
@@ -357,8 +362,10 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             </div>
           </div>
         </section>
+        </AnimateOnScroll>
 
         {/* Download on the App Store */}
+        <AnimateOnScroll>
         <section id="download" className="px-4 py-10 sm:py-16">
           <div className="max-w-4xl mx-auto">
             <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-10 md:p-14 text-center space-y-6">
@@ -396,8 +403,10 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             </div>
           </div>
         </section>
+        </AnimateOnScroll>
 
         {/* School Platform Comparison Section */}
+        <AnimateOnScroll>
         <section id="compare" className="px-4 py-10 sm:py-16">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
@@ -474,8 +483,10 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             </div>
           </div>
         </section>
+        </AnimateOnScroll>
 
         {/* Packages Section */}
+        <AnimateOnScroll>
         <section id="pricing" className="px-4 py-10 sm:py-16">
           <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
@@ -491,7 +502,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               {t.packages.map((pkg, idx) => (
                 <div
                   key={pkg.name}
-                  className={`bg-gray-50 dark:bg-white/5 backdrop-blur-xl border rounded-2xl p-6 sm:p-8 flex flex-col ${
+                  className={`bg-gray-50 dark:bg-white/5 backdrop-blur-xl border rounded-2xl p-6 sm:p-8 flex flex-col transition-all duration-200 hover:shadow-lg hover:-translate-y-1 ${
                     idx === 1
                       ? 'border-[#00BFFF]/40 ring-1 ring-[#00BFFF]/20'
                       : 'border-gray-200 dark:border-white/10'
@@ -532,8 +543,10 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             </p>
           </div>
         </section>
+        </AnimateOnScroll>
 
         {/* For School Divisions */}
+        <AnimateOnScroll>
         <section id="divisions" className="px-4 py-10 sm:py-16">
           <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-4">
@@ -588,6 +601,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             </div>
           </div>
         </section>
+        </AnimateOnScroll>
         {/* FAQ Section */}
         <section id="faq" className="px-4 py-10 sm:py-16">
           <div className="max-w-3xl mx-auto space-y-8 sm:space-y-12">
@@ -655,6 +669,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         </section>
 
         {/* Built in Canada & Reconciliation Section */}
+        <AnimateOnScroll>
         <section id="canada" className="px-4 py-10 sm:py-16">
           <div className="max-w-4xl mx-auto space-y-8">
             <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-10 md:p-14">
@@ -717,6 +732,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             </div>
           </div>
         </section>
+        </AnimateOnScroll>
 
         {/* Ambassador Program Teaser */}
         <section className="px-4 py-10 sm:py-16">

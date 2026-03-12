@@ -5,6 +5,7 @@ import { GlowingLogo } from '@/components/ui/glowing-logo'
 import { ThemeToggle } from '@/components/landing/ThemeToggle'
 import { LanguageToggle } from '@/components/ui/LanguageToggle'
 import { landingContent, type Lang } from '@/lib/landing-i18n'
+import CurriculumOutcomesMap from '@/components/landing/CurriculumOutcomesMap'
 
 /* ============================================
    Feature Detail Data
