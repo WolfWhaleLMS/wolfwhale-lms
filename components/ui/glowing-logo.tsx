@@ -24,7 +24,7 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           zIndex: 0,
-          background: 'radial-gradient(circle, rgba(79,70,229,0.55) 0%, rgba(79,70,229,0.25) 40%, rgba(79,70,229,0) 70%)',
+          background: 'radial-gradient(circle, rgba(16,185,129,0.55) 0%, rgba(16,185,129,0.25) 40%, rgba(16,185,129,0) 70%)',
           filter: `blur(${g * 1.2}px)`,
         }}
       />
@@ -38,7 +38,7 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           zIndex: 0,
-          background: 'radial-gradient(circle, rgba(139,92,246,0.7) 0%, rgba(139,92,246,0.35) 40%, rgba(139,92,246,0) 70%)',
+          background: 'radial-gradient(circle, rgba(52,211,153,0.7) 0%, rgba(52,211,153,0.35) 40%, rgba(52,211,153,0) 70%)',
           filter: `blur(${g * 1.2}px)`,
         }}
       />

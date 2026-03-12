@@ -1,4 +1,4 @@
-import { Bot, Eye, Wrench, WifiOff, GraduationCap, Gamepad2, BookOpen, Users, Heart, Flag, Shield, Globe, Brain, Sparkles } from 'lucide-react'
+import { Bot, Eye, Wrench, WifiOff, GraduationCap, Gamepad2, BookOpen, Users, Heart, Flag, Shield, Globe, Brain, Sparkles, MapPin } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 export type Lang = 'en' | 'fr'
@@ -215,14 +215,14 @@ export const landingContent: Record<Lang, LandingContent> = {
     volumeDiscounts: 'Teachers always free. Division pricing available for 500+ users.',
     aboutTitle: 'Why WolfWhale',
     aboutText: 'WolfWhale is the only school platform that combines cognitive load theory, on-device AI, and 72 original textbooks into one native iOS app. Built for 4 user roles \u2014 Student, Teacher, Parent, and Admin \u2014 with 682 Saskatchewan curriculum outcomes mapped and expanding nationally. Student data never leaves the device. Canadian values drive everything we ship \u2014 privacy, accessibility, Indigenous connections, and bilingual support.',
-    canadaTitle: 'Built in Canada',
-    canadaSub: 'Saskatoon, SK. Designed, developed, hosted in Canada. Saskatchewan-first curriculum, expanding to all 13 provinces and territories.',
+    canadaTitle: 'Built in Saskatchewan',
+    canadaSub: 'Owned and operated on Treaty 6 Territory in Saskatoon, Saskatchewan. Designed, developed, and hosted in Canada. Saskatchewan-first curriculum, expanding to all 13 provinces and territories.',
     canadaBadges: [
+      { icon: MapPin, label: 'Treaty 6 Territory' },
       { icon: Flag, label: 'Canadian Owned' },
       { icon: Shield, label: 'PIPEDA Compliant' },
       { icon: Shield, label: 'COPPA Compliant' },
       { icon: Globe, label: 'Hosted in Canada' },
-      { icon: Heart, label: 'Built for Canadians' },
     ],
     trcTitle: 'TRC Calls to Action',
     trcSub: 'Education technology that honours reconciliation.',
