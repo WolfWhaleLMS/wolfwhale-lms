@@ -264,7 +264,7 @@ export default async function HelpCenterPage({ searchParams }: PageProps) {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
             <Image
-              src="/logo-teal.png"
+              src="/logo.png"
               alt="WolfWhale"
               width={48}
               height={48}

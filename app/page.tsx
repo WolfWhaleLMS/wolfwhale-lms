@@ -37,7 +37,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           "name": "Wolf Whale",
           "description": "Complete school operating system for Canadian K-12. Combines a Learning Management System (LMS) + Student Information System (SIS) with 72 original textbooks, AI tools, attendance, gradebook, and report cards in one native iOS app.",
           "url": "https://wolfwhale.ca",
-          "logo": "https://wolfwhale.ca/logo-teal.png",
+          "logo": "https://wolfwhale.ca/logo.png",
           "email": "info@wolfwhale.ca",
           "telephone": "+1-306-981-5926",
           "address": {
@@ -475,9 +475,9 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           </div>
         </section>
 
-        {/* Pricing Section */}
+        {/* Packages Section */}
         <section id="pricing" className="px-4 py-10 sm:py-16">
-          <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
+          <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
             <div className="text-center space-y-3">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
                 {t.pricingTitle}
@@ -487,52 +487,61 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               </p>
             </div>
 
-            <div className="max-w-md mx-auto">
-              <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-8 text-center space-y-6 relative overflow-hidden">
-                <div className="relative space-y-2">
-                  <p className="text-xs text-gray-500 dark:text-white/50 uppercase tracking-widest font-medium">{t.perUser}</p>
-                  <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-5xl sm:text-6xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}>$12</span>
-                    <span className="text-lg text-gray-500 dark:text-white/50 font-medium">{t.perMonth}</span>
-                  </div>
-                  <p className="text-xs text-gray-400 dark:text-white/40">{t.minContract}</p>
-                </div>
-                <div className="relative h-px bg-gray-200 dark:bg-white/10" />
-                <ul className="relative space-y-3 text-left">
-                  {t.pricingFeatures.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2.5 text-sm text-gray-700 dark:text-white/75">
-                      <CheckCircle2 className="h-4 w-4 text-gray-900 dark:text-white shrink-0 mt-0.5" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                <div className="relative pt-2 space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+              {t.packages.map((pkg, idx) => (
+                <div
+                  key={pkg.name}
+                  className={`bg-gray-50 dark:bg-white/5 backdrop-blur-xl border rounded-2xl p-6 sm:p-8 flex flex-col ${
+                    idx === 1
+                      ? 'border-[#00BFFF]/40 ring-1 ring-[#00BFFF]/20'
+                      : 'border-gray-200 dark:border-white/10'
+                  }`}
+                >
+                  {idx === 1 && (
+                    <span className="inline-block self-start text-[10px] uppercase tracking-widest font-semibold text-[#00BFFF] bg-[#00BFFF]/10 px-2.5 py-1 rounded-full mb-4">
+                      Most Popular
+                    </span>
+                  )}
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">{pkg.name}</h3>
+                  <p className="text-xs text-gray-500 dark:text-white/50 mt-1 mb-5">{pkg.best}</p>
+                  <ul className="space-y-2.5 flex-1">
+                    {pkg.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-2 text-sm text-gray-700 dark:text-white/75">
+                        <CheckCircle2 className="h-4 w-4 text-gray-900 dark:text-white shrink-0 mt-0.5" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
                   <a
                     href="#contact"
-                    className="w-full inline-flex items-center justify-center gap-2 h-12 px-8 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-black text-sm font-semibold transition-all duration-100 hover:bg-gray-800 dark:hover:bg-gray-100"
+                    className={`mt-6 w-full inline-flex items-center justify-center gap-2 h-11 rounded-xl text-sm font-semibold transition-all duration-100 ${
+                      idx === 1
+                        ? 'bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100'
+                        : 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-white/15 border border-gray-200 dark:border-white/10'
+                    }`}
                   >
-                    {t.requestDemo}
+                    {pkg.cta}
                     <ArrowRight className="h-4 w-4" />
                   </a>
-                  <a
-                    href="https://apps.apple.com/app/id6759676805"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 h-10 text-sm text-gray-400 dark:text-white/40 hover:text-[#00BFFF] transition-colors duration-100"
-                  >
-                    Download on the App Store <ArrowRight className="h-3 w-3" />
-                  </a>
-                  <p className="text-xs text-gray-400 dark:text-white/40">{t.volumeDiscounts}</p>
                 </div>
-              </div>
+              ))}
             </div>
+
+            <p className="text-center text-xs text-gray-400 dark:text-white/40 max-w-2xl mx-auto leading-relaxed">
+              {t.customNote}
+            </p>
           </div>
         </section>
 
         {/* For School Divisions */}
         <section id="divisions" className="px-4 py-10 sm:py-16">
           <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
-            <div className="text-center space-y-3">
+            <div className="text-center space-y-4">
+              <div className="flex justify-center">
+                <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-white/10 shadow-lg">
+                  <Image src="/sask-flag.png" alt="Saskatchewan Flag" width={256} height={128} className="w-20 sm:w-24 h-auto" />
+                </div>
+              </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white tracking-wider">
                 {t.divisionsTitle}
               </h2>
@@ -650,8 +659,13 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             <div className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-10 md:p-14">
               <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
                 <div className="shrink-0 flex flex-col items-center gap-4">
-                  <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-white/10 shadow-lg">
-                    <Image src="/canada-flag.png" alt="Canadian Flag" width={256} height={128} className="w-24 sm:w-32 h-auto" />
+                  <div className="flex gap-3">
+                    <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-white/10 shadow-lg">
+                      <Image src="/treaty6-flag.png" alt="Treaty No. 6 Territory Flag" width={256} height={170} className="w-24 sm:w-32 h-auto" />
+                    </div>
+                    <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-white/10 shadow-lg">
+                      <Image src="/sask-flag.png" alt="Saskatchewan Flag" width={256} height={128} className="w-24 sm:w-32 h-auto" />
+                    </div>
                   </div>
                   <span className="text-xs text-gray-400 dark:text-white/40 tracking-widest uppercase">Est. 2024</span>
                 </div>

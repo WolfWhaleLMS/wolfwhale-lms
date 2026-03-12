@@ -14,7 +14,7 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
 
   return (
     <div className={`relative inline-flex items-center justify-center ${className}`}>
-      {/* Light mode glow — green */}
+      {/* Light mode glow — indigo */}
       <div
         className="absolute rounded-full dark:hidden"
         style={{
@@ -24,11 +24,11 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           zIndex: 0,
-          background: 'radial-gradient(circle, rgba(16,185,129,0.5) 0%, rgba(16,185,129,0.2) 45%, rgba(16,185,129,0) 70%)',
+          background: 'radial-gradient(circle, rgba(79,70,229,0.55) 0%, rgba(79,70,229,0.25) 40%, rgba(79,70,229,0) 70%)',
           filter: `blur(${g}px)`,
         }}
       />
-      {/* Dark mode glow — green */}
+      {/* Dark mode glow — purple */}
       <div
         className="absolute rounded-full hidden dark:block"
         style={{
@@ -38,7 +38,7 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           zIndex: 0,
-          background: 'radial-gradient(circle, rgba(52,211,153,0.6) 0%, rgba(52,211,153,0.25) 45%, rgba(52,211,153,0) 70%)',
+          background: 'radial-gradient(circle, rgba(139,92,246,0.7) 0%, rgba(139,92,246,0.35) 40%, rgba(139,92,246,0) 70%)',
           filter: `blur(${g}px)`,
         }}
       />
@@ -55,7 +55,7 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
         }}
       >
         <Image
-          src="/logo-teal.png"
+          src="/logo.png"
           alt="WolfWhale"
           width={Math.round(tileSize)}
           height={Math.round(tileSize)}

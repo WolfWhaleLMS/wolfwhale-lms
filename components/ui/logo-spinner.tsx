@@ -88,7 +88,7 @@ export function LogoSpinner({ size = 80 }: { size?: number }) {
         style={{ width: size, height: size }}
       >
         <img
-          src="/logo-teal.png"
+          src="/logo.png"
           alt="Loading"
           width={size}
           height={size}

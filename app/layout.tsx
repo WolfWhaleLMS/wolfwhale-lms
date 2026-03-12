@@ -95,7 +95,7 @@ export const metadata: Metadata = {
       "Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
     images: [
       {
-        url: "/logo-teal.png",
+        url: "/logo.png",
         width: 952,
         height: 895,
         alt: "WolfWhale LMS - Canadian Learning Management System",
@@ -107,7 +107,7 @@ export const metadata: Metadata = {
     title: "WOLFWHALE LMS",
     description:
       "Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
-    images: ["/logo-teal.png"],
+    images: ["/logo.png"],
     creator: "@wolfwhale",
   },
   robots: {
@@ -157,7 +157,7 @@ export default function RootLayout({
             "@type": "Organization",
             name: "WolfWhale Inc.",
             url: "https://wolfwhale.ca",
-            logo: "https://wolfwhale.ca/logo-teal.png",
+            logo: "https://wolfwhale.ca/logo.png",
             description:
               "Canadian learning management system for K-12 & post-secondary education",
             sameAs: [],

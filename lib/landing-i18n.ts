@@ -76,14 +76,11 @@ export interface LandingContent {
   swipeHint: string
   compareDisclaimer: string
   readyToSwitch: string
-  // Pricing
+  // Pricing / Packages
   pricingTitle: string
   pricingSub: string
-  perUser: string
-  perMonth: string
-  minContract: string
-  pricingFeatures: string[]
-  volumeDiscounts: string
+  packages: { name: string; best: string; features: string[]; cta: string }[]
+  customNote: string
   // About
   aboutTitle: string
   aboutText: string
@@ -143,7 +140,7 @@ export interface LandingContent {
 export const landingContent: Record<Lang, LandingContent> = {
   en: {
     lms: 'School Platform',
-    nav: { features: 'Features', compare: 'Compare', pricing: 'Pricing', faq: 'FAQ', signIn: 'Sign In', contact: 'Contact', divisions: 'Divisions' },
+    nav: { features: 'Features', compare: 'Compare', pricing: 'Packages', faq: 'FAQ', signIn: 'Sign In', contact: 'Contact', divisions: 'Divisions' },
     heroTagline: 'The complete school operating system for Canadian K\u201312 and post-secondary. Attendance, gradebook, report cards, a digital textbook library, AI tools \u2014 one app, zero data leaving Canada.',
     requestDemo: 'Get a Demo',
     seeFeatures: 'See Features',
@@ -197,22 +194,47 @@ export const landingContent: Record<Lang, LandingContent> = {
     swipeHint: 'Swipe to see all competitors \u2192',
     compareDisclaimer: 'Comparison based on publicly available feature lists as of 2026. Partial (\u2014) indicates limited or plugin-dependent support.',
     readyToSwitch: 'Ready to switch?',
-    pricingTitle: 'SIMPLE PRICING',
-    pricingSub: 'One plan. Everything included. No surprises.',
-    perUser: 'Per User Account',
-    perMonth: '/ month',
-    minContract: 'Minimum 1-year contract',
-    pricingFeatures: [
-      'All features included',
-      '72 original textbooks with micro-lessons',
-      'On-device AI tutor & micro-lesson converter',
-      '100+ learning tools & AR experiences',
-      'Offline learning & gamification',
-      '682 curriculum outcomes mapped',
-      'Canadian hosting (PIPEDA, FERPA & COPPA)',
-      'Onboarding & priority support',
+    pricingTitle: 'PACKAGES',
+    pricingSub: 'Flexible plans for schools of every size. Teachers always free.',
+    packages: [
+      {
+        name: 'School',
+        best: 'Individual schools',
+        features: [
+          'All platform features',
+          '72 original textbooks',
+          'AI teaching tools',
+          'Onboarding & training',
+          'Priority support',
+        ],
+        cta: 'Request a Quote',
+      },
+      {
+        name: 'Division',
+        best: 'Multi-school deployments',
+        features: [
+          'Everything in School',
+          'Bulk MDM deployment',
+          'Division-wide analytics',
+          'Volume licensing',
+          'Dedicated account manager',
+        ],
+        cta: 'Contact Sales',
+      },
+      {
+        name: 'Province',
+        best: 'Provincial rollouts',
+        features: [
+          'Everything in Division',
+          'Custom curriculum mapping',
+          'Provincial data residency',
+          'SLA & uptime guarantee',
+          'Executive onboarding',
+        ],
+        cta: 'Book a Call',
+      },
     ],
-    volumeDiscounts: 'Teachers always free. Division pricing available for 500+ users.',
+    customNote: 'All plans include Canadian hosting, PIPEDA & COPPA compliance, and 682 mapped curriculum outcomes. Custom pricing based on your school or division size.',
     aboutTitle: 'Why WolfWhale',
     aboutText: 'WolfWhale is the only school platform that combines cognitive load theory, on-device AI, and 72 original textbooks into one native iOS app. Built for 4 user roles \u2014 Student, Teacher, Parent, and Admin \u2014 with 682 Saskatchewan curriculum outcomes mapped and expanding nationally. Student data never leaves the device. Canadian values drive everything we ship \u2014 privacy, accessibility, Indigenous connections, and bilingual support.',
     canadaTitle: 'Built in Saskatchewan',
@@ -315,7 +337,7 @@ export const landingContent: Record<Lang, LandingContent> = {
   },
   fr: {
     lms: 'Plateforme scolaire',
-    nav: { features: 'Fonctionnalit\u00e9s', compare: 'Comparer', pricing: 'Tarifs', faq: 'FAQ', signIn: 'Connexion', contact: 'Contact', divisions: 'Divisions scolaires' },
+    nav: { features: 'Fonctionnalit\u00e9s', compare: 'Comparer', pricing: 'Forfaits', faq: 'FAQ', signIn: 'Connexion', contact: 'Contact', divisions: 'Divisions scolaires' },
     heroTagline: 'Le syst\u00e8me scolaire complet pour le K\u201312 et le postsecondaire au Canada. Pr\u00e9sences, carnet de notes, bulletins, une biblioth\u00e8que de manuels num\u00e9riques, outils IA \u2014 une seule app, aucune donn\u00e9e hors du Canada.',
     requestDemo: 'Demander une d\u00e9mo',
     seeFeatures: 'Voir les fonctionnalit\u00e9s',
@@ -369,22 +391,47 @@ export const landingContent: Record<Lang, LandingContent> = {
     swipeHint: 'Glissez pour voir tous les concurrents \u2192',
     compareDisclaimer: 'Comparaison fond\u00e9e sur les listes de fonctionnalit\u00e9s publiques de 2026.',
     readyToSwitch: 'Pr\u00eat \u00e0 changer\u00a0?',
-    pricingTitle: 'TARIFICATION SIMPLE',
-    pricingSub: 'Un seul forfait. Tout inclus. Aucuns frais cach\u00e9s.',
-    perUser: 'Par compte utilisateur',
-    perMonth: '/ mois',
-    minContract: 'Contrat minimum d\u2019un an',
-    pricingFeatures: [
-      'Toutes les fonctionnalit\u00e9s incluses',
-      '72 manuels originaux avec micro-le\u00e7ons',
-      'Tuteur IA et convertisseur de micro-le\u00e7ons',
-      '100+ outils et exp\u00e9riences RA',
-      'Apprentissage hors ligne et ludification',
-      '682 r\u00e9sultats du programme cart\u00e9s',
-      'H\u00e9bergement canadien (LPRPDE, FERPA et COPPA)',
-      'Int\u00e9gration et soutien prioritaire',
+    pricingTitle: 'FORFAITS',
+    pricingSub: 'Des plans flexibles pour les écoles de toutes tailles. Enseignants toujours gratuits.',
+    packages: [
+      {
+        name: 'École',
+        best: 'Écoles individuelles',
+        features: [
+          'Toutes les fonctionnalités',
+          '72 manuels originaux',
+          'Outils IA pour enseignants',
+          'Intégration et formation',
+          'Soutien prioritaire',
+        ],
+        cta: 'Demander un devis',
+      },
+      {
+        name: 'Division',
+        best: 'Déploiements multi-écoles',
+        features: [
+          'Tout dans École',
+          'Déploiement MDM en masse',
+          'Analytique de division',
+          'Licence en volume',
+          'Gestionnaire de compte dédié',
+        ],
+        cta: 'Contacter les ventes',
+      },
+      {
+        name: 'Province',
+        best: 'Déploiements provinciaux',
+        features: [
+          'Tout dans Division',
+          'Cartographie du programme personnalisée',
+          'Résidence des données provinciale',
+          'SLA et garantie de disponibilité',
+          'Intégration exécutive',
+        ],
+        cta: 'Réserver un appel',
+      },
     ],
-    volumeDiscounts: 'Acc\u00e8s gratuit pour les enseignants. Rabais de volume pour les commissions scolaires.',
+    customNote: 'Tous les forfaits incluent l’hébergement canadien, la conformité LPRPDE et COPPA, et 682 résultats du programme cartés. Tarification personnalisée selon la taille de votre école ou division.',
     aboutTitle: '\u00c0 propos de WolfWhale',
     aboutText: 'WolfWhale est la seule plateforme scolaire qui combine la th\u00e9orie de la charge cognitive, l\u2019IA sur l\u2019appareil et 72 manuels originaux dans une seule app iOS native. Con\u00e7u pour 4 r\u00f4les \u2014 \u00c9l\u00e8ve, Enseignant, Parent et Admin \u2014 avec 682 r\u00e9sultats du programme de la Saskatchewan, en expansion nationale. Les donn\u00e9es des \u00e9l\u00e8ves ne quittent jamais l\u2019appareil. Les valeurs canadiennes guident tout ce que nous livrons \u2014 confidentialit\u00e9, accessibilit\u00e9, liens autochtones et soutien bilingue.',
     canadaTitle: 'Fi\u00e8rement construit au Canada',

@@ -108,7 +108,7 @@ function getLocalBusinessSchema() {
     '@type': 'LocalBusiness',
     name: 'WolfWhale Inc.',
     url: 'https://wolfwhale.ca',
-    logo: 'https://wolfwhale.ca/logo-teal.png',
+    logo: 'https://wolfwhale.ca/logo.png',
     telephone: '+1-306-981-5926',
     email: 'info@wolfwhale.ca',
     address: {
@@ -322,7 +322,7 @@ export default async function LandingPage({
             '@type': 'Organization',
             name: 'WolfWhale Inc.',
             url: 'https://wolfwhale.ca',
-            logo: 'https://wolfwhale.ca/logo-teal.png',
+            logo: 'https://wolfwhale.ca/logo.png',
           },
           ...(isCity
             ? {
@@ -379,7 +379,7 @@ export default async function LandingPage({
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <img
-              src="/logo-teal.png"
+              src="/logo.png"
               alt="WolfWhale"
               className="h-14 w-14 rounded-xl object-contain shadow-lg shadow-purple-500/20"
             />
@@ -721,7 +721,7 @@ export default async function LandingPage({
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
                 <img
-                  src="/logo-teal.png"
+                  src="/logo.png"
                   alt="WolfWhale"
                   className="h-14 w-14 rounded-xl object-contain shadow-lg shadow-purple-500/20"
                 />

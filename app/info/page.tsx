@@ -114,7 +114,7 @@ export default function InfoPage() {
           ========================================== */}
       <section className="relative z-10 py-20 md:py-28 bg-black/40 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center">
-          <Image src="/logo-teal.png" alt="WolfWhale" width={160} height={160} className="rounded-2xl object-contain shadow-2xl shadow-purple-500/30 mb-8" />
+          <Image src="/logo.png" alt="WolfWhale" width={160} height={160} className="rounded-2xl object-contain shadow-2xl shadow-purple-500/30 mb-8" />
 
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-normal mb-4 tracking-wider leading-tight text-white">
             WolfWhale
@@ -344,7 +344,7 @@ export default function InfoPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <Image src="/logo-teal.png" alt="WolfWhale" width={48} height={48} className="rounded-xl object-contain shadow-lg shadow-purple-500/20" />
+                <Image src="/logo.png" alt="WolfWhale" width={48} height={48} className="rounded-xl object-contain shadow-lg shadow-purple-500/20" />
                 <div>
                   <h3 className="font-display font-bold tracking-wider uppercase text-white">WolfWhale</h3>
                   <p className="text-xs text-white/60 tracking-widest uppercase">K-12 Learning Management System</p>
