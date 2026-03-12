@@ -501,21 +501,12 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-3xl mx-auto">
               {t.packages.map((pkg, idx) => (
                 <div
                   key={pkg.name}
-                  className={`bg-gray-50 dark:bg-white/5 backdrop-blur-xl border rounded-2xl p-6 sm:p-8 flex flex-col transition-all duration-200 hover:shadow-lg hover:-translate-y-1 ${
-                    idx === 1
-                      ? 'border-[#0891B2]/40 ring-1 ring-[#0891B2]/20'
-                      : 'border-gray-200 dark:border-white/10'
-                  }`}
+                  className="bg-gray-50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-8 flex flex-col transition-all duration-200 hover:shadow-lg hover:-translate-y-1"
                 >
-                  {idx === 1 && (
-                    <span className="inline-block self-start text-[10px] uppercase tracking-widest font-semibold text-[#0891B2] bg-[#0891B2]/10 px-2.5 py-1 rounded-full mb-4">
-                      Most Popular
-                    </span>
-                  )}
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white">{pkg.name}</h3>
                   <p className="text-xs text-gray-500 dark:text-white/50 mt-1 mb-5">{pkg.best}</p>
                   <ul className="space-y-2.5 flex-1">
@@ -528,11 +519,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                   </ul>
                   <a
                     href="#contact"
-                    className={`mt-6 w-full inline-flex items-center justify-center gap-2 h-11 rounded-xl text-sm font-semibold transition-all duration-100 ${
-                      idx === 1
-                        ? 'bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100'
-                        : 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-white/15 border border-gray-200 dark:border-white/10'
-                    }`}
+                    className="mt-6 w-full inline-flex items-center justify-center gap-2 h-11 rounded-xl text-sm font-semibold transition-all duration-100 bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100"
                   >
                     {pkg.cta}
                     <ArrowRight className="h-4 w-4" />
