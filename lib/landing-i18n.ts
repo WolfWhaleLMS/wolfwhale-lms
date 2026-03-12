@@ -310,10 +310,10 @@ export const landingContent: Record<Lang, LandingContent> = {
       { value: '88%', label: 'Non-Indigenous graduation rate in Canada', source: 'Statistics Canada, 2021' },
     ],
     missions: [
-      { title: 'Mission 1', desc: 'Raise Indigenous graduation rates' },
-      { title: 'Mission 2', desc: 'Replace outdated school platforms with one app' },
-      { title: 'Mission 3', desc: 'Bring K\u201312 and post-secondary onto one platform' },
-      { title: 'Mission 4', desc: 'Give every Canadian student access \u2014 urban, rural, and remote' },
+      { title: 'Goal 1', desc: 'Raise Indigenous graduation rates' },
+      { title: 'Goal 2', desc: 'Replace outdated school platforms with one app' },
+      { title: 'Goal 3', desc: 'Bring K\u201312 and post-secondary onto one platform' },
+      { title: 'Goal 4', desc: 'Give every Canadian student access \u2014 urban, rural, and remote' },
     ],
     // IT Summit Banner
     itSummitBanner: 'See us at IT Summit 2026 \u2014 Saskatoon, May 28-29',
@@ -511,10 +511,10 @@ export const landingContent: Record<Lang, LandingContent> = {
       { value: '88%', label: 'Taux de diplomation non autochtone au Canada', source: 'Statistique Canada, 2021' },
     ],
     missions: [
-      { title: 'Mission 1', desc: 'Augmenter les taux de diplomation autochtones' },
-      { title: 'Mission 2', desc: 'Remplacer les plateformes scolaires d\u00e9pass\u00e9es par une seule app' },
-      { title: 'Mission 3', desc: 'R\u00e9unir le K\u201312 et le postsecondaire sur une seule plateforme' },
-      { title: 'Mission 4', desc: 'Donner acc\u00e8s \u00e0 chaque \u00e9l\u00e8ve canadien \u2014 urbain, rural et \u00e9loign\u00e9' },
+      { title: 'Goal 1', desc: 'Augmenter les taux de diplomation autochtones' },
+      { title: 'Goal 2', desc: 'Remplacer les plateformes scolaires d\u00e9pass\u00e9es par une seule app' },
+      { title: 'Goal 3', desc: 'R\u00e9unir le K\u201312 et le postsecondaire sur une seule plateforme' },
+      { title: 'Goal 4', desc: 'Donner acc\u00e8s \u00e0 chaque \u00e9l\u00e8ve canadien \u2014 urbain, rural et \u00e9loign\u00e9' },
     ],
     // IT Summit Banner
     itSummitBanner: 'Visitez-nous au IT Summit 2026 \u2014 Saskatoon, 28-29 mai',
