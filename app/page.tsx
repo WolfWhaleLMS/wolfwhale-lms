@@ -143,12 +143,12 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
       </header>
       {/* Spacer for fixed header */}
 
-        {/* Woodland Cree pictograph decorations */}
-        <Pictographs />
       <div className="h-[80px] sm:h-[86px]" />
 
       {/* Hero Section */}
       <main className="relative z-10">
+        {/* Woodland Cree pictograph decorations */}
+        <Pictographs />
         <section className="flex items-center justify-center min-h-[60vh] sm:min-h-[calc(100vh-200px)] px-4 py-10 sm:py-16">
           <div className="w-full max-w-5xl text-center space-y-6 sm:space-y-8 animate-fade-in-up">
             <div className="mb-8 sm:mb-16">

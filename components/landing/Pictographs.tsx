@@ -161,26 +161,26 @@ const motifs: { viewBox: string; elements: React.ReactNode }[] = [
   },
 ]
 
-/* Scattered positions — left and right edges, staggered vertically */
+/* Scattered positions — left and right edges */
 const placements: { top: string; side: 'left' | 'right'; rotate: number; scale: number; motifIndex: number }[] = [
-  { top: '5%',  side: 'left',  rotate: -8,  scale: 1,    motifIndex: 0 },
-  { top: '8%',  side: 'right', rotate: 5,   scale: 0.85, motifIndex: 1 },
-  { top: '14%', side: 'left',  rotate: 3,   scale: 0.9,  motifIndex: 4 },
-  { top: '18%', side: 'right', rotate: -12, scale: 1.1,  motifIndex: 2 },
-  { top: '24%', side: 'left',  rotate: 7,   scale: 0.8,  motifIndex: 5 },
-  { top: '28%', side: 'right', rotate: -5,  scale: 0.95, motifIndex: 3 },
-  { top: '34%', side: 'left',  rotate: -10, scale: 1,    motifIndex: 7 },
-  { top: '38%', side: 'right', rotate: 8,   scale: 0.85, motifIndex: 6 },
-  { top: '44%', side: 'left',  rotate: 4,   scale: 0.9,  motifIndex: 9 },
-  { top: '48%', side: 'right', rotate: -7,  scale: 1.05, motifIndex: 8 },
-  { top: '54%', side: 'left',  rotate: -3,  scale: 0.85, motifIndex: 1 },
-  { top: '58%', side: 'right', rotate: 10,  scale: 0.9,  motifIndex: 0 },
-  { top: '64%', side: 'left',  rotate: 6,   scale: 1,    motifIndex: 3 },
-  { top: '68%', side: 'right', rotate: -8,  scale: 0.8,  motifIndex: 5 },
-  { top: '74%', side: 'left',  rotate: -5,  scale: 0.95, motifIndex: 2 },
-  { top: '78%', side: 'right', rotate: 3,   scale: 1.1,  motifIndex: 7 },
-  { top: '84%', side: 'left',  rotate: 9,   scale: 0.85, motifIndex: 6 },
-  { top: '88%', side: 'right', rotate: -6,  scale: 0.9,  motifIndex: 4 },
+  { top: '3%',  side: 'left',  rotate: -8,  scale: 1,    motifIndex: 0 },
+  { top: '6%',  side: 'right', rotate: 5,   scale: 0.85, motifIndex: 1 },
+  { top: '12%', side: 'left',  rotate: 3,   scale: 0.9,  motifIndex: 4 },
+  { top: '16%', side: 'right', rotate: -12, scale: 1.1,  motifIndex: 2 },
+  { top: '22%', side: 'left',  rotate: 7,   scale: 0.8,  motifIndex: 5 },
+  { top: '26%', side: 'right', rotate: -5,  scale: 0.95, motifIndex: 3 },
+  { top: '32%', side: 'left',  rotate: -10, scale: 1,    motifIndex: 7 },
+  { top: '36%', side: 'right', rotate: 8,   scale: 0.85, motifIndex: 6 },
+  { top: '42%', side: 'left',  rotate: 4,   scale: 0.9,  motifIndex: 9 },
+  { top: '46%', side: 'right', rotate: -7,  scale: 1.05, motifIndex: 8 },
+  { top: '52%', side: 'left',  rotate: -3,  scale: 0.85, motifIndex: 1 },
+  { top: '56%', side: 'right', rotate: 10,  scale: 0.9,  motifIndex: 0 },
+  { top: '62%', side: 'left',  rotate: 6,   scale: 1,    motifIndex: 3 },
+  { top: '66%', side: 'right', rotate: -8,  scale: 0.8,  motifIndex: 5 },
+  { top: '72%', side: 'left',  rotate: -5,  scale: 0.95, motifIndex: 2 },
+  { top: '76%', side: 'right', rotate: 3,   scale: 1.1,  motifIndex: 7 },
+  { top: '82%', side: 'left',  rotate: 9,   scale: 0.85, motifIndex: 6 },
+  { top: '86%', side: 'right', rotate: -6,  scale: 0.9,  motifIndex: 4 },
   { top: '92%', side: 'left',  rotate: -4,  scale: 1,    motifIndex: 9 },
   { top: '96%', side: 'right', rotate: 7,   scale: 0.85, motifIndex: 8 },
 ]
@@ -190,18 +190,24 @@ export function Pictographs() {
 
   return (
     <>
-      {/* Pictograph decorations — hidden on small screens */}
-      <div className="hidden 2xl:block absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+      {/* Pictograph decorations — visible on all screen sizes */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
         {placements.map((p, i) => {
           const motif = motifs[p.motifIndex]
           return (
             <svg
               key={i}
               viewBox={motif.viewBox}
-              className="absolute w-14 h-14 text-gray-300/60 dark:text-white/[0.06] stroke-current"
+              className={`absolute stroke-current
+                w-7 h-7 sm:w-10 sm:h-10 lg:w-14 lg:h-14
+                text-gray-300/40 dark:text-white/[0.05]
+                sm:text-gray-300/50 sm:dark:text-white/[0.07]
+                lg:text-gray-300/60 lg:dark:text-white/[0.08]
+              `}
               style={{
                 top: p.top,
-                [p.side]: p.side === 'left' ? '1.5%' : '1.5%',
+                left: p.side === 'left' ? '2px' : undefined,
+                right: p.side === 'right' ? '2px' : undefined,
                 transform: `rotate(${p.rotate}deg) scale(${p.scale})`,
               }}
             >
@@ -212,7 +218,7 @@ export function Pictographs() {
       </div>
 
       {/* Attribution info bubble — bottom-left corner */}
-      <div className="hidden 2xl:block fixed bottom-4 left-4 z-50">
+      <div className="fixed bottom-4 left-4 z-50">
         <button
           onClick={() => setShowInfo(!showInfo)}
           className="p-2 rounded-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-400 dark:text-white/30 hover:text-gray-600 dark:hover:text-white/60 transition-colors pointer-events-auto"
@@ -231,6 +237,12 @@ export function Pictographs() {
             <p className="text-[10px] text-gray-400 dark:text-white/40 mt-2">
               Source: &ldquo;The Aboriginal Rock Paintings of the Churchill River&rdquo; — University of Saskatchewan
             </p>
+            <button
+              onClick={() => setShowInfo(false)}
+              className="mt-2 text-[10px] text-gray-400 dark:text-white/40 hover:text-gray-600 dark:hover:text-white/60 underline"
+            >
+              Close
+            </button>
           </div>
         )}
       </div>
