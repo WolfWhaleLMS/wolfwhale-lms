@@ -773,9 +773,14 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                 </div>
               </div>
             </div>
-            <p className="text-xs text-gray-400 dark:text-white/40">
-              &copy; {new Date().getFullYear()} {t.footerCopyright}
-            </p>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+              <p className="text-xs text-gray-400 dark:text-white/40">
+                &copy; {new Date().getFullYear()} {t.footerCopyright}
+              </p>
+              <p className="text-xs text-gray-400 dark:text-white/40">
+                Canadian Copyright Registration No. 1243132
+              </p>
+            </div>
           </div>
         </div>
       </footer>
