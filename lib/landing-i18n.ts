@@ -259,7 +259,7 @@ export const landingContent: Record<Lang, LandingContent> = {
     contactTitle: 'TALK TO US',
     contactSub: 'We reply within two business days.',
     emailDirect: 'Or email us at',
-    footerCopyright: 'WolfWhale Inc. All rights reserved.',
+    footerCopyright: 'WolfWhale. All rights reserved.',
     privacy: 'Privacy',
     terms: 'Terms',
     help: 'Help',
