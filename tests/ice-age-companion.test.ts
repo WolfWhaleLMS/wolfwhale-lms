@@ -7,7 +7,12 @@ import {
   getLevelForXp,
   STARTER_SPECIES,
 } from '@/lib/companion/ice-age-companion'
-import { COMPANION_SPRITE_ASSETS, SPRITE_ATLAS_CONTRACT, companionAnimationForMood } from '@/lib/companion/sprite-assets'
+import {
+  COMPANION_ANIMATION_STATES,
+  COMPANION_SPRITE_ASSETS,
+  SPRITE_ATLAS_CONTRACT,
+  companionAnimationForMood,
+} from '@/lib/companion/sprite-assets'
 
 describe('WolfWhale Ice Age Companion logic', () => {
   it('creates a safe starter egg profile from student choices', () => {
@@ -110,6 +115,34 @@ describe('WolfWhale Ice Age Companion logic', () => {
       width: 1536,
       height: 1872,
     })
+  })
+
+  it('requires sparkle-flash and cute emoticon cues for every companion sprite', () => {
+    const animationCueStates = COMPANION_ANIMATION_STATES as Record<
+      string,
+      { requiredCue?: string; effectRule?: string }
+    >
+    const spriteCueAssets = COMPANION_SPRITE_ASSETS as Record<
+      string,
+      { sparkleAnchor?: string; emoticonCue?: string; anatomyLock?: string }
+    >
+
+    for (const [stateName, state] of Object.entries(animationCueStates)) {
+      expect(state.requiredCue, `${stateName} needs a visible emotion cue`).toMatch(/\S/)
+      expect(state.effectRule, `${stateName} needs an effect cleanup rule`).toMatch(/\S/)
+    }
+
+    expect(animationCueStates.celebrating.requiredCue?.toLowerCase()).toContain('sparkle')
+    expect(animationCueStates.greeting.requiredCue?.toLowerCase()).toMatch(/heart|sparkle/)
+    expect(animationCueStates.sad.requiredCue?.toLowerCase()).toMatch(/tear|droopy/)
+
+    for (const species of STARTER_SPECIES) {
+      const cueAsset = spriteCueAssets[species.id]
+
+      expect(cueAsset.sparkleAnchor, `${species.label} needs a sparkle anchor`).toMatch(/\S/)
+      expect(cueAsset.emoticonCue, `${species.label} needs a cute face cue`).toMatch(/eye|blush|smile|heart/i)
+      expect(cueAsset.anatomyLock, `${species.label} needs an anatomy lock`).toMatch(/\S/)
+    }
   })
 
   it('chooses sprite animation rows from pet movement and mood', () => {

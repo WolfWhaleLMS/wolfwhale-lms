@@ -44,6 +44,28 @@ Rows:
 8. `front-running`, 6 frames
 9. `review`, 6 frames
 
+## Emotion + Sparkle Cue Contract
+
+The LMS now treats cute emotion cues as part of the sprite contract, not optional polish. Each animation row in `lib/companion/sprite-assets.ts` includes:
+
+- `requiredCue`: the required visual emotion read for that row
+- `effectRule`: cleanup rules so the effect stays usable as a transparent pet sprite
+
+The important production rules:
+
+- Every creature needs a readable cute face cue: large eyes, blush pixels, soft smile, droopy eyes, or focused eye shine depending on state.
+- Every creature needs a sparkle-flash celebration row. Sparkles must be hard pixel stars attached to the pet silhouette, not loose decorations.
+- Greeting can use one attached heart sparkle or cheek sparkle.
+- Sad/waiting states must stay gentle and student-safe. No punishment symbols, injury marks, guilt copy, or dramatic failure effects.
+- Running states should show charm through expression and pose. Avoid speed lines, dust, shadows, and motion trails.
+- Review/focus states should use eyes, brow, posture, or a tiny attached sparkle. Do not add papers, UI panels, question marks, or speech bubbles.
+
+Each species entry also includes:
+
+- `sparkleAnchor`: where the flash effects should attach
+- `emoticonCue`: the cute face/expression language for that animal
+- `anatomyLock`: the audit rule that prevents duplicated trunks, extra feet, duplicate heads, duplicate antlers, and other malformed frames
+
 ## Final Asset Paths
 
 Drop final transparent WebP atlases here:
@@ -75,14 +97,16 @@ Before marking a sprite atlas ready:
 - Glyptodont has one head, four squat legs, one shell, one clubbed tail.
 - Sparkles, blush, tears, and emoticon-like details stay attached to the pet silhouette.
 - No letters, speech bubbles, thought bubbles, speed lines, dust clouds, floor shadows, or loose effect sprites.
+- Check every frame of every row for duplicated body parts before changing the species status to `ready`.
 
 ## Code Touchpoints
 
 - Companion rules and local/mock persistence: `lib/companion/ice-age-companion.ts`
-- Sprite atlas contract and species-to-asset map: `lib/companion/sprite-assets.ts`
+- Sprite atlas contract, emotion row rules, species sparkle anchors, and anatomy locks: `lib/companion/sprite-assets.ts`
 - Sprite renderer: `components/companion/CompanionSprite.tsx`
 - Student dashboard pet panel: `components/lms/StudentCompanionWidget.tsx`
 - Single-player prototype world: `app/student/companion-world/page.tsx`
 - World client: `components/companion/IceAgeWorldClient.tsx`
+- Sprite contract tests: `tests/ice-age-companion.test.ts`
 
 The service boundary is intentionally localStorage-backed for the MVP. When backend persistence is ready, keep the same `StudentCompanionProfile` shape and replace `loadCompanionProfile` / `saveCompanionProfile` with Supabase-backed reads and writes.
