@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
@@ -204,9 +205,12 @@ export default async function LandingPage({
       <header className="relative z-10 border-b border-white/10 backdrop-blur-md bg-black/60">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <img
+            <Image
               src="/logo.png"
               alt="WolfWhale"
+              width={56}
+              height={56}
+              sizes="56px"
               className="h-14 w-14 rounded-xl object-contain shadow-lg shadow-purple-500/20"
             />
             <div>
@@ -268,9 +272,12 @@ export default async function LandingPage({
 
           {/* Canadian Badge */}
           <div className="flex items-center justify-center gap-3 mb-10 px-6 py-3 rounded-xl bg-white/5 border border-white/10 w-fit mx-auto">
-            <img
+            <Image
               src="/canada-coat-of-arms.png"
               alt="Coat of Arms of Canada"
+              width={64}
+              height={64}
+              sizes="64px"
               className="h-16 w-auto object-contain"
             />
             <div className="text-left">
@@ -546,9 +553,12 @@ export default async function LandingPage({
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <img
+                <Image
                   src="/logo.png"
                   alt="WolfWhale"
+                  width={56}
+                  height={56}
+                  sizes="56px"
                   className="h-14 w-14 rounded-xl object-contain shadow-lg shadow-purple-500/20"
                 />
                 <div>
@@ -646,9 +656,12 @@ export default async function LandingPage({
           <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/60">
             <p>&copy; 2026 WolfWhale LMS. All rights reserved.</p>
             <div className="flex items-center gap-2">
-              <img
+              <Image
                 src="/canada-coat-of-arms.png"
                 alt="Coat of Arms of Canada"
+                width={48}
+                height={48}
+                sizes="48px"
                 className="h-12 w-auto object-contain"
               />
               <span className="text-xs font-semibold text-white/70">

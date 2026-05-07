@@ -131,11 +131,19 @@ body::before {
   --glass-highlight:      rgba(255, 255, 255, 0.05);
   --glass-shadow:         rgba(0, 0, 0, 0.40);
   --glass-shadow-heavy:   rgba(0, 0, 0, 0.60);
-  --glass-blur-sm:        6px;
-  --glass-blur-md:        8px;
-  --glass-blur-lg:        12px;
-  --glass-blur-xl:        20px;
+  --glass-blur-sm:        3px;
+  --glass-blur-md:        5px;
+  --glass-blur-lg:        8px;
+  --glass-blur-xl:        12px;
   --glass-saturate:       150%;
+
+  /* High-refresh motion tokens. Browsers still choose the real frame rate. */
+  --motion-frame-budget: 8.333ms;
+  --motion-duration-fast: 100ms;
+  --motion-duration-base: 160ms;
+  --motion-duration-slow: 240ms;
+  --motion-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Neon glow tokens — vivid on black */
   --glow-blue:   0 0 25px rgba(0, 191, 255, 0.40), 0 0 50px rgba(0, 191, 255, 0.15);
@@ -169,10 +177,10 @@ body::before {
   --glass-highlight:      rgba(255, 255, 255, 0.05);
   --glass-shadow:         rgba(0, 0, 0, 0.40);
   --glass-shadow-heavy:   rgba(0, 0, 0, 0.60);
-  --glass-blur-sm:        6px;
-  --glass-blur-md:        8px;
-  --glass-blur-lg:        12px;
-  --glass-blur-xl:        20px;
+  --glass-blur-sm:        3px;
+  --glass-blur-md:        5px;
+  --glass-blur-lg:        8px;
+  --glass-blur-xl:        12px;
   --glass-saturate:       150%;
 
   /* Neon glow tokens — vivid on black */
@@ -541,7 +549,8 @@ body::before {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    -moz-osx-font-smoothing: auto;
+    text-rendering: optimizeLegibility;
   }
 
   :focus-visible {
@@ -552,6 +561,8 @@ body::before {
 
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
   }
 }
 
@@ -566,6 +577,25 @@ body::before {
 
   .text-pretty {
     text-wrap: pretty;
+  }
+
+  .sharp-text,
+  button,
+  [role="button"],
+  input,
+  textarea,
+  select,
+  label,
+  nav,
+  .ocean-card,
+  .glass-panel,
+  .glass-card,
+  .liquid-glass,
+  .liquid-glass-elevated,
+  .liquid-glass-heavy {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: auto;
+    text-rendering: optimizeLegibility;
   }
 
   /* Display font — Times New Roman for academic sophistication */
@@ -703,10 +733,13 @@ body::before {
       0 0 15px rgba(0, 191, 255, 0.08),
       0 8px 32px rgba(0, 0, 0, 0.06),
       inset 0 1px 0 var(--glass-highlight);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      transform var(--motion-duration-base) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-base) var(--motion-ease-standard),
+      border-color var(--motion-duration-base) var(--motion-ease-standard),
+      background-color var(--motion-duration-base) var(--motion-ease-standard);
     position: relative;
     overflow: hidden;
-    will-change: transform;
   }
 
   /* Chrome reflection overlay */
@@ -761,8 +794,8 @@ body::before {
 @layer utilities {
   .glass-panel {
     background: rgba(255, 255, 255, 0.90);
-    backdrop-filter: blur(20px) saturate(200%);
-    -webkit-backdrop-filter: blur(20px) saturate(200%);
+    backdrop-filter: blur(var(--glass-blur-xl)) saturate(160%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(160%);
     border: 1px solid rgba(0, 191, 255, 0.20);
     box-shadow:
       0 8px 32px rgba(0, 60, 120, 0.08),
@@ -781,8 +814,8 @@ body::before {
 
   .glass-card {
     background: rgba(0, 191, 255, 0.04);
-    backdrop-filter: blur(24px) saturate(200%);
-    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    backdrop-filter: blur(var(--glass-blur-xl)) saturate(160%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-xl)) saturate(160%);
     border: 1px solid rgba(0, 191, 255, 0.18);
     border-radius: 20px;
     box-shadow:
@@ -791,7 +824,11 @@ body::before {
       inset 0 1px 0 rgba(0, 191, 255, 0.06);
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition:
+      transform var(--motion-duration-base) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-base) var(--motion-ease-standard),
+      border-color var(--motion-duration-base) var(--motion-ease-standard),
+      background-color var(--motion-duration-base) var(--motion-ease-standard);
   }
 
   .glass-card::before {
@@ -835,7 +872,10 @@ body::before {
     box-shadow:
       0 8px 32px rgba(0, 0, 0, 0.40),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      box-shadow var(--motion-duration-base) var(--motion-ease-standard),
+      border-color var(--motion-duration-base) var(--motion-ease-standard),
+      background-color var(--motion-duration-base) var(--motion-ease-standard);
   }
 
   .liquid-glass-elevated {
@@ -846,7 +886,10 @@ body::before {
     box-shadow:
       0 16px 48px rgba(0, 0, 0, 0.50),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      box-shadow var(--motion-duration-base) var(--motion-ease-standard),
+      border-color var(--motion-duration-base) var(--motion-ease-standard),
+      background-color var(--motion-duration-base) var(--motion-ease-standard);
   }
 
   .liquid-glass-heavy {
@@ -857,11 +900,14 @@ body::before {
     box-shadow:
       0 8px 32px rgba(0, 0, 0, 0.50),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      box-shadow var(--motion-duration-base) var(--motion-ease-standard),
+      border-color var(--motion-duration-base) var(--motion-ease-standard),
+      background-color var(--motion-duration-base) var(--motion-ease-standard);
   }
 
   .liquid-glass-hover:hover {
-    transform: translateY(-3px) scale(1.005);
+    transform: translateY(-2px);
     border-color: rgba(139, 92, 246, 0.25);
     box-shadow:
       0 20px 60px rgba(0, 0, 0, 0.50),
@@ -879,19 +925,19 @@ body::before {
 
   .transition-glass {
     transition:
-      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transform var(--motion-duration-base) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-base) var(--motion-ease-standard),
+      border-color var(--motion-duration-base) var(--motion-ease-standard),
+      background-color var(--motion-duration-base) var(--motion-ease-standard);
   }
 
   .hover-lift:hover {
-    transform: translateY(-3px) scale(1.005);
+    transform: translateY(-2px);
   }
 
   .active-press:active {
-    transform: translateY(0) scale(0.98);
-    transition-duration: 0.1s;
+    transform: translateY(1px);
+    transition-duration: var(--motion-duration-fast);
   }
 
   .btn-glow {
@@ -1142,9 +1188,14 @@ body::before {
     position: relative;
     border-radius: 12px;
     cursor: pointer;
-    transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition:
+      transform var(--motion-duration-fast) var(--motion-ease-out),
+      box-shadow var(--motion-duration-fast) var(--motion-ease-out),
+      border-color var(--motion-duration-fast) var(--motion-ease-out),
+      color var(--motion-duration-fast) var(--motion-ease-out);
     -webkit-font-smoothing: antialiased;
     user-select: none;
+    text-shadow: none;
   }
 
   /* ─── DARK CHROME (primary CTA on black bg) ─── */
@@ -1167,7 +1218,6 @@ body::before {
       0 0 20px rgba(139, 92, 246, 0.10),
       inset 0 2px 1px rgba(255, 255, 255, 0.20),
       inset 0 -1px 1px rgba(0, 0, 0, 0.30);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.60);
   }
   .btn-chrome-3d-dark:hover {
     background: linear-gradient(
@@ -1224,7 +1274,6 @@ body::before {
       0 2px 4px rgba(0, 0, 0, 0.20),
       inset 0 2px 1px rgba(255, 255, 255, 0.45),
       inset 0 -1px 1px rgba(0, 0, 0, 0.15);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.50);
   }
   .btn-chrome-3d-blue:hover {
     background: linear-gradient(
@@ -1278,7 +1327,6 @@ body::before {
       0 2px 4px rgba(0, 0, 0, 0.20),
       inset 0 2px 1px rgba(255, 255, 255, 0.40),
       inset 0 -1px 1px rgba(0, 0, 0, 0.15);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.40);
   }
   .btn-chrome-3d-red:hover {
     background: linear-gradient(
@@ -1333,7 +1381,6 @@ body::before {
       0 2px 4px rgba(0, 0, 0, 0.20),
       inset 0 2px 1px rgba(255, 255, 255, 0.50),
       inset 0 -1px 1px rgba(0, 0, 0, 0.12);
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
   }
   .btn-chrome-3d-green:hover {
     background: linear-gradient(
@@ -1388,7 +1435,6 @@ body::before {
       0 2px 4px rgba(0, 0, 0, 0.15),
       inset 0 2px 1px rgba(255, 255, 255, 0.80),
       inset 0 -1px 1px rgba(0, 0, 0, 0.08);
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.60);
   }
   .btn-chrome-3d-silver:hover {
     background: linear-gradient(
@@ -1778,11 +1824,11 @@ body::before {
 
 @layer utilities {
   .animate-glass-slide-up {
-    animation: glass-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: glass-slide-up var(--motion-duration-slow) var(--motion-ease-out);
   }
 
   .animate-glass-pop-in {
-    animation: glass-pop-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: glass-pop-in var(--motion-duration-base) var(--motion-ease-out);
   }
 
   .animate-blob-drift {
@@ -1794,7 +1840,7 @@ body::before {
   }
 
   .animate-fade-in-up {
-    animation: fade-in-up 0.4s ease-out;
+    animation: fade-in-up var(--motion-duration-slow) var(--motion-ease-out);
   }
 
   .animate-shimmer {
@@ -2043,8 +2089,10 @@ body::before {
 .whale-gradient:active,
 button.whale-gradient:active {
   box-shadow: 0 0 25px rgba(51, 255, 51, 0.50), 0 0 50px rgba(0, 255, 255, 0.25);
-  transform: scale(0.97);
-  transition: all 0.1s ease;
+  transform: translateY(1px);
+  transition:
+    transform var(--motion-duration-fast) var(--motion-ease-out),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-out);
 }
 
 .ocean-glow:active {
@@ -2240,7 +2288,7 @@ button:focus-visible {
 
 /* ── Hub Button: Hover state ── */
 .hub-button-ring:hover .hub-button-outer {
-  transform: translateY(-6px) scale(1.05);
+  transform: translateY(-4px);
   box-shadow:
     0 16px 40px rgba(0, 60, 120, 0.30),
     0 4px 12px rgba(0, 0, 0, 0.15),
@@ -2258,13 +2306,13 @@ button:focus-visible {
 
 /* ── Hub Button: Active/press state ── */
 .hub-button-ring:active .hub-button-outer {
-  transform: translateY(4px) scale(0.95);
+  transform: translateY(2px);
   box-shadow:
     0 2px 8px rgba(0, 60, 120, 0.15),
     0 1px 2px rgba(0, 0, 0, 0.10),
     inset 0 4px 12px rgba(0, 0, 0, 0.15),
     inset 0 -1px 2px rgba(255, 255, 255, 0.20);
-  transition-duration: 0.1s;
+  transition-duration: var(--motion-duration-fast);
 }
 
 .dark .hub-button-ring:active .hub-button-outer {
@@ -2339,10 +2387,11 @@ button:focus-visible {
     0 2px 4px rgba(0, 0, 0, 0.15),
     inset 0 2px 1px rgba(255, 255, 255, 0.80),
     inset 0 -1px 1px rgba(0, 0, 0, 0.08);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.60);
   cursor: pointer;
   text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform var(--motion-duration-fast) var(--motion-ease-out),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-out);
 }
 
 .hub-back-button:hover {
@@ -2389,7 +2438,6 @@ button:focus-visible {
     0 2px 4px rgba(0, 0, 0, 0.25),
     inset 0 2px 1px rgba(255, 255, 255, 0.10),
     inset 0 -1px 1px rgba(0, 0, 0, 0.15);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.50);
 }
 
 .dark .hub-back-button:hover {
@@ -2568,5 +2616,298 @@ button:focus-visible {
   }
   .hub-toggle-knob {
     transition: none !important;
+  }
+}
+
+/* ── Landing page: woodland Frutiger Aero ── */
+.woodland-aero {
+  color: #07383f;
+  background:
+    radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.95) 0 0.5rem, transparent 0.65rem),
+    radial-gradient(circle at 88% 18%, rgba(215, 255, 244, 0.95) 0 0.4rem, transparent 0.55rem),
+    radial-gradient(circle at 12% 34%, rgba(139, 232, 255, 0.35), transparent 20rem),
+    linear-gradient(180deg, #e9fbff 0%, #c8f6ef 38%, #eafff3 67%, #d7f7ff 100%);
+}
+
+.woodland-aero .aero-nav {
+  border-color: rgba(54, 126, 121, 0.2) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(231, 255, 250, 0.76)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 12px 32px rgba(21, 87, 98, 0.12);
+}
+
+.woodland-aero .aero-wordmark {
+  filter: invert(1);
+}
+
+.woodland-aero .aero-nav a {
+  color: #23434d !important;
+}
+
+.woodland-aero .aero-hero {
+  border-color: rgba(51, 119, 112, 0.18) !important;
+  background:
+    radial-gradient(ellipse at 68% 18%, rgba(255, 255, 255, 0.82), transparent 22rem),
+    radial-gradient(circle at 12% 70%, rgba(148, 231, 137, 0.28), transparent 18rem),
+    linear-gradient(180deg, #f9ffff 0%, #e7fbff 34%, #d2f5ed 74%, #eaf7ff 100%);
+}
+
+.woodland-aero .aero-hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: -19;
+  content: "";
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.65), transparent 40%, rgba(255, 255, 255, 0.22)),
+    radial-gradient(ellipse at 50% 100%, rgba(61, 154, 104, 0.18), transparent 30rem);
+  pointer-events: none;
+}
+
+.woodland-aero .aero-hero::after {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: -1;
+  height: 15rem;
+  content: "";
+  background: linear-gradient(180deg, transparent, rgba(119, 185, 133, 0.18) 45%, rgba(228, 252, 242, 0.9));
+  pointer-events: none;
+}
+
+.woodland-aero .aero-hero-app-bg {
+  display: block !important;
+  opacity: 0.16 !important;
+  mix-blend-mode: multiply;
+  filter: saturate(0.9) brightness(1.18);
+}
+
+.woodland-aero .aero-hero-wash {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.96), rgba(247, 255, 252, 0.88) 44%, rgba(235, 255, 248, 0.8)),
+    radial-gradient(circle at 70% 28%, rgba(255, 255, 255, 0.72), transparent 20rem) !important;
+}
+
+.woodland-aero .aero-hero-ground {
+  background: linear-gradient(180deg, transparent, rgba(209, 245, 230, 0.72), rgba(247, 255, 252, 0.98)) !important;
+}
+
+.woodland-aero .aero-bubble {
+  position: absolute;
+  z-index: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background:
+    radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.34) 22%, rgba(97, 217, 229, 0.12) 58%, rgba(255, 255, 255, 0.32));
+  box-shadow:
+    inset -14px -16px 30px rgba(30, 142, 155, 0.12),
+    0 16px 40px rgba(46, 155, 148, 0.12);
+  pointer-events: none;
+}
+
+.woodland-aero .aero-bubble-one {
+  top: 15%;
+  left: 6%;
+  width: 5.5rem;
+  height: 5.5rem;
+}
+
+.woodland-aero .aero-bubble-two {
+  top: 21%;
+  right: 17%;
+  width: 3rem;
+  height: 3rem;
+}
+
+.woodland-aero .aero-bubble-three {
+  right: 34%;
+  bottom: 21%;
+  width: 4rem;
+  height: 4rem;
+}
+
+.woodland-aero .aero-kicker {
+  color: #006d62 !important;
+  border-color: rgba(16, 185, 129, 0.36) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(195, 255, 236, 0.72)) !important;
+  box-shadow: inset 0 1px 0 white, 0 8px 20px rgba(20, 184, 166, 0.12);
+}
+
+.woodland-aero .aero-headline,
+.woodland-aero h1,
+.woodland-aero h2 {
+  color: #061a28 !important;
+  letter-spacing: 0 !important;
+  text-shadow: none;
+}
+
+.woodland-aero .aero-copy,
+.woodland-aero p,
+.woodland-aero li,
+.woodland-aero span {
+  color: #244653;
+}
+
+.woodland-aero .aero-copy {
+  color: #234c57 !important;
+}
+
+.woodland-aero .aero-button {
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.72) !important;
+  border-radius: 0.9rem !important;
+  background:
+    radial-gradient(circle at 28% 18%, rgba(255, 255, 255, 0.85), transparent 19%),
+    linear-gradient(180deg, #28d6c1 0%, #099482 55%, #047064 100%) !important;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.65),
+    inset 0 -10px 18px rgba(0, 78, 90, 0.2),
+    0 12px 26px rgba(8, 121, 111, 0.22);
+}
+
+.woodland-aero .aero-button-secondary {
+  color: #07383f !important;
+  background:
+    radial-gradient(circle at 28% 18%, rgba(255, 255, 255, 0.95), transparent 20%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(214, 246, 255, 0.78)) !important;
+  border-color: rgba(77, 126, 138, 0.26) !important;
+}
+
+.woodland-aero .aero-chip {
+  color: #1f4651 !important;
+  border-color: rgba(88, 134, 145, 0.2) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(229, 255, 247, 0.72)) !important;
+  box-shadow: inset 0 1px 0 white, 0 8px 18px rgba(28, 96, 96, 0.08);
+}
+
+.woodland-aero .aero-product-frame,
+.woodland-aero .aero-card,
+.woodland-aero .aero-role-card {
+  color: #07383f !important;
+  border-color: rgba(55, 132, 126, 0.24) !important;
+  border-radius: 1.2rem !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(233, 255, 250, 0.64) 52%, rgba(208, 244, 255, 0.56)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -12px 28px rgba(52, 173, 166, 0.08),
+    0 16px 38px rgba(34, 106, 118, 0.13) !important;
+  backdrop-filter: blur(8px) saturate(1.18);
+  -webkit-backdrop-filter: blur(8px) saturate(1.18);
+}
+
+.woodland-aero .aero-card h3,
+.woodland-aero .aero-role-card h3,
+.woodland-aero .aero-card p,
+.woodland-aero .aero-role-card p {
+  color: #123943 !important;
+}
+
+.woodland-aero .aero-stat-band,
+.woodland-aero .aero-section,
+.woodland-aero .aero-footer {
+  border-color: rgba(63, 131, 123, 0.16) !important;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.85), transparent 18rem),
+    linear-gradient(180deg, rgba(245, 255, 252, 0.96), rgba(221, 249, 241, 0.92)) !important;
+}
+
+.woodland-aero .aero-section:nth-of-type(odd) {
+  background:
+    radial-gradient(circle at 88% 8%, rgba(165, 234, 255, 0.42), transparent 18rem),
+    linear-gradient(180deg, rgba(232, 251, 255, 0.96), rgba(244, 255, 248, 0.94)) !important;
+}
+
+.woodland-aero .aero-demo,
+.woodland-aero .aero-canada {
+  color: #f7fffb !important;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(111, 255, 210, 0.28), transparent 22rem),
+    radial-gradient(circle at 82% 22%, rgba(87, 164, 255, 0.18), transparent 20rem),
+    linear-gradient(135deg, #06342f 0%, #0b5c5c 45%, #124a79 100%) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.woodland-aero .aero-demo h2,
+.woodland-aero .aero-canada h2,
+.woodland-aero .aero-demo p,
+.woodland-aero .aero-canada p,
+.woodland-aero .aero-demo span,
+.woodland-aero .aero-canada span {
+  color: #f4fffb !important;
+  text-shadow: none;
+}
+
+.woodland-aero .aero-demo .aero-role-card,
+.woodland-aero .aero-demo .aero-role-card h3,
+.woodland-aero .aero-demo .aero-role-card p {
+  color: #123943 !important;
+  text-shadow: none;
+}
+
+.woodland-aero .aero-forest {
+  opacity: 0.58 !important;
+  filter: saturate(1.12) drop-shadow(0 24px 28px rgba(52, 113, 76, 0.18));
+}
+
+.woodland-aero .aero-hero-fox {
+  left: clamp(1.2rem, 8vw, 9rem) !important;
+  bottom: 1.4rem !important;
+  width: clamp(8.5rem, 18vw, 15rem) !important;
+}
+
+.woodland-aero .aero-hero-trout {
+  right: clamp(-5rem, -2vw, -1.5rem) !important;
+  bottom: 4.4rem !important;
+}
+
+.woodland-aero .aero-moose {
+  right: clamp(-3rem, 3vw, 3rem) !important;
+  top: 4.5rem !important;
+}
+
+.woodland-aero .aero-birch {
+  opacity: 0.78 !important;
+}
+
+.woodland-aero .aero-owl {
+  left: clamp(-2rem, 2vw, 1rem) !important;
+  top: 3rem !important;
+}
+
+.woodland-aero .aero-demo-trout {
+  left: 28% !important;
+  top: -1rem !important;
+}
+
+@media (max-width: 768px) {
+  .woodland-aero .aero-nav {
+    background: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  .woodland-aero .aero-hero {
+    min-height: 88svh;
+  }
+
+  .woodland-aero .aero-headline {
+    font-size: clamp(3rem, 13vw, 4.9rem) !important;
+  }
+
+  .woodland-aero .aero-copy {
+    color: #1f4651 !important;
+    font-size: 1.08rem !important;
+    line-height: 1.65 !important;
+  }
+
+  .woodland-aero .aero-bubble-two,
+  .woodland-aero .aero-bubble-three,
+  .woodland-aero .aero-hero-trout {
+    display: none;
+  }
+
+  .woodland-aero .aero-hero-fox {
+    bottom: 1rem !important;
+    left: 1rem !important;
+    width: 9.5rem !important;
   }
 }

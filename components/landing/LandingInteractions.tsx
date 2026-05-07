@@ -76,7 +76,7 @@ export function CopyEmailButton({ label = 'Copy email', copiedLabel = 'Copied' }
   return (
     <button
       onClick={copy}
-      className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-lg border border-gray-200 dark:border-white/10 text-gray-600 dark:text-white/60 text-sm font-medium transition-all duration-100 hover:border-gray-300 dark:hover:border-white/20"
+      className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-lg border border-gray-200 dark:border-white/10 text-gray-600 dark:text-white/60 text-sm font-medium transition-colors duration-100 hover:border-gray-300 dark:hover:border-white/20"
     >
       {copied ? (
         <>
@@ -90,13 +90,28 @@ export function CopyEmailButton({ label = 'Copy email', copiedLabel = 'Copied' }
 
 export function ScrollPersist() {
   useEffect(() => {
-    const saved = sessionStorage.getItem('ww-scroll')
-    if (saved) {
-      requestAnimationFrame(() => window.scrollTo(0, parseInt(saved)))
+    const scrollToHash = () => {
+      const id = decodeURIComponent(window.location.hash.slice(1))
+      if (!id) return
+
+      document.getElementById(id)?.scrollIntoView({ block: 'start' })
     }
+
+    const hasAnchorTarget = window.location.hash.length > 1
+    const saved = sessionStorage.getItem('ww-scroll')
+    if (saved && !hasAnchorTarget) {
+      requestAnimationFrame(() => window.scrollTo(0, parseInt(saved)))
+    } else if (hasAnchorTarget) {
+      requestAnimationFrame(scrollToHash)
+    }
+
     const onScroll = () => sessionStorage.setItem('ww-scroll', String(window.scrollY))
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    window.addEventListener('hashchange', scrollToHash)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('hashchange', scrollToHash)
+    }
   }, [])
   return null
 }
