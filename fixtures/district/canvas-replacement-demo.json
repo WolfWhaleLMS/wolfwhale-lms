@@ -1,0 +1,38 @@
+{
+  "districtName": "WolfWhale Demonstration District",
+  "districtId": "ww-demo-district",
+  "launchDate": "2026-05-08",
+  "sso": {
+    "env": {
+      "SSO_PROVIDER_TYPE": "oidc",
+      "OIDC_ISSUER": "https://identity.demo-district.example",
+      "OIDC_CLIENT_ID": "wolfwhale-demo-client",
+      "OIDC_CLIENT_SECRET": "configured-in-secret-manager"
+    }
+  },
+  "sis": {
+    "oneRoster": {
+      "orgs": "sourcedId,name,type\nschool-1,WolfWhale Demonstration School,school\n",
+      "users": "sourcedId,username,givenName,familyName,role,email,orgSourcedIds\nstudent-1,alex,Alex,Student,student,alex@example.edu,school-1\nteacher-1,tessa,Tessa,Teacher,teacher,tessa@example.edu,school-1\n",
+      "courses": "sourcedId,title,courseCode,orgSourcedId\ncourse-1,Grade 8 Humanities,HUM8,school-1\n",
+      "classes": "sourcedId,title,courseSourcedId,schoolSourcedId,termSourcedIds\nclass-1,Humanities 8A,course-1,school-1,term-1\n",
+      "enrollments": "sourcedId,classSourcedId,schoolSourcedId,userSourcedId,role,primary\nmembership-1,class-1,school-1,student-1,student,true\nmembership-2,class-1,school-1,teacher-1,teacher,true\n"
+    }
+  },
+  "loadProfile": {
+    "activeStudents": 5000,
+    "activeTeachers": 500,
+    "activeCourses": 1000,
+    "activeEnrollments": 50000
+  },
+  "legal": {
+    "dataProcessingChecklist": "DATA_PROCESSING_CHECKLIST.md",
+    "supportRunbook": "SUPPORT_RUNBOOK.md",
+    "incidentRunbook": "INCIDENT_RESPONSE_RUNBOOK.md",
+    "enterpriseReadiness": "ENTERPRISE_LAUNCH_READINESS.md"
+  },
+  "restore": {
+    "mode": "disposable-non-production",
+    "command": "RESTORE_DRILL_CONFIRM=restore-non-production RESTORE_DRILL_DB_URL=postgresql://localhost:5432/wolfwhale_restore_drill BACKUP_FILE=backups/latest.dump npm run db:restore-drill"
+  }
+}

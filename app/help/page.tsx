@@ -257,7 +257,13 @@ export default async function HelpCenterPage({ searchParams }: PageProps) {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black">
-
+      {/* Corinthian Pillar Borders */}
+      <div className="fixed top-[15px] -bottom-[60px] left-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" aria-hidden="true">
+        <Image src="/pillar.jpg" alt="" fill sizes="(min-width: 1024px) 260px, (min-width: 768px) 190px, (min-width: 640px) 130px, 80px" className="object-cover object-top mix-blend-multiply opacity-90 dark:mix-blend-lighten dark:invert dark:opacity-40" />
+      </div>
+      <div className="fixed top-[15px] -bottom-[60px] right-0 w-[80px] sm:w-[130px] md:w-[190px] lg:w-[260px] z-[5] pointer-events-none" style={{ transform: 'scaleX(-1)' }} aria-hidden="true">
+        <Image src="/pillar.jpg" alt="" fill sizes="(min-width: 1024px) 260px, (min-width: 768px) 190px, (min-width: 640px) 130px, 80px" className="object-cover object-top mix-blend-multiply opacity-90 dark:mix-blend-lighten dark:invert dark:opacity-40" />
+      </div>
 
       {/* Header */}
       <header className="sticky top-0 z-10 bg-white dark:bg-black border-b border-gray-200 dark:border-white/5">

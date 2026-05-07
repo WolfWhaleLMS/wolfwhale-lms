@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 export function LogoSpinner({ size = 80 }: { size?: number }) {
   const strokeWidth = 3
   const padding = 8
@@ -87,7 +89,7 @@ export function LogoSpinner({ size = 80 }: { size?: number }) {
         className="rounded-xl border-2 border-black overflow-hidden bg-white shadow-lg"
         style={{ width: size, height: size }}
       >
-        <img
+        <Image
           src="/logo.png"
           alt="Loading"
           width={size}

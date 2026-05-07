@@ -1,0 +1,74 @@
+import { NextRequest } from 'next/server'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { proxy } from '@/proxy'
+import {
+  PILOT_SESSION_COOKIE,
+  createPilotSessionCookieValue,
+  readPilotSessionCookieValue,
+  rolePath,
+} from '@/lib/pilot/session'
+
+const originalEnv = { ...process.env }
+
+function requestFor(pathname: string, cookieValue?: string) {
+  return new NextRequest(`https://wolfwhale.test${pathname}`, {
+    headers: cookieValue ? { cookie: `${PILOT_SESSION_COOKIE}=${cookieValue}` } : undefined,
+  })
+}
+
+describe('pilot authentication', () => {
+  beforeEach(() => {
+    process.env.PILOT_SESSION_SECRET = 'test-session-secret-with-enough-length'
+    process.env.PILOT_ACCESS_CODE = 'launch-tomorrow'
+  })
+
+  afterEach(() => {
+    process.env = { ...originalEnv }
+  })
+
+  it('creates a signed pilot session cookie that verifies back to a role', async () => {
+    const cookie = await createPilotSessionCookieValue('teacher', 1_778_164_000_000)
+
+    const session = await readPilotSessionCookieValue(cookie, 1_778_164_001_000)
+
+    expect(session?.role).toBe('teacher')
+    expect(session?.expiresAt).toBeGreaterThan(1_778_164_001_000)
+  })
+
+  it('rejects tampered pilot session cookies', async () => {
+    const cookie = await createPilotSessionCookieValue('student', 1_778_164_000_000)
+    const tampered = `${cookie.slice(0, -1)}${cookie.endsWith('a') ? 'b' : 'a'}`
+
+    await expect(readPilotSessionCookieValue(tampered, 1_778_164_001_000)).resolves.toBeNull()
+  })
+
+  it('maps each role to its protected route', () => {
+    expect(rolePath('student')).toBe('/student')
+    expect(rolePath('teacher')).toBe('/teacher')
+    expect(rolePath('admin')).toBe('/admin')
+    expect(rolePath('guardian')).toBe('/guardian')
+  })
+
+  it('redirects unauthenticated users from protected role routes to login', async () => {
+    const response = await proxy(requestFor('/student'))
+
+    expect(response.status).toBe(307)
+    expect(response.headers.get('location')).toBe('https://wolfwhale.test/login?next=%2Fstudent')
+  })
+
+  it('allows valid-role users through their protected route', async () => {
+    const cookie = await createPilotSessionCookieValue('student')
+    const response = await proxy(requestFor('/student', cookie))
+
+    expect(response.status).toBe(200)
+    expect(response.headers.get('location')).toBeNull()
+  })
+
+  it('redirects valid sessions away from the wrong role route', async () => {
+    const cookie = await createPilotSessionCookieValue('teacher')
+    const response = await proxy(requestFor('/student', cookie))
+
+    expect(response.status).toBe(307)
+    expect(response.headers.get('location')).toBe('https://wolfwhale.test/teacher')
+  })
+})
