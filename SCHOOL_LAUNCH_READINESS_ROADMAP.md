@@ -16,6 +16,11 @@ Ready to sell/pilot now:
 - Teacher assignment creation and grading.
 - Teacher attendance marking and rubric creation.
 - Student text submission.
+- Student course workspaces with course-specific syllabus, lessons, materials, submit portals, grades/feedback, gradebook, attendance, calendar, and messages.
+- Student all-assignments workspace grouped by course.
+- Student dedicated feature workspaces for grades/feedback, gradebook, attendance, calendar, resources, messages, and notifications.
+- Student background theme settings with local persistence.
+- Student study companion baseline with starter species, hatching, XP, levels, behavior mode, sprite fallback rendering, and world activities.
 - Guardian linked-student visibility.
 - Private resource access through signed storage URLs.
 - Supabase RLS hardening and live validation.

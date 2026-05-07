@@ -223,16 +223,31 @@ export interface LmsCourseSummary {
 
 export interface LmsAssignmentSummary {
   id: string
+  courseId: string
+  courseTitle: string
   title: string
+  category: string
+  instructions: string
   dueAt: string
   maxPoints: number
   status: string
 }
 
 export interface LmsGradeSummary {
+  assignmentId: string
+  courseId: string
+  courseTitle: string
   assignmentTitle: string
   scoreLabel: string
   feedback: string
+}
+
+export interface LmsLessonSummary {
+  id: string
+  courseId: string
+  courseTitle: string
+  title: string
+  status: string
 }
 
 export interface LmsGradingQueueItem {
@@ -245,6 +260,7 @@ export interface LmsGradingQueueItem {
 
 export interface LmsCalendarItem {
   id: string
+  courseId: string
   title: string
   courseTitle: string
   dueAt: string
@@ -253,6 +269,8 @@ export interface LmsCalendarItem {
 
 export interface LmsResourceSummary {
   id: string
+  lessonId: string
+  courseId: string
   title: string
   courseTitle: string
   fileName: string
@@ -261,6 +279,7 @@ export interface LmsResourceSummary {
 
 export interface LmsMessageSummary {
   id: string
+  courseId: string
   subject: string
   senderName: string
   content: string

@@ -13,6 +13,10 @@ Closed gates:
 - Server-side membership checks redirect users away from unauthorized role dashboards.
 - Student, teacher, admin, and guardian dashboards use persistent Supabase-backed LMS records.
 - Student, teacher, admin, and guardian dashboards expose clickable role-specific tool hubs instead of static unclickable report pages.
+- Student courses and assignments now open real workspaces instead of forcing students to hunt through one unclickable scrolling dashboard.
+- Student gradebook, grades/feedback, attendance, calendar, resources, messages, and notifications now open dedicated workspaces from the tool hub.
+- Student course workspaces collect each course's syllabus, lessons, materials, submit portals, grades/feedback, gradebook, attendance, calendar, and messages in one course-specific view.
+- Student settings can change background themes, and the study companion baseline can hatch, render through the sprite fallback/atlas contract, earn XP, level, switch behavior mode locally, and open the companion world.
 - Student submissions, teacher assignment creation, teacher grading, teacher attendance marking, teacher rubric creation, admin course creation, admin enrollment, and admin roster import/invite flow persist through API routes.
 - Weighted gradebook, attendance, and academic-risk summaries are available to the correct roles.
 - Calendar, message, notification, and course-resource visibility are present in each role surface.

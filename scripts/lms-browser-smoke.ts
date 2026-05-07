@@ -131,19 +131,39 @@ async function assertApiLinks(page: Page) {
 async function assertDashboardTools(page: Page, role: LmsRole) {
   const nav = page.getByRole('navigation', { name: 'Dashboard tools' })
   await nav.waitFor()
+  const dashboardUrl = page.url().replace(/#.*$/, '')
+  const dashboardPath = new URL(dashboardUrl).pathname
 
   for (const label of requiredDashboardTools[role]) {
     const link = nav.getByRole('link', { name: linkName(label) })
     await link.waitFor()
 
-    const hash = await link.evaluate((element) => new URL((element as HTMLAnchorElement).href).hash)
-    if (!hash) {
-      throw new Error(`Dashboard tool "${label}" on ${page.url()} does not target a section.`)
-    }
+    const href = await link.evaluate((element) => (element as HTMLAnchorElement).href)
+    const target = new URL(href)
 
-    await link.click()
-    await page.waitForFunction((expectedHash) => window.location.hash === expectedHash, hash)
-    await page.locator(hash).waitFor()
+    if (target.pathname === dashboardPath) {
+      if (!target.hash) {
+        throw new Error(`Dashboard tool "${label}" on ${page.url()} does not target a section or workspace.`)
+      }
+
+      await link.click()
+      await page.waitForFunction((expectedHash) => window.location.hash === expectedHash, target.hash)
+      await page.locator(target.hash).waitFor()
+    } else {
+      await link.click()
+      await page.waitForURL((url) => url.pathname === target.pathname && (!target.hash || url.hash === target.hash))
+      await assertNoFrameworkError(page)
+      await assertAccessibilitySmoke(page)
+      if (target.hash) {
+        await page.locator(target.hash).waitFor()
+      } else {
+        await page.locator('main').waitFor()
+      }
+
+      await page.goto(dashboardUrl, { waitUntil: 'domcontentloaded' })
+      await page.getByRole('heading', { name: roleHeading(role) }).waitFor()
+      await nav.waitFor()
+    }
   }
 
   await page.getByRole('link', { name: 'Dashboard home' }).click()

@@ -28,7 +28,7 @@ Observed result:
 - Scale-budget check passed for the verified single-school operating envelope.
 - LMS load smoke passed during `launch:verify` for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments.
 - Next build passed on Next.js 16.2.5.
-- Build generated 285 static pages and `ƒ Proxy`; route list includes `/api/lms/attendance`, `/api/lms/rubrics`, `/api/lms/roster/import`, `/api/lms/exports/attendance`, `/api/lms/exports/gradebook`, and `/api/lms/exports/sis`.
+- Build generated 291 static pages and `ƒ Proxy`; route list includes `/api/lms/attendance`, `/api/lms/rubrics`, `/api/lms/roster/import`, `/api/lms/exports/attendance`, `/api/lms/exports/gradebook`, `/api/lms/exports/sis`, and the student workspace routes.
 - Supabase direct DB security step is skipped by `launch:verify` when no `SUPABASE_DB_URL` or `DATABASE_URL` is set.
 - Equivalent live Supabase MCP SQL validation passed against project `yhxesebykwhlpsmxxiqo`.
 
@@ -168,3 +168,23 @@ Screenshot evidence:
 - `test-results/lms-smoke/student.png`
 - `/tmp/student-boreal-1440x900.png`
 - `/tmp/student-boreal-390x844.png`
+
+## Student Course Workspace Evidence
+
+Verification on 2026-05-07:
+
+- `npm test` passed, 18 files / 76 tests.
+- `npm run lint` completed with 0 errors and 10 existing warnings outside the changed student course/theme/companion files.
+- `npm run typecheck` passed.
+- `npm run build` passed and includes dynamic routes for `/student/courses`, `/student/courses/[courseId]`, `/student/assignments`, `/student/grades-feedback`, `/student/gradebook`, `/student/attendance`, `/student/calendar`, `/student/resources`, `/student/messages`, `/student/notifications`, `/student/settings`, and `/student/companion-world`.
+- `npm run test:a11y` passed against `http://localhost:3000`; the role smoke clicked every student dashboard tool into a real workspace and returned to the dashboard.
+- Additional Playwright browser workflow passed for the student account on `http://localhost:3000`: login, seven dedicated feature pages, Courses workspace, click a course with assignments, verify syllabus/lessons/assignments/materials/gradebook/attendance/calendar/messages, verify course submit forms, verify all-assignments submit forms, apply the Fisher Price Toybox and Ancient Monolith themes, hatch a Glyptodont companion, open Companion world, and verify no framework errors.
+
+Screenshot evidence:
+
+- `test-results/student-course-workflows/courses.png`
+- `test-results/student-course-workflows/course-detail.png`
+- `test-results/student-course-workflows/assignments.png`
+- `test-results/student-course-workflows/settings-pet-theme.png`
+- `test-results/student-course-workflows/feature-pages-and-settings.png`
+- `test-results/student-course-workflows/companion-world.png`

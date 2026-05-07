@@ -25,7 +25,10 @@ Do not market it as a proven large-district Canvas/Brightspace/Moodle displaceme
 - `/student`, `/teacher`, `/admin`, and `/guardian` are protected through the Next proxy plus server-side membership checks.
 - Admin dashboard shows school metrics, risk summary, attendance summary, audit trail, calendar, resources, messages, course creation, student enrollment, roster import, gradebook export, attendance export, and SIS export.
 - Teacher dashboard shows courses, roster, assignments, assignment creation, weighted gradebook, gradebook export, attendance marking/export, rubric creation, grading queue, grade posting, calendar, resources, and messages.
-- Student dashboard shows courses, assignments, submissions, weighted gradebook status, attendance, grades, feedback, notifications, calendar, resources, messages, and text submission.
+- Student dashboard shows courses, assignments, submissions, weighted gradebook status, attendance, grades, feedback, notifications, calendar, resources, messages, student analytics, background themes, and a local study companion.
+- Student course cards now open course-specific workspaces where syllabus, lessons, resources, assignment submission portals, grades/feedback, gradebook, attendance, calendar, and messages are displayed together for that course.
+- Student assignments are also available in an all-assignments workspace grouped by course.
+- Student grades/feedback, gradebook, attendance, calendar, resources, messages, notifications, settings, and companion world now have dedicated student routes rather than relying only on in-dashboard section jumps.
 - Guardian dashboard shows linked-student courses, assignments, weighted gradebook status, attendance, grades, feedback, calendar, resources, and messages.
 - Each role dashboard now has a clickable tool hub plus section anchors so users can jump directly to the features they are allowed to use.
 - API routes persist core workflows:
@@ -92,14 +95,15 @@ Applied live migration names include:
 - `npm run launch:verify`: passed.
 - `npm run lint`: passed.
 - `npm run typecheck`: passed.
-- `npm test`: passed, 16 files / 64 tests.
+- `npm test`: passed, 18 files / 76 tests.
 - `npm run enterprise:check`: passed.
 - `npm run district:verify`: passed.
 - `npm run district:proof`: passed for `fixtures/district/canvas-replacement-demo.json`.
 - `npm run scale:check`: passed for the verified single-school operating envelope.
 - `npm run load:smoke`: passed for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments.
-- `npm run build`: passed, 285 generated static pages and `ƒ Proxy`; route list includes attendance, rubric, roster import, gradebook export, attendance export, and SIS export APIs.
+- `npm run build`: passed, 291 generated static pages and `ƒ Proxy`; route list includes attendance, rubric, roster import, gradebook export, attendance export, SIS export APIs, and dedicated student workspace routes.
 - `npm run test:lms-smoke` / `npm run test:a11y`: passed with screenshots in `test-results/lms-smoke`.
+- Student course workspace browser pass: passed with screenshots in `test-results/student-course-workflows`.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passed for real submit/create/attendance/rubric/grade/enrollment/import workflows.
 - `npm audit --omit=dev --audit-level=high`: passed, 0 vulnerabilities.
 - Computer Use visual workflow pass: student demo login, dashboard tool hub, tool jump, dashboard-home jump, and sign-out passed in Chrome.

@@ -9,6 +9,7 @@ import type {
   LmsGradebookCourseSummary,
   LmsGradeSummary,
   LmsGradingQueueItem,
+  LmsLessonSummary,
   LmsMessageSummary,
   LmsPerson,
   LmsRecords,
@@ -38,10 +39,16 @@ function courseSummary(course: LmsCourseRecord): LmsCourseSummary {
   }
 }
 
-function assignmentSummary(assignment: LmsAssignmentRecord): LmsAssignmentSummary {
+function assignmentSummary(records: LmsRecords, assignment: LmsAssignmentRecord): LmsAssignmentSummary {
+  const course = findCourse(records, assignment.courseId)
+
   return {
     id: assignment.id,
+    courseId: assignment.courseId,
+    courseTitle: course.title,
     title: assignment.title,
+    category: assignment.category,
+    instructions: assignment.instructions,
     dueAt: assignment.dueAt,
     maxPoints: assignment.maxPoints,
     status: assignment.status,
@@ -77,8 +84,12 @@ function findCourse(records: LmsRecords, courseId: string) {
 
 function gradeSummary(records: LmsRecords, grade: LmsGradeRecord): LmsGradeSummary {
   const assignment = findAssignment(records, grade.assignmentId)
+  const course = findCourse(records, assignment.courseId)
 
   return {
+    assignmentId: assignment.id,
+    courseId: assignment.courseId,
+    courseTitle: course.title,
     assignmentTitle: assignment.title,
     scoreLabel: `${grade.pointsEarned}/${assignment.maxPoints}`,
     feedback: grade.feedback,
@@ -153,6 +164,7 @@ function calendarItemsForCourseIds(records: LmsRecords, courseIds: Set<string>):
     .filter((assignment) => courseIds.has(assignment.courseId))
     .map((assignment) => ({
       id: assignment.id,
+      courseId: assignment.courseId,
       title: assignment.title,
       courseTitle: findCourse(records, assignment.courseId).title,
       dueAt: assignment.dueAt,
@@ -172,12 +184,26 @@ function resourcesForCourseIds(records: LmsRecords, courseIds: Set<string>): Lms
 
       return {
         id: resource.id,
+        lessonId: resource.lessonId,
+        courseId: lesson?.courseId ?? '',
         title: resource.displayName,
         courseTitle: course?.title ?? 'Course',
         fileName: resource.fileName,
         fileType: resource.fileType,
       }
     })
+}
+
+function lessonSummariesForCourseIds(records: LmsRecords, courseIds: Set<string>): LmsLessonSummary[] {
+  return records.lessons
+    .filter((lesson) => courseIds.has(lesson.courseId))
+    .map((lesson) => ({
+      id: lesson.id,
+      courseId: lesson.courseId,
+      courseTitle: findCourse(records, lesson.courseId).title,
+      title: lesson.title,
+      status: lesson.status,
+    }))
 }
 
 function messageSummaries(records: LmsRecords): LmsMessageSummary[] {
@@ -190,6 +216,7 @@ function messageSummaries(records: LmsRecords): LmsMessageSummary[] {
 
       return {
         id: message.id,
+        courseId: conversation?.courseId ?? '',
         subject: conversation?.subject ?? 'Conversation',
         senderName: sender ? person(sender).name : 'School member',
         content: message.content,
@@ -396,7 +423,7 @@ export function buildLmsDashboardViews(records: LmsRecords) {
       teacher: person(findUser(records, records.actorIds.teacher)),
       courses: teacherCourses.map(courseSummary),
       roster: records.users.filter((user) => teacherRosterIds.has(user.id)).map(person),
-      assignments: teacherAssignments.map(assignmentSummary),
+      assignments: teacherAssignments.map((assignment) => assignmentSummary(records, assignment)),
       gradingQueue: pendingTeacherSubmissions(records, records.actorIds.teacher),
       calendar: calendarItemsForCourseIds(records, teacherCourseIdSet),
       resources: resourcesForCourseIds(records, teacherCourseIdSet),
@@ -408,11 +435,12 @@ export function buildLmsDashboardViews(records: LmsRecords) {
     student: {
       student: person(findUser(records, records.actorIds.student)),
       courses: studentCourses.map(courseSummary),
-      assignments: studentAssignments.map(assignmentSummary),
+      assignments: studentAssignments.map((assignment) => assignmentSummary(records, assignment)),
       submissions: records.submissions.filter((submission) => submission.studentId === records.actorIds.student),
       grades: gradesForStudent(records, records.actorIds.student),
       notifications: records.notifications.filter((notification) => notification.userId === records.actorIds.student),
       calendar: calendarItemsForCourseIds(records, studentCourseIdSet),
+      lessons: lessonSummariesForCourseIds(records, studentCourseIdSet),
       resources: resourcesForCourseIds(records, studentCourseIdSet),
       messages,
       gradebook: studentGradebook(records, records.actorIds.student, studentCourseIdSet),
@@ -426,7 +454,7 @@ export function buildLmsDashboardViews(records: LmsRecords) {
         return {
           ...person(findUser(records, studentId)),
           courses: records.courses.filter((course) => courseIds.has(course.id)).map(courseSummary),
-          assignments: records.assignments.filter((assignment) => courseIds.has(assignment.courseId)).map(assignmentSummary),
+          assignments: records.assignments.filter((assignment) => courseIds.has(assignment.courseId)).map((assignment) => assignmentSummary(records, assignment)),
           grades: gradesForStudent(records, studentId),
           gradebook: studentGradebook(records, studentId, courseIds),
         }

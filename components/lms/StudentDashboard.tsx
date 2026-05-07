@@ -18,11 +18,14 @@ import {
   MessageSquare,
   Mountain,
   Send,
+  Settings,
   Target,
   Trees,
   type LucideIcon,
 } from 'lucide-react'
 import type { CSSProperties, ReactNode } from 'react'
+import { StudentCompanionWidget } from '@/components/lms/StudentCompanionWidget'
+import { StudentPreferenceBridge } from '@/components/lms/StudentThemeSettings'
 import type { buildLmsDashboardViews } from '@/lib/lms/read-model'
 
 type StudentView = ReturnType<typeof buildLmsDashboardViews>['student']
@@ -35,16 +38,17 @@ type StudentTool = {
 }
 
 const studentTools: StudentTool[] = [
-  { href: '#courses', label: 'Courses', description: 'Open enrolled classes', icon: BookOpen },
-  { href: '#assignments', label: 'Assignments', description: 'Review upcoming work', icon: ClipboardCheck },
-  { href: '#submit-work', label: 'Submit work', description: 'Turn in assignment responses', icon: Send },
-  { href: '#grades-feedback', label: 'Grades and feedback', description: 'Read marked work', icon: GraduationCap },
-  { href: '#gradebook', label: 'Gradebook', description: 'Track current standing', icon: BarChart3 },
-  { href: '#attendance', label: 'Attendance', description: 'Check presence history', icon: CalendarCheck },
-  { href: '#calendar', label: 'Calendar', description: 'See dated course items', icon: CalendarDays },
-  { href: '#resources', label: 'Resources', description: 'Download class files', icon: FileText },
-  { href: '#messages', label: 'Messages', description: 'Read teacher messages', icon: MessageSquare },
-  { href: '#notifications', label: 'Notifications', description: 'Review latest alerts', icon: Bell },
+  { href: '/student/courses', label: 'Courses', description: 'Open enrolled classes', icon: BookOpen },
+  { href: '/student/assignments', label: 'Assignments', description: 'Review upcoming work', icon: ClipboardCheck },
+  { href: '/student/assignments#submit-work', label: 'Submit work', description: 'Turn in assignment responses', icon: Send },
+  { href: '/student/grades-feedback', label: 'Grades and feedback', description: 'Read marked work', icon: GraduationCap },
+  { href: '/student/gradebook', label: 'Gradebook', description: 'Track current standing', icon: BarChart3 },
+  { href: '/student/attendance', label: 'Attendance', description: 'Check presence history', icon: CalendarCheck },
+  { href: '/student/calendar', label: 'Calendar', description: 'See dated course items', icon: CalendarDays },
+  { href: '/student/resources', label: 'Resources', description: 'Download class files', icon: FileText },
+  { href: '/student/messages', label: 'Messages', description: 'Read teacher messages', icon: MessageSquare },
+  { href: '/student/notifications', label: 'Notifications', description: 'Review latest alerts', icon: Bell },
+  { href: '/student/companion-world', label: 'Companion world', description: 'Visit Glacier Commons', icon: Compass },
 ]
 
 const toolStyles = [
@@ -178,11 +182,12 @@ export function StudentDashboard({ view }: { view: StudentView }) {
   return (
     <main
       id="dashboard-top"
-      className="relative min-h-screen scroll-mt-28 overflow-hidden bg-[#063d37] text-[#17352c]"
+      className="student-theme-shell relative min-h-screen scroll-mt-28 overflow-hidden bg-[#063d37] text-[#17352c]"
     >
+      <StudentPreferenceBridge />
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(circle_at_18%_10%,rgba(255,255,255,0.86),transparent_18rem),radial-gradient(circle_at_76%_6%,rgba(125,211,252,0.52),transparent_22rem),linear-gradient(180deg,#b8e9ff_0%,#72c7c0_28%,#0a5f59_58%,#063d37_100%)]"
+        className="student-theme-backdrop absolute inset-0 bg-[radial-gradient(circle_at_18%_10%,rgba(255,255,255,0.86),transparent_18rem),radial-gradient(circle_at_76%_6%,rgba(125,211,252,0.52),transparent_22rem),linear-gradient(180deg,#b8e9ff_0%,#72c7c0_28%,#0a5f59_58%,#063d37_100%)]"
       />
       <div
         aria-hidden="true"
@@ -217,6 +222,13 @@ export function StudentDashboard({ view }: { view: StudentView }) {
             </a>
 
             <div className="mt-3 grid gap-2">
+              <a
+                href="/student/settings"
+                className="flex min-h-11 items-center gap-2 rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-sm font-bold text-white transition hover:translate-y-[-1px] focus:outline-none focus:ring-2 focus:ring-lime-200 focus:ring-offset-2 focus:ring-offset-[#0f3d35]"
+              >
+                <Settings className="h-4 w-4" />
+                Settings
+              </a>
               <div className="rounded-lg border border-white/15 bg-white/10 px-3 py-2">
                 <p className="text-xs font-bold text-emerald-100">Momentum</p>
                 <p className="mt-1 text-2xl font-black leading-none text-white">{momentum}</p>
@@ -295,6 +307,7 @@ export function StudentDashboard({ view }: { view: StudentView }) {
                   <a
                     key={tool.href}
                     href={tool.href}
+                    aria-label={`${tool.label} ${tool.description}`}
                     className="group relative min-h-[7rem] overflow-hidden rounded-lg border border-white/20 bg-[linear-gradient(145deg,rgba(17,61,49,0.94),rgba(48,89,55,0.9))] p-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22),0_12px_26px_rgba(4,33,29,0.2)] transition hover:translate-y-[-2px] hover:border-lime-200/60 focus:outline-none focus:ring-2 focus:ring-lime-200 focus:ring-offset-2 focus:ring-offset-[#0b3f39]"
                   >
                     <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-10 bg-[linear-gradient(180deg,rgba(132,204,22,0),rgba(132,204,22,0.2))]" />
@@ -325,7 +338,7 @@ export function StudentDashboard({ view }: { view: StudentView }) {
                     return (
                       <a
                         key={course.id}
-                        href="#gradebook"
+                        href={`/student/courses/${course.id}`}
                         className="group relative min-h-36 overflow-hidden rounded-lg border border-emerald-100 bg-[linear-gradient(145deg,rgba(255,255,255,0.9),rgba(217,245,229,0.76))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_10px_24px_rgba(17,94,89,0.1)] transition hover:translate-y-[-2px] hover:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:ring-offset-2"
                       >
                         <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-10 bg-[linear-gradient(90deg,rgba(74,118,62,0.16),rgba(14,165,233,0.12))]" />
@@ -383,6 +396,7 @@ export function StudentDashboard({ view }: { view: StudentView }) {
                   valueDisplay={`${attendanceAverage} pct`}
                 />
                 <LearningDial value={100 - Math.min(100, missingWork * 25)} label="Workload health" detail={`${missingWork} missing assignment${missingWork === 1 ? '' : 's'}`} color="#f59e0b" />
+                <StudentCompanionWidget compact />
               </div>
             </BorealPanel>
 

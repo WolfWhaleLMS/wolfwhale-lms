@@ -56,15 +56,43 @@ describe('persistent LMS read model', () => {
       'Launch Reflection',
       'Primary Source Exit Ticket',
     ])
-    expect(views.student.grades).toEqual([
+    expect(views.student.assignments[0]).toMatchObject({
+      courseId: 'course-1',
+      courseTitle: 'Grade 8 Humanities',
+      category: 'Reflection',
+      instructions: 'Write one paragraph about what helped you learn.',
+    })
+    expect(views.student.lessons).toEqual([
       {
+        id: 'lesson-1',
+        courseId: 'course-1',
+        courseTitle: 'Grade 8 Humanities',
+        title: 'Primary Source Skills',
+        status: 'published',
+      },
+    ])
+    expect(views.student.grades).toMatchObject([
+      {
+        assignmentId: 'assignment-1',
+        courseId: 'course-1',
+        courseTitle: 'Grade 8 Humanities',
         assignmentTitle: 'Launch Reflection',
         scoreLabel: '9/10',
         feedback: 'Strong reflection with a clear next question.',
       },
     ])
     expect(views.student.calendar).toHaveLength(2)
-    expect(views.student.resources.map((resource) => resource.title)).toEqual(['Primary Source Pack'])
+    expect(views.student.resources).toEqual([
+      {
+        id: 'resource-1',
+        lessonId: 'lesson-1',
+        courseId: 'course-1',
+        title: 'Primary Source Pack',
+        courseTitle: 'Grade 8 Humanities',
+        fileName: 'source-pack.pdf',
+        fileType: 'application/pdf',
+      },
+    ])
     expect(JSON.stringify(views.student)).not.toContain('Riley Student')
   })
 
@@ -74,8 +102,11 @@ describe('persistent LMS read model', () => {
 
     expect(views.guardian.guardian.name).toBe('Morgan Guardian')
     expect(views.guardian.students.map((student) => student.name)).toEqual(['Alex Student'])
-    expect(views.guardian.students[0].grades).toEqual([
+    expect(views.guardian.students[0].grades).toMatchObject([
       {
+        assignmentId: 'assignment-1',
+        courseId: 'course-1',
+        courseTitle: 'Grade 8 Humanities',
         assignmentTitle: 'Launch Reflection',
         scoreLabel: '9/10',
         feedback: 'Strong reflection with a clear next question.',

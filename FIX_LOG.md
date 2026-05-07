@@ -100,3 +100,17 @@ Sprint date: 2026-05-07
 - Restyled courses, assignments, gradebook, attendance, resources, calendar, messages, notifications, and submit-work forms without changing teacher/admin/guardian dashboards.
 - Added a forest/lake Frutiger Aero-inspired backdrop using existing public clay forest assets and code-native labels/controls.
 - Reordered the mobile layout so the student dashboard appears before the side rail.
+
+## Student Course Workspaces, Themes, And Companion
+
+- Added real student workspace routes for `/student/courses`, `/student/courses/[courseId]`, `/student/assignments`, and `/student/settings`.
+- Added dedicated student feature routes for `/student/grades-feedback`, `/student/gradebook`, `/student/attendance`, `/student/calendar`, `/student/resources`, `/student/messages`, and `/student/notifications`.
+- Changed student course cards and dashboard tool links so courses open into course-specific workspaces instead of leaving students on one long scrolling dashboard.
+- Added course-scoped syllabus, lessons, materials, assignment submission portals, grades/feedback, gradebook, attendance, calendar, and messages on each course detail page.
+- Added an all-assignments workspace grouped by course with a single stable `#submit-work` anchor and course-specific submit forms.
+- Extended the LMS read model with course-aware assignment categories, lesson summaries, resource course/lesson IDs, grade course IDs, calendar course IDs, and message course IDs.
+- Added student background theme settings with local persistence and three launch themes: woodland boreal, Fisher Price toybox, and ancient monolith.
+- Added a first usable study companion widget with starter Ice Age species, local pet profile storage, hatching, XP rewards, level/hatch progress, behavior mode, and world activities.
+- Added a companion world prototype at `/student/companion-world` plus a `/companion-world` redirect.
+- Added companion sprite atlas contracts, animation-state mapping, and code-native fallback sprite/egg CSS so pets render while final atlas assets are still being prepared.
+- Added tests covering course-specific read-model data, dashboard tool links, course workspace isolation, assignments grouped by course, settings themes, and companion local-storage safety.
