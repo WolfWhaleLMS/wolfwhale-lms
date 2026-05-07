@@ -2,89 +2,84 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {
   BookOpen,
-  ClipboardCheck,
-  BarChart3,
-  MessageSquare,
-  CalendarCheck,
   Users,
-  Trophy,
-  Shield,
-  Building2,
-  LayoutDashboard,
   GraduationCap,
   Sparkles,
   Mail,
   Phone,
   ChevronRight,
-  CheckCircle2,
   WifiOff,
   Gamepad2,
-  Music,
-  Moon,
-  Bell,
-  Dog,
-  Monitor,
   Bot,
+  Brain,
+  Smartphone,
+  ArrowRight,
   Heart,
+  Shield,
+  DollarSign,
   type LucideIcon
 } from 'lucide-react'
 
 /* ============================================
-   Feature Card Component
+   Stat Card
    ============================================ */
-function FeatureCard({
-  icon: Icon,
-  title,
-  description,
-  highlight = false,
-}: {
-  icon: LucideIcon
-  title: string
-  description: string
-  highlight?: boolean
-}) {
+function StatCard({ value, label }: { value: string; label: string }) {
   return (
-    <div
-      className={`rounded-2xl p-6 ocean-card group hover:neon-border-blue transition-all ${
-        highlight ? 'md:col-span-2 lg:col-span-3 neon-border-blue' : ''
-      }`}
-    >
-      <div
-        className={`p-3 rounded-xl bg-gradient-to-br w-fit mb-4 group-hover:scale-110 transition-transform ${
-          highlight
-            ? 'from-[#00BFFF]/20 to-[#8B5CF6]/20'
-            : 'from-[#00BFFF]/10 to-[#8B5CF6]/10'
-        }`}
-      >
-        <Icon className={`h-6 w-6 ${highlight ? 'text-[#8B5CF6]' : 'text-[#00BFFF]'}`} />
-      </div>
-      <h3 className={`font-semibold mb-3 text-white ${highlight ? 'text-2xl' : 'text-xl'}`}>
-        {title}
-        {highlight && (
-          <span className="ml-3 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#8B5CF6]/15 text-[#C4B5FD] text-xs font-bold uppercase tracking-wider border border-[#8B5CF6]/30">
-            <Sparkles className="h-3 w-3" />
-            Only on WolfWhale
-          </span>
-        )}
-      </h3>
-      <p className={`text-white/70 leading-relaxed ${highlight ? 'text-base max-w-3xl' : 'text-sm'}`}>
-        {description}
-      </p>
+    <div className="rounded-xl p-5 ocean-card text-center">
+      <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#00BFFF] to-[#8B5CF6] bg-clip-text text-transparent">{value}</p>
+      <p className="text-xs text-white/60 mt-1 tracking-wider uppercase">{label}</p>
     </div>
   )
 }
 
-
 /* ============================================
-   Role Capability Item
+   Info Card — clickable card for topic sections
    ============================================ */
-function RoleItem({ text }: { text: string }) {
-  return (
-    <li className="flex items-start gap-2">
-      <CheckCircle2 className="h-3 w-3 text-[#00BFFF] mt-0.5 flex-shrink-0" />
-      <span>{text}</span>
-    </li>
+function InfoCard({
+  icon: Icon,
+  title,
+  description,
+  color,
+  bullets,
+  href,
+}: {
+  icon: LucideIcon
+  title: string
+  description: string
+  color: string
+  bullets: string[]
+  href?: string
+}) {
+  const content = (
+    <div className="rounded-2xl p-6 bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all group cursor-pointer h-full">
+      <div
+        className="inline-flex p-3 rounded-xl mb-4 border"
+        style={{ backgroundColor: `${color}10`, borderColor: `${color}30` }}
+      >
+        <Icon className="h-6 w-6" style={{ color }} />
+      </div>
+      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#00BFFF] transition-colors">{title}</h3>
+      <p className="text-sm text-white/60 mb-4">{description}</p>
+      <ul className="space-y-1.5">
+        {bullets.map((b) => (
+          <li key={b} className="text-sm text-white/50 flex items-start gap-2">
+            <span className="mt-1.5 h-1 w-1 rounded-full shrink-0" style={{ backgroundColor: color }} />
+            {b}
+          </li>
+        ))}
+      </ul>
+      {href && (
+        <p className="text-xs text-white/30 mt-4 group-hover:text-[#00BFFF]/60 transition-colors flex items-center gap-1">
+          Learn more <ArrowRight className="h-3 w-3" />
+        </p>
+      )}
+    </div>
   )
+
+  if (href) {
+    return <Link href={href}>{content}</Link>
+  }
+  return content
 }
 
 /* ============================================
@@ -92,535 +87,273 @@ function RoleItem({ text }: { text: string }) {
    ============================================ */
 export default function InfoPage() {
   return (
-    <div className="min-h-screen text-white">
-      {/* Dark Background with subtle neon accents */}
-      <div className="fixed inset-0 z-0">
-        {/* Pure black base */}
-        <div className="absolute inset-0 bg-black" />
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            background: 'radial-gradient(ellipse 150% 80% at 50% 20%, rgba(139,92,246,0.12) 0%, transparent 60%)',
-          }}
-        />
-        <div
-          className="absolute inset-0 opacity-20"
-          style={{
-            background: 'radial-gradient(ellipse 120% 60% at 30% 70%, rgba(0,191,255,0.06) 0%, transparent 50%)',
-          }}
-        />
+    <div className="min-h-screen bg-black text-white relative overflow-hidden">
 
-        {/* Floating sparkle particles — neon on black */}
-        <div className="absolute left-[10%] top-[15%] h-2 w-2 rounded-full bg-[#8B5CF6]/20 animate-pulse" />
-        <div className="absolute left-[25%] top-[70%] h-3 w-3 rounded-full bg-[#00BFFF]/15 animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute left-[55%] top-[20%] h-1.5 w-1.5 rounded-full bg-[#8B5CF6]/15 animate-pulse" style={{ animationDelay: '2s' }} />
-        <div className="absolute left-[80%] top-[60%] h-2.5 w-2.5 rounded-full bg-[#00BFFF]/20 animate-pulse" style={{ animationDelay: '3s' }} />
-        <div className="absolute left-[40%] top-[85%] h-3 w-3 rounded-full bg-[#8B5CF6]/15 animate-pulse" style={{ animationDelay: '0.5s' }} />
-        <div className="absolute left-[70%] top-[10%] h-2 w-2 rounded-full bg-[#00BFFF]/15 animate-pulse" style={{ animationDelay: '1.5s' }} />
+      {/* Dark Background with subtle neon accents */}
+      <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-950 to-black" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full bg-[#00BFFF]/3 blur-[150px]" />
+        <div className="absolute bottom-0 right-0 w-[600px] h-[400px] rounded-full bg-[#8B5CF6]/3 blur-[120px]" />
       </div>
+
 
       {/* Header Navigation */}
       <header className="relative z-10 border-b border-white/10 backdrop-blur-md bg-black/60">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Image src="/logo.png" alt="WolfWhale" width={56} height={56} className="rounded-xl object-contain shadow-lg shadow-purple-500/20" />
-            <div>
-              <h1 className="text-xl font-display font-bold text-white tracking-wider uppercase">WolfWhale</h1>
-              <p className="text-xs text-white/70 font-display font-semibold tracking-widest uppercase">Learning Management System</p>
-            </div>
-          </div>
-          <a
-            href="mailto:info@wolfwhale.ca"
-            className="px-6 py-2.5 rounded-lg btn-chrome-3d-blue text-white transition-all text-sm font-bold"
-          >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+          <Link href="/" className="text-sm text-white/70 hover:text-white transition-colors font-medium">
+            Home
+          </Link>
+          <a href="mailto:info@wolfwhale.ca" className="px-5 py-2 rounded-lg btn-chrome-3d-blue text-white transition-all text-sm font-bold">
             Contact Us
           </a>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative z-10 py-16 md:py-24">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6">
-            <Sparkles className="h-4 w-4 text-[#00BFFF]" />
-            <span className="text-sm text-white/80">The Modern K-12 & Post-Secondary Learning Platform</span>
-          </div>
+      {/* ==========================================
+          HERO — centered glass logo, minimal text
+          ========================================== */}
+      <section className="relative z-10 py-20 md:py-28 bg-black/40 backdrop-blur-sm">
+        <div className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center">
+          <Image src="/logo.png" alt="WolfWhale" width={160} height={160} className="rounded-2xl object-contain shadow-2xl shadow-purple-500/30 mb-8" />
 
-          <h1
-            className="text-5xl md:text-7xl font-display font-extrabold mb-6 tracking-wider leading-tight"
-            style={{
-              background: 'linear-gradient(to right, #00BFFF, #8B5CF6)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              filter: 'drop-shadow(0 3px 12px rgba(139,92,246,0.3))',
-            }}
-          >
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-normal mb-4 tracking-wider leading-tight text-white">
             WolfWhale
           </h1>
 
-          <p className="text-lg md:text-xl text-white/80 mb-6 tracking-[0.15em] uppercase font-display font-bold">
-            Learning Management System
-          </p>
-          <p className="text-xl md:text-2xl text-white/80 mb-4 max-w-3xl mx-auto">
-            Innovating the most important tool in education
+          <p className="text-lg md:text-xl text-white/60 mb-8 tracking-[0.15em] uppercase font-display">
+            Improving the most important tool in education
           </p>
 
-          <p className="text-base md:text-lg text-white/70 mb-6 max-w-2xl mx-auto">
-            Browser-based AI tutoring. Spaced repetition flashcards. Full offline mode. No other LMS has these.
-          </p>
+          {/* What is an LMS? */}
+          <div className="max-w-3xl mb-10 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm px-8 py-8 text-center">
+            <h2 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-wider mb-4">What is an LMS?</h2>
+            <p className="text-base sm:text-lg text-white/70 leading-relaxed">
+              A <strong>Learning Management System</strong> is the digital backbone of a classroom — where courses are delivered, grades are tracked, and students learn. WolfWhale is the only one built from the ground up around how students actually absorb information.
+            </p>
+          </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row items-center gap-4 mb-12">
             <a
-              href="#pricing"
+              href="mailto:info@wolfwhale.ca?subject=WolfWhale%20LMS%20-%20Demo%20Request"
               className="px-8 py-4 rounded-xl btn-chrome-3d-blue text-white transition-all font-bold flex items-center gap-2 group"
             >
               Request a Demo
-              <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              <ChevronRight className="h-5 w-5 group-hover:translate-x-0.5 transition-transform" />
             </a>
-            <a
-              href="mailto:info@wolfwhale.ca"
-              className="px-8 py-4 rounded-xl btn-chrome-3d-silver transition-all font-bold"
-            >
-              Contact Us
-            </a>
+            <Link href="/" className="px-8 py-4 rounded-xl border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition-all font-medium">
+              Back to Home
+            </Link>
           </div>
 
-        </div>
-      </section>
-
-      {/* Dashboard Previews */}
-      <section className="relative z-10 py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Built for Every Role</h2>
-            <p className="text-lg text-white/70 max-w-2xl mx-auto mb-8">
-              Tailored experiences for students, teachers, parents, and administrators
-            </p>
-
-            {/* Contact CTA */}
-            <div className="max-w-2xl mx-auto">
-              <div className="rounded-2xl p-6 ocean-card">
-                <p className="text-sm text-white/70 mb-4">Want to see the platform in action?</p>
-                <a
-                  href="mailto:info@wolfwhale.ca?subject=WolfWhale%20LMS%20-%20Demo%20Request"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg btn-chrome-3d-blue text-white transition-all text-sm font-bold"
-                >
-                  Request a Demo
-                  <ChevronRight className="h-4 w-4" />
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Student Dashboard */}
-            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 p-5 border-b border-white/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#8B5CF6] text-white">
-                  <GraduationCap className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">Student Dashboard</h3>
-                  <p className="text-xs text-white/70">Your learning command center</p>
-                </div>
-              </div>
-              <div className="relative">
-                <Image src="/screenshots/student-dashboard.png" alt="Student Dashboard — performance gauges, courses, tasks, XP, and virtual pets" width={1440} height={900} sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" className="w-full h-auto" />
-              </div>
-            </div>
-
-            {/* Teacher Dashboard */}
-            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 p-5 border-b border-white/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#8B5CF6] text-white">
-                  <BookOpen className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">Teacher Dashboard</h3>
-                  <p className="text-xs text-white/70">Manage courses and students</p>
-                </div>
-              </div>
-              <div className="relative">
-                <Image src="/screenshots/teacher-dashboard.png" alt="Teacher Dashboard — courses, gradebook, students, and quick actions" width={1440} height={900} sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" className="w-full h-auto" />
-              </div>
-            </div>
-
-            {/* Parent Dashboard */}
-            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 p-5 border-b border-white/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF] to-[#8B5CF6] text-white">
-                  <Users className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">Parent Dashboard</h3>
-                  <p className="text-xs text-white/70">Monitor your child&apos;s progress</p>
-                </div>
-              </div>
-              <div className="relative">
-                <Image src="/screenshots/parent-dashboard.png" alt="Parent Dashboard — grades, attendance, assignments, and child progress" width={1440} height={900} sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" className="w-full h-auto" />
-              </div>
-            </div>
-
-            {/* Admin Dashboard */}
-            <div className="rounded-2xl overflow-hidden ocean-card group hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 p-5 border-b border-white/10">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-[#D97706] to-[#F59E0B] text-white">
-                  <Building2 className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">Admin Dashboard</h3>
-                  <p className="text-xs text-white/70">School overview and management</p>
-                </div>
-              </div>
-              <div className="relative">
-                <Image src="/screenshots/admin-dashboard.png" alt="Admin Dashboard — school health, enrollment, users, and system settings" width={1440} height={900} sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" className="w-full h-auto" />
-              </div>
-            </div>
+          {/* Stats bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full max-w-3xl">
+            <StatCard value="72" label="Original Textbooks" />
+            <StatCard value="288+" label="Chapters" />
+            <StatCard value="682" label="Curriculum Outcomes" />
+            <StatCard value="5" label="User Roles" />
           </div>
         </div>
       </section>
 
-      {/* Four User Roles */}
-      <section className="relative z-10 py-20 bg-white/5 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Four User Roles</h2>
-            <p className="text-lg text-white/70 max-w-2xl mx-auto">
-              Each role has specific capabilities designed for their needs
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Student */}
-            <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#8B5CF6]/10 w-fit mb-3">
-                <GraduationCap className="h-5 w-5 text-[#00BFFF]" />
-              </div>
-              <h3 className="font-semibold mb-3 text-sm text-white">Student</h3>
-              <ul className="space-y-2 text-xs text-white/70">
-                <RoleItem text="View courses & lessons" />
-                <RoleItem text="Spaced repetition flashcards" />
-                <RoleItem text="Take quizzes & submit work" />
-                <RoleItem text="Earn XP, badges & streaks" />
-                <RoleItem text="AI Tutor for instant help" />
-                <RoleItem text="Virtual pet companion" />
-                <RoleItem text="Chess, mini-games & study tools" />
-                <RoleItem text="Study music radio" />
-                <RoleItem text="Full offline study mode" />
-              </ul>
-            </div>
-
-            {/* Teacher */}
-            <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#8B5CF6]/10 w-fit mb-3">
-                <BookOpen className="h-5 w-5 text-[#00BFFF]" />
-              </div>
-              <h3 className="font-semibold mb-3 text-sm text-white">Teacher</h3>
-              <ul className="space-y-2 text-xs text-white/70">
-                <RoleItem text="Create courses & modules" />
-                <RoleItem text="Rich lesson builder with content blocks" />
-                <RoleItem text="Build quizzes (multiple types)" />
-                <RoleItem text="Create flashcard decks" />
-                <RoleItem text="Gradebook & grade management" />
-                <RoleItem text="Track attendance" />
-                <RoleItem text="Student analytics" />
-                <RoleItem text="Message students & parents" />
-              </ul>
-            </div>
-
-            {/* Parent */}
-            <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#8B5CF6]/10 w-fit mb-3">
-                <Users className="h-5 w-5 text-[#00BFFF]" />
-              </div>
-              <h3 className="font-semibold mb-3 text-sm text-white">Parent</h3>
-              <ul className="space-y-2 text-xs text-white/70">
-                <RoleItem text="Monitor child grades & progress" />
-                <RoleItem text="View attendance patterns" />
-                <RoleItem text="See upcoming assignments" />
-                <RoleItem text="Track XP & achievements" />
-                <RoleItem text="Message teachers directly" />
-                <RoleItem text="Receive real-time alerts" />
-                <RoleItem text="Visual performance dashboards" />
-              </ul>
-            </div>
-
-            {/* School Admin */}
-            <div className="rounded-xl p-5 ocean-card hover:neon-border-blue transition-all">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-[#00BFFF]/10 to-[#8B5CF6]/10 w-fit mb-3">
-                <Building2 className="h-5 w-5 text-[#00BFFF]" />
-              </div>
-              <h3 className="font-semibold mb-3 text-sm text-white">School Admin</h3>
-              <ul className="space-y-2 text-xs text-white/70">
-                <RoleItem text="Manage all users & roles" />
-                <RoleItem text="Configure school settings" />
-                <RoleItem text="View school-wide reports" />
-                <RoleItem text="Bulk enrollment" />
-                <RoleItem text="Custom branding & subdomain" />
-                <RoleItem text="Audit logs & compliance" />
-                <RoleItem text="System monitoring" />
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Grid */}
-      <section className="relative z-10 py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Everything You Need</h2>
-            <p className="text-lg text-white/70 max-w-2xl mx-auto">
-              A complete suite of tools designed for K-12 and post-secondary education
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <FeatureCard icon={BookOpen} title="Interactive Courses" description="Modules, lessons, and rich content blocks — text, images, and video." />
-            <FeatureCard icon={ClipboardCheck} title="Quiz Builder" description="Multiple choice, true/false, short answer, essay. Auto-grading included." />
-            <FeatureCard icon={BarChart3} title="Gradebook" description="Weighted grades, A-F scale, category stats, CSV/PDF export." />
-            <FeatureCard icon={Bot} title="AI Tutor (WebLLM)" description="Runs in-browser. Zero API costs, full privacy — no data leaves the device." />
-            <FeatureCard icon={WifiOff} title="Offline Mode" description="Study anywhere. Lessons and flashcards sync when you reconnect." />
-            <FeatureCard icon={Trophy} title="Gamification" description="XP, levels, badges, leaderboards, and streak tracking." />
-            <FeatureCard icon={Dog} title="Virtual Pets" description="Adopt pets that grow as you learn. Study more, level them up." />
-            <FeatureCard icon={CalendarCheck} title="Attendance" description="Daily tracking with pattern alerts for teachers and parents." />
-            <FeatureCard icon={Users} title="Parent Dashboard" description="Grades, attendance, assignments, and teacher messaging at a glance." />
-            <FeatureCard icon={Gamepad2} title="Student Tools" description="Chess, mini-games, focus timers, and study mode with DND." />
-            <FeatureCard icon={Music} title="Study Music" description="Ambient lo-fi and focus tracks built right into the platform." />
-            <FeatureCard icon={Bell} title="Notifications" description="Real-time alerts for grades, assignments, and messages." />
-            <FeatureCard icon={LayoutDashboard} title="Role Dashboards" description="Tailored views for students, teachers, parents, and admins." />
-            <FeatureCard icon={Moon} title="Dark & Light Mode" description="Smooth theme switching for any environment." />
-            <FeatureCard icon={Shield} title="FERPA & PIPEDA" description="Audit logging, data export, and full regulatory compliance." />
-            <FeatureCard icon={Building2} title="Multi-Tenant" description="Per-school subdomains with isolated data and custom branding." />
-            <FeatureCard icon={MessageSquare} title="Messaging" description="DMs, group chats, file sharing, and read receipts." />
-            <FeatureCard icon={Monitor} title="Mobile Responsive" description="Works on desktop, tablet, and phone — any device, anywhere." />
-          </div>
-        </div>
-      </section>
-
-      {/* TRC Calls to Action */}
-      <section className="relative z-10 py-20 bg-white/5 backdrop-blur-sm">
+      {/* ==========================================
+          FEATURE CARDS — 6 clickable, link to detail pages
+          ========================================== */}
+      <section className="relative z-10 py-20 bg-black/40 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#D97706]/10 border border-[#D97706]/20 mb-6">
-              <Heart className="h-4 w-4 text-[#D97706]" />
-              <span className="text-sm text-white/80">Advancing Reconciliation Through Technology</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Supporting TRC Calls to Action</h2>
-            <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              WolfWhale is built to support the Truth and Reconciliation Commission&apos;s Education Calls to Action (6-12), helping schools deliver culturally responsive education through technology.
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-wider">Features</h2>
+            <p className="text-lg text-white/70 max-w-xl mx-auto">
+              Tap any card to learn more.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Call 6 */}
-            <div className="rounded-2xl p-6 ocean-card hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#D97706]/15 text-[#D97706] font-bold text-sm">#6</div>
-                <h3 className="font-semibold text-base text-white">Eliminate Education Gaps</h3>
-              </div>
-              <p className="text-sm text-white/70 leading-relaxed">
-                Offline learning mode ensures students in remote and rural communities have full access to courses, flashcards, and study materials -- even without internet connectivity.
-              </p>
-            </div>
-
-            {/* Call 7 */}
-            <div className="rounded-2xl p-6 ocean-card hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#D97706]/15 text-[#D97706] font-bold text-sm">#7</div>
-                <h3 className="font-semibold text-base text-white">Culturally Appropriate Curricula</h3>
-              </div>
-              <p className="text-sm text-white/70 leading-relaxed">
-                Culturally responsive content templates and flexible course builders allow educators to create curricula that reflect Indigenous perspectives, traditions, and ways of knowing.
-              </p>
-            </div>
-
-            {/* Call 8 */}
-            <div className="rounded-2xl p-6 ocean-card hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#D97706]/15 text-[#D97706] font-bold text-sm">#8</div>
-                <h3 className="font-semibold text-base text-white">Indigenous Language Instruction</h3>
-              </div>
-              <p className="text-sm text-white/70 leading-relaxed">
-                Built-in support for Indigenous language content through spaced repetition flashcards and multimedia lessons, enabling language revitalization programs within the platform.
-              </p>
-            </div>
-
-            {/* Call 9 */}
-            <div className="rounded-2xl p-6 ocean-card hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#D97706]/15 text-[#D97706] font-bold text-sm">#9</div>
-                <h3 className="font-semibold text-base text-white">Residential Schools History</h3>
-              </div>
-              <p className="text-sm text-white/70 leading-relaxed">
-                Ready-to-use course modules on residential schools history, designed to be age-appropriate and delivered through interactive lessons, ensuring all students learn this essential history.
-              </p>
-            </div>
-
-            {/* Call 10 */}
-            <div className="rounded-2xl p-6 ocean-card hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#D97706]/15 text-[#D97706] font-bold text-sm">#10</div>
-                <h3 className="font-semibold text-base text-white">Share Best Practices</h3>
-              </div>
-              <p className="text-sm text-white/70 leading-relaxed">
-                Community-driven content creation and Indigenous educator collaboration tools allow schools to share teaching resources, pedagogical approaches, and successful program models.
-              </p>
-            </div>
-
-            {/* Call 11 */}
-            <div className="rounded-2xl p-6 ocean-card hover:neon-border-blue transition-all">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#D97706]/15 text-[#D97706] font-bold text-sm">#11</div>
-                <h3 className="font-semibold text-base text-white">Teacher Training</h3>
-              </div>
-              <p className="text-sm text-white/70 leading-relaxed">
-                Professional development courses on Indigenous knowledge systems and First Nations pedagogical approaches, delivered right within the platform teachers already use daily.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-10 text-center">
-            <p className="text-sm text-white/60 max-w-2xl mx-auto italic">
-              WolfWhale is committed to supporting reconciliation through technology. We believe every student deserves access to education that honors Indigenous ways of knowing and learning.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section id="pricing" className="relative z-10 py-20 bg-white/5 backdrop-blur-sm">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Pricing</h2>
-          <p className="text-lg text-white/70 mb-12 max-w-2xl mx-auto">
-            One plan. All features. No hidden fees.
-          </p>
-
-          <div className="rounded-2xl p-10 ocean-card max-w-2xl mx-auto neon-border-blue">
-            <div className="space-y-8">
-              {/* Price */}
-              <div>
-                <div className="flex items-baseline justify-center gap-1">
-                  <span className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#00BFFF] to-[#8B5CF6] bg-clip-text text-transparent">$20</span>
-                  <span className="text-lg text-white/70">CAD</span>
-                </div>
-                <p className="text-white/70 mt-2">per user account, per month</p>
-              </div>
-
-              {/* Key details */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm">
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full ocean-card">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF]" />
-                  <span className="text-white/70">All features included</span>
-                </div>
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full ocean-card">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF]" />
-                  <span className="text-white/70">2-year minimum contract</span>
-                </div>
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full ocean-card">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF]" />
-                  <span className="text-white/70">Single tier</span>
-                </div>
-              </div>
-
-              {/* What's included */}
-              <div className="grid grid-cols-2 gap-3 text-left text-sm max-w-lg mx-auto">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-white/70">Unlimited courses</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-white/70">Spaced repetition flashcards</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-white/70">AI Tutor (zero API cost)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-white/70">Full offline mode</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-white/70">Gradebook & reports</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-white/70">Gamification & XP</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-white/70">Virtual pet companions</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-white/70">Parent portal</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-white/70">Attendance tracking</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-white/70">Real-time messaging</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-white/70">Custom branding</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#00BFFF] flex-shrink-0" />
-                  <span className="text-white/70">FERPA & PIPEDA compliant</span>
-                </div>
-              </div>
-
-              {/* CTA */}
-              <div className="pt-4 space-y-4">
-                <a
-                  href="mailto:info@wolfwhale.ca?subject=Wolf%20Whale%20LMS%20-%20Get%20Started"
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl btn-chrome-3d-blue text-white transition-all font-bold group"
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {[
+              { icon: Brain, title: 'Cognitive Load Lessons', slug: 'micro-lessons', points: ['Research-backed lesson format', 'Hook → Lesson → Compare → Quiz', 'Reading timer ensures comprehension', 'Gated quizzes unlock after reading'], color: '#8B5CF6' },
+              { icon: Bot, title: 'On-Device AI (6 Tools)', slug: 'ai-tools', points: ['AI Tutor with curriculum awareness', 'Lesson Converter (industry first)', 'Lesson Plan & Report Card builders', 'Apple Intelligence — data stays on device'], color: '#00BFFF' },
+              { icon: BookOpen, title: '72 Original Textbooks', slug: 'textbooks', points: ['288+ chapters, full SK K-12 coverage', 'WolfWhale Books publisher brand', 'Flashcards, quizzes & activities built in'], color: '#FFD700' },
+              { icon: WifiOff, title: 'Offline Learning', slug: 'offline', points: ['AES-GCM encrypted storage', 'Full course & textbook access offline', 'Auto sync on reconnect'], color: '#34D399' },
+              { icon: GraduationCap, title: '11 Teacher Tools', slug: 'teacher-tools', points: ['Lesson Converter & Plan Builder', 'Gradebook & Rubric Builder', 'Seating Chart & Weekly Planner'], color: '#FF6B9D' },
+              { icon: Gamepad2, title: 'Gamification & XP', slug: 'gamification', points: ['XP system with streaks & leaderboards', 'Study Pet companion (fish collection)', 'Chess, Kahoot, spelling bee & more'], color: '#FFD700' },
+            ].map(({ icon: Icon, title, points, color, slug }) => (
+              <Link
+                key={title}
+                href={`/features/${slug}`}
+                className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 hover:border-white/20 transition-all duration-100 group cursor-pointer"
+              >
+                <div
+                  className="inline-flex p-3 rounded-xl mb-4 border transition-colors duration-100"
+                  style={{
+                    backgroundColor: `${color}10`,
+                    borderColor: `${color}30`,
+                  }}
                 >
-                  Get Started
-                  <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </a>
-
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-[#00BFFF]">
-                  <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4" />
-                    <a href="mailto:info@wolfwhale.ca" className="text-sm font-medium hover:underline">
-                      info@wolfwhale.ca
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Phone className="h-4 w-4" />
-                    <a href="tel:+13069815926" className="text-sm font-medium hover:underline">
-                      +1 (306) 981-5926
-                    </a>
-                  </div>
+                  <Icon className="h-6 w-6" style={{ color }} />
                 </div>
-              </div>
-            </div>
+                <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[#00BFFF] transition-colors duration-100">{title}</h3>
+                <ul className="space-y-1">
+                  {points.map((pt) => (
+                    <li key={pt} className="text-sm text-white/65 flex items-start gap-2">
+                      <span className="mt-1.5 h-1 w-1 rounded-full shrink-0" style={{ backgroundColor: color }} />
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-xs text-white/30 mt-3 group-hover:text-[#00BFFF]/60 transition-colors duration-100 flex items-center gap-1">
+                  Learn more <ArrowRight className="h-3 w-3" />
+                </p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
+      {/* ==========================================
+          APP SCREENSHOTS — placeholder iPhone frames
+          ========================================== */}
+      <section className="relative z-10 py-20 bg-white/5 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-wider">See It in Action</h2>
+            <p className="text-lg text-white/70 max-w-2xl mx-auto">
+              Built natively for iOS. Beautiful, fast, and designed for the classroom.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { label: 'Student Dashboard', file: 'student-dashboard.png' },
+              { label: 'Micro-Lesson View', file: 'micro-lesson.png' },
+              { label: 'Textbook Reader', file: 'textbook-reader.png' },
+              { label: 'AI Tutor', file: 'ai-tutor.png' },
+              { label: 'Teacher Tools', file: 'teacher-tools.png' },
+              { label: 'Quiz Builder', file: 'quiz-builder.png' },
+              { label: 'Gamification & XP', file: 'gamification.png' },
+              { label: 'Constellation Map', file: 'constellation.png' },
+            ].map(({ label, file }) => (
+              <div key={file} className="flex flex-col items-center gap-3">
+                <div className="w-full aspect-[9/19.5] rounded-[2rem] border-2 border-white/20 bg-white/5 backdrop-blur-sm overflow-hidden flex items-center justify-center relative">
+                  {/* Replace with: <Image src={`/screenshots/${file}`} alt={label} fill className="object-cover" /> */}
+                  <div className="flex flex-col items-center gap-3 text-center px-4">
+                    <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center">
+                      <Smartphone className="h-6 w-6 text-white/40" />
+                    </div>
+                    <p className="text-xs text-white/30 font-medium">{file}</p>
+                  </div>
+                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-full" />
+                </div>
+                <p className="text-sm text-white/60 font-medium text-center">{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ==========================================
+          INFO CARDS — compact topic cards
+          ========================================== */}
+      <section className="relative z-10 py-20 bg-black/40 backdrop-blur-sm">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-wider">More About WolfWhale</h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <InfoCard
+              icon={Users}
+              title="5 User Roles"
+              description="Purpose-built dashboards for every stakeholder."
+              color="#00BFFF"
+              bullets={[
+                'Student — courses, XP, study pets, constellation',
+                'Teacher — 11 tools, gradebook, lesson builder',
+                'Parent — child progress monitoring',
+                'School Admin — school-wide management',
+                'Super Admin — multi-tenant platform control',
+              ]}
+            />
+            <InfoCard
+              icon={Heart}
+              title="Indigenous Education & TRC"
+              description="Supporting Truth & Reconciliation Calls to Action 6-12."
+              color="#FF6B9D"
+              bullets={[
+                'Indigenous connections in all 72 textbooks',
+                'Culturally responsive curriculum mapping',
+                'Land acknowledgement integration',
+                'First Nations, Métis & Inuit perspectives',
+              ]}
+            />
+            <InfoCard
+              icon={DollarSign}
+              title="Simple Pricing"
+              description="$12 per student per year. That's it."
+              color="#34D399"
+              bullets={[
+                'Unlimited teachers, parents & admins',
+                'All 72 textbooks and AI tools included',
+                'No per-feature upsells',
+                'Volume discounts for districts',
+              ]}
+            />
+            <InfoCard
+              icon={Shield}
+              title="Privacy & Security"
+              description="On-device AI means student data never leaves the device."
+              color="#8B5CF6"
+              bullets={[
+                'Apple Intelligence — no cloud AI',
+                'AES-GCM encrypted offline storage',
+                'Row-level security on all data',
+                'PIPEDA & FOIP compliant',
+              ]}
+            />
+            <InfoCard
+              icon={BookOpen}
+              title="WolfWhale Books"
+              description="Our own publisher brand — 72 textbooks, 288+ chapters."
+              color="#FFD700"
+              bullets={[
+                'Full Saskatchewan K-12 coverage',
+                '70% pan-Canadian core (WNCP)',
+                '30% province-specific content',
+                'Interactive content blocks & flashcards',
+              ]}
+            />
+            <InfoCard
+              icon={Sparkles}
+              title="Constellation Curriculum"
+              description="Visual skill tree mapping 682 curriculum outcomes."
+              color="#00BFFF"
+              bullets={[
+                'Interactive star map of learning progress',
+                'Standards-aligned to SK curriculum',
+                'Cross-subject connections visible',
+                'Expandable to all Canadian provinces',
+              ]}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ==========================================
+          FOOTER — simple, with Canada + Treaty 6
+          ========================================== */}
       <footer className="relative z-10 border-t border-white/10 py-12 backdrop-blur-md bg-black/60">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <Image src="/logo.png" alt="WolfWhale" width={56} height={56} className="rounded-xl object-contain shadow-lg shadow-purple-500/20" />
+                <Image src="/logo.png" alt="WolfWhale" width={48} height={48} className="rounded-xl object-contain shadow-lg shadow-purple-500/20" />
                 <div>
                   <h3 className="font-display font-bold tracking-wider uppercase text-white">WolfWhale</h3>
-                  <p className="text-xs text-white/70 font-display tracking-widest uppercase">Modern K-12 & Post-Secondary Learning Platform</p>
+                  <p className="text-xs text-white/60 tracking-widest uppercase">K-12 Learning Management System</p>
                 </div>
               </div>
-              <p className="text-sm text-white/70 max-w-md mb-3">
-                Empowering schools with a comprehensive learning management system designed for K-12 and post-secondary education. Featuring the only built-in spaced repetition system and browser-based AI tutoring.
+              <p className="text-sm text-white/60 max-w-md mb-4">
+                100% designed and built in Canada. First Nations owned, operating on Treaty 6 territory.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 text-sm text-white/70">
+              <div className="flex flex-col sm:flex-row gap-3 text-sm text-white/60">
                 <a href="mailto:info@wolfwhale.ca" className="flex items-center gap-1.5 hover:text-[#00BFFF] transition-colors">
                   <Mail className="h-3.5 w-3.5" /> info@wolfwhale.ca
                 </a>
@@ -631,30 +364,28 @@ export default function InfoPage() {
             </div>
 
             <div>
-              <h4 className="font-semibold mb-3 text-sm text-white">Product</h4>
-              <ul className="space-y-2 text-sm text-white/70">
-                <li><a href="#" className="hover:text-[#00BFFF] transition-colors">Features</a></li>
-                <li><a href="#pricing" className="hover:text-[#00BFFF] transition-colors">Pricing</a></li>
-                <li><a href="#" className="hover:text-[#00BFFF] transition-colors">Documentation</a></li>
-                <li><a href="mailto:info@wolfwhale.ca" className="hover:text-[#00BFFF] transition-colors">Contact</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-3 text-sm text-white">Legal</h4>
-              <ul className="space-y-2 text-sm text-white/70">
+              <h4 className="font-semibold mb-3 text-sm text-white">Links</h4>
+              <ul className="space-y-2 text-sm text-white/60">
+                <li><Link href="/" className="hover:text-[#00BFFF] transition-colors">Home</Link></li>
+                <li><Link href="/#features" className="hover:text-[#00BFFF] transition-colors">Features</Link></li>
                 <li><Link href="/privacy" className="hover:text-[#00BFFF] transition-colors">Privacy Policy</Link></li>
                 <li><Link href="/terms" className="hover:text-[#00BFFF] transition-colors">Terms of Service</Link></li>
-                <li><Link href="/help" className="hover:text-[#00BFFF] transition-colors">Help Center</Link></li>
+                <li><a href="mailto:info@wolfwhale.ca" className="hover:text-[#00BFFF] transition-colors">Contact</a></li>
               </ul>
             </div>
           </div>
 
-          <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/60">
-            <p>&copy; 2026 WolfWhale Learning Management System. All rights reserved.</p>
-            <div className="flex items-center gap-2">
-              <Image src="/canada-coat-of-arms.png" alt="Coat of Arms of Canada" width={24} height={48} className="h-12 w-auto object-contain" />
-              <span className="text-xs font-semibold text-white/70">100% Canadian Owned &amp; Built</span>
+          <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/50">
+            <p>&copy; 2026 WolfWhale Inc. All rights reserved.</p>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Image src="/canada-flag.png" alt="Canadian Flag" width={28} height={14} className="object-contain" />
+                <span className="text-xs font-medium text-white/60">100% Designed &amp; Built in Canada</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {/* TODO: Add Treaty 6 flag image at /public/treaty-6-flag.png */}
+                <span className="text-xs font-medium text-white/60">Treaty 6 Territory</span>
+              </div>
             </div>
           </div>
         </div>

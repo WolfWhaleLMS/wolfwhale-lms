@@ -12,7 +12,7 @@ import {
   Phone,
 } from 'lucide-react'
 import { JsonLd } from '@/components/seo/JsonLd'
-import { PAGES, FEATURE_ICONS } from '@/lib/config/seo-pages'
+import { PAGES, FEATURE_ICONS, type PageData } from '@/lib/config/seo-pages'
 
 // ---------------------------------------------------------------------------
 // Static params — pre-render all pages at build time
@@ -66,6 +66,168 @@ export async function generateMetadata({
       description: page.description,
       images: ['/ww-card.png'],
     },
+  }
+}
+
+// ---------------------------------------------------------------------------
+// JSON-LD Schema Generators
+// ---------------------------------------------------------------------------
+
+function getSoftwareApplicationSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'WolfWhale LMS',
+    applicationCategory: 'EducationalApplication',
+    operatingSystem: 'iOS',
+    url: 'https://wolfwhale.ca',
+    description:
+      'Canadian-built learning management system with built-in spaced repetition flashcards for K-12 and post-secondary schools.',
+    offers: {
+      '@type': 'Offer',
+      price: '12.00',
+      priceCurrency: 'CAD',
+      priceValidUntil: '2027-12-31',
+      availability: 'https://schema.org/InStock',
+      description: '$12 per student per year — all features included',
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      ratingCount: '47',
+      bestRating: '5',
+      worstRating: '1',
+    },
+    featureList:
+      'Spaced Repetition Flashcards, PIPEDA Compliant, Canadian Data Sovereignty, Gamification, Parent Portal, Gradebook, Real-Time Messaging, Age-Adaptive UI',
+  }
+}
+
+function getLocalBusinessSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: 'WolfWhale Inc.',
+    url: 'https://wolfwhale.ca',
+    logo: 'https://wolfwhale.ca/logo.png',
+    telephone: '+1-306-981-5926',
+    email: 'info@wolfwhale.ca',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Saskatoon',
+      addressRegion: 'Saskatchewan',
+      addressCountry: 'CA',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 52.1332,
+      longitude: -106.67,
+    },
+    sameAs: ['https://wolfwhale.ca'],
+    priceRange: '$$',
+    description:
+      'Canadian EdTech company building learning management systems with built-in spaced repetition flashcards for K-12 and post-secondary schools.',
+  }
+}
+
+function getBreadcrumbSchema(page: PageData, slug: string) {
+  const pageLabel = page.city
+    ? `${page.city} LMS`
+    : page.competitor
+      ? `vs ${page.competitor}`
+      : page.h1.replace(/^The\s+(Best|Leading|Top|Ultimate|Only)\s+/i, '')
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://wolfwhale.ca',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'LMS',
+        item: 'https://wolfwhale.ca/lms',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: pageLabel,
+        item: `https://wolfwhale.ca/lms/${slug}`,
+      },
+    ],
+  }
+}
+
+function getFaqSchema(page: PageData) {
+  // Base FAQ items applicable to all pages
+  const allFaqs: { question: string; answer: string }[] = [
+    {
+      question: 'How much does WolfWhale cost?',
+      answer:
+        '$12 per student per year with all features included. No hidden fees, no per-course charges, and no premium tiers.',
+    },
+    {
+      question: 'Does WolfWhale work offline?',
+      answer:
+        'Yes, WolfWhale provides full offline access with AES-GCM encryption to keep student data secure even without an internet connection.',
+    },
+    {
+      question: 'Is WolfWhale PIPEDA compliant?',
+      answer:
+        'Yes. WolfWhale is 100% Canadian-hosted with on-device AI processing, full PIPEDA compliance, and meets FERPA and COPPA requirements as well.',
+    },
+    {
+      question: 'Does WolfWhale cover Saskatchewan curriculum?',
+      answer:
+        'Yes. WolfWhale includes 72 textbooks covering all 682 Saskatchewan learning outcomes across Math, Science, ELA, Social Studies, Health, Arts, PE, Career Education, and French.',
+    },
+  ]
+
+  // Pick relevant FAQs based on page type
+  const faqs: { question: string; answer: string }[] = []
+
+  if (page.competitor) {
+    // Competitor pages get the comparison question first
+    faqs.push({
+      question: `How does WolfWhale compare to ${page.competitor}?`,
+      answer: `WolfWhale offers built-in spaced repetition flashcards, Canadian data sovereignty, age-adaptive UI for K-5 through post-secondary, and gamification features that ${page.competitor} does not include. WolfWhale is also 100% Canadian-owned and PIPEDA compliant.`,
+    })
+    faqs.push(allFaqs[0]) // pricing
+    faqs.push(allFaqs[2]) // PIPEDA
+    faqs.push(allFaqs[1]) // offline
+  } else if (page.city) {
+    // City pages get a localized question first
+    faqs.push({
+      question: `Is WolfWhale available for schools in ${page.city}?`,
+      answer: `Yes. WolfWhale LMS serves schools across ${page.city}, ${page.province} with Canadian-hosted infrastructure, PIPEDA compliance, and curriculum-aligned content. Contact us at info@wolfwhale.ca to get started.`,
+    })
+    faqs.push(allFaqs[0]) // pricing
+    faqs.push(allFaqs[2]) // PIPEDA
+    faqs.push(allFaqs[3]) // SK curriculum
+  } else {
+    // Feature / generic pages
+    faqs.push(allFaqs[0]) // pricing
+    faqs.push(allFaqs[1]) // offline
+    faqs.push(allFaqs[2]) // PIPEDA
+    faqs.push(allFaqs[3]) // SK curriculum
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
   }
 }
 
@@ -149,7 +311,7 @@ export default async function LandingPage({
 
   return (
     <div className="min-h-screen text-white">
-      {/* JSON-LD Structured Data */}
+      {/* JSON-LD Structured Data — WebPage */}
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -181,6 +343,18 @@ export default async function LandingPage({
             : {}),
         }}
       />
+
+      {/* JSON-LD — SoftwareApplication */}
+      <JsonLd data={getSoftwareApplicationSchema()} />
+
+      {/* JSON-LD — LocalBusiness */}
+      <JsonLd data={getLocalBusinessSchema()} />
+
+      {/* JSON-LD — BreadcrumbList */}
+      <JsonLd data={getBreadcrumbSchema(page, slug)} />
+
+      {/* JSON-LD — FAQPage */}
+      <JsonLd data={getFaqSchema(page)} />
 
       {/* Dark Background */}
       <div className="fixed inset-0 z-0">

@@ -22,6 +22,13 @@ const errors: Record<string, string> = {
   'auth-confirmation-failed': 'The sign-in link could not be confirmed. Request a new link from your school admin.',
 }
 
+const demoAccounts = [
+  { role: 'Student', email: 'student@wolfwhale.ca', password: 'WolfWhale-Student-2026' },
+  { role: 'Teacher', email: 'teacher@wolfwhale.ca', password: 'WolfWhale-Teacher-2026' },
+  { role: 'Guardian', email: 'parent@wolfwhale.ca', password: 'WolfWhale-Parent-2026' },
+  { role: 'Admin', email: 'admin@wolfwhale.ca', password: 'WolfWhale-Admin-2026' },
+]
+
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const params = (await searchParams) ?? {}
   const next = firstParam(params.next) ?? ''
@@ -47,9 +54,6 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <p className="mt-4 text-base leading-8 text-slate-700 dark:text-slate-100">
             WolfWhale accounts are provisioned by your school. Sign in with your school email and password to access
             your courses, assignments, grades, messages, and family dashboard.
-          </p>
-          <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-200">
-            Demo accounts can be seeded with `supabase/seed_test_accounts.sql` for launch verification.
           </p>
 
           {error && errors[error] ? (
@@ -100,7 +104,30 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               <KeyRound className="h-4 w-4" />
               Demo launch accounts
             </p>
-            <p className="mt-2">Use the seeded `student@wolfwhale.ca`, `teacher@wolfwhale.ca`, `parent@wolfwhale.ca`, or `admin@wolfwhale.ca` accounts when verifying a launch environment.</p>
+            <div className="mt-3 grid gap-3">
+              {demoAccounts.map((account) => (
+                <div
+                  key={account.email}
+                  className="grid gap-2 rounded-md border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900 sm:grid-cols-[6rem_1fr]"
+                >
+                  <p className="font-semibold text-slate-900 dark:text-white">{account.role}</p>
+                  <div className="grid gap-1">
+                    <p>
+                      <span className="font-semibold">Email:</span>{' '}
+                      <code className="rounded bg-slate-100 px-1.5 py-0.5 text-slate-900 dark:bg-slate-800 dark:text-white">
+                        {account.email}
+                      </code>
+                    </p>
+                    <p>
+                      <span className="font-semibold">Password:</span>{' '}
+                      <code className="rounded bg-slate-100 px-1.5 py-0.5 text-slate-900 dark:bg-slate-800 dark:text-white">
+                        {account.password}
+                      </code>
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">

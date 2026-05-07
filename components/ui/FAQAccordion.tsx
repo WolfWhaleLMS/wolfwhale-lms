@@ -23,7 +23,7 @@ function AccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: bool
       >
         <span className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">{item.q}</span>
         <ChevronDown
-          className={`h-5 w-5 text-[#00BFFF] flex-shrink-0 transition-transform duration-300 ${
+          className={`h-5 w-5 text-[#0891B2] flex-shrink-0 transition-transform duration-300 ${
             isOpen ? 'rotate-180' : ''
           }`}
         />
