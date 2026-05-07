@@ -91,3 +91,12 @@ Sprint date: 2026-05-07
 - Replaced broad `transition-all`/`transition: all` usage in shared UI controls and glass surfaces with explicit transform, color, border, background, and shadow transitions.
 - Removed text shadows from chrome buttons and landing-page headings that were making UI text appear fuzzy.
 - Added `tests/ui-rendering-quality.test.ts` to guard against regressions in button scaling, glass hover scaling, and rendering tokens.
+
+## Student Boreal Dashboard Theme
+
+- Replaced the student LMS dashboard's shared corporate shell with a student-only woodland/boreal learning console.
+- Added a horizontal moss-stone tool hub with working anchors for courses, assignments, submissions, grades, gradebook, attendance, calendar, resources, messages, and notifications.
+- Added student-first analytics widgets using radial dials for momentum, mastery, attendance weather, and workload health.
+- Restyled courses, assignments, gradebook, attendance, resources, calendar, messages, notifications, and submit-work forms without changing teacher/admin/guardian dashboards.
+- Added a forest/lake Frutiger Aero-inspired backdrop using existing public clay forest assets and code-native labels/controls.
+- Reordered the mobile layout so the student dashboard appears before the side rail.

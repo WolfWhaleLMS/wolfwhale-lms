@@ -152,3 +152,19 @@ All four demo launch accounts were verified through the Supabase client path:
 - Teacher record load: passed.
 - Guardian record load: passed.
 - Admin record load: passed.
+
+## Student Boreal Dashboard Evidence
+
+Verification on 2026-05-07:
+
+- `npm test -- tests/lms-dashboards.test.tsx` passed.
+- `npm run lint` completed with 0 errors and 10 existing warnings outside the changed student dashboard file.
+- `npm run test:a11y` passed against `http://localhost:3000`.
+- Playwright desktop capture at `1440x900` exercised login, the Assignments tool-hub anchor, Dashboard home navigation, and screenshot capture with no console/page errors.
+- Playwright mobile capture at `390x844` verified the student dashboard renders first on mobile.
+
+Screenshot evidence:
+
+- `test-results/lms-smoke/student.png`
+- `/tmp/student-boreal-1440x900.png`
+- `/tmp/student-boreal-390x844.png`
