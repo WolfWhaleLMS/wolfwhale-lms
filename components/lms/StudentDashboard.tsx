@@ -1,40 +1,63 @@
-import { BarChart3, Bell, BookOpen, CalendarCheck, ClipboardCheck, Send } from 'lucide-react'
+import { BarChart3, Bell, BookOpen, CalendarCheck, CalendarDays, ClipboardCheck, FileText, GraduationCap, MessageSquare, Send } from 'lucide-react'
 import { LmsPanel, LmsShell } from '@/components/lms/LmsShell'
 import { CalendarPanel, MessagesPanel, ResourcesPanel } from '@/components/lms/SharedLmsPanels'
 import type { buildLmsDashboardViews } from '@/lib/lms/read-model'
 
 type StudentView = ReturnType<typeof buildLmsDashboardViews>['student']
 
+const studentTools = [
+  { href: '#courses', label: 'Courses', description: 'Open enrolled classes', icon: BookOpen },
+  { href: '#assignments', label: 'Assignments', description: 'Review upcoming work', icon: ClipboardCheck },
+  { href: '#submit-work', label: 'Submit work', description: 'Turn in assignment responses', icon: Send },
+  { href: '#grades-feedback', label: 'Grades and feedback', description: 'Read marked work', icon: GraduationCap },
+  { href: '#gradebook', label: 'Gradebook', description: 'Track current standing', icon: BarChart3 },
+  { href: '#attendance', label: 'Attendance', description: 'Check presence history', icon: CalendarCheck },
+  { href: '#calendar', label: 'Calendar', description: 'See dated course items', icon: CalendarDays },
+  { href: '#resources', label: 'Resources', description: 'Download class files', icon: FileText },
+  { href: '#messages', label: 'Messages', description: 'Read teacher messages', icon: MessageSquare },
+  { href: '#notifications', label: 'Notifications', description: 'Review latest alerts', icon: Bell },
+]
+
 export function StudentDashboard({ view }: { view: StudentView }) {
   return (
-    <LmsShell title="Student dashboard" subtitle="Courses, upcoming assignments, submissions, grades, and feedback.">
+    <LmsShell title="Student dashboard" subtitle="Courses, upcoming assignments, submissions, grades, and feedback." tools={studentTools}>
       <div className="grid gap-4 lg:grid-cols-3">
-        <LmsPanel title="My courses">
+        <LmsPanel id="courses" title="My courses">
           <ul className="grid gap-2">
             {view.courses.map((course) => (
-              <li key={course.id} className="flex items-center gap-2 rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
-                <BookOpen className="h-4 w-4 text-teal-700 dark:text-teal-200" />
-                {course.title}
+              <li key={course.id} className="rounded-md border border-slate-200 text-sm dark:border-slate-800">
+                <a href="#gradebook" className="flex items-center gap-2 px-3 py-2 hover:bg-teal-50 dark:hover:bg-teal-950/40">
+                  <BookOpen className="h-4 w-4 text-teal-700 dark:text-teal-200" />
+                  <span className="grid gap-0.5">
+                    <span className="font-semibold">{course.title}</span>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">View progress</span>
+                  </span>
+                </a>
               </li>
             ))}
           </ul>
         </LmsPanel>
 
-        <LmsPanel title="Assignments">
+        <LmsPanel id="assignments" title="Assignments">
           <ul className="grid gap-2">
             {view.assignments.map((assignment) => (
               <li key={assignment.id} className="rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
-                <span className="inline-flex items-center gap-2 font-semibold">
-                  <ClipboardCheck className="h-4 w-4 text-teal-700 dark:text-teal-200" />
-                  {assignment.title}
-                </span>
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <span className="inline-flex items-center gap-2 font-semibold">
+                    <ClipboardCheck className="h-4 w-4 text-teal-700 dark:text-teal-200" />
+                    {assignment.title}
+                  </span>
+                  <a href="#submit-work" className="text-sm font-semibold text-teal-700 hover:text-teal-800 dark:text-teal-200 dark:hover:text-teal-100">
+                    Submit work
+                  </a>
+                </div>
                 <span className="mt-1 block text-slate-500 dark:text-slate-400">Due {assignment.dueAt}</span>
               </li>
             ))}
           </ul>
         </LmsPanel>
 
-        <LmsPanel title="Notifications">
+        <LmsPanel id="notifications" title="Notifications">
           <ul className="grid gap-2">
             {view.notifications.map((notification) => (
               <li key={notification.id} className="rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
@@ -49,7 +72,7 @@ export function StudentDashboard({ view }: { view: StudentView }) {
         </LmsPanel>
       </div>
 
-      <LmsPanel title="Grades and feedback">
+      <LmsPanel id="grades-feedback" title="Grades and feedback">
         <ul className="grid gap-2">
           {view.grades.map((grade) => (
             <li key={grade.assignmentTitle} className="rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
@@ -62,7 +85,7 @@ export function StudentDashboard({ view }: { view: StudentView }) {
       </LmsPanel>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <LmsPanel title="Gradebook">
+        <LmsPanel id="gradebook" title="Gradebook">
           <ul className="grid gap-2">
             {view.gradebook.map((course) => (
               <li key={course.courseId} className="rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
@@ -93,7 +116,7 @@ export function StudentDashboard({ view }: { view: StudentView }) {
           </ul>
         </LmsPanel>
 
-        <LmsPanel title="Attendance">
+        <LmsPanel id="attendance" title="Attendance">
           <ul className="grid gap-2">
             {view.attendance.map((summary) => (
               <li key={summary.courseId} className="rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
@@ -116,7 +139,7 @@ export function StudentDashboard({ view }: { view: StudentView }) {
         <MessagesPanel messages={view.messages} />
       </div>
 
-      <LmsPanel title="Submit work">
+      <LmsPanel id="submit-work" title="Submit work">
         <ul className="grid gap-3">
           {view.assignments.map((assignment) => (
             <li key={assignment.id} className="rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
@@ -137,10 +160,11 @@ export function StudentDashboard({ view }: { view: StudentView }) {
                 </label>
                 <button
                   type="submit"
+                  aria-label={`Submit ${assignment.title}`}
                   className="inline-flex h-10 w-fit items-center justify-center gap-2 rounded-md bg-teal-700 px-4 text-sm font-semibold text-white hover:bg-teal-800"
                 >
                   <Send className="h-4 w-4" />
-                  Submit
+                  Submit work
                 </button>
               </form>
             </li>

@@ -4,7 +4,7 @@ Evidence date: 2026-05-07
 
 ## Final Local Gate
 
-`npm run launch:verify` passed after the Supabase-backed LMS changes, messaging RLS fixes, and large-school workflow expansion.
+`npm run launch:verify` passed after the dashboard navigation/workflow audit fixes, Supabase-backed LMS changes, messaging RLS fixes, and large-school workflow expansion.
 
 The command ran:
 
@@ -22,13 +22,13 @@ Observed result:
 
 - Lint passed.
 - TypeScript passed.
-- Vitest passed: 15 test files / 61 tests.
+- Vitest passed: 16 test files / 64 tests.
 - District verification passed: OneRoster validation, SIS export package, gradebook CSV export, attendance CSV export, report cards, SSO config validation, district proof profile, enterprise gate, and load smoke.
 - Enterprise readiness gate passed.
 - Scale-budget check passed for the verified single-school operating envelope.
-- LMS load smoke passed in 1489ms during `launch:verify` for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments.
+- LMS load smoke passed during `launch:verify` for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments.
 - Next build passed on Next.js 16.2.5.
-- Build generated 46 static pages and `ƒ Proxy`; route list includes `/api/lms/attendance`, `/api/lms/rubrics`, `/api/lms/roster/import`, `/api/lms/exports/attendance`, `/api/lms/exports/gradebook`, and `/api/lms/exports/sis`.
+- Build generated 285 static pages and `ƒ Proxy`; route list includes `/api/lms/attendance`, `/api/lms/rubrics`, `/api/lms/roster/import`, `/api/lms/exports/attendance`, `/api/lms/exports/gradebook`, and `/api/lms/exports/sis`.
 - Supabase direct DB security step is skipped by `launch:verify` when no `SUPABASE_DB_URL` or `DATABASE_URL` is set.
 - Equivalent live Supabase MCP SQL validation passed against project `yhxesebykwhlpsmxxiqo`.
 
@@ -41,11 +41,34 @@ The smoke test verifies:
 - `/student` redirects unauthenticated users to `/login?next=%2Fstudent`.
 - Student, teacher, admin, and guardian accounts sign in with Supabase Auth.
 - Each role dashboard renders its role heading.
+- Each role dashboard exposes a `Dashboard tools` navigation region.
+- Every required role dashboard tool link is clicked and verified to target a real section.
+- `Dashboard home` navigation is clicked and verified.
+- The login `Account help` link goes to `/help` instead of looping through `/`.
+- Sign-out returns users to `/login?loggedOut=1`.
+- LMS export/resource links return successful HTTP responses.
 - Each role dashboard renders Calendar, Resources, and Messages panels.
 - Teacher dashboard includes gradebook, attendance, and rubrics.
 - Admin dashboard includes risk summary and roster import.
 - Desktop student and mobile teacher/admin/guardian dashboard screenshots render without framework errors.
 - Accessibility smoke requires each tested page to have an `h1`, no `img` without `alt`, no unlabeled form controls, and no unnamed buttons.
+
+## Mutating Workflow Audit
+
+`LMS_SMOKE_MUTATE=1 npm run test:a11y` passed against the local app.
+
+The mutating browser audit verified:
+
+- Student submission forms can submit successfully and redirect with `saved=submission`.
+- Teacher assignment creation redirects with `saved=assignment`.
+- Teacher attendance marking redirects with `saved=attendance`.
+- Teacher rubric creation redirects with `saved=rubric`.
+- Teacher grading queue posts a grade when a queue item exists and redirects with `saved=grade`.
+- Admin course creation redirects with `saved=course`.
+- Admin enrollment redirects with `saved=enrollment`.
+- Admin roster CSV import redirects with `saved=roster`.
+
+Computer Use was also used in Chrome to visually confirm the student demo login, dashboard tool hub, `Submit work` jump, `Dashboard home` jump, and sign-out return to the login page.
 
 Screenshots:
 

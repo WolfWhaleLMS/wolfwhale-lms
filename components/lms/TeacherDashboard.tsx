@@ -1,29 +1,48 @@
-import { BarChart3, BookOpen, CalendarCheck, ClipboardCheck, Download, FileText, Plus, Users } from 'lucide-react'
+import { BarChart3, BookOpen, CalendarCheck, CalendarDays, ClipboardCheck, Download, FileText, MessageSquare, Plus, Users } from 'lucide-react'
 import { EmptyState, LmsPanel, LmsShell } from '@/components/lms/LmsShell'
 import { CalendarPanel, MessagesPanel, ResourcesPanel } from '@/components/lms/SharedLmsPanels'
 import type { buildLmsDashboardViews } from '@/lib/lms/read-model'
 
 type TeacherView = ReturnType<typeof buildLmsDashboardViews>['teacher']
 
+const teacherTools = [
+  { href: '#courses', label: 'Courses', description: 'Manage class sections', icon: BookOpen },
+  { href: '#roster', label: 'Roster', description: 'Review enrolled students', icon: Users },
+  { href: '#assignments', label: 'Assignments', description: 'Inspect assigned work', icon: ClipboardCheck },
+  { href: '#create-assignment', label: 'Create assignment', description: 'Publish new work', icon: Plus },
+  { href: '#gradebook', label: 'Gradebook', description: 'Review grades and exports', icon: BarChart3 },
+  { href: '#attendance', label: 'Attendance', description: 'Record attendance', icon: CalendarCheck },
+  { href: '#rubrics', label: 'Rubrics', description: 'Build scoring guides', icon: FileText },
+  { href: '#grading-queue', label: 'Grading queue', description: 'Post scores and feedback', icon: ClipboardCheck },
+  { href: '#calendar', label: 'Calendar', description: 'See dated class items', icon: CalendarDays },
+  { href: '#resources', label: 'Resources', description: 'Open course files', icon: FileText },
+  { href: '#messages', label: 'Messages', description: 'Read class messages', icon: MessageSquare },
+]
+
 export function TeacherDashboard({ view }: { view: TeacherView }) {
   return (
-    <LmsShell title="Teacher dashboard" subtitle="Courses, rosters, assignments, submissions, and grading queue.">
+    <LmsShell title="Teacher dashboard" subtitle="Courses, rosters, assignments, submissions, and grading queue." tools={teacherTools}>
       <div className="grid gap-4 lg:grid-cols-3">
-        <LmsPanel title="Courses">
+        <LmsPanel id="courses" title="Courses">
           <ul className="grid gap-2">
             {view.courses.map((course) => (
               <li key={course.id} className="rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
-                <span className="flex items-center gap-2 font-semibold">
-                  <BookOpen className="h-4 w-4 text-teal-700 dark:text-teal-200" />
-                  {course.title}
-                </span>
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <span className="flex items-center gap-2 font-semibold">
+                    <BookOpen className="h-4 w-4 text-teal-700 dark:text-teal-200" />
+                    {course.title}
+                  </span>
+                  <a href="#gradebook" className="text-sm font-semibold text-teal-700 hover:text-teal-800 dark:text-teal-200 dark:hover:text-teal-100">
+                    Open gradebook
+                  </a>
+                </div>
                 <span className="mt-1 block text-slate-500 dark:text-slate-400">{course.subject} grade {course.gradeLevel}</span>
               </li>
             ))}
           </ul>
         </LmsPanel>
 
-        <LmsPanel title="Roster">
+        <LmsPanel id="roster" title="Roster">
           <ul className="grid gap-2">
             {view.roster.map((student) => (
               <li key={student.id} className="flex items-center gap-2 rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
@@ -34,11 +53,16 @@ export function TeacherDashboard({ view }: { view: TeacherView }) {
           </ul>
         </LmsPanel>
 
-        <LmsPanel title="Assignments">
+        <LmsPanel id="assignments" title="Assignments">
           <ul className="grid gap-2">
             {view.assignments.map((assignment) => (
               <li key={assignment.id} className="rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
-                <span className="font-semibold">{assignment.title}</span>
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <span className="font-semibold">{assignment.title}</span>
+                  <a href="#grading-queue" className="text-sm font-semibold text-teal-700 hover:text-teal-800 dark:text-teal-200 dark:hover:text-teal-100">
+                    Grade submissions
+                  </a>
+                </div>
                 <span className="mt-1 block text-slate-500 dark:text-slate-400">{assignment.maxPoints} points</span>
               </li>
             ))}
@@ -46,7 +70,7 @@ export function TeacherDashboard({ view }: { view: TeacherView }) {
         </LmsPanel>
       </div>
 
-      <LmsPanel title="Create assignment">
+      <LmsPanel id="create-assignment" title="Create assignment">
         <form action="/api/lms/assignments" method="post" className="grid gap-3 lg:grid-cols-[1fr_1fr_10rem_auto] lg:items-end">
           <label className="grid gap-1 text-sm font-semibold">
             Course
@@ -123,7 +147,7 @@ export function TeacherDashboard({ view }: { view: TeacherView }) {
         <MessagesPanel messages={view.messages} />
       </div>
 
-      <LmsPanel title="Gradebook">
+      <LmsPanel id="gradebook" title="Gradebook">
         <div className="mb-3 flex flex-wrap gap-2">
           <a
             href="/api/lms/exports/gradebook"
@@ -182,7 +206,7 @@ export function TeacherDashboard({ view }: { view: TeacherView }) {
       </LmsPanel>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <LmsPanel title="Attendance">
+        <LmsPanel id="attendance" title="Attendance">
           <form action="/api/lms/attendance" method="post" className="grid gap-3">
             <div className="grid gap-3 sm:grid-cols-2">
               <label className="grid gap-1 text-sm font-semibold">
@@ -262,7 +286,7 @@ export function TeacherDashboard({ view }: { view: TeacherView }) {
           </ul>
         </LmsPanel>
 
-        <LmsPanel title="Rubrics">
+        <LmsPanel id="rubrics" title="Rubrics">
           <form action="/api/lms/rubrics" method="post" className="grid gap-3">
             <label className="grid gap-1 text-sm font-semibold">
               Assignment
@@ -317,7 +341,7 @@ export function TeacherDashboard({ view }: { view: TeacherView }) {
         </LmsPanel>
       </div>
 
-      <LmsPanel title="Grading queue">
+      <LmsPanel id="grading-queue" title="Grading queue">
         {view.gradingQueue.length === 0 ? (
           <EmptyState>No submissions need grading.</EmptyState>
         ) : (

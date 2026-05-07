@@ -6,7 +6,7 @@ Audit date: 2026-05-07
 
 WolfWhale has moved beyond the earlier controlled pilot and beyond the first Supabase-backed MVP. It now has a larger school-operations baseline with authenticated role routing, durable core LMS workflows, weighted gradebook summaries, rubrics, attendance, risk visibility, roster imports/invites, and scale-budget verification.
 
-The verified claim is: **commercial school LMS baseline for single-school and controlled multi-school selling, with durable auth, role dashboards, course/enrollment management, assignments, submissions, weighted grades, rubrics, attendance, feedback, calendar/resource/message visibility, roster invitations, scale gates, and hardened Supabase data access.**
+The verified claim is: **commercial school LMS baseline for single-school and controlled multi-school selling, with durable auth, role dashboards, clickable role tool hubs, course/enrollment management, assignments, submissions, weighted grades, rubrics, attendance, feedback, calendar/resource/message visibility, roster invitations, scale gates, and hardened Supabase data access.**
 
 Do not market it as a proven large-district Canvas/Brightspace/Moodle displacement yet. That claim still requires a customer-specific SSO/SIS implementation, production restore-drill evidence against a disposable target, formal WCAG certification, and signed support/legal operating agreements.
 
@@ -27,6 +27,7 @@ Do not market it as a proven large-district Canvas/Brightspace/Moodle displaceme
 - Teacher dashboard shows courses, roster, assignments, assignment creation, weighted gradebook, gradebook export, attendance marking/export, rubric creation, grading queue, grade posting, calendar, resources, and messages.
 - Student dashboard shows courses, assignments, submissions, weighted gradebook status, attendance, grades, feedback, notifications, calendar, resources, messages, and text submission.
 - Guardian dashboard shows linked-student courses, assignments, weighted gradebook status, attendance, grades, feedback, calendar, resources, and messages.
+- Each role dashboard now has a clickable tool hub plus section anchors so users can jump directly to the features they are allowed to use.
 - API routes persist core workflows:
   - `/api/lms/courses`
   - `/api/lms/enrollments`
@@ -91,15 +92,17 @@ Applied live migration names include:
 - `npm run launch:verify`: passed.
 - `npm run lint`: passed.
 - `npm run typecheck`: passed.
-- `npm test`: passed, 15 files / 61 tests.
+- `npm test`: passed, 16 files / 64 tests.
 - `npm run enterprise:check`: passed.
 - `npm run district:verify`: passed.
 - `npm run district:proof`: passed for `fixtures/district/canvas-replacement-demo.json`.
 - `npm run scale:check`: passed for the verified single-school operating envelope.
 - `npm run load:smoke`: passed for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments.
-- `npm run build`: passed, 46 generated static pages and `ƒ Proxy`; route list includes attendance, rubric, roster import, gradebook export, attendance export, and SIS export APIs.
-- `npm run test:lms-smoke`: passed with screenshots in `test-results/lms-smoke`.
-- `npm audit --audit-level=moderate`: passed, 0 vulnerabilities.
+- `npm run build`: passed, 285 generated static pages and `ƒ Proxy`; route list includes attendance, rubric, roster import, gradebook export, attendance export, and SIS export APIs.
+- `npm run test:lms-smoke` / `npm run test:a11y`: passed with screenshots in `test-results/lms-smoke`.
+- `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passed for real submit/create/attendance/rubric/grade/enrollment/import workflows.
+- `npm audit --omit=dev --audit-level=high`: passed, 0 vulnerabilities.
+- Computer Use visual workflow pass: student demo login, dashboard tool hub, tool jump, dashboard-home jump, and sign-out passed in Chrome.
 - Live Supabase MCP security validation: passed against `yhxesebykwhlpsmxxiqo`, 0 failing rows across all five launch-security checks.
 
 ## Launch Recommendation

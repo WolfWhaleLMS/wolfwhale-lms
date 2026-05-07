@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowLeft, KeyRound, LogIn, Mail, ShieldCheck } from 'lucide-react'
+import { KeyRound, LifeBuoy, LogIn, Mail, ShieldCheck } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'School Account Sign In',
@@ -39,11 +39,11 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     <main className="min-h-screen bg-slate-50 px-4 py-10 text-slate-950 dark:bg-slate-950 dark:text-white sm:px-6">
       <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-3xl flex-col justify-center">
         <Link
-          href="/"
+          href="/help"
           className="mb-8 inline-flex w-fit items-center gap-2 text-sm font-semibold text-teal-700 hover:text-teal-800 dark:text-teal-200 dark:hover:text-teal-100"
         >
-          <ArrowLeft className="h-4 w-4" />
-          Back to WolfWhale
+          <LifeBuoy className="h-4 w-4" />
+          Account help
         </Link>
 
         <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-xl shadow-slate-950/5 dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/20 sm:p-8">

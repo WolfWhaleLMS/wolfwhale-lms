@@ -2,9 +2,9 @@ import { CalendarDays, FileText, MessageSquare } from 'lucide-react'
 import { EmptyState, LmsPanel } from '@/components/lms/LmsShell'
 import type { LmsCalendarItem, LmsMessageSummary, LmsResourceSummary } from '@/lib/lms/types'
 
-export function CalendarPanel({ items }: { items: LmsCalendarItem[] }) {
+export function CalendarPanel({ id = 'calendar', items }: { id?: string; items: LmsCalendarItem[] }) {
   return (
-    <LmsPanel title="Calendar">
+    <LmsPanel id={id} title="Calendar">
       {items.length === 0 ? (
         <EmptyState>No dated LMS items.</EmptyState>
       ) : (
@@ -26,9 +26,9 @@ export function CalendarPanel({ items }: { items: LmsCalendarItem[] }) {
   )
 }
 
-export function ResourcesPanel({ resources }: { resources: LmsResourceSummary[] }) {
+export function ResourcesPanel({ id = 'resources', resources }: { id?: string; resources: LmsResourceSummary[] }) {
   return (
-    <LmsPanel title="Resources">
+    <LmsPanel id={id} title="Resources">
       {resources.length === 0 ? (
         <EmptyState>No course resources.</EmptyState>
       ) : (
@@ -50,9 +50,9 @@ export function ResourcesPanel({ resources }: { resources: LmsResourceSummary[] 
   )
 }
 
-export function MessagesPanel({ messages }: { messages: LmsMessageSummary[] }) {
+export function MessagesPanel({ id = 'messages', messages }: { id?: string; messages: LmsMessageSummary[] }) {
   return (
-    <LmsPanel title="Messages">
+    <LmsPanel id={id} title="Messages">
       {messages.length === 0 ? (
         <EmptyState>No visible messages.</EmptyState>
       ) : (

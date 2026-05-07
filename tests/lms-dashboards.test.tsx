@@ -8,17 +8,26 @@ import { buildLmsDashboardViews, createDemoLmsRecords } from '@/lib/lms/read-mod
 
 const views = buildLmsDashboardViews(createDemoLmsRecords())
 
+function expectDashboardTools(labels: string[]) {
+  const tools = screen.getByRole('navigation', { name: 'Dashboard tools' })
+
+  for (const label of labels) {
+    expect(within(tools).getByRole('link', { name: new RegExp(label) })).toBeInTheDocument()
+  }
+}
+
 describe('persistent LMS dashboards', () => {
   it('renders the admin operations dashboard', () => {
     render(<AdminDashboard view={views.admin} />)
 
     expect(screen.getByRole('heading', { name: 'Admin dashboard' })).toBeInTheDocument()
+    expectDashboardTools(['School', 'Metrics', 'Risk', 'Create course', 'Roster import'])
     expect(screen.getByText('WolfWhale Academy')).toBeInTheDocument()
     expect(screen.getByText('Active students')).toBeInTheDocument()
     expect(screen.getByText('grade.created')).toBeInTheDocument()
     expect(screen.getByText('Risk summary')).toBeInTheDocument()
     expect(screen.getByText('High')).toBeInTheDocument()
-    expect(screen.getByText('Attendance')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Attendance' })).toBeInTheDocument()
     expect(screen.getByText('Export SIS package')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Import roster' })).toBeInTheDocument()
     expect(screen.getAllByText('Primary Source Pack').length).toBeGreaterThan(0)
@@ -29,6 +38,7 @@ describe('persistent LMS dashboards', () => {
     render(<TeacherDashboard view={views.teacher} />)
 
     expect(screen.getByRole('heading', { name: 'Teacher dashboard' })).toBeInTheDocument()
+    expectDashboardTools(['Courses', 'Roster', 'Create assignment', 'Gradebook', 'Attendance', 'Rubrics', 'Grading queue'])
     expect(screen.getAllByText('Grade 8 Humanities').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Alex Student').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Primary Source Exit Ticket').length).toBeGreaterThan(0)
@@ -37,9 +47,9 @@ describe('persistent LMS dashboards', () => {
     expect(screen.getByRole('button', { name: 'Save attendance' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Save rubric' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Post grade' })).toBeInTheDocument()
-    expect(screen.getByText('Gradebook')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Gradebook' })).toBeInTheDocument()
     expect(screen.getByText('Export gradebook')).toBeInTheDocument()
-    expect(screen.getByText('Rubrics')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Rubrics' })).toBeInTheDocument()
     expect(screen.getByText('Reflection Rubric')).toBeInTheDocument()
     expect(screen.getAllByText('Primary Source Pack').length).toBeGreaterThan(0)
   })
@@ -48,12 +58,14 @@ describe('persistent LMS dashboards', () => {
     render(<StudentDashboard view={views.student} />)
 
     expect(screen.getByRole('heading', { name: 'Student dashboard' })).toBeInTheDocument()
+    expectDashboardTools(['Courses', 'Assignments', 'Submit work', 'Gradebook', 'Attendance', 'Calendar', 'Resources', 'Messages'])
     expect(screen.getAllByText('Launch Reflection').length).toBeGreaterThan(0)
     expect(screen.getByText('9/10')).toBeInTheDocument()
     expect(screen.getByText('90% A-')).toBeInTheDocument()
     expect(screen.getByText('67%')).toBeInTheDocument()
-    expect(screen.getAllByRole('button', { name: 'Submit' }).length).toBeGreaterThan(0)
+    expect(screen.getAllByRole('button', { name: /Submit / }).length).toBeGreaterThan(0)
     expect(screen.getAllByText('Please review the source pack before tomorrow.').length).toBeGreaterThan(0)
+    expect(screen.getAllByRole('link', { name: 'Submit work' }).length).toBeGreaterThan(0)
     expect(screen.queryByText('Riley Student')).not.toBeInTheDocument()
   })
 
@@ -61,6 +73,7 @@ describe('persistent LMS dashboards', () => {
     render(<GuardianDashboard view={views.guardian} />)
 
     expect(screen.getByRole('heading', { name: 'Guardian dashboard' })).toBeInTheDocument()
+    expectDashboardTools(['Linked students', 'Attendance', 'Calendar', 'Resources', 'Messages'])
     const linkedStudentSection = screen.getByTestId('guardian-linked-students')
 
     expect(within(linkedStudentSection).getByText('Alex Student')).toBeInTheDocument()

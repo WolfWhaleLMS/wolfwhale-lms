@@ -22,6 +22,10 @@ Sprint date: 2026-05-07
 
 - Added LMS dashboards in `components/lms`.
 - Added shared calendar, resource, and message panels.
+- Added role-specific dashboard tool hubs so student, teacher, admin, and guardian users can jump directly to their available workflows instead of scrolling through static dashboard content.
+- Added stable section anchors and dashboard-home navigation for courses, assignments, submissions, grades, gradebook, attendance, calendar, resources, messages, roster, risk, audit, and admin operations.
+- Replaced the dashboard `/` back link with an in-dashboard home anchor because `/` now intentionally redirects public visitors into LMS login.
+- Updated the login-page back/help link to point to `/help` instead of looping through the root LMS redirect.
 - Added student submission workflow.
 - Added teacher assignment creation and grade posting workflow.
 - Added weighted gradebook summaries with category weights, letter grades, missing-work counts, attendance rate, and risk status.
@@ -51,6 +55,7 @@ Sprint date: 2026-05-07
 - Replaced pilot browser smoke with `scripts/lms-browser-smoke.ts`.
 - Added `npm run test:lms-smoke`; kept `test:pilot-smoke` as a compatibility alias.
 - Strengthened browser smoke to require gradebook, attendance, rubrics, risk summary, and roster import panels.
+- Strengthened browser smoke again to click every role dashboard tool link, verify target sections, check dashboard-home navigation, validate LMS API export/resource links, test login help navigation, test logout, and optionally run mutating workflow submits with `LMS_SMOKE_MUTATE=1`.
 - Added guarded `scripts/backup-db.sh`.
 - Added guarded `scripts/restore-drill.sh`.
 - Added `scripts/check-lms-scale-budget.ts` and `npm run scale:check`.
@@ -72,6 +77,7 @@ Sprint date: 2026-05-07
 - Confirmed:
   - `npm run launch:verify` passes.
   - `npm run test:lms-smoke` passes.
+  - `LMS_SMOKE_MUTATE=1 npm run test:a11y` passes against the local app.
   - `npm audit --audit-level=moderate` reports 0 vulnerabilities.
   - Live Supabase MCP launch-security checks pass against `yhxesebykwhlpsmxxiqo`.
   - `npm run district:proof` passes.

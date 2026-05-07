@@ -12,6 +12,7 @@ Closed gates:
 - Protected role routes reject unauthenticated users.
 - Server-side membership checks redirect users away from unauthorized role dashboards.
 - Student, teacher, admin, and guardian dashboards use persistent Supabase-backed LMS records.
+- Student, teacher, admin, and guardian dashboards expose clickable role-specific tool hubs instead of static unclickable report pages.
 - Student submissions, teacher assignment creation, teacher grading, teacher attendance marking, teacher rubric creation, admin course creation, admin enrollment, and admin roster import/invite flow persist through API routes.
 - Weighted gradebook, attendance, and academic-risk summaries are available to the correct roles.
 - Calendar, message, notification, and course-resource visibility are present in each role surface.
@@ -22,7 +23,7 @@ Closed gates:
 - District proof profile validation is implemented and passing for the demo district profile.
 - Supabase anonymous table/function/storage exposure is validated clean on the connected project.
 - Messaging RLS recursion found during browser smoke was fixed live and captured in migrations.
-- Lint, typecheck, all tests, enterprise readiness, scale check, synthetic load smoke, build, npm audit, live Supabase MCP checks, and browser smoke pass.
+- Lint, typecheck, all tests, enterprise readiness, scale check, synthetic load smoke, build, npm audit, live Supabase MCP checks, browser smoke, mutating workflow smoke, and Computer Use visual navigation checks pass.
 - Backup and restore-drill scripts now exist and are guarded against accidental production restore.
 - Support, incident-response, data-processing, and enterprise-readiness runbooks now exist.
 

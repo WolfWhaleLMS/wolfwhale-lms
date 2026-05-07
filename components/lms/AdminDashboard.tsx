@@ -1,4 +1,4 @@
-import { Activity, AlertTriangle, BookOpen, Bell, CalendarCheck, ClipboardCheck, Download, Plus, Upload, UserPlus, Users } from 'lucide-react'
+import { Activity, AlertTriangle, Bell, BookOpen, CalendarCheck, CalendarDays, ClipboardCheck, Download, FileText, MessageSquare, Plus, Upload, UserPlus, Users } from 'lucide-react'
 import { LmsPanel, LmsShell } from '@/components/lms/LmsShell'
 import { CalendarPanel, MessagesPanel, ResourcesPanel } from '@/components/lms/SharedLmsPanels'
 import type { buildLmsDashboardViews } from '@/lib/lms/read-model'
@@ -6,6 +6,20 @@ import type { buildLmsDashboardViews } from '@/lib/lms/read-model'
 type AdminView = ReturnType<typeof buildLmsDashboardViews>['admin']
 
 const metricIcons = [Users, Users, BookOpen, Users, ClipboardCheck, ClipboardCheck, Bell]
+
+const adminTools = [
+  { href: '#school', label: 'School', description: 'Review school status', icon: BookOpen },
+  { href: '#audit', label: 'Audit trail', description: 'Inspect system activity', icon: Activity },
+  { href: '#metrics', label: 'Metrics', description: 'Monitor launch health', icon: Activity },
+  { href: '#risk', label: 'Risk', description: 'Find student support needs', icon: AlertTriangle },
+  { href: '#attendance', label: 'Attendance', description: 'Review attendance exports', icon: CalendarCheck },
+  { href: '#calendar', label: 'Calendar', description: 'See school LMS dates', icon: CalendarDays },
+  { href: '#resources', label: 'Resources', description: 'Open shared files', icon: FileText },
+  { href: '#messages', label: 'Messages', description: 'Read school messages', icon: MessageSquare },
+  { href: '#create-course', label: 'Create course', description: 'Add classes and sections', icon: Plus },
+  { href: '#enroll-student', label: 'Enroll student', description: 'Place students in courses', icon: UserPlus },
+  { href: '#roster-import', label: 'Roster import', description: 'Bulk-load school users', icon: Upload },
+]
 
 export function AdminDashboard({ view }: { view: AdminView }) {
   const metrics = [
@@ -19,9 +33,9 @@ export function AdminDashboard({ view }: { view: AdminView }) {
   ] as const
 
   return (
-    <LmsShell title="Admin dashboard" subtitle="School operations, launch health, roster, courses, and audit visibility.">
+    <LmsShell title="Admin dashboard" subtitle="School operations, launch health, roster, courses, and audit visibility." tools={adminTools}>
       <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-        <LmsPanel title="School">
+        <LmsPanel id="school" title="School">
           <dl className="grid gap-3 sm:grid-cols-3">
             <div className="rounded-md border border-slate-200 p-3 dark:border-slate-800">
               <dt className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Name</dt>
@@ -38,7 +52,7 @@ export function AdminDashboard({ view }: { view: AdminView }) {
           </dl>
         </LmsPanel>
 
-        <LmsPanel title="Audit trail">
+        <LmsPanel id="audit" title="Audit trail">
           <ul className="grid gap-2">
             {view.auditTrail.map((entry) => (
               <li key={entry.id} className="flex items-center gap-2 rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
@@ -51,7 +65,7 @@ export function AdminDashboard({ view }: { view: AdminView }) {
         </LmsPanel>
       </div>
 
-      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <section id="metrics" className="scroll-mt-28 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {metrics.map(([label, value], index) => {
           const Icon = metricIcons[index]
 
@@ -68,7 +82,7 @@ export function AdminDashboard({ view }: { view: AdminView }) {
       </section>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <LmsPanel title="Risk summary">
+        <LmsPanel id="risk" title="Risk summary">
           <div className="mb-3 flex flex-wrap gap-2">
             <a
               href="/api/lms/exports/gradebook"
@@ -110,7 +124,7 @@ export function AdminDashboard({ view }: { view: AdminView }) {
           </dl>
         </LmsPanel>
 
-        <LmsPanel title="Attendance">
+        <LmsPanel id="attendance" title="Attendance">
           <div className="mb-3">
             <a
               href="/api/lms/exports/attendance"
@@ -143,7 +157,7 @@ export function AdminDashboard({ view }: { view: AdminView }) {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <LmsPanel title="Create course">
+        <LmsPanel id="create-course" title="Create course">
           <form action="/api/lms/courses" method="post" className="grid gap-3">
             <label className="grid gap-1 text-sm font-semibold">
               Course name
@@ -187,7 +201,7 @@ export function AdminDashboard({ view }: { view: AdminView }) {
           </form>
         </LmsPanel>
 
-        <LmsPanel title="Enroll student">
+        <LmsPanel id="enroll-student" title="Enroll student">
           <form action="/api/lms/enrollments" method="post" className="grid gap-3">
             <label className="grid gap-1 text-sm font-semibold">
               Course
@@ -244,7 +258,7 @@ export function AdminDashboard({ view }: { view: AdminView }) {
           </form>
         </LmsPanel>
 
-        <LmsPanel title="Roster import">
+        <LmsPanel id="roster-import" title="Roster import">
           <form action="/api/lms/roster/import" method="post" className="grid gap-3">
             <label className="grid gap-1 text-sm font-semibold">
               CSV rows
