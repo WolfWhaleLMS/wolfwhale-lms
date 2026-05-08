@@ -258,6 +258,10 @@ Verification on 2026-05-08:
 - `npm run launch:verify` passed after adding the resource upload, companion persistence, bucket configuration, and ops evidence gate.
 - `npm run test:a11y` passed.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y` passed after uploading a real teacher course resource through `/api/lms/resources`.
+- Commit `4bf817b` was pushed to `origin/main`.
+- Vercel production deployment passed: `https://wolfwhale-8g9t87zvt-ryland-dupres-projects.vercel.app`.
+- `wolfwhale.ca` was aliased to the new deployment.
+- `LMS_SMOKE_BASE_URL=https://wolfwhale.ca npm run test:a11y` passed against the custom domain.
 
 New coverage/evidence added:
 
