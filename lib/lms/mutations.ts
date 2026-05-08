@@ -169,6 +169,30 @@ async function ensureActiveStudentEnrollment(supabase: SupabaseClient, tenantId:
   }
 }
 
+async function ensureTeacherCanManageCourse(
+  supabase: SupabaseClient,
+  input: { tenantId: string; courseId: string; courseCreatedBy: unknown; teacherId: string }
+) {
+  if (id(input.courseCreatedBy, 'created_by') === input.teacherId) return
+
+  const teacherEnrollment = await maybeSingleRow(
+    supabase
+      .from('course_enrollments')
+      .select('id')
+      .eq('tenant_id', input.tenantId)
+      .eq('course_id', input.courseId)
+      .eq('teacher_id', input.teacherId)
+      .eq('status', 'active')
+      .limit(1)
+      .maybeSingle(),
+    'teacher_course_lookup_failed'
+  )
+
+  if (!teacherEnrollment) {
+    throw new LmsMutationError('Teacher is not assigned to this course.', 'teacher_course_required')
+  }
+}
+
 async function insertAuditLog(
   supabase: SupabaseClient,
   input: { tenantId: string; userId: string; action: string; resourceType: string; resourceId?: string; details?: Row }
@@ -568,8 +592,13 @@ export async function createAssignment(
   if (id(course.tenant_id, 'tenant_id') !== membership.tenantId) {
     throw new LmsMutationError('Course does not belong to this school.', 'tenant_mismatch')
   }
-  if (membership.role === 'teacher' && id(course.created_by, 'created_by') !== user.id) {
-    throw new LmsMutationError('Teacher can only create assignments for their own courses.', 'teacher_course_required')
+  if (membership.role === 'teacher') {
+    await ensureTeacherCanManageCourse(supabase, {
+      tenantId: membership.tenantId,
+      courseId: draft.courseId,
+      courseCreatedBy: course.created_by,
+      teacherId: user.id,
+    })
   }
 
   const assignment = await singleRow(
@@ -707,7 +736,12 @@ export async function createRubric(
     throw new LmsMutationError('Assignment does not belong to this school.', 'tenant_mismatch')
   }
   if (membership.role === 'teacher' && id(course.created_by, 'created_by') !== user.id && id(assignment.created_by, 'created_by') !== user.id) {
-    throw new LmsMutationError('Teacher can only create rubrics for their own courses or assignments.', 'teacher_course_required')
+    await ensureTeacherCanManageCourse(supabase, {
+      tenantId,
+      courseId: id(assignment.course_id, 'course_id'),
+      courseCreatedBy: course.created_by,
+      teacherId: user.id,
+    })
   }
 
   const rubric = await singleRow(

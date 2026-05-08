@@ -194,10 +194,12 @@ Screenshot evidence:
 Verification on 2026-05-08:
 
 - `npm test -- tests/lms-student-workspaces.test.tsx tests/lms-dashboards.test.tsx tests/ice-age-companion.test.ts` passed: 3 files / 18 tests.
+- `npm test -- tests/lms-mutations.test.ts tests/lms-student-workspaces.test.tsx tests/lms-dashboards.test.tsx tests/ice-age-companion.test.ts` passed: 4 files / 22 tests.
 - `npm run typecheck` passed.
 - `npm run lint` completed with 0 errors and the same 10 existing unrelated warnings in textbook/referral files.
 - `npm run build` passed.
 - `npm run test:a11y` passed; the browser smoke logged in all four demo roles, clicked dashboard tools, checked target pages, API resource/export links, logout, and basic accessibility.
+- `LMS_SMOKE_BASE_URL=https://wolfwhale.ca npm run test:a11y` passed after the production deployment and custom-domain alias update.
 
 Additional Playwright measurement against `http://localhost:3000` with the student demo account:
 
@@ -207,3 +209,9 @@ Additional Playwright measurement against `http://localhost:3000` with the stude
 - Student dashboard has 0 submission forms and 0 textareas.
 - Student dashboard renders 5 Ice Age base preview images.
 - Final animated sprite atlas count remains 0 because the production WebP atlases have not been generated yet.
+
+Deployment evidence:
+
+- Commit `4fa3b5b` deployed to Vercel production as `https://wolfwhale-hbyvp29tr-ryland-dupres-projects.vercel.app`.
+- `wolfwhale.ca` was aliased to that deployment.
+- `https://wolfwhale.ca/images/ice-age-companion/base/woolly-mammoth.png` returned HTTP 200 after aliasing.

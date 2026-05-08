@@ -189,14 +189,24 @@ async function waitForSaved(page: Page, role: LmsRole, saved: string) {
 }
 
 async function exerciseStudentWorkflows(page: Page) {
+  const assignmentsUrl = new URL('/student/assignments#submit-work', page.url()).toString()
+
+  await page.goto(assignmentsUrl, { waitUntil: 'domcontentloaded' })
+  await page.locator('#submit-work').waitFor()
+
   const submissionForms = page.locator('#submit-work form[action="/api/lms/submissions"]')
   const formCount = await submissionForms.count()
   if (formCount === 0) {
-    throw new Error('Student dashboard has no assignment submission forms.')
+    throw new Error('Student assignments workspace has no assignment submission forms.')
   }
 
   for (let index = 0; index < formCount; index += 1) {
-    const form = submissionForms.nth(index)
+    if (index > 0) {
+      await page.goto(assignmentsUrl, { waitUntil: 'domcontentloaded' })
+      await page.locator('#submit-work').waitFor()
+    }
+
+    const form = page.locator('#submit-work form[action="/api/lms/submissions"]').nth(index)
     await page.locator('#submit-work').scrollIntoViewIfNeeded()
     await form.locator('textarea[name="content"]').fill(`Workflow audit submission ${index + 1} ${Date.now()}`)
     await form.getByRole('button', { name: /^Submit / }).click()

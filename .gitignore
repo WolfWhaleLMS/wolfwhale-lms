@@ -68,3 +68,4 @@ backups/
 
 # TypeScript
 next-env.d.ts
+.env*.local

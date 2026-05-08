@@ -127,3 +127,5 @@ Sprint date: 2026-05-07
 - Added `basePreviewPath` support to `CompanionSprite` so planned species can show static real art before final animated WebP atlases are ready.
 - Updated the companion hatch selector so students see the available creature art immediately.
 - Left final sprite atlas status as `planned`; the six final transparent WebP atlases still need to be generated and QA-approved before any species is marked `ready`.
+- Updated the optional mutating LMS browser smoke so student submission checks navigate to `/student/assignments#submit-work` instead of expecting submission forms on the dashboard.
+- Allowed teachers to create assignments/rubrics for active courses they are assigned to through `course_enrollments`, not only courses they personally created.
