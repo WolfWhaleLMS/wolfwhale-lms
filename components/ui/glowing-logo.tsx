@@ -44,7 +44,7 @@ export function GlowingLogo({ size = 48, className = '' }: GlowingLogoProps) {
       />
       {/* App tile */}
       <div
-        className="relative overflow-hidden bg-white dark:bg-black flex items-center justify-center"
+        className="relative overflow-hidden bg-white flex items-center justify-center"
         style={{
           width: tileSize,
           height: tileSize,

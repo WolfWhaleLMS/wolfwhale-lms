@@ -12,6 +12,7 @@ import {
   Phone,
 } from 'lucide-react'
 import { JsonLd } from '@/components/seo/JsonLd'
+import { WolfWhaleBrand } from '@/components/ui/wolfwhale-brand'
 import { PAGES, FEATURE_ICONS, type PageData } from '@/lib/config/seo-pages'
 
 // ---------------------------------------------------------------------------
@@ -378,24 +379,7 @@ export default async function LandingPage({
       {/* Header */}
       <header className="relative z-10 border-b border-white/10 backdrop-blur-md bg-black/60">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/logo.png"
-              alt="WolfWhale"
-              width={56}
-              height={56}
-              sizes="56px"
-              className="h-14 w-14 rounded-xl object-contain shadow-lg shadow-purple-500/20"
-            />
-            <div>
-              <span className="text-xl font-display font-bold text-white block tracking-wider uppercase">
-                WolfWhale LMS
-              </span>
-              <span className="text-xs text-white/70 font-display font-semibold tracking-widest uppercase">
-                Learning Management System
-              </span>
-            </div>
-          </Link>
+          <WolfWhaleBrand href="/" logoSize={56} textClassName="text-xl text-white" taglineClassName="text-xs text-white/70" />
           <nav className="flex items-center gap-4">
             <Link
               href="/info"
@@ -726,24 +710,7 @@ export default async function LandingPage({
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="md:col-span-2">
-              <div className="flex items-center gap-3 mb-4">
-                <Image
-                  src="/logo.png"
-                  alt="WolfWhale"
-                  width={56}
-                  height={56}
-                  sizes="56px"
-                  className="h-14 w-14 rounded-xl object-contain shadow-lg shadow-purple-500/20"
-                />
-                <div>
-                  <span className="font-display font-bold block tracking-wider uppercase text-white">
-                    WolfWhale LMS
-                  </span>
-                  <span className="text-xs text-white/70 font-display font-semibold tracking-widest uppercase">
-                    Modern K-12 &amp; Post-Secondary Learning Platform
-                  </span>
-                </div>
-              </div>
+              <WolfWhaleBrand href="/" logoSize={56} className="mb-4" textClassName="text-base text-white" taglineClassName="text-xs text-white/70" />
               <p className="text-sm text-white/70 max-w-md mb-3">
                 Canadian-built learning management system with built-in spaced
                 repetition flashcards. FERPA, COPPA, and PIPEDA compliant.

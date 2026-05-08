@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { KeyRound, LifeBuoy, LogIn, Mail, ShieldCheck } from 'lucide-react'
+import { KeyRound, LifeBuoy, LogIn, Mail } from 'lucide-react'
+import { WolfWhaleBrand } from '@/components/ui/wolfwhale-brand'
 
 export const metadata: Metadata = {
   title: 'School Account Sign In',
@@ -47,9 +48,14 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         </Link>
 
         <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-xl shadow-slate-950/5 dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/20 sm:p-8">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-200">
-            <ShieldCheck className="h-6 w-6" />
-          </div>
+          <WolfWhaleBrand
+            logoSize={86}
+            priority
+            className="w-full justify-start"
+            markClassName="rounded-2xl border-black/15 shadow-md"
+            textClassName="text-3xl sm:text-4xl"
+            taglineClassName="text-base sm:text-lg"
+          />
           <h1 className="mt-6 font-serif text-4xl font-semibold leading-tight sm:text-5xl">School account access</h1>
           <p className="mt-4 text-base leading-8 text-slate-700 dark:text-slate-100">
             WolfWhale accounts are provisioned by your school. Sign in with your school email and password to access

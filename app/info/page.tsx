@@ -19,6 +19,7 @@ import {
   DollarSign,
   type LucideIcon
 } from 'lucide-react'
+import { WolfWhaleBrand } from '@/components/ui/wolfwhale-brand'
 
 /* ============================================
    Stat Card
@@ -114,11 +115,14 @@ export default function InfoPage() {
           ========================================== */}
       <section className="relative z-10 py-20 md:py-28 bg-black/40 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center">
-          <Image src="/logo.png" alt="WolfWhale" width={160} height={160} className="rounded-2xl object-contain shadow-2xl shadow-purple-500/30 mb-8" />
-
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-normal mb-4 tracking-wider leading-tight text-white">
-            WolfWhale
-          </h1>
+          <WolfWhaleBrand
+            logoSize={160}
+            className="mb-8 flex-col text-center"
+            markClassName="rounded-2xl shadow-2xl shadow-purple-500/30"
+            textClassName="text-4xl text-white sm:text-5xl md:text-7xl"
+            taglineClassName="text-lg text-white/70 md:text-xl"
+            priority
+          />
 
           <p className="text-lg md:text-xl text-white/60 mb-8 tracking-[0.15em] uppercase font-display">
             Improving the most important tool in education
@@ -343,13 +347,7 @@ export default function InfoPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div className="md:col-span-2">
-              <div className="flex items-center gap-3 mb-4">
-                <Image src="/logo.png" alt="WolfWhale" width={48} height={48} className="rounded-xl object-contain shadow-lg shadow-purple-500/20" />
-                <div>
-                  <h3 className="font-display font-bold tracking-wider uppercase text-white">WolfWhale</h3>
-                  <p className="text-xs text-white/60 tracking-widest uppercase">K-12 Learning Management System</p>
-                </div>
-              </div>
+              <WolfWhaleBrand href="/" logoSize={48} className="mb-4" textClassName="text-base text-white" taglineClassName="text-xs text-white/60" />
               <p className="text-sm text-white/60 max-w-md mb-4">
                 100% designed and built in Canada. First Nations owned, operating on Treaty 6 territory.
               </p>

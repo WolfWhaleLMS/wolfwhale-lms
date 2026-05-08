@@ -217,3 +217,15 @@ Deployment evidence:
 - `wolfwhale.ca` was aliased to the `5aa814b` deployment.
 - `LMS_SMOKE_BASE_URL=https://wolfwhale.ca npm run test:a11y` passed against the final custom-domain deployment.
 - `https://wolfwhale.ca/images/ice-age-companion/base/woolly-mammoth.png` returned HTTP 200 after aliasing.
+
+## WolfWhale Brand Logo Evidence
+
+Verification on 2026-05-08:
+
+- `npm test -- tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx tests/ice-age-companion.test.ts` passed: 3 files / 18 tests.
+- `npm run typecheck` passed.
+- `npm run lint` completed with 0 errors and the same 10 existing unrelated warnings.
+- `npm run build` passed.
+- `npm run test:a11y` passed.
+- Playwright login-page visual check found `aria-label="WolfWhale Learning Management System"`, 1 visible `/logo.png` mark, and Times New Roman computed font for `WolfWhale` and `Learning Management System`.
+- Screenshot evidence: `test-results/brand-login-1440.png`.

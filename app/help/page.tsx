@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { ArrowLeft, Mail, Phone, Clock } from 'lucide-react'
 import { LanguageToggle } from '@/components/ui/LanguageToggle'
 import { FAQAccordion } from '@/components/ui/FAQAccordion'
+import { WolfWhaleBrand } from '@/components/ui/wolfwhale-brand'
 
 type Lang = 'en' | 'fr'
 
@@ -268,22 +269,7 @@ export default async function HelpCenterPage({ searchParams }: PageProps) {
       {/* Header */}
       <header className="sticky top-0 z-10 bg-white dark:bg-black border-b border-gray-200 dark:border-white/5">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
-            <Image
-              src="/logo.png"
-              alt="WolfWhale"
-              width={48}
-              height={48}
-              sizes="48px"
-              className="rounded-xl object-contain shadow-lg border-2 border-black dark:border-white/10"
-            />
-            <div>
-              <h1 className="text-lg sm:text-xl font-display font-bold text-gray-900 dark:text-white group-hover:opacity-70 transition-opacity tracking-wider uppercase">
-                WolfWhale
-              </h1>
-              <p className="text-[10px] sm:text-xs text-gray-500 dark:text-white/50 font-display font-semibold tracking-widest uppercase">Learning Management System</p>
-            </div>
-          </Link>
+          <WolfWhaleBrand href="/" logoSize={48} textClassName="text-lg sm:text-xl" taglineClassName="text-[10px] sm:text-xs" />
 
           {/* Language Toggle (client component) */}
           <LanguageToggle lang={lang} />

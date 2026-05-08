@@ -129,3 +129,10 @@ Sprint date: 2026-05-07
 - Left final sprite atlas status as `planned`; the six final transparent WebP atlases still need to be generated and QA-approved before any species is marked `ready`.
 - Updated the optional mutating LMS browser smoke so student submission checks navigate to `/student/assignments#submit-work` instead of expecting submission forms on the dashboard.
 - Allowed teachers to create assignments/rubrics for active courses they are assigned to through `course_enrollments`, not only courses they personally created.
+
+## WolfWhale Main Brand Logo
+
+- Replaced the primary `/logo.png` asset with a black WolfWhale silhouette mark derived from the existing product mark.
+- Added `WolfWhaleBrand` as the shared brand lockup component.
+- Applied the Times New Roman `WolfWhale` / `Learning Management System` lockup to the main login, help, privacy, terms, info, and LMS landing surfaces.
+- Updated logo loading/glow components so the black mark sits on a white tile and remains visible on dark surfaces.

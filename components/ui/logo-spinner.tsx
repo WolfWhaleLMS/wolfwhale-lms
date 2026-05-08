@@ -94,7 +94,7 @@ export function LogoSpinner({ size = 80 }: { size?: number }) {
           alt="Loading"
           width={size}
           height={size}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         />
       </div>
       {/* Keyframe for tracing the edge — animates strokeDashoffset around the perimeter */}
