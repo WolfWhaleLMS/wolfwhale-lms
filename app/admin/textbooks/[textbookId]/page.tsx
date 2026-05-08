@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, use } from 'react'
+import { useCallback, useEffect, useState, use } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
@@ -32,6 +32,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { TextbookImage } from '@/components/textbook/TextbookImage'
 import {
   getTextbook,
   updateTextbook,
@@ -106,7 +107,7 @@ export default function AdminTextbookDetailPage({
   // Collapsible units
   const [expandedUnits, setExpandedUnits] = useState<Set<string>>(new Set())
 
-  const loadTextbook = async () => {
+  const loadTextbook = useCallback(async () => {
     try {
       const data = await getTextbook(textbookId)
       setTextbook(data as TextbookWithChapters)
@@ -132,11 +133,11 @@ export default function AdminTextbookDetailPage({
     } finally {
       setLoading(false)
     }
-  }
+  }, [textbookId])
 
   useEffect(() => {
     loadTextbook()
-  }, [textbookId])
+  }, [loadTextbook])
 
   const handleSaveMetadata = async () => {
     if (!title.trim()) {
@@ -705,7 +706,7 @@ export default function AdminTextbookDetailPage({
 
             {coverImageUrl && (
               <div className="rounded-lg border border-border p-2">
-                <img
+                <TextbookImage
                   src={coverImageUrl}
                   alt="Cover preview"
                   className="max-h-48 mx-auto rounded"

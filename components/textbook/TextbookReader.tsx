@@ -7,6 +7,7 @@ import {
   File,
   FileText,
 } from 'lucide-react'
+import { TextbookImage } from '@/components/textbook/TextbookImage'
 import type { KeyTerm } from '@/lib/types/textbook'
 
 interface TextbookReaderProps {
@@ -126,7 +127,7 @@ export function TextbookReader({ content, keyTerms = [] }: TextbookReaderProps) 
                 const caption = d(block, 'caption')
                 return (
                   <figure key={index} className="my-6">
-                    <img
+                    <TextbookImage
                       src={url}
                       alt={alt}
                       className="max-w-full rounded-lg shadow-sm"

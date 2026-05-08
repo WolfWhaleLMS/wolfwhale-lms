@@ -32,6 +32,39 @@
   }
 }
 
+@keyframes ww-clay-drift {
+  0%, 100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -10px;
+  }
+}
+
+@keyframes ww-clay-drift-slow {
+  0%, 100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 8px;
+  }
+}
+
+.ww-clay-float {
+  animation: ww-clay-drift 6.5s ease-in-out infinite;
+}
+
+.ww-clay-float-slow {
+  animation: ww-clay-drift-slow 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ww-clay-float,
+  .ww-clay-float-slow {
+    animation: none;
+  }
+}
+
 .ww-companion-sprite-shell,
 .ww-companion-preview-shell,
 .ww-companion-fallback-shell,

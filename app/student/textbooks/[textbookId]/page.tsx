@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { getTextbook, getReadingProgress } from '@/app/actions/textbooks'
 import { ChapterList } from '@/components/textbook/ChapterList'
+import { TextbookImage } from '@/components/textbook/TextbookImage'
 import type { StudentReadingProgress, TextbookChapter, TextbookUnit } from '@/lib/types/textbook'
 
 export default async function TextbookTOCPage({
@@ -95,7 +96,7 @@ export default async function TextbookTOCPage({
           {/* Cover image */}
           {textbook.cover_image_url ? (
             <div className="h-48 w-full shrink-0 md:h-auto md:w-56">
-              <img
+              <TextbookImage
                 src={textbook.cover_image_url}
                 alt={textbook.title}
                 className="h-full w-full object-cover"

@@ -63,7 +63,7 @@ Live Supabase MCP validation against project `yhxesebykwhlpsmxxiqo` returned zer
 - public storage bucket listing
 - security-invoker view configuration
 
-Local `npm run launch:verify` also runs the same direct DB security script when `SUPABASE_DB_URL` or `DATABASE_URL` is available.
+Local `npm run launch:verify` also runs the same direct DB security script when `SUPABASE_DB_URL`, `DATABASE_URL`, or `SUPABASE_DB_PASSWORD` is available. With `SUPABASE_DB_PASSWORD`, the script infers the linked Supabase project/pooler URL instead of requiring a full Postgres URL in the shell. It can also use `SUPABASE_ACCESS_TOKEN` plus `SUPABASE_PROJECT_REF` through the Supabase Management API read-only query endpoint when the token has `database_read` permission.
 
 ## Operations Evidence
 
@@ -71,6 +71,7 @@ Implemented:
 
 - `npm run db:backup`
 - `npm run db:restore-drill`
+- `npm run ops:evidence`
 - `npm run security:supabase`
 - `npm run scale:check`
 - `npm run load:smoke`
@@ -80,6 +81,8 @@ Implemented:
 - `npm run test:lms-smoke`
 
 Restore drills are intentionally guarded by `RESTORE_DRILL_CONFIRM=restore-non-production` and require a disposable non-production database URL.
+
+`npm run ops:evidence` validates the restore-drill evidence schema against the bundled example. For production proof, run it with `ENFORCE_REAL_OPS_EVIDENCE=1 RESTORE_DRILL_EVIDENCE_PATH=<completed-drill-json>`.
 
 ## Sales Boundary
 

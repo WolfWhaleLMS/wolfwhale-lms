@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { BookOpen, GraduationCap, Layers } from 'lucide-react'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
+import { TextbookImage } from '@/components/textbook/TextbookImage'
 import type { Textbook } from '@/lib/types/textbook'
 
 interface TextbookCardProps {
@@ -55,7 +56,7 @@ export function TextbookCard({
       {/* Cover / Gradient Header */}
       {textbook.cover_image_url ? (
         <div className="relative h-36 overflow-hidden">
-          <img
+          <TextbookImage
             src={textbook.cover_image_url}
             alt={textbook.title}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"

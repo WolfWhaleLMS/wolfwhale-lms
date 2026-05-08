@@ -4,9 +4,9 @@ Audit date: 2026-05-07
 
 ## Executive Finding
 
-WolfWhale has moved beyond the earlier controlled pilot and beyond the first Supabase-backed MVP. It now has a larger school-operations baseline with authenticated role routing, durable core LMS workflows, weighted gradebook summaries, rubrics, attendance, risk visibility, roster imports/invites, and scale-budget verification.
+WolfWhale has moved beyond the earlier controlled pilot and beyond the first Supabase-backed MVP. It now has a larger school-operations baseline with authenticated role routing, durable core LMS workflows, weighted gradebook summaries, rubrics, attendance, risk visibility, roster imports/invites, private course resource uploads, durable student companion persistence, and scale-budget verification.
 
-The verified claim is: **commercial school LMS baseline for single-school and controlled multi-school selling, with durable auth, role dashboards, clickable role tool hubs, course/enrollment management, assignments, submissions, weighted grades, rubrics, attendance, feedback, calendar/resource/message visibility, roster invitations, scale gates, and hardened Supabase data access.**
+The verified claim is: **commercial school LMS baseline for single-school and controlled multi-school selling, with durable auth, role dashboards, clickable role tool hubs, course/enrollment management, assignments, submissions, weighted grades, rubrics, attendance, feedback, calendar/resource/message visibility, private course-resource upload/download, roster invitations, scale gates, and hardened Supabase data access.**
 
 Do not market it as a proven large-district Canvas/Brightspace/Moodle displacement yet. That claim still requires a customer-specific SSO/SIS implementation, production restore-drill evidence against a disposable target, formal WCAG certification, and signed support/legal operating agreements.
 
@@ -14,8 +14,9 @@ Do not market it as a proven large-district Canvas/Brightspace/Moodle displaceme
 
 - Next.js 16.2.5 App Router, React 19, TypeScript, Tailwind 4.
 - Supabase Auth SSR via `@supabase/ssr`.
-- Supabase PostgreSQL RLS-backed tenant, role, course, enrollment, assignment, submission, grade, rubric, attendance, notification, resource, conversation, and message data.
-- Supabase Storage private course resources with signed access route.
+- Supabase PostgreSQL RLS-backed tenant, role, course, enrollment, assignment, submission, grade, rubric, attendance, notification, resource, conversation, message, and companion data.
+- Supabase Storage private course resources with staff upload and signed access route.
+- Supabase-backed Ice Age companion profile persistence with local client cache fallback.
 - Vitest unit/component tests, production build gate, and Playwright browser smoke.
 - Sentry, Vercel Analytics, Vercel Speed Insights, and Vercel cron route support.
 
@@ -42,8 +43,10 @@ Do not market it as a proven large-district Canvas/Brightspace/Moodle displaceme
   - `/api/lms/submissions`
   - `/api/lms/grades`
   - `/api/lms/roster/import`
+  - `/api/lms/resources`
   - `/api/lms/resources/[resourceId]`
   - `/api/lms/rubrics`
+  - `/api/companion/profile`
 
 ## Benchmark Against Canvas/Brightspace/Moodle/Edsby
 
@@ -51,7 +54,7 @@ Covered for a commercial district-baseline LMS:
 
 - Authentication and role routing.
 - Student, teacher, admin, and guardian dashboards.
-- Courses, enrollments, assignments, submissions, weighted grading, rubrics, attendance, feedback, calendar visibility, notifications, messages, and resources.
+- Courses, enrollments, assignments, submissions, weighted grading, rubrics, attendance, feedback, calendar visibility, notifications, messages, resources, and staff resource uploads.
 - Guardian-limited linked-student visibility.
 - Admin roster CSV validation and Supabase Auth invite imports.
 - OneRoster bundle validation, SIS export package generation, gradebook/attendance CSV exports, report-card generation, and SSO config validation.
@@ -65,7 +68,7 @@ Still below mature large-district Canvas-scale proof:
 
 - Customer-specific automated OneRoster/SIS sync, LTI, standards alignment, analytics, and archival exports.
 - Customer-specific SSO/SAML/OIDC, delegated admin, password recovery policy, and invite lifecycle polish.
-- File upload UI, malware scanning, quota management, and retention workflows.
+- Malware scanning, quota management, retention workflows, and legal-hold controls for uploaded files.
 - Load testing, restore-drill evidence, support SLAs, and full WCAG audit.
 
 ## Supabase Production Data Finding
@@ -77,6 +80,13 @@ Live Supabase connector validation against project `yhxesebykwhlpsmxxiqo` after 
 - 0 reviewed storage buckets left public.
 - 0 key launch tables without RLS.
 - 0 remaining legacy recursive messaging policies.
+
+Additional repo migrations added on 2026-05-08:
+
+- `20260508180000_student_companion_profiles.sql`
+- `20260508181000_course_resource_upload_rls.sql`
+
+These add durable companion storage and tighten course-material upload/read policies. Live production validation must be rerun after those migrations are applied to the target Supabase project.
 
 Applied live migration names include:
 
@@ -95,7 +105,7 @@ Applied live migration names include:
 - `npm run launch:verify`: passed.
 - `npm run lint`: passed.
 - `npm run typecheck`: passed.
-- `npm test`: passed, 18 files / 76 tests.
+- `npm test`: passed, 19 files / 82 tests before the current resource/companion push; rerun evidence is tracked in `TEST_EVIDENCE.md`.
 - `npm run enterprise:check`: passed.
 - `npm run district:verify`: passed.
 - `npm run district:proof`: passed for `fixtures/district/canvas-replacement-demo.json`.
@@ -104,11 +114,28 @@ Applied live migration names include:
 - `npm run build`: passed, 291 generated static pages and `ƒ Proxy`; route list includes attendance, rubric, roster import, gradebook export, attendance export, SIS export APIs, and dedicated student workspace routes.
 - `npm run test:lms-smoke` / `npm run test:a11y`: passed with screenshots in `test-results/lms-smoke`.
 - Student course workspace browser pass: passed with screenshots in `test-results/student-course-workflows`.
-- `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passed for real submit/create/attendance/rubric/grade/enrollment/import workflows.
+- `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passed for real submit/create/attendance/rubric/grade/enrollment/import workflows; current smoke now also covers teacher resource upload.
 - `npm audit --omit=dev --audit-level=high`: passed, 0 vulnerabilities.
 - Computer Use visual workflow pass: student demo login, dashboard tool hub, tool jump, dashboard-home jump, and sign-out passed in Chrome.
-- Live Supabase MCP security validation: passed against `yhxesebykwhlpsmxxiqo`, 0 failing rows across all five launch-security checks.
+- Live Supabase MCP security validation: passed against `yhxesebykwhlpsmxxiqo`, 0 failing rows across the original five launch-security checks. The repo now builds seven checks including course-material policy checks.
 
 ## Launch Recommendation
 
 Launch/sell as a commercial school LMS baseline for single schools and carefully scoped multi-school customers. Keep sales language precise: WolfWhale now supports real school LMS operations across core roles, gradebook, attendance, rubrics, roster invites, and data safety, but it is not yet independently proven as a large-district Canvas displacement.
+
+## Codebase Structure Follow-Up - 2026-05-08
+
+The codebase is not a disposable prototype, but it still had obvious sprint-build signals: several oversized files mixed data fetching, view logic, feature routing, and component primitives in one place. The highest-risk student LMS areas were refactored first.
+
+Improved:
+
+- Student workspaces now live under `components/lms/student-workspaces/` instead of one large mixed component file.
+- The student dashboard route now separates server data loading from presentation.
+- TypeScript project settings now reject JavaScript compilation and enforce consistent import casing.
+- Lint is now clean with 0 warnings after fixing textbook hook dependencies, centralizing textbook image rendering, and replacing a raw internal referral anchor.
+
+Remaining structural debt:
+
+- Textbook admin/editor pages are still large and should be split into route, form, preview, flashcard, and curriculum-outcome modules.
+- `app/globals.css` remains oversized and should be split into theme/system CSS modules after the current landing/theme work is finalized.
+- `lib/config/seo-pages.ts` and some seed scripts are large data/config files and should eventually move into structured JSON or scoped fixtures.

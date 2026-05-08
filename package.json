@@ -21,6 +21,7 @@
     "scale:check": "npx tsx scripts/check-lms-scale-budget.ts",
     "load:smoke": "npx tsx scripts/lms-load-smoke.ts",
     "enterprise:check": "npx tsx scripts/check-enterprise-readiness.ts",
+    "ops:evidence": "npx tsx scripts/check-ops-evidence.ts",
     "district:proof": "npx tsx scripts/check-district-proof.ts",
     "district:verify": "npm test tests/lms-district-scale.test.ts && npm run enterprise:check && npm run district:proof && npm run load:smoke",
     "test": "vitest run",

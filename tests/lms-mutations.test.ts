@@ -3,6 +3,7 @@ import {
   LmsMutationError,
   letterGradeForPercentage,
   normalizeGradeDraft,
+  normalizeResourceUploadDraft,
   normalizeSubmissionDraft,
   percentageForPoints,
 } from '@/lib/lms/mutations'
@@ -50,5 +51,31 @@ describe('LMS mutation validation', () => {
     expect(letterGradeForPercentage(97)).toBe('A+')
     expect(letterGradeForPercentage(82)).toBe('B-')
     expect(letterGradeForPercentage(59)).toBe('F')
+  })
+
+  it('normalizes private course resource uploads before storage', () => {
+    const file = new File(['course guide'], 'Unit Guide.pdf', { type: 'application/pdf' })
+
+    expect(
+      normalizeResourceUploadDraft({
+        courseId: 'course-1',
+        displayName: '  Unit 1 guide ',
+        file,
+      })
+    ).toMatchObject({
+      courseId: 'course-1',
+      displayName: 'Unit 1 guide',
+      file,
+      fileName: 'Unit Guide.pdf',
+      fileType: 'application/pdf',
+      fileSize: 12,
+    })
+
+    expect(() =>
+      normalizeResourceUploadDraft({
+        courseId: 'course-1',
+        file: new File(['x'], 'script.html', { type: 'text/html' }),
+      })
+    ).toThrow(LmsMutationError)
   })
 })

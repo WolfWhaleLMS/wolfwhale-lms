@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
@@ -71,7 +71,7 @@ export default function AdminTextbooksPage() {
   const [newFramework, setNewFramework] = useState('Saskatchewan Curriculum')
   const [newDescription, setNewDescription] = useState('')
 
-  const loadTextbooks = async () => {
+  const loadTextbooks = useCallback(async () => {
     try {
       const filters: { subject?: string; status?: string } = {}
       if (filterSubject !== 'all') filters.subject = filterSubject
@@ -84,11 +84,11 @@ export default function AdminTextbooksPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [filterSubject, filterStatus])
 
   useEffect(() => {
     loadTextbooks()
-  }, [filterSubject, filterStatus])
+  }, [loadTextbooks])
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault()

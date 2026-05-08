@@ -33,8 +33,8 @@ function roleHeading(role: LmsRole) {
 
 const requiredDashboardTools: Record<LmsRole, string[]> = {
   student: ['Courses', 'Assignments', 'Submit work', 'Grades and feedback', 'Gradebook', 'Attendance', 'Calendar', 'Resources', 'Messages', 'Notifications', 'Companion world', 'Settings'],
-  teacher: ['Courses', 'Roster', 'Create assignment', 'Gradebook', 'Attendance', 'Rubrics', 'Grading queue'],
-  admin: ['School', 'Metrics', 'Risk', 'Create course', 'Roster import'],
+  teacher: ['Courses', 'Roster', 'Assignments', 'Create assignment', 'Gradebook', 'Attendance', 'Rubrics', 'Grading queue', 'Calendar', 'Resources', 'Messages'],
+  admin: ['School', 'Audit trail', 'Metrics', 'Risk', 'Attendance', 'Calendar', 'Resources', 'Messages', 'Create course', 'Enroll student', 'Roster import'],
   guardian: ['Linked students', 'Attendance', 'Calendar', 'Resources', 'Messages'],
 }
 
@@ -223,6 +223,16 @@ async function exerciseTeacherWorkflows(page: Page) {
   await page.locator('#create-assignment textarea[name="instructions"]').fill('Workflow audit instructions.')
   await page.locator('#create-assignment').getByRole('button', { name: 'Create' }).click()
   await waitForSaved(page, 'teacher', 'assignment')
+
+  await page.locator('#resources').scrollIntoViewIfNeeded()
+  await page.locator('#resources input[name="displayName"]').fill(`Workflow audit resource ${stamp}`)
+  await page.locator('#resources input[name="file"]').setInputFiles({
+    name: `workflow-audit-${stamp}.txt`,
+    mimeType: 'text/plain',
+    buffer: Buffer.from(`Workflow audit resource ${stamp}`),
+  })
+  await page.locator('#resources').getByRole('button', { name: 'Upload resource' }).click()
+  await waitForSaved(page, 'teacher', 'resource')
 
   await page.locator('#attendance').scrollIntoViewIfNeeded()
   await page.locator('#attendance input[name="attendanceDate"]').fill('2026-05-07')

@@ -18,6 +18,7 @@ import {
   type CompanionSpecies,
   type StudentCompanionProfile,
 } from '@/lib/companion/ice-age-companion'
+import { loadCompanionProfileFromServer, saveCompanionProfileEverywhere, saveCompanionProfileToServer } from '@/lib/companion/profile-sync'
 
 function speciesLabel(species: CompanionSpecies) {
   return STARTER_SPECIES.find((candidate) => candidate.id === species)?.label ?? 'Study companion'
@@ -35,11 +36,30 @@ export function StudentCompanionWidget({ compact = false }: { compact?: boolean 
   const [species, setSpecies] = useState<CompanionSpecies>('woolly-mammoth')
 
   useEffect(() => {
+    let active = true
     const stored = loadCompanionProfile()
     if (stored) {
       setProfile(stored)
       setPetName(stored.petName)
       setSpecies(stored.species)
+    }
+
+    void loadCompanionProfileFromServer().then((serverProfile) => {
+      if (!active) return
+      if (serverProfile) {
+        setProfile(serverProfile)
+        setPetName(serverProfile.petName)
+        setSpecies(serverProfile.species)
+        saveCompanionProfile(serverProfile)
+        return
+      }
+      if (stored) {
+        void saveCompanionProfileToServer(stored)
+      }
+    })
+
+    return () => {
+      active = false
     }
   }, [])
 
@@ -47,7 +67,7 @@ export function StudentCompanionWidget({ compact = false }: { compact?: boolean 
 
   function persist(nextProfile: StudentCompanionProfile) {
     setProfile(nextProfile)
-    saveCompanionProfile(nextProfile)
+    saveCompanionProfileEverywhere(nextProfile)
   }
 
   function hatch(event: FormEvent<HTMLFormElement>) {

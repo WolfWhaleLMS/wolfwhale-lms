@@ -229,3 +229,44 @@ Verification on 2026-05-08:
 - `npm run test:a11y` passed.
 - Playwright login-page visual check found `aria-label="WolfWhale Learning Management System"`, 1 visible `/logo.png` mark, and Times New Roman computed font for `WolfWhale` and `Learning Management System`.
 - Screenshot evidence: `test-results/brand-login-1440.png`.
+
+## Codebase Structure Hardening Evidence
+
+Verification on 2026-05-08:
+
+- `npm run lint` passed with 0 errors and 0 warnings after textbook/referral cleanup.
+- `npm run typecheck` passed.
+- `npm test -- tests/lms-student-workspaces.test.tsx tests/lms-dashboards.test.tsx` passed: 2 files / 9 tests.
+- `npm run launch:verify` passed, including lint, typecheck, full test suite, district proof, enterprise check, scale check, load smoke, and production build.
+- `npm run test:a11y` passed; browser smoke screenshots are in `test-results/lms-smoke`.
+
+Known skipped gate:
+
+- `npm run security:supabase` was skipped inside `launch:verify` because no direct DB credential or Supabase Management API database-read token is present locally. The gate now accepts `SUPABASE_DB_URL` / `DATABASE_URL`, the safer `SUPABASE_DB_PASSWORD` path, or `SUPABASE_ACCESS_TOKEN` plus `SUPABASE_PROJECT_REF`.
+
+## Resource Upload, Companion Persistence, And Ops Evidence
+
+Verification on 2026-05-08:
+
+- `npm test` passed: 20 files / 85 tests.
+- `npm run lint` passed with 0 warnings.
+- `npm run typecheck` passed.
+- `npm run enterprise:check` passed.
+- `npm run ops:evidence` passed against the bundled restore-drill evidence schema example.
+- `npm run district:proof` passed.
+- `npm run build` passed and generated 293 static pages; route list includes `/api/lms/resources`, `/api/lms/resources/[resourceId]`, and `/api/companion/profile`.
+- `npm run launch:verify` passed after adding the resource upload, companion persistence, bucket configuration, and ops evidence gate.
+- `npm run test:a11y` passed.
+- `LMS_SMOKE_MUTATE=1 npm run test:a11y` passed after uploading a real teacher course resource through `/api/lms/resources`.
+
+New coverage/evidence added:
+
+- Teacher/admin resource upload form and API route.
+- Course resource storage bucket configured through `SUPABASE_COURSE_RESOURCE_BUCKET`, defaulting to the connected project's `lesson-resources` bucket.
+- Server-side resource upload/signing uses service-role storage after normal role and membership checks, so the live bucket policy mismatch no longer breaks valid staff uploads.
+- Supabase migrations now include durable `student_companion_profiles` plus course-resource upload/read policy hardening for `lesson-resources` and `course-materials`.
+- Supabase launch-security SQL now has seven checks, adding course-material/lesson-resource policy checks.
+
+Known skipped gate:
+
+- The direct live Supabase SQL step still skips without `SUPABASE_DB_URL`, `DATABASE_URL`, `SUPABASE_DB_PASSWORD`, or `SUPABASE_ACCESS_TOKEN` plus `SUPABASE_PROJECT_REF`. The local repo gate is ready; applying and proving the two new migrations against a target live project requires one of those operator credentials.

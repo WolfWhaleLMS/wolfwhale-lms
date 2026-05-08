@@ -1,6 +1,6 @@
 import { BarChart3, BookOpen, CalendarCheck, CalendarDays, ClipboardCheck, Download, FileText, MessageSquare, Plus, Users } from 'lucide-react'
 import { EmptyState, LmsPanel, LmsShell } from '@/components/lms/LmsShell'
-import { CalendarPanel, MessagesPanel, ResourcesPanel } from '@/components/lms/SharedLmsPanels'
+import { CalendarPanel, MessagesPanel, ResourceUploadForm, ResourcesPanel } from '@/components/lms/SharedLmsPanels'
 import type { buildLmsDashboardViews } from '@/lib/lms/read-model'
 
 type TeacherView = ReturnType<typeof buildLmsDashboardViews>['teacher']
@@ -143,7 +143,7 @@ export function TeacherDashboard({ view }: { view: TeacherView }) {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <CalendarPanel items={view.calendar} />
-        <ResourcesPanel resources={view.resources} />
+        <ResourcesPanel resources={view.resources} actions={<ResourceUploadForm courses={view.courses} returnTo="/teacher" />} />
         <MessagesPanel messages={view.messages} />
       </div>
 

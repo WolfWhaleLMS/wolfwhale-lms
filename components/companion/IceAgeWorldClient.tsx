@@ -13,6 +13,7 @@ import {
   type CompanionWorldActivityId,
   type StudentCompanionProfile,
 } from '@/lib/companion/ice-age-companion'
+import { loadCompanionProfileFromServer, saveCompanionProfileEverywhere, saveCompanionProfileToServer } from '@/lib/companion/profile-sync'
 import type { IceAgeCompanionSummary } from '@/components/companion/IceAgeCompanionClient'
 
 const rooms = [
@@ -44,17 +45,34 @@ export function IceAgeWorldClient({ summary }: { summary: IceAgeCompanionSummary
   const [activeRoom, setActiveRoom] = useState<(typeof rooms)[number]['id']>('glacier-commons')
 
   useEffect(() => {
+    let active = true
     const saved = loadCompanionProfile()
     const starter = saved ?? createStarterCompanion({ species: STARTER_SPECIES[0].id, petName: 'Tundra' })
     setProfile(starter)
-    if (!saved) saveCompanionProfile(starter)
+    if (!saved) saveCompanionProfileEverywhere(starter)
+
+    void loadCompanionProfileFromServer().then((serverProfile) => {
+      if (!active) return
+      if (serverProfile) {
+        setProfile(serverProfile)
+        saveCompanionProfile(serverProfile)
+        return
+      }
+      if (saved) {
+        void saveCompanionProfileToServer(saved)
+      }
+    })
+
+    return () => {
+      active = false
+    }
   }, [])
 
   function completeActivity(activityId: CompanionWorldActivityId) {
     if (!profile) return
     const updated = completeWorldActivity(profile, activityId)
     setProfile(updated)
-    saveCompanionProfile(updated)
+    saveCompanionProfileEverywhere(updated)
   }
 
   const room = rooms.find((candidate) => candidate.id === activeRoom) ?? rooms[0]

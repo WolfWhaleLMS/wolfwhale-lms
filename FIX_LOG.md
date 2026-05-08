@@ -136,3 +136,37 @@ Sprint date: 2026-05-07
 - Added `WolfWhaleBrand` as the shared brand lockup component.
 - Applied the Times New Roman `WolfWhale` / `Learning Management System` lockup to the main login, help, privacy, terms, info, and LMS landing surfaces.
 - Updated logo loading/glow components so the black mark sits on a white tile and remains visible on dark surfaces.
+
+## Codebase Structure Hardening
+
+- Split `components/lms/StudentWorkspaces.tsx` into a dedicated `components/lms/student-workspaces/` feature module with separate course, assignment, progress, communications, settings, helper, and shared UI files.
+- Preserved the existing `StudentWorkspaces` export surface so route imports did not need to change.
+- Split `app/student/dashboard/page.tsx` into a thin route wrapper, `dashboard-data.ts` for server-side Supabase/auth/data shaping, and `dashboard-view.tsx` for presentation.
+- Tightened TypeScript config by disabling JavaScript compilation in the TypeScript project and enabling consistent import casing checks.
+- Centralized textbook dynamic image rendering in `TextbookImage` so arbitrary textbook/admin images have one explicit native-image boundary instead of repeated lint exceptions.
+- Fixed textbook admin/editor hook dependency warnings with stable callback loaders.
+- Replaced the referral banner's raw internal anchor with Next `Link`.
+- Verified the refactor with focused student LMS tests, full launch verification, clean lint, and browser LMS smoke checks.
+
+## Supabase Security Gate Credential Path
+
+- Added `scripts/resolve-supabase-db-url.ts` so live Supabase SQL checks can run from either `SUPABASE_DB_URL` / `DATABASE_URL` or a password-only `SUPABASE_DB_PASSWORD` setup.
+- The resolver reads local env files and the linked Supabase pooler URL, so operators do not have to paste a full Postgres URL into the shell.
+- Added an alternate Supabase Management API read-only query path using `SUPABASE_ACCESS_TOKEN` plus `SUPABASE_PROJECT_REF` for operators that prefer token-scoped database-read validation.
+- Updated `npm run launch:verify` so missing DB credentials are handled as a deliberate skipped gate, while actual Supabase security failures still fail verification.
+- Added `.env.example` entries and resolver tests for the password-only Supabase launch-security path.
+
+## Resource Uploads, Companion Persistence, And Ops Evidence
+
+- Added teacher/admin private course resource upload UI inside the Resources panel.
+- Added `/api/lms/resources` and `createCourseResource` so staff uploads validate file type/size, upload to private Supabase Storage, create/reuse a course resources lesson, attach the file, and audit the mutation.
+- Added `SUPABASE_COURSE_RESOURCE_BUCKET`, defaulting to the connected project's `lesson-resources` bucket while still supporting `course-materials` for new projects.
+- Updated course resource upload/signing to use server-side service-role storage after normal role/membership validation, avoiding valid staff uploads being blocked by drifted bucket policies.
+- Added RLS/storage migration `20260508181000_course_resource_upload_rls.sql` to remove broad course-material public reads, scope course-material insert paths to the uploader tenant, and allow assigned teachers to insert/delete lesson attachments.
+- Expanded Supabase launch-security checks to include `student_companion_profiles`, course-material public listing, tenant-scoped upload policy validation, and assigned-teacher lesson-attachment insert validation.
+- Added `student_companion_profiles` migration, `/api/companion/profile`, and client sync helpers so Ice Age companion progress is durable for authenticated students while still using local cache as a fast fallback.
+- Updated the floating companion, student companion widget, and companion world to sync with the server.
+- Added restore-drill evidence schema validation, `npm run ops:evidence`, example evidence JSON, production-promotion checklist, and restore evidence documentation.
+- Added `ops:evidence` to `npm run launch:verify` and `enterprise:check`.
+- Tightened the student dashboard data loader by replacing loose `any` casts with typed Supabase row shapers and fixed course grade summaries to average stored grade percentages instead of mixing earned points with percentages.
+- Strengthened browser smoke coverage so teacher/admin dashboard tool hubs include resources/calendar/messages and mutating teacher smoke uploads a real course resource file.

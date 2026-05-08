@@ -122,13 +122,7 @@ const nextConfig = {
     ];
   },
   async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/login?next=%2Fstudent',
-        permanent: false,
-      },
-    ];
+    return [];
   },
 };
 

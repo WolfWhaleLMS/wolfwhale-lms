@@ -1,3 +1,5 @@
+import { courseResourceBucketIds } from '@/lib/lms/resource-storage'
+
 export interface LaunchSecurityCheck {
   id: string
   description: string
@@ -27,6 +29,7 @@ export const LAUNCH_SENSITIVE_TABLES = [
   'notifications',
   'notification_preferences',
   'audit_logs',
+  'student_companion_profiles',
 ] as const
 
 export const SECURITY_INVOKER_VIEWS = ['student_course_progress', 'course_student_count'] as const
@@ -35,6 +38,7 @@ export const PUBLIC_STORAGE_BUCKETS_REQUIRING_REVIEW = [
   'course-thumbnails',
   'profile-avatars',
   'certificates',
+  ...courseResourceBucketIds,
 ] as const
 
 export const HIGH_RISK_SECURITY_DEFINER_RPCS = [
@@ -161,6 +165,45 @@ left join pg_policies p
   )
 where b.public or p.policyname is not null
 order by b.id, p.policyname;`,
+    },
+    {
+      id: 'course_materials_insert_tenant_scoped',
+      description: 'Course material uploads must be scoped to the authenticated user tenant path.',
+      sql: `with expected(policyname) as (values ('course_materials_teacher_insert'))
+select expected.policyname, p.with_check
+from expected
+left join pg_policies p
+  on p.schemaname = 'storage'
+  and p.tablename = 'objects'
+  and p.cmd = 'INSERT'
+  and p.policyname = expected.policyname
+where p.policyname is null
+  or (
+    p.with_check is null
+    or (p.with_check not like '%course-materials%' and p.with_check not like '%lesson-resources%')
+    or p.with_check not like '%tenant_memberships%'
+    or p.with_check not like '%storage.foldername%'
+    or p.with_check not like '%tenant_id%'
+  );`,
+    },
+    {
+      id: 'lesson_attachment_insert_allows_assigned_teachers',
+      description: 'Lesson attachment inserts must allow assigned course teachers, not only lesson creators.',
+      sql: `with expected(policyname) as (values ('la_insert_teacher'))
+select expected.policyname, p.with_check
+from expected
+left join pg_policies p
+  on p.schemaname = 'public'
+  and p.tablename = 'lesson_attachments'
+  and p.cmd = 'INSERT'
+  and p.policyname = expected.policyname
+where p.policyname is null
+  or (
+    p.with_check is null
+    or p.with_check not like '%course_enrollments%'
+    or p.with_check not like '%teacher_id%'
+    or p.with_check not like '%auth.uid()%'
+  );`,
     },
   ]
 }

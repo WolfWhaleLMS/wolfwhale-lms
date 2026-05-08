@@ -1,6 +1,22 @@
-import { CalendarDays, FileText, MessageSquare } from 'lucide-react'
+import type { ReactNode } from 'react'
+import { CalendarDays, FileText, MessageSquare, Upload } from 'lucide-react'
 import { EmptyState, LmsPanel } from '@/components/lms/LmsShell'
-import type { LmsCalendarItem, LmsMessageSummary, LmsResourceSummary } from '@/lib/lms/types'
+import type { LmsCalendarItem, LmsCourseSummary, LmsMessageSummary, LmsResourceSummary } from '@/lib/lms/types'
+
+const resourceAcceptTypes = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'text/plain',
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'video/mp4',
+  'audio/mpeg',
+  'application/zip',
+].join(',')
 
 export function CalendarPanel({ id = 'calendar', items }: { id?: string; items: LmsCalendarItem[] }) {
   return (
@@ -26,9 +42,77 @@ export function CalendarPanel({ id = 'calendar', items }: { id?: string; items: 
   )
 }
 
-export function ResourcesPanel({ id = 'resources', resources }: { id?: string; resources: LmsResourceSummary[] }) {
+export function ResourceUploadForm({
+  courses,
+  returnTo,
+}: {
+  courses: LmsCourseSummary[]
+  returnTo: '/teacher' | '/admin'
+}) {
+  if (courses.length === 0) {
+    return <EmptyState>Create a course before uploading resources.</EmptyState>
+  }
+
+  return (
+    <form action="/api/lms/resources" method="post" encType="multipart/form-data" className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-950">
+      <input type="hidden" name="returnTo" value={returnTo} />
+      <label className="grid gap-1 text-sm font-semibold">
+        Course
+        <select
+          name="courseId"
+          required
+          className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+        >
+          {courses.map((course) => (
+            <option key={course.id} value={course.id}>
+              {course.title}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="grid gap-1 text-sm font-semibold">
+        Display name
+        <input
+          name="displayName"
+          maxLength={255}
+          placeholder="Unit guide, lab sheet, slide deck..."
+          className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+        />
+      </label>
+      <label className="grid gap-1 text-sm font-semibold">
+        File
+        <input
+          name="file"
+          type="file"
+          required
+          accept={resourceAcceptTypes}
+          className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-normal text-slate-950 file:mr-3 file:rounded-md file:border-0 file:bg-teal-700 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-white dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+        />
+      </label>
+      <button
+        type="submit"
+        className="inline-flex h-10 w-fit items-center justify-center gap-2 rounded-md bg-teal-700 px-4 text-sm font-semibold text-white hover:bg-teal-800"
+      >
+        <Upload className="h-4 w-4" />
+        Upload resource
+      </button>
+      <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">PDF, Office, text, image, audio, video, and ZIP files up to 100 MB. Downloads use signed private links.</p>
+    </form>
+  )
+}
+
+export function ResourcesPanel({
+  id = 'resources',
+  resources,
+  actions,
+}: {
+  id?: string
+  resources: LmsResourceSummary[]
+  actions?: ReactNode
+}) {
   return (
     <LmsPanel id={id} title="Resources">
+      {actions ? <div className="mb-4">{actions}</div> : null}
       {resources.length === 0 ? (
         <EmptyState>No course resources.</EmptyState>
       ) : (

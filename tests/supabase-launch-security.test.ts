@@ -41,6 +41,7 @@ describe('Supabase launch security invariants', () => {
         'student_parents',
         'audit_logs',
         'data_deletion_requests',
+        'student_companion_profiles',
       ])
     )
   })
@@ -55,6 +56,8 @@ describe('Supabase launch security invariants', () => {
       'security_invoker_views',
       'authenticated_high_risk_security_definer_rpc_execute',
       'public_storage_bucket_listing',
+      'course_materials_insert_tenant_scoped',
+      'lesson_attachment_insert_allows_assigned_teachers',
     ])
 
     for (const table of LAUNCH_SENSITIVE_TABLES) {
@@ -72,6 +75,9 @@ describe('Supabase launch security invariants', () => {
     for (const bucket of PUBLIC_STORAGE_BUCKETS_REQUIRING_REVIEW) {
       expect(checks[4].sql).toContain(bucket)
     }
+
+    expect(checks[5].sql).toContain('course_materials_teacher_insert')
+    expect(checks[6].sql).toContain('course_enrollments')
   })
 
   it('has a migration that revokes direct execute on high-risk security-definer RPCs', () => {
@@ -116,10 +122,11 @@ describe('Supabase launch security invariants', () => {
     expect(policyMigration).toContain('set public = false')
   })
 
-  it('documents the database URL needed for live launch-security validation', () => {
+  it('documents the database credential needed for live launch-security validation', () => {
     const envExample = readFileSync(envExamplePath, 'utf8')
 
     expect(envExample).toContain('SUPABASE_DB_URL=')
+    expect(envExample).toContain('SUPABASE_DB_PASSWORD=')
     expect(envExample).toContain('npm run security:supabase')
   })
 })

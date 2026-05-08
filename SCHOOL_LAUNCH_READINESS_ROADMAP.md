@@ -20,9 +20,10 @@ Ready to sell/pilot now:
 - Student all-assignments workspace grouped by course.
 - Student dedicated feature workspaces for grades/feedback, gradebook, attendance, calendar, resources, messages, and notifications.
 - Student background theme settings with local persistence.
-- Student study companion baseline with starter species, hatching, XP, levels, behavior mode, sprite fallback rendering, and world activities.
+- Student study companion baseline with starter species, hatching, XP, levels, behavior mode, sprite fallback rendering, world activities, local cache, and authenticated Supabase persistence.
 - Guardian linked-student visibility.
 - Private resource access through signed storage URLs.
+- Teacher/admin private course resource uploads through Supabase Storage and lesson attachments.
 - Supabase RLS hardening and live validation.
 - Single-school scale-budget checks.
 - Enterprise readiness gate, support runbook, incident runbook, data-processing checklist, and synthetic load smoke.
@@ -61,7 +62,7 @@ These are the next product-depth tracks before claiming complete Canvas/Brightsp
 1. Standards alignment, report cards, analytics, and parent notification policy.
 2. Customer-specific automated OneRoster/SIS sync, LTI exploration, and archival exports.
 3. Customer-specific SSO/SAML/OIDC, password recovery policy, and delegated admin controls.
-4. File upload UI, retention policies, virus scanning, and quota management.
+4. Retention policies, virus scanning, quota management, and legal-hold controls for uploaded files.
 5. Messaging moderation, abuse reporting, audit review, and communication policy controls.
 6. Independent load testing beyond the verified single-school budget.
 7. Full WCAG audit and remediation.
@@ -72,10 +73,11 @@ These are the next product-depth tracks before claiming complete Canvas/Brightsp
 
 1. Separate staging and production Supabase projects.
 2. Promotion process for migrations and seed/test data.
-3. Observability dashboards for auth errors, RLS denials, mutation failures, and slow queries.
-4. Backups, restore drills, and retention reporting.
-5. Security review for FERPA/COPPA/PIPEDA-aligned operating procedures.
-6. Contract-ready support and data-processing documentation.
+3. Restore-drill evidence capture using `npm run ops:evidence` with `ENFORCE_REAL_OPS_EVIDENCE=1`.
+4. Observability dashboards for auth errors, RLS denials, mutation failures, and slow queries.
+5. Backups, restore drills, and retention reporting.
+6. Security review for FERPA/COPPA/PIPEDA-aligned operating procedures.
+7. Contract-ready support and data-processing documentation.
 
 ## Sales Positioning
 

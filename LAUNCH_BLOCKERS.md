@@ -4,7 +4,9 @@ Audit date: 2026-05-07
 
 ## Current Gate
 
-No repo-local or connected-Supabase P0/P1 blockers remain for a commercial single-school LMS launch within the currently verified operating envelope.
+No repo-local P0/P1 blockers remain for a commercial single-school LMS launch within the currently verified operating envelope. Connected Supabase browser smoke passes for the current LMS workflows, including real teacher resource upload through the existing `lesson-resources` bucket.
+
+Operator-gated live proof still required: apply `20260508180000_student_companion_profiles.sql` and `20260508181000_course_resource_upload_rls.sql` to the target Supabase project and rerun `npm run security:supabase` with direct DB credentials or a database-read Supabase token. Until then, companion progress keeps its local fallback and resource upload works through the server-side service-role storage path, but the newest table/policy hardening has not been SQL-proven on the live database from this shell.
 
 Closed gates:
 
@@ -16,10 +18,11 @@ Closed gates:
 - Student courses and assignments now open real workspaces instead of forcing students to hunt through one unclickable scrolling dashboard.
 - Student gradebook, grades/feedback, attendance, calendar, resources, messages, and notifications now open dedicated workspaces from the tool hub.
 - Student course workspaces collect each course's syllabus, lessons, materials, submit portals, grades/feedback, gradebook, attendance, calendar, and messages in one course-specific view.
-- Student settings can change background themes, and the study companion baseline can hatch, render through the sprite fallback/atlas contract, earn XP, level, switch behavior mode locally, and open the companion world.
+- Student settings can change background themes, and the study companion baseline can hatch, render through the sprite fallback/atlas contract, earn XP, level, sync through authenticated Supabase persistence, switch behavior mode, and open the companion world.
 - Student submissions, teacher assignment creation, teacher grading, teacher attendance marking, teacher rubric creation, admin course creation, admin enrollment, and admin roster import/invite flow persist through API routes.
 - Weighted gradebook, attendance, and academic-risk summaries are available to the correct roles.
 - Calendar, message, notification, and course-resource visibility are present in each role surface.
+- Teacher and admin dashboards can upload private course resources into signed-link Supabase Storage.
 - Course resource downloads go through signed Supabase Storage URLs.
 - Guardian views are scoped to linked students.
 - Roster CSV validation and scale-budget checks are implemented.
@@ -50,7 +53,7 @@ These are not repo-local P0/P1 blockers for the current commercial baseline, but
 
 - Automated OneRoster/SIS sync, LTI, standards alignment, analytics, and archival exports for that customer.
 - SSO/SAML/OIDC, password recovery policy, delegated admin workflows, and invite lifecycle polish for that customer.
-- File upload UI, malware scanning, storage quotas, retention policies, and legal hold workflows.
+- Malware scanning, storage quotas, retention policies, and legal hold workflows for customer file storage.
 - Production restore-drill evidence against a disposable staging database.
 - Independent customer load testing beyond the current verified envelope of 5000 active students, 500 teachers, 1000 courses, and 50000 active enrollments.
 - Formal WCAG audit beyond current smoke checks.

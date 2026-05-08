@@ -1,10 +1,27 @@
 import type { SupabaseClient, User } from '@supabase/supabase-js'
+import { getCourseResourceBucket } from '@/lib/lms/resource-storage'
 
 type Row = Record<string, unknown>
 type LmsStaffRole = 'teacher' | 'admin' | 'super_admin'
 type LmsAttendanceStatus = 'present' | 'absent' | 'tardy' | 'excused' | 'online'
 
 const attendanceStatuses: readonly LmsAttendanceStatus[] = ['present', 'absent', 'tardy', 'excused', 'online']
+const courseResourceLessonTitle = 'Course resources'
+const maxCourseResourceBytes = 100 * 1024 * 1024
+const allowedCourseResourceMimeTypes = new Set([
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'text/plain',
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'video/mp4',
+  'audio/mpeg',
+  'application/zip',
+])
 
 export class LmsMutationError extends Error {
   constructor(
@@ -60,6 +77,12 @@ function numeric(value: unknown, field: string) {
   return parsed
 }
 
+function optionalNumeric(value: unknown, fallback = 0) {
+  const parsed = typeof value === 'number' ? value : Number(String(value ?? '').trim())
+
+  return Number.isFinite(parsed) ? parsed : fallback
+}
+
 function bool(value: unknown) {
   return value === true || value === 'true' || value === 'on' || value === '1'
 }
@@ -80,6 +103,63 @@ function jsonArray(value: unknown, field: string) {
 
 function isRole(value: unknown, roles: readonly string[]) {
   return typeof value === 'string' && roles.includes(value)
+}
+
+function isUploadFile(value: unknown): value is File {
+  return Boolean(
+    value &&
+      typeof value === 'object' &&
+      'name' in value &&
+      'size' in value &&
+      typeof (value as File).name === 'string' &&
+      typeof (value as File).size === 'number'
+  )
+}
+
+function mimeTypeForFileName(fileName: string) {
+  const extension = fileName.toLowerCase().split('.').pop()
+
+  switch (extension) {
+    case 'pdf':
+      return 'application/pdf'
+    case 'doc':
+      return 'application/msword'
+    case 'docx':
+      return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    case 'pptx':
+      return 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+    case 'xlsx':
+      return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    case 'txt':
+      return 'text/plain'
+    case 'jpg':
+    case 'jpeg':
+      return 'image/jpeg'
+    case 'png':
+      return 'image/png'
+    case 'gif':
+      return 'image/gif'
+    case 'mp4':
+      return 'video/mp4'
+    case 'mp3':
+      return 'audio/mpeg'
+    case 'zip':
+      return 'application/zip'
+    default:
+      return ''
+  }
+}
+
+function safeStorageFileName(fileName: string) {
+  return (
+    fileName
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9._-]+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^\.+/, '')
+      .slice(0, 180) || 'course-resource'
+  )
 }
 
 function rows(data: unknown) {
@@ -207,6 +287,60 @@ async function insertAuditLog(
   })
 }
 
+async function ensureCourseResourceLesson(
+  supabase: SupabaseClient,
+  input: { tenantId: string; courseId: string; createdBy: string }
+) {
+  const existingLesson = await maybeSingleRow(
+    supabase
+      .from('lessons')
+      .select('id')
+      .eq('tenant_id', input.tenantId)
+      .eq('course_id', input.courseId)
+      .eq('title', courseResourceLessonTitle)
+      .order('created_at', { ascending: true })
+      .limit(1)
+      .maybeSingle(),
+    'resource_lesson_lookup_failed'
+  )
+
+  if (existingLesson) {
+    return id(existingLesson.id, 'lesson_id')
+  }
+
+  const lastLesson = await maybeSingleRow(
+    supabase
+      .from('lessons')
+      .select('order_index')
+      .eq('tenant_id', input.tenantId)
+      .eq('course_id', input.courseId)
+      .order('order_index', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    'lesson_order_lookup_failed'
+  )
+  const lesson = await singleRow(
+    supabase
+      .from('lessons')
+      .insert({
+        tenant_id: input.tenantId,
+        course_id: input.courseId,
+        title: courseResourceLessonTitle,
+        description: 'Teacher-uploaded course files and handouts.',
+        content: '',
+        order_index: optionalNumeric(lastLesson?.order_index, 0) + 1,
+        created_by: input.createdBy,
+        status: 'published',
+        published_at: new Date().toISOString(),
+      })
+      .select('id')
+      .single(),
+    'resource_lesson_insert_failed'
+  )
+
+  return id(lesson.id, 'lesson_id')
+}
+
 export function normalizeSubmissionDraft(input: { assignmentId: unknown; content: unknown }) {
   return {
     assignmentId: id(input.assignmentId, 'assignment_id'),
@@ -284,6 +418,34 @@ export function normalizeAssignmentDraft(input: {
     dueDate: limitedText(input.dueDate, 'due_date', 80),
     maxPoints,
     category: optionalLimitedText(input.category, 80) || 'Coursework',
+  }
+}
+
+export function normalizeResourceUploadDraft(input: { courseId: unknown; displayName?: unknown; file: unknown }) {
+  if (!isUploadFile(input.file)) {
+    throw new LmsMutationError('A resource file is required.', 'missing_resource_file')
+  }
+
+  const fileName = limitedText(input.file.name, 'file_name', 255)
+  const fileType = text(input.file.type, mimeTypeForFileName(fileName))
+
+  if (input.file.size <= 0) {
+    throw new LmsMutationError('Resource file is empty.', 'empty_resource_file')
+  }
+  if (input.file.size > maxCourseResourceBytes) {
+    throw new LmsMutationError('Resource file must be 100 MB or smaller.', 'resource_file_too_large')
+  }
+  if (!allowedCourseResourceMimeTypes.has(fileType)) {
+    throw new LmsMutationError('Resource file type is not supported.', 'unsupported_resource_file_type')
+  }
+
+  return {
+    courseId: id(input.courseId, 'course_id'),
+    displayName: optionalLimitedText(input.displayName, 255) || fileName,
+    file: input.file,
+    fileName,
+    fileType,
+    fileSize: input.file.size,
   }
 }
 
@@ -632,6 +794,88 @@ export async function createAssignment(
   })
 
   return { assignmentId: id(assignment.id, 'assignment_id') }
+}
+
+export async function createCourseResource(
+  supabase: SupabaseClient,
+  input: { courseId: unknown; displayName?: unknown; file: unknown },
+  options: { storageClient?: SupabaseClient; bucket?: string } = {}
+) {
+  const user = await requireUser(supabase)
+  const membership = await requireStaff(supabase, user)
+  const draft = normalizeResourceUploadDraft(input)
+  const course = await singleRow(
+    supabase.from('courses').select('id,tenant_id,created_by').eq('id', draft.courseId).single(),
+    'course_lookup_failed'
+  )
+  const tenantId = id(course.tenant_id, 'tenant_id')
+
+  if (tenantId !== membership.tenantId) {
+    throw new LmsMutationError('Course does not belong to this school.', 'tenant_mismatch')
+  }
+  if (membership.role === 'teacher') {
+    await ensureTeacherCanManageCourse(supabase, {
+      tenantId,
+      courseId: draft.courseId,
+      courseCreatedBy: course.created_by,
+      teacherId: user.id,
+    })
+  }
+
+  const storageObjectName = `${tenantId}/${user.id}/${draft.courseId}/${Date.now()}-${Math.random()
+    .toString(36)
+    .slice(2, 10)}-${safeStorageFileName(draft.fileName)}`
+  const storageClient = options.storageClient ?? supabase
+  const storageBucket = options.bucket ?? getCourseResourceBucket()
+  let uploaded = false
+
+  try {
+    const { error: uploadError } = await storageClient.storage.from(storageBucket).upload(storageObjectName, draft.file, {
+      contentType: draft.fileType,
+      upsert: false,
+    })
+
+    if (uploadError) {
+      throw new LmsMutationError(`Unable to upload course resource: ${uploadError.message}`, 'resource_upload_failed')
+    }
+    uploaded = true
+
+    const lessonId = await ensureCourseResourceLesson(supabase, { tenantId, courseId: draft.courseId, createdBy: user.id })
+
+    const resource = await singleRow(
+      supabase
+        .from('lesson_attachments')
+        .insert({
+          lesson_id: lessonId,
+          file_path: storageObjectName,
+          file_name: draft.fileName,
+          file_type: draft.fileType,
+          file_size: draft.fileSize,
+          display_name: draft.displayName,
+          order_index: 0,
+        })
+        .select('id')
+        .single(),
+      'resource_insert_failed'
+    )
+
+    await insertAuditLog(supabase, {
+      tenantId,
+      userId: user.id,
+      action: 'resource.created',
+      resourceType: 'lesson_attachment',
+      resourceId: id(resource.id, 'resource_id'),
+      details: { course_id: draft.courseId, lesson_id: lessonId, file_name: draft.fileName },
+    })
+
+    return { resourceId: id(resource.id, 'resource_id') }
+  } catch (error) {
+    if (uploaded) {
+      await storageClient.storage.from(storageBucket).remove([storageObjectName])
+    }
+
+    throw error
+  }
 }
 
 export async function markAttendance(

@@ -15,6 +15,7 @@ import {
   type CompanionSpecies,
   type StudentCompanionProfile,
 } from '@/lib/companion/ice-age-companion'
+import { loadCompanionProfileFromServer, saveCompanionProfileEverywhere, saveCompanionProfileToServer } from '@/lib/companion/profile-sync'
 import { cn } from '@/lib/utils'
 
 export interface IceAgeCompanionSummary {
@@ -33,10 +34,28 @@ export function IceAgeCompanionClient({ summary }: { summary: IceAgeCompanionSum
   const [pointer, setPointer] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
+    let active = true
     const saved = loadCompanionProfile()
     setProfile(saved)
     setPanelOpen(!saved)
     setReady(true)
+
+    void loadCompanionProfileFromServer().then((serverProfile) => {
+      if (!active) return
+      if (serverProfile) {
+        setProfile(serverProfile)
+        setPanelOpen(false)
+        saveCompanionProfile(serverProfile)
+        return
+      }
+      if (saved) {
+        void saveCompanionProfileToServer(saved)
+      }
+    })
+
+    return () => {
+      active = false
+    }
   }, [])
 
   useEffect(() => {
@@ -65,7 +84,7 @@ export function IceAgeCompanionClient({ summary }: { summary: IceAgeCompanionSum
 
   function persist(nextProfile: StudentCompanionProfile) {
     setProfile(nextProfile)
-    saveCompanionProfile(nextProfile)
+    saveCompanionProfileEverywhere(nextProfile)
   }
 
   function awardQuickXp() {

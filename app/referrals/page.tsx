@@ -77,7 +77,7 @@ export default function ReferralsPage() {
         <div className="max-w-6xl mx-auto px-4 py-1.5 flex items-center justify-center gap-2 text-xs sm:text-sm">
           <span className="w-1.5 h-1.5 rounded-full bg-[#00BFFF] animate-pulse" />
           <span className="text-gray-700 dark:text-white/80 font-medium">IT Summit 2026 &mdash; See WolfWhale live</span>
-          <a href="/#contact" className="text-[#00BFFF] font-semibold hover:underline ml-1">Book a Meeting &rarr;</a>
+          <Link href="/#contact" className="text-[#00BFFF] font-semibold hover:underline ml-1">Book a Meeting &rarr;</Link>
         </div>
       </div>
 

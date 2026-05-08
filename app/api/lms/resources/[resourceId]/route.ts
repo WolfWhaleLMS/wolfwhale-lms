@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getCourseResourceBucket } from '@/lib/lms/resource-storage'
+import { createAdminClient, hasSupabaseAdminEnv } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 
 type RouteContext = {
@@ -31,8 +33,9 @@ export async function GET(_request: NextRequest, context: RouteContext) {
     return notFound()
   }
 
-  const { data: signed, error: signedError } = await supabase.storage
-    .from('course-materials')
+  const storageClient = hasSupabaseAdminEnv() ? createAdminClient() : supabase
+  const { data: signed, error: signedError } = await storageClient.storage
+    .from(getCourseResourceBucket())
     .createSignedUrl(String(resource.file_path), 300)
 
   if (signedError || !signed?.signedUrl) {

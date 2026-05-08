@@ -64,6 +64,7 @@ import {
   unlinkChapterOutcome,
   getTextbook,
 } from '@/app/actions/textbooks'
+import { TextbookImage } from '@/components/textbook/TextbookImage'
 import type {
   TextbookChapter,
   TextbookFlashcard,
@@ -351,7 +352,7 @@ function ImageBlockEditor({
       </div>
       {block.data.url && (
         <div className="mt-3 rounded-lg border border-border p-2">
-          <img
+          <TextbookImage
             src={block.data.url}
             alt={block.data.alt || ''}
             className="max-h-48 mx-auto"
@@ -1138,7 +1139,7 @@ function FlashcardManager({ chapterId }: { chapterId: string }) {
   const [difficulty, setDifficulty] = useState(1)
   const [addingCard, setAddingCard] = useState(false)
 
-  const loadFlashcards = async () => {
+  const loadFlashcards = useCallback(async () => {
     try {
       const data = await getAdminChapterFlashcards(chapterId)
       setFlashcards(data as TextbookFlashcard[])
@@ -1147,11 +1148,11 @@ function FlashcardManager({ chapterId }: { chapterId: string }) {
     } finally {
       setLoadingCards(false)
     }
-  }
+  }, [chapterId])
 
   useEffect(() => {
     loadFlashcards()
-  }, [chapterId])
+  }, [loadFlashcards])
 
   const handleAddFlashcard = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -1355,7 +1356,7 @@ function OutcomesManager({
   const [loadingOutcomes, setLoadingOutcomes] = useState(true)
   const [showAvailable, setShowAvailable] = useState(false)
 
-  const loadOutcomes = async () => {
+  const loadOutcomes = useCallback(async () => {
     try {
       const [linked, available] = await Promise.all([
         getChapterOutcomes(chapterId),
@@ -1368,7 +1369,7 @@ function OutcomesManager({
     } finally {
       setLoadingOutcomes(false)
     }
-  }
+  }, [chapterId, gradeLevel, framework, province, subject])
 
   useEffect(() => {
     if (province && framework && subject && gradeLevel) {
@@ -1376,7 +1377,7 @@ function OutcomesManager({
     } else {
       setLoadingOutcomes(false)
     }
-  }, [chapterId, province, framework, subject, gradeLevel])
+  }, [gradeLevel, framework, loadOutcomes, province, subject])
 
   const handleLink = async (outcomeId: string) => {
     try {

@@ -1,6 +1,6 @@
 import { Activity, AlertTriangle, Bell, BookOpen, CalendarCheck, CalendarDays, ClipboardCheck, Download, FileText, MessageSquare, Plus, Upload, UserPlus, Users } from 'lucide-react'
 import { LmsPanel, LmsShell } from '@/components/lms/LmsShell'
-import { CalendarPanel, MessagesPanel, ResourcesPanel } from '@/components/lms/SharedLmsPanels'
+import { CalendarPanel, MessagesPanel, ResourceUploadForm, ResourcesPanel } from '@/components/lms/SharedLmsPanels'
 import type { buildLmsDashboardViews } from '@/lib/lms/read-model'
 
 type AdminView = ReturnType<typeof buildLmsDashboardViews>['admin']
@@ -152,7 +152,7 @@ export function AdminDashboard({ view }: { view: AdminView }) {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <CalendarPanel items={view.calendar} />
-        <ResourcesPanel resources={view.resources} />
+        <ResourcesPanel resources={view.resources} actions={<ResourceUploadForm courses={view.courses} returnTo="/admin" />} />
         <MessagesPanel messages={view.messages} />
       </div>
 
