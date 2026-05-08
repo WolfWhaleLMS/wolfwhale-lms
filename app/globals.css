@@ -33,6 +33,7 @@
 }
 
 .ww-companion-sprite-shell,
+.ww-companion-preview-shell,
 .ww-companion-fallback-shell,
 .ww-companion-egg-shell {
   display: inline-block;

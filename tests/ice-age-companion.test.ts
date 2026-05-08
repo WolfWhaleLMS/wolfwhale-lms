@@ -124,7 +124,7 @@ describe('WolfWhale Ice Age Companion logic', () => {
     >
     const spriteCueAssets = COMPANION_SPRITE_ASSETS as Record<
       string,
-      { sparkleAnchor?: string; emoticonCue?: string; anatomyLock?: string }
+      { basePreviewPath?: string; sparkleAnchor?: string; emoticonCue?: string; anatomyLock?: string }
     >
 
     for (const [stateName, state] of Object.entries(animationCueStates)) {
@@ -143,6 +143,15 @@ describe('WolfWhale Ice Age Companion logic', () => {
       expect(cueAsset.emoticonCue, `${species.label} needs a cute face cue`).toMatch(/eye|blush|smile|heart/i)
       expect(cueAsset.anatomyLock, `${species.label} needs an anatomy lock`).toMatch(/\S/)
     }
+  })
+
+  it('uses available Ice Age base art previews until final atlases are ready', () => {
+    expect(COMPANION_SPRITE_ASSETS['woolly-mammoth'].basePreviewPath).toBe('/images/ice-age-companion/base/woolly-mammoth.png')
+    expect(COMPANION_SPRITE_ASSETS['saber-tooth-cat'].basePreviewPath).toBe('/images/ice-age-companion/base/saber-tooth-cat.png')
+    expect(COMPANION_SPRITE_ASSETS['giant-ground-sloth'].basePreviewPath).toBe('/images/ice-age-companion/base/giant-ground-sloth.png')
+    expect(COMPANION_SPRITE_ASSETS['woolly-rhino'].basePreviewPath).toBe('/images/ice-age-companion/base/woolly-rhino.png')
+    expect(COMPANION_SPRITE_ASSETS['giant-elk'].basePreviewPath).toBe('/images/ice-age-companion/base/giant-elk.png')
+    expect(COMPANION_SPRITE_ASSETS.glyptodont.basePreviewPath).toBeUndefined()
   })
 
   it('chooses sprite animation rows from pet movement and mood', () => {

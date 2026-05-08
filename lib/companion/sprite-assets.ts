@@ -89,6 +89,7 @@ export type CompanionAnimationState = keyof typeof COMPANION_ANIMATION_STATES
 export interface CompanionSpriteAsset {
   species: CompanionSpecies
   atlasPath: string
+  basePreviewPath?: string
   referencePath: string
   status: 'planned' | 'ready'
   sparkleAnchor: string
@@ -100,6 +101,7 @@ export const COMPANION_SPRITE_ASSETS: Record<CompanionSpecies, CompanionSpriteAs
   'woolly-mammoth': {
     species: 'woolly-mammoth',
     atlasPath: '/images/ice-age-companion/sprites/woolly-mammoth.webp',
+    basePreviewPath: '/images/ice-age-companion/base/woolly-mammoth.png',
     referencePath: '/images/ice-age-companion/reference/animation-bible.png',
     status: 'planned',
     sparkleAnchor: 'trunk curl, tusk tips, cheek fluff, and stomp paws',
@@ -109,6 +111,7 @@ export const COMPANION_SPRITE_ASSETS: Record<CompanionSpecies, CompanionSpriteAs
   'saber-tooth-cat': {
     species: 'saber-tooth-cat',
     atlasPath: '/images/ice-age-companion/sprites/saber-tooth-cat.webp',
+    basePreviewPath: '/images/ice-age-companion/base/saber-tooth-cat.png',
     referencePath: '/images/ice-age-companion/reference/animation-bible.png',
     status: 'planned',
     sparkleAnchor: 'saber tips, ear tips, cheek ruff, and front paws',
@@ -118,6 +121,7 @@ export const COMPANION_SPRITE_ASSETS: Record<CompanionSpecies, CompanionSpriteAs
   'giant-ground-sloth': {
     species: 'giant-ground-sloth',
     atlasPath: '/images/ice-age-companion/sprites/giant-ground-sloth.webp',
+    basePreviewPath: '/images/ice-age-companion/base/giant-ground-sloth.png',
     referencePath: '/images/ice-age-companion/reference/animation-bible.png',
     status: 'planned',
     sparkleAnchor: 'long claw tips, nose bridge, shoulder fur, and belly tuft',
@@ -127,6 +131,7 @@ export const COMPANION_SPRITE_ASSETS: Record<CompanionSpecies, CompanionSpriteAs
   'woolly-rhino': {
     species: 'woolly-rhino',
     atlasPath: '/images/ice-age-companion/sprites/woolly-rhino.webp',
+    basePreviewPath: '/images/ice-age-companion/base/woolly-rhino.png',
     referencePath: '/images/ice-age-companion/reference/animation-bible.png',
     status: 'planned',
     sparkleAnchor: 'front horn, smaller rear horn, cheek fluff, and hoof taps',
@@ -136,6 +141,7 @@ export const COMPANION_SPRITE_ASSETS: Record<CompanionSpecies, CompanionSpriteAs
   'giant-elk': {
     species: 'giant-elk',
     atlasPath: '/images/ice-age-companion/sprites/giant-elk.webp',
+    basePreviewPath: '/images/ice-age-companion/base/giant-elk.png',
     referencePath: '/images/ice-age-companion/reference/animation-bible.png',
     status: 'planned',
     sparkleAnchor: 'broad antler tips, muzzle, chest fluff, and hoof taps',

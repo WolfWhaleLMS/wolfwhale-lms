@@ -1,6 +1,7 @@
 'use client'
 
 import type { CSSProperties } from 'react'
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import type { CompanionHatchStage, CompanionSpecies } from '@/lib/companion/ice-age-companion'
 import {
@@ -59,6 +60,26 @@ export function CompanionSprite({
               '--ww-sprite-scale': scale,
             } as CSSProperties
           }
+        />
+      </span>
+    )
+  }
+
+  if (asset.basePreviewPath) {
+    return (
+      <span
+        aria-label={`${asset.species} companion preview ${animation.label}`}
+        className={cn('ww-companion-preview-shell', className)}
+        role="img"
+        style={{ width: size, height } as CSSProperties}
+      >
+        <Image
+          src={asset.basePreviewPath}
+          alt=""
+          width={SPRITE_ATLAS_CONTRACT.cellWidth}
+          height={SPRITE_ATLAS_CONTRACT.cellHeight}
+          className="h-full w-full object-contain"
+          unoptimized
         />
       </span>
     )

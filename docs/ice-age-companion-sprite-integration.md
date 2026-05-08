@@ -21,6 +21,18 @@ The current animation/emotion bible is saved at:
 
 Use it as the visual source of truth for expression language, sparkle-flash moments, and anatomy checks. It is a reference sheet, not a production atlas.
 
+The available base creature art found from the hatch-pet runs is now copied into the LMS as static previews:
+
+```text
+public/images/ice-age-companion/base/woolly-mammoth.png
+public/images/ice-age-companion/base/saber-tooth-cat.png
+public/images/ice-age-companion/base/giant-ground-sloth.png
+public/images/ice-age-companion/base/woolly-rhino.png
+public/images/ice-age-companion/base/giant-elk.png
+```
+
+These preview files are used by `CompanionSprite` while the final transparent WebP atlases are still `planned`, including the student companion hatch selector so the creatures are visible before a pet is fully hatched. Glyptodont still needs base/final generated art before it can render from real art instead of the CSS fallback.
+
 ## Runtime Contract
 
 Each final pet sprite must be a Codex-style atlas:
@@ -83,7 +95,7 @@ Then change each asset status from `planned` to `ready` in:
 
 `lib/companion/sprite-assets.ts`
 
-Until then, the LMS uses a lightweight CSS fallback so the companion feature works without broken images.
+Until then, the LMS uses the available static base preview art first and a lightweight CSS fallback for any species without preview art, so the companion feature works without broken images.
 
 ## Anatomy QA
 

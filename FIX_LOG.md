@@ -114,3 +114,16 @@ Sprint date: 2026-05-07
 - Added a companion world prototype at `/student/companion-world` plus a `/companion-world` redirect.
 - Added companion sprite atlas contracts, animation-state mapping, and code-native fallback sprite/egg CSS so pets render while final atlas assets are still being prepared.
 - Added tests covering course-specific read-model data, dashboard tool links, course workspace isolation, assignments grouped by course, settings themes, and companion local-storage safety.
+
+## Student Dashboard App Shell And Companion Previews
+
+- Reworked the student dashboard from a long embedded workflow page into a first-viewport app launcher.
+- Kept dashboard access to 12 primary tools: courses, assignments, submit work, grades/feedback, gradebook, attendance, calendar, resources, messages, notifications, companion world, and settings.
+- Kept compact course launch cards on the dashboard while moving course internals to course-specific pages.
+- Confirmed the dashboard no longer contains submission forms or textareas; submissions live in `/student/assignments#submit-work` and course detail pages.
+- Added compact learning cockpit rows for next action, latest feedback, and latest message, each linking to the relevant workspace.
+- Tightened the student dashboard layout so the desktop first viewport fits at `1440x900` and `1920x1080`.
+- Copied available Ice Age base art into `public/images/ice-age-companion/base/` for five MVP creatures: mammoth, smilodon, ground sloth, woolly rhino, and giant elk.
+- Added `basePreviewPath` support to `CompanionSprite` so planned species can show static real art before final animated WebP atlases are ready.
+- Updated the companion hatch selector so students see the available creature art immediately.
+- Left final sprite atlas status as `planned`; the six final transparent WebP atlases still need to be generated and QA-approved before any species is marked `ready`.

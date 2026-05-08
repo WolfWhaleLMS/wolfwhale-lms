@@ -188,3 +188,22 @@ Screenshot evidence:
 - `test-results/student-course-workflows/settings-pet-theme.png`
 - `test-results/student-course-workflows/feature-pages-and-settings.png`
 - `test-results/student-course-workflows/companion-world.png`
+
+## Student App Dashboard And Companion Preview Evidence
+
+Verification on 2026-05-08:
+
+- `npm test -- tests/lms-student-workspaces.test.tsx tests/lms-dashboards.test.tsx tests/ice-age-companion.test.ts` passed: 3 files / 18 tests.
+- `npm run typecheck` passed.
+- `npm run lint` completed with 0 errors and the same 10 existing unrelated warnings in textbook/referral files.
+- `npm run build` passed.
+- `npm run test:a11y` passed; the browser smoke logged in all four demo roles, clicked dashboard tools, checked target pages, API resource/export links, logout, and basic accessibility.
+
+Additional Playwright measurement against `http://localhost:3000` with the student demo account:
+
+- `1440x900`: `scrollHeight=900`, `clientHeight=900`, `overflow=0`.
+- `1920x1080`: `scrollHeight=1080`, `clientHeight=1080`, `overflow=0`.
+- Student dashboard has 12 dashboard tool links and 3 course launch links.
+- Student dashboard has 0 submission forms and 0 textareas.
+- Student dashboard renders 5 Ice Age base preview images.
+- Final animated sprite atlas count remains 0 because the production WebP atlases have not been generated yet.

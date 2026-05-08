@@ -32,7 +32,7 @@ function roleHeading(role: LmsRole) {
 }
 
 const requiredDashboardTools: Record<LmsRole, string[]> = {
-  student: ['Courses', 'Assignments', 'Submit work', 'Gradebook', 'Attendance', 'Calendar', 'Resources', 'Messages'],
+  student: ['Courses', 'Assignments', 'Submit work', 'Grades and feedback', 'Gradebook', 'Attendance', 'Calendar', 'Resources', 'Messages', 'Notifications', 'Companion world', 'Settings'],
   teacher: ['Courses', 'Roster', 'Create assignment', 'Gradebook', 'Attendance', 'Rubrics', 'Grading queue'],
   admin: ['School', 'Metrics', 'Risk', 'Create course', 'Roster import'],
   guardian: ['Linked students', 'Attendance', 'Calendar', 'Resources', 'Messages'],
@@ -108,7 +108,13 @@ async function assertRoleSurface(page: Page, role: LmsRole) {
     await page.getByRole('button', { name: 'Import roster' }).waitFor()
   }
 
-  if (role === 'student' || role === 'guardian') {
+  if (role === 'student') {
+    await page.getByRole('heading', { name: 'Tool hub' }).waitFor()
+    await page.getByRole('heading', { name: 'Learning cockpit' }).waitFor()
+    await page.getByRole('heading', { name: 'Study companion' }).waitFor()
+  }
+
+  if (role === 'guardian') {
     await page.getByRole('heading', { name: 'Gradebook' }).waitFor()
     await page.getByRole('heading', { name: 'Attendance' }).waitFor()
   }
@@ -166,9 +172,14 @@ async function assertDashboardTools(page: Page, role: LmsRole) {
     }
   }
 
-  await page.getByRole('link', { name: 'Dashboard home' }).click()
-  await page.waitForFunction(() => window.location.hash === '#dashboard-top')
-  await page.locator('#dashboard-top').waitFor()
+  const dashboardHome = page.getByRole('link', { name: 'Dashboard home' })
+  if ((await dashboardHome.count()) > 0) {
+    await dashboardHome.click()
+    await page.waitForFunction(() => window.location.hash === '#dashboard-top')
+    await page.locator('#dashboard-top').waitFor()
+  } else {
+    await page.locator('#dashboard-top').waitFor()
+  }
 }
 
 async function waitForSaved(page: Page, role: LmsRole, saved: string) {
@@ -274,9 +285,13 @@ async function loginAs(browser: Browser, role: LmsRole, viewport: { width: numbe
   await page.getByRole('button', { name: 'Sign in' }).click()
   await page.waitForURL(`**/${role}`)
   await page.getByRole('heading', { name: roleHeading(role) }).waitFor()
-  await page.getByRole('heading', { name: 'Calendar' }).waitFor()
-  await page.getByRole('heading', { name: 'Resources' }).waitFor()
-  await page.getByRole('heading', { name: 'Messages' }).waitFor()
+  if (role === 'student') {
+    await page.getByRole('navigation', { name: 'Dashboard tools' }).waitFor()
+  } else {
+    await page.getByRole('heading', { name: 'Calendar' }).waitFor()
+    await page.getByRole('heading', { name: 'Resources' }).waitFor()
+    await page.getByRole('heading', { name: 'Messages' }).waitFor()
+  }
   await assertRoleSurface(page, role)
   await assertDashboardTools(page, role)
   await assertApiLinks(page)

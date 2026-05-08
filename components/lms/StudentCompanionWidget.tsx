@@ -79,14 +79,14 @@ export function StudentCompanionWidget({ compact = false }: { compact?: boolean 
   }
 
   return (
-    <section className="student-workspace-panel rounded-lg border border-white/75 bg-white/84 p-4 shadow-[0_18px_50px_rgba(5,44,38,0.18)] backdrop-blur-md">
+    <section className={`student-workspace-panel rounded-lg border border-white/75 bg-white/84 shadow-[0_18px_50px_rgba(5,44,38,0.18)] backdrop-blur-md ${compact ? 'p-3' : 'p-4'}`}>
       <div className="flex items-center gap-2">
         <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-emerald-400 to-sky-400 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_8px_18px_rgba(13,148,136,0.22)]">
           <PawPrint className="h-5 w-5" />
         </span>
         <div>
           <h2 className="text-lg font-black leading-tight text-[#17352c]">Study companion</h2>
-          <p className="text-sm font-semibold text-[#48675e]">Local pet progress, ready for sprite assets.</p>
+          <p className={`${compact ? 'text-xs' : 'text-sm'} font-semibold text-[#48675e]`}>Local pet progress, ready for sprite assets.</p>
         </div>
       </div>
 
@@ -171,34 +171,51 @@ export function StudentCompanionWidget({ compact = false }: { compact?: boolean 
           </div>
         </div>
       ) : (
-        <form onSubmit={hatch} className="mt-4 grid gap-3">
-          <label className="grid gap-2 text-sm font-black text-[#17352c]">
-            Pet name
-            <input
-              value={petName}
-              onChange={(event) => setPetName(event.target.value)}
-              className="rounded-lg border border-emerald-200 bg-white px-3 py-2 text-sm font-semibold outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-200"
-            />
-          </label>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        <form onSubmit={hatch} className={`mt-3 grid ${compact ? 'gap-2' : 'gap-3'}`}>
+          {!compact ? (
+            <label className="grid gap-2 text-sm font-black text-[#17352c]">
+              Pet name
+              <input
+                value={petName}
+                onChange={(event) => setPetName(event.target.value)}
+                className="rounded-lg border border-emerald-200 bg-white px-3 py-2 text-sm font-semibold outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-200"
+              />
+            </label>
+          ) : null}
+          <div className={compact ? 'grid grid-cols-6 gap-1.5' : 'grid gap-2 sm:grid-cols-2 lg:grid-cols-3'}>
             {STARTER_SPECIES.map((starter) => (
               <button
                 key={starter.id}
                 type="button"
+                aria-label={`Choose ${starter.label}`}
                 aria-pressed={species === starter.id}
                 onClick={() => setSpecies(starter.id)}
-                className={`rounded-lg border px-3 py-2 text-left text-sm font-black ${
+                title={starter.label}
+                className={`flex items-center rounded-lg border text-left text-sm font-black ${
+                  compact ? 'min-h-10 justify-center p-1' : 'min-h-20 gap-3 px-3 py-2'
+                } ${
                   species === starter.id ? 'border-emerald-600 bg-emerald-50 text-emerald-900' : 'border-emerald-100 bg-white/72 text-[#17352c]'
                 }`}
               >
-                {starter.label}
+                <span className={`${compact ? 'h-8 w-8' : 'h-12 w-12'} grid shrink-0 place-items-center overflow-hidden rounded-full bg-[radial-gradient(circle_at_35%_28%,#ffffff,#a7f3d0_46%,#14532d_100%)]`}>
+                  <CompanionSprite species={starter.id} hatchStage="hatched" state="idle" size={compact ? 32 : 48} />
+                </span>
+                <span className={compact ? 'sr-only' : ''}>{starter.label}</span>
               </button>
             ))}
           </div>
-          <button type="submit" className="inline-flex w-fit items-center gap-2 rounded-lg bg-[#17352c] px-4 py-2 text-sm font-black text-white">
-            <Sparkles className="h-4 w-4" />
-            Hatch companion
-          </button>
+          {compact ? <p className="truncate text-xs font-black text-[#48675e]">{speciesLabel(species)}</p> : null}
+          <div className="flex flex-wrap items-center gap-2">
+            <button type="submit" className="inline-flex w-fit items-center gap-2 rounded-lg bg-[#17352c] px-4 py-2 text-sm font-black text-white">
+              <Sparkles className="h-4 w-4" />
+              Hatch companion
+            </button>
+            {compact ? (
+              <Link href="/student/settings" className="rounded-lg border border-emerald-200 bg-white/72 px-3 py-2 text-sm font-black text-[#17352c]">
+                More
+              </Link>
+            ) : null}
+          </div>
         </form>
       )}
     </section>
