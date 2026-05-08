@@ -213,5 +213,7 @@ Additional Playwright measurement against `http://localhost:3000` with the stude
 Deployment evidence:
 
 - Commit `4fa3b5b` deployed to Vercel production as `https://wolfwhale-hbyvp29tr-ryland-dupres-projects.vercel.app`.
-- `wolfwhale.ca` was aliased to that deployment.
+- Follow-up commit `5aa814b` deployed to Vercel production as `https://wolfwhale-fhn5v0p9h-ryland-dupres-projects.vercel.app`.
+- `wolfwhale.ca` was aliased to the `5aa814b` deployment.
+- `LMS_SMOKE_BASE_URL=https://wolfwhale.ca npm run test:a11y` passed against the final custom-domain deployment.
 - `https://wolfwhale.ca/images/ice-age-companion/base/woolly-mammoth.png` returned HTTP 200 after aliasing.
