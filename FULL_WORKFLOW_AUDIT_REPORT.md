@@ -161,3 +161,7 @@ Evidence:
 - `npm run build` passed and generated 293 static pages.
 - `npm run test:a11y` passed against local `http://localhost:3000`.
 - Local 390px teacher width check after the fix measured `scrollWidth=390`, `clientWidth=390`.
+- Commit `9005d9e` was pushed to `origin/main`.
+- Vercel production deployment passed: `https://wolfwhale-cx3z6ok4e-ryland-dupres-projects.vercel.app`.
+- `wolfwhale.ca` was aliased to that deployment.
+- `LMS_SMOKE_BASE_URL=https://wolfwhale.ca npm run test:a11y` passed against the custom domain.
