@@ -290,6 +290,10 @@ Verification on 2026-05-08:
 - `npm run build` passed and generated 293 static pages.
 - `npm run launch:verify` passed, including lint, typecheck, test suite, district proof, enterprise check, ops evidence contract, scale check, load smoke, build, and a skipped live Supabase SQL gate due missing DB credentials.
 - `npm run test:a11y` passed against `http://localhost:3000`; screenshots are in `test-results/lms-smoke`.
+- Commit `3d2eb98` was pushed to `origin/main`.
+- Vercel production deployment passed: `https://wolfwhale-dua081yuq-ryland-dupres-projects.vercel.app`.
+- `wolfwhale.ca` was aliased to that deployment.
+- `LMS_SMOKE_BASE_URL=https://wolfwhale.ca npm run test:a11y` passed against the custom domain.
 
 New evidence covered:
 
