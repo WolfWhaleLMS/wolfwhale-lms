@@ -6,6 +6,15 @@ import {
 
 interface CompanionProfileResponse {
   profile?: unknown
+  version?: unknown
+}
+
+let lastServerVersion: number | null = null
+
+function profileVersion(value: unknown) {
+  const version = Number(value)
+
+  return Number.isInteger(version) && version > 0 ? version : null
 }
 
 export async function loadCompanionProfileFromServer() {
@@ -15,6 +24,7 @@ export async function loadCompanionProfileFromServer() {
     if (!response.ok) return null
 
     const body = (await response.json()) as CompanionProfileResponse
+    lastServerVersion = profileVersion(body.version)
 
     return parseCompanionProfile(JSON.stringify(body.profile ?? null))
   } catch {
@@ -29,10 +39,28 @@ export async function saveCompanionProfileToServer(profile: StudentCompanionProf
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify({ profile }),
+      body: JSON.stringify({ profile, version: lastServerVersion }),
     })
 
-    return response.ok || response.status === 401 || response.status === 403
+    if (response.status === 409) {
+      const body = (await response.json().catch(() => null)) as CompanionProfileResponse | null
+      const serverProfile = parseCompanionProfile(JSON.stringify(body?.profile ?? null))
+      lastServerVersion = profileVersion(body?.version)
+      if (serverProfile) {
+        saveCompanionProfile(serverProfile)
+      }
+
+      return false
+    }
+
+    if (response.ok) {
+      const body = (await response.json().catch(() => null)) as CompanionProfileResponse | null
+      lastServerVersion = profileVersion(body?.version) ?? lastServerVersion
+
+      return true
+    }
+
+    return response.status === 401 || response.status === 403
   } catch {
     return false
   }

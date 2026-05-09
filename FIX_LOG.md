@@ -170,3 +170,15 @@ Sprint date: 2026-05-07
 - Added `ops:evidence` to `npm run launch:verify` and `enterprise:check`.
 - Tightened the student dashboard data loader by replacing loose `any` casts with typed Supabase row shapers and fixed course grade summaries to average stored grade percentages instead of mixing earned points with percentages.
 - Strengthened browser smoke coverage so teacher/admin dashboard tool hubs include resources/calendar/messages and mutating teacher smoke uploads a real course resource file.
+
+## Rate Limits, Resource Safety, And Companion Conflicts
+
+- Added a shared server-side rate limiter with Upstash Redis support and an in-memory local fallback.
+- Applied throttling to real login, LMS mutation routes, roster import, course resource upload, companion profile save, and legacy pilot demo mutations.
+- Added `course_resource_security_reviews` migration with file SHA-256, scan status, scan provider, retention expiry, legal hold, quarantine reason, indexes, and RLS policies.
+- Added upload quota enforcement hooks for school-wide and course-level resource storage budgets.
+- Added download-time resource gating for quarantined, scan-error, pending-strict-scan, and retention-expired resources.
+- Added admin resource-review controls to change scan status, quarantine note, and legal-hold state from the Resources panel.
+- Added companion profile optimistic versioning so stale pet saves return a 409 conflict instead of silently overwriting newer server state.
+- Expanded launch-security sensitive table tracking to include `course_resource_security_reviews`.
+- Added focused tests for rate limiting and course resource security decisions.

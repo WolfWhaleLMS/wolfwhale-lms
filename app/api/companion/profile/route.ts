@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { parseCompanionProfile, type StudentCompanionProfile } from '@/lib/companion/ice-age-companion'
+import { checkRateLimit, rateLimitKey } from '@/lib/security/rate-limit'
 import { createClient } from '@/lib/supabase/server'
 
 type Row = Record<string, unknown>
@@ -53,7 +54,21 @@ function profileFromBody(body: unknown) {
   return parseCompanionProfile(JSON.stringify((body as { profile?: unknown }).profile ?? null))
 }
 
-function companionProfilePayload(profile: StudentCompanionProfile, tenantId: string, userId: string) {
+function versionFromBody(body: unknown) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return null
+
+  const version = Number((body as { version?: unknown }).version)
+
+  return Number.isInteger(version) && version > 0 ? version : null
+}
+
+function rowVersion(row: Row | null) {
+  const version = Number(row?.version)
+
+  return Number.isInteger(version) && version > 0 ? version : 1
+}
+
+function companionProfilePayload(profile: StudentCompanionProfile, tenantId: string, userId: string, version: number) {
   return {
     tenant_id: tenantId,
     student_id: userId,
@@ -62,6 +77,7 @@ function companionProfilePayload(profile: StudentCompanionProfile, tenantId: str
     hatch_stage: profile.hatchStage,
     level: profile.level,
     xp: profile.xp,
+    version,
     profile,
     updated_at: new Date().toISOString(),
   }
@@ -73,7 +89,7 @@ export async function GET() {
 
   const { data, error } = await session.supabase
     .from('student_companion_profiles')
-    .select('profile')
+    .select('profile,version')
     .eq('tenant_id', session.tenantId)
     .eq('student_id', session.userId)
     .maybeSingle()
@@ -82,28 +98,100 @@ export async function GET() {
     return jsonError(`Unable to load companion profile: ${error.message}`, 500)
   }
 
-  return NextResponse.json({ profile: parseCompanionProfile(JSON.stringify((data as Row | null)?.profile ?? null)) })
+  const row = (data as Row | null) ?? null
+
+  return NextResponse.json({
+    profile: parseCompanionProfile(JSON.stringify(row?.profile ?? null)),
+    version: rowVersion(row),
+  })
 }
 
 export async function PUT(request: NextRequest) {
   const session = await requireStudentMembership()
   if ('error' in session) return session.error
 
+  const rateLimit = await checkRateLimit(
+    { id: 'companion:profile', limit: 60, window: '1 m' },
+    rateLimitKey(request, [session.userId])
+  )
+
+  if (!rateLimit.success) {
+    return jsonError('Too many companion profile saves. Please wait and try again.', 429)
+  }
+
   const body = await request.json().catch(() => null)
   const profile = profileFromBody(body)
+  const expectedVersion = versionFromBody(body)
   if (!profile) {
     return jsonError('A valid companion profile is required.', 400)
   }
 
-  const { data, error } = await session.supabase
+  const { data: existing, error: existingError } = await session.supabase
     .from('student_companion_profiles')
-    .upsert(companionProfilePayload(profile, session.tenantId, session.userId), { onConflict: 'tenant_id,student_id' })
-    .select('profile')
-    .single()
+    .select('id,profile,version')
+    .eq('tenant_id', session.tenantId)
+    .eq('student_id', session.userId)
+    .maybeSingle()
+
+  if (existingError) {
+    return jsonError(`Unable to save companion profile: ${existingError.message}`, 500)
+  }
+
+  const existingRow = (existing as Row | null) ?? null
+  const existingVersion = rowVersion(existingRow)
+
+  if (existingRow && expectedVersion && expectedVersion !== existingVersion) {
+    return NextResponse.json(
+      {
+        error: 'companion_profile_conflict',
+        profile: parseCompanionProfile(JSON.stringify(existingRow.profile ?? null)),
+        version: existingVersion,
+      },
+      { status: 409 }
+    )
+  }
+
+  const nextVersion = existingRow ? existingVersion + 1 : 1
+  const payload = companionProfilePayload(profile, session.tenantId, session.userId, nextVersion)
+  const saveQuery = existingRow
+    ? session.supabase
+        .from('student_companion_profiles')
+        .update(payload)
+        .eq('id', text(existingRow.id))
+        .eq('version', existingVersion)
+        .select('profile,version')
+        .maybeSingle()
+    : session.supabase.from('student_companion_profiles').insert(payload).select('profile,version').maybeSingle()
+
+  const { data, error } = await saveQuery
 
   if (error) {
     return jsonError(`Unable to save companion profile: ${error.message}`, 500)
   }
+  if (!data) {
+    const { data: current } = await session.supabase
+      .from('student_companion_profiles')
+      .select('profile,version')
+      .eq('tenant_id', session.tenantId)
+      .eq('student_id', session.userId)
+      .maybeSingle()
 
-  return NextResponse.json({ profile: parseCompanionProfile(JSON.stringify((data as Row).profile)) })
+    const currentRow = (current as Row | null) ?? null
+
+    return NextResponse.json(
+      {
+        error: 'companion_profile_conflict',
+        profile: parseCompanionProfile(JSON.stringify(currentRow?.profile ?? null)),
+        version: rowVersion(currentRow),
+      },
+      { status: 409 }
+    )
+  }
+
+  const saved = data as Row
+
+  return NextResponse.json({
+    profile: parseCompanionProfile(JSON.stringify(saved.profile)),
+    version: rowVersion(saved),
+  })
 }

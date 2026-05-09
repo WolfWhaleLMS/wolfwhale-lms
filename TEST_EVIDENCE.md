@@ -274,3 +274,26 @@ New coverage/evidence added:
 Known skipped gate:
 
 - The direct live Supabase SQL step still skips without `SUPABASE_DB_URL`, `DATABASE_URL`, `SUPABASE_DB_PASSWORD`, or `SUPABASE_ACCESS_TOKEN` plus `SUPABASE_PROJECT_REF`. The local repo gate is ready; applying and proving the two new migrations against a target live project requires one of those operator credentials.
+
+## Rate Limit, Resource Safety, And Companion Conflict Evidence
+
+Verification on 2026-05-08:
+
+- `supabase migration up` did not apply live migrations because the linked Supabase migration history contains remote migration versions missing from this local migration directory. No destructive migration repair was run.
+- `npm run security:supabase` exited before querying because this shell still lacks `SUPABASE_DB_URL`, `DATABASE_URL`, `SUPABASE_DB_PASSWORD`, or `SUPABASE_ACCESS_TOKEN` plus `SUPABASE_PROJECT_REF`.
+- `npm test -- tests/rate-limit.test.ts tests/resource-security.test.ts tests/supabase-launch-security.test.ts` passed: 3 files / 13 tests.
+- `npm test -- tests/lms-query-mapping.test.ts tests/lms-read-model.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx` passed: 4 files / 15 tests.
+- `npm test` passed: 22 files / 92 tests.
+- `npm audit --omit=dev --audit-level=high` passed with 0 vulnerabilities.
+- `npm run lint` passed with 0 warnings.
+- `npm run typecheck` passed.
+- `npm run build` passed and generated 293 static pages.
+- `npm run launch:verify` passed, including lint, typecheck, test suite, district proof, enterprise check, ops evidence contract, scale check, load smoke, build, and a skipped live Supabase SQL gate due missing DB credentials.
+- `npm run test:a11y` passed against `http://localhost:3000`; screenshots are in `test-results/lms-smoke`.
+
+New evidence covered:
+
+- Request rate limiting blocks after policy limits and builds stable IP/action keys.
+- Course resource SHA-256 hashing, pending/blocked/error/expired access decisions, legal-hold override, retention expiry, and missing-table rollout handling are covered by tests.
+- Admin Resources UI renders the resource safety status and review controls through existing dashboard coverage.
+- Supabase launch-sensitive table tracking now includes `course_resource_security_reviews`.

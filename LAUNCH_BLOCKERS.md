@@ -6,7 +6,12 @@ Audit date: 2026-05-07
 
 No repo-local P0/P1 blockers remain for a commercial single-school LMS launch within the currently verified operating envelope. Connected Supabase browser smoke passes for the current LMS workflows, including real teacher resource upload through the existing `lesson-resources` bucket.
 
-Operator-gated live proof still required: apply `20260508180000_student_companion_profiles.sql` and `20260508181000_course_resource_upload_rls.sql` to the target Supabase project and rerun `npm run security:supabase` with direct DB credentials or a database-read Supabase token. Until then, companion progress keeps its local fallback and resource upload works through the server-side service-role storage path, but the newest table/policy hardening has not been SQL-proven on the live database from this shell.
+Operator-gated live proof still required: apply `20260508180000_student_companion_profiles.sql`, `20260508181000_course_resource_upload_rls.sql`, and `20260508192000_course_resource_reviews_and_companion_version.sql` to the target Supabase project and rerun `npm run security:supabase` with direct DB credentials or a database-read Supabase token. Until then, companion progress keeps its local fallback and resource upload still works through the server-side service-role storage path, but the newest table/policy hardening, resource review ledger, upload quota hooks, retention metadata, and companion conflict-version column have not been SQL-proven on the live database from this shell.
+
+Latest operator attempt on 2026-05-08:
+
+- `supabase migration up` could not apply the migrations because the linked Supabase history reports remote migration versions that are not present in this local migration directory.
+- `npm run security:supabase` still exits before querying because no `SUPABASE_DB_URL`, `DATABASE_URL`, `SUPABASE_DB_PASSWORD`, or `SUPABASE_ACCESS_TOKEN` plus `SUPABASE_PROJECT_REF` is available in this shell.
 
 Closed gates:
 
@@ -53,7 +58,7 @@ These are not repo-local P0/P1 blockers for the current commercial baseline, but
 
 - Automated OneRoster/SIS sync, LTI, standards alignment, analytics, and archival exports for that customer.
 - SSO/SAML/OIDC, password recovery policy, delegated admin workflows, and invite lifecycle polish for that customer.
-- Malware scanning, storage quotas, retention policies, and legal hold workflows for customer file storage.
+- Repo-level upload review, quotas, retention metadata, and legal-hold flags now exist; production malware scanner integration, admin review UI, and customer legal-hold policy still need operator/customer decisions.
 - Production restore-drill evidence against a disposable staging database.
 - Independent customer load testing beyond the current verified envelope of 5000 active students, 500 teachers, 1000 courses, and 50000 active enrollments.
 - Formal WCAG audit beyond current smoke checks.

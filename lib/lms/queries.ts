@@ -7,6 +7,7 @@ import type {
   LmsRubricCriterion,
   LmsRubricScore,
 } from '@/lib/lms/types'
+import { isMissingResourceSecurityTableError } from '@/lib/lms/resource-security'
 
 type Row = Record<string, unknown>
 
@@ -25,6 +26,7 @@ interface SupabaseLmsRows {
   auditTrail: Row[]
   lessons: Row[]
   resources: Row[]
+  resourceReviews: Row[]
   conversations: Row[]
   conversationMembers: Row[]
   messages: Row[]
@@ -262,13 +264,22 @@ export function mapSupabaseRowsToLmsRecords(rows: SupabaseLmsRows): LmsRecords {
       title: text(lesson.title, 'Untitled lesson'),
       status: text(lesson.status, 'published'),
     })),
-    resources: rows.resources.map((resource) => ({
-      id: text(resource.id),
-      lessonId: text(resource.lesson_id),
-      fileName: text(resource.file_name, 'resource'),
-      fileType: text(resource.file_type),
-      displayName: text(resource.display_name) || text(resource.file_name, 'Resource'),
-    })),
+    resources: rows.resources.map((resource) => {
+      const review = rows.resourceReviews.find((candidate) => text(candidate.resource_id) === text(resource.id))
+
+      return {
+        id: text(resource.id),
+        lessonId: text(resource.lesson_id),
+        fileName: text(resource.file_name, 'resource'),
+        fileType: text(resource.file_type),
+        displayName: text(resource.display_name) || text(resource.file_name, 'Resource'),
+        scanStatus: text(review?.scan_status, 'unreviewed'),
+        scanProvider: text(review?.scan_provider),
+        legalHold: booleanValue(review?.legal_hold),
+        retentionExpiresAt: text(review?.retention_expires_at),
+        quarantineReason: text(review?.quarantine_reason),
+      }
+    }),
     conversations: rows.conversations.map((conversation) => ({
       id: text(conversation.id),
       tenantId: text(conversation.tenant_id),
@@ -327,6 +338,19 @@ async function queryIn(supabase: SupabaseClient, table: string, select: string, 
   const { data, error } = await supabase.from(table).select(select).in(column, values)
 
   if (error) {
+    throw new Error(`Failed to load ${table}: ${error.message}`)
+  }
+
+  return (data ?? []) as unknown as Row[]
+}
+
+async function queryInOptional(supabase: SupabaseClient, table: string, select: string, column: string, values: string[]) {
+  if (values.length === 0) return []
+
+  const { data, error } = await supabase.from(table).select(select).in(column, values)
+
+  if (error) {
+    if (isMissingResourceSecurityTableError(error)) return []
     throw new Error(`Failed to load ${table}: ${error.message}`)
   }
 
@@ -409,6 +433,13 @@ export async function loadLmsRecordsForUser(supabase: SupabaseClient, userId: st
     'lesson_id',
     lessons.map((lesson) => text(lesson.id)).filter(Boolean)
   )
+  const resourceReviews = await queryInOptional(
+    supabase,
+    'course_resource_security_reviews',
+    'resource_id,scan_status,scan_provider,legal_hold,retention_expires_at,quarantine_reason',
+    'resource_id',
+    resources.map((resource) => text(resource.id)).filter(Boolean)
+  )
   const conversationMembers = await queryIn(
     supabase,
     'conversation_members',
@@ -449,6 +480,7 @@ export async function loadLmsRecordsForUser(supabase: SupabaseClient, userId: st
     auditTrail,
     lessons,
     resources,
+    resourceReviews,
     conversations,
     conversationMembers,
     messages,

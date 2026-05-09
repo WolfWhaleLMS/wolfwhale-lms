@@ -139,3 +139,18 @@ Remaining structural debt:
 - Textbook admin/editor pages are still large and should be split into route, form, preview, flashcard, and curriculum-outcome modules.
 - `app/globals.css` remains oversized and should be split into theme/system CSS modules after the current landing/theme work is finalized.
 - `lib/config/seo-pages.ts` and some seed scripts are large data/config files and should eventually move into structured JSON or scoped fixtures.
+
+## Hardening Follow-Up - 2026-05-08
+
+Improved:
+
+- Auth, LMS mutation, roster import, resource upload, and companion profile save routes now have server-side rate limiting.
+- Course resource uploads now have a repo-level security review ledger with SHA-256 hash, scan status, scan provider, retention expiry, legal hold, quarantine reason, RLS policies, and quota hooks.
+- Resource downloads now block quarantined, scan-error, strict-pending-scan, and retention-expired files.
+- Admins can review resource scan status, quarantine notes, and legal-hold flags from the Resources panel.
+- Companion profiles now carry a version column and return 409 conflicts for stale server writes.
+
+Still externally gated:
+
+- The live Supabase project has not been SQL-proven for the new migrations from this shell because migration history and DB credential gates remain.
+- Final Ice Age sprite atlases are still visual-generation assets, not code-only artifacts; no species should be marked `ready` until the hatch-pet image-generation and QA workflow is completed.

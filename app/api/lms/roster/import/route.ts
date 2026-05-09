@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { importRosterWithInvites } from '@/lib/lms/roster-import'
-import { lmsMutationErrorCode, lmsRedirect } from '@/lib/lms/route-helpers'
+import { enforceLmsMutationRateLimit, lmsMutationErrorCode, lmsRedirect } from '@/lib/lms/route-helpers'
 import { createClient } from '@/lib/supabase/server'
 
 async function rosterCsv(formValue: FormDataEntryValue | null) {
@@ -14,6 +14,7 @@ export async function POST(request: NextRequest) {
   const formData = await request.formData()
 
   try {
+    await enforceLmsMutationRateLimit(request, 'roster-import', { limit: 5, window: '10 m' })
     const result = await importRosterWithInvites(await createClient(), {
       rosterCsv: await rosterCsv(formData.get('rosterCsv')),
     })

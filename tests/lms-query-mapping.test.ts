@@ -73,6 +73,7 @@ describe('Supabase LMS query mapping', () => {
       auditTrail: [{ id: 'a1', tenant_id: 'tenant-1', action: 'submission.created', resource_type: 'submission', created_at: '2026-05-07T16:01:00.000Z' }],
       lessons: [{ id: 'lesson-1', tenant_id: 'tenant-1', course_id: 'course-1', title: 'Sources', status: 'published' }],
       resources: [{ id: 'resource-1', lesson_id: 'lesson-1', file_name: 'source.pdf', file_type: 'application/pdf', display_name: 'Source Pack' }],
+      resourceReviews: [{ resource_id: 'resource-1', scan_status: 'clean', scan_provider: 'mime-allowlist-sha256', legal_hold: false, retention_expires_at: '2033-05-07T16:01:00.000Z', quarantine_reason: '' }],
       conversations: [{ id: 'conversation-1', tenant_id: 'tenant-1', subject: 'Class help', course_id: 'course-1', created_by: 'teacher-1', updated_at: '2026-05-07T16:02:00.000Z' }],
       conversationMembers: [{ conversation_id: 'conversation-1', user_id: 'teacher-1' }],
       messages: [{ id: 'message-1', tenant_id: 'tenant-1', conversation_id: 'conversation-1', sender_id: 'teacher-1', content: 'Bring notes.', created_at: '2026-05-07T16:03:00.000Z' }],
@@ -109,7 +110,7 @@ describe('Supabase LMS query mapping', () => {
     expect(records.submissions[0]).toMatchObject({ content: 'My answer', status: 'submitted' })
     expect(records.grades[0]).toMatchObject({ percentage: 80, letterGrade: 'B-' })
     expect(records.notifications[0]).toMatchObject({ read: false })
-    expect(records.resources[0]).toMatchObject({ displayName: 'Source Pack', fileName: 'source.pdf' })
+    expect(records.resources[0]).toMatchObject({ displayName: 'Source Pack', fileName: 'source.pdf', scanStatus: 'clean' })
     expect(records.messages[0]).toMatchObject({ content: 'Bring notes.' })
     expect(records.rubrics[0]).toMatchObject({ name: 'Exit Ticket Rubric', criteria: [{ name: 'Evidence', points: 5 }] })
     expect(records.attendance[0]).toMatchObject({ attendanceDate: '2026-05-07', status: 'present' })
@@ -137,6 +138,7 @@ describe('Supabase LMS query mapping', () => {
       auditTrail: [],
       lessons: [],
       resources: [],
+      resourceReviews: [],
       conversations: [],
       conversationMembers: [],
       messages: [],

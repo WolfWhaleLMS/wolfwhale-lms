@@ -1,4 +1,13 @@
 import type { SupabaseClient, User } from '@supabase/supabase-js'
+import {
+  courseResourceCourseQuotaBytes,
+  courseResourceInitialScanStatus,
+  courseResourceRetentionExpiresAt,
+  courseResourceScanProvider,
+  courseResourceTenantQuotaBytes,
+  isMissingResourceSecurityTableError,
+  sha256ForUploadFile,
+} from '@/lib/lms/resource-security'
 import { getCourseResourceBucket } from '@/lib/lms/resource-storage'
 
 type Row = Record<string, unknown>
@@ -339,6 +348,77 @@ async function ensureCourseResourceLesson(
   )
 
   return id(lesson.id, 'lesson_id')
+}
+
+function bytes(value: unknown) {
+  const parsed = Number(value)
+
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 0
+}
+
+async function enforceCourseResourceQuota(
+  supabase: SupabaseClient,
+  input: { tenantId: string; courseId: string; nextFileSize: number }
+) {
+  const { data, error } = await supabase
+    .from('course_resource_security_reviews')
+    .select('course_id,file_size')
+    .eq('tenant_id', input.tenantId)
+
+  if (error) {
+    if (isMissingResourceSecurityTableError(error)) return
+    throw new LmsMutationError(`Unable to verify course resource quota: ${error.message}`, 'resource_quota_lookup_failed')
+  }
+
+  const usageRows = rows(data)
+  const tenantBytes = usageRows.reduce((total, row) => total + bytes(row.file_size), 0)
+  const courseBytes = usageRows
+    .filter((row) => text(row.course_id) === input.courseId)
+    .reduce((total, row) => total + bytes(row.file_size), 0)
+
+  if (tenantBytes + input.nextFileSize > courseResourceTenantQuotaBytes()) {
+    throw new LmsMutationError('This school has reached its course resource storage quota.', 'tenant_resource_quota_exceeded')
+  }
+  if (courseBytes + input.nextFileSize > courseResourceCourseQuotaBytes()) {
+    throw new LmsMutationError('This course has reached its resource storage quota.', 'course_resource_quota_exceeded')
+  }
+}
+
+async function recordCourseResourceSecurityReview(
+  supabase: SupabaseClient,
+  input: {
+    tenantId: string
+    courseId: string
+    lessonId: string
+    resourceId: string
+    uploadedBy: string
+    fileName: string
+    fileType: string
+    fileSize: number
+    fileSha256: string
+  }
+) {
+  const scanStatus = courseResourceInitialScanStatus()
+  const { error } = await supabase.from('course_resource_security_reviews').insert({
+    tenant_id: input.tenantId,
+    course_id: input.courseId,
+    lesson_id: input.lessonId,
+    resource_id: input.resourceId,
+    uploaded_by: input.uploadedBy,
+    file_name: input.fileName,
+    file_type: input.fileType,
+    file_size: input.fileSize,
+    file_sha256: input.fileSha256,
+    scan_status: scanStatus,
+    scan_provider: courseResourceScanProvider(),
+    scan_checked_at: scanStatus === 'clean' ? new Date().toISOString() : null,
+    retention_expires_at: courseResourceRetentionExpiresAt(),
+  })
+
+  if (error) {
+    if (isMissingResourceSecurityTableError(error)) return
+    throw new LmsMutationError(`Unable to record course resource security review: ${error.message}`, 'resource_security_review_failed')
+  }
 }
 
 export function normalizeSubmissionDraft(input: { assignmentId: unknown; content: unknown }) {
@@ -822,12 +902,20 @@ export async function createCourseResource(
     })
   }
 
+  const fileSha256 = await sha256ForUploadFile(draft.file)
+  await enforceCourseResourceQuota(supabase, {
+    tenantId,
+    courseId: draft.courseId,
+    nextFileSize: draft.fileSize,
+  })
+
   const storageObjectName = `${tenantId}/${user.id}/${draft.courseId}/${Date.now()}-${Math.random()
     .toString(36)
     .slice(2, 10)}-${safeStorageFileName(draft.fileName)}`
   const storageClient = options.storageClient ?? supabase
   const storageBucket = options.bucket ?? getCourseResourceBucket()
   let uploaded = false
+  let resourceIdToDelete = ''
 
   try {
     const { error: uploadError } = await storageClient.storage.from(storageBucket).upload(storageObjectName, draft.file, {
@@ -858,18 +946,35 @@ export async function createCourseResource(
         .single(),
       'resource_insert_failed'
     )
+    const resourceId = id(resource.id, 'resource_id')
+    resourceIdToDelete = resourceId
+
+    await recordCourseResourceSecurityReview(supabase, {
+      tenantId,
+      courseId: draft.courseId,
+      lessonId,
+      resourceId,
+      uploadedBy: user.id,
+      fileName: draft.fileName,
+      fileType: draft.fileType,
+      fileSize: draft.fileSize,
+      fileSha256,
+    })
 
     await insertAuditLog(supabase, {
       tenantId,
       userId: user.id,
       action: 'resource.created',
       resourceType: 'lesson_attachment',
-      resourceId: id(resource.id, 'resource_id'),
-      details: { course_id: draft.courseId, lesson_id: lessonId, file_name: draft.fileName },
+      resourceId,
+      details: { course_id: draft.courseId, lesson_id: lessonId, file_name: draft.fileName, file_sha256: fileSha256 },
     })
 
-    return { resourceId: id(resource.id, 'resource_id') }
+    return { resourceId }
   } catch (error) {
+    if (resourceIdToDelete) {
+      await supabase.from('lesson_attachments').delete().eq('id', resourceIdToDelete)
+    }
     if (uploaded) {
       await storageClient.storage.from(storageBucket).remove([storageObjectName])
     }

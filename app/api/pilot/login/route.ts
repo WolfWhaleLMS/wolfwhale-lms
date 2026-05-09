@@ -7,6 +7,7 @@ import {
   isPilotRole,
   rolePath,
 } from '@/lib/pilot/session'
+import { checkRateLimit, rateLimitKey } from '@/lib/security/rate-limit'
 
 function loginRedirect(request: NextRequest, error: string) {
   const url = new URL('/login', request.url)
@@ -32,6 +33,11 @@ export async function POST(request: NextRequest) {
   const role = String(formData.get('role') ?? '')
   const code = String(formData.get('code') ?? '')
   const requestedNext = String(formData.get('next') ?? '') || null
+  const rateLimit = await checkRateLimit({ id: 'pilot:login', limit: 10, window: '10 m' }, rateLimitKey(request, [role]))
+
+  if (!rateLimit.success) {
+    return loginRedirect(request, 'rate-limited')
+  }
 
   if (!isPilotRole(role)) {
     return loginRedirect(request, 'invalid-role')

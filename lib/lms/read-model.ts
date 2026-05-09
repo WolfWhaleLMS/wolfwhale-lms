@@ -190,6 +190,11 @@ function resourcesForCourseIds(records: LmsRecords, courseIds: Set<string>): Lms
         courseTitle: course?.title ?? 'Course',
         fileName: resource.fileName,
         fileType: resource.fileType,
+        scanStatus: resource.scanStatus,
+        scanProvider: resource.scanProvider,
+        legalHold: resource.legalHold,
+        retentionExpiresAt: resource.retentionExpiresAt,
+        quarantineReason: resource.quarantineReason,
       }
     })
 }
@@ -633,6 +638,11 @@ export function createDemoLmsRecords(): LmsRecords {
         fileName: 'source-pack.pdf',
         fileType: 'application/pdf',
         displayName: 'Primary Source Pack',
+        scanStatus: 'clean',
+        scanProvider: 'mock',
+        legalHold: false,
+        retentionExpiresAt: '2033-05-06T21:00:00.000Z',
+        quarantineReason: '',
       },
     ],
     conversations: [

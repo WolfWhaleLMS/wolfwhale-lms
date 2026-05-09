@@ -24,6 +24,9 @@ Ready to sell/pilot now:
 - Guardian linked-student visibility.
 - Private resource access through signed storage URLs.
 - Teacher/admin private course resource uploads through Supabase Storage and lesson attachments.
+- Server-side rate limits for auth, LMS mutations, roster import, resource upload, and companion profile save.
+- Course-resource SHA-256 review ledger, quota hooks, retention metadata, quarantine states, legal-hold flags, and admin review controls.
+- Companion profile server persistence with optimistic conflict versioning.
 - Supabase RLS hardening and live validation.
 - Single-school scale-budget checks.
 - Enterprise readiness gate, support runbook, incident runbook, data-processing checklist, and synthetic load smoke.
@@ -62,7 +65,7 @@ These are the next product-depth tracks before claiming complete Canvas/Brightsp
 1. Standards alignment, report cards, analytics, and parent notification policy.
 2. Customer-specific automated OneRoster/SIS sync, LTI exploration, and archival exports.
 3. Customer-specific SSO/SAML/OIDC, password recovery policy, and delegated admin controls.
-4. Retention policies, virus scanning, quota management, and legal-hold controls for uploaded files.
+4. Production malware scanner integration, admin quarantine/release UI, customer retention/legal-hold policy, and live proof of the repo upload-safety migrations.
 5. Messaging moderation, abuse reporting, audit review, and communication policy controls.
 6. Independent load testing beyond the verified single-school budget.
 7. Full WCAG audit and remediation.
@@ -75,7 +78,7 @@ These are the next product-depth tracks before claiming complete Canvas/Brightsp
 2. Promotion process for migrations and seed/test data.
 3. Restore-drill evidence capture using `npm run ops:evidence` with `ENFORCE_REAL_OPS_EVIDENCE=1`.
 4. Observability dashboards for auth errors, RLS denials, mutation failures, and slow queries.
-5. Backups, restore drills, and retention reporting.
+5. Backups, restore drills, resource retention reports, and evidence from a disposable staging restore target.
 6. Security review for FERPA/COPPA/PIPEDA-aligned operating procedures.
 7. Contract-ready support and data-processing documentation.
 

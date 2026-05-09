@@ -121,4 +121,4 @@ Before marking a sprite atlas ready:
 - World client: `components/companion/IceAgeWorldClient.tsx`
 - Sprite contract tests: `tests/ice-age-companion.test.ts`
 
-The service boundary is intentionally localStorage-backed for the MVP. When backend persistence is ready, keep the same `StudentCompanionProfile` shape and replace `loadCompanionProfile` / `saveCompanionProfile` with Supabase-backed reads and writes.
+Companion progress now uses authenticated Supabase persistence through `/api/companion/profile` with localStorage as a fast offline/cache fallback. The server row carries a `version` value so stale browser tabs receive a 409 conflict instead of silently overwriting newer pet progress. Keep the same `StudentCompanionProfile` shape when adding future companion features; extend the API envelope rather than storing server metadata inside the pet profile itself.

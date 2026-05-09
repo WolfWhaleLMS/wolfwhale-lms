@@ -115,6 +115,11 @@ export interface LmsResourceRecord {
   fileName: string
   fileType: string
   displayName: string
+  scanStatus: string
+  scanProvider: string
+  legalHold: boolean
+  retentionExpiresAt: string
+  quarantineReason: string
 }
 
 export interface LmsConversationRecord {
@@ -275,6 +280,11 @@ export interface LmsResourceSummary {
   courseTitle: string
   fileName: string
   fileType: string
+  scanStatus: string
+  scanProvider: string
+  legalHold: boolean
+  retentionExpiresAt: string
+  quarantineReason: string
 }
 
 export interface LmsMessageSummary {

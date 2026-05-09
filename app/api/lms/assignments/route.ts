@@ -1,12 +1,13 @@
 import { NextRequest } from 'next/server'
 import { createAssignment } from '@/lib/lms/mutations'
-import { lmsMutationErrorCode, lmsRedirect } from '@/lib/lms/route-helpers'
+import { enforceLmsMutationRateLimit, lmsMutationErrorCode, lmsRedirect } from '@/lib/lms/route-helpers'
 import { createClient } from '@/lib/supabase/server'
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData()
 
   try {
+    await enforceLmsMutationRateLimit(request, 'assignments')
     await createAssignment(await createClient(), {
       courseId: formData.get('courseId'),
       title: formData.get('title'),

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { rolePathForMembershipRole, safeAuthRedirectPath } from '@/lib/lms/auth'
+import { checkRateLimit, rateLimitKey } from '@/lib/security/rate-limit'
 import { createClient } from '@/lib/supabase/server'
 
 function loginRedirect(request: NextRequest, error: string, next: string | null) {
@@ -18,6 +19,15 @@ export async function POST(request: NextRequest) {
 
   if (!email || !password) {
     return loginRedirect(request, 'missing-credentials', next)
+  }
+
+  const rateLimit = await checkRateLimit(
+    { id: 'auth:login', limit: 8, window: '10 m' },
+    rateLimitKey(request, [email || 'blank-email'])
+  )
+
+  if (!rateLimit.success) {
+    return loginRedirect(request, 'rate-limited', next)
   }
 
   const supabase = await createClient()

@@ -42,6 +42,7 @@ describe('Supabase launch security invariants', () => {
         'audit_logs',
         'data_deletion_requests',
         'student_companion_profiles',
+        'course_resource_security_reviews',
       ])
     )
   })

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { CalendarDays, FileText, MessageSquare, Upload } from 'lucide-react'
+import { CalendarDays, FileText, MessageSquare, ShieldCheck, Upload } from 'lucide-react'
 import { EmptyState, LmsPanel } from '@/components/lms/LmsShell'
 import type { LmsCalendarItem, LmsCourseSummary, LmsMessageSummary, LmsResourceSummary } from '@/lib/lms/types'
 
@@ -17,6 +17,28 @@ const resourceAcceptTypes = [
   'audio/mpeg',
   'application/zip',
 ].join(',')
+
+const resourceStatusLabels: Record<string, string> = {
+  clean: 'Clean',
+  pending: 'Pending scan',
+  blocked: 'Quarantined',
+  error: 'Scan error',
+  unreviewed: 'Unreviewed',
+}
+
+function resourceStatusClass(status: string) {
+  switch (status) {
+    case 'clean':
+      return 'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-100'
+    case 'blocked':
+    case 'error':
+      return 'border-red-200 bg-red-50 text-red-800 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-100'
+    case 'pending':
+      return 'border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-100'
+    default:
+      return 'border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300'
+  }
+}
 
 export function CalendarPanel({ id = 'calendar', items }: { id?: string; items: LmsCalendarItem[] }) {
   return (
@@ -105,10 +127,12 @@ export function ResourcesPanel({
   id = 'resources',
   resources,
   actions,
+  canReview = false,
 }: {
   id?: string
   resources: LmsResourceSummary[]
   actions?: ReactNode
+  canReview?: boolean
 }) {
   return (
     <LmsPanel id={id} title="Resources">
@@ -126,6 +150,50 @@ export function ResourcesPanel({
               <span className="mt-1 block text-slate-500 dark:text-slate-400">
                 {resource.courseTitle} - {resource.fileName}
               </span>
+              <span className={`mt-2 inline-flex w-fit items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold ${resourceStatusClass(resource.scanStatus)}`}>
+                <ShieldCheck className="h-3.5 w-3.5" />
+                {resourceStatusLabels[resource.scanStatus] ?? resource.scanStatus}
+                {resource.legalHold ? ' - legal hold' : ''}
+              </span>
+              {resource.retentionExpiresAt ? (
+                <span className="ml-2 text-xs text-slate-500 dark:text-slate-400">Retains until {resource.retentionExpiresAt.slice(0, 10)}</span>
+              ) : null}
+              {canReview ? (
+                <form action={`/api/lms/resources/${resource.id}`} method="post" className="mt-3 grid gap-2 rounded-md border border-slate-200 bg-slate-50 p-2 dark:border-slate-800 dark:bg-slate-950">
+                  <input type="hidden" name="returnTo" value="/admin" />
+                  <label className="grid gap-1 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    Scan status
+                    <select
+                      name="scanStatus"
+                      defaultValue={['pending', 'clean', 'blocked', 'error'].includes(resource.scanStatus) ? resource.scanStatus : 'pending'}
+                      className="h-9 rounded-md border border-slate-300 bg-white px-2 text-sm font-normal normal-case tracking-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                    >
+                      <option value="pending">Pending scan</option>
+                      <option value="clean">Clean</option>
+                      <option value="blocked">Quarantined</option>
+                      <option value="error">Scan error</option>
+                    </select>
+                  </label>
+                  <label className="inline-flex items-center gap-2 text-sm font-semibold">
+                    <input type="checkbox" name="legalHold" defaultChecked={resource.legalHold} className="h-4 w-4 rounded border-slate-300 text-teal-700" />
+                    Legal hold
+                  </label>
+                  <label className="grid gap-1 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    Quarantine note
+                    <input
+                      name="quarantineReason"
+                      defaultValue={resource.quarantineReason}
+                      maxLength={500}
+                      placeholder="Reason for block or scan exception"
+                      className="h-9 rounded-md border border-slate-300 bg-white px-2 text-sm font-normal normal-case tracking-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                    />
+                  </label>
+                  <button type="submit" className="inline-flex h-9 w-fit items-center gap-2 rounded-md bg-slate-900 px-3 text-sm font-semibold text-white hover:bg-slate-700 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">
+                    <ShieldCheck className="h-4 w-4" />
+                    Save review
+                  </button>
+                </form>
+              ) : null}
             </li>
           ))}
         </ul>

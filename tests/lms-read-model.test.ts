@@ -91,6 +91,11 @@ describe('persistent LMS read model', () => {
         courseTitle: 'Grade 8 Humanities',
         fileName: 'source-pack.pdf',
         fileType: 'application/pdf',
+        scanStatus: 'clean',
+        scanProvider: 'mock',
+        legalHold: false,
+        retentionExpiresAt: '2033-05-06T21:00:00.000Z',
+        quarantineReason: '',
       },
     ])
     expect(JSON.stringify(views.student)).not.toContain('Riley Student')

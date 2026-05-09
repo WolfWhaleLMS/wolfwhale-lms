@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { createCourseResource } from '@/lib/lms/mutations'
-import { lmsMutationErrorCode, lmsRedirect } from '@/lib/lms/route-helpers'
+import { enforceLmsMutationRateLimit, lmsMutationErrorCode, lmsRedirect } from '@/lib/lms/route-helpers'
 import { createAdminClient, hasSupabaseAdminEnv } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 
@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
   const returnTo = safeReturnPath(formData.get('returnTo'))
 
   try {
+    await enforceLmsMutationRateLimit(request, 'resources', { limit: 20, window: '10 m' })
     await createCourseResource(
       await createClient(),
       {

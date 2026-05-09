@@ -20,7 +20,8 @@ npm run security:supabase
 
 - Confirm the Vercel deployment URL and custom domain.
 - Confirm the connected Supabase project ref and migration version.
-- Apply all pending migrations, including companion profile persistence.
+- Apply all pending migrations, including companion profile persistence, course resource RLS hardening, resource security reviews, and companion profile versioning.
+- Set the resource safety environment values for the customer: `COURSE_RESOURCE_TENANT_QUOTA_BYTES`, `COURSE_RESOURCE_COURSE_QUOTA_BYTES`, `COURSE_RESOURCE_RETENTION_DAYS`, `COURSE_RESOURCE_REQUIRE_CLEAN_SCAN`, and `COURSE_RESOURCE_SCAN_PROVIDER`.
 - Run a backup and record the backup checksum.
 - Run a restore drill into a disposable non-production database.
 - Save restore evidence in the restore-drill evidence JSON format.

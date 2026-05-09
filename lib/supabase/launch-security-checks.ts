@@ -30,6 +30,7 @@ export const LAUNCH_SENSITIVE_TABLES = [
   'notification_preferences',
   'audit_logs',
   'student_companion_profiles',
+  'course_resource_security_reviews',
 ] as const
 
 export const SECURITY_INVOKER_VIEWS = ['student_course_progress', 'course_student_count'] as const

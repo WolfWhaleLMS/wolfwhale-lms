@@ -152,7 +152,7 @@ export function AdminDashboard({ view }: { view: AdminView }) {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <CalendarPanel items={view.calendar} />
-        <ResourcesPanel resources={view.resources} actions={<ResourceUploadForm courses={view.courses} returnTo="/admin" />} />
+        <ResourcesPanel resources={view.resources} actions={<ResourceUploadForm courses={view.courses} returnTo="/admin" />} canReview />
         <MessagesPanel messages={view.messages} />
       </div>
 
