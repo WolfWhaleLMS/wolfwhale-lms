@@ -27,6 +27,15 @@ import type { buildLmsDashboardViews } from '@/lib/lms/read-model'
 
 type StudentView = ReturnType<typeof buildLmsDashboardViews>['student']
 
+const savedMessages: Record<string, string> = {
+  submission: 'Work submitted. Your teacher can now review it.',
+}
+
+const errorMessages: Record<string, string> = {
+  rate_limited: 'Too many requests. Wait a moment and try again.',
+  lms_mutation_failed: 'That LMS action did not save. Try again or contact your school.',
+}
+
 type StudentTool = {
   href: string
   label: string
@@ -122,7 +131,7 @@ function StatPill({ label, value }: { label: string; value: string | number }) {
   )
 }
 
-export function StudentDashboard({ view }: { view: StudentView }) {
+export function StudentDashboard({ view, saved, error }: { view: StudentView; saved?: string; error?: string }) {
   const gradeAverage = average(view.gradebook.map((course) => course.currentPercentage))
   const attendanceAverage = average(view.attendance.map((summary) => summary.attendanceRate), 100)
   const missingWork = view.gradebook.reduce((total, course) => total + course.missingAssignments, 0)
@@ -168,6 +177,16 @@ export function StudentDashboard({ view }: { view: StudentView }) {
               <p className="mt-1 max-w-3xl text-sm font-semibold leading-6 text-[#345c52]">
                 Good morning, {studentFirstName}. Pick a tool, jump into a course, or check the next thing due.
               </p>
+              {saved && savedMessages[saved] ? (
+                <p className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50/90 px-3 py-2 text-sm font-black text-emerald-800">
+                  {savedMessages[saved]}
+                </p>
+              ) : null}
+              {error && errorMessages[error] ? (
+                <p className="mt-3 rounded-lg border border-red-200 bg-red-50/90 px-3 py-2 text-sm font-black text-red-800">
+                  {errorMessages[error]}
+                </p>
+              ) : null}
             </div>
 
             <div className="flex flex-wrap gap-2">

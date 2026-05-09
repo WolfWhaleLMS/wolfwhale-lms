@@ -20,6 +20,7 @@ const errors: Record<string, string> = {
   'missing-credentials': 'Enter your school email and password.',
   'invalid-credentials': 'The email or password did not match a WolfWhale account.',
   'no-membership': 'This account is not assigned to an active school role.',
+  'rate-limited': 'Too many sign-in attempts. Wait a few minutes, then try again.',
   'auth-confirmation-failed': 'The sign-in link could not be confirmed. Request a new link from your school admin.',
 }
 

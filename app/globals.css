@@ -872,6 +872,21 @@ body::before {
     text-transform: uppercase;
   }
 
+  .lms-dashboard-shell form,
+  .lms-dashboard-shell label,
+  .lms-dashboard-shell li,
+  .lms-dashboard-shell section {
+    min-width: 0;
+  }
+
+  .lms-dashboard-shell input:not([type='checkbox']):not([type='radio']),
+  .lms-dashboard-shell select,
+  .lms-dashboard-shell textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
   /* Technical data font (Share Tech Mono) */
   .font-data {
     font-family: var(--font-share-tech-mono), 'Share Tech Mono', monospace;

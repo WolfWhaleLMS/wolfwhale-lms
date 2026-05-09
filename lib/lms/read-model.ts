@@ -266,10 +266,25 @@ function riskLevel(input: { currentPercentage: number; missingAssignments: numbe
   return 'good'
 }
 
+function percentageForGrade(records: LmsRecords, grade: LmsGradeRecord) {
+  const assignment = records.assignments.find((candidate) => candidate.id === grade.assignmentId)
+  if (grade.percentage > 0) return grade.percentage
+  if (!assignment || assignment.maxPoints <= 0) return 0
+
+  return Math.round((grade.pointsEarned / assignment.maxPoints) * 10000) / 100
+}
+
+function assignmentIsPastDue(assignment: LmsAssignmentRecord, now = Date.now()) {
+  const dueAt = Date.parse(assignment.dueAt)
+
+  return Number.isFinite(dueAt) && dueAt < now
+}
+
 function weightedPercentage(records: LmsRecords, course: LmsCourseRecord, studentId: string) {
   const assignments = records.assignments.filter((assignment) => assignment.courseId === course.id && assignment.status !== 'archived')
   const grades = records.grades.filter((grade) => grade.courseId === course.id && grade.studentId === studentId)
   const gradeByAssignmentId = new Map(grades.map((grade) => [grade.assignmentId, grade]))
+  const fallbackPercentages = grades.map((grade) => percentageForGrade(records, grade)).filter((value) => value > 0)
   let weightedTotal = 0
   let usedWeight = 0
 
@@ -280,7 +295,7 @@ function weightedPercentage(records: LmsRecords, course: LmsCourseRecord, studen
         const grade = gradeByAssignmentId.get(assignment.id)
         if (!grade) return null
 
-        return grade.percentage || Math.round((grade.pointsEarned / assignment.maxPoints) * 10000) / 100
+        return percentageForGrade(records, grade)
       })
       .filter((value): value is number => typeof value === 'number')
 
@@ -290,11 +305,16 @@ function weightedPercentage(records: LmsRecords, course: LmsCourseRecord, studen
     }
   }
 
+  if (usedWeight === 0 && fallbackPercentages.length > 0) {
+    return Math.round((fallbackPercentages.reduce((total, value) => total + value, 0) / fallbackPercentages.length) * 100) / 100
+  }
+
   return usedWeight === 0 ? 0 : Math.round((weightedTotal / usedWeight) * 100) / 100
 }
 
 function gradebookForCourse(records: LmsRecords, course: LmsCourseRecord, studentIds: Set<string>): LmsGradebookCourseSummary {
   const assignments = records.assignments.filter((assignment) => assignment.courseId === course.id && assignment.status !== 'archived')
+  const pastDueAssignments = assignments.filter((assignment) => assignmentIsPastDue(assignment))
 
   return {
     courseId: course.id,
@@ -305,7 +325,12 @@ function gradebookForCourse(records: LmsRecords, course: LmsCourseRecord, studen
       .map((student) => {
         const currentPercentage = weightedPercentage(records, course, student.id)
         const gradedAssignments = records.grades.filter((grade) => grade.courseId === course.id && grade.studentId === student.id).length
-        const missingAssignments = assignments.length - gradedAssignments
+        const gradedAssignmentIds = new Set(
+          records.grades
+            .filter((grade) => grade.courseId === course.id && grade.studentId === student.id)
+            .map((grade) => grade.assignmentId)
+        )
+        const missingAssignments = pastDueAssignments.filter((assignment) => !gradedAssignmentIds.has(assignment.id)).length
         const attendanceRate = attendanceRateForStudentCourse(records, student.id, course.id)
 
         return {

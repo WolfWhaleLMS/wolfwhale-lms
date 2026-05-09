@@ -22,6 +22,9 @@ const adminTools = [
 ]
 
 export function AdminDashboard({ view }: { view: AdminView }) {
+  const auditTrail = [...view.auditTrail]
+    .sort((left, right) => right.createdAt.localeCompare(left.createdAt))
+    .slice(0, 25)
   const metrics = [
     ['Active students', view.metrics.activeStudents],
     ['Active teachers', view.metrics.activeTeachers],
@@ -53,8 +56,8 @@ export function AdminDashboard({ view }: { view: AdminView }) {
         </LmsPanel>
 
         <LmsPanel id="audit" title="Audit trail">
-          <ul className="grid gap-2">
-            {view.auditTrail.map((entry) => (
+          <ul className="grid max-h-[32rem] gap-2 overflow-y-auto pr-1">
+            {auditTrail.map((entry) => (
               <li key={entry.id} className="flex items-center gap-2 rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
                 <Activity className="h-4 w-4 text-teal-700 dark:text-teal-200" />
                 <span className="font-semibold">{entry.action}</span>
@@ -62,6 +65,11 @@ export function AdminDashboard({ view }: { view: AdminView }) {
               </li>
             ))}
           </ul>
+          {view.auditTrail.length > auditTrail.length ? (
+            <p className="mt-3 text-xs font-semibold text-slate-500 dark:text-slate-400">
+              Showing latest {auditTrail.length} of {view.auditTrail.length} audit events.
+            </p>
+          ) : null}
         </LmsPanel>
       </div>
 
@@ -226,7 +234,7 @@ export function AdminDashboard({ view }: { view: AdminView }) {
               >
                 {view.students.map((student) => (
                   <option key={student.id} value={student.id}>
-                    {student.name}
+                    {student.name} - {student.id.slice(0, 8)}
                   </option>
                 ))}
               </select>
@@ -239,7 +247,7 @@ export function AdminDashboard({ view }: { view: AdminView }) {
               >
                 {view.teachers.map((teacher) => (
                   <option key={teacher.id} value={teacher.id}>
-                    {teacher.name}
+                    {teacher.name} - {teacher.id.slice(0, 8)}
                   </option>
                 ))}
               </select>

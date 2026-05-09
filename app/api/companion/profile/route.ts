@@ -17,6 +17,21 @@ function jsonError(message: string, status: number) {
   return NextResponse.json({ error: message }, { status })
 }
 
+function isMissingCompanionProfilesTableError(error: unknown) {
+  if (!error || typeof error !== 'object') return false
+
+  const row = error as { code?: unknown; message?: unknown; details?: unknown }
+  const code = typeof row.code === 'string' ? row.code : ''
+  const message = [row.message, row.details].filter((value) => typeof value === 'string').join(' ')
+
+  return (
+    code === '42P01' ||
+    code === 'PGRST205' ||
+    message.includes('student_companion_profiles') ||
+    message.includes('Could not find the table')
+  )
+}
+
 async function requireStudentMembership() {
   const supabase = await createClient()
   const {
@@ -95,6 +110,14 @@ export async function GET() {
     .maybeSingle()
 
   if (error) {
+    if (isMissingCompanionProfilesTableError(error)) {
+      return NextResponse.json({
+        profile: null,
+        version: null,
+        persistence: 'local-fallback',
+      })
+    }
+
     return jsonError(`Unable to load companion profile: ${error.message}`, 500)
   }
 
@@ -134,6 +157,14 @@ export async function PUT(request: NextRequest) {
     .maybeSingle()
 
   if (existingError) {
+    if (isMissingCompanionProfilesTableError(existingError)) {
+      return NextResponse.json({
+        profile,
+        version: null,
+        persistence: 'local-fallback',
+      })
+    }
+
     return jsonError(`Unable to save companion profile: ${existingError.message}`, 500)
   }
 
@@ -166,6 +197,14 @@ export async function PUT(request: NextRequest) {
   const { data, error } = await saveQuery
 
   if (error) {
+    if (isMissingCompanionProfilesTableError(error)) {
+      return NextResponse.json({
+        profile,
+        version: null,
+        persistence: 'local-fallback',
+      })
+    }
+
     return jsonError(`Unable to save companion profile: ${error.message}`, 500)
   }
   if (!data) {

@@ -40,6 +40,19 @@ function resourceStatusClass(status: string) {
   }
 }
 
+function formatLmsDateTime(value: string) {
+  const parsed = Date.parse(value)
+  if (!Number.isFinite(parsed)) return value
+
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(new Date(parsed))
+}
+
 export function CalendarPanel({ id = 'calendar', items }: { id?: string; items: LmsCalendarItem[] }) {
   return (
     <LmsPanel id={id} title="Calendar">
@@ -54,7 +67,7 @@ export function CalendarPanel({ id = 'calendar', items }: { id?: string; items: 
                 {item.title}
               </span>
               <span className="mt-1 block text-slate-500 dark:text-slate-400">
-                {item.courseTitle} - {item.dueAt}
+                {item.courseTitle} - {formatLmsDateTime(item.dueAt)}
               </span>
             </li>
           ))}

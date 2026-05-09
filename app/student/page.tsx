@@ -9,8 +9,19 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic'
 
-export default async function StudentPage() {
-  const view = await loadLmsDashboardView('student')
+interface StudentPageProps {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>
+}
 
-  return <StudentDashboard view={view} />
+function firstParam(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value
+}
+
+export default async function StudentPage({ searchParams }: StudentPageProps) {
+  const view = await loadLmsDashboardView('student')
+  const params = (await searchParams) ?? {}
+  const saved = firstParam(params.saved)
+  const error = firstParam(params.error)
+
+  return <StudentDashboard view={view} saved={saved} error={error} />
 }
