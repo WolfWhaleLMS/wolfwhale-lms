@@ -27,7 +27,8 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 ## Latest Fresh Verification
 
 - `npm test -- tests/lms-mutations.test.ts tests/lms-query-mapping.test.ts tests/lms-student-workspaces.test.tsx`: passed, 3 files / 13 tests.
-- `npm test`: passed, 22 files / 94 tests.
+- `npm test -- tests/lms-submission-file-route.test.ts`: passed, 4 tests covering auth-required, RLS miss, signed redirect, and signing failure.
+- `npm test`: passed, 23 files / 98 tests.
 - `npm run lint`: passed.
 - `npm run typecheck`: passed.
 - `npm run build`: passed; route list includes `/api/lms/submissions/[submissionId]/file`.
