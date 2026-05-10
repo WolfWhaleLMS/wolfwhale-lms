@@ -8,6 +8,7 @@ const timesNewRoman = {
 
 export function WolfWhaleBrand({
   href,
+  logoSrc = '/logo.png',
   logoSize = 56,
   className,
   markClassName,
@@ -16,6 +17,7 @@ export function WolfWhaleBrand({
   priority = false,
 }: {
   href?: string
+  logoSrc?: string
   logoSize?: number
   className?: string
   markClassName?: string
@@ -34,7 +36,7 @@ export function WolfWhaleBrand({
         aria-hidden="true"
       >
         <Image
-          src="/logo.png"
+          src={logoSrc}
           alt=""
           width={logoSize}
           height={logoSize}
