@@ -32,6 +32,7 @@ interface SupabaseLmsRows {
   messages: Row[]
   rubrics: Row[]
   attendance: Row[]
+  calendarEvents: Row[]
 }
 
 function text(value: unknown, fallback = '') {
@@ -324,6 +325,17 @@ export function mapSupabaseRowsToLmsRecords(rows: SupabaseLmsRows): LmsRecords {
       notes: text(entry.notes),
       markedBy: text(entry.marked_by),
     })),
+    calendarEvents: rows.calendarEvents.map((event) => ({
+      id: text(event.id),
+      tenantId: text(event.tenant_id),
+      courseId: text(event.course_id),
+      title: text(event.title, 'Calendar event'),
+      description: text(event.description),
+      startsAt: text(event.starts_at),
+      endsAt: text(event.ends_at),
+      status: text(event.status, 'published'),
+      createdBy: text(event.created_by),
+    })),
   }
 }
 
@@ -405,6 +417,7 @@ export async function loadLmsRecordsForUser(supabase: SupabaseClient, userId: st
     messages,
     rubrics,
     attendance,
+    calendarEvents,
   ] = await Promise.all([
     queryTable(supabase, 'tenant_memberships', 'tenant_id,user_id,role,status', tenantId),
     queryTable(supabase, 'student_parents', 'tenant_id,student_id,parent_id,status', tenantId),
@@ -430,6 +443,12 @@ export async function loadLmsRecordsForUser(supabase: SupabaseClient, userId: st
     queryTable(supabase, 'messages', 'id,tenant_id,conversation_id,sender_id,content,created_at', tenantId),
     queryTable(supabase, 'rubrics', 'id,tenant_id,assignment_id,name,description,criteria,created_by', tenantId),
     queryTable(supabase, 'attendance_records', 'id,tenant_id,course_id,student_id,attendance_date,status,notes,marked_by', tenantId),
+    queryTable(
+      supabase,
+      'calendar_events',
+      'id,tenant_id,course_id,title,description,starts_at,ends_at,status,created_by',
+      tenantId
+    ),
   ])
   const resources = await queryIn(
     supabase,
@@ -491,5 +510,6 @@ export async function loadLmsRecordsForUser(supabase: SupabaseClient, userId: st
     messages,
     rubrics,
     attendance,
+    calendarEvents,
   })
 }

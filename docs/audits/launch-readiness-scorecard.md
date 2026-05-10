@@ -17,7 +17,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 | Student text and file submission | Partial | Added file upload support, metadata mapping, private signed file route, UI file input, storage policy migration, and assigned-teacher submission RLS migration. Upload is verified, but the stricter signed-link browser smoke is blocked until the new table RLS migration is applied live. |
 | Parent linked-child privacy | Partial | Guardian dashboard passed local smoke through linked-student surfaces, and read-model tests now prove over-fetched teacher/student-only messages do not appear in unrelated student or guardian views. Full live RLS matrix for wrong-child/wrong-tenant access is still pending. |
 | Gradebook/reports | Partial | Weighted read model and exports exist; full regression pending. |
-| Calendar/attendance/messages | Partial | Role read models, visible message composer forms, and audited `/api/lms/messages` writes now exist. Student/guardian messages resolve to course staff server-side, teacher messages are scoped to assigned course students/guardians, and a relationship-aware conversation policy migration is pending live application. Moderation/export controls and live RLS proof remain open. |
+| Calendar/attendance/messages | Partial | Role read models, visible message composer forms, audited `/api/lms/messages` writes, and audited `/api/lms/calendar-events` school/course event writes now exist. Student/guardian messages resolve to course staff server-side, teacher messages are scoped to assigned course students/guardians, and relationship-aware calendar/message policy migrations are pending live application. Moderation/export controls and live RLS proof remain open. |
 | Private files | Partial | Course resources and student submission files use private buckets and signed routes. The linked dev project has a private `submissions` bucket; storage and table RLS migrations still need live DB application/validation. |
 | Audit logging | Partial | Core LMS mutation services, roster import, and the direct resource-review admin write now have static audit-log coverage. Live audit-row insertion proof is still pending with applied Supabase migrations. |
 | Pets/rewards | Partial | Companion code is fish-only with clownfish/pufferfish starters, fish-only Supabase species migration, and server-side XP grants for first-time student submissions plus first teacher feedback posts. Lesson, quiz, streak, and attendance reward expansion is still pending. |
@@ -44,12 +44,13 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 - `npm test -- tests/lms-course-sections.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: passed, 3 files / 10 tests covering course section/term normalization, admin form fields, Supabase query mapping, exports, and the metadata migration artifact.
 - `npm test -- tests/lms-invitations.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: passed, 3 files / 9 tests covering direct admin invite normalization, route/form wiring, and audit-log coverage.
 - `npm test -- tests/lms-guardian-links.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: passed, 3 files / 10 tests covering guardian-link normalization, admin read model choices, route/form wiring, and audit-log coverage.
-- `npm test`: passed, 31 files / 131 tests after the admin guardian-link slice.
-- `npm run lint`: passed after the admin guardian-link slice.
-- `npm run typecheck`: passed after the admin guardian-link slice.
-- `npm run build`: passed after the admin guardian-link slice; route list includes `/api/lms/courses`, `/api/lms/guardian-links`, `/api/lms/invitations`, `/api/lms/messages`, and `/student/companion-world`.
-- `npm run load:smoke`: passed after the course section metadata slice in 1848ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments.
-- Admin create-course browser fallback: attempted against `http://127.0.0.1:3010` at desktop and mobile widths. The Browser plugin automation runtime was unavailable, and the Playwright fallback was blocked before dashboard render by `/login?error=lms-access-required` after sign-in. Component/render tests cover the new Section and Term controls; live browser proof remains pending with healthy smoke credentials/data and the new migration applied.
+- `npm test -- tests/lms-calendar-events.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: passed, 4 files / 12 tests covering durable calendar event normalization, role calendars, admin/teacher forms, query mapping, route delegation, migration policy artifact, and audit-log coverage.
+- `npm test`: passed, 32 files / 134 tests after the durable calendar-events slice.
+- `npm run lint`: passed after the durable calendar-events slice.
+- `npm run typecheck`: passed after the durable calendar-events slice.
+- `npm run build`: passed after the durable calendar-events slice; route list includes `/api/lms/calendar-events`, `/api/lms/courses`, `/api/lms/guardian-links`, `/api/lms/invitations`, `/api/lms/messages`, and `/student/companion-world`.
+- `npm run load:smoke`: passed after the durable calendar-events slice in 2039ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments.
+- Calendar/dashboard browser fallback: attempted against `http://127.0.0.1:3010` after the durable calendar-events slice. The Browser plugin was available, but tool discovery did not expose the required browser-control execution tool, so the repo Playwright fallback was used. The fallback was blocked before dashboard render by `/login?error=lms-access-required` after student sign-in; the harness now checks visible Add event controls and mutating calendar-event writes when smoke credentials/data are healthy.
 - Landing/login visual smoke: passed for `/` and `/login` at 1440px and 390px widths; screenshots written to `test-results/landing-refresh`.
 - Login one-click demo render smoke: passed at 390px; found four demo buttons, five auth forms, and no horizontal overflow.
 - `npm audit --audit-level=moderate`: passed, 0 vulnerabilities.
@@ -67,6 +68,6 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 2. `npm run lint`
 3. `npm run build`
 4. `npm run test:a11y`
-5. Admin create-course browser smoke with active smoke accounts and `20260510225408_course_section_metadata.sql` applied
-6. `npm run security:supabase` with DB credentials after applying `20260510205641_student_submission_file_storage.sql`, `20260510212739_submissions_assigned_teacher_read_policy.sql`, `20260510220050_fish_companion_species.sql`, `20260510233000_course_message_write_policy.sql`, and `20260510225408_course_section_metadata.sql`
+5. LMS dashboard browser smoke with active smoke accounts and `20260510225408_course_section_metadata.sql` plus `20260510231855_lms_calendar_events.sql` applied
+6. `npm run security:supabase` with DB credentials after applying `20260510205641_student_submission_file_storage.sql`, `20260510212739_submissions_assigned_teacher_read_policy.sql`, `20260510220050_fish_companion_species.sql`, `20260510233000_course_message_write_policy.sql`, `20260510225408_course_section_metadata.sql`, and `20260510231855_lms_calendar_events.sql`
 7. Fresh deployed smoke on `wolfwhale.ca` after the branch is deployed

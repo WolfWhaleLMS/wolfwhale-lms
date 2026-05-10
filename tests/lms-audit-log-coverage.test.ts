@@ -7,6 +7,7 @@ const mutationSource = readFileSync(path.join(repoRoot, 'lib/lms/mutations.ts'),
 const rosterImportSource = readFileSync(path.join(repoRoot, 'lib/lms/roster-import.ts'), 'utf8')
 const invitationSource = readFileSync(path.join(repoRoot, 'lib/lms/invitations.ts'), 'utf8')
 const guardianLinkSource = readFileSync(path.join(repoRoot, 'lib/lms/guardian-links.ts'), 'utf8')
+const calendarEventSource = readFileSync(path.join(repoRoot, 'lib/lms/calendar-events.ts'), 'utf8')
 
 const mutationAuditExpectations = [
   {
@@ -68,6 +69,7 @@ const routeServiceExpectations = [
   ['app/api/lms/messages/route.ts', 'sendCourseMessage'],
   ['app/api/lms/invitations/route.ts', 'inviteUserToSchool'],
   ['app/api/lms/guardian-links/route.ts', 'linkGuardianToStudent'],
+  ['app/api/lms/calendar-events/route.ts', 'createCalendarEvent'],
   ['app/api/lms/roster/import/route.ts', 'importRosterWithInvites'],
 ] as const
 
@@ -128,6 +130,8 @@ describe('LMS audit-log coverage', () => {
     expect(invitationSource).toContain('user.invited')
     expect(guardianLinkSource).toContain(".from('audit_logs').insert")
     expect(guardianLinkSource).toContain('guardian.linked')
+    expect(calendarEventSource).toContain(".from('audit_logs').insert")
+    expect(calendarEventSource).toContain('calendar_event.created')
 
     for (const expectation of directRouteAuditExpectations) {
       const routeSource = sourceFor(expectation.routePath)

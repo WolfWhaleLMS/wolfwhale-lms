@@ -99,6 +99,8 @@ async function assertRoleSurface(page: Page, role: LmsRole) {
     await page.getByRole('heading', { name: 'Gradebook' }).waitFor()
     await page.getByRole('heading', { name: 'Attendance' }).waitFor()
     await page.getByRole('heading', { name: 'Rubrics' }).waitFor()
+    await page.locator('#calendar form[action="/api/lms/calendar-events"] input[name="startsAt"]').waitFor()
+    await page.locator('#calendar').getByRole('button', { name: 'Add event' }).waitFor()
     await page.getByRole('button', { name: 'Save attendance' }).waitFor()
     await page.getByRole('button', { name: 'Save rubric' }).waitFor()
   }
@@ -108,6 +110,8 @@ async function assertRoleSurface(page: Page, role: LmsRole) {
     await page.getByRole('heading', { name: 'Invite user' }).waitFor()
     await page.getByRole('heading', { name: 'Guardian links' }).waitFor()
     await page.getByRole('heading', { name: 'Roster import' }).waitFor()
+    await page.locator('#calendar form[action="/api/lms/calendar-events"] input[name="startsAt"]').waitFor()
+    await page.locator('#calendar').getByRole('button', { name: 'Add event' }).waitFor()
     await page.getByRole('button', { name: 'Import roster' }).waitFor()
   }
 
@@ -278,6 +282,8 @@ async function exerciseTeacherWorkflows(page: Page) {
   await page.locator('#resources').getByRole('button', { name: 'Upload resource' }).click()
   await waitForSaved(page, 'teacher', 'resource')
 
+  await exerciseCalendarEventWorkflow(page, 'teacher', stamp)
+
   await page.locator('#attendance').scrollIntoViewIfNeeded()
   await page.locator('#attendance input[name="attendanceDate"]').fill('2026-05-07')
   await page.locator('#attendance input[name="notes"]').fill(`Workflow audit attendance ${stamp}`)
@@ -300,6 +306,18 @@ async function exerciseTeacherWorkflows(page: Page) {
   }
 }
 
+async function exerciseCalendarEventWorkflow(page: Page, role: Extract<LmsRole, 'admin' | 'teacher'>, stamp: string) {
+  await page.locator('#calendar').scrollIntoViewIfNeeded()
+  const form = page.locator('#calendar form[action="/api/lms/calendar-events"]')
+
+  await form.locator('input[name="title"]').fill(`Workflow audit event ${stamp}`)
+  await form.locator('input[name="startsAt"]').fill('2026-12-16T10:00')
+  await form.locator('input[name="endsAt"]').fill('2026-12-16T11:00')
+  await form.locator('textarea[name="description"]').fill('Workflow audit calendar event.')
+  await form.getByRole('button', { name: 'Add event' }).click()
+  await waitForSaved(page, role, 'calendar-event')
+}
+
 async function exerciseAdminWorkflows(page: Page) {
   const stamp = Date.now().toString(36)
 
@@ -312,6 +330,8 @@ async function exerciseAdminWorkflows(page: Page) {
   await page.locator('#create-course textarea[name="description"]').fill('Workflow audit course creation.')
   await page.locator('#create-course').getByRole('button', { name: 'Create course' }).click()
   await waitForSaved(page, 'admin', 'course')
+
+  await exerciseCalendarEventWorkflow(page, 'admin', stamp)
 
   await page.locator('#enroll-student').scrollIntoViewIfNeeded()
   await page.locator('#enroll-student input[name="notifyStudent"]').check()

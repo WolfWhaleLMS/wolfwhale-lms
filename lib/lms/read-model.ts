@@ -173,7 +173,7 @@ function pendingTeacherSubmissions(records: LmsRecords, teacherId: string): LmsG
 }
 
 function calendarItemsForCourseIds(records: LmsRecords, courseIds: Set<string>): LmsCalendarItem[] {
-  return records.assignments
+  const assignmentItems = records.assignments
     .filter((assignment) => courseIds.has(assignment.courseId))
     .map((assignment) => ({
       id: assignment.id,
@@ -183,6 +183,19 @@ function calendarItemsForCourseIds(records: LmsRecords, courseIds: Set<string>):
       dueAt: assignment.dueAt,
       status: assignment.status,
     }))
+
+  const eventItems = records.calendarEvents
+    .filter((event) => event.status !== 'cancelled' && (!event.courseId || courseIds.has(event.courseId)))
+    .map((event) => ({
+      id: event.id,
+      courseId: event.courseId,
+      title: event.title,
+      courseTitle: event.courseId ? findCourse(records, event.courseId).title : records.tenant.name,
+      dueAt: event.startsAt,
+      status: event.status,
+    }))
+
+  return [...assignmentItems, ...eventItems]
     .sort((left, right) => left.dueAt.localeCompare(right.dueAt))
 }
 
@@ -805,5 +818,6 @@ export function createDemoLmsRecords(): LmsRecords {
         markedBy: teacherId,
       },
     ],
+    calendarEvents: [],
   }
 }

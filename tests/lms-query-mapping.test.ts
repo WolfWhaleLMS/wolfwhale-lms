@@ -105,6 +105,19 @@ describe('Supabase LMS query mapping', () => {
           marked_by: 'teacher-1',
         },
       ],
+      calendarEvents: [
+        {
+          id: 'event-1',
+          tenant_id: 'tenant-1',
+          course_id: 'course-1',
+          title: 'Seminar',
+          description: 'Class seminar.',
+          starts_at: '2026-05-09T17:00:00.000Z',
+          ends_at: '2026-05-09T18:00:00.000Z',
+          status: 'published',
+          created_by: 'teacher-1',
+        },
+      ],
     })
 
     expect(records.tenant.name).toBe('WolfWhale School')
@@ -129,6 +142,7 @@ describe('Supabase LMS query mapping', () => {
     expect(records.messages[0]).toMatchObject({ content: 'Bring notes.' })
     expect(records.rubrics[0]).toMatchObject({ name: 'Exit Ticket Rubric', criteria: [{ name: 'Evidence', points: 5 }] })
     expect(records.attendance[0]).toMatchObject({ attendanceDate: '2026-05-07', status: 'present' })
+    expect(records.calendarEvents[0]).toMatchObject({ title: 'Seminar', startsAt: '2026-05-09T17:00:00.000Z' })
   })
 
   it('uses the signed-in user as the actor for their active role', () => {
@@ -159,6 +173,7 @@ describe('Supabase LMS query mapping', () => {
       messages: [],
       rubrics: [],
       attendance: [],
+      calendarEvents: [],
     })
 
     expect(records.actorIds.student).toBe('student-2')

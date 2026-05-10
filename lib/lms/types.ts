@@ -173,6 +173,18 @@ export interface LmsAttendanceRecord {
   markedBy: string
 }
 
+export interface LmsCalendarEventRecord {
+  id: string
+  tenantId: string
+  courseId: string
+  title: string
+  description: string
+  startsAt: string
+  endsAt: string
+  status: string
+  createdBy: string
+}
+
 export interface LmsGradingPolicyCategory {
   name: string
   weight: number
@@ -217,6 +229,7 @@ export interface LmsRecords {
   messages: LmsMessageRecord[]
   rubrics: LmsRubricRecord[]
   attendance: LmsAttendanceRecord[]
+  calendarEvents: LmsCalendarEventRecord[]
 }
 
 export interface LmsPerson {

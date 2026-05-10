@@ -81,6 +81,14 @@ Admin guardian linking now has a real write path:
 - `linkGuardianToStudent` verifies the current user is a school admin, verifies both student and guardian are active in the same tenant, upserts `student_parents`, and writes a `guardian.linked` audit event.
 - Remaining guardian lifecycle work includes unlinking, primary-contact flags, custody/consent notes, and live wrong-child/wrong-tenant RLS proof.
 
+School and course calendar events now have a real write path:
+
+- Admin and teacher dashboards expose event forms wired to `/api/lms/calendar-events`.
+- `createCalendarEvent` verifies active staff membership, requires teachers to attach events to assigned courses, and permits admins to create school-wide events.
+- `calendar_events` are loaded through the durable Supabase read model and merged with assignment due dates in role calendars.
+- `20260510231855_lms_calendar_events.sql` adds the event table, indexes, course/school event shape constraints, RLS policies, and authenticated grants.
+- Remaining calendar work includes recurring events, edit/cancel UI, iCal/feed export, notification rules, and live RLS/deployed proof.
+
 ## Evidence
 
 - `npm test -- tests/lms-mutations.test.ts tests/lms-query-mapping.test.ts tests/lms-student-workspaces.test.tsx`: 13/13 passing on 2026-05-10.
@@ -94,11 +102,13 @@ Admin guardian linking now has a real write path:
 - `npm test -- tests/lms-course-sections.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: 10/10 passing on 2026-05-10 for course section/term normalization, admin UI, query mapping, exports, and migration coverage.
 - `npm test -- tests/lms-invitations.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: 9/9 passing on 2026-05-10 for direct invite normalization, route/form wiring, and audit-log coverage.
 - `npm test -- tests/lms-guardian-links.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: 10/10 passing on 2026-05-10 for guardian-link normalization, admin read-model choices, route/form wiring, and audit-log coverage.
-- `npm test`: 31 files / 131 tests passing on 2026-05-10.
-- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the admin guardian-link slice.
-- `npm run load:smoke`: passing on 2026-05-10 in 1848ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments after the course section metadata slice.
+- `npm test -- tests/lms-calendar-events.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: 12/12 passing on 2026-05-10 for durable calendar event normalization, role calendars, admin/teacher forms, query mapping, migration artifact, route delegation, and audit-log coverage.
+- `npm test`: 32 files / 134 tests passing on 2026-05-10.
+- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the durable calendar-events slice.
+- `npm run load:smoke`: passing on 2026-05-10 in 2039ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments after the durable calendar-events slice.
 - Landing/login visual smoke passed on 2026-05-10 for desktop and mobile with no missing image alt text, unnamed buttons, or horizontal overflow.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passing locally on 2026-05-10 with student file attachment, teacher grading, admin writes, logout, and screenshots in `test-results/lms-smoke`.
+- `LMS_SMOKE_BASE_URL=http://127.0.0.1:3010 npm run test:a11y`: blocked after the durable calendar-events slice because the smoke student reached `/login?error=lms-access-required` after sign-in before the dashboard rendered. The smoke harness now checks Add event controls and mutating calendar-event writes once active LMS smoke accounts/data are restored.
 - Updated signed-file smoke assertion exposed a live RLS gap on 2026-05-10: assigned teachers cannot yet read all student submissions until `20260510212739_submissions_assigned_teacher_read_policy.sql` is applied.
 - Non-mutating local Playwright smoke against `http://127.0.0.1:3010` passed on 2026-05-10 after fixing same-host auth redirects for local `127.0.0.1` login flows.
 - Supabase changelog and Storage upload/access-control docs were checked on 2026-05-10 before implementing storage-facing code.

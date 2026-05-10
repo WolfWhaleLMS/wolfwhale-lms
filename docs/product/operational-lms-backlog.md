@@ -6,7 +6,7 @@ Date: 2026-05-10
 
 - Auth and role routing: keep Supabase Auth, logout, safe redirects, role dashboards, and membership checks verified.
 - School setup: admin creates school/course/section equivalents, enrolls users, links guardians, and imports roster/invites.
-- Course operations: teacher creates course content, assignments, rubrics, resources, attendance, messages, and grades.
+- Course operations: teacher creates course content, assignments, rubrics, resources, attendance, calendar events, messages, and grades.
 - Student work: student views courses and submits text/files through private storage.
 - Parent privacy: guardian sees only linked-child progress, feedback, attendance, calendar, messages, and teacher notes.
 - Gradebook and reports: submissions update grades, missing-work counts, attendance summaries, and export/report views.
@@ -22,6 +22,7 @@ Date: 2026-05-10
 - One-click demo account buttons on login without exposing reusable passwords in broader app surfaces.
 - Assignment submission file-download affordances for student and guardian views where policy allows.
 - Admin user lifecycle: resend invites, deactivate/reactivate users, reset roles, unlink guardians, and audit each action. Initial direct invites and guardian linking now exist.
+- Calendar lifecycle: edit/cancel events, add recurring events, event reminders, calendar feeds, and school-year/term views. Initial audited school/course event creation now exists.
 - Teacher content modules: reorder modules, attach resources per module, publish/unpublish, and preview as student.
 - Messaging controls: allowed role matrix, moderation hooks, reporting, retention, and export.
 - Attendance reports: date-range filters, CSV/PDF export, absence trend flags, and guardian notes.

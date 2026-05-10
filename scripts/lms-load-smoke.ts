@@ -178,6 +178,7 @@ function createSyntheticRecords(input: {
     messages: [],
     rubrics: [],
     attendance,
+    calendarEvents: [],
   }
 }
 

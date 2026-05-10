@@ -53,9 +53,10 @@ function formatLmsDateTime(value: string) {
   }).format(new Date(parsed))
 }
 
-export function CalendarPanel({ id = 'calendar', items }: { id?: string; items: LmsCalendarItem[] }) {
+export function CalendarPanel({ id = 'calendar', items, actions }: { id?: string; items: LmsCalendarItem[]; actions?: ReactNode }) {
   return (
     <LmsPanel id={id} title="Calendar">
+      {actions ? <div className="mb-4">{actions}</div> : null}
       {items.length === 0 ? (
         <EmptyState>No dated LMS items.</EmptyState>
       ) : (
@@ -74,6 +75,86 @@ export function CalendarPanel({ id = 'calendar', items }: { id?: string; items: 
         </ul>
       )}
     </LmsPanel>
+  )
+}
+
+export function CalendarEventForm({
+  courses,
+  returnTo,
+  allowSchoolWide = false,
+}: {
+  courses: LmsCourseSummary[]
+  returnTo: '/teacher' | '/admin'
+  allowSchoolWide?: boolean
+}) {
+  if (courses.length === 0 && !allowSchoolWide) {
+    return <EmptyState>Create a course before adding calendar events.</EmptyState>
+  }
+
+  return (
+    <form action="/api/lms/calendar-events" method="post" className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-950">
+      <input type="hidden" name="returnTo" value={returnTo} />
+      <label className="grid gap-1 text-sm font-semibold">
+        Course
+        <select
+          name="courseId"
+          required={!allowSchoolWide}
+          className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+        >
+          {allowSchoolWide ? <option value="">School-wide</option> : null}
+          {courses.map((course) => (
+            <option key={course.id} value={course.id}>
+              {course.title}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="grid gap-1 text-sm font-semibold">
+        Event title
+        <input
+          name="title"
+          required
+          maxLength={255}
+          placeholder="Field trip, class meeting, showcase..."
+          className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+        />
+      </label>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <label className="grid gap-1 text-sm font-semibold">
+          Starts
+          <input
+            name="startsAt"
+            type="datetime-local"
+            required
+            className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+          />
+        </label>
+        <label className="grid gap-1 text-sm font-semibold">
+          Ends
+          <input
+            name="endsAt"
+            type="datetime-local"
+            className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+          />
+        </label>
+      </div>
+      <label className="grid gap-1 text-sm font-semibold">
+        Description
+        <textarea
+          name="description"
+          rows={2}
+          maxLength={2000}
+          className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+        />
+      </label>
+      <button
+        type="submit"
+        className="inline-flex h-10 w-fit items-center justify-center gap-2 rounded-md bg-teal-700 px-4 text-sm font-semibold text-white hover:bg-teal-800"
+      >
+        <CalendarDays className="h-4 w-4" />
+        Add event
+      </button>
+    </form>
   )
 }
 
