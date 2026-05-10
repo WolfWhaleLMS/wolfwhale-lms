@@ -9,6 +9,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 | Repository foundation | Partial | `/Users/wolfwhale/wolfwhale-core` was missing; `/Users/wolfwhale/wolfwhale-lms` is the active repo with Next.js, Supabase, LMS routes, tests, and prior launch docs. |
 | Prompt-to-artifact audit | Partial | `docs/audits/prompt-to-artifact-checklist.md` maps named files, P0 flows, security/privacy/design/scale requirements, evidence, and blockers. This is an audit aid, not a readiness claim. |
 | Auth sign-in/sign-out | Partial | `/api/auth/login`, `/api/auth/logout`, `lib/lms/auth.ts`, and existing tests are present. Fresh local browser smoke passed for all four roles; deployed smoke still pending. |
+| One-click demo accounts | Pass | Login screen now has one-click demo buttons for student, teacher, guardian, and admin accounts. Buttons post to the real `/api/auth/login` route, not a pilot/mock auth path. |
 | Role dashboards | Partial | Student, teacher, admin, and guardian dashboards loaded in the local smoke run with desktop/mobile viewports and accessibility checks. Deployed and formal WCAG passes pending. |
 | Public landing/login UX | Partial | Frutiger Aero landing/login refresh renders with real WolfWhale logo and dashboard screenshots. Local Playwright smoke passed for desktop/mobile h1, image alt, named buttons, and horizontal overflow; formal accessibility review pending. |
 | Admin setup flows | Partial | Local mutating smoke passed for course creation, enrollment, and roster import. Live RLS/security proof and deployed smoke pending. |
@@ -34,11 +35,13 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 - `npm test -- tests/supabase-launch-security.test.ts tests/lms-submission-file-route.test.ts`: passed, 2 files / 11 tests after adding the assigned-teacher submission RLS verifier.
 - `npm test -- tests/privacy-launch-docs.test.ts`: passed, 2 tests covering privacy/DPA/subprocessor/breach/retention/export/delete/correction placeholder docs.
 - `npm test -- tests/prompt-artifact-checklist.test.ts`: passed, 3 tests verifying the prompt-to-artifact checklist covers named docs, 14 P0 flows, and blocked live gates.
-- `npm test`: passed, 25 files / 104 tests.
+- `npm test -- tests/lms-auth.test.ts tests/prompt-artifact-checklist.test.ts`: passed, 2 files / 10 tests covering real auth routing plus one-click demo auth forms.
+- `npm test`: passed, 25 files / 105 tests.
 - `npm run lint`: passed after the assigned-teacher RLS migration and stricter smoke update.
 - `npm run typecheck`: passed after the assigned-teacher RLS migration and stricter smoke update.
 - `npm run build`: passed; route list includes `/api/lms/submissions/[submissionId]/file`.
 - Landing/login visual smoke: passed for `/` and `/login` at 1440px and 390px widths; screenshots written to `test-results/landing-refresh`.
+- Login one-click demo render smoke: passed at 390px; found four demo buttons, five auth forms, and no horizontal overflow.
 - `npm audit --audit-level=moderate`: passed, 0 vulnerabilities.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: previously passed locally; after adding the teacher signed-file assertion, the latest run exposed that the live Supabase `submissions` SELECT policy does not yet allow the assigned teacher to see the uploaded INDIG 100 submission. New migration: `20260510212739_submissions_assigned_teacher_read_policy.sql`.
 - Changed-file secret scan for service-role/API/private-key patterns: no matches.

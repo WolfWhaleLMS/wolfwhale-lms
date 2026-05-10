@@ -84,4 +84,19 @@ describe('LMS production auth foundation', () => {
     expect(source).not.toContain('Access code')
     expect(source).not.toContain('/api/pilot/login')
   })
+
+  it('keeps demo accounts as one-click real-auth forms on the login screen', () => {
+    const source = readFileSync(path.join(repoRoot, 'app/login/page.tsx'), 'utf8')
+
+    expect(source).toContain('aria-label={`Use ${account.role} demo account`}')
+    expect(source).toContain('{account.role} demo')
+
+    for (const role of ['Student', 'Teacher', 'Guardian', 'Admin']) {
+      expect(source).toContain(`role: '${role}'`)
+    }
+
+    expect(source).toContain('type="hidden" name="email"')
+    expect(source).toContain('type="hidden" name="password"')
+    expect(source).toContain('Demo launch accounts')
+  })
 })

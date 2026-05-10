@@ -20,7 +20,7 @@ Purpose: map the active WolfWhale LMS launch objective to concrete repo artifact
 
 | P0 Flow | Evidence | Status |
 | --- | --- | --- |
-| 1. One-click demo accounts only on login screen | `app/login/page.tsx` lists demo launch accounts on the login screen | Partial: still not one-click buttons |
+| 1. One-click demo accounts only on login screen | `app/login/page.tsx` includes demo account POST buttons that submit to `/api/auth/login`; `tests/lms-auth.test.ts` guards the real-auth forms | Present |
 | 2. Real sign-in/sign-out | `app/api/auth/login/route.ts`, `app/api/auth/logout/route.ts`, `proxy.ts`, `tests/lms-auth.test.ts`, browser smoke | Partial: deployed smoke pending |
 | 3. Admin creates school/course/section and invites users | `app/api/lms/courses/route.ts`, `app/api/lms/enrollments/route.ts`, `app/api/lms/roster/import/route.ts`, admin dashboard | Partial: school/section lifecycle still incomplete |
 | 4. Teacher creates course content and assignments | `app/api/lms/assignments/route.ts`, `app/api/lms/resources/route.ts`, teacher dashboard, mutating smoke | Partial: live RLS proof pending |

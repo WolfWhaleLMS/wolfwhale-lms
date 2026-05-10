@@ -132,20 +132,29 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             </p>
             <div className="mt-3 grid gap-2">
               {demoAccounts.map((account) => (
-                <div
+                <form
                   key={account.email}
-                  className="grid gap-2 rounded-2xl border border-white/80 bg-white/80 p-3 shadow-sm shadow-sky-900/5 dark:border-white/10 dark:bg-white/5 sm:grid-cols-[5.5rem_1fr]"
+                  action="/api/auth/login"
+                  method="post"
+                  className="grid gap-3 rounded-2xl border border-white/80 bg-white/80 p-3 shadow-sm shadow-sky-900/5 dark:border-white/10 dark:bg-white/5 sm:grid-cols-[5.5rem_1fr_auto] sm:items-center"
                 >
+                  <input type="hidden" name="next" value={next} />
+                  <input type="hidden" name="email" value={account.email} />
+                  <input type="hidden" name="password" value={account.password} />
                   <p className="font-black text-blue-900 dark:text-cyan-100">{account.role}</p>
                   <div className="grid gap-1">
                     <code className="break-all rounded-xl bg-white px-2 py-1 text-xs font-bold text-slate-900 dark:bg-slate-900 dark:text-white">
                       {account.email}
                     </code>
-                    <code className="break-all rounded-xl bg-white px-2 py-1 text-xs font-bold text-slate-900 dark:bg-slate-900 dark:text-white">
-                      {account.password}
-                    </code>
                   </div>
-                </div>
+                  <button
+                    type="submit"
+                    aria-label={`Use ${account.role} demo account`}
+                    className="inline-flex min-h-11 items-center justify-center rounded-2xl bg-gradient-to-b from-white via-sky-50 to-sky-100 px-4 text-sm font-black text-blue-800 shadow-sm shadow-sky-900/10 transition hover:brightness-105 dark:from-white/15 dark:via-white/10 dark:to-white/5 dark:text-cyan-100"
+                  >
+                    {account.role} demo
+                  </button>
+                </form>
               ))}
             </div>
           </div>
