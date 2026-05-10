@@ -13,9 +13,11 @@ import { getCourseResourceBucket, getSubmissionBucket } from '@/lib/lms/resource
 
 type Row = Record<string, unknown>
 type LmsStaffRole = 'teacher' | 'admin' | 'super_admin'
+type LmsMessagingRole = 'student' | 'teacher' | 'parent' | 'admin' | 'super_admin'
 type LmsAttendanceStatus = 'present' | 'absent' | 'tardy' | 'excused' | 'online'
 
 const attendanceStatuses: readonly LmsAttendanceStatus[] = ['present', 'absent', 'tardy', 'excused', 'online']
+const messagingRoles: readonly LmsMessagingRole[] = ['student', 'teacher', 'parent', 'admin', 'super_admin']
 const courseResourceLessonTitle = 'Course resources'
 const maxSubmissionFileBytes = 25 * 1024 * 1024
 const maxCourseResourceBytes = 100 * 1024 * 1024
@@ -242,6 +244,10 @@ async function requireStaff(supabase: SupabaseClient, user: User, roles: readonl
   return requireMembership(supabase, user, roles)
 }
 
+async function requireMessagingMembership(supabase: SupabaseClient, user: User) {
+  return requireMembership(supabase, user, messagingRoles)
+}
+
 async function singleRow<T extends Row>(query: PromiseLike<{ data: unknown; error: { message: string } | null }>, errorCode: string) {
   const { data, error } = await query
   if (error) {
@@ -263,6 +269,15 @@ async function maybeSingleRow<T extends Row>(query: PromiseLike<{ data: unknown;
   return (data ?? null) as T | null
 }
 
+async function rowList<T extends Row>(query: PromiseLike<{ data: unknown; error: { message: string } | null }>, errorCode: string) {
+  const { data, error } = await query
+  if (error) {
+    throw new LmsMutationError(error.message, errorCode)
+  }
+
+  return rows(data) as T[]
+}
+
 async function ensureActiveStudentEnrollment(supabase: SupabaseClient, tenantId: string, courseId: string, studentId: string) {
   const enrollment = await maybeSingleRow(
     supabase
@@ -278,6 +293,29 @@ async function ensureActiveStudentEnrollment(supabase: SupabaseClient, tenantId:
 
   if (!enrollment) {
     throw new LmsMutationError('Student is not actively enrolled in this course.', 'enrollment_required')
+  }
+}
+
+async function activeTenantMembershipForUser(supabase: SupabaseClient, tenantId: string, userId: string) {
+  const membership = await maybeSingleRow(
+    supabase
+      .from('tenant_memberships')
+      .select('tenant_id,user_id,role,status')
+      .eq('tenant_id', tenantId)
+      .eq('user_id', userId)
+      .eq('status', 'active')
+      .maybeSingle(),
+    'recipient_membership_lookup_failed'
+  )
+
+  if (!membership || !isRole(membership.role, messagingRoles)) {
+    throw new LmsMutationError('Message recipient is not an active member of this school.', 'message_recipient_required')
+  }
+
+  return {
+    tenantId: id(membership.tenant_id, 'tenant_id'),
+    userId: id(membership.user_id, 'user_id'),
+    role: text(membership.role) as LmsMessagingRole,
   }
 }
 
@@ -662,6 +700,310 @@ export function normalizeRubricDraft(input: { assignmentId: unknown; name: unkno
     ...(description ? { description } : {}),
     criteria,
   }
+}
+
+export function normalizeMessageDraft(input: { courseId: unknown; recipientId?: unknown; subject?: unknown; content: unknown }) {
+  return {
+    courseId: id(input.courseId, 'course_id'),
+    recipientId: text(input.recipientId),
+    subject: optionalLimitedText(input.subject, 255),
+    content: limitedText(input.content, 'message', 5000),
+  }
+}
+
+function notificationActionUrlForRole(role: LmsMessagingRole) {
+  if (role === 'student') return '/student/messages'
+  if (role === 'parent') return '/guardian'
+  if (role === 'teacher') return '/teacher'
+
+  return '/admin'
+}
+
+async function courseMessageRecipientFromStudent(
+  supabase: SupabaseClient,
+  input: { tenantId: string; courseId: string; studentId: string; courseCreatedBy: unknown }
+) {
+  const enrollment = await maybeSingleRow(
+    supabase
+      .from('course_enrollments')
+      .select('student_id,teacher_id')
+      .eq('tenant_id', input.tenantId)
+      .eq('course_id', input.courseId)
+      .eq('student_id', input.studentId)
+      .eq('status', 'active')
+      .maybeSingle(),
+    'message_enrollment_lookup_failed'
+  )
+
+  if (!enrollment) {
+    throw new LmsMutationError('Student is not actively enrolled in this course.', 'message_course_required')
+  }
+
+  return {
+    recipientId: text(enrollment.teacher_id) || id(input.courseCreatedBy, 'created_by'),
+    studentId: id(enrollment.student_id, 'student_id'),
+  }
+}
+
+async function courseMessageRecipientFromGuardian(
+  supabase: SupabaseClient,
+  input: { tenantId: string; courseId: string; guardianId: string; courseCreatedBy: unknown }
+) {
+  const links = await rowList(
+    supabase
+      .from('student_parents')
+      .select('student_id')
+      .eq('tenant_id', input.tenantId)
+      .eq('parent_id', input.guardianId)
+      .eq('status', 'active'),
+    'guardian_link_lookup_failed'
+  )
+  const linkedStudentIds = new Set(links.map((link) => text(link.student_id)).filter(Boolean))
+
+  if (linkedStudentIds.size === 0) {
+    throw new LmsMutationError('Guardian has no active linked students.', 'guardian_link_required')
+  }
+
+  const enrollments = await rowList(
+    supabase
+      .from('course_enrollments')
+      .select('student_id,teacher_id')
+      .eq('tenant_id', input.tenantId)
+      .eq('course_id', input.courseId)
+      .eq('status', 'active'),
+    'guardian_course_lookup_failed'
+  )
+  const enrollment = enrollments.find((candidate) => linkedStudentIds.has(text(candidate.student_id)))
+
+  if (!enrollment) {
+    throw new LmsMutationError('Guardian is not linked to a student in this course.', 'guardian_course_required')
+  }
+
+  return {
+    recipientId: text(enrollment.teacher_id) || id(input.courseCreatedBy, 'created_by'),
+    studentId: id(enrollment.student_id, 'student_id'),
+  }
+}
+
+async function ensureTeacherCanMessageRecipient(
+  supabase: SupabaseClient,
+  input: {
+    tenantId: string
+    courseId: string
+    teacherId: string
+    courseCreatedBy: unknown
+    recipientId: string
+    recipientRole: LmsMessagingRole
+  }
+) {
+  if (input.recipientRole === 'admin' || input.recipientRole === 'super_admin') return
+
+  const teacherOwnsCourse = id(input.courseCreatedBy, 'created_by') === input.teacherId
+
+  if (input.recipientRole === 'student') {
+    const enrollment = await maybeSingleRow(
+      supabase
+        .from('course_enrollments')
+        .select('id,teacher_id')
+        .eq('tenant_id', input.tenantId)
+        .eq('course_id', input.courseId)
+        .eq('student_id', input.recipientId)
+        .eq('status', 'active')
+        .maybeSingle(),
+      'message_recipient_enrollment_lookup_failed'
+    )
+
+    if (!enrollment || (!teacherOwnsCourse && text(enrollment.teacher_id) !== input.teacherId)) {
+      throw new LmsMutationError('Teacher can only message students assigned to this course.', 'message_recipient_not_allowed')
+    }
+
+    return
+  }
+
+  if (input.recipientRole === 'parent') {
+    const links = await rowList(
+      supabase
+        .from('student_parents')
+        .select('student_id')
+        .eq('tenant_id', input.tenantId)
+        .eq('parent_id', input.recipientId)
+        .eq('status', 'active'),
+      'message_guardian_link_lookup_failed'
+    )
+    const linkedStudentIds = new Set(links.map((link) => text(link.student_id)).filter(Boolean))
+    const enrollments = await rowList(
+      supabase
+        .from('course_enrollments')
+        .select('student_id,teacher_id')
+        .eq('tenant_id', input.tenantId)
+        .eq('course_id', input.courseId)
+        .eq('status', 'active'),
+      'message_guardian_course_lookup_failed'
+    )
+    const linkedEnrollment = enrollments.find((enrollment) => linkedStudentIds.has(text(enrollment.student_id)))
+
+    if (!linkedEnrollment || (!teacherOwnsCourse && text(linkedEnrollment.teacher_id) !== input.teacherId)) {
+      throw new LmsMutationError('Teacher can only message guardians linked to assigned students.', 'message_recipient_not_allowed')
+    }
+
+    return
+  }
+
+  throw new LmsMutationError('Teacher cannot message that recipient for this course.', 'message_recipient_not_allowed')
+}
+
+async function resolveCourseMessageRecipient(
+  supabase: SupabaseClient,
+  input: {
+    tenantId: string
+    courseId: string
+    courseCreatedBy: unknown
+    draftRecipientId: string
+    sender: { userId: string; role: LmsMessagingRole }
+  }
+) {
+  let recipientId = input.draftRecipientId
+  let linkedStudentId = ''
+
+  if (input.sender.role === 'student') {
+    const recipient = await courseMessageRecipientFromStudent(supabase, {
+      tenantId: input.tenantId,
+      courseId: input.courseId,
+      studentId: input.sender.userId,
+      courseCreatedBy: input.courseCreatedBy,
+    })
+    recipientId = recipient.recipientId
+    linkedStudentId = recipient.studentId
+  } else if (input.sender.role === 'parent') {
+    const recipient = await courseMessageRecipientFromGuardian(supabase, {
+      tenantId: input.tenantId,
+      courseId: input.courseId,
+      guardianId: input.sender.userId,
+      courseCreatedBy: input.courseCreatedBy,
+    })
+    recipientId = recipient.recipientId
+    linkedStudentId = recipient.studentId
+  } else if (!recipientId) {
+    throw new LmsMutationError('Message recipient is required.', 'missing_recipient_id')
+  }
+
+  if (recipientId === input.sender.userId) {
+    throw new LmsMutationError('Messages require a different recipient.', 'message_recipient_not_allowed')
+  }
+
+  const recipientMembership = await activeTenantMembershipForUser(supabase, input.tenantId, recipientId)
+
+  if ((input.sender.role === 'student' || input.sender.role === 'parent') && !isRole(recipientMembership.role, ['teacher', 'admin', 'super_admin'])) {
+    throw new LmsMutationError('Students and guardians can only message course staff.', 'message_recipient_not_allowed')
+  }
+
+  if (input.sender.role === 'teacher') {
+    await ensureTeacherCanMessageRecipient(supabase, {
+      tenantId: input.tenantId,
+      courseId: input.courseId,
+      teacherId: input.sender.userId,
+      courseCreatedBy: input.courseCreatedBy,
+      recipientId,
+      recipientRole: recipientMembership.role,
+    })
+  }
+
+  return { recipientId, recipientRole: recipientMembership.role, linkedStudentId }
+}
+
+export async function sendCourseMessage(
+  supabase: SupabaseClient,
+  input: { courseId: unknown; recipientId?: unknown; subject?: unknown; content: unknown }
+) {
+  const user = await requireUser(supabase)
+  const membership = await requireMessagingMembership(supabase, user)
+  const draft = normalizeMessageDraft(input)
+  const course = await singleRow(
+    supabase.from('courses').select('id,tenant_id,name,created_by,status').eq('id', draft.courseId).single(),
+    'message_course_lookup_failed'
+  )
+  const tenantId = id(course.tenant_id, 'tenant_id')
+
+  if (tenantId !== membership.tenantId) {
+    throw new LmsMutationError('Course does not belong to this school.', 'tenant_mismatch')
+  }
+  if (text(course.status) !== 'active') {
+    throw new LmsMutationError('Messages can only be sent for active courses.', 'message_course_inactive')
+  }
+
+  const recipient = await resolveCourseMessageRecipient(supabase, {
+    tenantId,
+    courseId: draft.courseId,
+    courseCreatedBy: course.created_by,
+    draftRecipientId: draft.recipientId,
+    sender: { userId: user.id, role: membership.role as LmsMessagingRole },
+  })
+  const subject = draft.subject || `Course message: ${text(course.name, 'Course')}`
+  const conversation = await singleRow(
+    supabase
+      .from('conversations')
+      .insert({
+        tenant_id: tenantId,
+        type: 'direct',
+        subject,
+        course_id: draft.courseId,
+        created_by: user.id,
+        updated_at: new Date().toISOString(),
+      })
+      .select('id')
+      .single(),
+    'conversation_insert_failed'
+  )
+  const conversationId = id(conversation.id, 'conversation_id')
+  const { error: memberError } = await supabase.from('conversation_members').insert([
+    { conversation_id: conversationId, user_id: user.id },
+    { conversation_id: conversationId, user_id: recipient.recipientId },
+  ])
+
+  if (memberError) {
+    throw new LmsMutationError(`Unable to create conversation members: ${memberError.message}`, 'conversation_member_insert_failed')
+  }
+
+  const message = await singleRow(
+    supabase
+      .from('messages')
+      .insert({
+        tenant_id: tenantId,
+        conversation_id: conversationId,
+        sender_id: user.id,
+        content: draft.content,
+      })
+      .select('id')
+      .single(),
+    'message_insert_failed'
+  )
+  const messageId = id(message.id, 'message_id')
+
+  await supabase.from('notifications').insert({
+    tenant_id: tenantId,
+    user_id: recipient.recipientId,
+    type: 'message_received',
+    title: 'New message',
+    message: subject,
+    action_url: notificationActionUrlForRole(recipient.recipientRole),
+    course_id: draft.courseId,
+    read: false,
+  })
+  await insertAuditLog(supabase, {
+    tenantId,
+    userId: user.id,
+    action: 'message.sent',
+    resourceType: 'message',
+    resourceId: messageId,
+    details: {
+      conversation_id: conversationId,
+      course_id: draft.courseId,
+      recipient_id: recipient.recipientId,
+      ...(recipient.linkedStudentId ? { linked_student_id: recipient.linkedStudentId } : {}),
+    },
+  })
+
+  return { conversationId, messageId }
 }
 
 export async function submitAssignment(

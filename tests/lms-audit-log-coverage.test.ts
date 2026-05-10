@@ -47,6 +47,11 @@ const mutationAuditExpectations = [
     actions: ['enrollment.created', 'enrollment.updated'],
     resourceType: 'course_enrollment',
   },
+  {
+    functionName: 'sendCourseMessage',
+    actions: ['message.sent'],
+    resourceType: 'message',
+  },
 ] as const
 
 const routeServiceExpectations = [
@@ -58,6 +63,7 @@ const routeServiceExpectations = [
   ['app/api/lms/attendance/route.ts', 'markAttendance'],
   ['app/api/lms/rubrics/route.ts', 'createRubric'],
   ['app/api/lms/enrollments/route.ts', 'enrollStudent'],
+  ['app/api/lms/messages/route.ts', 'sendCourseMessage'],
   ['app/api/lms/roster/import/route.ts', 'importRosterWithInvites'],
 ] as const
 

@@ -215,9 +215,86 @@ export function ResourcesPanel({
   )
 }
 
-export function MessagesPanel({ id = 'messages', messages }: { id?: string; messages: LmsMessageSummary[] }) {
+export function MessageComposer({
+  courses,
+  recipients = [],
+  returnTo,
+  recipientLabel = 'Recipient',
+  contentLabel = 'Message',
+}: {
+  courses: LmsCourseSummary[]
+  recipients?: Array<{ id: string; name: string }>
+  returnTo: '/teacher' | '/guardian' | '/admin' | '/student/messages'
+  recipientLabel?: string
+  contentLabel?: string
+}) {
+  if (courses.length === 0) return null
+
+  return (
+    <form action="/api/lms/messages" method="post" className="mb-3 grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-950">
+      <input type="hidden" name="returnTo" value={returnTo} />
+      <div className="grid gap-3 sm:grid-cols-2">
+        <label className="grid gap-1 text-sm font-semibold">
+          Course
+          <select
+            name="courseId"
+            required
+            className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+          >
+            {courses.map((course) => (
+              <option key={course.id} value={course.id}>
+                {course.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        {recipients.length > 0 ? (
+          <label className="grid gap-1 text-sm font-semibold">
+            {recipientLabel}
+            <select
+              name="recipientId"
+              required
+              className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            >
+              {recipients.map((recipient) => (
+                <option key={recipient.id} value={recipient.id}>
+                  {recipient.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : null}
+      </div>
+      <label className="grid gap-1 text-sm font-semibold">
+        Subject
+        <input
+          name="subject"
+          maxLength={255}
+          className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+        />
+      </label>
+      <label className="grid gap-1 text-sm font-semibold">
+        {contentLabel}
+        <textarea
+          name="content"
+          required
+          maxLength={5000}
+          rows={3}
+          className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+        />
+      </label>
+      <button type="submit" className="inline-flex h-10 w-fit items-center justify-center gap-2 rounded-md bg-teal-700 px-4 text-sm font-semibold text-white hover:bg-teal-800">
+        <MessageSquare className="h-4 w-4" />
+        Send message
+      </button>
+    </form>
+  )
+}
+
+export function MessagesPanel({ id = 'messages', messages, actions }: { id?: string; messages: LmsMessageSummary[]; actions?: ReactNode }) {
   return (
     <LmsPanel id={id} title="Messages">
+      {actions}
       {messages.length === 0 ? (
         <EmptyState>No visible messages.</EmptyState>
       ) : (

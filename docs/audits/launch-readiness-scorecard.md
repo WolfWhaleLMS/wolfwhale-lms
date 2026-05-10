@@ -17,7 +17,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 | Student text and file submission | Partial | Added file upload support, metadata mapping, private signed file route, UI file input, storage policy migration, and assigned-teacher submission RLS migration. Upload is verified, but the stricter signed-link browser smoke is blocked until the new table RLS migration is applied live. |
 | Parent linked-child privacy | Partial | Guardian dashboard passed local smoke through linked-student surfaces; full live RLS matrix for wrong-child/wrong-tenant access is still pending. |
 | Gradebook/reports | Partial | Weighted read model and exports exist; full regression pending. |
-| Calendar/attendance/messages | Partial | Role read models and route surfaces exist and loaded in local smoke; deeper workflow and live RLS proof pending. |
+| Calendar/attendance/messages | Partial | Role read models, visible message composer forms, and audited `/api/lms/messages` writes now exist. Student/guardian messages resolve to course staff server-side, teacher messages are scoped to assigned course students/guardians, and a relationship-aware conversation policy migration is pending live application. Moderation/export controls and live RLS proof remain open. |
 | Private files | Partial | Course resources and student submission files use private buckets and signed routes. The linked dev project has a private `submissions` bucket; storage and table RLS migrations still need live DB application/validation. |
 | Audit logging | Partial | Core LMS mutation services, roster import, and the direct resource-review admin write now have static audit-log coverage. Live audit-row insertion proof is still pending with applied Supabase migrations. |
 | Pets/rewards | Partial | Companion code is fish-only with clownfish/pufferfish starters, fish-only Supabase species migration, and server-side XP grants for first-time student submissions plus first teacher feedback posts. Lesson, quiz, streak, and attendance reward expansion is still pending. |
@@ -39,10 +39,11 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 - `npm test -- tests/lms-audit-log-coverage.test.ts`: passed, 3 tests covering audited write services, write-route delegation, roster imports, and resource-review audit rows.
 - `npm test -- tests/fish-companion.test.ts`: passed, 12 tests covering fish-only starter species, fish sprite metadata, fish companion storage keys, retired companion language removal, and the fish-only Supabase species migration.
 - `npm test -- tests/companion-server-xp.test.ts`: passed, 3 tests covering server-side companion XP profile creation/update and LMS wiring for first-time submissions and first teacher feedback posts.
-- `npm test`: passed, 27 files / 117 tests after the same-host auth redirect fix and server-side companion XP slice.
+- `npm test -- tests/lms-messages.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx tests/lms-audit-log-coverage.test.ts`: passed, 4 files / 16 tests covering message normalization, audited message route/service wiring, visible composer forms, audit coverage, and the relationship-aware messaging policy artifact.
+- `npm test`: passed, 28 files / 121 tests after the audited messaging write slice.
 - `npm run lint`: passed after the server-side companion XP slice.
 - `npm run typecheck`: passed after the server-side companion XP slice.
-- `npm run build`: passed after the server-side companion XP slice; route list includes `/student/companion-world`.
+- `npm run build`: passed after the audited messaging write slice; route list includes `/api/lms/messages` and `/student/companion-world`.
 - Landing/login visual smoke: passed for `/` and `/login` at 1440px and 390px widths; screenshots written to `test-results/landing-refresh`.
 - Login one-click demo render smoke: passed at 390px; found four demo buttons, five auth forms, and no horizontal overflow.
 - `npm audit --audit-level=moderate`: passed, 0 vulnerabilities.

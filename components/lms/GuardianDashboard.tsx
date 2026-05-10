@@ -1,6 +1,6 @@
 import { BarChart3, BookOpen, CalendarCheck, CalendarDays, FileText, GraduationCap, MessageSquare, Users } from 'lucide-react'
 import { LmsPanel, LmsShell } from '@/components/lms/LmsShell'
-import { CalendarPanel, MessagesPanel, ResourcesPanel } from '@/components/lms/SharedLmsPanels'
+import { CalendarPanel, MessageComposer, MessagesPanel, ResourcesPanel } from '@/components/lms/SharedLmsPanels'
 import type { buildLmsDashboardViews } from '@/lib/lms/read-model'
 
 type GuardianView = ReturnType<typeof buildLmsDashboardViews>['guardian']
@@ -13,7 +13,21 @@ const guardianTools = [
   { href: '#messages', label: 'Messages', description: 'Read school and teacher messages', icon: MessageSquare },
 ]
 
+function guardianMessageCourses(view: GuardianView) {
+  const courses = new Map<string, GuardianView['students'][number]['courses'][number]>()
+
+  for (const student of view.students) {
+    for (const course of student.courses) {
+      courses.set(course.id, course)
+    }
+  }
+
+  return [...courses.values()]
+}
+
 export function GuardianDashboard({ view }: { view: GuardianView }) {
+  const messageCourses = guardianMessageCourses(view)
+
   return (
     <LmsShell title="Guardian dashboard" subtitle="Linked student progress, grades, upcoming work, and school alerts." tools={guardianTools}>
       <section id="linked-students" data-testid="guardian-linked-students" className="scroll-mt-28 grid gap-4 lg:grid-cols-2">
@@ -93,7 +107,10 @@ export function GuardianDashboard({ view }: { view: GuardianView }) {
       <div className="grid gap-4 lg:grid-cols-3">
         <CalendarPanel items={view.calendar} />
         <ResourcesPanel resources={view.resources} />
-        <MessagesPanel messages={view.messages} />
+        <MessagesPanel
+          messages={view.messages}
+          actions={<MessageComposer courses={messageCourses} returnTo="/guardian" contentLabel="Message to teacher" />}
+        />
       </div>
     </LmsShell>
   )

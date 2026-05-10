@@ -70,6 +70,46 @@ export function StudentMessagesWorkspace({ view }: { view: StudentView }) {
   return (
     <StudentWorkspaceShell title="Messages" subtitle="Teacher and school messages grouped with the course they belong to.">
       <div className="grid gap-5">
+        {view.courses.length > 0 ? (
+          <WorkspacePanel title="Message a teacher" icon={MessageSquare}>
+            <form action="/api/lms/messages" method="post" className="grid gap-3">
+              <input type="hidden" name="returnTo" value="/student/messages" />
+              <label className="grid gap-1 text-sm font-black text-[#17352c]">
+                Course
+                <select name="courseId" required className="h-11 rounded-lg border border-sky-100 bg-white/86 px-3 text-sm font-semibold text-[#17352c]">
+                  {view.courses.map((course) => (
+                    <option key={course.id} value={course.id}>
+                      {course.title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="grid gap-1 text-sm font-black text-[#17352c]">
+                Subject
+                <input
+                  name="subject"
+                  maxLength={255}
+                  className="h-11 rounded-lg border border-sky-100 bg-white/86 px-3 text-sm font-semibold text-[#17352c]"
+                />
+              </label>
+              <label className="grid gap-1 text-sm font-black text-[#17352c]">
+                Message
+                <textarea
+                  name="content"
+                  required
+                  maxLength={5000}
+                  rows={3}
+                  className="rounded-lg border border-sky-100 bg-white/86 px-3 py-2 text-sm font-semibold text-[#17352c]"
+                />
+              </label>
+              <button type="submit" className="inline-flex h-11 w-fit items-center justify-center gap-2 rounded-lg bg-[#17352c] px-4 text-sm font-black text-white">
+                <MessageSquare className="h-4 w-4" />
+                Send message
+              </button>
+            </form>
+          </WorkspacePanel>
+        ) : null}
+
         {view.courses.map((course) => {
           const messages = courseMessages(view, course.id)
 

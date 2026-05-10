@@ -7,6 +7,7 @@ Date: 2026-05-10
 - Fresh deployed verification after current changes: run deployed smoke on `wolfwhale.ca` once this branch is deployed.
 - Apply and verify `supabase/migrations/20260510205641_student_submission_file_storage.sql` and `supabase/migrations/20260510212739_submissions_assigned_teacher_read_policy.sql` against the target Supabase project.
 - Apply and verify `supabase/migrations/20260510220050_fish_companion_species.sql` so live companion profiles accept only clownfish and pufferfish.
+- Apply and verify `supabase/migrations/20260510233000_course_message_write_policy.sql` so live conversation reads and member inserts follow course, role, and guardian-link boundaries.
 - Run live Supabase security validation with `SUPABASE_DB_URL`, `DATABASE_URL`, or equivalent read-only project credentials.
 - Browser-test the remaining file-submission privacy edges after applying the new RLS migration: teacher signed download in the UI, wrong-role denial, wrong-tenant denial, student feedback visibility, and guardian scoping. Automated signed-route tests now cover auth-required, RLS miss, signed redirect, and signing failure.
 - Confirm all private file buckets are private and cannot be listed or read anonymously.

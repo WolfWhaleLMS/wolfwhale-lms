@@ -102,6 +102,7 @@ describe('student LMS workspaces', () => {
     render(<StudentMessagesWorkspace view={views.student} />)
     expect(screen.getByRole('heading', { name: 'Messages' })).toBeInTheDocument()
     expect(screen.getByText('Humanities check-in')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Send message' })).toBeInTheDocument()
     cleanup()
 
     render(<StudentNotificationsWorkspace view={views.student} />)
