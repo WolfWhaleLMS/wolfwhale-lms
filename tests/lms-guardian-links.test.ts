@@ -36,17 +36,43 @@ describe('LMS guardian links', () => {
     expect(views.admin.guardians).toEqual([{ id: 'guardian-1', name: 'Morgan Guardian' }])
   })
 
+  it('exposes active guardian links for admin unlinking without inactive relationships', () => {
+    const records = createDemoLmsRecords()
+    records.parentLinks.push({
+      tenantId: records.tenant.id,
+      studentId: records.actorIds.student,
+      parentId: 'inactive-parent',
+      status: 'inactive',
+    })
+
+    const views = buildLmsDashboardViews(records)
+
+    expect(views.admin.guardianLinks).toEqual([
+      {
+        studentId: 'student-1',
+        studentName: 'Alex Student',
+        guardianId: 'guardian-1',
+        guardianName: 'Morgan Guardian',
+      },
+    ])
+  })
+
   it('wires the admin dashboard and route to an audited guardian-link service', () => {
     const dashboardSource = sourceFor('components/lms/AdminDashboard.tsx')
     const routeSource = sourceFor('app/api/lms/guardian-links/route.ts')
+    const unlinkRouteSource = sourceFor('app/api/lms/guardian-links/unlink/route.ts')
     const linkSource = sourceFor('lib/lms/guardian-links.ts')
 
     expect(dashboardSource).toContain('action="/api/lms/guardian-links"')
+    expect(dashboardSource).toContain('action="/api/lms/guardian-links/unlink"')
     expect(dashboardSource).toContain('name="guardianId"')
     expect(routeSource).toContain('linkGuardianToStudent')
+    expect(unlinkRouteSource).toContain('unlinkGuardianFromStudent')
+    expect(unlinkRouteSource).toContain('enforceLmsMutationRateLimit')
     expect(routeSource).toContain('enforceLmsMutationRateLimit')
     expect(linkSource).toContain('student_parents')
     expect(linkSource).toContain('guardian.linked')
+    expect(linkSource).toContain('guardian.unlinked')
     expect(linkSource).toContain('tenant_membership')
   })
 })

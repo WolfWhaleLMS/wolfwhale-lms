@@ -17,7 +17,7 @@ import {
 } from '@/lib/companion/sprite-assets'
 
 const repoRoot = path.resolve(__dirname, '..')
-const retiredCompanionPattern = new RegExp(
+const nonFishLegacyPattern = new RegExp(
   [
     'ice\\s*age',
     ['ice', 'age'].join('-'),
@@ -151,7 +151,7 @@ describe('WolfWhale fish companion logic', () => {
     expect(companionAnimationForMood({ hatchStage: 'crack-stage-2', mood: 'hatching' })).toBe('celebrating')
   })
 
-  it('removes retired companion language from product-facing companion files', () => {
+  it('keeps product-facing companion files fish-only', () => {
     const checkedFiles = [
       'app/student/companion-world/page.tsx',
       'components/companion/SeaCompanionClient.tsx',
@@ -167,7 +167,7 @@ describe('WolfWhale fish companion logic', () => {
       expect(existsSync(absolutePath), `${relativePath} should exist`).toBe(true)
       const source = readFileSync(absolutePath, 'utf8')
 
-      expect(source, `${relativePath} should not mention retired concepts`).not.toMatch(retiredCompanionPattern)
+      expect(source, `${relativePath} should stay fish-only`).not.toMatch(nonFishLegacyPattern)
     }
   })
 
@@ -176,7 +176,7 @@ describe('WolfWhale fish companion logic', () => {
 
     expect(migration).toContain("'clownfish'")
     expect(migration).toContain("'pufferfish'")
-    expect(migration).not.toMatch(retiredCompanionPattern)
+    expect(migration).not.toMatch(nonFishLegacyPattern)
   })
 
   it('requires sparkle-flash and cute emoticon cues for every fish sprite state', () => {

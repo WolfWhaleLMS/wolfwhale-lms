@@ -246,6 +246,13 @@ export interface LmsCourseSummary {
   termLabel: string
 }
 
+export interface LmsGuardianLinkSummary {
+  studentId: string
+  studentName: string
+  guardianId: string
+  guardianName: string
+}
+
 export interface LmsAssignmentSummary {
   id: string
   courseId: string

@@ -44,6 +44,20 @@ export function normalizeGuardianLinkDraft(input: { studentId: unknown; guardian
   }
 }
 
+export function normalizeGuardianUnlinkDraft(input: { studentId: unknown; guardianId: unknown }) {
+  const studentId = id(input.studentId, 'student_id')
+  const guardianId = id(input.guardianId, 'guardian_id')
+
+  if (studentId === guardianId) {
+    throw new LmsMutationError('A guardian cannot be linked to themself as a student.', 'self_guardian_link')
+  }
+
+  return {
+    studentId,
+    guardianId,
+  }
+}
+
 async function requireSchoolAdmin(supabase: SupabaseClient) {
   const {
     data: { user },
@@ -151,6 +165,52 @@ export async function linkGuardianToStudent(
       student_id: draft.studentId,
       guardian_id: draft.guardianId,
       relationship: draft.relationship,
+    },
+  })
+
+  return {
+    linkId,
+    studentId: draft.studentId,
+    guardianId: draft.guardianId,
+  }
+}
+
+export async function unlinkGuardianFromStudent(
+  supabase: SupabaseClient,
+  input: { studentId: unknown; guardianId: unknown }
+) {
+  const admin = await requireSchoolAdmin(supabase)
+  const draft = normalizeGuardianUnlinkDraft(input)
+
+  const { data: links, error: linkError } = await supabase
+    .from('student_parents')
+    .update({ status: 'inactive' })
+    .eq('tenant_id', admin.tenantId)
+    .eq('student_id', draft.studentId)
+    .eq('parent_id', draft.guardianId)
+    .eq('status', 'active')
+    .select('id')
+
+  if (linkError) {
+    throw new LmsMutationError(`Unable to unlink guardian: ${linkError.message}`, 'guardian_unlink_failed')
+  }
+
+  const link = rows(links)[0]
+  if (!link) {
+    throw new LmsMutationError('Active guardian link was not found.', 'guardian_link_not_found')
+  }
+
+  const linkId = id(link.id, 'student_parent_id')
+
+  await supabase.from('audit_logs').insert({
+    tenant_id: admin.tenantId,
+    user_id: admin.userId,
+    action: 'guardian.unlinked',
+    resource_type: 'student_parent',
+    resource_id: linkId,
+    details: {
+      student_id: draft.studentId,
+      guardian_id: draft.guardianId,
     },
   })
 

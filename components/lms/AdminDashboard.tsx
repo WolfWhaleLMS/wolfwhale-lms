@@ -337,6 +337,33 @@ export function AdminDashboard({ view }: { view: AdminView }) {
               Link guardian
             </button>
           </form>
+          <div className="mt-4 border-t border-slate-200 pt-4 dark:border-slate-800">
+            <h3 className="text-sm font-semibold">Active guardian links</h3>
+            {view.guardianLinks.length === 0 ? (
+              <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">No active guardian links.</p>
+            ) : (
+              <ul className="mt-2 grid gap-2">
+                {view.guardianLinks.map((link) => (
+                  <li key={`${link.studentId}:${link.guardianId}`} className="flex flex-col gap-2 rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
+                    <span>
+                      <strong>{link.studentName}</strong>
+                      <span className="text-slate-500 dark:text-slate-400"> linked to {link.guardianName}</span>
+                    </span>
+                    <form action="/api/lms/guardian-links/unlink" method="post">
+                      <input type="hidden" name="studentId" value={link.studentId} />
+                      <input type="hidden" name="guardianId" value={link.guardianId} />
+                      <button
+                        type="submit"
+                        className="inline-flex h-9 w-fit items-center justify-center rounded-md border border-rose-200 bg-rose-50 px-3 text-sm font-semibold text-rose-800 hover:bg-rose-100 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-100"
+                      >
+                        Unlink
+                      </button>
+                    </form>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </LmsPanel>
 
         <LmsPanel id="enroll-student" title="Enroll student">

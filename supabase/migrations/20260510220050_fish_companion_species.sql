@@ -1,4 +1,4 @@
--- Switch student companion species from retired concept animals to fish-only
+-- Switch student companion species to fish-only
 -- starter pets. The app only allows clownfish and pufferfish.
 
 ALTER TABLE student_companion_profiles

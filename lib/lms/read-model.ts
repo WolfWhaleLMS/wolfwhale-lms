@@ -10,6 +10,7 @@ import type {
   LmsGradeSummary,
   LmsGradeTrend,
   LmsGradingQueueItem,
+  LmsGuardianLinkSummary,
   LmsLessonSummary,
   LmsMessageSummary,
   LmsPerson,
@@ -134,6 +135,17 @@ function activeGuardians(records: LmsRecords) {
   )
 
   return records.users.filter((user) => guardianIds.has(user.id))
+}
+
+function activeGuardianLinks(records: LmsRecords): LmsGuardianLinkSummary[] {
+  return records.parentLinks
+    .filter((link) => link.status === 'active')
+    .map((link) => ({
+      studentId: link.studentId,
+      studentName: person(findUser(records, link.studentId)).name,
+      guardianId: link.parentId,
+      guardianName: person(findUser(records, link.parentId)).name,
+    }))
 }
 
 function studentCourseIds(records: LmsRecords, studentId: string) {
@@ -506,6 +518,7 @@ export function buildLmsDashboardViews(records: LmsRecords) {
       students: activeStudents(records).map(person),
       teachers: activeTeachers(records).map(person),
       guardians: activeGuardians(records).map(person),
+      guardianLinks: activeGuardianLinks(records),
       calendar: calendarItemsForCourseIds(records, allCourseIds),
       resources: resourcesForCourseIds(records, allCourseIds),
       messages: adminMessages,
