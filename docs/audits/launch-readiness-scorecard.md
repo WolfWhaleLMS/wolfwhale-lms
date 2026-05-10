@@ -46,6 +46,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 - `npm run lint`: passed after the course section metadata slice.
 - `npm run typecheck`: passed after the course section metadata slice.
 - `npm run build`: passed after the course section metadata slice; route list includes `/api/lms/courses`, `/api/lms/messages`, and `/student/companion-world`.
+- `npm run load:smoke`: passed after the course section metadata slice in 1848ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments.
 - Admin create-course browser fallback: attempted against `http://127.0.0.1:3010` at desktop and mobile widths. The Browser plugin automation runtime was unavailable, and the Playwright fallback was blocked before dashboard render by `/login?error=lms-access-required` after sign-in. Component/render tests cover the new Section and Term controls; live browser proof remains pending with healthy smoke credentials/data and the new migration applied.
 - Landing/login visual smoke: passed for `/` and `/login` at 1440px and 390px widths; screenshots written to `test-results/landing-refresh`.
 - Login one-click demo render smoke: passed at 390px; found four demo buttons, five auth forms, and no horizontal overflow.
