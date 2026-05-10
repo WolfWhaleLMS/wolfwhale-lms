@@ -2,7 +2,7 @@ import {
   parseCompanionProfile,
   saveCompanionProfile,
   type StudentCompanionProfile,
-} from '@/lib/companion/ice-age-companion'
+} from '@/lib/companion/fish-companion'
 
 interface CompanionProfileResponse {
   profile?: unknown

@@ -1,12 +1,8 @@
-export const COMPANION_STORAGE_KEY = 'wolfwhale.ice-age-companion.v1'
+export const COMPANION_STORAGE_KEY = 'wolfwhale.fish-companion.v1'
 
 export const STARTER_SPECIES = [
-  { id: 'woolly-mammoth', label: 'Woolly Mammoth', accent: '#b9895f' },
-  { id: 'saber-tooth-cat', label: 'Saber-Tooth Cat', accent: '#d59c4c' },
-  { id: 'giant-ground-sloth', label: 'Giant Ground Sloth', accent: '#9b7a54' },
-  { id: 'woolly-rhino', label: 'Woolly Rhino', accent: '#a7a69d' },
-  { id: 'giant-elk', label: 'Giant Elk / Megaloceros', accent: '#c79252' },
-  { id: 'glyptodont', label: 'Glyptodont', accent: '#b89b72' },
+  { id: 'clownfish', label: 'Clownfish', accent: '#f97316' },
+  { id: 'pufferfish', label: 'Pufferfish', accent: '#facc15' },
 ] as const
 
 export type CompanionSpecies = (typeof STARTER_SPECIES)[number]['id']
@@ -90,18 +86,18 @@ export const XP_EVENT_AMOUNTS = {
 } as const satisfies Record<CompanionXpSource, number>
 
 export const WORLD_ACTIVITIES = {
-  'mammoth-library-notes': {
-    label: 'Mammoth Library notes',
+  'reef-library-notes': {
+    label: 'Reef Library notes',
     xp: 20,
     source: 'world_activity',
   },
-  'quiz-cave-practice': {
-    label: 'Quiz Cave practice',
+  'tidepool-quiz-practice': {
+    label: 'Tidepool quiz practice',
     xp: 30,
     source: 'quiz_completed',
   },
-  'glacier-commons-check-in': {
-    label: 'Glacier Commons check-in',
+  'kelp-commons-check-in': {
+    label: 'Kelp Commons check-in',
     xp: 10,
     source: 'course_task_checked',
   },
@@ -110,11 +106,11 @@ export const WORLD_ACTIVITIES = {
 export type CompanionWorldActivityId = keyof typeof WORLD_ACTIVITIES
 
 const COSMETIC_UNLOCKS = [
-  { id: 'starter-snow', minLevel: 1 },
-  { id: 'acorn-satchel', minLevel: 2 },
-  { id: 'aurora-scarf', minLevel: 3 },
-  { id: 'glacier-glow', minLevel: 4 },
-  { id: 'library-habitat', minLevel: 5 },
+  { id: 'starter-reef', minLevel: 1 },
+  { id: 'kelp-satchel', minLevel: 2 },
+  { id: 'coral-scarf', minLevel: 3 },
+  { id: 'bubble-glow', minLevel: 4 },
+  { id: 'reef-library-habitat', minLevel: 5 },
 ] as const
 
 function nowIso() {
@@ -130,7 +126,7 @@ function clampXpAmount(value: number) {
 function normalizeName(value: string) {
   const trimmed = value.trim()
 
-  return trimmed.length > 0 ? trimmed.slice(0, 32) : 'Buddy'
+  return trimmed.length > 0 ? trimmed.slice(0, 32) : 'Bubbles'
 }
 
 function createId(input: { species: CompanionSpecies; petName: string; now: string }) {
@@ -172,7 +168,7 @@ export function cosmeticsForLevel(level: number) {
 
 export function createStarterCompanion(input: StarterCompanionInput): StudentCompanionProfile {
   const createdAt = input.now ?? nowIso()
-  const species = STARTER_SPECIES.some((candidate) => candidate.id === input.species) ? input.species : 'woolly-mammoth'
+  const species = STARTER_SPECIES.some((candidate) => candidate.id === input.species) ? input.species : 'clownfish'
 
   return {
     id: createId({ species, petName: input.petName, now: createdAt }),
@@ -183,9 +179,9 @@ export function createStarterCompanion(input: StarterCompanionInput): StudentCom
     level: 1,
     mood: 'egg',
     behaviorMode: 'stationary',
-    unlockedCosmetics: ['starter-snow'],
+    unlockedCosmetics: ['starter-reef'],
     selectedCosmetics: {
-      habitat: 'starter-snow',
+      habitat: 'starter-reef',
     },
     worldRewards: [],
     recentXpEvents: [],
@@ -213,7 +209,7 @@ export function awardCompanionXp(profile: StudentCompanionProfile, input: Compan
     unlockedCosmetics,
     selectedCosmetics: {
       ...profile.selectedCosmetics,
-      habitat: profile.selectedCosmetics.habitat ?? 'starter-snow',
+      habitat: profile.selectedCosmetics.habitat ?? 'starter-reef',
     },
     recentXpEvents: [
       {
@@ -312,8 +308,14 @@ export function parseCompanionProfile(value: string | null): StudentCompanionPro
       level,
       mood: parsed.mood === 'sleepy' || parsed.mood === 'studying' || parsed.mood === 'celebrating' ? parsed.mood : moodForProfile({ hatchStage }),
       behaviorMode: parsed.behaviorMode === 'follow-pointer' ? 'follow-pointer' : 'stationary',
-      unlockedCosmetics: Array.from(new Set(['starter-snow', ...(Array.isArray(parsed.unlockedCosmetics) ? parsed.unlockedCosmetics.filter((item): item is string => typeof item === 'string') : []), ...cosmeticsForLevel(level)])),
-      selectedCosmetics: parsed.selectedCosmetics && typeof parsed.selectedCosmetics === 'object' ? parsed.selectedCosmetics : { habitat: 'starter-snow' },
+      unlockedCosmetics: Array.from(
+        new Set([
+          'starter-reef',
+          ...(Array.isArray(parsed.unlockedCosmetics) ? parsed.unlockedCosmetics.filter((item): item is string => typeof item === 'string') : []),
+          ...cosmeticsForLevel(level),
+        ])
+      ),
+      selectedCosmetics: parsed.selectedCosmetics && typeof parsed.selectedCosmetics === 'object' ? parsed.selectedCosmetics : { habitat: 'starter-reef' },
       worldRewards: Array.isArray(parsed.worldRewards)
         ? parsed.worldRewards.filter((reward): reward is CompanionWorldReward => Boolean(reward && typeof reward.activityId === 'string' && typeof reward.label === 'string'))
         : [],

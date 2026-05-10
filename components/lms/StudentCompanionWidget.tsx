@@ -1,7 +1,7 @@
 'use client'
 
 import { FormEvent, useEffect, useMemo, useState } from 'react'
-import { PawPrint, Sparkles } from 'lucide-react'
+import { Fish, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { CompanionSprite } from '@/components/companion/CompanionSprite'
 import {
@@ -17,7 +17,7 @@ import {
   type CompanionBehaviorMode,
   type CompanionSpecies,
   type StudentCompanionProfile,
-} from '@/lib/companion/ice-age-companion'
+} from '@/lib/companion/fish-companion'
 import { loadCompanionProfileFromServer, saveCompanionProfileEverywhere, saveCompanionProfileToServer } from '@/lib/companion/profile-sync'
 
 function speciesLabel(species: CompanionSpecies) {
@@ -32,8 +32,8 @@ function xpToNextLevel(profile: StudentCompanionProfile) {
 
 export function StudentCompanionWidget({ compact = false }: { compact?: boolean }) {
   const [profile, setProfile] = useState<StudentCompanionProfile | null>(null)
-  const [petName, setPetName] = useState('Tundra')
-  const [species, setSpecies] = useState<CompanionSpecies>('woolly-mammoth')
+  const [petName, setPetName] = useState('Bubbles')
+  const [species, setSpecies] = useState<CompanionSpecies>('clownfish')
 
   useEffect(() => {
     let active = true
@@ -102,11 +102,11 @@ export function StudentCompanionWidget({ compact = false }: { compact?: boolean 
     <section className={`student-workspace-panel rounded-lg border border-white/75 bg-white/84 shadow-[0_18px_50px_rgba(5,44,38,0.18)] backdrop-blur-md ${compact ? 'p-3' : 'p-4'}`}>
       <div className="flex items-center gap-2">
         <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-emerald-400 to-sky-400 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_8px_18px_rgba(13,148,136,0.22)]">
-          <PawPrint className="h-5 w-5" />
+          <Fish className="h-5 w-5" />
         </span>
         <div>
           <h2 className="text-lg font-black leading-tight text-[#17352c]">Study companion</h2>
-          <p className={`${compact ? 'text-xs' : 'text-sm'} font-semibold text-[#48675e]`}>Local pet progress, ready for sprite assets.</p>
+          <p className={`${compact ? 'text-xs' : 'text-sm'} font-semibold text-[#48675e]`}>Fish progress, ready for sprite assets.</p>
         </div>
       </div>
 

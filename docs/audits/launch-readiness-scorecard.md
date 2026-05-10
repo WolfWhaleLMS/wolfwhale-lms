@@ -20,7 +20,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 | Calendar/attendance/messages | Partial | Role read models and route surfaces exist and loaded in local smoke; deeper workflow and live RLS proof pending. |
 | Private files | Partial | Course resources and student submission files use private buckets and signed routes. The linked dev project has a private `submissions` bucket; storage and table RLS migrations still need live DB application/validation. |
 | Audit logging | Partial | Core LMS mutation services, roster import, and the direct resource-review admin write now have static audit-log coverage. Live audit-row insertion proof is still pending with applied Supabase migrations. |
-| Pets/rewards | Partial | Companion code exists; server-side XP from real events still needs deeper integration. |
+| Pets/rewards | Partial | Companion code is now fish-only with clownfish/pufferfish starters, fish-only Supabase species migration, and regression tests. Server-side XP from real LMS events still needs deeper integration. |
 | Accessibility | Partial | Prior smoke evidence exists; fresh WCAG-focused checks pending. |
 | Security/RLS | Partial | Static tests now cover assigned-teacher submission read/update policy shape. Live DB validation is blocked by missing DB/read credentials and Supabase CLI role-permission failure. |
 | Privacy launch packet | Partial | Added counsel-review-required privacy readiness, DPA, subprocessor, breach, and student-record rights runbook placeholders. Product automation and legal review are still pending. |
@@ -37,14 +37,16 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 - `npm test -- tests/prompt-artifact-checklist.test.ts`: passed, 3 tests verifying the prompt-to-artifact checklist covers named docs, 14 P0 flows, and blocked live gates.
 - `npm test -- tests/lms-auth.test.ts tests/prompt-artifact-checklist.test.ts`: passed, 2 files / 10 tests covering real auth routing plus one-click demo auth forms.
 - `npm test -- tests/lms-audit-log-coverage.test.ts`: passed, 3 tests covering audited write services, write-route delegation, roster imports, and resource-review audit rows.
-- `npm test`: passed, 26 files / 108 tests.
-- `npm run lint`: passed after the audit-log coverage update.
-- `npm run typecheck`: passed after the audit-log coverage update.
-- `npm run build`: passed after the audit-log coverage update; route list includes `/api/lms/submissions/[submissionId]/file`.
+- `npm test -- tests/fish-companion.test.ts`: passed, 12 tests covering fish-only starter species, fish sprite metadata, fish companion storage keys, retired companion language removal, and the fish-only Supabase species migration.
+- `npm test`: passed, 26 files / 111 tests.
+- `npm run lint`: passed after the fish companion replacement.
+- `npm run typecheck`: passed after the fish companion replacement.
+- `npm run build`: passed after the fish companion replacement; route list includes `/student/companion-world`.
 - Landing/login visual smoke: passed for `/` and `/login` at 1440px and 390px widths; screenshots written to `test-results/landing-refresh`.
 - Login one-click demo render smoke: passed at 390px; found four demo buttons, five auth forms, and no horizontal overflow.
 - `npm audit --audit-level=moderate`: passed, 0 vulnerabilities.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: previously passed locally; after adding the teacher signed-file assertion, the latest run exposed that the live Supabase `submissions` SELECT policy does not yet allow the assigned teacher to see the uploaded INDIG 100 submission. New migration: `20260510212739_submissions_assigned_teacher_read_policy.sql`.
+- `LMS_SMOKE_BASE_URL=http://127.0.0.1:3010 npm run test:a11y`: blocked in this pass because the local smoke could not complete the demo student login and timed out waiting for `/student`; no mutation paths were run.
 - Changed-file secret scan for service-role/API/private-key patterns: no matches.
 - Supabase changelog and Storage docs checked on 2026-05-10 before storage-facing implementation.
 - `npm run security:supabase`: still blocked because no `SUPABASE_DB_URL`, `DATABASE_URL`, `SUPABASE_DB_PASSWORD`, or `SUPABASE_ACCESS_TOKEN` plus project ref is available to the script.
@@ -56,5 +58,5 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 2. `npm run lint`
 3. `npm run build`
 4. `npm run test:a11y`
-5. `npm run security:supabase` with DB credentials after applying `20260510205641_student_submission_file_storage.sql` and `20260510212739_submissions_assigned_teacher_read_policy.sql`
+5. `npm run security:supabase` with DB credentials after applying `20260510205641_student_submission_file_storage.sql`, `20260510212739_submissions_assigned_teacher_read_policy.sql`, and `20260510220050_fish_companion_species.sql`
 6. Fresh deployed smoke on `wolfwhale.ca` after the branch is deployed

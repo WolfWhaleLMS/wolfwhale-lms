@@ -3,7 +3,7 @@
 import type { CSSProperties } from 'react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import type { CompanionHatchStage, CompanionSpecies } from '@/lib/companion/ice-age-companion'
+import type { CompanionHatchStage, CompanionSpecies } from '@/lib/companion/fish-companion'
 import {
   COMPANION_ANIMATION_STATES,
   COMPANION_SPRITE_ASSETS,
@@ -115,7 +115,7 @@ function CompanionEgg({
 
   return (
     <span
-      aria-label="Ice Age companion egg"
+      aria-label="Fish companion egg"
       className={cn('ww-companion-egg-shell', className)}
       data-crack-level={crackLevel}
       role="img"

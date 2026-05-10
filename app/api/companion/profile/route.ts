@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { parseCompanionProfile, type StudentCompanionProfile } from '@/lib/companion/ice-age-companion'
+import { parseCompanionProfile, type StudentCompanionProfile } from '@/lib/companion/fish-companion'
 import { checkRateLimit, rateLimitKey } from '@/lib/security/rate-limit'
 import { createClient } from '@/lib/supabase/server'
 

@@ -55,7 +55,7 @@ const studentTools: StudentTool[] = [
   { href: '/student/resources', label: 'Resources', description: 'Open class files', icon: FileText, tone: 'from-stone-500 via-emerald-500 to-lime-400' },
   { href: '/student/messages', label: 'Messages', description: 'Teacher notes', icon: MessageSquare, tone: 'from-teal-500 via-sky-400 to-cyan-300' },
   { href: '/student/notifications', label: 'Notifications', description: 'Latest updates', icon: Bell, tone: 'from-lime-500 via-teal-400 to-sky-500' },
-  { href: '/student/companion-world', label: 'Companion world', description: 'Visit Glacier Commons', icon: Compass, tone: 'from-amber-400 via-sky-400 to-emerald-400' },
+  { href: '/student/companion-world', label: 'Companion world', description: 'Visit Kelp Commons', icon: Compass, tone: 'from-amber-400 via-sky-400 to-emerald-400' },
   { href: '/student/settings', label: 'Settings', description: 'Themes and pet', icon: Settings, tone: 'from-slate-500 via-emerald-500 to-sky-400' },
 ]
 

@@ -14,11 +14,11 @@ import {
   setCompanionBehaviorMode,
   type CompanionSpecies,
   type StudentCompanionProfile,
-} from '@/lib/companion/ice-age-companion'
+} from '@/lib/companion/fish-companion'
 import { loadCompanionProfileFromServer, saveCompanionProfileEverywhere, saveCompanionProfileToServer } from '@/lib/companion/profile-sync'
 import { cn } from '@/lib/utils'
 
-export interface IceAgeCompanionSummary {
+export interface SeaCompanionSummary {
   progressLabel: string
   progressValue: number
   nextLesson: string
@@ -26,7 +26,7 @@ export interface IceAgeCompanionSummary {
   continueHref: string
 }
 
-export function IceAgeCompanionClient({ summary }: { summary: IceAgeCompanionSummary }) {
+export function SeaCompanionClient({ summary }: { summary: SeaCompanionSummary }) {
   const [profile, setProfile] = useState<StudentCompanionProfile | null>(null)
   const [ready, setReady] = useState(false)
   const [panelOpen, setPanelOpen] = useState(false)
@@ -107,7 +107,7 @@ export function IceAgeCompanionClient({ summary }: { summary: IceAgeCompanionSum
     <>
       <button
         type="button"
-        aria-label="Open Ice Age Companion"
+        aria-label="Open fish companion"
         className="fixed bottom-5 right-5 z-50 flex h-[86px] w-[86px] items-center justify-center rounded-full border border-cyan-200/60 bg-white/90 shadow-2xl shadow-cyan-900/20 backdrop-blur transition hover:-translate-y-1 hover:shadow-cyan-500/30 focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:border-cyan-300/20 dark:bg-slate-950/90"
         onClick={() => setPanelOpen(true)}
         style={launcherStyle}
@@ -115,19 +115,19 @@ export function IceAgeCompanionClient({ summary }: { summary: IceAgeCompanionSum
         {profile ? (
           <CompanionSprite species={profile.species} hatchStage={profile.hatchStage} mood={profile.mood} size={68} moving={profile.behaviorMode === 'follow-pointer'} />
         ) : (
-          <CompanionSprite species="woolly-mammoth" hatchStage="egg" size={62} />
+          <CompanionSprite species="clownfish" hatchStage="egg" size={62} />
         )}
       </button>
 
       {panelOpen ? (
         <aside
-          aria-label="WolfWhale Ice Age Companion"
+          aria-label="WolfWhale fish companion"
           className="fixed bottom-4 right-4 z-50 flex max-h-[calc(100vh-2rem)] w-[min(390px,calc(100vw-2rem))] flex-col overflow-hidden rounded-lg border border-cyan-200/70 bg-white text-slate-950 shadow-2xl shadow-slate-950/25 dark:border-cyan-300/20 dark:bg-slate-950 dark:text-white"
         >
           <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-slate-800">
             <div className="flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-cyan-600 dark:text-cyan-300" />
-              <h2 className="text-sm font-bold">Ice Age Companion</h2>
+              <h2 className="text-sm font-bold">Fish companion</h2>
             </div>
             <div className="flex gap-1">
               <button type="button" className="rounded-md p-2 hover:bg-slate-100 dark:hover:bg-slate-900" onClick={() => setHidden(true)} aria-label="Hide companion">
@@ -153,8 +153,8 @@ export function IceAgeCompanionClient({ summary }: { summary: IceAgeCompanionSum
 }
 
 function CompanionOnboarding({ onCreate }: { onCreate: (profile: StudentCompanionProfile) => void }) {
-  const [species, setSpecies] = useState<CompanionSpecies>('woolly-mammoth')
-  const [petName, setPetName] = useState('Tundra')
+  const [species, setSpecies] = useState<CompanionSpecies>('clownfish')
+  const [petName, setPetName] = useState('Bubbles')
 
   return (
     <form
@@ -165,8 +165,8 @@ function CompanionOnboarding({ onCreate }: { onCreate: (profile: StudentCompanio
       }}
     >
       <div>
-        <p className="text-sm font-semibold">Choose a starter egg</p>
-        <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">Your companion grows from learning XP and never gets punished or dies.</p>
+        <p className="text-sm font-semibold">Choose a starter fish egg</p>
+        <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">Your fish grows from learning XP and never gets punished or dies.</p>
       </div>
       <div className="grid grid-cols-2 gap-2">
         {STARTER_SPECIES.map((option) => (
@@ -185,7 +185,7 @@ function CompanionOnboarding({ onCreate }: { onCreate: (profile: StudentCompanio
         ))}
       </div>
       <label className="grid gap-1 text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
-        Pet name
+        Fish name
         <input
           className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
           maxLength={32}
@@ -194,7 +194,7 @@ function CompanionOnboarding({ onCreate }: { onCreate: (profile: StudentCompanio
         />
       </label>
       <button type="submit" className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-cyan-700 px-4 text-sm font-bold text-white hover:bg-cyan-800">
-        Hatch my egg
+        Hatch my fish
         <ChevronRight className="h-4 w-4" />
       </button>
     </form>
@@ -208,7 +208,7 @@ function CompanionPanel({
   onAwardQuickXp,
 }: {
   profile: StudentCompanionProfile
-  summary: IceAgeCompanionSummary
+  summary: SeaCompanionSummary
   onModeChange: (mode: StudentCompanionProfile['behaviorMode']) => void
   onAwardQuickXp: () => void
 }) {

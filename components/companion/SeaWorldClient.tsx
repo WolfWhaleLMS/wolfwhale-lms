@@ -12,42 +12,42 @@ import {
   saveCompanionProfile,
   type CompanionWorldActivityId,
   type StudentCompanionProfile,
-} from '@/lib/companion/ice-age-companion'
+} from '@/lib/companion/fish-companion'
 import { loadCompanionProfileFromServer, saveCompanionProfileEverywhere, saveCompanionProfileToServer } from '@/lib/companion/profile-sync'
-import type { IceAgeCompanionSummary } from '@/components/companion/IceAgeCompanionClient'
+import type { SeaCompanionSummary } from '@/components/companion/SeaCompanionClient'
 
 const rooms = [
   {
-    id: 'glacier-commons',
-    title: 'Glacier Commons',
-    description: 'A calm hub for checking in, choosing the next helpful action, and seeing your companion.',
-    activityId: 'glacier-commons-check-in',
+    id: 'kelp-commons',
+    title: 'Kelp Commons',
+    description: 'A calm reef hub for checking in, choosing the next helpful action, and seeing your fish.',
+    activityId: 'kelp-commons-check-in',
     action: 'Check in',
   },
   {
-    id: 'mammoth-library',
-    title: 'Mammoth Library',
-    description: 'Open course notes, reading tasks, and lesson links with your companion nearby.',
-    activityId: 'mammoth-library-notes',
+    id: 'reef-library',
+    title: 'Reef Library',
+    description: 'Open course notes, reading tasks, and lesson links with your fish nearby.',
+    activityId: 'reef-library-notes',
     action: 'Review notes',
   },
   {
-    id: 'quiz-cave',
-    title: 'Quiz Cave',
+    id: 'tidepool-quiz',
+    title: 'Tidepool Quiz',
     description: 'Practice questions and quiz review live here while the full mini-game system waits for later.',
-    activityId: 'quiz-cave-practice',
+    activityId: 'tidepool-quiz-practice',
     action: 'Practice quiz',
   },
 ] as const
 
-export function IceAgeWorldClient({ summary }: { summary: IceAgeCompanionSummary }) {
+export function SeaWorldClient({ summary }: { summary: SeaCompanionSummary }) {
   const [profile, setProfile] = useState<StudentCompanionProfile | null>(null)
-  const [activeRoom, setActiveRoom] = useState<(typeof rooms)[number]['id']>('glacier-commons')
+  const [activeRoom, setActiveRoom] = useState<(typeof rooms)[number]['id']>('kelp-commons')
 
   useEffect(() => {
     let active = true
     const saved = loadCompanionProfile()
-    const starter = saved ?? createStarterCompanion({ species: STARTER_SPECIES[0].id, petName: 'Tundra' })
+    const starter = saved ?? createStarterCompanion({ species: STARTER_SPECIES[0].id, petName: 'Bubbles' })
     setProfile(starter)
     if (!saved) saveCompanionProfileEverywhere(starter)
 
@@ -89,8 +89,8 @@ export function IceAgeWorldClient({ summary }: { summary: IceAgeCompanionSummary
         <section className="overflow-hidden rounded-lg border border-cyan-200/20 bg-slate-900">
           <div className="flex flex-col gap-4 border-b border-cyan-200/10 px-5 py-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-bold uppercase text-cyan-200">WolfWhale Ice Age Companion</p>
-              <h1 className="mt-1 text-3xl font-black tracking-tight sm:text-4xl">Glacier Commons</h1>
+              <p className="text-sm font-bold uppercase text-cyan-200">WolfWhale fish companion</p>
+              <h1 className="mt-1 text-3xl font-black tracking-tight sm:text-4xl">Kelp Commons</h1>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300">Single-player learning world prototype. No chat, trading, or multiplayer yet.</p>
             </div>
             <div className="rounded-md border border-cyan-200/20 bg-cyan-950/30 px-3 py-2 text-sm font-bold text-cyan-100">
@@ -127,9 +127,9 @@ export function IceAgeWorldClient({ summary }: { summary: IceAgeCompanionSummary
               <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,rgba(226,245,255,0.18))]" />
               <div className="relative grid min-h-[510px] content-between gap-6">
                 <div className="grid gap-3 sm:grid-cols-3">
-                  <WorldDoor title="Mammoth Library" active={activeRoom === 'mammoth-library'} onClick={() => setActiveRoom('mammoth-library')} />
-                  <WorldDoor title="Glacier Commons" active={activeRoom === 'glacier-commons'} onClick={() => setActiveRoom('glacier-commons')} />
-                  <WorldDoor title="Quiz Cave" active={activeRoom === 'quiz-cave'} onClick={() => setActiveRoom('quiz-cave')} />
+                  <WorldDoor title="Reef Library" active={activeRoom === 'reef-library'} onClick={() => setActiveRoom('reef-library')} />
+                  <WorldDoor title="Kelp Commons" active={activeRoom === 'kelp-commons'} onClick={() => setActiveRoom('kelp-commons')} />
+                  <WorldDoor title="Tidepool Quiz" active={activeRoom === 'tidepool-quiz'} onClick={() => setActiveRoom('tidepool-quiz')} />
                 </div>
 
                 <div className="grid gap-5 lg:grid-cols-[1fr_320px] lg:items-end">

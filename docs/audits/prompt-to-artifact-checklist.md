@@ -33,7 +33,7 @@ Purpose: map the active WolfWhale LMS launch objective to concrete repo artifact
 | 11. Messaging works between allowed roles | role dashboards and read models expose conversations/messages | Partial: write workflow and moderation policy incomplete |
 | 12. Reports summarize progress, missing work, attendance, grade trends | admin/teacher views, exports, `lib/lms/exports.ts` | Partial: report depth and trend proof pending |
 | 13. File uploads are private, scoped, size/type limited, auditable | `lib/lms/mutations.ts`, `lib/lms/resource-security.ts`, `app/api/lms/submissions/[submissionId]/file/route.ts`, storage migrations | Partial: live DB/storage policy validation pending |
-| 14. Pets gain XP and unlock from real learning events | companion profile code and assets exist | Partial: server-side XP grants from real LMS events still incomplete |
+| 14. Pets gain XP and unlock from real learning events | `lib/companion/fish-companion.ts`, `tests/fish-companion.test.ts`, `components/lms/StudentCompanionWidget.tsx`, `supabase/migrations/20260510220050_fish_companion_species.sql` | Partial: fish-only companion is enforced; server-side XP grants from real LMS events still incomplete |
 
 ## Security, Privacy, And Compliance Artifacts
 
@@ -53,7 +53,7 @@ Purpose: map the active WolfWhale LMS launch objective to concrete repo artifact
 | --- | --- | --- |
 | WolfWhale logo | `public/wolfwhale-logo-final.png`, `components/ui/wolfwhale-brand.tsx` | Present |
 | Frutiger Aero / tactile public UI | `app/page.tsx`, `app/login/page.tsx`, `app/globals.css`, screenshots in `test-results/landing-refresh` | Partial: formal accessibility review pending |
-| Sea companion/pixel pet direction | `docs/sea-companion-pixel-pet-handoff.md`, `public/images/sea-companion/concepts/*` | Present as concept handoff; final atlases pending |
+| Fish companion/pixel pet direction | `docs/sea-companion-pixel-pet-handoff.md`, `public/clownfish.svg`, `public/images/sea-companion/concepts/puffer-fish-design-bible.png` | Present as fish-only concept handoff; final atlases pending |
 | Consistent role dashboard shell | `components/lms/LmsShell.tsx`, role dashboards, `scripts/lms-browser-smoke.ts` | Partial |
 
 ## Scale, Ops, And Deployment

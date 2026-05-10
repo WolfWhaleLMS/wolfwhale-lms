@@ -1,4 +1,4 @@
--- Durable Ice Age companion profile storage for authenticated students.
+-- Durable fish companion profile storage for authenticated students.
 -- The client keeps a local cache, but this table is the source of truth once
 -- the student is signed in.
 
@@ -8,12 +8,8 @@ CREATE TABLE IF NOT EXISTS student_companion_profiles (
   student_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   species TEXT NOT NULL CHECK (
     species IN (
-      'woolly-mammoth',
-      'saber-tooth-cat',
-      'giant-ground-sloth',
-      'woolly-rhino',
-      'giant-elk',
-      'glyptodont'
+      'clownfish',
+      'pufferfish'
     )
   ),
   pet_name VARCHAR(32) NOT NULL,
