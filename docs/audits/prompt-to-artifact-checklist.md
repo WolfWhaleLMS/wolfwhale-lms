@@ -33,7 +33,7 @@ Purpose: map the active WolfWhale LMS launch objective to concrete repo artifact
 | 11. Messaging works between allowed roles | role dashboards and read models expose conversations/messages | Partial: write workflow and moderation policy incomplete |
 | 12. Reports summarize progress, missing work, attendance, grade trends | admin/teacher views, exports, `lib/lms/exports.ts` | Partial: report depth and trend proof pending |
 | 13. File uploads are private, scoped, size/type limited, auditable | `lib/lms/mutations.ts`, `lib/lms/resource-security.ts`, `app/api/lms/submissions/[submissionId]/file/route.ts`, storage migrations | Partial: live DB/storage policy validation pending |
-| 14. Pets gain XP and unlock from real learning events | `lib/companion/fish-companion.ts`, `tests/fish-companion.test.ts`, `components/lms/StudentCompanionWidget.tsx`, `supabase/migrations/20260510220050_fish_companion_species.sql` | Partial: fish-only companion is enforced; server-side XP grants from real LMS events still incomplete |
+| 14. Pets gain XP and unlock from real learning events | `lib/companion/fish-companion.ts`, `lib/companion/server-xp.ts`, `tests/fish-companion.test.ts`, `tests/companion-server-xp.test.ts`, `components/lms/StudentCompanionWidget.tsx`, `supabase/migrations/20260510220050_fish_companion_species.sql` | Partial: fish-only companion is enforced and first-time submissions/teacher feedback now grant server-side XP; lessons/quizzes/streaks still pending |
 
 ## Security, Privacy, And Compliance Artifacts
 
@@ -85,6 +85,6 @@ Fresh evidence currently recorded in `docs/audits/launch-readiness-scorecard.md`
 - Pass the stricter mutating browser smoke including teacher signed-file download.
 - Complete parent wrong-child/wrong-tenant live RLS matrix.
 - Convert privacy packet placeholders into reviewed legal/customer operating artifacts.
-- Complete server-side companion XP grants from real learning events.
+- Expand server-side companion XP grants beyond submissions and teacher feedback into lessons, quizzes, streaks, and attendance patterns.
 - Produce deployed smoke evidence for `wolfwhale.ca`.
 - Produce restore-drill, monitoring, and load-test evidence before scale claims.

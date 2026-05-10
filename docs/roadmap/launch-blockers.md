@@ -18,7 +18,7 @@ Date: 2026-05-10
 ## P1 Blockers Before Multi-School Sales
 
 - Admin lifecycle for invites, user deactivation, role changes, guardian linking/unlinking, and audit review.
-- Server-side companion XP grants from real learning events.
+- Expand server-side companion XP beyond first-time submissions and first teacher feedback posts into lessons, quizzes, streaks, and attendance patterns.
 - Upload malware scanning, quarantine queue, legal hold workflow, and quota UI.
 - Messaging moderation, communication policy controls, and export/review tools.
 - Formal WCAG 2.2 audit and remediation evidence.

@@ -20,7 +20,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 | Calendar/attendance/messages | Partial | Role read models and route surfaces exist and loaded in local smoke; deeper workflow and live RLS proof pending. |
 | Private files | Partial | Course resources and student submission files use private buckets and signed routes. The linked dev project has a private `submissions` bucket; storage and table RLS migrations still need live DB application/validation. |
 | Audit logging | Partial | Core LMS mutation services, roster import, and the direct resource-review admin write now have static audit-log coverage. Live audit-row insertion proof is still pending with applied Supabase migrations. |
-| Pets/rewards | Partial | Companion code is now fish-only with clownfish/pufferfish starters, fish-only Supabase species migration, and regression tests. Server-side XP from real LMS events still needs deeper integration. |
+| Pets/rewards | Partial | Companion code is fish-only with clownfish/pufferfish starters, fish-only Supabase species migration, and server-side XP grants for first-time student submissions plus first teacher feedback posts. Lesson, quiz, streak, and attendance reward expansion is still pending. |
 | Accessibility | Partial | Prior smoke evidence exists; fresh WCAG-focused checks pending. |
 | Security/RLS | Partial | Static tests now cover assigned-teacher submission read/update policy shape. Live DB validation is blocked by missing DB/read credentials and Supabase CLI role-permission failure. |
 | Privacy launch packet | Partial | Added counsel-review-required privacy readiness, DPA, subprocessor, breach, and student-record rights runbook placeholders. Product automation and legal review are still pending. |
@@ -38,10 +38,11 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 - `npm test -- tests/lms-auth.test.ts tests/pilot-auth.test.ts`: passed, 2 files / 16 tests covering real auth routing, one-click demo auth forms, relative route-handler redirects, and proxy host preservation for local dev.
 - `npm test -- tests/lms-audit-log-coverage.test.ts`: passed, 3 tests covering audited write services, write-route delegation, roster imports, and resource-review audit rows.
 - `npm test -- tests/fish-companion.test.ts`: passed, 12 tests covering fish-only starter species, fish sprite metadata, fish companion storage keys, retired companion language removal, and the fish-only Supabase species migration.
-- `npm test`: passed, 26 files / 114 tests after the same-host auth redirect fix.
-- `npm run lint`: passed after the same-host auth redirect fix.
-- `npm run typecheck`: passed after the same-host auth redirect fix.
-- `npm run build`: passed after the same-host auth redirect fix; route list includes `/student/companion-world`.
+- `npm test -- tests/companion-server-xp.test.ts`: passed, 3 tests covering server-side companion XP profile creation/update and LMS wiring for first-time submissions and first teacher feedback posts.
+- `npm test`: passed, 27 files / 117 tests after the same-host auth redirect fix and server-side companion XP slice.
+- `npm run lint`: passed after the server-side companion XP slice.
+- `npm run typecheck`: passed after the server-side companion XP slice.
+- `npm run build`: passed after the server-side companion XP slice; route list includes `/student/companion-world`.
 - Landing/login visual smoke: passed for `/` and `/login` at 1440px and 390px widths; screenshots written to `test-results/landing-refresh`.
 - Login one-click demo render smoke: passed at 390px; found four demo buttons, five auth forms, and no horizontal overflow.
 - `npm audit --audit-level=moderate`: passed, 0 vulnerabilities.
@@ -51,6 +52,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 - Supabase changelog and Storage docs checked on 2026-05-10 before storage-facing implementation.
 - `npm run security:supabase`: still blocked because no `SUPABASE_DB_URL`, `DATABASE_URL`, `SUPABASE_DB_PASSWORD`, or `SUPABASE_ACCESS_TOKEN` plus project ref is available to the script.
 - `supabase migration list --linked`: blocked by remote role permission error while initializing the CLI login role.
+- `supabase migration list --local`: blocked because the local Supabase Postgres service is not running on `127.0.0.1:54322`.
 
 ## Next Gate To Run
 

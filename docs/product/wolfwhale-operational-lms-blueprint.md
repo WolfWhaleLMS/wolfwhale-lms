@@ -50,15 +50,17 @@ The companion system is now fish-only for beta:
 - Starter species are limited to clownfish and pufferfish.
 - Retired companion code, docs, and raster assets were removed from the tracked app tree.
 - `student_companion_profiles.species` is moved to a fish-only check constraint by `20260510220050_fish_companion_species.sql`.
+- Server-side XP is granted after first-time real LMS events: student assignment submission and first teacher feedback/grade post. Repeat submissions and grade edits do not farm XP.
 
 ## Evidence
 
 - `npm test -- tests/lms-mutations.test.ts tests/lms-query-mapping.test.ts tests/lms-student-workspaces.test.tsx`: 13/13 passing on 2026-05-10.
-- `npm test`: 26 files / 114 tests passing on 2026-05-10.
+- `npm test`: 27 files / 117 tests passing on 2026-05-10.
 - `npm test -- tests/lms-auth.test.ts tests/pilot-auth.test.ts`: 16/16 passing on 2026-05-10 for real auth routing, one-click demo forms, route-handler local redirects, and proxy host preservation.
 - `npm test -- tests/lms-audit-log-coverage.test.ts`: 3/3 passing on 2026-05-10.
 - `npm test -- tests/fish-companion.test.ts`: 12/12 passing on 2026-05-10.
-- `npm run lint`, `npm run typecheck`, and `npm run build`: passing on 2026-05-10 after the same-host auth redirect fix.
+- `npm test -- tests/companion-server-xp.test.ts`: 3/3 passing on 2026-05-10 for server-side companion XP grants from real submission and feedback events.
+- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the server-side companion XP slice.
 - Landing/login visual smoke passed on 2026-05-10 for desktop and mobile with no missing image alt text, unnamed buttons, or horizontal overflow.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passing locally on 2026-05-10 with student file attachment, teacher grading, admin writes, logout, and screenshots in `test-results/lms-smoke`.
 - Updated signed-file smoke assertion exposed a live RLS gap on 2026-05-10: assigned teachers cannot yet read all student submissions until `20260510212739_submissions_assigned_teacher_read_policy.sql` is applied.

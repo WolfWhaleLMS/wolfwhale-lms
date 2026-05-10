@@ -1,4 +1,5 @@
 import type { SupabaseClient, User } from '@supabase/supabase-js'
+import { tryAwardServerCompanionXp } from '@/lib/companion/server-xp'
 import {
   courseResourceCourseQuotaBytes,
   courseResourceInitialScanStatus,
@@ -770,6 +771,15 @@ export async function submitAssignment(
       },
     })
 
+    if (!existingSubmission) {
+      await tryAwardServerCompanionXp(supabase, {
+        tenantId,
+        studentId: user.id,
+        source: 'assignment_submitted',
+        label: 'Assignment submitted',
+      })
+    }
+
     return { submissionId: id(saved.id, 'submission_id'), filePath: uploadedPath }
   } catch (error) {
     if (uploadedPath) {
@@ -885,6 +895,15 @@ export async function gradeSubmission(
     resourceId: id(savedGrade.id, 'grade_id'),
     details: { submission_id: draft.submissionId, student_id: studentId },
   })
+
+  if (!existingGrade) {
+    await tryAwardServerCompanionXp(supabase, {
+      tenantId,
+      studentId,
+      source: 'course_task_checked',
+      label: 'Teacher feedback received',
+    })
+  }
 
   return { gradeId: id(savedGrade.id, 'grade_id') }
 }
