@@ -561,11 +561,20 @@ export function normalizeGradeDraft(input: { submissionId: unknown; pointsEarned
   }
 }
 
-export function normalizeCourseDraft(input: { name: unknown; subject: unknown; gradeLevel: unknown; description?: unknown }) {
+export function normalizeCourseDraft(input: {
+  name: unknown
+  subject: unknown
+  gradeLevel: unknown
+  sectionLabel?: unknown
+  termLabel?: unknown
+  description?: unknown
+}) {
   return {
     name: limitedText(input.name, 'course_name', 255),
     subject: optionalLimitedText(input.subject, 100),
     gradeLevel: optionalLimitedText(input.gradeLevel, 50),
+    sectionLabel: optionalLimitedText(input.sectionLabel, 80),
+    termLabel: optionalLimitedText(input.termLabel, 80),
     description: optionalLimitedText(input.description, 5000),
   }
 }
@@ -1250,7 +1259,10 @@ export async function gradeSubmission(
   return { gradeId: id(savedGrade.id, 'grade_id') }
 }
 
-export async function createCourse(supabase: SupabaseClient, input: { name: unknown; subject: unknown; gradeLevel: unknown; description?: unknown }) {
+export async function createCourse(
+  supabase: SupabaseClient,
+  input: { name: unknown; subject: unknown; gradeLevel: unknown; sectionLabel?: unknown; termLabel?: unknown; description?: unknown }
+) {
   const user = await requireUser(supabase)
   const membership = await requireStaff(supabase, user)
   const draft = normalizeCourseDraft(input)
@@ -1263,6 +1275,8 @@ export async function createCourse(supabase: SupabaseClient, input: { name: unkn
         description: draft.description || null,
         subject: draft.subject || null,
         grade_level: draft.gradeLevel || null,
+        section_label: draft.sectionLabel || null,
+        semester: draft.termLabel || null,
         created_by: user.id,
         status: 'active',
       })
@@ -1277,6 +1291,7 @@ export async function createCourse(supabase: SupabaseClient, input: { name: unkn
     action: 'course.created',
     resourceType: 'course',
     resourceId: id(course.id, 'course_id'),
+    details: { section_label: draft.sectionLabel, term_label: draft.termLabel },
   })
 
   return { courseId: id(course.id, 'course_id') }

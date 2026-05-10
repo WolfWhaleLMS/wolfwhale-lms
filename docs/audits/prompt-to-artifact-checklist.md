@@ -22,7 +22,7 @@ Purpose: map the active WolfWhale LMS launch objective to concrete repo artifact
 | --- | --- | --- |
 | 1. One-click demo accounts only on login screen | `app/login/page.tsx` includes demo account POST buttons that submit to `/api/auth/login`; `tests/lms-auth.test.ts` guards the real-auth forms | Present |
 | 2. Real sign-in/sign-out | `app/api/auth/login/route.ts`, `app/api/auth/logout/route.ts`, `proxy.ts`, `tests/lms-auth.test.ts`, browser smoke | Partial: deployed smoke pending |
-| 3. Admin creates school/course/section and invites users | `app/api/lms/courses/route.ts`, `app/api/lms/enrollments/route.ts`, `app/api/lms/roster/import/route.ts`, admin dashboard | Partial: school/section lifecycle still incomplete |
+| 3. Admin creates school/course/section and invites users | `app/api/lms/courses/route.ts`, `app/api/lms/enrollments/route.ts`, `app/api/lms/roster/import/route.ts`, `components/lms/AdminDashboard.tsx`, `lib/lms/mutations.ts`, `lib/lms/queries.ts`, `lib/lms/exports.ts`, `supabase/migrations/20260510225408_course_section_metadata.sql`, `tests/lms-course-sections.test.ts` | Partial: course section and term metadata now persist through the admin create-course path; school lifecycle, invite delivery, and live RLS/deployed proof still incomplete |
 | 4. Teacher creates course content and assignments | `app/api/lms/assignments/route.ts`, `app/api/lms/resources/route.ts`, teacher dashboard, mutating smoke | Partial: live RLS proof pending |
 | 5. Student submits text and files | `app/api/lms/submissions/route.ts`, `lib/lms/mutations.ts`, student assignment workspace, storage migration | Partial: file upload works; live signed-link smoke blocked until new table RLS migration is applied |
 | 6. Teacher grades with feedback/rubric | `app/api/lms/grades/route.ts`, `app/api/lms/rubrics/route.ts`, `lib/lms/mutations.ts`, mutating smoke | Partial: live RLS proof pending |
@@ -42,6 +42,7 @@ Purpose: map the active WolfWhale LMS launch objective to concrete repo artifact
 | RLS/security checks | `lib/supabase/launch-security-checks.ts`, `scripts/check-supabase-launch-security.ts`, `tests/supabase-launch-security.test.ts` | Partial: live DB validation blocked by credentials |
 | Private storage policies | `supabase/migrations/20260510205641_student_submission_file_storage.sql` | Pending live apply |
 | Assigned-teacher submission policy | `supabase/migrations/20260510212739_submissions_assigned_teacher_read_policy.sql` | Pending live apply |
+| Course section metadata | `supabase/migrations/20260510225408_course_section_metadata.sql` | Pending live apply |
 | Audit-log coverage | `tests/lms-audit-log-coverage.test.ts`, `lib/lms/mutations.ts`, `lib/lms/roster-import.ts`, `app/api/lms/resources/[resourceId]/route.ts` | Partial: static coverage present; live audit-row proof pending |
 | Secret/dependency checks | `npm audit --audit-level=moderate`; changed-file secret scans recorded in scorecard | Partial |
 | Privacy launch packet | `docs/security/privacy-launch-readiness.md`, DPA, subprocessor, breach, retention/export/delete/correction runbooks | Partial: counsel and customer review pending |

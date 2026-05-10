@@ -96,8 +96,16 @@ export function buildSisExportPackage(records: LmsRecords, adminView: AdminView)
       records.users.map((user) => [user.id, user.email, user.firstName, user.lastName])
     ),
     'courses.csv': csv(
-      ['course_id', 'title', 'subject', 'grade_level', 'status'],
-      records.courses.map((course) => [course.id, course.title, course.subject, course.gradeLevel, course.status])
+      ['course_id', 'title', 'subject', 'grade_level', 'section_label', 'term_label', 'status'],
+      records.courses.map((course) => [
+        course.id,
+        course.title,
+        course.subject,
+        course.gradeLevel,
+        course.sectionLabel,
+        course.termLabel,
+        course.status,
+      ])
     ),
     'enrollments.csv': csv(
       ['course_id', 'student_id', 'teacher_id', 'status'],

@@ -12,7 +12,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 | One-click demo accounts | Pass | Login screen now has one-click demo buttons for student, teacher, guardian, and admin accounts. Buttons post to the real `/api/auth/login` route, not a pilot/mock auth path. |
 | Role dashboards | Partial | Student, teacher, admin, and guardian dashboards loaded in the local smoke run with desktop/mobile viewports and accessibility checks. Deployed and formal WCAG passes pending. |
 | Public landing/login UX | Partial | Frutiger Aero landing/login refresh renders with real WolfWhale logo and dashboard screenshots. Local Playwright smoke passed for desktop/mobile h1, image alt, named buttons, and horizontal overflow; formal accessibility review pending. |
-| Admin setup flows | Partial | Local mutating smoke passed for course creation, enrollment, and roster import. Live RLS/security proof and deployed smoke pending. |
+| Admin setup flows | Partial | Local mutating smoke passed for course creation, enrollment, and roster import. Course setup now persists school-facing section and term labels through the admin form, LMS mutation, query mapping, exports, and `20260510225408_course_section_metadata.sql`. Live RLS/security proof and deployed smoke pending. |
 | Teacher assignment/grading/attendance/rubrics | Partial | Local mutating smoke passed for assignment creation, resource upload, attendance, rubric, and grade posting. Live RLS/security proof pending. |
 | Student text and file submission | Partial | Added file upload support, metadata mapping, private signed file route, UI file input, storage policy migration, and assigned-teacher submission RLS migration. Upload is verified, but the stricter signed-link browser smoke is blocked until the new table RLS migration is applied live. |
 | Parent linked-child privacy | Partial | Guardian dashboard passed local smoke through linked-student surfaces, and read-model tests now prove over-fetched teacher/student-only messages do not appear in unrelated student or guardian views. Full live RLS matrix for wrong-child/wrong-tenant access is still pending. |
@@ -41,10 +41,12 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 - `npm test -- tests/companion-server-xp.test.ts`: passed, 3 tests covering server-side companion XP profile creation/update and LMS wiring for first-time submissions and first teacher feedback posts.
 - `npm test -- tests/lms-messages.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx tests/lms-audit-log-coverage.test.ts`: passed, 4 files / 16 tests covering message normalization, audited message route/service wiring, visible composer forms, audit coverage, and the relationship-aware messaging policy artifact.
 - `npm test -- tests/lms-read-model.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx`: passed, 3 files / 14 tests covering role dashboards, student workspaces, and defense-in-depth message filtering by conversation membership.
-- `npm test`: passed, 28 files / 122 tests after the scoped-message privacy hardening.
-- `npm run lint`: passed after the server-side companion XP slice.
-- `npm run typecheck`: passed after the server-side companion XP slice.
-- `npm run build`: passed after the audited messaging write slice; route list includes `/api/lms/messages` and `/student/companion-world`.
+- `npm test -- tests/lms-course-sections.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: passed, 3 files / 10 tests covering course section/term normalization, admin form fields, Supabase query mapping, exports, and the metadata migration artifact.
+- `npm test`: passed, 29 files / 126 tests after the course section metadata slice.
+- `npm run lint`: passed after the course section metadata slice.
+- `npm run typecheck`: passed after the course section metadata slice.
+- `npm run build`: passed after the course section metadata slice; route list includes `/api/lms/courses`, `/api/lms/messages`, and `/student/companion-world`.
+- Admin create-course browser fallback: attempted against `http://127.0.0.1:3010` at desktop and mobile widths. The Browser plugin automation runtime was unavailable, and the Playwright fallback was blocked before dashboard render by `/login?error=lms-access-required` after sign-in. Component/render tests cover the new Section and Term controls; live browser proof remains pending with healthy smoke credentials/data and the new migration applied.
 - Landing/login visual smoke: passed for `/` and `/login` at 1440px and 390px widths; screenshots written to `test-results/landing-refresh`.
 - Login one-click demo render smoke: passed at 390px; found four demo buttons, five auth forms, and no horizontal overflow.
 - `npm audit --audit-level=moderate`: passed, 0 vulnerabilities.
@@ -62,5 +64,6 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 2. `npm run lint`
 3. `npm run build`
 4. `npm run test:a11y`
-5. `npm run security:supabase` with DB credentials after applying `20260510205641_student_submission_file_storage.sql`, `20260510212739_submissions_assigned_teacher_read_policy.sql`, and `20260510220050_fish_companion_species.sql`
-6. Fresh deployed smoke on `wolfwhale.ca` after the branch is deployed
+5. Admin create-course browser smoke with active smoke accounts and `20260510225408_course_section_metadata.sql` applied
+6. `npm run security:supabase` with DB credentials after applying `20260510205641_student_submission_file_storage.sql`, `20260510212739_submissions_assigned_teacher_read_policy.sql`, `20260510220050_fish_companion_species.sql`, `20260510233000_course_message_write_policy.sql`, and `20260510225408_course_section_metadata.sql`
+7. Fresh deployed smoke on `wolfwhale.ca` after the branch is deployed

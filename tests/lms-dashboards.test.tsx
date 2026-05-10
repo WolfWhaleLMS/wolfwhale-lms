@@ -40,6 +40,7 @@ describe('persistent LMS dashboards', () => {
     expect(screen.getByRole('heading', { name: 'Teacher dashboard' })).toBeInTheDocument()
     expectDashboardTools(['Courses', 'Roster', 'Create assignment', 'Gradebook', 'Attendance', 'Rubrics', 'Grading queue'])
     expect(screen.getAllByText('Grade 8 Humanities').length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/section 8A/).length).toBeGreaterThan(0)
     expect(screen.getAllByText('Alex Student').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Primary Source Exit Ticket').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Riley Student').length).toBeGreaterThan(0)

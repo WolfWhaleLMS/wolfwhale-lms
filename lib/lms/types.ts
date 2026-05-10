@@ -34,6 +34,8 @@ export interface LmsCourseRecord {
   title: string
   subject: string
   gradeLevel: string
+  sectionLabel: string
+  termLabel: string
   createdBy: string
   status: string
   gradingPolicy: LmsGradingPolicy
@@ -227,6 +229,8 @@ export interface LmsCourseSummary {
   title: string
   subject: string
   gradeLevel: string
+  sectionLabel: string
+  termLabel: string
 }
 
 export interface LmsAssignmentSummary {

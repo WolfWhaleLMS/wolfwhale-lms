@@ -36,6 +36,8 @@ function courseSummary(course: LmsCourseRecord): LmsCourseSummary {
     title: course.title,
     subject: course.subject,
     gradeLevel: course.gradeLevel,
+    sectionLabel: course.sectionLabel,
+    termLabel: course.termLabel,
   }
 }
 
@@ -580,6 +582,8 @@ export function createDemoLmsRecords(): LmsRecords {
         title: 'Grade 8 Humanities',
         subject: 'Humanities',
         gradeLevel: '8',
+        sectionLabel: '8A',
+        termLabel: 'Spring 2026',
         createdBy: teacherId,
         status: 'active',
         gradingPolicy: {

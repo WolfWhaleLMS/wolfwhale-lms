@@ -197,6 +197,8 @@ export function mapSupabaseRowsToLmsRecords(rows: SupabaseLmsRows): LmsRecords {
       title: text(course.name, 'Untitled course'),
       subject: text(course.subject),
       gradeLevel: text(course.grade_level),
+      sectionLabel: text(course.section_label),
+      termLabel: text(course.semester),
       createdBy: text(course.created_by),
       status: text(course.status, 'active'),
       gradingPolicy: gradingPolicy(course.grading_policy),
@@ -406,7 +408,7 @@ export async function loadLmsRecordsForUser(supabase: SupabaseClient, userId: st
   ] = await Promise.all([
     queryTable(supabase, 'tenant_memberships', 'tenant_id,user_id,role,status', tenantId),
     queryTable(supabase, 'student_parents', 'tenant_id,student_id,parent_id,status', tenantId),
-    queryTable(supabase, 'courses', 'id,tenant_id,name,subject,grade_level,created_by,status,grading_policy', tenantId),
+    queryTable(supabase, 'courses', 'id,tenant_id,name,subject,grade_level,section_label,semester,created_by,status,grading_policy', tenantId),
     queryTable(supabase, 'course_enrollments', 'tenant_id,course_id,student_id,teacher_id,status', tenantId),
     queryTable(supabase, 'assignments', 'id,tenant_id,course_id,title,instructions,due_date,max_points,status,category', tenantId),
     queryTable(

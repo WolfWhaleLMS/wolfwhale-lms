@@ -16,6 +16,8 @@ describe('Supabase LMS query mapping', () => {
           name: 'Grade 8 Humanities',
           subject: 'Humanities',
           grade_level: '8',
+          section_label: '8A',
+          semester: 'Spring 2026',
           created_by: 'teacher-1',
           status: 'active',
           grading_policy: { categories: [{ name: 'Exit Ticket', weight: 100 }] },
@@ -108,7 +110,12 @@ describe('Supabase LMS query mapping', () => {
     expect(records.tenant.name).toBe('WolfWhale School')
     expect(records.actorIds.teacher).toBe('teacher-1')
     expect(records.users[0]).toMatchObject({ id: 'teacher-1', firstName: 'Tessa', lastName: 'Teacher' })
-    expect(records.courses[0]).toMatchObject({ title: 'Grade 8 Humanities', gradeLevel: '8' })
+    expect(records.courses[0]).toMatchObject({
+      title: 'Grade 8 Humanities',
+      gradeLevel: '8',
+      sectionLabel: '8A',
+      termLabel: 'Spring 2026',
+    })
     expect(records.assignments[0]).toMatchObject({ dueAt: '2026-05-08T16:00:00.000Z', maxPoints: 5, category: 'Exit Ticket' })
     expect(records.submissions[0]).toMatchObject({
       content: 'My answer',

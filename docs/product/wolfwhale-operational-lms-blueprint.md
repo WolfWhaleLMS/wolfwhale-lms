@@ -59,6 +59,14 @@ Course messaging now has a real audited write path:
 - `sendCourseMessage` creates the conversation, members, message, notification, and `message.sent` audit row from one LMS mutation service.
 - `20260510233000_course_message_write_policy.sql` tightens conversation reads and member inserts so direct Supabase writes follow course, role, and guardian-link boundaries.
 
+Admin course setup now carries durable section and term metadata:
+
+- The admin create-course form accepts school-facing section and term labels.
+- `normalizeCourseDraft` trims and caps section/term labels before writes.
+- `createCourse` persists section labels in `courses.section_label` and term labels in the existing `courses.semester` field.
+- Supabase query mapping, LMS read models, dashboards, and CSV exports expose the metadata.
+- `20260510225408_course_section_metadata.sql` adds the section column, tenant-scoped section index, and column comments for live schema alignment.
+
 ## Evidence
 
 - `npm test -- tests/lms-mutations.test.ts tests/lms-query-mapping.test.ts tests/lms-student-workspaces.test.tsx`: 13/13 passing on 2026-05-10.
@@ -69,7 +77,9 @@ Course messaging now has a real audited write path:
 - `npm test -- tests/companion-server-xp.test.ts`: 3/3 passing on 2026-05-10 for server-side companion XP grants from real submission and feedback events.
 - `npm test -- tests/lms-messages.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx tests/lms-audit-log-coverage.test.ts`: 16/16 passing on 2026-05-10 for audited message writes, composer UI, route delegation, and policy artifact coverage.
 - `npm test -- tests/lms-read-model.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx`: 14/14 passing on 2026-05-10 for role-scoped dashboards and message visibility filtering.
-- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the audited messaging write slice.
+- `npm test -- tests/lms-course-sections.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: 10/10 passing on 2026-05-10 for course section/term normalization, admin UI, query mapping, exports, and migration coverage.
+- `npm test`: 29 files / 126 tests passing on 2026-05-10.
+- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the course section metadata slice.
 - Landing/login visual smoke passed on 2026-05-10 for desktop and mobile with no missing image alt text, unnamed buttons, or horizontal overflow.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passing locally on 2026-05-10 with student file attachment, teacher grading, admin writes, logout, and screenshots in `test-results/lms-smoke`.
 - Updated signed-file smoke assertion exposed a live RLS gap on 2026-05-10: assigned teachers cannot yet read all student submissions until `20260510212739_submissions_assigned_teacher_read_policy.sql` is applied.

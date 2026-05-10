@@ -305,6 +305,8 @@ async function exerciseAdminWorkflows(page: Page) {
   await page.locator('#create-course input[name="name"]').fill(`Workflow audit course ${stamp}`)
   await page.locator('#create-course input[name="subject"]').fill('Operations')
   await page.locator('#create-course input[name="gradeLevel"]').fill('8')
+  await page.locator('#create-course input[name="sectionLabel"]').fill('8A')
+  await page.locator('#create-course input[name="termLabel"]').fill('Spring 2026')
   await page.locator('#create-course textarea[name="description"]').fill('Workflow audit course creation.')
   await page.locator('#create-course').getByRole('button', { name: 'Create course' }).click()
   await waitForSaved(page, 'admin', 'course')

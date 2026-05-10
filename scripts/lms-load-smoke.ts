@@ -57,6 +57,8 @@ function createSyntheticRecords(input: {
     title: `Course ${index + 1}`,
     subject: 'Core',
     gradeLevel: String((index % 12) + 1),
+    sectionLabel: `S${(index % 8) + 1}`,
+    termLabel: 'Load Test Term',
     createdBy: `teacher-${index % Math.max(input.activeTeachers, 1)}`,
     status: 'active',
     gradingPolicy: {

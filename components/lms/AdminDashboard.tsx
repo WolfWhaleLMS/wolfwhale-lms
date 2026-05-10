@@ -190,6 +190,22 @@ export function AdminDashboard({ view }: { view: AdminView }) {
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
                 />
               </label>
+              <label className="grid gap-1 text-sm font-semibold">
+                Section
+                <input
+                  name="sectionLabel"
+                  placeholder="8A"
+                  className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                />
+              </label>
+              <label className="grid gap-1 text-sm font-semibold">
+                Term
+                <input
+                  name="termLabel"
+                  placeholder="Spring 2026"
+                  className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                />
+              </label>
             </div>
             <label className="grid gap-1 text-sm font-semibold">
               Description

@@ -12,6 +12,8 @@ export async function POST(request: NextRequest) {
       name: formData.get('name'),
       subject: formData.get('subject'),
       gradeLevel: formData.get('gradeLevel'),
+      sectionLabel: formData.get('sectionLabel'),
+      termLabel: formData.get('termLabel'),
       description: formData.get('description'),
     })
 

@@ -36,7 +36,11 @@ export function TeacherDashboard({ view }: { view: TeacherView }) {
                     Open gradebook
                   </a>
                 </div>
-                <span className="mt-1 block text-slate-500 dark:text-slate-400">{course.subject} grade {course.gradeLevel}</span>
+                <span className="mt-1 block text-slate-500 dark:text-slate-400">
+                  {course.subject} grade {course.gradeLevel}
+                  {course.sectionLabel ? ` section ${course.sectionLabel}` : ''}
+                  {course.termLabel ? ` - ${course.termLabel}` : ''}
+                </span>
               </li>
             ))}
           </ul>

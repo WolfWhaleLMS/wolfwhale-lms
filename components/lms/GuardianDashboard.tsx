@@ -44,6 +44,7 @@ export function GuardianDashboard({ view }: { view: GuardianView }) {
                     <li key={course.id} className="rounded-md border border-slate-200 text-sm dark:border-slate-800">
                       <a href="#attendance" className="flex px-3 py-2 font-semibold hover:bg-teal-50 dark:hover:bg-teal-950/40">
                         {course.title}
+                        {course.sectionLabel ? ` section ${course.sectionLabel}` : ''}
                       </a>
                     </li>
                   ))}
