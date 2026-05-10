@@ -39,10 +39,17 @@ Student assignment submissions now support private file upload in addition to te
 - New migration aligns storage RLS policy with the submission object path.
 - New migration scopes `submissions` table read/update policies so assigned teachers can see and grade submissions even when they did not create the course shell.
 
+Audit-log coverage is now guarded for critical beta write paths:
+
+- Core LMS mutation services must call the shared audit helper with expected action names and resource types.
+- Write routes for submissions, grades, courses, assignments, resources, attendance, rubrics, enrollments, and roster import must delegate into audited services.
+- Admin resource-review updates now insert `resource_review.updated` audit rows with review id, resource id, scan status, legal-hold flag, and quarantine reason.
+
 ## Evidence
 
 - `npm test -- tests/lms-mutations.test.ts tests/lms-query-mapping.test.ts tests/lms-student-workspaces.test.tsx`: 13/13 passing on 2026-05-10.
-- `npm test`: 25 files / 105 tests passing on 2026-05-10.
+- `npm test`: 26 files / 108 tests passing on 2026-05-10.
+- `npm test -- tests/lms-audit-log-coverage.test.ts`: 3/3 passing on 2026-05-10.
 - `npm run lint`, `npm run typecheck`, and `npm run build`: passing on 2026-05-10.
 - Landing/login visual smoke passed on 2026-05-10 for desktop and mobile with no missing image alt text, unnamed buttons, or horizontal overflow.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passing locally on 2026-05-10 with student file attachment, teacher grading, admin writes, logout, and screenshots in `test-results/lms-smoke`.

@@ -151,12 +151,14 @@ export async function POST(request: NextRequest, context: RouteContext) {
     }
 
     const status = scanStatus(formData.get('scanStatus'))
+    const legalHold = formData.get('legalHold') === 'on'
+    const quarantineReason = limitedReason(formData.get('quarantineReason'))
     const { error: updateError } = await supabase
       .from('course_resource_security_reviews')
       .update({
         scan_status: status,
-        legal_hold: formData.get('legalHold') === 'on',
-        quarantine_reason: limitedReason(formData.get('quarantineReason')),
+        legal_hold: legalHold,
+        quarantine_reason: quarantineReason,
         scan_checked_at: status === 'clean' ? new Date().toISOString() : null,
         updated_at: new Date().toISOString(),
       })
@@ -165,6 +167,20 @@ export async function POST(request: NextRequest, context: RouteContext) {
     if (updateError) {
       throw new LmsMutationError(`Unable to update resource review: ${updateError.message}`, 'resource_security_review_failed')
     }
+
+    await supabase.from('audit_logs').insert({
+      tenant_id: tenantId,
+      user_id: user.id,
+      action: 'resource_review.updated',
+      resource_type: 'course_resource_security_review',
+      resource_id: reviewId,
+      details: {
+        resource_id: resourceId,
+        scan_status: status,
+        legal_hold: legalHold,
+        quarantine_reason: quarantineReason,
+      },
+    })
 
     return lmsRedirect(request, '/admin', { saved: 'resource-review' })
   } catch (error) {

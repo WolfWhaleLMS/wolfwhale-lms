@@ -42,6 +42,7 @@ Purpose: map the active WolfWhale LMS launch objective to concrete repo artifact
 | RLS/security checks | `lib/supabase/launch-security-checks.ts`, `scripts/check-supabase-launch-security.ts`, `tests/supabase-launch-security.test.ts` | Partial: live DB validation blocked by credentials |
 | Private storage policies | `supabase/migrations/20260510205641_student_submission_file_storage.sql` | Pending live apply |
 | Assigned-teacher submission policy | `supabase/migrations/20260510212739_submissions_assigned_teacher_read_policy.sql` | Pending live apply |
+| Audit-log coverage | `tests/lms-audit-log-coverage.test.ts`, `lib/lms/mutations.ts`, `lib/lms/roster-import.ts`, `app/api/lms/resources/[resourceId]/route.ts` | Partial: static coverage present; live audit-row proof pending |
 | Secret/dependency checks | `npm audit --audit-level=moderate`; changed-file secret scans recorded in scorecard | Partial |
 | Privacy launch packet | `docs/security/privacy-launch-readiness.md`, DPA, subprocessor, breach, retention/export/delete/correction runbooks | Partial: counsel and customer review pending |
 | Threat model | `docs/security/threat-model.md` | Present; needs refresh after live RLS checks |

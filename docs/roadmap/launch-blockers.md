@@ -10,6 +10,7 @@ Date: 2026-05-10
 - Browser-test the remaining file-submission privacy edges after applying the new RLS migration: teacher signed download in the UI, wrong-role denial, wrong-tenant denial, student feedback visibility, and guardian scoping. Automated signed-route tests now cover auth-required, RLS miss, signed redirect, and signing failure.
 - Confirm all private file buckets are private and cannot be listed or read anonymously.
 - Complete a role/relationship RLS matrix for student, teacher, admin, guardian, wrong tenant, wrong child, and unauthenticated requests.
+- Prove live audit-log insertion for core mutation routes, roster import, and resource-review updates after target Supabase migrations are applied.
 - Produce current secret scan and dependency audit evidence.
 - Get counsel/customer review and product automation behind the new privacy/security launch docs for file submissions, retention, exports, correction, deletion, DPA, subprocessors, and breach workflow.
 

@@ -60,7 +60,7 @@ This is an engineering threat model for student-record software. It is not legal
 - Supabase RLS on core LMS tables.
 - Private storage buckets with signed access routes.
 - File type/size allowlists for course resources and student submission files.
-- Audit logs for core mutations.
+- Audit logs for core mutations, roster imports, and admin resource-review updates.
 - Rate limiting for auth and LMS mutation endpoints.
 - Tests for auth redirect safety, LMS mutations, read-model mapping, role surfaces, resource security, and launch security invariants.
 
@@ -70,7 +70,7 @@ This is an engineering threat model for student-record software. It is not legal
 - Live Supabase validation after applying the new submission-file storage migration.
 - Full RLS test matrix for student/teacher/admin/guardian cross-tenant and cross-child denial cases.
 - Malware scanning and quarantine worker for uploaded files.
-- Complete audit-log coverage matrix for every write route.
+- Live audit-row insertion proof after target Supabase migrations are applied.
 - Secret scan and dependency audit in the current branch.
 - Formal privacy/compliance review for FERPA, COPPA, PPRA, PIPEDA, BC/Canadian school expectations, and retention/deletion workflows.
 

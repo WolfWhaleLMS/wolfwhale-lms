@@ -19,7 +19,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 | Gradebook/reports | Partial | Weighted read model and exports exist; full regression pending. |
 | Calendar/attendance/messages | Partial | Role read models and route surfaces exist and loaded in local smoke; deeper workflow and live RLS proof pending. |
 | Private files | Partial | Course resources and student submission files use private buckets and signed routes. The linked dev project has a private `submissions` bucket; storage and table RLS migrations still need live DB application/validation. |
-| Audit logging | Partial | LMS mutation helper writes audit rows for key paths; route coverage audit still needed for all writes. |
+| Audit logging | Partial | Core LMS mutation services, roster import, and the direct resource-review admin write now have static audit-log coverage. Live audit-row insertion proof is still pending with applied Supabase migrations. |
 | Pets/rewards | Partial | Companion code exists; server-side XP from real events still needs deeper integration. |
 | Accessibility | Partial | Prior smoke evidence exists; fresh WCAG-focused checks pending. |
 | Security/RLS | Partial | Static tests now cover assigned-teacher submission read/update policy shape. Live DB validation is blocked by missing DB/read credentials and Supabase CLI role-permission failure. |
@@ -36,10 +36,11 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 - `npm test -- tests/privacy-launch-docs.test.ts`: passed, 2 tests covering privacy/DPA/subprocessor/breach/retention/export/delete/correction placeholder docs.
 - `npm test -- tests/prompt-artifact-checklist.test.ts`: passed, 3 tests verifying the prompt-to-artifact checklist covers named docs, 14 P0 flows, and blocked live gates.
 - `npm test -- tests/lms-auth.test.ts tests/prompt-artifact-checklist.test.ts`: passed, 2 files / 10 tests covering real auth routing plus one-click demo auth forms.
-- `npm test`: passed, 25 files / 105 tests.
-- `npm run lint`: passed after the assigned-teacher RLS migration and stricter smoke update.
-- `npm run typecheck`: passed after the assigned-teacher RLS migration and stricter smoke update.
-- `npm run build`: passed; route list includes `/api/lms/submissions/[submissionId]/file`.
+- `npm test -- tests/lms-audit-log-coverage.test.ts`: passed, 3 tests covering audited write services, write-route delegation, roster imports, and resource-review audit rows.
+- `npm test`: passed, 26 files / 108 tests.
+- `npm run lint`: passed after the audit-log coverage update.
+- `npm run typecheck`: passed after the audit-log coverage update.
+- `npm run build`: passed after the audit-log coverage update; route list includes `/api/lms/submissions/[submissionId]/file`.
 - Landing/login visual smoke: passed for `/` and `/login` at 1440px and 390px widths; screenshots written to `test-results/landing-refresh`.
 - Login one-click demo render smoke: passed at 390px; found four demo buttons, five auth forms, and no horizontal overflow.
 - `npm audit --audit-level=moderate`: passed, 0 vulnerabilities.
