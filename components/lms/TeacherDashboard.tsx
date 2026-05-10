@@ -1,6 +1,7 @@
 import { BarChart3, BookOpen, CalendarCheck, CalendarDays, ClipboardCheck, Download, FileText, MessageSquare, Plus, Users } from 'lucide-react'
 import { EmptyState, LmsPanel, LmsShell } from '@/components/lms/LmsShell'
 import { CalendarEventForm, CalendarPanel, MessageComposer, MessagesPanel, ResourceUploadForm, ResourcesPanel } from '@/components/lms/SharedLmsPanels'
+import { gradeTrendLabel } from '@/lib/lms/grade-trends'
 import type { buildLmsDashboardViews } from '@/lib/lms/read-model'
 
 type TeacherView = ReturnType<typeof buildLmsDashboardViews>['teacher']
@@ -199,6 +200,7 @@ export function TeacherDashboard({ view }: { view: TeacherView }) {
                       <th className="px-3 py-2">Grade</th>
                       <th className="px-3 py-2">Missing</th>
                       <th className="px-3 py-2">Attendance</th>
+                      <th className="px-3 py-2">Trend</th>
                       <th className="px-3 py-2">Risk</th>
                     </tr>
                   </thead>
@@ -209,6 +211,7 @@ export function TeacherDashboard({ view }: { view: TeacherView }) {
                         <td className="px-3 py-2">{student.currentPercentage}% {student.letterGrade}</td>
                         <td className="px-3 py-2">{student.missingAssignments}</td>
                         <td className="px-3 py-2">{student.attendanceRate}%</td>
+                        <td className="px-3 py-2">{gradeTrendLabel(student.gradeTrend)}</td>
                         <td className="px-3 py-2 capitalize">{student.riskLevel}</td>
                       </tr>
                     ))}

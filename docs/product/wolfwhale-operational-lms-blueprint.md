@@ -89,6 +89,13 @@ School and course calendar events now have a real write path:
 - `20260510231855_lms_calendar_events.sql` adds the event table, indexes, course/school event shape constraints, RLS policies, and authenticated grants.
 - Remaining calendar work includes recurring events, edit/cancel UI, iCal/feed export, notification rules, and live RLS/deployed proof.
 
+Gradebook and reports now include trend evidence:
+
+- Gradebook summaries compute a per-student course trend from the two most recent graded items.
+- Teacher, student, and guardian gradebook surfaces render the trend as a plain-language label.
+- Gradebook CSV exports and generated report-card objects include the raw trend field for downstream school reporting.
+- Remaining reporting work includes date-range filters, report-pack generation, teacher/admin report builders, and live/deployed proof.
+
 ## Evidence
 
 - `npm test -- tests/lms-mutations.test.ts tests/lms-query-mapping.test.ts tests/lms-student-workspaces.test.tsx`: 13/13 passing on 2026-05-10.
@@ -103,9 +110,10 @@ School and course calendar events now have a real write path:
 - `npm test -- tests/lms-invitations.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: 9/9 passing on 2026-05-10 for direct invite normalization, route/form wiring, and audit-log coverage.
 - `npm test -- tests/lms-guardian-links.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: 10/10 passing on 2026-05-10 for guardian-link normalization, admin read-model choices, route/form wiring, and audit-log coverage.
 - `npm test -- tests/lms-calendar-events.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: 12/12 passing on 2026-05-10 for durable calendar event normalization, role calendars, admin/teacher forms, query mapping, migration artifact, route delegation, and audit-log coverage.
-- `npm test`: 32 files / 134 tests passing on 2026-05-10.
-- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the durable calendar-events slice.
-- `npm run load:smoke`: passing on 2026-05-10 in 2039ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments after the durable calendar-events slice.
+- `npm test -- tests/lms-gradebook-attendance.test.ts tests/lms-district-scale.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx`: 20/20 passing on 2026-05-10 for grade trends in read models, report cards, CSV exports, teacher dashboard, guardian dashboard, and student workspaces.
+- `npm test`: 32 files / 135 tests passing on 2026-05-10.
+- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the grade-trend reporting slice.
+- `npm run load:smoke`: passing on 2026-05-10 in 2529ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments after the grade-trend reporting slice.
 - Landing/login visual smoke passed on 2026-05-10 for desktop and mobile with no missing image alt text, unnamed buttons, or horizontal overflow.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passing locally on 2026-05-10 with student file attachment, teacher grading, admin writes, logout, and screenshots in `test-results/lms-smoke`.
 - `LMS_SMOKE_BASE_URL=http://127.0.0.1:3010 npm run test:a11y`: blocked after the durable calendar-events slice because the smoke student reached `/login?error=lms-access-required` after sign-in before the dashboard rendered. The smoke harness now checks Add event controls and mutating calendar-event writes once active LMS smoke accounts/data are restored.

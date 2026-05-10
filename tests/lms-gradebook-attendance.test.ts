@@ -86,6 +86,43 @@ describe('large-scale LMS gradebook, rubrics, and attendance', () => {
     })
   })
 
+  it('computes grade trends from recent graded work for reports', () => {
+    const records = createDemoLmsRecords()
+    const courseId = records.courses[0].id
+    const studentId = records.actorIds.student
+
+    records.assignments.push({
+      id: 'older-reflection',
+      tenantId: records.tenant.id,
+      courseId,
+      title: 'Older Reflection',
+      instructions: 'Earlier reflection.',
+      dueAt: '2026-05-01T16:00:00.000Z',
+      maxPoints: 10,
+      status: 'assigned',
+      category: 'Reflection',
+    })
+    records.grades.push({
+      id: 'older-grade',
+      tenantId: records.tenant.id,
+      assignmentId: 'older-reflection',
+      studentId,
+      courseId,
+      pointsEarned: 7,
+      percentage: 70,
+      letterGrade: 'C-',
+      feedback: 'Earlier work.',
+      gradedAt: '2026-05-02T21:00:00.000Z',
+      rubricScores: [],
+    })
+
+    const views = buildLmsDashboardViews(records)
+
+    expect(views.teacher.gradebook[0].students[0]).toMatchObject({ gradeTrend: 'improving' })
+    expect(views.student.gradebook[0]).toMatchObject({ gradeTrend: 'improving' })
+    expect(views.guardian.students[0].gradebook[0]).toMatchObject({ gradeTrend: 'improving' })
+  })
+
   it('shows rubric criteria tied to assignments', () => {
     const views = buildLmsDashboardViews(createDemoLmsRecords())
 

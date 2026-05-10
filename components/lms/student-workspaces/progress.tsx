@@ -1,5 +1,6 @@
 import { courseGrades, gradebookForCourse, attendanceForCourse } from './helpers'
 import { EmptyState, StudentWorkspaceShell, WorkspaceCourseSection } from './shared'
+import { gradeTrendLabel } from '@/lib/lms/grade-trends'
 import type { StudentView } from './types'
 
 export function StudentGradesFeedbackWorkspace({ view }: { view: StudentView }) {
@@ -44,7 +45,7 @@ export function StudentGradebookWorkspace({ view }: { view: StudentView }) {
           return (
             <WorkspaceCourseSection key={course.id} course={course} label="gradebook">
               {gradebook ? (
-                <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
                   <div className="rounded-lg bg-emerald-50/80 p-3">
                     <dt className="text-sm font-bold text-[#55736a]">Current</dt>
                     <dd className="font-black text-[#17352c]">{gradebook.currentPercentage}% {gradebook.letterGrade}</dd>
@@ -60,6 +61,10 @@ export function StudentGradebookWorkspace({ view }: { view: StudentView }) {
                   <div className="rounded-lg bg-lime-50/80 p-3">
                     <dt className="text-sm font-bold text-[#55736a]">Graded</dt>
                     <dd className="font-black text-[#17352c]">{gradebook.gradedAssignments}</dd>
+                  </div>
+                  <div className="rounded-lg bg-cyan-50/80 p-3">
+                    <dt className="text-sm font-bold text-[#55736a]">Trend</dt>
+                    <dd className="font-black text-[#17352c]">{gradeTrendLabel(gradebook.gradeTrend)}</dd>
                   </div>
                   <div className="rounded-lg bg-white/74 p-3">
                     <dt className="text-sm font-bold text-[#55736a]">Learning health</dt>

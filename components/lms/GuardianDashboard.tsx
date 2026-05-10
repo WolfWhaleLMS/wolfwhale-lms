@@ -1,6 +1,7 @@
 import { BarChart3, BookOpen, CalendarCheck, CalendarDays, FileText, GraduationCap, MessageSquare, Users } from 'lucide-react'
 import { LmsPanel, LmsShell } from '@/components/lms/LmsShell'
 import { CalendarPanel, MessageComposer, MessagesPanel, ResourcesPanel } from '@/components/lms/SharedLmsPanels'
+import { gradeTrendLabel } from '@/lib/lms/grade-trends'
 import type { buildLmsDashboardViews } from '@/lib/lms/read-model'
 
 type GuardianView = ReturnType<typeof buildLmsDashboardViews>['guardian']
@@ -78,7 +79,7 @@ export function GuardianDashboard({ view }: { view: GuardianView }) {
                       <span className="font-semibold">{course.courseTitle}</span>
                       <span className="ml-2 text-teal-700 dark:text-teal-200">{course.currentPercentage}% {course.letterGrade}</span>
                       <span className="mt-1 block text-slate-500 dark:text-slate-400">
-                        {course.attendanceRate}% attendance, {course.missingAssignments} missing, {course.riskLevel} risk
+                        {course.attendanceRate}% attendance, {course.missingAssignments} missing, {gradeTrendLabel(course.gradeTrend)} trend, {course.riskLevel} risk
                       </span>
                     </li>
                   ))}

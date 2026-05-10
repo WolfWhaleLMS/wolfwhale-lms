@@ -318,6 +318,7 @@ export interface LmsMessageSummary {
 }
 
 export type LmsRiskLevel = 'good' | 'watch' | 'high'
+export type LmsGradeTrend = 'improving' | 'steady' | 'declining' | 'not_enough_data'
 
 export interface LmsGradebookStudentSummary {
   studentId: string
@@ -328,6 +329,7 @@ export interface LmsGradebookStudentSummary {
   missingAssignments: number
   attendanceRate: number
   riskLevel: LmsRiskLevel
+  gradeTrend: LmsGradeTrend
 }
 
 export interface LmsGradebookCourseSummary {
@@ -346,6 +348,7 @@ export interface LmsStudentGradebookSummary {
   missingAssignments: number
   attendanceRate: number
   riskLevel: LmsRiskLevel
+  gradeTrend: LmsGradeTrend
 }
 
 export interface LmsRubricSummary {

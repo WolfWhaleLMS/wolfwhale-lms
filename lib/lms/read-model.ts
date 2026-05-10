@@ -8,6 +8,7 @@ import type {
   LmsGradeRecord,
   LmsGradebookCourseSummary,
   LmsGradeSummary,
+  LmsGradeTrend,
   LmsGradingQueueItem,
   LmsLessonSummary,
   LmsMessageSummary,
@@ -347,6 +348,20 @@ function weightedPercentage(records: LmsRecords, course: LmsCourseRecord, studen
   return usedWeight === 0 ? 0 : Math.round((weightedTotal / usedWeight) * 100) / 100
 }
 
+function gradeTrend(records: LmsRecords, courseId: string, studentId: string): LmsGradeTrend {
+  const grades = records.grades
+    .filter((grade) => grade.courseId === courseId && grade.studentId === studentId)
+    .sort((left, right) => right.gradedAt.localeCompare(left.gradedAt))
+
+  if (grades.length < 2) return 'not_enough_data'
+
+  const delta = percentageForGrade(records, grades[0]) - percentageForGrade(records, grades[1])
+  if (delta >= 3) return 'improving'
+  if (delta <= -3) return 'declining'
+
+  return 'steady'
+}
+
 function gradebookForCourse(records: LmsRecords, course: LmsCourseRecord, studentIds: Set<string>): LmsGradebookCourseSummary {
   const assignments = records.assignments.filter((assignment) => assignment.courseId === course.id && assignment.status !== 'archived')
   const pastDueAssignments = assignments.filter((assignment) => assignmentIsPastDue(assignment))
@@ -367,6 +382,7 @@ function gradebookForCourse(records: LmsRecords, course: LmsCourseRecord, studen
         )
         const missingAssignments = pastDueAssignments.filter((assignment) => !gradedAssignmentIds.has(assignment.id)).length
         const attendanceRate = attendanceRateForStudentCourse(records, student.id, course.id)
+        const trend = gradeTrend(records, course.id, student.id)
 
         return {
           studentId: student.id,
@@ -377,6 +393,7 @@ function gradebookForCourse(records: LmsRecords, course: LmsCourseRecord, studen
           missingAssignments,
           attendanceRate,
           riskLevel: riskLevel({ currentPercentage, missingAssignments, attendanceRate }),
+          gradeTrend: trend,
         }
       })
   }
@@ -397,6 +414,7 @@ function studentGradebook(records: LmsRecords, studentId: string, courseIds: Set
         missingAssignments: summary?.missingAssignments ?? 0,
         attendanceRate: summary?.attendanceRate ?? 100,
         riskLevel: summary?.riskLevel ?? 'good',
+        gradeTrend: summary?.gradeTrend ?? 'not_enough_data',
       }
     })
 }

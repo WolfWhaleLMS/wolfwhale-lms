@@ -55,12 +55,12 @@ describe('district-scale Canvas replacement operations', () => {
     const records = createDemoLmsRecords()
     const views = buildLmsDashboardViews(records)
 
-    expect(buildGradebookCsv(views.teacher.gradebook)).toContain('course_id,course_title,student_id,student_name,current_percentage,letter_grade,graded_assignments,missing_assignments,attendance_rate,risk_level')
+    expect(buildGradebookCsv(views.teacher.gradebook)).toContain('course_id,course_title,student_id,student_name,current_percentage,letter_grade,graded_assignments,missing_assignments,attendance_rate,risk_level,grade_trend')
     expect(buildAttendanceCsv(views.admin.attendance)).toContain('course_id,course_title,present,absent,tardy,excused,online,attendance_rate')
     expect(buildReportCards(records)).toEqual(expect.arrayContaining([
       expect.objectContaining({
         studentName: 'Alex Student',
-        courses: [expect.objectContaining({ courseTitle: 'Grade 8 Humanities', currentPercentage: 90, letterGrade: 'A-' })],
+        courses: [expect.objectContaining({ courseTitle: 'Grade 8 Humanities', currentPercentage: 90, letterGrade: 'A-', gradeTrend: 'not_enough_data' })],
       }),
     ]))
 

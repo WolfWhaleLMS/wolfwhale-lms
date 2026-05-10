@@ -82,6 +82,7 @@ describe('student LMS workspaces', () => {
     render(<StudentGradebookWorkspace view={views.student} />)
     expect(screen.getByRole('heading', { name: 'Gradebook' })).toBeInTheDocument()
     expect(screen.getByText('90% A-')).toBeInTheDocument()
+    expect(screen.getByText('Needs more grades')).toBeInTheDocument()
     cleanup()
 
     render(<StudentAttendanceWorkspace view={views.student} />)

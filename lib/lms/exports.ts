@@ -29,6 +29,7 @@ export function buildGradebookCsv(gradebook: LmsGradebookCourseSummary[]) {
       'missing_assignments',
       'attendance_rate',
       'risk_level',
+      'grade_trend',
     ],
     gradebook.flatMap((course) =>
       course.students.map((student) => [
@@ -42,6 +43,7 @@ export function buildGradebookCsv(gradebook: LmsGradebookCourseSummary[]) {
         student.missingAssignments,
         student.attendanceRate,
         student.riskLevel,
+        student.gradeTrend,
       ])
     )
   )
@@ -83,6 +85,7 @@ export function buildReportCards(records: LmsRecords) {
             attendanceRate: summary.attendanceRate,
             missingAssignments: summary.missingAssignments,
             riskLevel: summary.riskLevel,
+            gradeTrend: summary.gradeTrend,
           }))
       ),
     }))

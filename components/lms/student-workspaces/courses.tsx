@@ -28,6 +28,7 @@ import {
   StudentWorkspaceShell,
   WorkspacePanel,
 } from './shared'
+import { gradeTrendLabel } from '@/lib/lms/grade-trends'
 import type { StudentView } from './types'
 
 export function StudentCoursesWorkspace({ view }: { view: StudentView }) {
@@ -158,6 +159,10 @@ export function StudentCourseWorkspace({ view, courseId }: { view: StudentView; 
               <div className="rounded-lg bg-amber-50/80 p-3">
                 <dt className="font-bold text-[#55736a]">Missing</dt>
                 <dd className="font-black text-[#17352c]">{gradebook?.missingAssignments ?? 0}</dd>
+              </div>
+              <div className="rounded-lg bg-cyan-50/80 p-3">
+                <dt className="font-bold text-[#55736a]">Trend</dt>
+                <dd className="font-black text-[#17352c]">{gradebook ? gradeTrendLabel(gradebook.gradeTrend) : 'Needs more grades'}</dd>
               </div>
             </dl>
           </WorkspacePanel>
