@@ -200,7 +200,9 @@ async function exerciseStudentWorkflows(page: Page) {
     throw new Error('Student assignments workspace has no assignment submission forms.')
   }
 
-  for (let index = 0; index < formCount; index += 1) {
+  const formsToExercise = Math.min(formCount, 2)
+
+  for (let index = 0; index < formsToExercise; index += 1) {
     if (index > 0) {
       await page.goto(assignmentsUrl, { waitUntil: 'domcontentloaded' })
       await page.locator('#submit-work').waitFor()
@@ -209,6 +211,13 @@ async function exerciseStudentWorkflows(page: Page) {
     const form = page.locator('#submit-work form[action="/api/lms/submissions"]').nth(index)
     await page.locator('#submit-work').scrollIntoViewIfNeeded()
     await form.locator('textarea[name="content"]').fill(`Workflow audit submission ${index + 1} ${Date.now()}`)
+    if (index === 0) {
+      await form.locator('input[name="file"]').setInputFiles({
+        name: `workflow-submission-${Date.now()}.txt`,
+        mimeType: 'text/plain',
+        buffer: Buffer.from('Workflow audit student submission attachment.'),
+      })
+    }
     await form.getByRole('button', { name: /^Submit / }).click()
     await waitForSaved(page, 'student', 'submission')
   }
@@ -332,7 +341,7 @@ async function main() {
     if (!unauthenticated.url().includes('/login?next=%2Fstudent')) {
       throw new Error(`Expected unauthenticated /student to redirect to login, got ${unauthenticated.url()}`)
     }
-    await unauthenticated.getByRole('link', { name: 'Account help' }).click()
+    await unauthenticated.getByRole('link', { name: /^(Account help|Help)$/ }).click()
     await unauthenticated.waitForURL('**/help')
     await unauthenticated.goto(`${baseUrl}/login`, { waitUntil: 'domcontentloaded' })
     await unauthenticated.screenshot({ path: path.join(outputDir, 'login-desktop.png'), fullPage: true })

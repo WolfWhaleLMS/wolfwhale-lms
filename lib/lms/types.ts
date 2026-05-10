@@ -65,6 +65,9 @@ export interface LmsSubmissionRecord {
   assignmentId: string
   studentId: string
   content: string
+  filePath: string
+  fileName: string
+  submissionUrl: string
   status: string
   submittedAt: string
 }
@@ -261,6 +264,7 @@ export interface LmsGradingQueueItem {
   studentName: string
   submittedAt: string
   maxPoints: number
+  fileName: string
 }
 
 export interface LmsCalendarItem {

@@ -356,6 +356,15 @@ export function TeacherDashboard({ view }: { view: TeacherView }) {
                   <span>{item.studentName}</span>
                   <span className="text-slate-500 dark:text-slate-400">{item.submittedAt}</span>
                 </div>
+                {item.fileName ? (
+                  <a
+                    href={`/api/lms/submissions/${item.submissionId}/file`}
+                    className="mt-2 inline-flex w-fit items-center gap-2 rounded-md border border-slate-200 px-3 py-2 text-xs font-semibold text-teal-700 hover:border-teal-400 hover:text-teal-800 dark:border-slate-800 dark:text-teal-200"
+                  >
+                    <FileText className="h-4 w-4" />
+                    {item.fileName}
+                  </a>
+                ) : null}
                 <form action="/api/lms/grades" method="post" className="mt-3 grid gap-3 sm:grid-cols-[8rem_1fr_auto]">
                   <input name="submissionId" type="hidden" value={item.submissionId} />
                   <label className="grid gap-1 text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">

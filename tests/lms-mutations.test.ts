@@ -18,8 +18,34 @@ describe('LMS mutation validation', () => {
     ).toEqual({ assignmentId: 'assignment-1', content: 'My evidence-based response.' })
   })
 
-  it('rejects empty submissions', () => {
+  it('normalizes student submission files before private storage upload', () => {
+    const file = new File(['primary source notes'], 'My Notes.pdf', { type: 'application/pdf' })
+
+    expect(
+      normalizeSubmissionDraft({
+        assignmentId: 'assignment-1',
+        content: '   ',
+        file,
+      })
+    ).toMatchObject({
+      assignmentId: 'assignment-1',
+      content: '',
+      file,
+      fileName: 'My Notes.pdf',
+      fileType: 'application/pdf',
+      fileSize: 20,
+    })
+  })
+
+  it('rejects empty submissions and unsafe submission files', () => {
     expect(() => normalizeSubmissionDraft({ assignmentId: 'assignment-1', content: '   ' })).toThrow(LmsMutationError)
+    expect(() =>
+      normalizeSubmissionDraft({
+        assignmentId: 'assignment-1',
+        content: 'Attached.',
+        file: new File(['<script>alert(1)</script>'], 'payload.html', { type: 'text/html' }),
+      })
+    ).toThrow(LmsMutationError)
   })
 
   it('normalizes teacher grade input and prevents impossible scores', () => {

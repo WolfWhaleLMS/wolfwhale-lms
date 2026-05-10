@@ -8,7 +8,7 @@ import {
   isMissingResourceSecurityTableError,
   sha256ForUploadFile,
 } from '@/lib/lms/resource-security'
-import { getCourseResourceBucket } from '@/lib/lms/resource-storage'
+import { getCourseResourceBucket, getSubmissionBucket } from '@/lib/lms/resource-storage'
 
 type Row = Record<string, unknown>
 type LmsStaffRole = 'teacher' | 'admin' | 'super_admin'
@@ -16,7 +16,22 @@ type LmsAttendanceStatus = 'present' | 'absent' | 'tardy' | 'excused' | 'online'
 
 const attendanceStatuses: readonly LmsAttendanceStatus[] = ['present', 'absent', 'tardy', 'excused', 'online']
 const courseResourceLessonTitle = 'Course resources'
+const maxSubmissionFileBytes = 25 * 1024 * 1024
 const maxCourseResourceBytes = 100 * 1024 * 1024
+const allowedSubmissionMimeTypes = new Set([
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'text/plain',
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'audio/mpeg',
+  'video/mp4',
+  'application/zip',
+])
 const allowedCourseResourceMimeTypes = new Set([
   'application/pdf',
   'application/msword',
@@ -123,6 +138,13 @@ function isUploadFile(value: unknown): value is File {
       typeof (value as File).name === 'string' &&
       typeof (value as File).size === 'number'
   )
+}
+
+function optionalUploadFile(value: unknown): File | null {
+  if (!isUploadFile(value)) return null
+  if (!text(value.name) && value.size === 0) return null
+
+  return value
 }
 
 function mimeTypeForFileName(fileName: string) {
@@ -421,10 +443,41 @@ async function recordCourseResourceSecurityReview(
   }
 }
 
-export function normalizeSubmissionDraft(input: { assignmentId: unknown; content: unknown }) {
+export function normalizeSubmissionDraft(input: { assignmentId: unknown; content: unknown; file?: unknown }) {
+  const file = optionalUploadFile(input.file)
+  const content = optionalLimitedText(input.content, 10000)
+
+  if (!content && !file) {
+    throw new LmsMutationError('submission is required', 'missing_submission')
+  }
+
+  if (!file) {
+    return {
+      assignmentId: id(input.assignmentId, 'assignment_id'),
+      content,
+    }
+  }
+
+  const fileName = limitedText(file.name, 'file_name', 255)
+  const fileType = text(file.type, mimeTypeForFileName(fileName))
+
+  if (file.size <= 0) {
+    throw new LmsMutationError('Submission file is empty.', 'empty_submission_file')
+  }
+  if (file.size > maxSubmissionFileBytes) {
+    throw new LmsMutationError('Submission file must be 25 MB or smaller.', 'submission_file_too_large')
+  }
+  if (!allowedSubmissionMimeTypes.has(fileType)) {
+    throw new LmsMutationError('Submission file type is not supported.', 'unsupported_submission_file_type')
+  }
+
   return {
     assignmentId: id(input.assignmentId, 'assignment_id'),
-    content: limitedText(input.content, 'submission', 10000),
+    content,
+    file,
+    fileName,
+    fileType,
+    fileSize: file.size,
   }
 }
 
@@ -610,7 +663,11 @@ export function normalizeRubricDraft(input: { assignmentId: unknown; name: unkno
   }
 }
 
-export async function submitAssignment(supabase: SupabaseClient, input: { assignmentId: unknown; content: unknown }) {
+export async function submitAssignment(
+  supabase: SupabaseClient,
+  input: { assignmentId: unknown; content: unknown; file?: unknown },
+  options: { storageClient?: SupabaseClient; bucket?: string } = {}
+) {
   const user = await requireUser(supabase)
   const membership = await requireStudent(supabase, user)
   const draft = normalizeSubmissionDraft(input)
@@ -637,7 +694,7 @@ export async function submitAssignment(supabase: SupabaseClient, input: { assign
   const existingSubmission = await maybeSingleRow(
     supabase
       .from('submissions')
-      .select('id,attempt_number')
+      .select('id,attempt_number,file_path')
       .eq('assignment_id', draft.assignmentId)
       .eq('student_id', user.id)
       .order('attempt_number', { ascending: false })
@@ -646,36 +703,81 @@ export async function submitAssignment(supabase: SupabaseClient, input: { assign
     'submission_lookup_failed'
   )
   const submittedLate = Date.now() > Date.parse(text(assignment.due_date))
-  const payload = {
+  const payload: Row = {
     tenant_id: tenantId,
     assignment_id: draft.assignmentId,
     student_id: user.id,
-    submission_text: draft.content,
+    submission_text: draft.content || null,
     status: 'submitted',
     submitted_late: submittedLate,
     submitted_at: new Date().toISOString(),
   }
+  const storageClient = options.storageClient ?? supabase
+  const storageBucket = options.bucket ?? getSubmissionBucket()
+  let uploadedPath = ''
+  let fileSha256 = ''
 
-  const saved = existingSubmission
-    ? await singleRow(
-        supabase.from('submissions').update(payload).eq('id', id(existingSubmission.id, 'submission_id')).select('id').single(),
-        'submission_update_failed'
-      )
-    : await singleRow(
-        supabase.from('submissions').insert({ ...payload, attempt_number: 1 }).select('id').single(),
-        'submission_insert_failed'
-      )
+  try {
+    if ('file' in draft && draft.file) {
+      fileSha256 = await sha256ForUploadFile(draft.file)
+      uploadedPath = `${tenantId}/${user.id}/${courseId}/${draft.assignmentId}/${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2, 10)}-${safeStorageFileName(draft.fileName)}`
 
-  await insertAuditLog(supabase, {
-    tenantId,
-    userId: user.id,
-    action: existingSubmission ? 'submission.updated' : 'submission.created',
-    resourceType: 'submission',
-    resourceId: id(saved.id, 'submission_id'),
-    details: { assignment_id: draft.assignmentId },
-  })
+      const { error: uploadError } = await storageClient.storage.from(storageBucket).upload(uploadedPath, draft.file, {
+        contentType: draft.fileType,
+        upsert: false,
+      })
 
-  return { submissionId: id(saved.id, 'submission_id') }
+      if (uploadError) {
+        throw new LmsMutationError(`Unable to upload submission file: ${uploadError.message}`, 'submission_file_upload_failed')
+      }
+
+      payload.file_path = uploadedPath
+      payload.file_name = draft.fileName
+      payload.submission_url = null
+    }
+
+    const saved = existingSubmission
+      ? await singleRow(
+          supabase.from('submissions').update(payload).eq('id', id(existingSubmission.id, 'submission_id')).select('id').single(),
+          'submission_update_failed'
+        )
+      : await singleRow(
+          supabase.from('submissions').insert({ ...payload, attempt_number: 1 }).select('id').single(),
+          'submission_insert_failed'
+        )
+
+    if (uploadedPath && text(existingSubmission?.file_path)) {
+      await storageClient.storage.from(storageBucket).remove([text(existingSubmission?.file_path)])
+    }
+
+    await insertAuditLog(supabase, {
+      tenantId,
+      userId: user.id,
+      action: existingSubmission ? 'submission.updated' : 'submission.created',
+      resourceType: 'submission',
+      resourceId: id(saved.id, 'submission_id'),
+      details: {
+        assignment_id: draft.assignmentId,
+        ...(uploadedPath && 'fileName' in draft
+          ? {
+              file_name: draft.fileName,
+              file_size: draft.fileSize,
+              file_sha256: fileSha256,
+            }
+          : {}),
+      },
+    })
+
+    return { submissionId: id(saved.id, 'submission_id'), filePath: uploadedPath }
+  } catch (error) {
+    if (uploadedPath) {
+      await storageClient.storage.from(storageBucket).remove([uploadedPath])
+    }
+
+    throw error
+  }
 }
 
 export async function gradeSubmission(

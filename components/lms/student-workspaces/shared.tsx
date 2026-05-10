@@ -86,17 +86,26 @@ export function AssignmentSubmitCard({ assignment }: { assignment: StudentAssign
           Due {formatShortDate(assignment.dueAt)}
         </span>
       </div>
-      <form action="/api/lms/submissions" method="post" className="mt-3 grid gap-3">
+      <form action="/api/lms/submissions" method="post" encType="multipart/form-data" className="mt-3 grid gap-3">
         <input name="assignmentId" type="hidden" value={assignment.id} />
         <label className="grid gap-2 text-sm font-black text-[#17352c]">
           Response
           <textarea
             name="content"
-            required
             rows={4}
             className="rounded-lg border border-emerald-200 bg-[#fbfffc] px-3 py-2 text-sm font-semibold text-[#17352c] shadow-inner outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-200"
           />
         </label>
+        <label className="grid gap-2 text-sm font-black text-[#17352c]">
+          Attach file
+          <input
+            name="file"
+            type="file"
+            accept=".pdf,.doc,.docx,.pptx,.xlsx,.txt,.jpg,.jpeg,.png,.gif,.mp3,.mp4,.zip,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,image/jpeg,image/png,image/gif,audio/mpeg,video/mp4,application/zip"
+            className="rounded-lg border border-emerald-200 bg-[#fbfffc] px-3 py-2 text-sm font-semibold text-[#17352c] file:mr-3 file:rounded-md file:border-0 file:bg-[#17352c] file:px-3 file:py-1.5 file:text-sm file:font-black file:text-white"
+          />
+        </label>
+        <p className="text-xs font-semibold leading-5 text-[#48675e]">Add a response, a file, or both. Files must be 25 MB or smaller.</p>
         <button type="submit" aria-label={`Submit ${assignment.title}`} className="inline-flex min-h-11 w-fit items-center gap-2 rounded-lg bg-[#17352c] px-4 py-2 text-sm font-black text-white">
           <Send className="h-4 w-4" />
           Submit work

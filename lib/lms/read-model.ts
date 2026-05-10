@@ -155,6 +155,7 @@ function pendingTeacherSubmissions(records: LmsRecords, teacherId: string): LmsG
         studentName: person(student).name,
         submittedAt: submission.submittedAt,
         maxPoints: assignment.maxPoints,
+        fileName: submission.fileName,
       }
     })
 }
@@ -512,19 +513,25 @@ export function createDemoLmsRecords(): LmsRecords {
     tenantId,
     assignmentId: gradedAssignmentId,
     studentId,
-    content: 'I learned how launch checks protect school data.',
-    status: 'graded',
-    submittedAt: '2026-05-06T19:00:00.000Z',
-  }
+      content: 'I learned how launch checks protect school data.',
+      filePath: '',
+      fileName: '',
+      submissionUrl: '',
+      status: 'graded',
+      submittedAt: '2026-05-06T19:00:00.000Z',
+    }
   const pendingSubmission: LmsSubmissionRecord = {
     id: 'submission-2',
     tenantId,
     assignmentId: pendingAssignmentId,
     studentId: otherStudentId,
-    content: 'I found a quote and wrote a claim.',
-    status: 'submitted',
-    submittedAt: '2026-05-06T20:15:00.000Z',
-  }
+      content: 'I found a quote and wrote a claim.',
+      filePath: 'tenant-1/student-2/course-1/assignment-2/source-notes.pdf',
+      fileName: 'source-notes.pdf',
+      submissionUrl: '',
+      status: 'submitted',
+      submittedAt: '2026-05-06T20:15:00.000Z',
+    }
 
   return {
     actorIds: {

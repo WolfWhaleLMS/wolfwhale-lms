@@ -61,6 +61,7 @@ describe('student LMS workspaces', () => {
     expect(within(humanities).getByText('Launch Reflection')).toBeInTheDocument()
     expect(within(humanities).getByText('Primary Source Exit Ticket')).toBeInTheDocument()
     expect(within(humanities).getAllByRole('button', { name: /Submit / }).length).toBe(2)
+    expect(within(humanities).getAllByLabelText('Attach file')).toHaveLength(2)
   })
 
   it('renders student settings with easy background themes and pet controls', () => {

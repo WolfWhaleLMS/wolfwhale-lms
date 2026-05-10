@@ -50,6 +50,9 @@ describe('Supabase LMS query mapping', () => {
           assignment_id: 'assignment-1',
           student_id: 'student-1',
           submission_text: 'My answer',
+          file_path: 'tenant-1/student-1/course-1/assignment-1/notes.pdf',
+          file_name: 'notes.pdf',
+          submission_url: null,
           status: 'submitted',
           submitted_at: '2026-05-07T16:00:00.000Z',
         },
@@ -107,7 +110,12 @@ describe('Supabase LMS query mapping', () => {
     expect(records.users[0]).toMatchObject({ id: 'teacher-1', firstName: 'Tessa', lastName: 'Teacher' })
     expect(records.courses[0]).toMatchObject({ title: 'Grade 8 Humanities', gradeLevel: '8' })
     expect(records.assignments[0]).toMatchObject({ dueAt: '2026-05-08T16:00:00.000Z', maxPoints: 5, category: 'Exit Ticket' })
-    expect(records.submissions[0]).toMatchObject({ content: 'My answer', status: 'submitted' })
+    expect(records.submissions[0]).toMatchObject({
+      content: 'My answer',
+      filePath: 'tenant-1/student-1/course-1/assignment-1/notes.pdf',
+      fileName: 'notes.pdf',
+      status: 'submitted',
+    })
     expect(records.grades[0]).toMatchObject({ percentage: 80, letterGrade: 'B-' })
     expect(records.notifications[0]).toMatchObject({ read: false })
     expect(records.resources[0]).toMatchObject({ displayName: 'Source Pack', fileName: 'source.pdf', scanStatus: 'clean' })

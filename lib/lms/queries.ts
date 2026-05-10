@@ -225,6 +225,9 @@ export function mapSupabaseRowsToLmsRecords(rows: SupabaseLmsRows): LmsRecords {
       assignmentId: text(submission.assignment_id),
       studentId: text(submission.student_id),
       content: text(submission.submission_text),
+      filePath: text(submission.file_path),
+      fileName: text(submission.file_name),
+      submissionUrl: text(submission.submission_url),
       status: text(submission.status, 'submitted'),
       submittedAt: text(submission.submitted_at),
     })),
@@ -409,7 +412,7 @@ export async function loadLmsRecordsForUser(supabase: SupabaseClient, userId: st
     queryTable(
       supabase,
       'submissions',
-      'id,tenant_id,assignment_id,student_id,submission_text,status,submitted_at',
+      'id,tenant_id,assignment_id,student_id,submission_text,file_path,file_name,submission_url,status,submitted_at',
       tenantId
     ),
     queryTable(
