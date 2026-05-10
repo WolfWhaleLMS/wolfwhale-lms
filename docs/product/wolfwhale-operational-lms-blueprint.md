@@ -54,14 +54,15 @@ The companion system is now fish-only for beta:
 ## Evidence
 
 - `npm test -- tests/lms-mutations.test.ts tests/lms-query-mapping.test.ts tests/lms-student-workspaces.test.tsx`: 13/13 passing on 2026-05-10.
-- `npm test`: 26 files / 111 tests passing on 2026-05-10.
+- `npm test`: 26 files / 114 tests passing on 2026-05-10.
+- `npm test -- tests/lms-auth.test.ts tests/pilot-auth.test.ts`: 16/16 passing on 2026-05-10 for real auth routing, one-click demo forms, route-handler local redirects, and proxy host preservation.
 - `npm test -- tests/lms-audit-log-coverage.test.ts`: 3/3 passing on 2026-05-10.
 - `npm test -- tests/fish-companion.test.ts`: 12/12 passing on 2026-05-10.
-- `npm run lint`, `npm run typecheck`, and `npm run build`: passing on 2026-05-10.
+- `npm run lint`, `npm run typecheck`, and `npm run build`: passing on 2026-05-10 after the same-host auth redirect fix.
 - Landing/login visual smoke passed on 2026-05-10 for desktop and mobile with no missing image alt text, unnamed buttons, or horizontal overflow.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passing locally on 2026-05-10 with student file attachment, teacher grading, admin writes, logout, and screenshots in `test-results/lms-smoke`.
 - Updated signed-file smoke assertion exposed a live RLS gap on 2026-05-10: assigned teachers cannot yet read all student submissions until `20260510212739_submissions_assigned_teacher_read_policy.sql` is applied.
-- Non-mutating local Playwright smoke against `http://127.0.0.1:3010` is currently blocked by demo student login not completing in the local environment.
+- Non-mutating local Playwright smoke against `http://127.0.0.1:3010` passed on 2026-05-10 after fixing same-host auth redirects for local `127.0.0.1` login flows.
 - Supabase changelog and Storage upload/access-control docs were checked on 2026-05-10 before implementing storage-facing code.
 - `npm run security:supabase` is still blocked until DB/read credentials are available to the local shell.
 

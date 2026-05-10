@@ -7,6 +7,8 @@ import {
   normalizeMembershipRole,
   rolePathForMembershipRole,
 } from '@/lib/lms/auth'
+import { lmsRedirect } from '@/lib/lms/route-helpers'
+import { NextRequest } from 'next/server'
 
 const originalEnv = { ...process.env }
 const repoRoot = path.resolve(__dirname, '..')
@@ -98,5 +100,27 @@ describe('LMS production auth foundation', () => {
     expect(source).toContain('type="hidden" name="email"')
     expect(source).toContain('type="hidden" name="password"')
     expect(source).toContain('Demo launch accounts')
+  })
+
+  it('keeps local form redirects relative so auth cookies stay on the active host', () => {
+    const request = new NextRequest('http://localhost:3010/api/lms/grades', {
+      headers: {
+        host: '127.0.0.1:3010',
+      },
+    })
+
+    const response = lmsRedirect(request, '/student', { saved: '1' })
+
+    expect(response.status).toBe(303)
+    expect(response.headers.get('location')).toBe('/student?saved=1')
+    expect(() => lmsRedirect(request, '/student/../../admin', {})).toThrow('Unsafe local redirect location')
+  })
+
+  it('uses relative redirects from the real Supabase login route', () => {
+    const source = readFileSync(path.join(repoRoot, 'app/api/auth/login/route.ts'), 'utf8')
+
+    expect(source).toContain('localRedirect(')
+    expect(source).not.toContain("new URL('/login', request.url)")
+    expect(source).not.toContain('new URL(safeAuthRedirectPath(next, fallback), request.url)')
   })
 })

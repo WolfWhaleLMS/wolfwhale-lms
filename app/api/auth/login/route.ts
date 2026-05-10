@@ -1,14 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
+import { localPathWithParams, localRedirect } from '@/lib/http/redirects'
 import { rolePathForMembershipRole, safeAuthRedirectPath } from '@/lib/lms/auth'
 import { checkRateLimit, rateLimitKey } from '@/lib/security/rate-limit'
 import { createClient } from '@/lib/supabase/server'
 
-function loginRedirect(request: NextRequest, error: string, next: string | null) {
-  const destination = new URL('/login', request.url)
-  destination.searchParams.set('error', error)
-  if (next) destination.searchParams.set('next', next)
-
-  return NextResponse.redirect(destination, { status: 303 })
+function loginRedirect(error: string, next: string | null) {
+  return localRedirect(localPathWithParams('/login', { error, next }), 303)
 }
 
 export async function POST(request: NextRequest) {
@@ -18,7 +15,7 @@ export async function POST(request: NextRequest) {
   const next = String(formData.get('next') ?? '')
 
   if (!email || !password) {
-    return loginRedirect(request, 'missing-credentials', next)
+    return loginRedirect('missing-credentials', next)
   }
 
   const rateLimit = await checkRateLimit(
@@ -27,14 +24,14 @@ export async function POST(request: NextRequest) {
   )
 
   if (!rateLimit.success) {
-    return loginRedirect(request, 'rate-limited', next)
+    return loginRedirect('rate-limited', next)
   }
 
   const supabase = await createClient()
   const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
   if (error || !data.user) {
-    return loginRedirect(request, 'invalid-credentials', next)
+    return loginRedirect('invalid-credentials', next)
   }
 
   const { data: memberships, error: membershipError } = await supabase
@@ -46,11 +43,10 @@ export async function POST(request: NextRequest) {
 
   if (membershipError || !memberships?.length) {
     await supabase.auth.signOut()
-    return loginRedirect(request, 'no-membership', next)
+    return loginRedirect('no-membership', next)
   }
 
   const fallback = rolePathForMembershipRole(String(memberships[0].role))
-  const destination = new URL(safeAuthRedirectPath(next, fallback), request.url)
 
-  return NextResponse.redirect(destination, { status: 303 })
+  return localRedirect(safeAuthRedirectPath(next, fallback), 303)
 }

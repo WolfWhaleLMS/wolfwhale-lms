@@ -12,7 +12,7 @@ Date: 2026-05-10
 - Confirm all private file buckets are private and cannot be listed or read anonymously.
 - Complete a role/relationship RLS matrix for student, teacher, admin, guardian, wrong tenant, wrong child, and unauthenticated requests.
 - Prove live audit-log insertion for core mutation routes, roster import, and resource-review updates after target Supabase migrations are applied.
-- Produce current secret scan and dependency audit evidence.
+- Repeat secret scan and dependency audit evidence immediately before release tagging; the latest local pass found no changed-file secret patterns and `npm audit --audit-level=moderate` found 0 vulnerabilities.
 - Get counsel/customer review and product automation behind the new privacy/security launch docs for file submissions, retention, exports, correction, deletion, DPA, subprocessors, and breach workflow.
 
 ## P1 Blockers Before Multi-School Sales

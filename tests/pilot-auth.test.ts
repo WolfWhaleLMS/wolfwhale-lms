@@ -10,9 +10,12 @@ import {
 
 const originalEnv = { ...process.env }
 
-function requestFor(pathname: string, cookieValue?: string) {
+function requestFor(pathname: string, cookieValue?: string, headers: Record<string, string> = {}) {
   return new NextRequest(`https://wolfwhale.test${pathname}`, {
-    headers: cookieValue ? { cookie: `${PILOT_SESSION_COOKIE}=${cookieValue}` } : undefined,
+    headers: {
+      ...headers,
+      ...(cookieValue ? { cookie: `${PILOT_SESSION_COOKIE}=${cookieValue}` } : {}),
+    },
   })
 }
 
@@ -54,6 +57,18 @@ describe('pilot authentication', () => {
 
     expect(response.status).toBe(307)
     expect(response.headers.get('location')).toBe('https://wolfwhale.test/login?next=%2Fstudent')
+  })
+
+  it('preserves the active host when protected-route redirects run in local dev', async () => {
+    const request = new NextRequest('http://localhost:3010/student', {
+      headers: {
+        host: '127.0.0.1:3010',
+      },
+    })
+    const response = await proxy(request)
+
+    expect(response.status).toBe(307)
+    expect(response.headers.get('location')).toBe('http://127.0.0.1:3010/login?next=%2Fstudent')
   })
 
   it('allows valid-role users through their protected route', async () => {

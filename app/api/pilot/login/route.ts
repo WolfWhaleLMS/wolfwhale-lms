@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
+import { localPathWithParams, localRedirect } from '@/lib/http/redirects'
 import {
   PILOT_SESSION_COOKIE,
   PILOT_SESSION_TTL_SECONDS,
@@ -9,10 +10,8 @@ import {
 } from '@/lib/pilot/session'
 import { checkRateLimit, rateLimitKey } from '@/lib/security/rate-limit'
 
-function loginRedirect(request: NextRequest, error: string) {
-  const url = new URL('/login', request.url)
-  url.searchParams.set('error', error)
-  return NextResponse.redirect(url, { status: 303 })
+function loginRedirect(_request: NextRequest, error: string) {
+  return localRedirect(localPathWithParams('/login', { error }), 303)
 }
 
 function destinationFor(role: string, requestedNext: string | null) {
@@ -47,8 +46,7 @@ export async function POST(request: NextRequest) {
     return loginRedirect(request, 'invalid-code')
   }
 
-  const destination = new URL(destinationFor(role, requestedNext), request.url)
-  const response = NextResponse.redirect(destination, { status: 303 })
+  const response = localRedirect(destinationFor(role, requestedNext), 303)
   const cookieValue = await createPilotSessionCookieValue(role)
 
   response.cookies.set(PILOT_SESSION_COOKIE, cookieValue, {

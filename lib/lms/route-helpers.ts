@@ -1,15 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
+import { localPathWithParams, localRedirect } from '@/lib/http/redirects'
 import { LmsMutationError } from '@/lib/lms/mutations'
 import { checkRateLimit, rateLimitKey, type RateLimitWindow } from '@/lib/security/rate-limit'
 
-export function lmsRedirect(request: NextRequest, pathname: string, params: Record<string, string>) {
-  const destination = new URL(pathname, request.url)
-
-  for (const [key, value] of Object.entries(params)) {
-    destination.searchParams.set(key, value)
-  }
-
-  return NextResponse.redirect(destination, { status: 303 })
+export function lmsRedirect(_request: NextRequest, pathname: string, params: Record<string, string>) {
+  return localRedirect(localPathWithParams(pathname, params), 303)
 }
 
 export function lmsMutationErrorCode(error: unknown) {

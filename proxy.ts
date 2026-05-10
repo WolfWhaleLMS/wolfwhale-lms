@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { absoluteLocalRedirectUrl, localPathWithParams } from '@/lib/http/redirects'
 import { PILOT_SESSION_COOKIE, readPilotSessionCookieValue, roleFromProtectedPath, rolePath } from '@/lib/pilot/session'
 import { hasSupabaseBrowserEnv } from '@/lib/supabase/env'
 import { updateSupabaseSession } from '@/lib/supabase/proxy'
@@ -23,7 +24,7 @@ export async function proxy(request: NextRequest) {
   }
 
   if (session) {
-    return NextResponse.redirect(new URL(rolePath(session.role), request.url))
+    return NextResponse.redirect(absoluteLocalRedirectUrl(request, rolePath(session.role)))
   }
 
   if (hasSupabaseBrowserEnv()) {
@@ -34,10 +35,7 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  const loginUrl = new URL('/login', request.url)
-  loginUrl.searchParams.set('next', pathname)
-
-  return NextResponse.redirect(loginUrl)
+  return NextResponse.redirect(absoluteLocalRedirectUrl(request, localPathWithParams('/login', { next: pathname })))
 }
 
 export const config = {

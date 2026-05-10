@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { localRedirect } from '@/lib/http/redirects'
 import { PILOT_SESSION_COOKIE } from '@/lib/pilot/session'
 
-export async function POST(request: NextRequest) {
-  const response = NextResponse.redirect(new URL('/login?loggedOut=1', request.url), { status: 303 })
+export async function POST() {
+  const response = localRedirect('/login?loggedOut=1', 303)
 
   response.cookies.set(PILOT_SESSION_COOKIE, '', {
     httpOnly: true,

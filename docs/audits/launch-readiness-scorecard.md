@@ -8,7 +8,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 | --- | --- | --- |
 | Repository foundation | Partial | `/Users/wolfwhale/wolfwhale-core` was missing; `/Users/wolfwhale/wolfwhale-lms` is the active repo with Next.js, Supabase, LMS routes, tests, and prior launch docs. |
 | Prompt-to-artifact audit | Partial | `docs/audits/prompt-to-artifact-checklist.md` maps named files, P0 flows, security/privacy/design/scale requirements, evidence, and blockers. This is an audit aid, not a readiness claim. |
-| Auth sign-in/sign-out | Partial | `/api/auth/login`, `/api/auth/logout`, `lib/lms/auth.ts`, and existing tests are present. Fresh local browser smoke passed for all four roles; deployed smoke still pending. |
+| Auth sign-in/sign-out | Partial | `/api/auth/login`, `/api/auth/logout`, `lib/lms/auth.ts`, and same-host redirect helpers are present. Fresh local Playwright smoke passed login/logout for all four roles; deployed smoke still pending. |
 | One-click demo accounts | Pass | Login screen now has one-click demo buttons for student, teacher, guardian, and admin accounts. Buttons post to the real `/api/auth/login` route, not a pilot/mock auth path. |
 | Role dashboards | Partial | Student, teacher, admin, and guardian dashboards loaded in the local smoke run with desktop/mobile viewports and accessibility checks. Deployed and formal WCAG passes pending. |
 | Public landing/login UX | Partial | Frutiger Aero landing/login refresh renders with real WolfWhale logo and dashboard screenshots. Local Playwright smoke passed for desktop/mobile h1, image alt, named buttons, and horizontal overflow; formal accessibility review pending. |
@@ -35,18 +35,18 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 - `npm test -- tests/supabase-launch-security.test.ts tests/lms-submission-file-route.test.ts`: passed, 2 files / 11 tests after adding the assigned-teacher submission RLS verifier.
 - `npm test -- tests/privacy-launch-docs.test.ts`: passed, 2 tests covering privacy/DPA/subprocessor/breach/retention/export/delete/correction placeholder docs.
 - `npm test -- tests/prompt-artifact-checklist.test.ts`: passed, 3 tests verifying the prompt-to-artifact checklist covers named docs, 14 P0 flows, and blocked live gates.
-- `npm test -- tests/lms-auth.test.ts tests/prompt-artifact-checklist.test.ts`: passed, 2 files / 10 tests covering real auth routing plus one-click demo auth forms.
+- `npm test -- tests/lms-auth.test.ts tests/pilot-auth.test.ts`: passed, 2 files / 16 tests covering real auth routing, one-click demo auth forms, relative route-handler redirects, and proxy host preservation for local dev.
 - `npm test -- tests/lms-audit-log-coverage.test.ts`: passed, 3 tests covering audited write services, write-route delegation, roster imports, and resource-review audit rows.
 - `npm test -- tests/fish-companion.test.ts`: passed, 12 tests covering fish-only starter species, fish sprite metadata, fish companion storage keys, retired companion language removal, and the fish-only Supabase species migration.
-- `npm test`: passed, 26 files / 111 tests.
-- `npm run lint`: passed after the fish companion replacement.
-- `npm run typecheck`: passed after the fish companion replacement.
-- `npm run build`: passed after the fish companion replacement; route list includes `/student/companion-world`.
+- `npm test`: passed, 26 files / 114 tests after the same-host auth redirect fix.
+- `npm run lint`: passed after the same-host auth redirect fix.
+- `npm run typecheck`: passed after the same-host auth redirect fix.
+- `npm run build`: passed after the same-host auth redirect fix; route list includes `/student/companion-world`.
 - Landing/login visual smoke: passed for `/` and `/login` at 1440px and 390px widths; screenshots written to `test-results/landing-refresh`.
 - Login one-click demo render smoke: passed at 390px; found four demo buttons, five auth forms, and no horizontal overflow.
 - `npm audit --audit-level=moderate`: passed, 0 vulnerabilities.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: previously passed locally; after adding the teacher signed-file assertion, the latest run exposed that the live Supabase `submissions` SELECT policy does not yet allow the assigned teacher to see the uploaded INDIG 100 submission. New migration: `20260510212739_submissions_assigned_teacher_read_policy.sql`.
-- `LMS_SMOKE_BASE_URL=http://127.0.0.1:3010 npm run test:a11y`: blocked in this pass because the local smoke could not complete the demo student login and timed out waiting for `/student`; no mutation paths were run.
+- `LMS_SMOKE_BASE_URL=http://127.0.0.1:3010 npm run test:a11y`: passed after fixing same-host auth redirects; screenshots written to `test-results/lms-smoke`. The Browser plugin runtime was unavailable because the required Node REPL tool was not exposed, so this used the repo Playwright fallback.
 - Changed-file secret scan for service-role/API/private-key patterns: no matches.
 - Supabase changelog and Storage docs checked on 2026-05-10 before storage-facing implementation.
 - `npm run security:supabase`: still blocked because no `SUPABASE_DB_URL`, `DATABASE_URL`, `SUPABASE_DB_PASSWORD`, or `SUPABASE_ACCESS_TOKEN` plus project ref is available to the script.

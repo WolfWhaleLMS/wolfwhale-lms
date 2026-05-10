@@ -1,5 +1,6 @@
 import type { EmailOtpType } from '@supabase/supabase-js'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
+import { localRedirect } from '@/lib/http/redirects'
 import { safeAuthRedirectPath } from '@/lib/lms/auth'
 import { createClient } from '@/lib/supabase/server'
 
@@ -13,9 +14,9 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type })
 
     if (!error) {
-      return NextResponse.redirect(new URL(safeAuthRedirectPath(next, '/student'), request.url), { status: 303 })
+      return localRedirect(safeAuthRedirectPath(next, '/student'), 303)
     }
   }
 
-  return NextResponse.redirect(new URL('/login?error=auth-confirmation-failed', request.url), { status: 303 })
+  return localRedirect('/login?error=auth-confirmation-failed', 303)
 }
