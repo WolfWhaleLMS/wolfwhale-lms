@@ -70,6 +70,25 @@ export function GuardianDashboard({ view }: { view: GuardianView }) {
 
               <div>
                 <h3 className="inline-flex items-center gap-2 text-sm font-semibold">
+                  <FileText className="h-4 w-4 text-teal-700 dark:text-teal-200" />
+                  Submitted files
+                </h3>
+                <ul className="mt-2 grid gap-2">
+                  {student.assignments
+                    .filter((assignment) => assignment.submissionFileHref)
+                    .map((assignment) => (
+                      <li key={assignment.submissionId} className="rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
+                        <span className="block font-semibold">{assignment.title}</span>
+                        <a href={assignment.submissionFileHref} className="mt-1 inline-flex font-semibold text-teal-700 hover:text-teal-800 dark:text-teal-200 dark:hover:text-teal-100">
+                          Download submitted file {assignment.submittedFileName}
+                        </a>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="inline-flex items-center gap-2 text-sm font-semibold">
                   <BarChart3 className="h-4 w-4 text-teal-700 dark:text-teal-200" />
                   Gradebook
                 </h3>

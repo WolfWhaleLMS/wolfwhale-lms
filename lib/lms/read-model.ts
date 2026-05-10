@@ -42,8 +42,11 @@ function courseSummary(course: LmsCourseRecord): LmsCourseSummary {
   }
 }
 
-function assignmentSummary(records: LmsRecords, assignment: LmsAssignmentRecord): LmsAssignmentSummary {
+function assignmentSummary(records: LmsRecords, assignment: LmsAssignmentRecord, studentId = ''): LmsAssignmentSummary {
   const course = findCourse(records, assignment.courseId)
+  const submission = studentId
+    ? records.submissions.find((candidate) => candidate.assignmentId === assignment.id && candidate.studentId === studentId)
+    : null
 
   return {
     id: assignment.id,
@@ -55,6 +58,10 @@ function assignmentSummary(records: LmsRecords, assignment: LmsAssignmentRecord)
     dueAt: assignment.dueAt,
     maxPoints: assignment.maxPoints,
     status: assignment.status,
+    submissionId: submission?.id ?? '',
+    submittedAt: submission?.submittedAt ?? '',
+    submittedFileName: submission?.fileName ?? '',
+    submissionFileHref: submission?.fileName ? `/api/lms/submissions/${submission.id}/file` : '',
   }
 }
 
@@ -522,7 +529,7 @@ export function buildLmsDashboardViews(records: LmsRecords) {
     student: {
       student: person(findUser(records, records.actorIds.student)),
       courses: studentCourses.map(courseSummary),
-      assignments: studentAssignments.map((assignment) => assignmentSummary(records, assignment)),
+      assignments: studentAssignments.map((assignment) => assignmentSummary(records, assignment, records.actorIds.student)),
       submissions: records.submissions.filter((submission) => submission.studentId === records.actorIds.student),
       grades: gradesForStudent(records, records.actorIds.student),
       notifications: records.notifications.filter((notification) => notification.userId === records.actorIds.student),
@@ -541,7 +548,7 @@ export function buildLmsDashboardViews(records: LmsRecords) {
         return {
           ...person(findUser(records, studentId)),
           courses: records.courses.filter((course) => courseIds.has(course.id)).map(courseSummary),
-          assignments: records.assignments.filter((assignment) => courseIds.has(assignment.courseId)).map((assignment) => assignmentSummary(records, assignment)),
+          assignments: records.assignments.filter((assignment) => courseIds.has(assignment.courseId)).map((assignment) => assignmentSummary(records, assignment, studentId)),
           grades: gradesForStudent(records, studentId),
           gradebook: studentGradebook(records, studentId, courseIds),
         }

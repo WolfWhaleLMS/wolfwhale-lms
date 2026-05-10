@@ -256,6 +256,10 @@ export interface LmsAssignmentSummary {
   dueAt: string
   maxPoints: number
   status: string
+  submissionId: string
+  submittedAt: string
+  submittedFileName: string
+  submissionFileHref: string
 }
 
 export interface LmsGradeSummary {

@@ -96,6 +96,13 @@ Gradebook and reports now include trend evidence:
 - Gradebook CSV exports and generated report-card objects include the raw trend field for downstream school reporting.
 - Remaining reporting work includes date-range filters, report-pack generation, teacher/admin report builders, and live/deployed proof.
 
+Submitted file downloads now have student and guardian affordances:
+
+- Assignment summaries include submitted file metadata only for the current student context used to build student and linked-guardian views.
+- Student assignment cards link to the signed submission file route when the student has an uploaded file.
+- Guardian linked-student panels expose submitted-file links for linked students and do not surface unrelated classmates' submitted files.
+- Remaining file work includes live wrong-role/wrong-tenant proof, bucket policy validation, malware scanning, and quota/review workflows.
+
 ## Evidence
 
 - `npm test -- tests/lms-mutations.test.ts tests/lms-query-mapping.test.ts tests/lms-student-workspaces.test.tsx`: 13/13 passing on 2026-05-10.
@@ -111,9 +118,10 @@ Gradebook and reports now include trend evidence:
 - `npm test -- tests/lms-guardian-links.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: 10/10 passing on 2026-05-10 for guardian-link normalization, admin read-model choices, route/form wiring, and audit-log coverage.
 - `npm test -- tests/lms-calendar-events.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: 12/12 passing on 2026-05-10 for durable calendar event normalization, role calendars, admin/teacher forms, query mapping, migration artifact, route delegation, and audit-log coverage.
 - `npm test -- tests/lms-gradebook-attendance.test.ts tests/lms-district-scale.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx`: 20/20 passing on 2026-05-10 for grade trends in read models, report cards, CSV exports, teacher dashboard, guardian dashboard, and student workspaces.
-- `npm test`: 32 files / 135 tests passing on 2026-05-10.
-- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the grade-trend reporting slice.
-- `npm run load:smoke`: passing on 2026-05-10 in 2529ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments after the grade-trend reporting slice.
+- `npm test -- tests/lms-student-workspaces.test.tsx tests/lms-dashboards.test.tsx`: 10/10 passing on 2026-05-10 for student and guardian submitted-file download affordances through the signed submission file route.
+- `npm test`: 32 files / 136 tests passing on 2026-05-10.
+- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the student/guardian submitted-file affordance slice.
+- `npm run load:smoke`: passing on 2026-05-10 in 2420ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments after the student/guardian submitted-file affordance slice.
 - Landing/login visual smoke passed on 2026-05-10 for desktop and mobile with no missing image alt text, unnamed buttons, or horizontal overflow.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passing locally on 2026-05-10 with student file attachment, teacher grading, admin writes, logout, and screenshots in `test-results/lms-smoke`.
 - `LMS_SMOKE_BASE_URL=http://127.0.0.1:3010 npm run test:a11y`: blocked after the durable calendar-events slice because the smoke student reached `/login?error=lms-access-required` after sign-in before the dashboard rendered. The smoke harness now checks Add event controls and mutating calendar-event writes once active LMS smoke accounts/data are restored.

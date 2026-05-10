@@ -1,5 +1,6 @@
 import {
   ArrowLeft,
+  FileDown,
   Send,
   Settings,
   type LucideIcon,
@@ -86,6 +87,12 @@ export function AssignmentSubmitCard({ assignment }: { assignment: StudentAssign
           Due {formatShortDate(assignment.dueAt)}
         </span>
       </div>
+      {assignment.submissionFileHref ? (
+        <a href={assignment.submissionFileHref} className="mt-3 inline-flex w-fit items-center gap-2 rounded-lg border border-emerald-200 bg-white/80 px-3 py-2 text-sm font-black text-emerald-800">
+          <FileDown className="h-4 w-4" />
+          Download submitted file {assignment.submittedFileName}
+        </a>
+      ) : null}
       <form action="/api/lms/submissions" method="post" encType="multipart/form-data" className="mt-3 grid gap-3">
         <input name="assignmentId" type="hidden" value={assignment.id} />
         <label className="grid gap-2 text-sm font-black text-[#17352c]">

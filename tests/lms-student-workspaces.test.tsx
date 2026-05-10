@@ -1,5 +1,6 @@
 import { cleanup, render, screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import { GuardianDashboard } from '@/components/lms/GuardianDashboard'
 import { StudentDashboard } from '@/components/lms/StudentDashboard'
 import {
   StudentAssignmentsWorkspace,
@@ -16,6 +17,18 @@ import {
 import { buildLmsDashboardViews, createDemoLmsRecords } from '@/lib/lms/read-model'
 
 const views = buildLmsDashboardViews(createDemoLmsRecords())
+
+function viewsWithStudentSubmissionFile() {
+  const records = createDemoLmsRecords()
+  const submission = records.submissions.find((candidate) => candidate.studentId === records.actorIds.student)
+
+  if (submission) {
+    submission.fileName = 'reflection-notes.pdf'
+    submission.filePath = `${records.tenant.id}/${records.actorIds.student}/${records.courses[0].id}/${submission.assignmentId}/reflection-notes.pdf`
+  }
+
+  return buildLmsDashboardViews(records)
+}
 
 describe('student LMS workspaces', () => {
   it('links student dashboard tools into real feature workspaces', () => {
@@ -62,6 +75,23 @@ describe('student LMS workspaces', () => {
     expect(within(humanities).getByText('Primary Source Exit Ticket')).toBeInTheDocument()
     expect(within(humanities).getAllByRole('button', { name: /Submit / }).length).toBe(2)
     expect(within(humanities).getAllByLabelText('Attach file')).toHaveLength(2)
+  })
+
+  it('shows signed submitted-file links to students and linked guardians', () => {
+    const linkedViews = viewsWithStudentSubmissionFile()
+
+    expect(linkedViews.student.assignments[0]).toMatchObject({
+      submittedFileName: 'reflection-notes.pdf',
+      submissionFileHref: '/api/lms/submissions/submission-1/file',
+    })
+
+    render(<StudentAssignmentsWorkspace view={linkedViews.student} />)
+    expect(screen.getByRole('link', { name: /Download submitted file reflection-notes\.pdf/ })).toHaveAttribute('href', '/api/lms/submissions/submission-1/file')
+    cleanup()
+
+    render(<GuardianDashboard view={linkedViews.guardian} />)
+    expect(screen.getByRole('link', { name: /Download submitted file reflection-notes\.pdf/ })).toHaveAttribute('href', '/api/lms/submissions/submission-1/file')
+    expect(screen.queryByText('source-notes.pdf')).not.toBeInTheDocument()
   })
 
   it('renders student settings with easy background themes and pet controls', () => {
