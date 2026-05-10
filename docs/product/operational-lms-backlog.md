@@ -15,7 +15,7 @@ Date: 2026-05-10
 - Pet rewards: XP and unlocks come from real learning events, not only manual demo buttons.
 - Browser QA: login, all role dashboards, mobile, upload, grading, parent visibility, and logout pass.
 - Security QA: RLS tests, storage policy tests, dependency audit, secret scan, and threat-model review pass.
-- Launch docs: privacy, DPA, subprocessor, breach, retention, export, delete, correction, support, and restore docs exist.
+- Launch docs: privacy, DPA, subprocessor, breach, retention, export, delete, correction, support, and restore docs exist; legal review and product automation remain open.
 
 ## P1: Paid Pilot Hardening
 

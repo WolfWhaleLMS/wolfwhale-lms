@@ -11,7 +11,7 @@ Date: 2026-05-10
 - Confirm all private file buckets are private and cannot be listed or read anonymously.
 - Complete a role/relationship RLS matrix for student, teacher, admin, guardian, wrong tenant, wrong child, and unauthenticated requests.
 - Produce current secret scan and dependency audit evidence.
-- Update privacy/security launch docs for file submissions, retention, exports, correction, deletion, DPA, subprocessors, and breach workflow.
+- Get counsel/customer review and product automation behind the new privacy/security launch docs for file submissions, retention, exports, correction, deletion, DPA, subprocessors, and breach workflow.
 
 ## P1 Blockers Before Multi-School Sales
 

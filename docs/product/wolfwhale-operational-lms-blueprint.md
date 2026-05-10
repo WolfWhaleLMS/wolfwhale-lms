@@ -42,7 +42,7 @@ Student assignment submissions now support private file upload in addition to te
 ## Evidence
 
 - `npm test -- tests/lms-mutations.test.ts tests/lms-query-mapping.test.ts tests/lms-student-workspaces.test.tsx`: 13/13 passing on 2026-05-10.
-- `npm test`: 23 files / 99 tests passing on 2026-05-10.
+- `npm test`: 24 files / 101 tests passing on 2026-05-10.
 - `npm run lint`, `npm run typecheck`, and `npm run build`: passing on 2026-05-10.
 - Landing/login visual smoke passed on 2026-05-10 for desktop and mobile with no missing image alt text, unnamed buttons, or horizontal overflow.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passing locally on 2026-05-10 with student file attachment, teacher grading, admin writes, logout, and screenshots in `test-results/lms-smoke`.

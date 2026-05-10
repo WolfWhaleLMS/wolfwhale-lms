@@ -21,6 +21,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 | Pets/rewards | Partial | Companion code exists; server-side XP from real events still needs deeper integration. |
 | Accessibility | Partial | Prior smoke evidence exists; fresh WCAG-focused checks pending. |
 | Security/RLS | Partial | Static tests now cover assigned-teacher submission read/update policy shape. Live DB validation is blocked by missing DB/read credentials and Supabase CLI role-permission failure. |
+| Privacy launch packet | Partial | Added counsel-review-required privacy readiness, DPA, subprocessor, breach, and student-record rights runbook placeholders. Product automation and legal review are still pending. |
 | Scale | Partial | Existing scale scripts cover a single-school envelope; no 10k-concurrent evidence yet. |
 | Monitoring/ops | Partial | Sentry config and ops scripts/docs exist; production alert and restore-drill proof pending. |
 | Deployment | Partial | Vercel config exists and prior wolfwhale.ca evidence exists; fresh deployed smoke pending after current changes. |
@@ -30,7 +31,8 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 - `npm test -- tests/lms-mutations.test.ts tests/lms-query-mapping.test.ts tests/lms-student-workspaces.test.tsx`: passed, 3 files / 13 tests.
 - `npm test -- tests/lms-submission-file-route.test.ts`: passed, 4 tests covering auth-required, RLS miss, signed redirect, and signing failure.
 - `npm test -- tests/supabase-launch-security.test.ts tests/lms-submission-file-route.test.ts`: passed, 2 files / 11 tests after adding the assigned-teacher submission RLS verifier.
-- `npm test`: passed, 23 files / 99 tests.
+- `npm test -- tests/privacy-launch-docs.test.ts`: passed, 2 tests covering privacy/DPA/subprocessor/breach/retention/export/delete/correction placeholder docs.
+- `npm test`: passed, 24 files / 101 tests.
 - `npm run lint`: passed after the assigned-teacher RLS migration and stricter smoke update.
 - `npm run typecheck`: passed after the assigned-teacher RLS migration and stricter smoke update.
 - `npm run build`: passed; route list includes `/api/lms/submissions/[submissionId]/file`.
