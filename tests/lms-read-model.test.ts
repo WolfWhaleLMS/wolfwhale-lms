@@ -121,4 +121,36 @@ describe('persistent LMS read model', () => {
     expect(JSON.stringify(views.guardian)).not.toContain('Riley Student')
     expect(JSON.stringify(views.guardian)).not.toContain('riley@example.test')
   })
+
+  it('filters messages by conversation membership for student and guardian views', () => {
+    const records = createDemoLmsRecords()
+
+    records.conversations.push({
+      id: 'conversation-private',
+      tenantId: records.tenant.id,
+      subject: 'Riley only',
+      courseId: 'course-1',
+      createdBy: records.actorIds.teacher,
+      updatedAt: '2026-05-06T23:00:00.000Z',
+    })
+    records.conversationMembers.push(
+      { conversationId: 'conversation-private', userId: records.actorIds.teacher },
+      { conversationId: 'conversation-private', userId: 'student-2' }
+    )
+    records.messages.push({
+      id: 'message-private',
+      tenantId: records.tenant.id,
+      conversationId: 'conversation-private',
+      senderId: records.actorIds.teacher,
+      content: 'Only Riley should see this message.',
+      createdAt: '2026-05-06T23:00:00.000Z',
+    })
+
+    const views = buildLmsDashboardViews(records)
+
+    expect(JSON.stringify(views.teacher)).toContain('Only Riley should see this message.')
+    expect(JSON.stringify(views.admin)).toContain('Only Riley should see this message.')
+    expect(JSON.stringify(views.student)).not.toContain('Only Riley should see this message.')
+    expect(JSON.stringify(views.guardian)).not.toContain('Only Riley should see this message.')
+  })
 })

@@ -212,10 +212,19 @@ function lessonSummariesForCourseIds(records: LmsRecords, courseIds: Set<string>
     }))
 }
 
-function messageSummaries(records: LmsRecords): LmsMessageSummary[] {
+function conversationIdsForUser(records: LmsRecords, userId: string) {
+  return new Set(
+    records.conversationMembers
+      .filter((member) => member.userId === userId)
+      .map((member) => member.conversationId)
+  )
+}
+
+function messageSummaries(records: LmsRecords, visibleConversationIds?: Set<string>): LmsMessageSummary[] {
   const conversationsById = new Map(records.conversations.map((conversation) => [conversation.id, conversation]))
 
   return records.messages
+    .filter((message) => !visibleConversationIds || visibleConversationIds.has(message.conversationId))
     .map((message) => {
       const sender = records.users.find((user) => user.id === message.senderId)
       const conversation = conversationsById.get(message.conversationId)
@@ -413,7 +422,10 @@ export function buildLmsDashboardViews(records: LmsRecords) {
     .map((link) => link.studentId)
   const guardianCourseIdSet = new Set(linkedStudentIds.flatMap((studentId) => [...studentCourseIds(records, studentId)]))
   const allCourseIds = new Set(records.courses.map((course) => course.id))
-  const messages = messageSummaries(records)
+  const adminMessages = messageSummaries(records)
+  const teacherMessages = messageSummaries(records, conversationIdsForUser(records, records.actorIds.teacher))
+  const studentMessages = messageSummaries(records, conversationIdsForUser(records, records.actorIds.student))
+  const guardianMessages = messageSummaries(records, conversationIdsForUser(records, records.actorIds.guardian))
   const teacherGradebook = teacherCourses.map((course) => gradebookForCourse(records, course, teacherRosterIds))
   const allGradebooks = records.courses.map((course) => {
     const studentIds = new Set(
@@ -445,7 +457,7 @@ export function buildLmsDashboardViews(records: LmsRecords) {
       teachers: activeTeachers(records).map(person),
       calendar: calendarItemsForCourseIds(records, allCourseIds),
       resources: resourcesForCourseIds(records, allCourseIds),
-      messages,
+      messages: adminMessages,
       gradebook: allGradebooks,
       attendance: records.courses.map((course) => attendanceSummary(records, course.id)),
       riskSummary: riskSummary(allGradebooks),
@@ -458,7 +470,7 @@ export function buildLmsDashboardViews(records: LmsRecords) {
       gradingQueue: pendingTeacherSubmissions(records, records.actorIds.teacher),
       calendar: calendarItemsForCourseIds(records, teacherCourseIdSet),
       resources: resourcesForCourseIds(records, teacherCourseIdSet),
-      messages,
+      messages: teacherMessages,
       gradebook: teacherGradebook,
       rubrics: rubricsForCourseIds(records, teacherCourseIdSet),
       attendance: teacherCourses.map((course) => attendanceSummary(records, course.id, teacherRosterIds)),
@@ -473,7 +485,7 @@ export function buildLmsDashboardViews(records: LmsRecords) {
       calendar: calendarItemsForCourseIds(records, studentCourseIdSet),
       lessons: lessonSummariesForCourseIds(records, studentCourseIdSet),
       resources: resourcesForCourseIds(records, studentCourseIdSet),
-      messages,
+      messages: studentMessages,
       gradebook: studentGradebook(records, records.actorIds.student, studentCourseIdSet),
       attendance: [...studentCourseIdSet].map((courseId) => attendanceSummary(records, courseId, new Set([records.actorIds.student]))),
     },
@@ -492,7 +504,7 @@ export function buildLmsDashboardViews(records: LmsRecords) {
       }),
       calendar: calendarItemsForCourseIds(records, guardianCourseIdSet),
       resources: resourcesForCourseIds(records, guardianCourseIdSet),
-      messages,
+      messages: guardianMessages,
       attendance: [...guardianCourseIdSet].map((courseId) => attendanceSummary(records, courseId, new Set(linkedStudentIds))),
     },
   }

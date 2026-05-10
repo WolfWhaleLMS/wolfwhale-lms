@@ -26,7 +26,7 @@ Purpose: map the active WolfWhale LMS launch objective to concrete repo artifact
 | 4. Teacher creates course content and assignments | `app/api/lms/assignments/route.ts`, `app/api/lms/resources/route.ts`, teacher dashboard, mutating smoke | Partial: live RLS proof pending |
 | 5. Student submits text and files | `app/api/lms/submissions/route.ts`, `lib/lms/mutations.ts`, student assignment workspace, storage migration | Partial: file upload works; live signed-link smoke blocked until new table RLS migration is applied |
 | 6. Teacher grades with feedback/rubric | `app/api/lms/grades/route.ts`, `app/api/lms/rubrics/route.ts`, `lib/lms/mutations.ts`, mutating smoke | Partial: live RLS proof pending |
-| 7. Parent sees only linked child feedback/progress | `lib/lms/read-model.ts`, `tests/lms-read-model.test.ts`, `tests/pilot-data.test.ts`, guardian dashboard | Partial: live wrong-child/wrong-tenant RLS matrix pending |
+| 7. Parent sees only linked child feedback/progress | `lib/lms/read-model.ts`, `tests/lms-read-model.test.ts`, `tests/pilot-data.test.ts`, guardian dashboard | Partial: local read model filters linked-child data and over-fetched private messages; live wrong-child/wrong-tenant RLS matrix pending |
 | 8. Gradebook updates from submissions and grades | `lib/lms/read-model.ts`, `lib/lms/exports.ts`, `tests/lms-gradebook-attendance.test.ts` | Partial: full live regression pending |
 | 9. Calendar shows due dates, classes, events | role dashboards and `scripts/lms-browser-smoke.ts` | Partial: deeper workflow coverage pending |
 | 10. Attendance can be recorded and reported | `app/api/lms/attendance/route.ts`, attendance dashboard, `lib/lms/exports.ts` | Partial: live RLS proof pending |

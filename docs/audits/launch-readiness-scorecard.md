@@ -15,7 +15,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 | Admin setup flows | Partial | Local mutating smoke passed for course creation, enrollment, and roster import. Live RLS/security proof and deployed smoke pending. |
 | Teacher assignment/grading/attendance/rubrics | Partial | Local mutating smoke passed for assignment creation, resource upload, attendance, rubric, and grade posting. Live RLS/security proof pending. |
 | Student text and file submission | Partial | Added file upload support, metadata mapping, private signed file route, UI file input, storage policy migration, and assigned-teacher submission RLS migration. Upload is verified, but the stricter signed-link browser smoke is blocked until the new table RLS migration is applied live. |
-| Parent linked-child privacy | Partial | Guardian dashboard passed local smoke through linked-student surfaces; full live RLS matrix for wrong-child/wrong-tenant access is still pending. |
+| Parent linked-child privacy | Partial | Guardian dashboard passed local smoke through linked-student surfaces, and read-model tests now prove over-fetched teacher/student-only messages do not appear in unrelated student or guardian views. Full live RLS matrix for wrong-child/wrong-tenant access is still pending. |
 | Gradebook/reports | Partial | Weighted read model and exports exist; full regression pending. |
 | Calendar/attendance/messages | Partial | Role read models, visible message composer forms, and audited `/api/lms/messages` writes now exist. Student/guardian messages resolve to course staff server-side, teacher messages are scoped to assigned course students/guardians, and a relationship-aware conversation policy migration is pending live application. Moderation/export controls and live RLS proof remain open. |
 | Private files | Partial | Course resources and student submission files use private buckets and signed routes. The linked dev project has a private `submissions` bucket; storage and table RLS migrations still need live DB application/validation. |
@@ -40,7 +40,8 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 - `npm test -- tests/fish-companion.test.ts`: passed, 12 tests covering fish-only starter species, fish sprite metadata, fish companion storage keys, retired companion language removal, and the fish-only Supabase species migration.
 - `npm test -- tests/companion-server-xp.test.ts`: passed, 3 tests covering server-side companion XP profile creation/update and LMS wiring for first-time submissions and first teacher feedback posts.
 - `npm test -- tests/lms-messages.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx tests/lms-audit-log-coverage.test.ts`: passed, 4 files / 16 tests covering message normalization, audited message route/service wiring, visible composer forms, audit coverage, and the relationship-aware messaging policy artifact.
-- `npm test`: passed, 28 files / 121 tests after the audited messaging write slice.
+- `npm test -- tests/lms-read-model.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx`: passed, 3 files / 14 tests covering role dashboards, student workspaces, and defense-in-depth message filtering by conversation membership.
+- `npm test`: passed, 28 files / 122 tests after the scoped-message privacy hardening.
 - `npm run lint`: passed after the server-side companion XP slice.
 - `npm run typecheck`: passed after the server-side companion XP slice.
 - `npm run build`: passed after the audited messaging write slice; route list includes `/api/lms/messages` and `/student/companion-world`.
