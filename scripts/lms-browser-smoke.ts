@@ -35,7 +35,7 @@ function roleHeading(role: LmsRole) {
 const requiredDashboardTools: Record<LmsRole, string[]> = {
   student: ['Courses', 'Assignments', 'Submit work', 'Grades and feedback', 'Gradebook', 'Attendance', 'Calendar', 'Resources', 'Messages', 'Notifications', 'Companion world', 'Settings'],
   teacher: ['Courses', 'Roster', 'Assignments', 'Create assignment', 'Gradebook', 'Attendance', 'Rubrics', 'Grading queue', 'Calendar', 'Resources', 'Messages'],
-  admin: ['School', 'Audit trail', 'Metrics', 'Risk', 'Attendance', 'Calendar', 'Resources', 'Messages', 'Create course', 'Invite user', 'Enroll student', 'Roster import'],
+  admin: ['School', 'Audit trail', 'Metrics', 'Risk', 'Attendance', 'Calendar', 'Resources', 'Messages', 'Create course', 'Invite user', 'Guardian links', 'Enroll student', 'Roster import'],
   guardian: ['Linked students', 'Attendance', 'Calendar', 'Resources', 'Messages'],
 }
 
@@ -106,6 +106,7 @@ async function assertRoleSurface(page: Page, role: LmsRole) {
   if (role === 'admin') {
     await page.getByRole('heading', { name: 'Risk summary' }).waitFor()
     await page.getByRole('heading', { name: 'Invite user' }).waitFor()
+    await page.getByRole('heading', { name: 'Guardian links' }).waitFor()
     await page.getByRole('heading', { name: 'Roster import' }).waitFor()
     await page.getByRole('button', { name: 'Import roster' }).waitFor()
   }

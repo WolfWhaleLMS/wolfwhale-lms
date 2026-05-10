@@ -118,6 +118,16 @@ function activeTeachers(records: LmsRecords) {
   return records.users.filter((user) => teacherIds.has(user.id))
 }
 
+function activeGuardians(records: LmsRecords) {
+  const guardianIds = new Set(
+    records.memberships
+      .filter((membership) => membership.role === 'parent' && membership.status === 'active')
+      .map((membership) => membership.userId)
+  )
+
+  return records.users.filter((user) => guardianIds.has(user.id))
+}
+
 function studentCourseIds(records: LmsRecords, studentId: string) {
   return new Set(
     records.enrollments
@@ -457,6 +467,7 @@ export function buildLmsDashboardViews(records: LmsRecords) {
       courses: records.courses.map(courseSummary),
       students: activeStudents(records).map(person),
       teachers: activeTeachers(records).map(person),
+      guardians: activeGuardians(records).map(person),
       calendar: calendarItemsForCourseIds(records, allCourseIds),
       resources: resourcesForCourseIds(records, allCourseIds),
       messages: adminMessages,

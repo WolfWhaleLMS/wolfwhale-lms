@@ -18,6 +18,7 @@ const adminTools = [
   { href: '#messages', label: 'Messages', description: 'Read school messages', icon: MessageSquare },
   { href: '#create-course', label: 'Create course', description: 'Add classes and sections', icon: Plus },
   { href: '#invite-user', label: 'Invite user', description: 'Send a school invite', icon: UserPlus },
+  { href: '#guardian-links', label: 'Guardian links', description: 'Connect parents to students', icon: Users },
   { href: '#enroll-student', label: 'Enroll student', description: 'Place students in courses', icon: UserPlus },
   { href: '#roster-import', label: 'Roster import', description: 'Bulk-load school users', icon: Upload },
 ]
@@ -280,6 +281,60 @@ export function AdminDashboard({ view }: { view: AdminView }) {
             >
               <UserPlus className="h-4 w-4" />
               Send invite
+            </button>
+          </form>
+        </LmsPanel>
+
+        <LmsPanel id="guardian-links" title="Guardian links">
+          <form action="/api/lms/guardian-links" method="post" className="grid gap-3">
+            <label className="grid gap-1 text-sm font-semibold">
+              Student
+              <select
+                name="studentId"
+                required
+                className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+              >
+                {view.students.map((student) => (
+                  <option key={student.id} value={student.id}>
+                    {student.name} - {student.id.slice(0, 8)}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="grid gap-1 text-sm font-semibold">
+              Guardian
+              <select
+                name="guardianId"
+                required
+                className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+              >
+                {view.guardians.map((guardian) => (
+                  <option key={guardian.id} value={guardian.id}>
+                    {guardian.name} - {guardian.id.slice(0, 8)}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="grid gap-1 text-sm font-semibold">
+              Relationship
+              <select
+                name="relationship"
+                defaultValue="guardian"
+                className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+              >
+                <option value="guardian">Guardian</option>
+                <option value="mother">Mother</option>
+                <option value="father">Father</option>
+                <option value="grandparent">Grandparent</option>
+                <option value="other">Other</option>
+              </select>
+            </label>
+            <button
+              type="submit"
+              className="inline-flex h-10 w-fit items-center justify-center gap-2 rounded-md bg-teal-700 px-4 text-sm font-semibold text-white hover:bg-teal-800"
+            >
+              <Users className="h-4 w-4" />
+              Link guardian
             </button>
           </form>
         </LmsPanel>
