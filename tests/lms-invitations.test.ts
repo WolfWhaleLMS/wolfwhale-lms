@@ -1,0 +1,50 @@
+import { existsSync, readFileSync } from 'node:fs'
+import path from 'node:path'
+import { describe, expect, it } from 'vitest'
+
+const repoRoot = path.resolve(__dirname, '..')
+
+function sourceFor(relativePath: string) {
+  const absolutePath = path.join(repoRoot, relativePath)
+  expect(existsSync(absolutePath), `${relativePath} should exist`).toBe(true)
+
+  return readFileSync(absolutePath, 'utf8')
+}
+
+describe('LMS admin invitations', () => {
+  it('normalizes direct invitation drafts for safe school membership writes', async () => {
+    const modulePath = '@/lib/lms/invitations'
+    const { normalizeInviteDraft } = await import(modulePath)
+
+    expect(
+      normalizeInviteDraft({
+        email: '  TEACHER@example.EDU ',
+        firstName: ' Tessa ',
+        lastName: ' Teacher ',
+        role: 'teacher',
+        gradeLevel: ' 8 ',
+      })
+    ).toEqual({
+      email: 'teacher@example.edu',
+      firstName: 'Tessa',
+      lastName: 'Teacher',
+      role: 'teacher',
+      gradeLevel: '8',
+    })
+  })
+
+  it('wires the admin dashboard and route to an audited invitation service', () => {
+    const dashboardSource = sourceFor('components/lms/AdminDashboard.tsx')
+    const routeSource = sourceFor('app/api/lms/invitations/route.ts')
+    const invitationSource = sourceFor('lib/lms/invitations.ts')
+
+    expect(dashboardSource).toContain('action="/api/lms/invitations"')
+    expect(dashboardSource).toContain('name="email"')
+    expect(dashboardSource).toContain('name="role"')
+    expect(routeSource).toContain('inviteUserToSchool')
+    expect(routeSource).toContain('enforceLmsMutationRateLimit')
+    expect(invitationSource).toContain('inviteUserByEmail')
+    expect(invitationSource).toContain('user.invited')
+    expect(invitationSource).toContain('tenant_membership')
+  })
+})

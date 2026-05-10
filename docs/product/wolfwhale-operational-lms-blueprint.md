@@ -67,6 +67,13 @@ Admin course setup now carries durable section and term metadata:
 - Supabase query mapping, LMS read models, dashboards, and CSV exports expose the metadata.
 - `20260510225408_course_section_metadata.sql` adds the section column, tenant-scoped section index, and column comments for live schema alignment.
 
+Admin direct invitations now have a real write path:
+
+- The admin dashboard exposes a direct invite form for student, teacher, parent, and admin roles.
+- `/api/lms/invitations` rate-limits invite attempts and delegates to `inviteUserToSchool`.
+- `inviteUserToSchool` verifies the current user is a school admin, sends the Supabase invite through the server-side admin client, upserts profile and tenant membership rows, and writes a `user.invited` audit event.
+- Remaining invite lifecycle work includes resend, deactivation/reactivation, role changes, and guardian-child linking.
+
 ## Evidence
 
 - `npm test -- tests/lms-mutations.test.ts tests/lms-query-mapping.test.ts tests/lms-student-workspaces.test.tsx`: 13/13 passing on 2026-05-10.
@@ -78,8 +85,9 @@ Admin course setup now carries durable section and term metadata:
 - `npm test -- tests/lms-messages.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx tests/lms-audit-log-coverage.test.ts`: 16/16 passing on 2026-05-10 for audited message writes, composer UI, route delegation, and policy artifact coverage.
 - `npm test -- tests/lms-read-model.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx`: 14/14 passing on 2026-05-10 for role-scoped dashboards and message visibility filtering.
 - `npm test -- tests/lms-course-sections.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: 10/10 passing on 2026-05-10 for course section/term normalization, admin UI, query mapping, exports, and migration coverage.
-- `npm test`: 29 files / 126 tests passing on 2026-05-10.
-- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the course section metadata slice.
+- `npm test -- tests/lms-invitations.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: 9/9 passing on 2026-05-10 for direct invite normalization, route/form wiring, and audit-log coverage.
+- `npm test`: 30 files / 128 tests passing on 2026-05-10.
+- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the direct admin invite slice.
 - `npm run load:smoke`: passing on 2026-05-10 in 1848ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments after the course section metadata slice.
 - Landing/login visual smoke passed on 2026-05-10 for desktop and mobile with no missing image alt text, unnamed buttons, or horizontal overflow.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passing locally on 2026-05-10 with student file attachment, teacher grading, admin writes, logout, and screenshots in `test-results/lms-smoke`.

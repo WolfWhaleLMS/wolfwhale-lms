@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest'
 const repoRoot = path.resolve(__dirname, '..')
 const mutationSource = readFileSync(path.join(repoRoot, 'lib/lms/mutations.ts'), 'utf8')
 const rosterImportSource = readFileSync(path.join(repoRoot, 'lib/lms/roster-import.ts'), 'utf8')
+const invitationSource = readFileSync(path.join(repoRoot, 'lib/lms/invitations.ts'), 'utf8')
 
 const mutationAuditExpectations = [
   {
@@ -64,6 +65,7 @@ const routeServiceExpectations = [
   ['app/api/lms/rubrics/route.ts', 'createRubric'],
   ['app/api/lms/enrollments/route.ts', 'enrollStudent'],
   ['app/api/lms/messages/route.ts', 'sendCourseMessage'],
+  ['app/api/lms/invitations/route.ts', 'inviteUserToSchool'],
   ['app/api/lms/roster/import/route.ts', 'importRosterWithInvites'],
 ] as const
 
@@ -120,6 +122,8 @@ describe('LMS audit-log coverage', () => {
   it('keeps roster imports and direct resource-review writes auditable', () => {
     expect(rosterImportSource).toContain("admin.from('audit_logs').insert")
     expect(rosterImportSource).toContain('roster.imported')
+    expect(invitationSource).toContain("admin.from('audit_logs').insert")
+    expect(invitationSource).toContain('user.invited')
 
     for (const expectation of directRouteAuditExpectations) {
       const routeSource = sourceFor(expectation.routePath)

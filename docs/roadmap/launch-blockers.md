@@ -20,7 +20,7 @@ Date: 2026-05-10
 
 ## P1 Blockers Before Multi-School Sales
 
-- Admin lifecycle for invites, user deactivation, role changes, guardian linking/unlinking, and audit review.
+- Admin lifecycle for invite resend, user deactivation/reactivation, role changes, guardian linking/unlinking, and audit review. Direct audited single-user invite creation now exists.
 - Expand server-side companion XP beyond first-time submissions and first teacher feedback posts into lessons, quizzes, streaks, and attendance patterns.
 - Upload malware scanning, quarantine queue, legal hold workflow, and quota UI.
 - Messaging moderation, communication policy controls, and export/review tools.

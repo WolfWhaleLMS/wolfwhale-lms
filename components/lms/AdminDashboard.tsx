@@ -17,6 +17,7 @@ const adminTools = [
   { href: '#resources', label: 'Resources', description: 'Open shared files', icon: FileText },
   { href: '#messages', label: 'Messages', description: 'Read school messages', icon: MessageSquare },
   { href: '#create-course', label: 'Create course', description: 'Add classes and sections', icon: Plus },
+  { href: '#invite-user', label: 'Invite user', description: 'Send a school invite', icon: UserPlus },
   { href: '#enroll-student', label: 'Enroll student', description: 'Place students in courses', icon: UserPlus },
   { href: '#roster-import', label: 'Roster import', description: 'Bulk-load school users', icon: Upload },
 ]
@@ -221,6 +222,64 @@ export function AdminDashboard({ view }: { view: AdminView }) {
             >
               <Plus className="h-4 w-4" />
               Create course
+            </button>
+          </form>
+        </LmsPanel>
+
+        <LmsPanel id="invite-user" title="Invite user">
+          <form action="/api/lms/invitations" method="post" className="grid gap-3">
+            <label className="grid gap-1 text-sm font-semibold">
+              Email
+              <input
+                name="email"
+                type="email"
+                required
+                className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+              />
+            </label>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="grid gap-1 text-sm font-semibold">
+                First name
+                <input
+                  name="firstName"
+                  className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                />
+              </label>
+              <label className="grid gap-1 text-sm font-semibold">
+                Last name
+                <input
+                  name="lastName"
+                  className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                />
+              </label>
+              <label className="grid gap-1 text-sm font-semibold">
+                Role
+                <select
+                  name="role"
+                  required
+                  defaultValue="student"
+                  className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                >
+                  <option value="student">Student</option>
+                  <option value="teacher">Teacher</option>
+                  <option value="parent">Parent</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </label>
+              <label className="grid gap-1 text-sm font-semibold">
+                Grade
+                <input
+                  name="gradeLevel"
+                  className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                />
+              </label>
+            </div>
+            <button
+              type="submit"
+              className="inline-flex h-10 w-fit items-center justify-center gap-2 rounded-md bg-teal-700 px-4 text-sm font-semibold text-white hover:bg-teal-800"
+            >
+              <UserPlus className="h-4 w-4" />
+              Send invite
             </button>
           </form>
         </LmsPanel>

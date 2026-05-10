@@ -21,7 +21,7 @@ describe('persistent LMS dashboards', () => {
     render(<AdminDashboard view={views.admin} />)
 
     expect(screen.getByRole('heading', { name: 'Admin dashboard' })).toBeInTheDocument()
-    expectDashboardTools(['School', 'Metrics', 'Risk', 'Create course', 'Roster import'])
+    expectDashboardTools(['School', 'Metrics', 'Risk', 'Create course', 'Invite user', 'Roster import'])
     expect(screen.getByText('WolfWhale Academy')).toBeInTheDocument()
     expect(screen.getByText('Active students')).toBeInTheDocument()
     expect(screen.getByText('grade.created')).toBeInTheDocument()
