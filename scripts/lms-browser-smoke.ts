@@ -26,6 +26,7 @@ const credentials: Record<LmsRole, { email: string; password: string }> = {
     password: process.env.LMS_SMOKE_GUARDIAN_PASSWORD ?? 'WolfWhale-Parent-2026',
   },
 }
+let latestWorkflowSubmissionFileName = ''
 
 function roleHeading(role: LmsRole) {
   return `${role[0].toUpperCase()}${role.slice(1)} dashboard`
@@ -134,6 +135,34 @@ async function assertApiLinks(page: Page) {
   }
 }
 
+async function assertTeacherSubmissionFileDownload(page: Page) {
+  if (!latestWorkflowSubmissionFileName) {
+    throw new Error('Mutating workflow did not record a student submission file name.')
+  }
+
+  await page.locator('#grading-queue').scrollIntoViewIfNeeded()
+
+  const link = page
+    .locator('#grading-queue a[href^="/api/lms/submissions/"][href$="/file"]')
+    .filter({ hasText: latestWorkflowSubmissionFileName })
+    .first()
+  await link.waitFor()
+
+  const href = await link.evaluate((element) => (element as HTMLAnchorElement).getAttribute('href'))
+  if (!href) {
+    throw new Error(`Teacher submission file link for ${latestWorkflowSubmissionFileName} is missing an href.`)
+  }
+
+  const response = await page.request.get(new URL(href, page.url()).toString(), { maxRedirects: 0 })
+  const location = response.headers().location
+
+  if (response.status() !== 302 || !location) {
+    throw new Error(
+      `Expected teacher submission file link ${href} to create a signed redirect, got ${response.status()} on ${page.url()}.`
+    )
+  }
+}
+
 async function assertDashboardTools(page: Page, role: LmsRole) {
   const nav = page.getByRole('navigation', { name: 'Dashboard tools' })
   await nav.waitFor()
@@ -212,8 +241,10 @@ async function exerciseStudentWorkflows(page: Page) {
     await page.locator('#submit-work').scrollIntoViewIfNeeded()
     await form.locator('textarea[name="content"]').fill(`Workflow audit submission ${index + 1} ${Date.now()}`)
     if (index === 0) {
+      const fileName = `workflow-submission-${Date.now()}.txt`
+      latestWorkflowSubmissionFileName = fileName
       await form.locator('input[name="file"]').setInputFiles({
-        name: `workflow-submission-${Date.now()}.txt`,
+        name: fileName,
         mimeType: 'text/plain',
         buffer: Buffer.from('Workflow audit student submission attachment.'),
       })
@@ -225,6 +256,8 @@ async function exerciseStudentWorkflows(page: Page) {
 
 async function exerciseTeacherWorkflows(page: Page) {
   const stamp = Date.now().toString(36)
+
+  await assertTeacherSubmissionFileDownload(page)
 
   await page.locator('#create-assignment').scrollIntoViewIfNeeded()
   await page.locator('#create-assignment input[name="title"]').fill(`Workflow audit assignment ${stamp}`)

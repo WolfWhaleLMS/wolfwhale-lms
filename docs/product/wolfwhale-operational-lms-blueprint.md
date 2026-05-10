@@ -37,13 +37,15 @@ Student assignment submissions now support private file upload in addition to te
 - Teacher grading queue exposes submitted file links through a signed route.
 - Audit log details include submitted file name, size, and SHA-256.
 - New migration aligns storage RLS policy with the submission object path.
+- New migration scopes `submissions` table read/update policies so assigned teachers can see and grade submissions even when they did not create the course shell.
 
 ## Evidence
 
 - `npm test -- tests/lms-mutations.test.ts tests/lms-query-mapping.test.ts tests/lms-student-workspaces.test.tsx`: 13/13 passing on 2026-05-10.
-- `npm test`: 23 files / 98 tests passing on 2026-05-10.
+- `npm test`: 23 files / 99 tests passing on 2026-05-10.
 - `npm run lint`, `npm run typecheck`, and `npm run build`: passing on 2026-05-10.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passing locally on 2026-05-10 with student file attachment, teacher grading, admin writes, logout, and screenshots in `test-results/lms-smoke`.
+- Updated signed-file smoke assertion exposed a live RLS gap on 2026-05-10: assigned teachers cannot yet read all student submissions until `20260510212739_submissions_assigned_teacher_read_policy.sql` is applied.
 - Supabase changelog and Storage upload/access-control docs were checked on 2026-05-10 before implementing storage-facing code.
 - `npm run security:supabase` is still blocked until DB/read credentials are available to the local shell.
 

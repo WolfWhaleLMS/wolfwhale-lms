@@ -206,5 +206,48 @@ where p.policyname is null
     or p.with_check not like '%auth.uid()%'
   );`,
     },
+    {
+      id: 'submissions_select_allows_assigned_teachers',
+      description: 'Submission reads must allow assigned course teachers and linked parents without relying on course creator ownership.',
+      sql: `with expected(policyname) as (values ('submissions_select_scoped'))
+select expected.policyname, p.qual
+from expected
+left join pg_policies p
+  on p.schemaname = 'public'
+  and p.tablename = 'submissions'
+  and p.cmd = 'SELECT'
+  and p.policyname = expected.policyname
+where p.policyname is null
+  or (
+    p.qual is null
+    or p.qual not like '%course_enrollments%'
+    or p.qual not like '%teacher_id%'
+    or p.qual not like '%student_parents%'
+    or p.qual not like '%auth.uid()%'
+  );`,
+    },
+    {
+      id: 'submissions_update_allows_assigned_teachers',
+      description: 'Submission status updates must allow assigned course teachers while staying scoped to active enrollments.',
+      sql: `with expected(policyname) as (values ('submissions_update_scoped'))
+select expected.policyname, p.qual, p.with_check
+from expected
+left join pg_policies p
+  on p.schemaname = 'public'
+  and p.tablename = 'submissions'
+  and p.cmd = 'UPDATE'
+  and p.policyname = expected.policyname
+where p.policyname is null
+  or (
+    p.qual is null
+    or p.with_check is null
+    or p.qual not like '%course_enrollments%'
+    or p.qual not like '%teacher_id%'
+    or p.qual not like '%status%'
+    or p.with_check not like '%course_enrollments%'
+    or p.with_check not like '%teacher_id%'
+    or p.with_check not like '%status%'
+  );`,
+    },
   ]
 }
