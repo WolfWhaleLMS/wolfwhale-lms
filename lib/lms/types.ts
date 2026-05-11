@@ -25,7 +25,13 @@ export interface LmsParentLinkRecord {
   tenantId: string
   studentId: string
   parentId: string
+  relationship?: string
   status: string
+  primaryContact?: boolean
+  consentGiven?: boolean
+  consentMethod?: string
+  consentNotes?: string
+  custodyNotes?: string
 }
 
 export interface LmsCourseRecord {
@@ -260,6 +266,11 @@ export interface LmsGuardianLinkSummary {
   studentName: string
   guardianId: string
   guardianName: string
+  primaryContact: boolean
+  consentGiven: boolean
+  consentMethod: string
+  consentNotes: string
+  custodyNotes: string
 }
 
 export interface LmsAssignmentSummary {

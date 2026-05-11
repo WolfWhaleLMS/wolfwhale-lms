@@ -3,8 +3,10 @@ import { LmsMutationError } from '@/lib/lms/mutations'
 
 type Row = Record<string, unknown>
 type GuardianRelationship = 'mother' | 'father' | 'guardian' | 'grandparent' | 'other'
+type ConsentMethod = 'electronic' | 'signed_form' | 'email' | 'in_person' | 'other'
 
 const relationships = new Set<GuardianRelationship>(['mother', 'father', 'guardian', 'grandparent', 'other'])
+const consentMethods = new Set<ConsentMethod>(['electronic', 'signed_form', 'email', 'in_person', 'other'])
 
 function text(value: unknown, fallback = '') {
   return typeof value === 'string' && value.trim() ? value.trim() : fallback
@@ -19,8 +21,31 @@ function id(value: unknown, field: string) {
   return normalized
 }
 
+function limitedText(value: unknown, maxLength: number) {
+  const normalized = text(value)
+
+  return normalized.length > maxLength ? normalized.slice(0, maxLength) : normalized
+}
+
+function booleanFlag(value: unknown) {
+  return value === true || value === 'true' || value === 'on' || value === '1'
+}
+
 function rows(data: unknown) {
   return (data ?? []) as Row[]
+}
+
+function normalizeConsentMethod(value: unknown) {
+  const method = text(value).toLowerCase()
+  if (!method) return ''
+  if (!consentMethods.has(method as ConsentMethod)) {
+    throw new LmsMutationError(
+      'Consent method must be electronic, signed_form, email, in_person, other, or blank.',
+      'invalid_consent_method'
+    )
+  }
+
+  return method as ConsentMethod
 }
 
 function normalizeRelationship(value: unknown): GuardianRelationship {
@@ -55,6 +80,27 @@ export function normalizeGuardianUnlinkDraft(input: { studentId: unknown; guardi
   return {
     studentId,
     guardianId,
+  }
+}
+
+export function normalizeGuardianContactDraft(input: {
+  studentId: unknown
+  guardianId: unknown
+  primaryContact?: unknown
+  consentGiven?: unknown
+  consentMethod?: unknown
+  consentNotes?: unknown
+  custodyNotes?: unknown
+}) {
+  const base = normalizeGuardianUnlinkDraft(input)
+
+  return {
+    ...base,
+    primaryContact: booleanFlag(input.primaryContact),
+    consentGiven: booleanFlag(input.consentGiven),
+    consentMethod: normalizeConsentMethod(input.consentMethod),
+    consentNotes: limitedText(input.consentNotes, 1000),
+    custodyNotes: limitedText(input.custodyNotes, 1000),
   }
 }
 
@@ -211,6 +257,83 @@ export async function unlinkGuardianFromStudent(
     details: {
       student_id: draft.studentId,
       guardian_id: draft.guardianId,
+    },
+  })
+
+  return {
+    linkId,
+    studentId: draft.studentId,
+    guardianId: draft.guardianId,
+  }
+}
+
+export async function updateGuardianContactDetails(
+  supabase: SupabaseClient,
+  input: {
+    studentId: unknown
+    guardianId: unknown
+    primaryContact?: unknown
+    consentGiven?: unknown
+    consentMethod?: unknown
+    consentNotes?: unknown
+    custodyNotes?: unknown
+  }
+) {
+  const admin = await requireSchoolAdmin(supabase)
+  const draft = normalizeGuardianContactDraft(input)
+
+  if (draft.primaryContact) {
+    const { error: primaryClearError } = await supabase
+      .from('student_parents')
+      .update({ is_primary_contact: false })
+      .eq('tenant_id', admin.tenantId)
+      .eq('student_id', draft.studentId)
+      .eq('status', 'active')
+
+    if (primaryClearError) {
+      throw new LmsMutationError(`Unable to clear existing primary contacts: ${primaryClearError.message}`, 'guardian_contact_update_failed')
+    }
+  }
+
+  const { data: links, error: linkError } = await supabase
+    .from('student_parents')
+    .update({
+      is_primary_contact: draft.primaryContact,
+      consent_given: draft.consentGiven,
+      consent_date: draft.consentGiven ? new Date().toISOString() : null,
+      consent_method: draft.consentMethod || null,
+      consent_notes: draft.consentNotes,
+      custody_notes: draft.custodyNotes,
+    })
+    .eq('tenant_id', admin.tenantId)
+    .eq('student_id', draft.studentId)
+    .eq('parent_id', draft.guardianId)
+    .eq('status', 'active')
+    .select('id')
+
+  if (linkError) {
+    throw new LmsMutationError(`Unable to update guardian contact details: ${linkError.message}`, 'guardian_contact_update_failed')
+  }
+
+  const link = rows(links)[0]
+  if (!link) {
+    throw new LmsMutationError('Active guardian link was not found.', 'guardian_link_not_found')
+  }
+
+  const linkId = id(link.id, 'student_parent_id')
+
+  await supabase.from('audit_logs').insert({
+    tenant_id: admin.tenantId,
+    user_id: admin.userId,
+    action: 'guardian.contact_updated',
+    resource_type: 'student_parent',
+    resource_id: linkId,
+    details: {
+      student_id: draft.studentId,
+      guardian_id: draft.guardianId,
+      primary_contact: draft.primaryContact,
+      consent_given: draft.consentGiven,
+      consent_method: draft.consentMethod,
     },
   })
 

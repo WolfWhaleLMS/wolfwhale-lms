@@ -414,19 +414,76 @@ export function AdminDashboard({ view }: { view: AdminView }) {
             ) : (
               <ul className="mt-2 grid gap-2">
                 {view.guardianLinks.map((link) => (
-                  <li key={`${link.studentId}:${link.guardianId}`} className="flex flex-col gap-2 rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
-                    <span>
-                      <strong>{link.studentName}</strong>
-                      <span className="text-slate-500 dark:text-slate-400"> linked to {link.guardianName}</span>
-                    </span>
-                    <form action="/api/lms/guardian-links/unlink" method="post">
+                  <li key={`${link.studentId}:${link.guardianId}`} className="grid gap-3 rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                      <span>
+                        <strong>{link.studentName}</strong>
+                        <span className="text-slate-500 dark:text-slate-400"> linked to {link.guardianName}</span>
+                      </span>
+                      <form action="/api/lms/guardian-links/unlink" method="post">
+                        <input type="hidden" name="studentId" value={link.studentId} />
+                        <input type="hidden" name="guardianId" value={link.guardianId} />
+                        <button
+                          type="submit"
+                          className="inline-flex h-9 w-fit items-center justify-center rounded-md border border-rose-200 bg-rose-50 px-3 text-sm font-semibold text-rose-800 hover:bg-rose-100 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-100"
+                        >
+                          Unlink
+                        </button>
+                      </form>
+                    </div>
+                    <form action="/api/lms/guardian-links/contact" method="post" className="grid gap-2 rounded-md bg-slate-50 p-2 dark:bg-slate-950/50">
                       <input type="hidden" name="studentId" value={link.studentId} />
                       <input type="hidden" name="guardianId" value={link.guardianId} />
+                      <div className="flex flex-wrap gap-3">
+                        <label className="inline-flex items-center gap-2 text-xs font-semibold">
+                          <input name="primaryContact" type="checkbox" defaultChecked={link.primaryContact} className="h-4 w-4 rounded border-slate-300" />
+                          Primary contact
+                        </label>
+                        <label className="inline-flex items-center gap-2 text-xs font-semibold">
+                          <input name="consentGiven" type="checkbox" defaultChecked={link.consentGiven} className="h-4 w-4 rounded border-slate-300" />
+                          Consent recorded
+                        </label>
+                        <label className="grid gap-1 text-xs font-semibold">
+                          Method
+                          <select
+                            name="consentMethod"
+                            defaultValue={link.consentMethod}
+                            className="h-8 rounded-md border border-slate-300 bg-white px-2 text-xs font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                          >
+                            <option value="">None</option>
+                            <option value="electronic">Electronic</option>
+                            <option value="signed_form">Signed form</option>
+                            <option value="email">Email</option>
+                            <option value="in_person">In person</option>
+                            <option value="other">Other</option>
+                          </select>
+                        </label>
+                      </div>
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        <label className="grid gap-1 text-xs font-semibold">
+                          Consent notes
+                          <textarea
+                            name="consentNotes"
+                            defaultValue={link.consentNotes}
+                            rows={2}
+                            className="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                          />
+                        </label>
+                        <label className="grid gap-1 text-xs font-semibold">
+                          Custody notes
+                          <textarea
+                            name="custodyNotes"
+                            defaultValue={link.custodyNotes}
+                            rows={2}
+                            className="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                          />
+                        </label>
+                      </div>
                       <button
                         type="submit"
-                        className="inline-flex h-9 w-fit items-center justify-center rounded-md border border-rose-200 bg-rose-50 px-3 text-sm font-semibold text-rose-800 hover:bg-rose-100 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-100"
+                        className="inline-flex h-9 w-fit items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-900 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
                       >
-                        Unlink
+                        Save contact details
                       </button>
                     </form>
                   </li>

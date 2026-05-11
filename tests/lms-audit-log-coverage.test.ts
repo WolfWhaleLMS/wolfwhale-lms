@@ -73,6 +73,7 @@ const routeServiceExpectations = [
   ['app/api/lms/memberships/role/route.ts', 'updateSchoolMembershipRole'],
   ['app/api/lms/guardian-links/route.ts', 'linkGuardianToStudent'],
   ['app/api/lms/guardian-links/unlink/route.ts', 'unlinkGuardianFromStudent'],
+  ['app/api/lms/guardian-links/contact/route.ts', 'updateGuardianContactDetails'],
   ['app/api/lms/calendar-events/route.ts', 'createCalendarEvent'],
   ['app/api/lms/roster/import/route.ts', 'importRosterWithInvites'],
 ] as const
@@ -139,6 +140,7 @@ describe('LMS audit-log coverage', () => {
     expect(guardianLinkSource).toContain(".from('audit_logs').insert")
     expect(guardianLinkSource).toContain('guardian.linked')
     expect(guardianLinkSource).toContain('guardian.unlinked')
+    expect(guardianLinkSource).toContain('guardian.contact_updated')
     expect(calendarEventSource).toContain(".from('audit_logs').insert")
     expect(calendarEventSource).toContain('calendar_event.created')
 

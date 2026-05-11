@@ -154,6 +154,11 @@ function activeGuardianLinks(records: LmsRecords): LmsGuardianLinkSummary[] {
       studentName: person(findUser(records, link.studentId)).name,
       guardianId: link.parentId,
       guardianName: person(findUser(records, link.parentId)).name,
+      primaryContact: link.primaryContact ?? false,
+      consentGiven: link.consentGiven ?? false,
+      consentMethod: link.consentMethod ?? '',
+      consentNotes: link.consentNotes ?? '',
+      custodyNotes: link.custodyNotes ?? '',
     }))
 }
 

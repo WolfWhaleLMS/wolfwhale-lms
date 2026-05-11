@@ -78,7 +78,7 @@ Admin direct invitations now have a real write path:
 - `updateSchoolMembershipStatus` verifies the current user is a school admin, requires the server-side admin client, blocks self-deactivation and super-admin deactivation, updates the tenant-scoped `tenant_memberships.status`, and writes `user.deactivated` or `user.reactivated` audit events.
 - The same school-membership list posts role-change requests to `/api/lms/memberships/role`.
 - `updateSchoolMembershipRole` verifies the current user is a school admin, requires the server-side admin client, blocks self role changes and super-admin changes, updates the tenant-scoped `tenant_memberships.role`, and writes `user.role_changed`.
-- Remaining admin lifecycle work includes primary-contact/consent details and audit review.
+- Remaining admin lifecycle work includes audit review, live RLS proof, and deployed smoke.
 
 Admin guardian linking now has a real write path:
 
@@ -87,8 +87,11 @@ Admin guardian linking now has a real write path:
 - `linkGuardianToStudent` verifies the current user is a school admin, verifies both student and guardian are active in the same tenant, upserts `student_parents`, and writes a `guardian.linked` audit event.
 - The admin dashboard also lists active guardian links and posts unlink requests to `/api/lms/guardian-links/unlink`.
 - `unlinkGuardianFromStudent` verifies the current user is a school admin, deactivates the tenant-scoped active `student_parents` row, and writes a `guardian.unlinked` audit event.
+- The active guardian-link list also posts primary-contact, consent method/notes, and custody notes to `/api/lms/guardian-links/contact`.
+- `updateGuardianContactDetails` verifies the current user is a school admin, updates the tenant-scoped active `student_parents` row, clears other active primary contacts for the same student when needed, and writes `guardian.contact_updated`.
+- `20260511001241_guardian_contact_details.sql` restores `is_primary_contact`, adds `consent_notes` and `custody_notes`, comments the sensitive fields, and indexes active primary contacts.
 - Guardian/teacher read models now exclude inactive student memberships from linked-student and teacher-roster operational views.
-- Remaining guardian lifecycle work includes primary-contact flags, custody/consent notes, and live wrong-child/wrong-tenant RLS proof.
+- Remaining guardian lifecycle work includes live wrong-child/wrong-tenant RLS proof.
 
 School and course calendar events now have a real write path:
 
@@ -128,12 +131,13 @@ Submitted file downloads now have student and guardian affordances:
 - `npm test -- tests/lms-invitations.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: 11/11 passing on 2026-05-10 for membership role-change normalization, route/form wiring, audited action coverage, and admin dashboard controls.
 - `npm test -- tests/lms-invitations.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: 12/12 passing on 2026-05-10 for invite resend normalization, route/form wiring, Supabase admin user lookup, resend API wiring, audited action coverage, and admin dashboard controls.
 - `npm test -- tests/lms-guardian-links.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: 11/11 passing on 2026-05-10 for guardian-link normalization, admin read-model choices, guardian unlinking read model/form/route wiring, and audit-log coverage.
+- `npm test -- tests/lms-guardian-links.test.ts tests/lms-query-mapping.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: 14/14 passing on 2026-05-10 for guardian contact/consent normalization, query mapping, migration artifact, route/form wiring, and audit-log coverage.
 - `npm test -- tests/lms-calendar-events.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: 12/12 passing on 2026-05-10 for durable calendar event normalization, role calendars, admin/teacher forms, query mapping, migration artifact, route delegation, and audit-log coverage.
 - `npm test -- tests/lms-gradebook-attendance.test.ts tests/lms-district-scale.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx`: 20/20 passing on 2026-05-10 for grade trends in read models, report cards, CSV exports, teacher dashboard, guardian dashboard, and student workspaces.
 - `npm test -- tests/lms-student-workspaces.test.tsx tests/lms-dashboards.test.tsx`: 10/10 passing on 2026-05-10 for student and guardian submitted-file download affordances through the signed submission file route.
-- `npm test`: 32 files / 141 tests passing on 2026-05-10.
-- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the audited invite-resend slice.
-- `npm run load:smoke`: passing on 2026-05-10 in 2879ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments after the audited invite-resend slice.
+- `npm test`: 32 files / 142 tests passing on 2026-05-10.
+- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the audited guardian-contact slice.
+- `npm run load:smoke`: passing on 2026-05-10 in 2954ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments after the audited guardian-contact slice.
 - Landing/login visual smoke passed on 2026-05-10 for desktop and mobile with no missing image alt text, unnamed buttons, or horizontal overflow.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passing locally on 2026-05-10 with student file attachment, teacher grading, admin writes, logout, and screenshots in `test-results/lms-smoke`.
 - `LMS_SMOKE_BASE_URL=http://127.0.0.1:3010 npm run test:a11y`: blocked after the durable calendar-events slice because the smoke student reached `/login?error=lms-access-required` after sign-in before the dashboard rendered. The smoke harness now checks Add event controls and mutating calendar-event writes once active LMS smoke accounts/data are restored.

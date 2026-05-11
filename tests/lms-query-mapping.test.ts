@@ -8,7 +8,20 @@ describe('Supabase LMS query mapping', () => {
       tenant: { id: 'tenant-1', name: 'WolfWhale School', slug: 'wolfwhale', status: 'active' },
       profiles: [{ id: 'teacher-1', first_name: 'Tessa', last_name: 'Teacher', email: 'teacher@example.test' }],
       memberships: [{ tenant_id: 'tenant-1', user_id: 'teacher-1', role: 'teacher', status: 'active' }],
-      parentLinks: [],
+      parentLinks: [
+        {
+          tenant_id: 'tenant-1',
+          student_id: 'student-1',
+          parent_id: 'parent-1',
+          relationship: 'guardian',
+          status: 'active',
+          is_primary_contact: true,
+          consent_given: true,
+          consent_method: 'signed_form',
+          consent_notes: 'Signed form received.',
+          custody_notes: 'Call office before pickup.',
+        },
+      ],
       courses: [
         {
           id: 'course-1',
@@ -138,6 +151,14 @@ describe('Supabase LMS query mapping', () => {
     })
     expect(records.grades[0]).toMatchObject({ percentage: 80, letterGrade: 'B-' })
     expect(records.notifications[0]).toMatchObject({ read: false })
+    expect(records.parentLinks[0]).toMatchObject({
+      relationship: 'guardian',
+      primaryContact: true,
+      consentGiven: true,
+      consentMethod: 'signed_form',
+      consentNotes: 'Signed form received.',
+      custodyNotes: 'Call office before pickup.',
+    })
     expect(records.resources[0]).toMatchObject({ displayName: 'Source Pack', fileName: 'source.pdf', scanStatus: 'clean' })
     expect(records.messages[0]).toMatchObject({ content: 'Bring notes.' })
     expect(records.rubrics[0]).toMatchObject({ name: 'Exit Ticket Rubric', criteria: [{ name: 'Evidence', points: 5 }] })

@@ -190,7 +190,13 @@ export function mapSupabaseRowsToLmsRecords(rows: SupabaseLmsRows): LmsRecords {
       tenantId: text(link.tenant_id),
       studentId: text(link.student_id),
       parentId: text(link.parent_id),
+      relationship: text(link.relationship, 'guardian'),
       status: text(link.status, 'active'),
+      primaryContact: booleanValue(link.is_primary_contact),
+      consentGiven: booleanValue(link.consent_given),
+      consentMethod: text(link.consent_method),
+      consentNotes: text(link.consent_notes),
+      custodyNotes: text(link.custody_notes),
     })),
     courses: rows.courses.map((course) => ({
       id: text(course.id),
@@ -420,7 +426,12 @@ export async function loadLmsRecordsForUser(supabase: SupabaseClient, userId: st
     calendarEvents,
   ] = await Promise.all([
     queryTable(supabase, 'tenant_memberships', 'tenant_id,user_id,role,status', tenantId),
-    queryTable(supabase, 'student_parents', 'tenant_id,student_id,parent_id,status', tenantId),
+    queryTable(
+      supabase,
+      'student_parents',
+      'tenant_id,student_id,parent_id,relationship,status,is_primary_contact,consent_given,consent_method,consent_notes,custody_notes',
+      tenantId
+    ),
     queryTable(supabase, 'courses', 'id,tenant_id,name,subject,grade_level,section_label,semester,created_by,status,grading_policy', tenantId),
     queryTable(supabase, 'course_enrollments', 'tenant_id,course_id,student_id,teacher_id,status', tenantId),
     queryTable(supabase, 'assignments', 'id,tenant_id,course_id,title,instructions,due_date,max_points,status,category', tenantId),
