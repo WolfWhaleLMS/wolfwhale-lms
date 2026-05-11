@@ -2,6 +2,7 @@ import { Bell, MessageSquare } from 'lucide-react'
 
 import { CellArchitectureResourceCenter } from '@/components/lms/resource-center/CellArchitectureResourceCenter'
 import { FurTradeRoutesMap } from '@/components/lms/resource-center/FurTradeRoutesMap'
+import { HumanBodyResourceCenter } from '@/components/lms/resource-center/HumanBodyResourceCenter'
 import { InteractiveResourceLibraryCatalog } from '@/components/lms/resource-center/InteractiveResourceLibraryCatalog'
 import { SolarSystemResourceCenter } from '@/components/lms/resource-center/SolarSystemResourceCenter'
 
@@ -44,6 +45,7 @@ export function StudentResourcesWorkspace({ view }: { view: StudentView }) {
       <div className="grid gap-5">
         <InteractiveResourceLibraryCatalog />
         <CellArchitectureResourceCenter />
+        <HumanBodyResourceCenter />
         <SolarSystemResourceCenter />
         <FurTradeRoutesMap />
 

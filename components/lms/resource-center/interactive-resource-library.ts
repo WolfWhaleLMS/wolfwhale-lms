@@ -23,6 +23,13 @@ export const interactiveResources: LiveInteractiveResource[] = [
     icon: 'microscope',
   },
   {
+    title: 'Human Body Studio',
+    href: '#human-body-studio',
+    status: 'Live',
+    area: 'Science: body systems and 3D anatomy',
+    icon: 'heart',
+  },
+  {
     title: 'Solar System Studio',
     href: '#solar-system-studio',
     status: 'Live',
@@ -39,7 +46,6 @@ export const interactiveResources: LiveInteractiveResource[] = [
 ]
 
 export const upcomingResources: UpcomingInteractiveResource[] = [
-  { title: 'Human Body Studio', area: 'Science: body systems', icon: 'heart' },
   { title: 'Chemistry Studio', area: 'Science: matter and reactions', icon: 'chemistry' },
   { title: 'Earth Systems Studio', area: 'Science: land, water, and climate', icon: 'earth' },
   { title: 'Physics Lab Studio', area: 'Science: forces and energy', icon: 'atom' },

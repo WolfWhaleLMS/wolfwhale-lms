@@ -596,7 +596,7 @@ export function CellArchitectureResourceCenter() {
         </nav>
       </div>
 
-      <div id="diagram-studio" className="grid gap-4 2xl:grid-cols-[300px_minmax(560px,1fr)_360px]">
+      <div id="diagram-studio" className="grid gap-4 xl:grid-cols-[300px_minmax(560px,1fr)_360px]">
         <CellRail
           selectedCell={selectedCell}
           activeOrganelle={activeOrganelle}

@@ -1,9 +1,9 @@
 'use client'
 
-import { Line, OrbitControls } from '@react-three/drei'
+import { Line, OrbitControls, useTexture } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useMemo, useRef } from 'react'
-import { CanvasTexture, Color, DoubleSide, Group, PlaneGeometry, Shape, SRGBColorSpace, Vector3 } from 'three'
+import { Color, DoubleSide, Group, PlaneGeometry, Shape, SRGBColorSpace, Vector3 } from 'three'
 
 import {
   furTradeCanadaOutlines,
@@ -27,45 +27,6 @@ type FurTradeMapSceneProps = {
   selectedLocation: FurTradeLocation
   visibleRoutes: FurTradeRoute[]
   terrainMode: FurTradeTerrainMode
-}
-
-function createReliefTexture() {
-  const canvas = document.createElement('canvas')
-  canvas.width = 2048
-  canvas.height = 1280
-  const context = canvas.getContext('2d')
-
-  if (!context) {
-    return null
-  }
-
-  const water = context.createLinearGradient(0, 0, canvas.width, canvas.height)
-  water.addColorStop(0, '#0a3742')
-  water.addColorStop(0.42, '#0e5260')
-  water.addColorStop(1, '#082a34')
-  context.fillStyle = water
-  context.fillRect(0, 0, canvas.width, canvas.height)
-
-  for (let y = 0; y < canvas.height; y += 8) {
-    for (let x = 0; x < canvas.width; x += 8) {
-      const noise = Math.sin(x * 0.018) + Math.cos(y * 0.014) + Math.sin((x + y) * 0.011)
-      const alpha = Math.max(0, Math.min(0.14, (noise + 2.2) * 0.025))
-      context.fillStyle = `rgba(255, 255, 255, ${alpha})`
-      context.fillRect(x, y, 8, 8)
-    }
-  }
-
-  const glow = context.createRadialGradient(canvas.width * 0.48, canvas.height * 0.54, 40, canvas.width * 0.48, canvas.height * 0.54, canvas.width * 0.48)
-  glow.addColorStop(0, 'rgba(241, 210, 138, 0.18)')
-  glow.addColorStop(0.45, 'rgba(105, 165, 119, 0.11)')
-  glow.addColorStop(1, 'rgba(0, 0, 0, 0.2)')
-  context.fillStyle = glow
-  context.fillRect(0, 0, canvas.width, canvas.height)
-
-  const texture = new CanvasTexture(canvas)
-  texture.colorSpace = SRGBColorSpace
-
-  return texture
 }
 
 function createTerrainGeometry(terrainMode: FurTradeTerrainMode) {
@@ -105,24 +66,53 @@ function shapeFromCoordinates(coordinates: Array<{ latitude: number; longitude: 
 }
 
 function ReliefBase({ terrainMode }: { terrainMode: FurTradeTerrainMode }) {
-  const reliefTexture = useMemo(() => createReliefTexture(), [])
+  const reliefTexture = useTexture('/fur-trade/canada-relief-texture.png')
   const terrainGeometry = useMemo(() => createTerrainGeometry(terrainMode), [terrainMode])
+  reliefTexture.colorSpace = SRGBColorSpace
+  reliefTexture.anisotropy = 8
 
   return (
     <mesh geometry={terrainGeometry} position={[0, 0, -0.18]} receiveShadow>
-      <meshStandardMaterial map={reliefTexture ?? undefined} color="#244d4a" roughness={0.92} metalness={0.02} side={DoubleSide} />
+      <meshStandardMaterial map={reliefTexture} color="#ffffff" roughness={0.82} metalness={0.01} side={DoubleSide} />
     </mesh>
   )
 }
 
-function LandMass({ coordinates, color, depth = 0.08 }: { coordinates: Array<{ latitude: number; longitude: number }>; color: string; depth?: number }) {
+function LandMass({ coordinates, index }: { coordinates: Array<{ latitude: number; longitude: number }>; index: number }) {
   const shape = useMemo(() => shapeFromCoordinates(coordinates), [coordinates])
 
   return (
-    <mesh castShadow receiveShadow position={[0, 0, -0.02]}>
-      <extrudeGeometry args={[shape, { depth, bevelEnabled: true, bevelSegments: 2, bevelSize: 0.018, bevelThickness: 0.018 }]} />
-      <meshStandardMaterial color={color} roughness={0.84} metalness={0.03} />
+    <mesh receiveShadow position={[0, 0, 0.06]}>
+      <shapeGeometry args={[shape]} />
+      <meshStandardMaterial
+        color={index === 0 ? '#d3e29a' : '#e4ebba'}
+        roughness={0.78}
+        metalness={0.01}
+        transparent
+        opacity={index === 0 ? 0.18 : 0.24}
+        side={DoubleSide}
+      />
     </mesh>
+  )
+}
+
+function BoundaryLines() {
+  return (
+    <>
+      {furTradeCanadaOutlines.map((outline, index) => (
+        <Line
+          key={index}
+          points={outline.map((coordinate) => {
+            const point = projectFurTradeCoordinate(coordinate)
+            return new Vector3(point.sceneX, point.sceneY, 0.2)
+          })}
+          color={index === 0 ? '#f8f1c8' : '#e6edbf'}
+          lineWidth={index === 0 ? 1.65 : 1.05}
+          transparent
+          opacity={index === 0 ? 0.9 : 0.58}
+        />
+      ))}
+    </>
   )
 }
 
@@ -255,11 +245,12 @@ function FurTradeMapModel({ selectedEra, selectedNetwork, selectedLocation, visi
     <group ref={mapRef}>
       <ReliefBase terrainMode={terrainMode} />
       {furTradeCanadaOutlines.map((outline, index) => (
-        <LandMass key={index} coordinates={outline} color={index === 0 ? '#476842' : '#5d764f'} depth={index === 0 ? 0.1 : 0.055} />
+        <LandMass key={index} coordinates={outline} index={index} />
       ))}
       {furTradeWaterBodies.map((water, index) => (
         <WaterMass key={index} coordinates={water} />
       ))}
+      <BoundaryLines />
       <RouteLines routes={visibleRoutes} selectedLocation={getFurTradeLocationById(selectedLocation.id)} />
       <LocationBeacons selectedEra={selectedEra} selectedNetwork={selectedNetwork} selectedLocation={selectedLocation} />
     </group>

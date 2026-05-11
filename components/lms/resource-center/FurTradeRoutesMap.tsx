@@ -306,7 +306,7 @@ function CanadaBaseMap({
                 onClick={() => onSelectLocation(location.id)}
                 aria-label={location.name}
                 aria-pressed={selected}
-                className="group absolute z-20 grid h-8 w-8 min-w-0 -translate-x-1/2 -translate-y-1/2 place-items-center gap-1 rounded-lg border border-white/14 bg-[#071b20]/86 px-0 py-0 text-center text-[11px] font-black text-white shadow-[0_10px_24px_rgba(2,8,23,0.28)] backdrop-blur transition-colors hover:z-30 hover:bg-[#f1d28a] hover:text-[#1f281f] data-[muted=true]:opacity-42 data-[selected=true]:h-auto data-[selected=true]:w-auto data-[selected=true]:min-w-[96px] data-[selected=true]:border-[#f1d28a] data-[selected=true]:bg-[#f1d28a] data-[selected=true]:px-2 data-[selected=true]:py-1.5 data-[selected=true]:text-[#1f281f] sm:h-auto sm:w-auto sm:min-w-[92px] sm:px-2 sm:py-1.5 sm:text-xs"
+                className="group absolute z-20 grid h-8 w-8 min-w-0 -translate-x-1/2 -translate-y-1/2 place-items-center gap-1 rounded-lg border border-white/14 bg-[#071b20]/86 px-0 py-0 text-center text-[11px] font-black text-white shadow-[0_10px_24px_rgba(2,8,23,0.28)] backdrop-blur transition-colors hover:z-30 hover:h-auto hover:w-auto hover:min-w-[92px] hover:bg-[#f1d28a] hover:px-2 hover:py-1.5 hover:text-[#1f281f] data-[muted=true]:opacity-42 data-[selected=true]:h-auto data-[selected=true]:w-auto data-[selected=true]:min-w-[96px] data-[selected=true]:border-[#f1d28a] data-[selected=true]:bg-[#f1d28a] data-[selected=true]:px-2 data-[selected=true]:py-1.5 data-[selected=true]:text-[#1f281f] sm:h-9 sm:w-9 sm:min-w-0 sm:px-0 sm:py-0 sm:text-xs"
                 data-selected={selected}
                 data-muted={muted}
                 style={{
@@ -315,7 +315,7 @@ function CanadaBaseMap({
                 }}
               >
                 <span className="h-2.5 w-2.5 rounded-full bg-current shadow-[0_0_0_5px_rgba(255,255,255,0.16)]" />
-                <span className="hidden max-w-[120px] leading-tight group-data-[selected=true]:block sm:block">{location.name}</span>
+                <span className="hidden max-w-[120px] leading-tight group-hover:block group-data-[selected=true]:block">{location.name}</span>
               </button>
             )
           })}
@@ -588,7 +588,7 @@ export function FurTradeRoutesMap() {
       <div className="mt-4 grid gap-3 rounded-lg border border-white/12 bg-white/8 p-4 text-sm font-semibold text-[#d6e6dc] lg:grid-cols-[1fr_auto]">
         <span className="inline-flex items-center gap-2">
           <BookOpen className="h-4 w-4 text-[#f1d28a]" />
-          Source-backed teaching notes from Parks Canada, Library and Archives Canada, and Indigenous Peoples Atlas of Canada.
+          Boundary data from geoBoundaries, with teaching notes from Parks Canada, Library and Archives Canada, and Indigenous Peoples Atlas of Canada.
         </span>
         <div className="flex flex-wrap gap-2">
           {furTradeSources.map((source) => (
