@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   courseResourceAccessDecision,
   courseResourceRetentionExpiresAt,
+  courseResourceUploadScanVerdict,
   isMissingResourceSecurityTableError,
   sha256ForUploadFile,
 } from '@/lib/lms/resource-security'
@@ -16,6 +17,49 @@ describe('course resource security controls', () => {
     await expect(sha256ForUploadFile(file)).resolves.toBe(
       'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad'
     )
+  })
+
+  it('automatically quarantines configured SHA-256 denylist matches', () => {
+    const verdict = courseResourceUploadScanVerdict({
+      fileSha256: 'BA7816BF8F01CFEA414140DE5DAE2223B00361A396177A9CB410FF61F20015AD',
+      blockedSha256: ['ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad'],
+      now: new Date('2026-05-08T12:00:00.000Z'),
+    })
+
+    expect(verdict).toEqual({
+      scanStatus: 'blocked',
+      scanProvider: 'mime-allowlist-sha256',
+      scanCheckedAt: '2026-05-08T12:00:00.000Z',
+      quarantineReason: 'SHA-256 denylist match',
+    })
+  })
+
+  it('marks non-blocklisted uploads clean or pending based on launch policy', () => {
+    expect(
+      courseResourceUploadScanVerdict({
+        fileSha256: 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad',
+        blockedSha256: [],
+        requireCleanScan: false,
+        now: new Date('2026-05-08T12:00:00.000Z'),
+      })
+    ).toMatchObject({
+      scanStatus: 'clean',
+      scanCheckedAt: '2026-05-08T12:00:00.000Z',
+      quarantineReason: '',
+    })
+
+    expect(
+      courseResourceUploadScanVerdict({
+        fileSha256: 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad',
+        blockedSha256: [],
+        requireCleanScan: true,
+        now: new Date('2026-05-08T12:00:00.000Z'),
+      })
+    ).toMatchObject({
+      scanStatus: 'pending',
+      scanCheckedAt: null,
+      quarantineReason: '',
+    })
   })
 
   it('blocks quarantined, errored, pending, and expired resources when policy requires it', () => {

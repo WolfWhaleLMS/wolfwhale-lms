@@ -2,10 +2,9 @@ import type { SupabaseClient, User } from '@supabase/supabase-js'
 import { tryAwardServerCompanionXp } from '@/lib/companion/server-xp'
 import {
   courseResourceCourseQuotaBytes,
-  courseResourceInitialScanStatus,
   courseResourceRetentionExpiresAt,
-  courseResourceScanProvider,
   courseResourceTenantQuotaBytes,
+  courseResourceUploadScanVerdict,
   isMissingResourceSecurityTableError,
   sha256ForUploadFile,
 } from '@/lib/lms/resource-security'
@@ -461,7 +460,7 @@ async function recordCourseResourceSecurityReview(
     fileSha256: string
   }
 ) {
-  const scanStatus = courseResourceInitialScanStatus()
+  const scanVerdict = courseResourceUploadScanVerdict({ fileSha256: input.fileSha256 })
   const { error } = await supabase.from('course_resource_security_reviews').insert({
     tenant_id: input.tenantId,
     course_id: input.courseId,
@@ -472,9 +471,10 @@ async function recordCourseResourceSecurityReview(
     file_type: input.fileType,
     file_size: input.fileSize,
     file_sha256: input.fileSha256,
-    scan_status: scanStatus,
-    scan_provider: courseResourceScanProvider(),
-    scan_checked_at: scanStatus === 'clean' ? new Date().toISOString() : null,
+    scan_status: scanVerdict.scanStatus,
+    scan_provider: scanVerdict.scanProvider,
+    scan_checked_at: scanVerdict.scanCheckedAt,
+    quarantine_reason: scanVerdict.quarantineReason || null,
     retention_expires_at: courseResourceRetentionExpiresAt(),
   })
 

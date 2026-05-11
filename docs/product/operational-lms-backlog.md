@@ -26,7 +26,7 @@ Date: 2026-05-10
 - Teacher content modules: reorder modules, attach resources per module, publish/unpublish, and preview as student.
 - Messaging controls: allowed role matrix admin settings, reporting, and retention policy controls. Initial staff message CSV export/review and staff moderation status controls now exist.
 - Attendance reports: date-range filters, CSV/PDF export, absence trend flags, and guardian notes.
-- Resource review UI: admin quarantine/legal-hold queue and quota summary now exist; malware scanner integration, retention override automation, and live policy proof remain.
+- Resource review UI: admin quarantine/legal-hold queue, quota summary, and SHA-256 denylist auto-quarantine now exist; external malware scanner integration, retention override automation, and live policy proof remain.
 - Companion XP integration: server-side XP grants for submission, grade feedback, and attendance check-ins now exist; lesson completion and quiz completion remain.
 - Accessibility audit: keyboard-only flows, focus order, color contrast, reduced motion, form errors, and WCAG 2.2 target sizing.
 - Monitoring: Sentry release health, alert routing, uptime checks, DB/storage error dashboards.

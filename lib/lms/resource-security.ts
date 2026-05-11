@@ -14,6 +14,13 @@ export interface CourseResourceAccessDecision {
   status: number
 }
 
+export interface CourseResourceUploadScanVerdict {
+  scanStatus: CourseResourceScanStatus
+  scanProvider: string
+  scanCheckedAt: string | null
+  quarantineReason: string
+}
+
 const defaultTenantQuotaBytes = 10 * 1024 * 1024 * 1024
 const defaultCourseQuotaBytes = 2 * 1024 * 1024 * 1024
 const defaultRetentionDays = 7 * 365
@@ -61,6 +68,53 @@ export function courseResourceInitialScanStatus(): CourseResourceScanStatus {
 
 export function courseResourceScanProvider() {
   return process.env.COURSE_RESOURCE_SCAN_PROVIDER?.trim() || 'mime-allowlist-sha256'
+}
+
+function configuredSha256Denylist() {
+  return (process.env.COURSE_RESOURCE_BLOCKED_SHA256 ?? '')
+    .split(',')
+    .map((value) => value.trim().toLowerCase())
+    .filter((value) => /^[a-f0-9]{64}$/.test(value))
+}
+
+export function courseResourceUploadScanVerdict(input: {
+  fileSha256: string
+  blockedSha256?: string[]
+  requireCleanScan?: boolean
+  scanProvider?: string
+  now?: Date
+}): CourseResourceUploadScanVerdict {
+  const now = input.now ?? new Date()
+  const scanProvider = input.scanProvider?.trim() || courseResourceScanProvider()
+  const fileSha256 = input.fileSha256.trim().toLowerCase()
+  const blockedSha256 = input.blockedSha256 ?? configuredSha256Denylist()
+  const denylist = new Set(blockedSha256.map((value) => value.trim().toLowerCase()).filter((value) => /^[a-f0-9]{64}$/.test(value)))
+
+  if (denylist.has(fileSha256)) {
+    return {
+      scanStatus: 'blocked',
+      scanProvider,
+      scanCheckedAt: now.toISOString(),
+      quarantineReason: 'SHA-256 denylist match',
+    }
+  }
+
+  const requireCleanScan = input.requireCleanScan ?? process.env.COURSE_RESOURCE_REQUIRE_CLEAN_SCAN === 'true'
+  if (requireCleanScan) {
+    return {
+      scanStatus: 'pending',
+      scanProvider,
+      scanCheckedAt: null,
+      quarantineReason: '',
+    }
+  }
+
+  return {
+    scanStatus: 'clean',
+    scanProvider,
+    scanCheckedAt: now.toISOString(),
+    quarantineReason: '',
+  }
 }
 
 export function isMissingResourceSecurityTableError(error: unknown) {
