@@ -75,6 +75,7 @@ This is an engineering threat model for student-record software. It is not legal
 - Malware scanning and quarantine worker for uploaded files.
 - Live audit-row insertion proof after target Supabase migrations are applied.
 - Live application and RLS validation for message moderation columns and staff-only moderation routes.
+- Live application and RLS validation for guardian contact-detail columns; the current target project is missing `student_parents.consent_notes`, which blocks dashboard read-model smoke and parent-privacy QA.
 - Secret scan and dependency audit in the current branch.
 - Formal privacy/compliance review for FERPA, COPPA, PPRA, PIPEDA, BC/Canadian school expectations, and retention/deletion workflows.
 

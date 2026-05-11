@@ -14,6 +14,7 @@ Date: 2026-05-11
 - Audit logs: important writes create durable audit rows.
 - Pet rewards: XP and unlocks come from real learning events, not only manual demo buttons.
 - Browser QA: login, all role dashboards, mobile, upload, grading, parent visibility, and logout pass.
+- Smoke readiness: preflight real Supabase auth plus the LMS dashboard read model before browser QA so missing migrations and broken smoke data fail with actionable table/role errors.
 - Security QA: RLS tests, storage policy tests, dependency audit, secret scan, and threat-model review pass.
 - Launch docs: privacy, DPA, subprocessor, breach, retention, export, delete, correction, support, and restore docs exist; legal review and product automation remain open.
 
@@ -48,3 +49,4 @@ Date: 2026-05-11
 - Scorecard: `docs/audits/launch-readiness-scorecard.md`
 - Threat model: `docs/security/threat-model.md`
 - Launch blockers: `docs/roadmap/launch-blockers.md`
+- Smoke readiness preflight: `scripts/check-lms-smoke-readiness.ts`

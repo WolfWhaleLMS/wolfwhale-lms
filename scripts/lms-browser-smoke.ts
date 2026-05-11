@@ -1,6 +1,7 @@
 import { mkdir } from 'node:fs/promises'
 import path from 'node:path'
 import { chromium, type Browser, type Page } from '@playwright/test'
+import { checkLmsSmokeReadiness } from './check-lms-smoke-readiness'
 
 const baseUrl = process.env.LMS_SMOKE_BASE_URL ?? 'http://localhost:3000'
 const outputDir = path.resolve(process.cwd(), 'test-results/lms-smoke')
@@ -388,6 +389,8 @@ async function loginAs(browser: Browser, role: LmsRole, viewport: { width: numbe
 }
 
 async function main() {
+  await checkLmsSmokeReadiness()
+
   await mkdir(outputDir, { recursive: true })
 
   const browser = await chromium.launch()

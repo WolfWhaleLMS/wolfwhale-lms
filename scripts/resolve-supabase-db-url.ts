@@ -23,12 +23,16 @@ function parseEnvFile(filePath: string): EnvMap {
 
     const key = line.slice(0, separatorIndex).trim()
     let value = line.slice(separatorIndex + 1).trim()
-    if (
+    const quoted =
       (value.startsWith('"') && value.endsWith('"')) ||
       (value.startsWith("'") && value.endsWith("'"))
-    ) {
+
+    if (quoted) {
       value = value.slice(1, -1)
+      value = value.replace(/\\n/g, '\n').replace(/\\r/g, '\r').replace(/\\t/g, '\t')
     }
+
+    value = value.replace(/^[\r\n]+|[\r\n]+$/g, '')
     parsed[key] = value
   }
 

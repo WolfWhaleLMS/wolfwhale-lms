@@ -16,6 +16,7 @@ The product target is a serious single-school paid beta first, then controlled m
 - React components consume read models from `lib/lms/read-model.ts`; write logic lives in `lib/lms/mutations.ts`; Supabase row mapping lives in `lib/lms/queries.ts`.
 - Demo/pilot routes remain separate from production LMS routes under `app/api/pilot/*` and `lib/pilot/*`.
 - Auditable writes use `audit_logs` through LMS mutation helpers.
+- Browser smoke now starts with `scripts/check-lms-smoke-readiness.ts`, which signs into the same Supabase smoke accounts and loads the LMS read model before Playwright. This keeps missing target-project migrations from being misreported as generic login UI failures.
 
 ## Verified Core Surfaces
 
@@ -140,9 +141,13 @@ Textbook quiz attempts now have a real learning-event path:
 - `npm test -- tests/companion-server-xp.test.ts tests/fish-companion.test.ts`: 16/16 passing on 2026-05-10 for fish-only companion guardrails and server-side XP grants from real submission, feedback, present/online attendance, and textbook lesson-completion events.
 - `npm test -- tests/textbook-inline-quiz.test.tsx`: 4/4 passing on 2026-05-11 for seeded quiz block normalization, student answer forms, audit-before-XP server-action wiring, and the RLS-backed inline quiz attempt migration artifact.
 - `npm test -- tests/textbook-inline-quiz.test.tsx tests/companion-server-xp.test.ts tests/fish-companion.test.ts tests/prompt-artifact-checklist.test.ts`: 23/23 passing on 2026-05-11 for textbook quiz attempts, fish-only companion guardrails, server-side XP wiring, and checklist coverage.
+- `npm test -- tests/supabase-db-url.test.ts tests/lms-smoke-readiness.test.ts`: 8/8 passing on 2026-05-11 for Supabase script env normalization and smoke-readiness auth/read-model diagnostics.
+- `npm test`: 38 files / 167 tests passing on 2026-05-11 after adding the smoke-readiness preflight.
+- `npm run lint`, `npm run typecheck`, `npm run build`, `npm audit --audit-level=moderate`, and `git diff --check`: passing on 2026-05-11 after adding the smoke-readiness preflight.
+- `npx tsx scripts/check-lms-smoke-readiness.ts`: blocked on 2026-05-11 after successful student auth because the target Supabase project is missing `student_parents.consent_notes`; apply `20260511001241_guardian_contact_details.sql` before rerunning browser smoke.
 - `npm test`: 37 files / 163 tests passing on 2026-05-11 after adding textbook inline quiz attempts.
 - `npm run lint`, `npm run typecheck`, `npm run build`, `npm audit --audit-level=moderate`, and `git diff --check`: passing on 2026-05-11 after adding textbook inline quiz attempts.
-- Fish-only companion scan for retired pet terms and companion-path `glacier` references found no matches on 2026-05-11. Broader science-textbook glacier references are curriculum content, not companion assets.
+- Fish-only companion scan for retired pet terms and non-fish companion references found no matches on 2026-05-11. Broader earth-science references are curriculum content, not companion assets.
 - Textbook inline quiz rendered QA fallback on 2026-05-11 reached the login screen at desktop and mobile widths, but the student demo account redirected to `/login?error=lms-access-required`; protected textbook chapter UI remains blocked until smoke memberships/data are restored.
 - `npm test -- tests/lms-message-export.test.tsx tests/lms-messages.test.ts tests/lms-dashboards.test.tsx tests/prompt-artifact-checklist.test.ts`: 14/14 passing on 2026-05-10 for staff-only message CSV export, dashboard links, message workflows, dashboards, and launch checklist coverage.
 - `npm test -- tests/lms-message-moderation.test.tsx tests/lms-message-export.test.tsx tests/lms-messages.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx tests/lms-audit-log-coverage.test.ts`: 21/21 passing on 2026-05-10 for staff-only message moderation controls, export/review, message workflows, query mapping, dashboards, and audit coverage.

@@ -1,7 +1,11 @@
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 import {
   resolveSupabaseDbUrl,
+  resolveSupabaseScriptEnv,
   resolveSupabaseProjectRef,
 } from '@/scripts/resolve-supabase-db-url'
 
@@ -52,5 +56,27 @@ describe('resolveSupabaseDbUrl', () => {
         },
       }),
     ).toBe('projectref')
+  })
+
+  it('normalizes Vercel-exported newline escapes from local env files', () => {
+    const cwd = mkdtempSync(path.join(tmpdir(), 'wolfwhale-env-'))
+
+    try {
+      writeFileSync(
+        path.join(cwd, '.env.local'),
+        [
+          'NEXT_PUBLIC_SUPABASE_URL="https://projectref.supabase.co\\n"',
+          'SUPABASE_DB_PASSWORD="secret\\n"',
+        ].join('\n'),
+      )
+
+      expect(resolveSupabaseScriptEnv({ cwd, env: {} })).toMatchObject({
+        NEXT_PUBLIC_SUPABASE_URL: 'https://projectref.supabase.co',
+        SUPABASE_DB_PASSWORD: 'secret',
+      })
+      expect(resolveSupabaseProjectRef({ cwd, env: {} })).toBe('projectref')
+    } finally {
+      rmSync(cwd, { recursive: true, force: true })
+    }
   })
 })
