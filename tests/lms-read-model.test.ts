@@ -122,6 +122,24 @@ describe('persistent LMS read model', () => {
     expect(JSON.stringify(views.guardian)).not.toContain('riley@example.test')
   })
 
+  it('keeps inactive student memberships out of guardian and teacher operational views', () => {
+    const records = createDemoLmsRecords()
+    records.memberships = records.memberships.map((membership) =>
+      membership.userId === records.actorIds.student ? { ...membership, status: 'inactive' } : membership
+    )
+    const views = buildLmsDashboardViews(records)
+
+    expect(views.admin.memberships.find((membership) => membership.userId === records.actorIds.student)).toMatchObject({
+      name: 'Alex Student',
+      role: 'student',
+      status: 'inactive',
+    })
+    expect(views.admin.metrics.activeStudents).toBe(1)
+    expect(views.teacher.roster.map((student) => student.name)).toEqual(['Riley Student'])
+    expect(views.guardian.students).toEqual([])
+    expect(JSON.stringify(views.guardian)).not.toContain('Alex Student')
+  })
+
   it('filters messages by conversation membership for student and guardian views', () => {
     const records = createDemoLmsRecords()
 

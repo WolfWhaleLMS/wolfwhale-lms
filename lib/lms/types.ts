@@ -237,6 +237,15 @@ export interface LmsPerson {
   name: string
 }
 
+export interface LmsMembershipSummary {
+  userId: string
+  name: string
+  email: string
+  role: LmsMembershipRole
+  status: string
+  isCurrentAdmin: boolean
+}
+
 export interface LmsCourseSummary {
   id: string
   title: string

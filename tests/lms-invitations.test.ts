@@ -47,4 +47,29 @@ describe('LMS admin invitations', () => {
     expect(invitationSource).toContain('user.invited')
     expect(invitationSource).toContain('tenant_membership')
   })
+
+  it('normalizes and wires audited school membership status changes', async () => {
+    const modulePath = '@/lib/lms/invitations'
+    const { normalizeMembershipStatusDraft } = await import(modulePath)
+    const dashboardSource = sourceFor('components/lms/AdminDashboard.tsx')
+    const routeSource = sourceFor('app/api/lms/memberships/status/route.ts')
+    const invitationSource = sourceFor('lib/lms/invitations.ts')
+
+    expect(normalizeMembershipStatusDraft({ userId: ' user-1 ', status: ' inactive ' })).toEqual({
+      userId: 'user-1',
+      status: 'inactive',
+    })
+    expect(() => normalizeMembershipStatusDraft({ userId: '', status: 'inactive' })).toThrow('user_id is required')
+    expect(() => normalizeMembershipStatusDraft({ userId: 'user-1', status: 'suspended' })).toThrow(
+      'Status must be active or inactive.'
+    )
+    expect(dashboardSource).toContain('action="/api/lms/memberships/status"')
+    expect(dashboardSource).toContain('name="userId"')
+    expect(dashboardSource).toContain('name="status"')
+    expect(routeSource).toContain('updateSchoolMembershipStatus')
+    expect(routeSource).toContain('enforceLmsMutationRateLimit')
+    expect(invitationSource).toContain('updateSchoolMembershipStatus')
+    expect(invitationSource).toContain('user.deactivated')
+    expect(invitationSource).toContain('user.reactivated')
+  })
 })

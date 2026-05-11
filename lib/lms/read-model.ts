@@ -12,6 +12,7 @@ import type {
   LmsGradingQueueItem,
   LmsGuardianLinkSummary,
   LmsLessonSummary,
+  LmsMembershipSummary,
   LmsMessageSummary,
   LmsPerson,
   LmsRecords,
@@ -75,6 +76,10 @@ function findUser(records: LmsRecords, userId: string) {
   return user
 }
 
+function userMap(records: LmsRecords) {
+  return new Map(records.users.map((user) => [user.id, user]))
+}
+
 function findAssignment(records: LmsRecords, assignmentId: string) {
   const assignment = records.assignments.find((candidate) => candidate.id === assignmentId)
   if (!assignment) {
@@ -108,13 +113,17 @@ function gradeSummary(records: LmsRecords, grade: LmsGradeRecord): LmsGradeSumma
 }
 
 function activeStudents(records: LmsRecords) {
-  const studentIds = new Set(
+  const studentIds = activeStudentIdSet(records)
+
+  return records.users.filter((user) => studentIds.has(user.id))
+}
+
+function activeStudentIdSet(records: LmsRecords) {
+  return new Set(
     records.memberships
       .filter((membership) => membership.role === 'student' && membership.status === 'active')
       .map((membership) => membership.userId)
   )
-
-  return records.users.filter((user) => studentIds.has(user.id))
 }
 
 function activeTeachers(records: LmsRecords) {
@@ -146,6 +155,26 @@ function activeGuardianLinks(records: LmsRecords): LmsGuardianLinkSummary[] {
       guardianId: link.parentId,
       guardianName: person(findUser(records, link.parentId)).name,
     }))
+}
+
+function membershipSummaries(records: LmsRecords): LmsMembershipSummary[] {
+  const users = userMap(records)
+
+  return records.memberships.map((membership) => {
+    const user = users.get(membership.userId)
+    if (!user) {
+      throw new Error(`Missing LMS user ${membership.userId}`)
+    }
+
+    return {
+      userId: membership.userId,
+      name: person(user).name,
+      email: user.email,
+      role: membership.role,
+      status: membership.status,
+      isCurrentAdmin: membership.userId === records.actorIds.admin,
+    }
+  })
 }
 
 function studentCourseIds(records: LmsRecords, studentId: string) {
@@ -466,11 +495,17 @@ function riskSummary(gradebooks: LmsGradebookCourseSummary[]): LmsRiskSummary {
 }
 
 export function buildLmsDashboardViews(records: LmsRecords) {
+  const activeStudentIds = activeStudentIdSet(records)
   const teacherCourseIdSet = teacherCourseIds(records, records.actorIds.teacher)
   const teacherCourses = records.courses.filter((course) => teacherCourseIdSet.has(course.id))
   const teacherRosterIds = new Set(
     records.enrollments
-      .filter((enrollment) => teacherCourseIdSet.has(enrollment.courseId) && enrollment.status === 'active')
+      .filter(
+        (enrollment) =>
+          teacherCourseIdSet.has(enrollment.courseId) &&
+          enrollment.status === 'active' &&
+          activeStudentIds.has(enrollment.studentId)
+      )
       .map((enrollment) => enrollment.studentId)
   )
   const teacherAssignments = records.assignments.filter((assignment) => teacherCourseIdSet.has(assignment.courseId))
@@ -480,7 +515,7 @@ export function buildLmsDashboardViews(records: LmsRecords) {
   const studentAssignments = records.assignments.filter((assignment) => studentCourseIdSet.has(assignment.courseId))
 
   const linkedStudentIds = records.parentLinks
-    .filter((link) => link.parentId === records.actorIds.guardian && link.status === 'active')
+    .filter((link) => link.parentId === records.actorIds.guardian && link.status === 'active' && activeStudentIds.has(link.studentId))
     .map((link) => link.studentId)
   const guardianCourseIdSet = new Set(linkedStudentIds.flatMap((studentId) => [...studentCourseIds(records, studentId)]))
   const allCourseIds = new Set(records.courses.map((course) => course.id))
@@ -514,6 +549,7 @@ export function buildLmsDashboardViews(records: LmsRecords) {
         unreadNotifications: records.notifications.filter((notification) => !notification.read).length,
       },
       auditTrail: records.auditTrail,
+      memberships: membershipSummaries(records),
       courses: records.courses.map(courseSummary),
       students: activeStudents(records).map(person),
       teachers: activeTeachers(records).map(person),

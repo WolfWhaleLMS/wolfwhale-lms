@@ -4,6 +4,7 @@ import { LmsMutationError } from '@/lib/lms/mutations'
 type Row = Record<string, unknown>
 
 const inviteRoles = new Set(['student', 'teacher', 'parent', 'admin'])
+const membershipStatuses = new Set(['active', 'inactive'])
 
 function text(value: unknown, fallback = '') {
   return typeof value === 'string' && value.trim() ? value.trim() : fallback
@@ -55,6 +56,19 @@ export function normalizeInviteDraft(input: {
     lastName: optionalLimitedText(input.lastName, 100),
     role: normalizeInviteRole(input.role),
     gradeLevel: optionalLimitedText(input.gradeLevel, 50),
+  }
+}
+
+export function normalizeMembershipStatusDraft(input: { userId: unknown; status: unknown }) {
+  const userId = id(input.userId, 'user_id')
+  const status = text(input.status).toLowerCase()
+  if (!membershipStatuses.has(status)) {
+    throw new LmsMutationError('Status must be active or inactive.', 'invalid_membership_status')
+  }
+
+  return {
+    userId,
+    status: status as 'active' | 'inactive',
   }
 }
 
@@ -163,5 +177,79 @@ export async function inviteUserToSchool(
   return {
     invitedUserId,
     role: draft.role,
+  }
+}
+
+export async function updateSchoolMembershipStatus(
+  supabase: SupabaseClient,
+  input: { userId: unknown; status: unknown }
+) {
+  const { createAdminClient, hasSupabaseAdminEnv } = await import('@/lib/supabase/admin')
+
+  if (!hasSupabaseAdminEnv()) {
+    throw new LmsMutationError('SUPABASE_SERVICE_ROLE_KEY is required for membership status changes.', 'service_role_required')
+  }
+
+  const adminContext = await requireSchoolAdmin(supabase)
+  const draft = normalizeMembershipStatusDraft(input)
+  if (draft.userId === adminContext.userId && draft.status === 'inactive') {
+    throw new LmsMutationError('Admins cannot deactivate their own school membership.', 'self_deactivation_not_allowed')
+  }
+
+  const admin = createAdminClient()
+  const { data: currentRows, error: lookupError } = await admin
+    .from('tenant_memberships')
+    .select('tenant_id,user_id,role,status')
+    .eq('tenant_id', adminContext.tenantId)
+    .eq('user_id', draft.userId)
+
+  if (lookupError) {
+    throw new LmsMutationError(`Unable to load membership: ${lookupError.message}`, 'membership_lookup_failed')
+  }
+
+  const currentMembership = rows(currentRows)[0]
+  if (!currentMembership) {
+    throw new LmsMutationError('School membership was not found.', 'membership_not_found')
+  }
+
+  const role = text(currentMembership.role)
+  const previousStatus = text(currentMembership.status, 'active')
+  if (role === 'super_admin' && draft.status === 'inactive') {
+    throw new LmsMutationError('Super admin memberships cannot be deactivated from school operations.', 'protected_membership')
+  }
+
+  const { data: updatedRows, error: updateError } = await admin
+    .from('tenant_memberships')
+    .update({ status: draft.status })
+    .eq('tenant_id', adminContext.tenantId)
+    .eq('user_id', draft.userId)
+    .select('user_id,role,status')
+
+  if (updateError) {
+    throw new LmsMutationError(`Unable to update membership status: ${updateError.message}`, 'membership_status_update_failed')
+  }
+
+  const updatedMembership = rows(updatedRows)[0]
+  if (!updatedMembership) {
+    throw new LmsMutationError('School membership was not updated.', 'membership_not_found')
+  }
+
+  await admin.from('audit_logs').insert({
+    tenant_id: adminContext.tenantId,
+    user_id: adminContext.userId,
+    action: draft.status === 'active' ? 'user.reactivated' : 'user.deactivated',
+    resource_type: 'tenant_membership',
+    resource_id: draft.userId,
+    details: {
+      role,
+      previous_status: previousStatus,
+      status: draft.status,
+    },
+  })
+
+  return {
+    userId: draft.userId,
+    role,
+    status: draft.status,
   }
 }

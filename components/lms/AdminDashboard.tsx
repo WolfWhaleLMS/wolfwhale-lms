@@ -1,4 +1,4 @@
-import { Activity, AlertTriangle, Bell, BookOpen, CalendarCheck, CalendarDays, ClipboardCheck, Download, FileText, MessageSquare, Plus, Upload, UserPlus, Users } from 'lucide-react'
+import { Activity, AlertTriangle, Bell, BookOpen, CalendarCheck, CalendarDays, ClipboardCheck, Download, FileText, MessageSquare, Plus, Upload, UserCheck, UserPlus, Users, UserX } from 'lucide-react'
 import { LmsPanel, LmsShell } from '@/components/lms/LmsShell'
 import { CalendarEventForm, CalendarPanel, MessagesPanel, ResourceUploadForm, ResourcesPanel } from '@/components/lms/SharedLmsPanels'
 import type { buildLmsDashboardViews } from '@/lib/lms/read-model'
@@ -17,6 +17,7 @@ const adminTools = [
   { href: '#resources', label: 'Resources', description: 'Open shared files', icon: FileText },
   { href: '#messages', label: 'Messages', description: 'Read school messages', icon: MessageSquare },
   { href: '#create-course', label: 'Create course', description: 'Add classes and sections', icon: Plus },
+  { href: '#school-users', label: 'Users', description: 'Activate or pause accounts', icon: UserCheck },
   { href: '#invite-user', label: 'Invite user', description: 'Send a school invite', icon: UserPlus },
   { href: '#guardian-links', label: 'Guardian links', description: 'Connect parents to students', icon: Users },
   { href: '#enroll-student', label: 'Enroll student', description: 'Place students in courses', icon: UserPlus },
@@ -283,6 +284,39 @@ export function AdminDashboard({ view }: { view: AdminView }) {
               Send invite
             </button>
           </form>
+        </LmsPanel>
+
+        <LmsPanel id="school-users" title="School users">
+          <ul className="grid gap-2">
+            {view.memberships.map((membership) => {
+              const nextStatus = membership.status === 'active' ? 'inactive' : 'active'
+              const isActive = membership.status === 'active'
+              const StatusIcon = isActive ? UserX : UserCheck
+
+              return (
+                <li key={membership.userId} className="flex flex-col gap-3 rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="font-semibold">{membership.name}</p>
+                    <p className="text-slate-500 dark:text-slate-400">
+                      {membership.email} · {membership.role} · {membership.status}
+                    </p>
+                  </div>
+                  <form action="/api/lms/memberships/status" method="post">
+                    <input type="hidden" name="userId" value={membership.userId} />
+                    <input type="hidden" name="status" value={nextStatus} />
+                    <button
+                      type="submit"
+                      disabled={membership.isCurrentAdmin}
+                      className="inline-flex h-9 w-fit items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-900 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
+                    >
+                      <StatusIcon className="h-4 w-4" />
+                      {isActive ? 'Deactivate' : 'Reactivate'}
+                    </button>
+                  </form>
+                </li>
+              )
+            })}
+          </ul>
         </LmsPanel>
 
         <LmsPanel id="guardian-links" title="Guardian links">
