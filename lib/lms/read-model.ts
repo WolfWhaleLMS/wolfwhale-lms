@@ -315,6 +315,10 @@ function messageSummaries(records: LmsRecords, visibleConversationIds?: Set<stri
         senderName: sender ? person(sender).name : 'School member',
         content: message.content,
         createdAt: message.createdAt,
+        moderationStatus: message.moderationStatus ?? 'visible',
+        moderationNote: message.moderationNote ?? '',
+        moderatedBy: message.moderatedBy ?? '',
+        moderatedAt: message.moderatedAt ?? '',
       }
     })
     .sort((left, right) => right.createdAt.localeCompare(left.createdAt))

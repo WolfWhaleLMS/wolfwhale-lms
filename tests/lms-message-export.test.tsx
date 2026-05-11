@@ -28,6 +28,10 @@ describe('LMS message review exports', () => {
         senderName: 'Tessa Teacher',
         content: 'Please review "Primary Source Pack" before class.',
         createdAt: '2026-05-07T16:03:00.000Z',
+        moderationStatus: 'visible',
+        moderationNote: '',
+        moderatedBy: '',
+        moderatedAt: '',
       },
     ])
 

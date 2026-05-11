@@ -314,6 +314,10 @@ export function mapSupabaseRowsToLmsRecords(rows: SupabaseLmsRows): LmsRecords {
       senderId: text(message.sender_id),
       content: text(message.content),
       createdAt: text(message.created_at),
+      moderationStatus: text(message.moderation_status, 'visible') as 'visible' | 'flagged' | 'hidden',
+      moderationNote: text(message.moderation_note),
+      moderatedBy: text(message.moderated_by),
+      moderatedAt: text(message.moderated_at),
     })),
     rubrics: rows.rubrics.map((rubric) => ({
       id: text(rubric.id),
@@ -454,7 +458,12 @@ export async function loadLmsRecordsForUser(supabase: SupabaseClient, userId: st
     queryTable(supabase, 'audit_logs', 'id,tenant_id,user_id,action,resource_type,resource_id,details,created_at', tenantId),
     queryTable(supabase, 'lessons', 'id,tenant_id,course_id,title,status', tenantId),
     queryTable(supabase, 'conversations', 'id,tenant_id,subject,course_id,created_by,updated_at', tenantId),
-    queryTable(supabase, 'messages', 'id,tenant_id,conversation_id,sender_id,content,created_at', tenantId),
+    queryTable(
+      supabase,
+      'messages',
+      'id,tenant_id,conversation_id,sender_id,content,created_at,moderation_status,moderation_note,moderated_by,moderated_at',
+      tenantId
+    ),
     queryTable(supabase, 'rubrics', 'id,tenant_id,assignment_id,name,description,criteria,created_by', tenantId),
     queryTable(supabase, 'attendance_records', 'id,tenant_id,course_id,student_id,attendance_date,status,notes,marked_by', tenantId),
     queryTable(

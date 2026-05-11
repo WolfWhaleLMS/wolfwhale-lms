@@ -210,6 +210,8 @@ export function AdminDashboard({ view }: { view: AdminView }) {
         <ResourcesPanel resources={view.resources} actions={<ResourceUploadForm courses={view.courses} returnTo="/admin" />} canReview />
         <MessagesPanel
           messages={view.messages}
+          canModerate
+          moderationReturnTo="/admin"
           actions={
             <a
               href="/api/lms/exports/messages"

@@ -15,9 +15,11 @@ type Row = Record<string, unknown>
 type LmsStaffRole = 'teacher' | 'admin' | 'super_admin'
 type LmsMessagingRole = 'student' | 'teacher' | 'parent' | 'admin' | 'super_admin'
 type LmsAttendanceStatus = 'present' | 'absent' | 'tardy' | 'excused' | 'online'
+type LmsMessageModerationStatus = 'visible' | 'flagged' | 'hidden'
 
 const attendanceStatuses: readonly LmsAttendanceStatus[] = ['present', 'absent', 'tardy', 'excused', 'online']
 const messagingRoles: readonly LmsMessagingRole[] = ['student', 'teacher', 'parent', 'admin', 'super_admin']
+const messageModerationStatuses: readonly LmsMessageModerationStatus[] = ['visible', 'flagged', 'hidden']
 const courseResourceLessonTitle = 'Course resources'
 const maxSubmissionFileBytes = 25 * 1024 * 1024
 const maxCourseResourceBytes = 100 * 1024 * 1024
@@ -720,6 +722,23 @@ export function normalizeMessageDraft(input: { courseId: unknown; recipientId?: 
   }
 }
 
+function messageModerationStatus(value: unknown) {
+  const normalized = text(value)
+  if (!messageModerationStatuses.includes(normalized as LmsMessageModerationStatus)) {
+    throw new LmsMutationError('Invalid message moderation status.', 'invalid_message_moderation_status')
+  }
+
+  return normalized as LmsMessageModerationStatus
+}
+
+export function normalizeMessageModerationDraft(input: { messageId: unknown; moderationStatus: unknown; moderationNote?: unknown }) {
+  return {
+    messageId: id(input.messageId, 'message_id'),
+    moderationStatus: messageModerationStatus(input.moderationStatus),
+    moderationNote: optionalLimitedText(input.moderationNote, 500),
+  }
+}
+
 function notificationActionUrlForRole(role: LmsMessagingRole) {
   if (role === 'student') return '/student/messages'
   if (role === 'parent') return '/guardian'
@@ -1013,6 +1032,102 @@ export async function sendCourseMessage(
   })
 
   return { conversationId, messageId }
+}
+
+export async function moderateCourseMessage(
+  supabase: SupabaseClient,
+  input: { messageId: unknown; moderationStatus: unknown; moderationNote?: unknown }
+) {
+  const user = await requireUser(supabase)
+  const staff = await requireStaff(supabase, user)
+  const draft = normalizeMessageModerationDraft(input)
+  const message = await singleRow(
+    supabase
+      .from('messages')
+      .select('id,tenant_id,conversation_id')
+      .eq('id', draft.messageId)
+      .single(),
+    'message_lookup_failed'
+  )
+  const tenantId = id(message.tenant_id, 'tenant_id')
+  const conversationId = id(message.conversation_id, 'conversation_id')
+
+  if (tenantId !== staff.tenantId) {
+    throw new LmsMutationError('Message does not belong to this school.', 'tenant_mismatch')
+  }
+
+  const conversation = await singleRow(
+    supabase
+      .from('conversations')
+      .select('id,tenant_id,course_id')
+      .eq('id', conversationId)
+      .single(),
+    'conversation_lookup_failed'
+  )
+  const courseId = text(conversation.course_id)
+
+  if (id(conversation.tenant_id, 'tenant_id') !== tenantId) {
+    throw new LmsMutationError('Conversation does not belong to this school.', 'tenant_mismatch')
+  }
+
+  if (staff.role === 'teacher') {
+    if (!courseId) {
+      throw new LmsMutationError('Teacher message moderation requires a course conversation.', 'teacher_course_required')
+    }
+
+    const course = await singleRow(
+      supabase
+        .from('courses')
+        .select('id,tenant_id,created_by')
+        .eq('id', courseId)
+        .single(),
+      'message_course_lookup_failed'
+    )
+
+    if (id(course.tenant_id, 'tenant_id') !== tenantId) {
+      throw new LmsMutationError('Course does not belong to this school.', 'tenant_mismatch')
+    }
+
+    await ensureTeacherCanManageCourse(supabase, {
+      tenantId,
+      courseId,
+      courseCreatedBy: course.created_by,
+      teacherId: user.id,
+    })
+  }
+
+  const moderatedAt = new Date().toISOString()
+  const { error } = await supabase
+    .from('messages')
+    .update({
+      moderation_status: draft.moderationStatus,
+      moderation_note: draft.moderationNote,
+      moderated_by: user.id,
+      moderated_at: moderatedAt,
+    })
+    .eq('id', draft.messageId)
+    .eq('tenant_id', tenantId)
+
+  if (error) {
+    throw new LmsMutationError(`Unable to update message moderation: ${error.message}`, 'message_moderation_failed')
+  }
+
+  await insertAuditLog(supabase, {
+    tenantId,
+    userId: user.id,
+    action: 'message.moderated',
+    resourceType: 'message',
+    resourceId: draft.messageId,
+    details: {
+      conversation_id: conversationId,
+      course_id: courseId,
+      moderation_status: draft.moderationStatus,
+      moderation_note: draft.moderationNote,
+      moderated_at: moderatedAt,
+    },
+  })
+
+  return { messageId: draft.messageId, moderationStatus: draft.moderationStatus }
 }
 
 export async function submitAssignment(

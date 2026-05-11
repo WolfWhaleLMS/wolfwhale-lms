@@ -372,7 +372,19 @@ export function MessageComposer({
   )
 }
 
-export function MessagesPanel({ id = 'messages', messages, actions }: { id?: string; messages: LmsMessageSummary[]; actions?: ReactNode }) {
+export function MessagesPanel({
+  id = 'messages',
+  messages,
+  actions,
+  canModerate = false,
+  moderationReturnTo = '/teacher',
+}: {
+  id?: string
+  messages: LmsMessageSummary[]
+  actions?: ReactNode
+  canModerate?: boolean
+  moderationReturnTo?: '/admin' | '/teacher'
+}) {
   return (
     <LmsPanel id={id} title="Messages">
       {actions}
@@ -389,7 +401,39 @@ export function MessagesPanel({ id = 'messages', messages, actions }: { id?: str
               <span className="mt-1 block text-slate-500 dark:text-slate-400">
                 {message.senderName} - {message.createdAt}
               </span>
+              <span className="mt-2 inline-flex rounded-md bg-slate-100 px-2 py-1 text-xs font-semibold capitalize text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                Moderation status: {message.moderationStatus}
+              </span>
               <p className="mt-1 text-slate-700 dark:text-slate-200">{message.content}</p>
+              {canModerate ? (
+                <form action={`/api/lms/messages/${message.id}/moderation`} method="post" className="mt-3 grid gap-2 rounded-md border border-slate-200 p-2 dark:border-slate-800">
+                  <input type="hidden" name="returnTo" value={moderationReturnTo} />
+                  <label className="grid gap-1 text-xs font-semibold">
+                    Message review
+                    <select
+                      name="moderationStatus"
+                      defaultValue={message.moderationStatus}
+                      className="h-9 rounded-md border border-slate-300 bg-white px-2 text-sm font-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                    >
+                      <option value="visible">Visible</option>
+                      <option value="flagged">Flagged</option>
+                      <option value="hidden">Hidden</option>
+                    </select>
+                  </label>
+                  <label className="grid gap-1 text-xs font-semibold">
+                    Review note
+                    <input
+                      name="moderationNote"
+                      defaultValue={message.moderationNote}
+                      maxLength={500}
+                      className="h-9 rounded-md border border-slate-300 bg-white px-2 text-sm font-normal normal-case tracking-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                    />
+                  </label>
+                  <button type="submit" className="inline-flex h-9 w-fit items-center gap-2 rounded-md bg-slate-900 px-3 text-sm font-semibold text-white hover:bg-slate-700 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">
+                    Save message review
+                  </button>
+                </form>
+              ) : null}
             </li>
           ))}
         </ul>

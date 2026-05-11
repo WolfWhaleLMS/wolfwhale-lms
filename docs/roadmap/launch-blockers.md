@@ -8,6 +8,7 @@ Date: 2026-05-10
 - Apply and verify `supabase/migrations/20260510205641_student_submission_file_storage.sql` and `supabase/migrations/20260510212739_submissions_assigned_teacher_read_policy.sql` against the target Supabase project.
 - Apply and verify `supabase/migrations/20260510220050_fish_companion_species.sql` so live companion profiles accept only clownfish and pufferfish.
 - Apply and verify `supabase/migrations/20260510233000_course_message_write_policy.sql` so live conversation reads and member inserts follow course, role, and guardian-link boundaries.
+- Apply and verify `supabase/migrations/20260511004429_message_moderation_controls.sql` so live message queries and staff moderation controls have the required review columns.
 - Apply and verify `supabase/migrations/20260510225408_course_section_metadata.sql` so live course setup persists section labels and keeps tenant-scoped section queries indexed.
 - Apply and verify `supabase/migrations/20260510231855_lms_calendar_events.sql` so live school/course event writes and calendar reads follow role, course, and guardian-link boundaries.
 - Restore and verify active LMS smoke credentials/data before browser QA; the latest local LMS browser smoke reached `/login?error=lms-access-required` after student sign-in before the protected dashboard rendered.
@@ -24,7 +25,7 @@ Date: 2026-05-10
 - Admin lifecycle live RLS/deployed proof. Direct audited single-user invite creation, invite resend, membership deactivate/reactivate, role changes, guardian linking/unlinking, guardian primary-contact/consent/custody details, and admin audit review/export now exist.
 - Expand server-side companion XP beyond first-time submissions and first teacher feedback posts into lessons, quizzes, streaks, and attendance patterns.
 - Upload malware scanning, quarantine queue, legal hold workflow, and quota UI.
-- Messaging moderation and communication policy controls. Initial staff message export/review now exists.
+- Messaging communication policy settings, retention/reporting controls, and live moderation proof. Initial staff message export/review and moderation status controls now exist.
 - Formal WCAG 2.2 audit and remediation evidence.
 - Production monitoring and alert ownership.
 - Backup/restore drill evidence against a disposable non-production database.

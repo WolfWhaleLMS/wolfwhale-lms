@@ -151,6 +151,8 @@ export function TeacherDashboard({ view }: { view: TeacherView }) {
         <ResourcesPanel resources={view.resources} actions={<ResourceUploadForm courses={view.courses} returnTo="/teacher" />} />
         <MessagesPanel
           messages={view.messages}
+          canModerate
+          moderationReturnTo="/teacher"
           actions={
             <>
               <a

@@ -150,6 +150,8 @@ export interface LmsConversationMemberRecord {
   userId: string
 }
 
+export type LmsMessageModerationStatus = 'visible' | 'flagged' | 'hidden'
+
 export interface LmsMessageRecord {
   id: string
   tenantId: string
@@ -157,6 +159,10 @@ export interface LmsMessageRecord {
   senderId: string
   content: string
   createdAt: string
+  moderationStatus?: LmsMessageModerationStatus
+  moderationNote?: string
+  moderatedBy?: string
+  moderatedAt?: string
 }
 
 export interface LmsRubricRecord {
@@ -349,6 +355,10 @@ export interface LmsMessageSummary {
   senderName: string
   content: string
   createdAt: string
+  moderationStatus: LmsMessageModerationStatus
+  moderationNote: string
+  moderatedBy: string
+  moderatedAt: string
 }
 
 export type LmsRiskLevel = 'good' | 'watch' | 'high'
