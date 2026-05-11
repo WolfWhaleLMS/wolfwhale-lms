@@ -23,7 +23,7 @@ Date: 2026-05-10
 ## P1 Blockers Before Multi-School Sales
 
 - Admin lifecycle live RLS/deployed proof. Direct audited single-user invite creation, invite resend, membership deactivate/reactivate, role changes, guardian linking/unlinking, guardian primary-contact/consent/custody details, and admin audit review/export now exist.
-- Expand server-side companion XP beyond first-time submissions, first teacher feedback posts, and present/online attendance check-ins into lessons and quizzes.
+- Expand server-side companion XP into real quiz completion once a quiz attempt write path is wired. First-time submissions, first teacher feedback posts, present/online attendance check-ins, and first-time textbook lesson completions now grant server-side XP.
 - External upload malware scanning, retention cleanup automation, and live resource-review proof. Initial SHA-256 denylist auto-quarantine, admin quarantine/legal-hold/retention controls, queue, and quota UI now exist.
 - Messaging communication policy settings, retention/reporting controls, and live moderation proof. Initial staff message export/review and moderation status controls now exist.
 - Formal WCAG 2.2 audit and remediation evidence.

@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { calculateNextReview, type SM2State } from '@/lib/flashcards/sm2'
 import { sanitizeText } from '@/lib/sanitize'
+import { tryAwardServerCompanionXp } from '@/lib/companion/server-xp'
 
 async function getContext() {
   const supabase = await createClient()
@@ -230,7 +231,7 @@ export async function trackReadingProgress(
   // Check for existing progress
   const { data: existing } = await supabase
     .from('student_reading_progress')
-    .select('id, time_spent_seconds')
+    .select('id, status, time_spent_seconds')
     .eq('student_id', user.id)
     .eq('chapter_id', chapterId)
     .eq('tenant_id', tenantId)
@@ -276,6 +277,16 @@ export async function trackReadingProgress(
       })
 
     if (error) throw error
+  }
+
+  if (status === 'completed' && (!existing || existing.status !== 'completed')) {
+    await tryAwardServerCompanionXp(supabase, {
+      tenantId,
+      studentId: user.id,
+      source: 'lesson_completed',
+      label: 'Lesson completed',
+      occurredAt: now,
+    })
   }
 
   // Update last_accessed_at on the student assignment
