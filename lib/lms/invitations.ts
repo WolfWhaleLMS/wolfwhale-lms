@@ -72,6 +72,13 @@ export function normalizeMembershipStatusDraft(input: { userId: unknown; status:
   }
 }
 
+export function normalizeMembershipRoleDraft(input: { userId: unknown; role: unknown }) {
+  return {
+    userId: id(input.userId, 'user_id'),
+    role: normalizeInviteRole(input.role),
+  }
+}
+
 async function requireSchoolAdmin(supabase: SupabaseClient) {
   const {
     data: { user },
@@ -251,5 +258,78 @@ export async function updateSchoolMembershipStatus(
     userId: draft.userId,
     role,
     status: draft.status,
+  }
+}
+
+export async function updateSchoolMembershipRole(
+  supabase: SupabaseClient,
+  input: { userId: unknown; role: unknown }
+) {
+  const { createAdminClient, hasSupabaseAdminEnv } = await import('@/lib/supabase/admin')
+
+  if (!hasSupabaseAdminEnv()) {
+    throw new LmsMutationError('SUPABASE_SERVICE_ROLE_KEY is required for membership role changes.', 'service_role_required')
+  }
+
+  const adminContext = await requireSchoolAdmin(supabase)
+  const draft = normalizeMembershipRoleDraft(input)
+  if (draft.userId === adminContext.userId) {
+    throw new LmsMutationError('Admins cannot change their own school role.', 'self_role_change_not_allowed')
+  }
+
+  const admin = createAdminClient()
+  const { data: currentRows, error: lookupError } = await admin
+    .from('tenant_memberships')
+    .select('tenant_id,user_id,role,status')
+    .eq('tenant_id', adminContext.tenantId)
+    .eq('user_id', draft.userId)
+
+  if (lookupError) {
+    throw new LmsMutationError(`Unable to load membership: ${lookupError.message}`, 'membership_lookup_failed')
+  }
+
+  const currentMembership = rows(currentRows)[0]
+  if (!currentMembership) {
+    throw new LmsMutationError('School membership was not found.', 'membership_not_found')
+  }
+
+  const previousRole = text(currentMembership.role)
+  if (previousRole === 'super_admin') {
+    throw new LmsMutationError('Super admin memberships cannot be changed from school operations.', 'protected_membership')
+  }
+
+  const { data: updatedRows, error: updateError } = await admin
+    .from('tenant_memberships')
+    .update({ role: draft.role })
+    .eq('tenant_id', adminContext.tenantId)
+    .eq('user_id', draft.userId)
+    .select('user_id,role,status')
+
+  if (updateError) {
+    throw new LmsMutationError(`Unable to update membership role: ${updateError.message}`, 'membership_role_update_failed')
+  }
+
+  const updatedMembership = rows(updatedRows)[0]
+  if (!updatedMembership) {
+    throw new LmsMutationError('School membership was not updated.', 'membership_not_found')
+  }
+
+  await admin.from('audit_logs').insert({
+    tenant_id: adminContext.tenantId,
+    user_id: adminContext.userId,
+    action: 'user.role_changed',
+    resource_type: 'tenant_membership',
+    resource_id: draft.userId,
+    details: {
+      previous_role: previousRole,
+      role: draft.role,
+      status: text(currentMembership.status, 'active'),
+    },
+  })
+
+  return {
+    userId: draft.userId,
+    previousRole,
+    role: draft.role,
   }
 }

@@ -72,4 +72,27 @@ describe('LMS admin invitations', () => {
     expect(invitationSource).toContain('user.deactivated')
     expect(invitationSource).toContain('user.reactivated')
   })
+
+  it('normalizes and wires audited school membership role changes', async () => {
+    const modulePath = '@/lib/lms/invitations'
+    const { normalizeMembershipRoleDraft } = await import(modulePath)
+    const dashboardSource = sourceFor('components/lms/AdminDashboard.tsx')
+    const routeSource = sourceFor('app/api/lms/memberships/role/route.ts')
+    const invitationSource = sourceFor('lib/lms/invitations.ts')
+
+    expect(normalizeMembershipRoleDraft({ userId: ' user-1 ', role: ' Teacher ' })).toEqual({
+      userId: 'user-1',
+      role: 'teacher',
+    })
+    expect(() => normalizeMembershipRoleDraft({ userId: '', role: 'teacher' })).toThrow('user_id is required')
+    expect(() => normalizeMembershipRoleDraft({ userId: 'user-1', role: 'owner' })).toThrow(
+      'Role must be student, teacher, parent, or admin.'
+    )
+    expect(dashboardSource).toContain('action="/api/lms/memberships/role"')
+    expect(dashboardSource).toContain('name="role"')
+    expect(routeSource).toContain('updateSchoolMembershipRole')
+    expect(routeSource).toContain('enforceLmsMutationRateLimit')
+    expect(invitationSource).toContain('updateSchoolMembershipRole')
+    expect(invitationSource).toContain('user.role_changed')
+  })
 })

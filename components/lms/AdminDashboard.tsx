@@ -301,18 +301,43 @@ export function AdminDashboard({ view }: { view: AdminView }) {
                       {membership.email} · {membership.role} · {membership.status}
                     </p>
                   </div>
-                  <form action="/api/lms/memberships/status" method="post">
-                    <input type="hidden" name="userId" value={membership.userId} />
-                    <input type="hidden" name="status" value={nextStatus} />
-                    <button
-                      type="submit"
-                      disabled={membership.isCurrentAdmin}
-                      className="inline-flex h-9 w-fit items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-900 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
-                    >
-                      <StatusIcon className="h-4 w-4" />
-                      {isActive ? 'Deactivate' : 'Reactivate'}
-                    </button>
-                  </form>
+                  <div className="flex flex-col gap-2 sm:items-end">
+                    <form action="/api/lms/memberships/status" method="post">
+                      <input type="hidden" name="userId" value={membership.userId} />
+                      <input type="hidden" name="status" value={nextStatus} />
+                      <button
+                        type="submit"
+                        disabled={membership.isCurrentAdmin}
+                        className="inline-flex h-9 w-fit items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-900 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
+                      >
+                        <StatusIcon className="h-4 w-4" />
+                        {isActive ? 'Deactivate' : 'Reactivate'}
+                      </button>
+                    </form>
+                    <form action="/api/lms/memberships/role" method="post" className="flex flex-wrap gap-2 sm:justify-end">
+                      <input type="hidden" name="userId" value={membership.userId} />
+                      <select
+                        name="role"
+                        aria-label={`Role for ${membership.name}`}
+                        defaultValue={membership.role}
+                        disabled={membership.isCurrentAdmin}
+                        className="h-9 rounded-md border border-slate-300 bg-white px-2 text-sm font-normal text-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                      >
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="parent">Parent</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                      <button
+                        type="submit"
+                        disabled={membership.isCurrentAdmin}
+                        className="inline-flex h-9 w-fit items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-900 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
+                      >
+                        <UserCheck className="h-4 w-4" />
+                        Update role
+                      </button>
+                    </form>
+                  </div>
                 </li>
               )
             })}

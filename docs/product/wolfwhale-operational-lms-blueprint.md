@@ -74,7 +74,9 @@ Admin direct invitations now have a real write path:
 - `inviteUserToSchool` verifies the current user is a school admin, sends the Supabase invite through the server-side admin client, upserts profile and tenant membership rows, and writes a `user.invited` audit event.
 - The admin dashboard now lists school memberships and posts deactivate/reactivate requests to `/api/lms/memberships/status`.
 - `updateSchoolMembershipStatus` verifies the current user is a school admin, requires the server-side admin client, blocks self-deactivation and super-admin deactivation, updates the tenant-scoped `tenant_memberships.status`, and writes `user.deactivated` or `user.reactivated` audit events.
-- Remaining invite lifecycle work includes resend and role changes.
+- The same school-membership list posts role-change requests to `/api/lms/memberships/role`.
+- `updateSchoolMembershipRole` verifies the current user is a school admin, requires the server-side admin client, blocks self role changes and super-admin changes, updates the tenant-scoped `tenant_memberships.role`, and writes `user.role_changed`.
+- Remaining invite lifecycle work includes resend.
 
 Admin guardian linking now has a real write path:
 
@@ -121,13 +123,14 @@ Submitted file downloads now have student and guardian affordances:
 - `npm test -- tests/lms-course-sections.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: 10/10 passing on 2026-05-10 for course section/term normalization, admin UI, query mapping, exports, and migration coverage.
 - `npm test -- tests/lms-invitations.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: 9/9 passing on 2026-05-10 for direct invite normalization, route/form wiring, and audit-log coverage.
 - `npm test -- tests/lms-invitations.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-read-model.test.ts tests/lms-dashboards.test.tsx`: 16/16 passing on 2026-05-10 for membership deactivate/reactivate normalization, route/form wiring, audited actions, and inactive-student guardian/teacher filtering.
+- `npm test -- tests/lms-invitations.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: 11/11 passing on 2026-05-10 for membership role-change normalization, route/form wiring, audited action coverage, and admin dashboard controls.
 - `npm test -- tests/lms-guardian-links.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-dashboards.test.tsx`: 11/11 passing on 2026-05-10 for guardian-link normalization, admin read-model choices, guardian unlinking read model/form/route wiring, and audit-log coverage.
 - `npm test -- tests/lms-calendar-events.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: 12/12 passing on 2026-05-10 for durable calendar event normalization, role calendars, admin/teacher forms, query mapping, migration artifact, route delegation, and audit-log coverage.
 - `npm test -- tests/lms-gradebook-attendance.test.ts tests/lms-district-scale.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx`: 20/20 passing on 2026-05-10 for grade trends in read models, report cards, CSV exports, teacher dashboard, guardian dashboard, and student workspaces.
 - `npm test -- tests/lms-student-workspaces.test.tsx tests/lms-dashboards.test.tsx`: 10/10 passing on 2026-05-10 for student and guardian submitted-file download affordances through the signed submission file route.
-- `npm test`: 32 files / 139 tests passing on 2026-05-10.
-- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the audited membership-status slice.
-- `npm run load:smoke`: passing on 2026-05-10 in 2844ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments after the audited membership-status slice.
+- `npm test`: 32 files / 140 tests passing on 2026-05-10.
+- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the audited membership-role slice.
+- `npm run load:smoke`: passing on 2026-05-10 in 2921ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments after the audited membership-role slice.
 - Landing/login visual smoke passed on 2026-05-10 for desktop and mobile with no missing image alt text, unnamed buttons, or horizontal overflow.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passing locally on 2026-05-10 with student file attachment, teacher grading, admin writes, logout, and screenshots in `test-results/lms-smoke`.
 - `LMS_SMOKE_BASE_URL=http://127.0.0.1:3010 npm run test:a11y`: blocked after the durable calendar-events slice because the smoke student reached `/login?error=lms-access-required` after sign-in before the dashboard rendered. The smoke harness now checks Add event controls and mutating calendar-event writes once active LMS smoke accounts/data are restored.
