@@ -1654,6 +1654,16 @@ export async function markAttendance(
     details: { course_id: draft.courseId, student_id: draft.studentId, attendance_date: draft.attendanceDate },
   })
 
+  if (!existingAttendance && (draft.status === 'present' || draft.status === 'online')) {
+    await tryAwardServerCompanionXp(supabase, {
+      tenantId,
+      studentId: draft.studentId,
+      source: 'study_streak',
+      label: 'Attendance check-in',
+      occurredAt: `${draft.attendanceDate}T00:00:00.000Z`,
+    })
+  }
+
   return { attendanceId: id(savedAttendance.id, 'attendance_id') }
 }
 

@@ -27,7 +27,7 @@ Date: 2026-05-10
 - Messaging controls: allowed role matrix admin settings, reporting, and retention policy controls. Initial staff message CSV export/review and staff moderation status controls now exist.
 - Attendance reports: date-range filters, CSV/PDF export, absence trend flags, and guardian notes.
 - Resource review UI: malware scanner integration, quarantine queue, legal hold, retention override, quota status.
-- Companion XP integration: server-side XP grants for submission, grade feedback, attendance streaks, and lesson completion.
+- Companion XP integration: server-side XP grants for submission, grade feedback, and attendance check-ins now exist; lesson completion and quiz completion remain.
 - Accessibility audit: keyboard-only flows, focus order, color contrast, reduced motion, form errors, and WCAG 2.2 target sizing.
 - Monitoring: Sentry release health, alert routing, uptime checks, DB/storage error dashboards.
 

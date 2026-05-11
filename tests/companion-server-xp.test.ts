@@ -111,13 +111,16 @@ describe('server-side companion XP grants', () => {
     })
   })
 
-  it('wires XP grants to first-time real submission and grade events only', () => {
+  it('wires XP grants to first-time real submission, grade, and attendance events only', () => {
     const source = readFileSync(path.join(repoRoot, 'lib/lms/mutations.ts'), 'utf8')
 
     expect(source).toContain('tryAwardServerCompanionXp')
     expect(source).toContain("source: 'assignment_submitted'")
     expect(source).toContain("source: 'course_task_checked'")
+    expect(source).toContain("source: 'study_streak'")
     expect(source).toContain('if (!existingSubmission)')
     expect(source).toContain('if (!existingGrade)')
+    expect(source).toContain('if (!existingAttendance')
+    expect(source).toContain("draft.status === 'present' || draft.status === 'online'")
   })
 })
