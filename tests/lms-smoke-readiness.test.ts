@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 
 import {
@@ -5,6 +7,8 @@ import {
   credentialsForSmokeRole,
   formatSmokeReadinessFailure,
 } from '@/scripts/check-lms-smoke-readiness'
+
+const repoRoot = path.resolve(__dirname, '..')
 
 describe('LMS smoke readiness preflight', () => {
   it('uses role-specific smoke credentials with safe defaults', () => {
@@ -80,5 +84,16 @@ describe('LMS smoke readiness preflight', () => {
       courses: 1,
       assignments: 2,
     })
+  })
+
+  it('keeps the browser smoke harness on the shared smoke-account helper', () => {
+    const source = readFileSync(path.join(repoRoot, 'scripts/lms-browser-smoke.ts'), 'utf8')
+
+    expect(source).toContain("from './lms-smoke-accounts'")
+    expect(source).toContain('credentialsForSmokeRole(role)')
+    expect(source).not.toContain('WolfWhale-Student-2026')
+    expect(source).not.toContain('WolfWhale-Teacher-2026')
+    expect(source).not.toContain('WolfWhale-Admin-2026')
+    expect(source).not.toContain('WolfWhale-Parent-2026')
   })
 })

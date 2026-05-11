@@ -2,31 +2,18 @@ import { mkdir } from 'node:fs/promises'
 import path from 'node:path'
 import { chromium, type Browser, type Page } from '@playwright/test'
 import { checkLmsSmokeReadiness } from './check-lms-smoke-readiness'
+import { credentialsForSmokeRole, lmsSmokeRoles, type LmsSmokeRole } from './lms-smoke-accounts'
 
 const baseUrl = process.env.LMS_SMOKE_BASE_URL ?? 'http://localhost:3000'
 const outputDir = path.resolve(process.cwd(), 'test-results/lms-smoke')
-const roles = ['student', 'teacher', 'admin', 'guardian'] as const
+const roles = lmsSmokeRoles
 const runMutatingWorkflowChecks = process.env.LMS_SMOKE_MUTATE === '1'
-type LmsRole = (typeof roles)[number]
+type LmsRole = LmsSmokeRole
 
-const credentials: Record<LmsRole, { email: string; password: string }> = {
-  student: {
-    email: process.env.LMS_SMOKE_STUDENT_EMAIL ?? 'student@wolfwhale.ca',
-    password: process.env.LMS_SMOKE_STUDENT_PASSWORD ?? 'WolfWhale-Student-2026',
-  },
-  teacher: {
-    email: process.env.LMS_SMOKE_TEACHER_EMAIL ?? 'teacher@wolfwhale.ca',
-    password: process.env.LMS_SMOKE_TEACHER_PASSWORD ?? 'WolfWhale-Teacher-2026',
-  },
-  admin: {
-    email: process.env.LMS_SMOKE_ADMIN_EMAIL ?? 'admin@wolfwhale.ca',
-    password: process.env.LMS_SMOKE_ADMIN_PASSWORD ?? 'WolfWhale-Admin-2026',
-  },
-  guardian: {
-    email: process.env.LMS_SMOKE_GUARDIAN_EMAIL ?? 'parent@wolfwhale.ca',
-    password: process.env.LMS_SMOKE_GUARDIAN_PASSWORD ?? 'WolfWhale-Parent-2026',
-  },
-}
+const credentials = Object.fromEntries(roles.map((role) => [role, credentialsForSmokeRole(role)])) as Record<
+  LmsRole,
+  { email: string; password: string }
+>
 let latestWorkflowSubmissionFileName = ''
 
 function roleHeading(role: LmsRole) {

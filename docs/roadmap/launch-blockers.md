@@ -13,7 +13,7 @@ Date: 2026-05-11
 - Apply and verify `supabase/migrations/20260511004429_message_moderation_controls.sql` so live message queries and staff moderation controls have the required review columns.
 - Apply and verify `supabase/migrations/20260510225408_course_section_metadata.sql` so live course setup persists section labels and keeps tenant-scoped section queries indexed.
 - Apply and verify `supabase/migrations/20260510231855_lms_calendar_events.sql` so live school/course event writes and calendar reads follow role, course, and guardian-link boundaries.
-- Restore and verify active LMS smoke credentials/data before browser QA. Run `npx tsx scripts/check-lms-smoke-readiness.ts` first; `npm run test:a11y` now uses the same auth/read-model preflight before launching Playwright.
+- Restore and verify active LMS smoke credentials/data before browser QA. Run `npx tsx scripts/check-lms-smoke-readiness.ts` first; `npm run test:a11y` now uses the same auth/read-model preflight before launching Playwright. Latest observed target-project schema misses include `student_parents.consent_notes` and `public.calendar_events`.
 - Run live Supabase security validation with `SUPABASE_DB_URL`, `DATABASE_URL`, or equivalent read-only project credentials.
 - Browser-test the remaining file-submission privacy edges after applying the new RLS migration: teacher signed download in the UI, wrong-role denial, wrong-tenant denial, student feedback visibility, and guardian scoping. Automated signed-route tests now cover auth-required, RLS miss, signed redirect, and signing failure.
 - Confirm all private file buckets are private and cannot be listed or read anonymously.
