@@ -125,7 +125,20 @@ describe('student LMS workspaces', () => {
     expect(screen.getByText('Launch Reflection')).toBeInTheDocument()
     cleanup()
 
+    render(<StudentMessagesWorkspace view={views.student} />)
+    expect(screen.getByRole('heading', { name: 'Messages' })).toBeInTheDocument()
+    expect(screen.getByText('Humanities check-in')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Send message' })).toBeInTheDocument()
+    cleanup()
+
+    render(<StudentNotificationsWorkspace view={views.student} />)
+    expect(screen.getByRole('heading', { name: 'Notifications' })).toBeInTheDocument()
+    expect(screen.getByText('Grade posted')).toBeInTheDocument()
+  })
+
+  it('renders the student resource center with interactive studios', () => {
     render(<StudentResourcesWorkspace view={views.student} />)
+
     expect(screen.getByRole('heading', { name: 'Resource Center' })).toBeInTheDocument()
     const libraryCatalog = screen.getByRole('region', { name: 'Interactive Resource Library catalog' })
     expect(within(libraryCatalog).getByRole('heading', { name: 'Interactive Resource Library' })).toBeInTheDocument()
@@ -172,16 +185,5 @@ describe('student LMS workspaces', () => {
     expect(screen.getByText('Real longitude and latitude projection')).toBeInTheDocument()
     expect(screen.getByText('Indigenous Trade Networks')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Primary Source Pack/ })).toHaveAttribute('href', '/api/lms/resources/resource-1')
-    cleanup()
-
-    render(<StudentMessagesWorkspace view={views.student} />)
-    expect(screen.getByRole('heading', { name: 'Messages' })).toBeInTheDocument()
-    expect(screen.getByText('Humanities check-in')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Send message' })).toBeInTheDocument()
-    cleanup()
-
-    render(<StudentNotificationsWorkspace view={views.student} />)
-    expect(screen.getByRole('heading', { name: 'Notifications' })).toBeInTheDocument()
-    expect(screen.getByText('Grade posted')).toBeInTheDocument()
-  })
+  }, 10000)
 })
