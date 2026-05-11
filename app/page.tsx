@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import {
   ArrowRight,
   BookOpen,
@@ -23,6 +24,32 @@ import { LanguageToggle } from '@/components/ui/LanguageToggle'
 import { WolfWhaleBrand } from '@/components/ui/wolfwhale-brand'
 import type { Lang } from '@/lib/landing-i18n'
 
+export const metadata: Metadata = {
+  title: 'WolfWhale LMS | School Operating System',
+  description:
+    'WolfWhale LMS is a Canadian school operating system for courses, attendance, grading, resources, messages, family visibility, and playful fish companion rewards.',
+  openGraph: {
+    title: 'WolfWhale LMS',
+    description:
+      'A polished Canadian LMS for real school workflows, role dashboards, private resources, and fish companion rewards.',
+    images: [
+      {
+        url: '/landing/websummit-water-garden.png',
+        width: 1672,
+        height: 941,
+        alt: 'Bright underwater WolfWhale LMS landing background with sunlight, bubbles, and aquatic plants',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'WolfWhale LMS',
+    description:
+      'A Canadian school LMS for role dashboards, grading, attendance, resources, messages, and fish companion rewards.',
+    images: ['/landing/websummit-water-garden.png'],
+  },
+}
+
 interface PageProps {
   searchParams: Promise<{ lang?: string }>
 }
@@ -36,10 +63,10 @@ const navItems = [
 ]
 
 const proofBadges = [
-  'Role dashboards',
-  'Attendance and gradebook',
-  'Resources and messages',
-  'Pilot-ready',
+  'Live role demos',
+  'Real LMS workflows',
+  'Private school records',
+  'Fish companion rewards',
 ]
 
 const productPillars = [
@@ -95,7 +122,7 @@ const featureIndex = [
 const roles = [
   {
     title: 'Students',
-    body: 'Courses, assignments, submissions, grades, feedback, attendance, messages, resources, and a study companion.',
+    body: 'Courses, assignments, submissions, grades, feedback, attendance, messages, resources, and a fish study companion.',
     image: '/screenshots/actual-student-dashboard.png',
   },
   {
@@ -188,28 +215,28 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           <GlossyBubbles />
 
           <Image
-            src="/screenshots/actual-teacher-dashboard.png"
+            src="/landing/websummit-water-garden.png"
             alt=""
-            width={1440}
-            height={960}
+            width={1672}
+            height={941}
             priority
-            className="ww-hero-app"
+            className="ww-hero-bg"
             style={{ width: '100%', height: '100%' }}
           />
 
           <div className="ww-shell ww-hero-grid">
             <div className="ww-hero-copy">
-              <p className="ww-kicker">WolfWhale Core</p>
-              <h1>School LMS operating system.</h1>
+              <p className="ww-kicker">Canadian LMS for school pilots</p>
+              <h1>WolfWhale LMS.</h1>
               <p className="ww-lede">
-                Courses, attendance, grading, resources, messages, and role dashboards in one K-12 platform.
+                Courses, attendance, grading, resources, messages, and family visibility in one playful sea-themed school operating system.
               </p>
 
               <div className="ww-hero-actions">
-                <a href="#contact" className="ww-button">
-                  Plan a Pilot
+                <Link href="/login" className="ww-button">
+                  Try the Demo
                   <ArrowRight size={18} />
-                </a>
+                </Link>
                 <a href="#product" className="ww-button ww-button-secondary">
                   See the Product
                   <ArrowRight size={18} />
