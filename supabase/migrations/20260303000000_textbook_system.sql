@@ -144,7 +144,7 @@ CREATE TABLE textbook_flashcards (
   order_index INT NOT NULL DEFAULT 0,
   created_at TIMESTAMPTZ DEFAULT NOW(),
 
-  CONSTRAINT valid_difficulty CHECK (difficulty >= 1 AND difficulty <= 5)
+  CONSTRAINT valid_textbook_flashcard_difficulty CHECK (difficulty >= 1 AND difficulty <= 5)
 );
 
 
@@ -187,7 +187,7 @@ CREATE TABLE student_reading_progress (
   notes JSONB DEFAULT '[]'::jsonb,
 
   UNIQUE(tenant_id, student_id, chapter_id),
-  CONSTRAINT valid_reading_status CHECK (status IN ('not_started', 'in_progress', 'completed'))
+  CONSTRAINT valid_textbook_reading_status CHECK (status IN ('not_started', 'in_progress', 'completed'))
 );
 
 
@@ -241,8 +241,8 @@ CREATE INDEX idx_assignments_student ON student_textbook_assignments(tenant_id, 
 CREATE INDEX idx_reading_progress_student ON student_reading_progress(tenant_id, student_id, textbook_id);
 
 -- Student Textbook Flashcard Progress
-CREATE INDEX idx_flashcard_progress_student ON student_textbook_flashcard_progress(tenant_id, student_id);
-CREATE INDEX idx_flashcard_progress_review ON student_textbook_flashcard_progress(student_id, next_review_at);
+CREATE INDEX idx_textbook_flashcard_progress_student ON student_textbook_flashcard_progress(tenant_id, student_id);
+CREATE INDEX idx_textbook_flashcard_progress_review ON student_textbook_flashcard_progress(student_id, next_review_at);
 
 
 -- ===================================================================
@@ -682,7 +682,7 @@ BEGIN
   NEW.updated_at = NOW();
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SET search_path = public;
 
 CREATE TRIGGER trg_textbooks_updated_at
   BEFORE UPDATE ON textbooks
@@ -711,12 +711,12 @@ CREATE TRIGGER trg_stfp_updated_at
 CREATE OR REPLACE FUNCTION update_textbook_on_chapter_change()
 RETURNS TRIGGER AS $$
 BEGIN
-  UPDATE textbooks
+  UPDATE public.textbooks
   SET updated_at = NOW()
   WHERE id = NEW.textbook_id;
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SET search_path = public;
 
 CREATE TRIGGER trg_chapter_update_textbook
   AFTER INSERT OR UPDATE ON textbook_chapters
@@ -775,3 +775,15 @@ CREATE TRIGGER trg_auto_assign_textbooks
   AFTER INSERT ON course_enrollments
   FOR EACH ROW
   EXECUTE FUNCTION auto_assign_textbooks_on_enrollment();
+
+REVOKE ALL ON FUNCTION update_textbook_updated_at() FROM PUBLIC;
+REVOKE ALL ON FUNCTION update_textbook_updated_at() FROM anon;
+REVOKE ALL ON FUNCTION update_textbook_updated_at() FROM authenticated;
+
+REVOKE ALL ON FUNCTION update_textbook_on_chapter_change() FROM PUBLIC;
+REVOKE ALL ON FUNCTION update_textbook_on_chapter_change() FROM anon;
+REVOKE ALL ON FUNCTION update_textbook_on_chapter_change() FROM authenticated;
+
+REVOKE ALL ON FUNCTION auto_assign_textbooks_on_enrollment() FROM PUBLIC;
+REVOKE ALL ON FUNCTION auto_assign_textbooks_on_enrollment() FROM anon;
+REVOKE ALL ON FUNCTION auto_assign_textbooks_on_enrollment() FROM authenticated;
