@@ -91,6 +91,7 @@ describe('persistent LMS read model', () => {
         courseTitle: 'Grade 8 Humanities',
         fileName: 'source-pack.pdf',
         fileType: 'application/pdf',
+        fileSize: 1048576,
         scanStatus: 'clean',
         scanProvider: 'mock',
         legalHold: false,

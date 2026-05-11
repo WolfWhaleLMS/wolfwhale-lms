@@ -1,6 +1,7 @@
-import { Activity, AlertTriangle, Bell, BookOpen, CalendarCheck, CalendarDays, ClipboardCheck, Download, FileText, MessageSquare, Plus, Upload, UserCheck, UserPlus, Users, UserX } from 'lucide-react'
+import { Activity, AlertTriangle, Bell, BookOpen, CalendarCheck, CalendarDays, ClipboardCheck, Download, FileText, MessageSquare, Plus, ShieldCheck, Upload, UserCheck, UserPlus, Users, UserX } from 'lucide-react'
 import { LmsPanel, LmsShell } from '@/components/lms/LmsShell'
 import { CalendarEventForm, CalendarPanel, MessagesPanel, ResourceUploadForm, ResourcesPanel } from '@/components/lms/SharedLmsPanels'
+import { buildResourceReviewSummary, formatResourceBytes } from '@/lib/lms/resource-review-summary'
 import type { buildLmsDashboardViews } from '@/lib/lms/read-model'
 
 type AdminView = ReturnType<typeof buildLmsDashboardViews>['admin']
@@ -15,6 +16,7 @@ const adminTools = [
   { href: '#attendance', label: 'Attendance', description: 'Review attendance exports', icon: CalendarCheck },
   { href: '#calendar', label: 'Calendar', description: 'See school LMS dates', icon: CalendarDays },
   { href: '#resources', label: 'Resources', description: 'Open shared files', icon: FileText },
+  { href: '#resource-review', label: 'Resource review', description: 'Quarantine and quotas', icon: ShieldCheck },
   { href: '#messages', label: 'Messages', description: 'Read school messages', icon: MessageSquare },
   { href: '#create-course', label: 'Create course', description: 'Add classes and sections', icon: Plus },
   { href: '#school-users', label: 'Users', description: 'Activate or pause accounts', icon: UserCheck },
@@ -41,6 +43,7 @@ export function AdminDashboard({ view }: { view: AdminView }) {
     .slice(0, 25)
   const auditedResourceTypes = new Set(view.auditTrail.map((entry) => entry.resourceType)).size
   const auditedActors = new Set(view.auditTrail.map((entry) => entry.userId).filter(Boolean)).size
+  const resourceReview = buildResourceReviewSummary(view.resources)
   const metrics = [
     ['Active students', view.metrics.activeStudents],
     ['Active teachers', view.metrics.activeTeachers],
@@ -223,6 +226,50 @@ export function AdminDashboard({ view }: { view: AdminView }) {
           }
         />
       </div>
+
+      <LmsPanel id="resource-review" title="Resource review queue">
+        <div className="grid gap-3 sm:grid-cols-4">
+          <div className="rounded-md border border-slate-200 p-3 text-sm dark:border-slate-800">
+            <p className="text-xl font-black text-slate-950 dark:text-white">{resourceReview.needsReview} need review</p>
+            <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">Pending, blocked, error, or unreviewed files</p>
+          </div>
+          <div className="rounded-md border border-slate-200 p-3 text-sm dark:border-slate-800">
+            <p className="text-xl font-black text-slate-950 dark:text-white">{resourceReview.quarantined} quarantined</p>
+            <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">Blocked from download until review changes</p>
+          </div>
+          <div className="rounded-md border border-slate-200 p-3 text-sm dark:border-slate-800">
+            <p className="text-xl font-black text-slate-950 dark:text-white">{resourceReview.legalHolds} legal holds</p>
+            <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">Retained past normal expiry</p>
+          </div>
+          <div className="rounded-md border border-slate-200 p-3 text-sm dark:border-slate-800">
+            <p className="text-xl font-black text-slate-950 dark:text-white">{resourceReview.quotaPercent}%</p>
+            <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">
+              Quota used: {formatResourceBytes(resourceReview.usedBytes)} of {formatResourceBytes(resourceReview.tenantQuotaBytes)}
+            </p>
+          </div>
+        </div>
+        {resourceReview.queue.length === 0 ? (
+          <p className="mt-3 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-100">
+            No resources need review.
+          </p>
+        ) : (
+          <ul className="mt-3 grid gap-2">
+            {resourceReview.queue.slice(0, 5).map((resource) => (
+              <li key={resource.id} className="rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
+                <span className="inline-flex items-center gap-2 font-semibold">
+                  <ShieldCheck className="h-4 w-4 text-teal-700 dark:text-teal-200" />
+                  {resource.title}
+                </span>
+                <span className="mt-1 block text-slate-500 dark:text-slate-400">
+                  {resource.courseTitle} - {resource.scanStatus}
+                  {resource.legalHold ? ' - legal hold' : ''}
+                </span>
+                {resource.quarantineReason ? <span className="mt-1 block text-xs font-semibold text-rose-700 dark:text-rose-200">{resource.quarantineReason}</span> : null}
+              </li>
+            ))}
+          </ul>
+        )}
+      </LmsPanel>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <LmsPanel id="create-course" title="Create course">

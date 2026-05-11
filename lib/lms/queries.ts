@@ -288,6 +288,7 @@ export function mapSupabaseRowsToLmsRecords(rows: SupabaseLmsRows): LmsRecords {
         fileName: text(resource.file_name, 'resource'),
         fileType: text(resource.file_type),
         displayName: text(resource.display_name) || text(resource.file_name, 'Resource'),
+        fileSize: numberValue(review?.file_size),
         scanStatus: text(review?.scan_status, 'unreviewed'),
         scanProvider: text(review?.scan_provider),
         legalHold: booleanValue(review?.legal_hold),
@@ -483,7 +484,7 @@ export async function loadLmsRecordsForUser(supabase: SupabaseClient, userId: st
   const resourceReviews = await queryInOptional(
     supabase,
     'course_resource_security_reviews',
-    'resource_id,scan_status,scan_provider,legal_hold,retention_expires_at,quarantine_reason',
+    'resource_id,file_size,scan_status,scan_provider,legal_hold,retention_expires_at,quarantine_reason',
     'resource_id',
     resources.map((resource) => text(resource.id)).filter(Boolean)
   )

@@ -129,6 +129,7 @@ export interface LmsResourceRecord {
   fileName: string
   fileType: string
   displayName: string
+  fileSize?: number
   scanStatus: string
   scanProvider: string
   legalHold: boolean
@@ -341,6 +342,7 @@ export interface LmsResourceSummary {
   courseTitle: string
   fileName: string
   fileType: string
+  fileSize: number
   scanStatus: string
   scanProvider: string
   legalHold: boolean
