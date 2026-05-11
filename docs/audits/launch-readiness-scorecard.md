@@ -34,6 +34,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 - `npm test`: passed, 38 files / 167 tests after adding the smoke-readiness preflight.
 - `npm run lint`, `npm run typecheck`, `npm run build`, `npm audit --audit-level=moderate`, and `git diff --check`: passed after adding the smoke-readiness preflight.
 - Changed-file secret scan for private-key/API-key/JWT literal patterns: no matches after adding the smoke-readiness preflight.
+- Codex Security diff scan for `2df488d` found no reportable findings. Artifact bundle: `/tmp/codex-security-scans/wolfwhale-lms/2df488d_20260511T020223Z/report.md`.
 - Fish-only companion scans for retired non-fish pet terms and non-fish companion references: no matches.
 - `npx tsx scripts/check-lms-smoke-readiness.ts`: blocked on the target Supabase project after successful student auth with `Failed to load student_parents: column student_parents.consent_notes does not exist`. Apply `supabase/migrations/20260511001241_guardian_contact_details.sql`, rerun seed test accounts if needed, then rerun this preflight before browser smoke.
 - `npm run test:a11y`: now exits before browser launch with the same actionable smoke-readiness failure, preventing the missing live migration from being misreported as a frontend login regression.
