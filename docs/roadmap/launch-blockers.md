@@ -4,8 +4,7 @@ Date: 2026-05-11
 
 ## P0 Blockers Before Serious Paid Beta
 
-- Fresh deployed verification after current changes: run deployed smoke on `wolfwhale.ca` once this branch is deployed.
-- Deploy the canonical login/dashboard routing fix. Latest `wolfwhale.ca` headers still show the old route surface: `/login` is 404, `/auth` is 200, and `/student` redirects to `/auth`; the local branch now expects `/login` as canonical and `/auth` as a 307 alias.
+- Complete full deployed role/RLS/browser verification on `wolfwhale.ca` after pending Supabase migrations are applied. The production alias now points to the `wolfwhale-lms` deployment, `/login` is canonical, `/auth` redirects to `/login`, and a teacher demo browser smoke passes.
 - Apply and verify `supabase/migrations/20260510205641_student_submission_file_storage.sql` and `supabase/migrations/20260510212739_submissions_assigned_teacher_read_policy.sql` against the target Supabase project.
 - Apply and verify `supabase/migrations/20260510220050_fish_companion_species.sql` so live companion profiles accept only clownfish and pufferfish.
 - Apply and verify `supabase/migrations/20260511013851_textbook_inline_quiz_attempts.sql` so live textbook quiz attempts are RLS-scoped, audited, and eligible for first-attempt fish companion XP.
@@ -46,4 +45,4 @@ Date: 2026-05-11
 
 - Requested `wolfwhale-core` path was not present; this pass used `/Users/wolfwhale/wolfwhale-lms`.
 - The worktree had pre-existing uncommitted landing/login/logo/sea-companion changes before this pass. Those were not reverted.
-- 2026-05-11 dashboard audit found the old login/dashboard loop was caused by target Supabase schema drift, not duplicate React routes alone. The shared role shell and schema-tolerant read model now let demo accounts reach `/teacher`, `/student`, `/guardian`, and `/admin` locally; deployed `wolfwhale.ca` verification is still pending after push/deploy.
+- 2026-05-11 dashboard audit found the old login/dashboard loop was caused by target Supabase schema drift, not duplicate React routes alone. The shared role shell and schema-tolerant read model now let demo accounts reach `/teacher`, `/student`, `/guardian`, and `/admin` locally. Production aliases for `wolfwhale.ca` and `www.wolfwhale.ca` now point to `wolfwhale-lms`, and teacher demo smoke passes on the public domain.
