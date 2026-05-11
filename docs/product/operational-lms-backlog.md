@@ -24,7 +24,7 @@ Date: 2026-05-10
 - Admin user lifecycle: live RLS/deployed proof. Initial direct invites, invite resend, membership deactivate/reactivate, role changes, guardian linking/unlinking, guardian primary-contact/consent/custody details, and audit review/export now exist.
 - Calendar lifecycle: edit/cancel events, add recurring events, event reminders, calendar feeds, and school-year/term views. Initial audited school/course event creation now exists.
 - Teacher content modules: reorder modules, attach resources per module, publish/unpublish, and preview as student.
-- Messaging controls: allowed role matrix, moderation hooks, reporting, retention, and export.
+- Messaging controls: allowed role matrix, moderation hooks, reporting, and retention policy controls. Initial staff message CSV export/review now exists.
 - Attendance reports: date-range filters, CSV/PDF export, absence trend flags, and guardian notes.
 - Resource review UI: malware scanner integration, quarantine queue, legal hold, retention override, quota status.
 - Companion XP integration: server-side XP grants for submission, grade feedback, attendance streaks, and lesson completion.

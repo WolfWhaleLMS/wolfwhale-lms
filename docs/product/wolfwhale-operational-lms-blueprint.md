@@ -58,6 +58,7 @@ Course messaging now has a real audited write path:
 - Student and guardian message forms send through `/api/lms/messages`; the server resolves the course staff recipient from active enrollment or linked-child relationships.
 - Teacher message forms can send to students in their course roster, with server-side assignment checks before any conversation row is created.
 - `sendCourseMessage` creates the conversation, members, message, notification, and `message.sent` audit row from one LMS mutation service.
+- Admin and teacher dashboards expose `/api/lms/exports/messages`, a scoped CSV review export built from the same role dashboard read models.
 - `20260510233000_course_message_write_policy.sql` tightens conversation reads and member inserts so direct Supabase writes follow course, role, and guardian-link boundaries.
 
 Admin course setup now carries durable section and term metadata:
@@ -125,6 +126,7 @@ Submitted file downloads now have student and guardian affordances:
 - `npm test -- tests/lms-audit-review.test.tsx tests/lms-query-mapping.test.ts`: 5/5 passing on 2026-05-10 for audit read-model metadata, dashboard review UI, and admin-only CSV export route coverage.
 - `npm test -- tests/fish-companion.test.ts`: 12/12 passing on 2026-05-10.
 - `npm test -- tests/companion-server-xp.test.ts`: 3/3 passing on 2026-05-10 for server-side companion XP grants from real submission and feedback events.
+- `npm test -- tests/lms-message-export.test.tsx tests/lms-messages.test.ts tests/lms-dashboards.test.tsx tests/prompt-artifact-checklist.test.ts`: 14/14 passing on 2026-05-10 for staff-only message CSV export, dashboard links, message workflows, dashboards, and launch checklist coverage.
 - `npm test -- tests/lms-messages.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx tests/lms-audit-log-coverage.test.ts`: 16/16 passing on 2026-05-10 for audited message writes, composer UI, route delegation, and policy artifact coverage.
 - `npm test -- tests/lms-read-model.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx`: 14/14 passing on 2026-05-10 for role-scoped dashboards and message visibility filtering.
 - `npm test -- tests/lms-course-sections.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: 10/10 passing on 2026-05-10 for course section/term normalization, admin UI, query mapping, exports, and migration coverage.
@@ -137,12 +139,12 @@ Submitted file downloads now have student and guardian affordances:
 - `npm test -- tests/lms-calendar-events.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: 12/12 passing on 2026-05-10 for durable calendar event normalization, role calendars, admin/teacher forms, query mapping, migration artifact, route delegation, and audit-log coverage.
 - `npm test -- tests/lms-gradebook-attendance.test.ts tests/lms-district-scale.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx`: 20/20 passing on 2026-05-10 for grade trends in read models, report cards, CSV exports, teacher dashboard, guardian dashboard, and student workspaces.
 - `npm test -- tests/lms-student-workspaces.test.tsx tests/lms-dashboards.test.tsx`: 10/10 passing on 2026-05-10 for student and guardian submitted-file download affordances through the signed submission file route.
-- `npm test`: 32 files / 142 tests passing on 2026-05-10.
-- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build`: passing on 2026-05-10 after the audited guardian-contact slice.
+- `npm test`: 34 files / 149 tests passing on 2026-05-10 after the staff message export slice.
+- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, `git diff --check`, and `npm run build`: passing on 2026-05-10 after the staff message export slice.
 - `npm run load:smoke`: passing on 2026-05-10 in 2954ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments after the audited guardian-contact slice.
 - Landing/login visual smoke passed on 2026-05-10 for desktop and mobile with no missing image alt text, unnamed buttons, or horizontal overflow.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passing locally on 2026-05-10 with student file attachment, teacher grading, admin writes, logout, and screenshots in `test-results/lms-smoke`.
-- `LMS_SMOKE_BASE_URL=http://127.0.0.1:3010 npm run test:a11y`: blocked after the durable calendar-events slice because the smoke student reached `/login?error=lms-access-required` after sign-in before the dashboard rendered. The smoke harness now checks Add event controls and mutating calendar-event writes once active LMS smoke accounts/data are restored.
+- `LMS_SMOKE_BASE_URL=http://127.0.0.1:3010 npm run test:lms-smoke`: blocked after the staff message export slice because the smoke student reached `/login?error=lms-access-required` after sign-in before the dashboard rendered. The smoke harness checks export API links, Add event controls, and mutating calendar-event writes once active LMS smoke accounts/data are restored.
 - Updated signed-file smoke assertion exposed a live RLS gap on 2026-05-10: assigned teachers cannot yet read all student submissions until `20260510212739_submissions_assigned_teacher_read_policy.sql` is applied.
 - Non-mutating local Playwright smoke against `http://127.0.0.1:3010` passed on 2026-05-10 after fixing same-host auth redirects for local `127.0.0.1` login flows.
 - Supabase changelog and Storage upload/access-control docs were checked on 2026-05-10 before implementing storage-facing code.

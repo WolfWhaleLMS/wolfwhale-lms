@@ -24,7 +24,7 @@ Date: 2026-05-10
 - Admin lifecycle live RLS/deployed proof. Direct audited single-user invite creation, invite resend, membership deactivate/reactivate, role changes, guardian linking/unlinking, guardian primary-contact/consent/custody details, and admin audit review/export now exist.
 - Expand server-side companion XP beyond first-time submissions and first teacher feedback posts into lessons, quizzes, streaks, and attendance patterns.
 - Upload malware scanning, quarantine queue, legal hold workflow, and quota UI.
-- Messaging moderation, communication policy controls, and export/review tools.
+- Messaging moderation and communication policy controls. Initial staff message export/review now exists.
 - Formal WCAG 2.2 audit and remediation evidence.
 - Production monitoring and alert ownership.
 - Backup/restore drill evidence against a disposable non-production database.

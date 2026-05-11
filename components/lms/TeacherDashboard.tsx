@@ -152,13 +152,22 @@ export function TeacherDashboard({ view }: { view: TeacherView }) {
         <MessagesPanel
           messages={view.messages}
           actions={
-            <MessageComposer
-              courses={view.courses}
-              recipients={view.roster}
-              returnTo="/teacher"
-              recipientLabel="Student"
-              contentLabel="Message to student"
-            />
+            <>
+              <a
+                href="/api/lms/exports/messages"
+                className="mb-3 inline-flex h-10 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-900 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
+              >
+                <Download className="h-4 w-4" />
+                Export messages
+              </a>
+              <MessageComposer
+                courses={view.courses}
+                recipients={view.roster}
+                returnTo="/teacher"
+                recipientLabel="Student"
+                contentLabel="Message to student"
+              />
+            </>
           }
         />
       </div>

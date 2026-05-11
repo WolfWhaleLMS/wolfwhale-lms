@@ -208,7 +208,18 @@ export function AdminDashboard({ view }: { view: AdminView }) {
       <div className="grid gap-4 lg:grid-cols-3">
         <CalendarPanel items={view.calendar} actions={<CalendarEventForm courses={view.courses} returnTo="/admin" allowSchoolWide />} />
         <ResourcesPanel resources={view.resources} actions={<ResourceUploadForm courses={view.courses} returnTo="/admin" />} canReview />
-        <MessagesPanel messages={view.messages} />
+        <MessagesPanel
+          messages={view.messages}
+          actions={
+            <a
+              href="/api/lms/exports/messages"
+              className="mb-3 inline-flex h-10 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-900 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
+            >
+              <Download className="h-4 w-4" />
+              Export messages
+            </a>
+          }
+        />
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">

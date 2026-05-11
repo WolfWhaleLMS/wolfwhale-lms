@@ -1,5 +1,5 @@
 import { buildLmsDashboardViews } from '@/lib/lms/read-model'
-import type { LmsAttendanceSummary, LmsAuditRecord, LmsGradebookCourseSummary, LmsRecords } from '@/lib/lms/types'
+import type { LmsAttendanceSummary, LmsAuditRecord, LmsGradebookCourseSummary, LmsMessageSummary, LmsRecords } from '@/lib/lms/types'
 
 type AdminView = ReturnType<typeof buildLmsDashboardViews>['admin']
 
@@ -94,6 +94,15 @@ export function buildAuditLogCsv(auditTrail: LmsAuditRecord[]) {
         entry.resourceId,
         auditDetails(entry.details),
       ])
+  )
+}
+
+export function buildMessagesCsv(messages: LmsMessageSummary[]) {
+  return csv(
+    ['message_id', 'created_at', 'course_id', 'subject', 'sender_name', 'content'],
+    [...messages]
+      .sort((left, right) => right.createdAt.localeCompare(left.createdAt))
+      .map((message) => [message.id, message.createdAt, message.courseId, message.subject, message.senderName, message.content])
   )
 }
 
