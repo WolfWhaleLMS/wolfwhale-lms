@@ -1,5 +1,10 @@
 import { Bell, MessageSquare } from 'lucide-react'
 
+import { CellArchitectureResourceCenter } from '@/components/lms/resource-center/CellArchitectureResourceCenter'
+import { FurTradeRoutesMap } from '@/components/lms/resource-center/FurTradeRoutesMap'
+import { InteractiveResourceLibraryCatalog } from '@/components/lms/resource-center/InteractiveResourceLibraryCatalog'
+import { SolarSystemResourceCenter } from '@/components/lms/resource-center/SolarSystemResourceCenter'
+
 import { courseCalendar, courseMessages, courseResources, formatShortDate } from './helpers'
 import { EmptyState, StudentWorkspaceShell, WorkspaceCourseSection, WorkspacePanel } from './shared'
 import type { StudentView } from './types'
@@ -35,8 +40,20 @@ export function StudentCalendarWorkspace({ view }: { view: StudentView }) {
 
 export function StudentResourcesWorkspace({ view }: { view: StudentView }) {
   return (
-    <StudentWorkspaceShell title="Resources" subtitle="Course files and materials grouped by the class and lesson they belong to.">
+    <StudentWorkspaceShell title="Resource Center" subtitle="Interactive learning diagrams and course files collected in one place.">
       <div className="grid gap-5">
+        <InteractiveResourceLibraryCatalog />
+        <CellArchitectureResourceCenter />
+        <SolarSystemResourceCenter />
+        <FurTradeRoutesMap />
+
+        <div id="course-files" className="scroll-mt-28">
+          <div className="student-workspace-panel rounded-lg border border-white/75 bg-white/84 p-4 shadow-[0_18px_50px_rgba(5,44,38,0.18)] backdrop-blur-md">
+            <h2 className="text-xl font-black text-[#17352c]">Course files</h2>
+            <p className="mt-1 text-sm font-semibold text-[#55736a]">Teacher-uploaded materials grouped by the class and lesson they belong to.</p>
+          </div>
+        </div>
+
         {view.courses.map((course) => {
           const resources = courseResources(view, course.id)
 

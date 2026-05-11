@@ -3826,3 +3826,76 @@ button:focus-visible {
     transform: translateY(-3px);
   }
 }
+
+.cell-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  cursor: grab;
+}
+
+.cell-canvas.is-native-asset {
+  filter: brightness(1.04) saturate(1.12) contrast(1.07);
+}
+
+.cell-canvas:active {
+  cursor: grabbing;
+}
+
+.fur-trade-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  cursor: grab;
+}
+
+.fur-trade-canvas:active {
+  cursor: grabbing;
+}
+
+.cell-finished-render-wrap {
+  position: relative;
+  display: grid;
+  width: min(68vh, 72%);
+  max-width: 720px;
+  height: 100%;
+  margin: 0 auto;
+  place-items: center;
+  padding-bottom: 2rem;
+  pointer-events: none;
+}
+
+.cell-finished-render-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: 4.5rem;
+  left: 50%;
+  width: min(46%, 330px);
+  height: 2.25rem;
+  border-radius: 999px;
+  background: radial-gradient(ellipse, rgba(50, 42, 34, 0.28), rgba(50, 42, 34, 0));
+  filter: blur(6px);
+  transform: translateX(-50%);
+}
+
+.cell-finished-render {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  height: auto;
+  max-width: min(100%, 560px);
+  max-height: calc(100% - 4rem);
+  object-fit: contain;
+  filter: drop-shadow(0 22px 34px rgba(61, 51, 40, 0.22));
+  transform-origin: center bottom;
+  animation: cell-finished-float 6.8s ease-in-out infinite;
+}
+
+@keyframes cell-finished-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.2deg) scale(1);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(1.1deg) scale(1.015);
+  }
+}
