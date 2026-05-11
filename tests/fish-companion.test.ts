@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import {
@@ -141,6 +141,7 @@ describe('WolfWhale fish companion logic', () => {
 
   it('uses available fish art previews until final atlases are ready', () => {
     expect(COMPANION_SPRITE_ASSETS.clownfish.basePreviewPath).toBe('/clownfish.svg')
+    expect(COMPANION_SPRITE_ASSETS.clownfish.referencePath).toBe('/clownfish.svg')
     expect(COMPANION_SPRITE_ASSETS.pufferfish.basePreviewPath).toBe('/images/sea-companion/concepts/puffer-fish-design-bible.png')
   })
 
@@ -153,6 +154,7 @@ describe('WolfWhale fish companion logic', () => {
 
   it('keeps product-facing companion files fish-only', () => {
     const checkedFiles = [
+      'AUDIT_REPORT.md',
       'app/student/companion-world/page.tsx',
       'components/companion/SeaCompanionClient.tsx',
       'components/companion/SeaWorldClient.tsx',
@@ -169,6 +171,23 @@ describe('WolfWhale fish companion logic', () => {
 
       expect(source, `${relativePath} should stay fish-only`).not.toMatch(nonFishLegacyPattern)
     }
+  })
+
+  it('keeps public companion artwork limited to approved fish assets', () => {
+    const retiredAssetRoots = [
+      ['public', 'images', ['chibi', 'animals'].join('-')].join('/'),
+      ['public', 'images', ['clay', 'forest'].join('-')].join('/'),
+    ]
+
+    for (const relativePath of retiredAssetRoots) {
+      expect(existsSync(path.join(repoRoot, relativePath)), `${relativePath} should be removed`).toBe(false)
+    }
+
+    const conceptDir = path.join(repoRoot, 'public/images/sea-companion/concepts')
+    const conceptFiles = existsSync(conceptDir) ? readdirSync(conceptDir).sort() : []
+
+    expect(conceptFiles).toEqual(['puffer-fish-design-bible.png'])
+    expect(existsSync(path.join(repoRoot, 'public/clownfish.svg'))).toBe(true)
   })
 
   it('keeps the Supabase species constraint fish-only', () => {

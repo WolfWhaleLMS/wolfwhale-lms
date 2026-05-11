@@ -98,7 +98,7 @@ describe('student LMS workspaces', () => {
     render(<StudentSettingsWorkspace />)
 
     expect(screen.getByRole('heading', { name: 'Student settings' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Woodland Boreal/ })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Reef Lagoon/ })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Fisher Price Toybox/ })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Study companion' })).toBeInTheDocument()
   })

@@ -20,7 +20,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 | Calendar/attendance/messages | Partial | Role read models, visible message composer forms, audited `/api/lms/messages` writes, and audited `/api/lms/calendar-events` school/course event writes now exist. Student/guardian messages resolve to course staff server-side, teacher messages are scoped to assigned course students/guardians, and relationship-aware calendar/message policy migrations are pending live application. Moderation/export controls and live RLS proof remain open. |
 | Private files | Partial | Course resources and student submission files use private buckets and signed routes. Teacher grading, student assignment workspaces, and guardian linked-student views now expose submitted-file links only when the scoped submission row is readable. The linked dev project has a private `submissions` bucket; storage and table RLS migrations still need live DB application/validation. |
 | Audit logging | Partial | Core LMS mutation services, roster import, direct invitations, membership status changes, guardian link/unlink, calendar events, and the direct resource-review admin write now have static audit-log coverage. Live audit-row insertion proof is still pending with applied Supabase migrations. |
-| Pets/rewards | Partial | Companion code is fish-only with clownfish/pufferfish starters, fish-only Supabase species migration, and server-side XP grants for first-time student submissions plus first teacher feedback posts. Lesson, quiz, streak, and attendance reward expansion is still pending. |
+| Pets/rewards | Partial | Companion code is fish-only with clownfish/pufferfish starters, fish-only Supabase species migration, fish-only public companion artwork, and server-side XP grants for first-time student submissions plus first teacher feedback posts. Lesson, quiz, streak, and attendance reward expansion is still pending. |
 | Accessibility | Partial | Prior smoke evidence exists; fresh WCAG-focused checks pending. |
 | Security/RLS | Partial | Static tests now cover assigned-teacher submission read/update policy shape. Live DB validation is blocked by missing DB/read credentials and Supabase CLI role-permission failure. |
 | Privacy launch packet | Partial | Added counsel-review-required privacy readiness, DPA, subprocessor, breach, and student-record rights runbook placeholders. Product automation and legal review are still pending. |
@@ -30,6 +30,9 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 
 ## Latest Fresh Verification
 
+- Fish-only cleanup pass: `npm test` passed, 32 files / 143 tests, including `tests/fish-companion.test.ts` coverage for approved fish assets and retired public asset removal.
+- Fish-only cleanup pass: `npm run lint`, `npm run typecheck`, `npm run build`, `npm audit --audit-level=moderate`, and `git diff --check` passed.
+- Fish-only cleanup pass: exact repo scan for retired companion terms returned no matches outside guardrail test strings.
 - `npm test -- tests/lms-mutations.test.ts tests/lms-query-mapping.test.ts tests/lms-student-workspaces.test.tsx`: passed, 3 files / 13 tests.
 - `npm test -- tests/lms-submission-file-route.test.ts`: passed, 4 tests covering auth-required, RLS miss, signed redirect, and signing failure.
 - `npm test -- tests/supabase-launch-security.test.ts tests/lms-submission-file-route.test.ts`: passed, 2 files / 11 tests after adding the assigned-teacher submission RLS verifier.

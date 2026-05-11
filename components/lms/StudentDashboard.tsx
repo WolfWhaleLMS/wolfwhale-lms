@@ -154,8 +154,7 @@ export function StudentDashboard({ view, saved, error }: { view: StudentView; sa
       <div aria-hidden="true" className="absolute inset-x-0 top-0 h-80 bg-[linear-gradient(180deg,rgba(255,255,255,0.62),rgba(255,255,255,0)),radial-gradient(ellipse_at_50%_100%,rgba(9,68,61,0.42),transparent_42%)]" />
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 top-32 h-72 bg-bottom bg-repeat-x opacity-65"
-        style={{ backgroundImage: 'url("/images/clay-forest/evergreen-skyline.png")', backgroundSize: 'auto 100%' }}
+        className="absolute inset-x-0 top-32 h-72 opacity-65 [background:radial-gradient(ellipse_at_18%_75%,rgba(16,185,129,0.34),transparent_30%),radial-gradient(ellipse_at_72%_70%,rgba(45,212,191,0.28),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0),rgba(5,150,105,0.22)_52%,rgba(8,47,73,0.28))]"
       />
       <div aria-hidden="true" className="absolute bottom-0 left-0 right-0 h-72 bg-[linear-gradient(180deg,rgba(6,61,55,0),rgba(5,45,38,0.48))]" />
 

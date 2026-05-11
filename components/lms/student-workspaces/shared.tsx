@@ -25,7 +25,7 @@ export function StudentWorkspaceShell({
     <main className="student-theme-shell relative min-h-screen overflow-hidden bg-[#063d37] px-4 py-5 text-[#17352c] sm:px-6 lg:px-8">
       <StudentPreferenceBridge />
       <div aria-hidden="true" className="absolute inset-0 student-theme-backdrop" />
-      <div aria-hidden="true" className="absolute inset-x-0 top-28 h-72 bg-bottom bg-repeat-x opacity-55" style={{ backgroundImage: 'url("/images/clay-forest/evergreen-skyline.png")', backgroundSize: 'auto 100%' }} />
+      <div aria-hidden="true" className="absolute inset-x-0 top-28 h-72 opacity-55 [background:radial-gradient(ellipse_at_18%_75%,rgba(16,185,129,0.34),transparent_30%),radial-gradient(ellipse_at_72%_70%,rgba(45,212,191,0.28),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0),rgba(5,150,105,0.22)_52%,rgba(8,47,73,0.28))]" />
       <div className="relative mx-auto max-w-7xl space-y-5">
         <header className="student-workspace-panel rounded-lg border border-white/75 bg-white/84 p-5 shadow-[0_18px_50px_rgba(5,44,38,0.18)] backdrop-blur-md">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

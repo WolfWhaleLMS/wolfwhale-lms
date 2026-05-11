@@ -153,7 +153,7 @@ All four demo launch accounts were verified through the Supabase client path:
 - Guardian record load: passed.
 - Admin record load: passed.
 
-## Student Boreal Dashboard Evidence
+## Student Reef Dashboard Evidence
 
 Verification on 2026-05-07:
 
@@ -166,8 +166,8 @@ Verification on 2026-05-07:
 Screenshot evidence:
 
 - `test-results/lms-smoke/student.png`
-- `/tmp/student-boreal-1440x900.png`
-- `/tmp/student-boreal-390x844.png`
+- `/tmp/student-reef-1440x900.png`
+- `/tmp/student-reef-390x844.png`
 
 ## Student Course Workspace Evidence
 
@@ -178,7 +178,7 @@ Verification on 2026-05-07:
 - `npm run typecheck` passed.
 - `npm run build` passed and includes dynamic routes for `/student/courses`, `/student/courses/[courseId]`, `/student/assignments`, `/student/grades-feedback`, `/student/gradebook`, `/student/attendance`, `/student/calendar`, `/student/resources`, `/student/messages`, `/student/notifications`, `/student/settings`, and `/student/companion-world`.
 - `npm run test:a11y` passed against `http://localhost:3000`; the role smoke clicked every student dashboard tool into a real workspace and returned to the dashboard.
-- Additional Playwright browser workflow passed for the student account on `http://localhost:3000`: login, seven dedicated feature pages, Courses workspace, click a course with assignments, verify syllabus/lessons/assignments/materials/gradebook/attendance/calendar/messages, verify course submit forms, verify all-assignments submit forms, apply the Fisher Price Toybox and Ancient Monolith themes, hatch a Glyptodont companion, open Companion world, and verify no framework errors.
+- Additional Playwright browser workflow passed for the student account on `http://localhost:3000`: login, seven dedicated feature pages, Courses workspace, click a course with assignments, verify syllabus/lessons/assignments/materials/gradebook/attendance/calendar/messages, verify course submit forms, verify all-assignments submit forms, apply the Fisher Price Toybox and Ancient Monolith themes, hatch a fish companion, open Companion world, and verify no framework errors.
 
 Screenshot evidence:
 
@@ -193,8 +193,8 @@ Screenshot evidence:
 
 Verification on 2026-05-08:
 
-- `npm test -- tests/lms-student-workspaces.test.tsx tests/lms-dashboards.test.tsx tests/ice-age-companion.test.ts` passed: 3 files / 18 tests.
-- `npm test -- tests/lms-mutations.test.ts tests/lms-student-workspaces.test.tsx tests/lms-dashboards.test.tsx tests/ice-age-companion.test.ts` passed: 4 files / 22 tests.
+- `npm test -- tests/lms-student-workspaces.test.tsx tests/lms-dashboards.test.tsx tests/fish-companion.test.ts` passed: 3 files / 18 tests.
+- `npm test -- tests/lms-mutations.test.ts tests/lms-student-workspaces.test.tsx tests/lms-dashboards.test.tsx tests/fish-companion.test.ts` passed: 4 files / 22 tests.
 - `npm run typecheck` passed.
 - `npm run lint` completed with 0 errors and the same 10 existing unrelated warnings in textbook/referral files.
 - `npm run build` passed.
@@ -207,7 +207,7 @@ Additional Playwright measurement against `http://localhost:3000` with the stude
 - `1920x1080`: `scrollHeight=1080`, `clientHeight=1080`, `overflow=0`.
 - Student dashboard has 12 dashboard tool links and 3 course launch links.
 - Student dashboard has 0 submission forms and 0 textareas.
-- Student dashboard renders 5 Ice Age base preview images.
+- Student dashboard renders fish companion preview art.
 - Final animated sprite atlas count remains 0 because the production WebP atlases have not been generated yet.
 
 Deployment evidence:
@@ -216,13 +216,13 @@ Deployment evidence:
 - Follow-up commit `5aa814b` deployed to Vercel production as `https://wolfwhale-fhn5v0p9h-ryland-dupres-projects.vercel.app`.
 - `wolfwhale.ca` was aliased to the `5aa814b` deployment.
 - `LMS_SMOKE_BASE_URL=https://wolfwhale.ca npm run test:a11y` passed against the final custom-domain deployment.
-- `https://wolfwhale.ca/images/ice-age-companion/base/woolly-mammoth.png` returned HTTP 200 after aliasing.
+- Retired non-fish public companion asset URLs are no longer launch evidence; current fish preview assets are `/clownfish.svg` and `/images/sea-companion/concepts/puffer-fish-design-bible.png`.
 
 ## WolfWhale Brand Logo Evidence
 
 Verification on 2026-05-08:
 
-- `npm test -- tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx tests/ice-age-companion.test.ts` passed: 3 files / 18 tests.
+- `npm test -- tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx tests/fish-companion.test.ts` passed: 3 files / 18 tests.
 - `npm run typecheck` passed.
 - `npm run lint` completed with 0 errors and the same 10 existing unrelated warnings.
 - `npm run build` passed.

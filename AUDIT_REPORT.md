@@ -16,7 +16,7 @@ Do not market it as a proven large-district Canvas/Brightspace/Moodle displaceme
 - Supabase Auth SSR via `@supabase/ssr`.
 - Supabase PostgreSQL RLS-backed tenant, role, course, enrollment, assignment, submission, grade, rubric, attendance, notification, resource, conversation, message, and companion data.
 - Supabase Storage private course resources with staff upload and signed access route.
-- Supabase-backed Ice Age companion profile persistence with local client cache fallback.
+- Supabase-backed fish companion profile persistence with local client cache fallback.
 - Vitest unit/component tests, production build gate, and Playwright browser smoke.
 - Sentry, Vercel Analytics, Vercel Speed Insights, and Vercel cron route support.
 
@@ -153,4 +153,4 @@ Improved:
 Still externally gated:
 
 - The live Supabase project has not been SQL-proven for the new migrations from this shell because migration history and DB credential gates remain.
-- Final Ice Age sprite atlases are still visual-generation assets, not code-only artifacts; no species should be marked `ready` until the hatch-pet image-generation and QA workflow is completed.
+- Final fish sprite atlases are still visual-generation assets, not code-only artifacts; no species should be marked `ready` until the hatch-pet image-generation and QA workflow is completed.

@@ -102,7 +102,7 @@ export const COMPANION_SPRITE_ASSETS: Record<CompanionSpecies, CompanionSpriteAs
     species: 'clownfish',
     atlasPath: '/images/sea-companion/sprites/clownfish.webp',
     basePreviewPath: '/clownfish.svg',
-    referencePath: '/images/sea-companion/concepts/sea-companion-contact-sheet.png',
+    referencePath: '/clownfish.svg',
     status: 'planned',
     sparkleAnchor: 'tail fin, cheek stripe, dorsal fin, and tiny bubble trail',
     emoticonCue: 'huge bright eyes, orange blush pixels, bubble smile',

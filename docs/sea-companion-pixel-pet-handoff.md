@@ -22,7 +22,6 @@ Use these as visual direction only:
 ```text
 public/clownfish.svg
 public/images/sea-companion/concepts/puffer-fish-design-bible.png
-public/images/sea-companion/concepts/sea-companion-contact-sheet.png
 ```
 
 If a concept sheet includes drafting shorthand such as question marks, books, bubbles, loose icons, or floating symbols, treat those as non-production artifacts. Do not include them in final sprite sheets.

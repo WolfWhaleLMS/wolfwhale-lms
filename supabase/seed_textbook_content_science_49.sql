@@ -913,11 +913,11 @@ BEGIN
       {"type": "heading", "content": "Geological Events", "level": 2},
       {"type": "text", "content": "Earthquakes occur when plates shift suddenly. Volcanoes form where magma reaches the surface. Tsunamis are giant waves caused by underwater earthquakes. These events have shaped Earth for billions of years."},
       {"type": "heading", "content": "Saskatchewan''s Geology", "level": 2},
-      {"type": "text", "content": "Saskatchewan''s landscape was shaped by glaciers during the last Ice Age. As glaciers retreated about 10,000 years ago, they left behind moraines (hills of glacial deposits), pothole lakes, the Qu''Appelle Valley, and thick layers of fertile soil."},
+      {"type": "text", "content": "Saskatchewan''s landscape was shaped by glaciers during the last major glacial period. As glaciers retreated about 10,000 years ago, they left behind moraines (hills of glacial deposits), pothole lakes, the Qu''Appelle Valley, and thick layers of fertile soil."},
       {"type": "callout", "content": "Saskatchewan sits on ancient bedrock that is over a billion years old, but the surface landscape is relatively young — shaped primarily by glacial activity.", "style": "info"},
       {"type": "heading", "content": "Practice", "level": 2},
       {"type": "quiz", "question": "What happens at convergent plate boundaries?", "options": ["Plates pull apart", "Plates slide past each other", "Plates push together", "Nothing happens"], "correct": 2, "explanation": "At convergent boundaries, plates push together, which can create mountains and cause earthquakes."},
-      {"type": "quiz", "question": "What shaped Saskatchewan''s landscape?", "options": ["Volcanoes", "Glaciers", "Earthquakes", "Tsunamis"], "correct": 1, "explanation": "Glaciers during the Ice Age carved valleys, deposited moraines, and left fertile soil across Saskatchewan."}
+      {"type": "quiz", "question": "What shaped Saskatchewan''s landscape?", "options": ["Volcanoes", "Glaciers", "Earthquakes", "Tsunamis"], "correct": 1, "explanation": "Glaciers during the last major glacial period carved valleys, deposited moraines, and left fertile soil across Saskatchewan."}
     ]'::jsonb,
     '[{"term": "Tectonic plate", "definition": "A large piece of Earth''s crust that floats on the mantle"},
       {"term": "Earthquake", "definition": "A sudden shaking of the ground caused by movement of tectonic plates"},
@@ -936,7 +936,7 @@ BEGIN
   INSERT INTO textbook_flashcards (tenant_id, chapter_id, front_text, back_text, hint, difficulty, order_index) VALUES
     (v_tenant, v_ch, 'What is a tectonic plate?', 'A large piece of Earth''s crust that floats on the mantle.', 'Earth''s surface is like a cracked eggshell.', 1, 0),
     (v_tenant, v_ch, 'Name the three types of plate boundaries.', 'Convergent, divergent, and transform.', 'Push together, pull apart, slide past.', 2, 1),
-    (v_tenant, v_ch, 'What shaped Saskatchewan''s landscape?', 'Glaciers during the Ice Age.', 'They retreated about 10,000 years ago.', 1, 2);
+    (v_tenant, v_ch, 'What shaped Saskatchewan''s landscape?', 'Glaciers during the last major glacial period.', 'They retreated about 10,000 years ago.', 1, 2);
 
   RAISE NOTICE 'Grade 7 Science content seeded successfully.';
 END $$;

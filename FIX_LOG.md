@@ -92,13 +92,13 @@ Sprint date: 2026-05-07
 - Removed text shadows from chrome buttons and landing-page headings that were making UI text appear fuzzy.
 - Added `tests/ui-rendering-quality.test.ts` to guard against regressions in button scaling, glass hover scaling, and rendering tokens.
 
-## Student Boreal Dashboard Theme
+## Student Reef Dashboard Theme
 
-- Replaced the student LMS dashboard's shared corporate shell with a student-only woodland/boreal learning console.
-- Added a horizontal moss-stone tool hub with working anchors for courses, assignments, submissions, grades, gradebook, attendance, calendar, resources, messages, and notifications.
+- Replaced the student LMS dashboard's shared corporate shell with a student-only reef-lagoon learning console.
+- Added a horizontal bubble-glass tool hub with working anchors for courses, assignments, submissions, grades, gradebook, attendance, calendar, resources, messages, and notifications.
 - Added student-first analytics widgets using radial dials for momentum, mastery, attendance weather, and workload health.
 - Restyled courses, assignments, gradebook, attendance, resources, calendar, messages, notifications, and submit-work forms without changing teacher/admin/guardian dashboards.
-- Added a forest/lake Frutiger Aero-inspired backdrop using existing public clay forest assets and code-native labels/controls.
+- Added a lagoon Frutiger Aero-inspired backdrop using code-native sea lighting and code-native labels/controls.
 - Reordered the mobile layout so the student dashboard appears before the side rail.
 
 ## Student Course Workspaces, Themes, And Companion
@@ -109,8 +109,8 @@ Sprint date: 2026-05-07
 - Added course-scoped syllabus, lessons, materials, assignment submission portals, grades/feedback, gradebook, attendance, calendar, and messages on each course detail page.
 - Added an all-assignments workspace grouped by course with a single stable `#submit-work` anchor and course-specific submit forms.
 - Extended the LMS read model with course-aware assignment categories, lesson summaries, resource course/lesson IDs, grade course IDs, calendar course IDs, and message course IDs.
-- Added student background theme settings with local persistence and three launch themes: woodland boreal, Fisher Price toybox, and ancient monolith.
-- Added a first usable study companion widget with starter Ice Age species, local pet profile storage, hatching, XP rewards, level/hatch progress, behavior mode, and world activities.
+- Added student background theme settings with local persistence and three launch themes: Reef Lagoon, Fisher Price toybox, and ancient monolith.
+- Added a first usable study companion widget with starter fish species, local pet profile storage, hatching, XP rewards, level/hatch progress, behavior mode, and world activities.
 - Added a companion world prototype at `/student/companion-world` plus a `/companion-world` redirect.
 - Added companion sprite atlas contracts, animation-state mapping, and code-native fallback sprite/egg CSS so pets render while final atlas assets are still being prepared.
 - Added tests covering course-specific read-model data, dashboard tool links, course workspace isolation, assignments grouped by course, settings themes, and companion local-storage safety.
@@ -123,10 +123,10 @@ Sprint date: 2026-05-07
 - Confirmed the dashboard no longer contains submission forms or textareas; submissions live in `/student/assignments#submit-work` and course detail pages.
 - Added compact learning cockpit rows for next action, latest feedback, and latest message, each linking to the relevant workspace.
 - Tightened the student dashboard layout so the desktop first viewport fits at `1440x900` and `1920x1080`.
-- Copied available Ice Age base art into `public/images/ice-age-companion/base/` for five MVP creatures: mammoth, smilodon, ground sloth, woolly rhino, and giant elk.
+- Removed the retired mixed-animal base art direction and kept the companion preview direction fish-only.
 - Added `basePreviewPath` support to `CompanionSprite` so planned species can show static real art before final animated WebP atlases are ready.
 - Updated the companion hatch selector so students see the available creature art immediately.
-- Left final sprite atlas status as `planned`; the six final transparent WebP atlases still need to be generated and QA-approved before any species is marked `ready`.
+- Left final sprite atlas status as `planned`; the two final transparent WebP atlases still need to be generated and QA-approved before any species is marked `ready`.
 - Updated the optional mutating LMS browser smoke so student submission checks navigate to `/student/assignments#submit-work` instead of expecting submission forms on the dashboard.
 - Allowed teachers to create assignments/rubrics for active courses they are assigned to through `course_enrollments`, not only courses they personally created.
 
@@ -164,7 +164,7 @@ Sprint date: 2026-05-07
 - Updated course resource upload/signing to use server-side service-role storage after normal role/membership validation, avoiding valid staff uploads being blocked by drifted bucket policies.
 - Added RLS/storage migration `20260508181000_course_resource_upload_rls.sql` to remove broad course-material public reads, scope course-material insert paths to the uploader tenant, and allow assigned teachers to insert/delete lesson attachments.
 - Expanded Supabase launch-security checks to include `student_companion_profiles`, course-material public listing, tenant-scoped upload policy validation, and assigned-teacher lesson-attachment insert validation.
-- Added `student_companion_profiles` migration, `/api/companion/profile`, and client sync helpers so Ice Age companion progress is durable for authenticated students while still using local cache as a fast fallback.
+- Added `student_companion_profiles` migration, `/api/companion/profile`, and client sync helpers so fish companion progress is durable for authenticated students while still using local cache as a fast fallback.
 - Updated the floating companion, student companion widget, and companion world to sync with the server.
 - Added restore-drill evidence schema validation, `npm run ops:evidence`, example evidence JSON, production-promotion checklist, and restore evidence documentation.
 - Added `ops:evidence` to `npm run launch:verify` and `enterprise:check`.

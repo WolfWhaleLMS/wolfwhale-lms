@@ -6,9 +6,9 @@ export const STUDENT_PREFERENCES_STORAGE_KEY = 'wolfwhale.student.preferences.v1
 
 export const STUDENT_BACKGROUND_THEMES = [
   {
-    id: 'woodland-boreal',
-    label: 'Woodland Boreal',
-    description: 'Spruce forest, clear lake light, moss, glass, and trail-map widgets.',
+    id: 'reef-lagoon',
+    label: 'Reef Lagoon',
+    description: 'Blue lagoon light, bubble glass, coral highlights, and fish-friendly controls.',
   },
   {
     id: 'fisher-price-toybox',
@@ -29,7 +29,7 @@ interface StudentPreferences {
 }
 
 const defaultPreferences: StudentPreferences = {
-  backgroundTheme: 'woodland-boreal',
+  backgroundTheme: 'reef-lagoon',
 }
 
 function isBackgroundTheme(value: unknown): value is StudentBackgroundTheme {
