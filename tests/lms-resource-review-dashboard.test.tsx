@@ -88,5 +88,6 @@ describe('LMS resource review dashboard', () => {
     expect(reviewPanel.getByText(/Quota used/)).toBeInTheDocument()
     expect(reviewPanel.getByText('Blocked Source Pack')).toBeInTheDocument()
     expect(reviewPanel.getByText('Malware match')).toBeInTheDocument()
+    expect(screen.getAllByLabelText(/Retention expiry/i).some((input) => (input as HTMLInputElement).value === '2033-05-06')).toBe(true)
   })
 })

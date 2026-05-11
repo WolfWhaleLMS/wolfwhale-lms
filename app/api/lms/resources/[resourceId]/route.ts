@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import {
   courseResourceAccessDecision,
+  courseResourceRetentionDateInputToExpiresAt,
   isMissingResourceSecurityTableError,
   type CourseResourceSecurityReview,
 } from '@/lib/lms/resource-security'
@@ -152,12 +153,18 @@ export async function POST(request: NextRequest, context: RouteContext) {
 
     const status = scanStatus(formData.get('scanStatus'))
     const legalHold = formData.get('legalHold') === 'on'
+    const retentionExpiresAt = courseResourceRetentionDateInputToExpiresAt(formData.get('retentionExpiresAt'))
     const quarantineReason = limitedReason(formData.get('quarantineReason'))
+    if (!retentionExpiresAt) {
+      throw new LmsMutationError('Invalid retention expiry date.', 'invalid_retention_expiry')
+    }
+
     const { error: updateError } = await supabase
       .from('course_resource_security_reviews')
       .update({
         scan_status: status,
         legal_hold: legalHold,
+        retention_expires_at: retentionExpiresAt,
         quarantine_reason: quarantineReason,
         scan_checked_at: status === 'clean' ? new Date().toISOString() : null,
         updated_at: new Date().toISOString(),
@@ -178,6 +185,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
         resource_id: resourceId,
         scan_status: status,
         legal_hold: legalHold,
+        retention_expires_at: retentionExpiresAt,
         quarantine_reason: quarantineReason,
       },
     })

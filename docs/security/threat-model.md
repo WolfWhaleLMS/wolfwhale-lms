@@ -61,7 +61,7 @@ This is an engineering threat model for student-record software. It is not legal
 - Private storage buckets with signed access routes.
 - File type/size allowlists for course resources and student submission files.
 - SHA-256 denylist auto-quarantine for known bad course resource uploads.
-- Admin resource review queue for scan status, legal hold, quarantine notes, and quota usage.
+- Admin resource review queue for scan status, legal hold, quarantine notes, retention expiry, and quota usage.
 - Audit logs for core mutations, roster imports, and admin resource-review updates.
 - Staff-only message export and moderation status controls with audited `message.moderated` events.
 - Rate limiting for auth and LMS mutation endpoints.

@@ -47,6 +47,17 @@ export function courseResourceRetentionExpiresAt(now = new Date(), retentionDays
   return new Date(now.getTime() + retentionDays * 24 * 60 * 60 * 1000).toISOString()
 }
 
+export function courseResourceRetentionDateInputToExpiresAt(value: unknown) {
+  const dateText = typeof value === 'string' ? value.trim() : ''
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateText)) return null
+
+  const expiresAt = new Date(`${dateText}T23:59:59.999Z`)
+  if (!Number.isFinite(expiresAt.getTime())) return null
+  if (expiresAt.toISOString().slice(0, 10) !== dateText) return null
+
+  return expiresAt.toISOString()
+}
+
 export async function sha256ForUploadFile(file: File) {
   const uploadFile = file as File & {
     arrayBuffer?: () => Promise<ArrayBuffer>

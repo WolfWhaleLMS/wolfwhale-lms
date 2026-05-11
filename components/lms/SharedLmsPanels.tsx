@@ -273,6 +273,16 @@ export function ResourcesPanel({
                     Legal hold
                   </label>
                   <label className="grid gap-1 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    Retention expiry
+                    <input
+                      name="retentionExpiresAt"
+                      type="date"
+                      defaultValue={resource.retentionExpiresAt ? resource.retentionExpiresAt.slice(0, 10) : ''}
+                      required
+                      className="h-9 rounded-md border border-slate-300 bg-white px-2 text-sm font-normal normal-case tracking-normal text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                    />
+                  </label>
+                  <label className="grid gap-1 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                     Quarantine note
                     <input
                       name="quarantineReason"

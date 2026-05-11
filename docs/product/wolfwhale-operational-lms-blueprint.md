@@ -118,7 +118,8 @@ Submitted file downloads now have student and guardian affordances:
 - Student assignment cards link to the signed submission file route when the student has an uploaded file.
 - Guardian linked-student panels expose submitted-file links for linked students and do not surface unrelated classmates' submitted files.
 - Course resource uploads compute SHA-256 hashes and can automatically quarantine configured denylist matches before the resource becomes downloadable.
-- Remaining file work includes live wrong-role/wrong-tenant proof, bucket policy validation, external malware scanner integration, and retention override automation.
+- Admin resource review controls can update scan status, legal hold, quarantine notes, and retention expiry while recording the review in audit details.
+- Remaining file work includes live wrong-role/wrong-tenant proof, bucket policy validation, external malware scanner integration, and retention cleanup automation.
 
 ## Evidence
 
@@ -132,7 +133,8 @@ Submitted file downloads now have student and guardian affordances:
 - `npm test -- tests/lms-message-export.test.tsx tests/lms-messages.test.ts tests/lms-dashboards.test.tsx tests/prompt-artifact-checklist.test.ts`: 14/14 passing on 2026-05-10 for staff-only message CSV export, dashboard links, message workflows, dashboards, and launch checklist coverage.
 - `npm test -- tests/lms-message-moderation.test.tsx tests/lms-message-export.test.tsx tests/lms-messages.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx tests/lms-audit-log-coverage.test.ts`: 21/21 passing on 2026-05-10 for staff-only message moderation controls, export/review, message workflows, query mapping, dashboards, and audit coverage.
 - `npm test -- tests/lms-resource-review-dashboard.test.tsx tests/resource-security.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx tests/prompt-artifact-checklist.test.ts`: 16/16 passing on 2026-05-10 for resource quarantine/legal-hold/quota summary logic, admin dashboard queue UI, query mapping, access decisions, and checklist coverage.
-- `npm test -- tests/resource-security.test.ts`: 7/7 passing on 2026-05-10 for upload hashing, SHA-256 denylist auto-quarantine, pending/clean scan policy, retention expiry, legal hold, and missing-review-table rollout handling.
+- `npm test -- tests/resource-security.test.ts`: 8/8 passing on 2026-05-10 for upload hashing, SHA-256 denylist auto-quarantine, pending/clean scan policy, retention expiry, admin retention-date normalization, legal hold, and missing-review-table rollout handling.
+- `npm test -- tests/resource-security.test.ts tests/lms-resource-review-dashboard.test.tsx tests/lms-audit-log-coverage.test.ts`: 13/13 passing on 2026-05-10 for retention expiry normalization, admin retention override UI, resource review queue UI, and direct resource-review audit coverage.
 - `npm test -- tests/lms-messages.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx tests/lms-audit-log-coverage.test.ts`: 16/16 passing on 2026-05-10 for audited message writes, composer UI, route delegation, and policy artifact coverage.
 - `npm test -- tests/lms-read-model.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx`: 14/14 passing on 2026-05-10 for role-scoped dashboards and message visibility filtering.
 - `npm test -- tests/lms-course-sections.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: 10/10 passing on 2026-05-10 for course section/term normalization, admin UI, query mapping, exports, and migration coverage.
@@ -145,9 +147,9 @@ Submitted file downloads now have student and guardian affordances:
 - `npm test -- tests/lms-calendar-events.test.ts tests/lms-audit-log-coverage.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx`: 12/12 passing on 2026-05-10 for durable calendar event normalization, role calendars, admin/teacher forms, query mapping, migration artifact, route delegation, and audit-log coverage.
 - `npm test -- tests/lms-gradebook-attendance.test.ts tests/lms-district-scale.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx`: 20/20 passing on 2026-05-10 for grade trends in read models, report cards, CSV exports, teacher dashboard, guardian dashboard, and student workspaces.
 - `npm test -- tests/lms-student-workspaces.test.tsx tests/lms-dashboards.test.tsx`: 10/10 passing on 2026-05-10 for student and guardian submitted-file download affordances through the signed submission file route.
-- `npm test`: 36 files / 158 tests passing on 2026-05-10 after the resource security pre-scan slice.
+- `npm test`: 36 files / 159 tests passing on 2026-05-10 after the resource retention review slice.
 - `npm test -- tests/lms-read-model.test.ts tests/lms-resource-review-dashboard.test.tsx tests/fish-companion.test.ts`: 21/21 passing on 2026-05-10 for resource file-size read-model mapping, admin resource review queue UI, and fish-only companion guardrails.
-- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, `git diff --check`, and `npm run build`: passing on 2026-05-10 after the resource security pre-scan slice.
+- `npm run lint`, `npm run typecheck`, `npm audit --audit-level=moderate`, `git diff --check`, and `npm run build`: passing on 2026-05-10 after the resource retention review slice.
 - `npm run load:smoke`: passing on 2026-05-10 in 2954ms for 5000 students, 500 teachers, 1000 courses, and 50000 enrollments after the audited guardian-contact slice.
 - Landing/login visual smoke passed on 2026-05-10 for desktop and mobile with no missing image alt text, unnamed buttons, or horizontal overflow.
 - `LMS_SMOKE_MUTATE=1 npm run test:a11y`: passing locally on 2026-05-10 with student file attachment, teacher grading, admin writes, logout, and screenshots in `test-results/lms-smoke`.

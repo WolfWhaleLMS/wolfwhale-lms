@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   courseResourceAccessDecision,
+  courseResourceRetentionDateInputToExpiresAt,
   courseResourceRetentionExpiresAt,
   courseResourceUploadScanVerdict,
   isMissingResourceSecurityTableError,
@@ -101,6 +102,12 @@ describe('course resource security controls', () => {
 
   it('calculates retention expiry from the configured launch policy window', () => {
     expect(courseResourceRetentionExpiresAt(new Date('2026-05-08T00:00:00.000Z'), 1)).toBe('2026-05-09T00:00:00.000Z')
+  })
+
+  it('normalizes admin retention date overrides to end-of-day UTC', () => {
+    expect(courseResourceRetentionDateInputToExpiresAt('2033-05-06')).toBe('2033-05-06T23:59:59.999Z')
+    expect(courseResourceRetentionDateInputToExpiresAt('2033-02-29')).toBeNull()
+    expect(courseResourceRetentionDateInputToExpiresAt('not-a-date')).toBeNull()
   })
 
   it('detects missing security review table errors for backwards-compatible rollout', () => {
