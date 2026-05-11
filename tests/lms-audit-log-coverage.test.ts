@@ -68,6 +68,7 @@ const routeServiceExpectations = [
   ['app/api/lms/enrollments/route.ts', 'enrollStudent'],
   ['app/api/lms/messages/route.ts', 'sendCourseMessage'],
   ['app/api/lms/invitations/route.ts', 'inviteUserToSchool'],
+  ['app/api/lms/invitations/resend/route.ts', 'resendSchoolInvitation'],
   ['app/api/lms/memberships/status/route.ts', 'updateSchoolMembershipStatus'],
   ['app/api/lms/memberships/role/route.ts', 'updateSchoolMembershipRole'],
   ['app/api/lms/guardian-links/route.ts', 'linkGuardianToStudent'],
@@ -131,6 +132,7 @@ describe('LMS audit-log coverage', () => {
     expect(rosterImportSource).toContain('roster.imported')
     expect(invitationSource).toContain("admin.from('audit_logs').insert")
     expect(invitationSource).toContain('user.invited')
+    expect(invitationSource).toContain('user.invite_resent')
     expect(invitationSource).toContain('user.deactivated')
     expect(invitationSource).toContain('user.reactivated')
     expect(invitationSource).toContain('user.role_changed')

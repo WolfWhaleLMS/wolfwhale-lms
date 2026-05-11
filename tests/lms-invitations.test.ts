@@ -95,4 +95,22 @@ describe('LMS admin invitations', () => {
     expect(invitationSource).toContain('updateSchoolMembershipRole')
     expect(invitationSource).toContain('user.role_changed')
   })
+
+  it('normalizes and wires audited invite resend requests', async () => {
+    const modulePath = '@/lib/lms/invitations'
+    const { normalizeInviteResendDraft } = await import(modulePath)
+    const dashboardSource = sourceFor('components/lms/AdminDashboard.tsx')
+    const routeSource = sourceFor('app/api/lms/invitations/resend/route.ts')
+    const invitationSource = sourceFor('lib/lms/invitations.ts')
+
+    expect(normalizeInviteResendDraft({ userId: ' user-1 ' })).toEqual({ userId: 'user-1' })
+    expect(() => normalizeInviteResendDraft({ userId: '' })).toThrow('user_id is required')
+    expect(dashboardSource).toContain('action="/api/lms/invitations/resend"')
+    expect(routeSource).toContain('resendSchoolInvitation')
+    expect(routeSource).toContain('enforceLmsMutationRateLimit')
+    expect(invitationSource).toContain('resendSchoolInvitation')
+    expect(invitationSource).toContain('getUserById')
+    expect(invitationSource).toContain('inviteUserByEmail')
+    expect(invitationSource).toContain('user.invite_resent')
+  })
 })

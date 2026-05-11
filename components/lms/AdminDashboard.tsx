@@ -302,6 +302,17 @@ export function AdminDashboard({ view }: { view: AdminView }) {
                     </p>
                   </div>
                   <div className="flex flex-col gap-2 sm:items-end">
+                    <form action="/api/lms/invitations/resend" method="post">
+                      <input type="hidden" name="userId" value={membership.userId} />
+                      <button
+                        type="submit"
+                        disabled={membership.isCurrentAdmin}
+                        className="inline-flex h-9 w-fit items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-900 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
+                      >
+                        <UserPlus className="h-4 w-4" />
+                        Resend invite
+                      </button>
+                    </form>
                     <form action="/api/lms/memberships/status" method="post">
                       <input type="hidden" name="userId" value={membership.userId} />
                       <input type="hidden" name="status" value={nextStatus} />

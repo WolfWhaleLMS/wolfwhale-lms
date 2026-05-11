@@ -79,6 +79,12 @@ export function normalizeMembershipRoleDraft(input: { userId: unknown; role: unk
   }
 }
 
+export function normalizeInviteResendDraft(input: { userId: unknown }) {
+  return {
+    userId: id(input.userId, 'user_id'),
+  }
+}
+
 async function requireSchoolAdmin(supabase: SupabaseClient) {
   const {
     data: { user },
@@ -184,6 +190,86 @@ export async function inviteUserToSchool(
   return {
     invitedUserId,
     role: draft.role,
+  }
+}
+
+export async function resendSchoolInvitation(supabase: SupabaseClient, input: { userId: unknown }) {
+  const { createAdminClient, hasSupabaseAdminEnv } = await import('@/lib/supabase/admin')
+
+  if (!hasSupabaseAdminEnv()) {
+    throw new LmsMutationError('SUPABASE_SERVICE_ROLE_KEY is required for invitation resends.', 'service_role_required')
+  }
+
+  const adminContext = await requireSchoolAdmin(supabase)
+  const draft = normalizeInviteResendDraft(input)
+  const admin = createAdminClient()
+  const { data: currentRows, error: membershipError } = await admin
+    .from('tenant_memberships')
+    .select('tenant_id,user_id,role,status')
+    .eq('tenant_id', adminContext.tenantId)
+    .eq('user_id', draft.userId)
+
+  if (membershipError) {
+    throw new LmsMutationError(`Unable to load membership: ${membershipError.message}`, 'membership_lookup_failed')
+  }
+
+  const membership = rows(currentRows)[0]
+  if (!membership) {
+    throw new LmsMutationError('School membership was not found.', 'membership_not_found')
+  }
+
+  const userResult = await admin.auth.admin.getUserById(draft.userId)
+  if (userResult.error) {
+    throw new LmsMutationError(`Unable to load invited user: ${userResult.error.message}`, 'user_lookup_failed')
+  }
+
+  const email = text(userResult.data.user?.email).toLowerCase()
+  if (!email) {
+    throw new LmsMutationError('Invited user has no email address.', 'missing_invite_email')
+  }
+
+  const role = text(membership.role)
+  const invite = await admin.auth.admin.inviteUserByEmail(email, {
+    data: {
+      role,
+      tenant_id: adminContext.tenantId,
+    },
+  })
+
+  if (invite.error) {
+    throw new LmsMutationError(`Unable to resend invite to ${email}: ${invite.error.message}`, 'invite_resend_failed')
+  }
+
+  const { error: updateError } = await admin
+    .from('tenant_memberships')
+    .update({
+      invited_at: new Date().toISOString(),
+      invited_by: adminContext.userId,
+    })
+    .eq('tenant_id', adminContext.tenantId)
+    .eq('user_id', draft.userId)
+
+  if (updateError) {
+    throw new LmsMutationError(`Unable to update invite timestamp: ${updateError.message}`, 'membership_invite_update_failed')
+  }
+
+  await admin.from('audit_logs').insert({
+    tenant_id: adminContext.tenantId,
+    user_id: adminContext.userId,
+    action: 'user.invite_resent',
+    resource_type: 'tenant_membership',
+    resource_id: draft.userId,
+    details: {
+      email,
+      role,
+      status: text(membership.status, 'active'),
+    },
+  })
+
+  return {
+    invitedUserId: draft.userId,
+    email,
+    role,
   }
 }
 
