@@ -25,27 +25,27 @@ import { WolfWhaleBrand } from '@/components/ui/wolfwhale-brand'
 import type { Lang } from '@/lib/landing-i18n'
 
 export const metadata: Metadata = {
-  title: 'WolfWhale LMS | School Operating System',
+  title: 'WolfWhale | School Platform',
   description:
-    'WolfWhale LMS is a Canadian school operating system for courses, attendance, grading, resources, messages, family visibility, and playful fish companion rewards.',
+    'WolfWhale is a Canadian school platform for courses, attendance, grades, resources, messages, family visibility, and fish rewards.',
   openGraph: {
-    title: 'WolfWhale LMS',
+    title: 'WolfWhale',
     description:
-      'A polished Canadian LMS for real school workflows, role dashboards, private resources, and fish companion rewards.',
+      'A polished Canadian school platform for real classroom workflows, private records, and fish rewards.',
     images: [
       {
         url: '/landing/websummit-water-garden.png',
         width: 1672,
         height: 941,
-        alt: 'Bright underwater WolfWhale LMS landing background with sunlight, bubbles, and aquatic plants',
+        alt: 'Bright underwater WolfWhale landing background with sunlight, bubbles, and aquatic plants',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'WolfWhale LMS',
+    title: 'WolfWhale',
     description:
-      'A Canadian school LMS for role dashboards, grading, attendance, resources, messages, and fish companion rewards.',
+      'A Canadian school platform for dashboards, grades, attendance, resources, messages, and fish rewards.',
     images: ['/landing/websummit-water-garden.png'],
   },
 }
@@ -63,81 +63,81 @@ const navItems = [
 ]
 
 const proofBadges = [
-  'Live role demos',
-  'Real LMS workflows',
-  'Private school records',
-  'Fish companion rewards',
+  'Demo',
+  'Real tools',
+  'Private data',
+  'Fish rewards',
 ]
 
 const productPillars = [
   {
     icon: CalendarCheck,
-    title: 'Daily operations',
-    body: 'Attendance, assignments, weighted grades, rubrics, calendars, resources, and report-card workflows live in one calm operating system.',
+    title: 'Classes',
+    body: 'Courses, assignments, grades, calendars, and attendance together.',
   },
   {
     icon: GraduationCap,
-    title: 'Teacher workflow',
-    body: 'Courses, lessons, submissions, feedback, grade posting, private materials, and teacher tools stay connected to the same school record.',
+    title: 'Teaching',
+    body: 'Create work, review submissions, post feedback, and share resources.',
   },
   {
     icon: BookOpen,
-    title: 'Learning content',
-    body: 'WolfWhale is built around Canadian curriculum alignment, textbooks, study tools, games, offline learning, and Indigenous education opportunities.',
+    title: 'Learning',
+    body: 'Simple tasks, study tools, textbooks, games, and fish rewards.',
   },
   {
     icon: ShieldCheck,
-    title: 'Data controls',
-    body: 'Role-scoped access, hardened Supabase RLS, private resources, export paths, and launch checks are part of the product foundation.',
+    title: 'Privacy',
+    body: 'Role access, private files, audit logs, and clear exports.',
   },
 ]
 
 const featureIndex = [
   {
-    group: 'Core LMS',
-    items: ['Courses', 'Enrollments', 'Assignments', 'Submissions', 'Feedback', 'Notifications'],
+    group: 'Learn',
+    items: ['Courses', 'Enrollments', 'Assignments', 'Submissions', 'Feedback', 'Alerts'],
   },
   {
-    group: 'Assessment',
-    items: ['Weighted grades', 'Gradebook', 'Rubrics', 'Grade posting', 'Missing work', 'Risk visibility'],
+    group: 'Grade',
+    items: ['Weighted grades', 'Gradebook', 'Rubrics', 'Posted grades', 'Missing work', 'Risk view'],
   },
   {
-    group: 'School Operations',
-    items: ['Attendance', 'Calendar', 'Rosters', 'Invitations', 'Report cards', 'Admin tools'],
+    group: 'Run',
+    items: ['Attendance', 'Calendar', 'Rosters', 'Invites', 'Reports', 'Admin tools'],
   },
   {
-    group: 'Resources',
-    items: ['Private uploads', 'Signed downloads', 'Lesson materials', 'Course resources', 'Student workspaces', 'Study tools'],
+    group: 'Share',
+    items: ['Uploads', 'Downloads', 'Lessons', 'Resources', 'Workspaces', 'Study tools'],
   },
   {
-    group: 'Communication',
-    items: ['Messages', 'Guardian visibility', 'Role dashboards', 'Linked-student views', 'Course calendars', 'Alerts'],
+    group: 'Talk',
+    items: ['Messages', 'Family view', 'Dashboards', 'Linked students', 'Class calendars', 'Updates'],
   },
   {
-    group: 'Exports and Setup',
-    items: ['Gradebook CSV', 'Attendance CSV', 'SIS export', 'OneRoster validation', 'SSO config checks', 'Launch proof checks'],
+    group: 'Export',
+    items: ['Grades', 'Attendance', 'SIS', 'OneRoster', 'SSO checks', 'Launch checks'],
   },
 ]
 
 const roles = [
   {
     title: 'Students',
-    body: 'Courses, assignments, submissions, grades, feedback, attendance, messages, resources, and a fish study companion.',
+    body: 'Assignments, grades, feedback, messages, resources, and fish rewards.',
     image: '/screenshots/actual-student-dashboard.png',
   },
   {
     title: 'Teachers',
-    body: 'Course rosters, assignment creation, grading queues, rubrics, attendance, resource uploads, gradebook exports, and feedback.',
+    body: 'Rosters, assignments, grading, rubrics, attendance, resources, and feedback.',
     image: '/screenshots/actual-teacher-dashboard.png',
   },
   {
     title: 'Guardians',
-    body: 'Linked-student progress, attendance, grades, feedback, calendar items, messages, and school visibility without extra portals.',
+    body: 'Progress, attendance, grades, feedback, calendar items, and messages.',
     image: '/screenshots/actual-guardian-dashboard.png',
   },
   {
     title: 'Admins',
-    body: 'School setup, launch health, rosters, courses, attendance exports, audit trails, resources, messages, and operational visibility.',
+    body: 'Schools, users, rosters, courses, exports, audit trails, and operations.',
     image: '/screenshots/actual-admin-dashboard.png',
   },
 ]
@@ -145,23 +145,23 @@ const roles = [
 const readiness = [
   {
     icon: UsersRound,
-    title: 'Role dashboards',
-    body: 'Protected student, teacher, admin, and guardian surfaces are backed by persistent school records.',
+    title: 'Dashboards',
+    body: 'Each role sees the right tools and records.',
   },
   {
     icon: UploadCloud,
-    title: 'Persistent workflows',
-    body: 'Assignments, submissions, grades, rubrics, attendance, roster imports, and private resources are wired through the app.',
+    title: 'Workflows',
+    body: 'Assignments, grades, attendance, rosters, and resources are connected.',
   },
   {
     icon: FileText,
     title: 'Exports',
-    body: 'Gradebook, attendance, report-card, SIS, OneRoster, SSO config, and district proof checks are documented in the repo.',
+    body: 'Grades, attendance, SIS, OneRoster, and launch checks are covered.',
   },
   {
     icon: MessagesSquare,
-    title: 'Pilot scope',
-    body: 'WolfWhale is ready for single-school and carefully scoped multi-school pilots, not yet a proven large-district Canvas replacement.',
+    title: 'Pilots',
+    body: 'Pilot small, prove it, then grow.',
   },
 ]
 
@@ -180,7 +180,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           <WolfWhaleBrand
             href={`/${lp}`}
             logoSrc="/wolfwhale-logo-final.png"
-            logoSize={48}
+            logoSize={62}
             priority
             className="ww-main-brand"
             markClassName="ww-main-brand-mark"
@@ -226,19 +226,20 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
 
           <div className="ww-shell ww-hero-grid">
             <div className="ww-hero-copy">
-              <p className="ww-kicker">Canadian LMS for school pilots</p>
-              <h1>WolfWhale LMS.</h1>
+              <h1 className="ww-hero-title">
+                <span className="ww-wordmark">WolfWhale</span>
+              </h1>
               <p className="ww-lede">
-                Courses, attendance, grading, resources, messages, and family visibility in one playful sea-themed school operating system.
+                Simple school tools with grades, attendance, messages, resources, and fish rewards.
               </p>
 
               <div className="ww-hero-actions">
                 <Link href="/login" className="ww-button">
-                  Try the Demo
+                  Try Demo
                   <ArrowRight size={18} />
                 </Link>
                 <a href="#product" className="ww-button ww-button-secondary">
-                  See the Product
+                  See Product
                   <ArrowRight size={18} />
                 </a>
               </div>
@@ -266,8 +267,8 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         <section id="product" className="ww-section">
           <SectionIntro
             label="Product"
-            title="Core product"
-            body="WolfWhale connects classroom work, school operations, family visibility, and data controls."
+            title="What it does"
+            body="The core school tools in one place."
           />
 
           <div className="ww-shell ww-pillar-grid">
@@ -284,8 +285,8 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         <section id="features" className="ww-section ww-feature-index-section">
           <SectionIntro
             label="Features"
-            title="Feature index"
-            body="A direct view of the main workflows documented in the product."
+            title="Tools"
+            body="The essentials schools ask for first."
           />
 
           <div className="ww-shell ww-feature-index">
@@ -308,8 +309,8 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         <section id="roles" className="ww-section ww-section-alt">
           <SectionIntro
             label="Roles"
-            title="Role dashboards"
-            body="Students, teachers, guardians, and admins each see the tools and records they are allowed to use."
+            title="For everyone"
+            body="Students, teachers, families, and admins each get a clear view."
           />
 
           <div className="ww-shell ww-role-grid">
@@ -328,8 +329,8 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         <section id="trust" className="ww-section">
           <SectionIntro
             label="Trust"
-            title="School data controls"
-            body="Auth, role routing, Supabase RLS, private resources, exports, support runbooks, smoke tests, and launch checks are documented."
+            title="Safe by design"
+            body="Role access, private files, audit trails, and launch checks are built in."
           />
 
           <div className="ww-shell ww-readiness-grid">
@@ -349,13 +350,13 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           <div className="ww-shell ww-pilot-inner">
             <div>
               <p className="ww-kicker">Pilot</p>
-              <h2>Start with one school.</h2>
+              <h2>Start small.</h2>
               <p>
-                WolfWhale is ready for single-school and controlled multi-school pilots. Large-district replacement claims come later, after customer-specific SSO, SIS, support, and restore evidence.
+                Pilot with one school, prove the workflows, then expand.
               </p>
             </div>
             <div className="ww-pilot-list">
-              {['Role setup', 'Rosters and courses', 'Teacher workflows', 'Guardian visibility', 'Exports and support'].map((item) => (
+              {['Roles', 'Rosters', 'Courses', 'Families', 'Exports'].map((item) => (
                 <span key={item}>
                   <CheckCircle2 size={16} />
                   {item}
@@ -368,8 +369,8 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
         <section id="contact" className="ww-section">
           <SectionIntro
             label="Contact"
-            title="Contact WolfWhale"
-            body="Tell us about your school, board, training program, or implementation question."
+            title="Talk to us"
+            body="Show it to your school, board, or training program."
           />
           <div className="ww-shell ww-contact-card">
             <ContactForm />
@@ -391,7 +392,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           <div>
             <WolfWhaleBrand
               logoSrc="/wolfwhale-logo-final.png"
-              logoSize={46}
+              logoSize={56}
               className="ww-main-footer-brand"
               markClassName="ww-main-brand-mark"
               textClassName="ww-main-brand-text"
@@ -404,7 +405,7 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               <Mail size={14} /> info@wolfwhale.ca
             </a>
           </div>
-          <p>© 2026 WolfWhale Inc. All rights reserved.</p>
+          <p>© 2026 <span className="ww-inline-wordmark">WolfWhale</span> Inc. All rights reserved.</p>
         </div>
       </footer>
     </div>

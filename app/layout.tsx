@@ -45,13 +45,12 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wolfwhale.ca";
 
 export const metadata: Metadata = {
   title: {
-    default: "WolfWhale | Learning Management System",
+    default: "WolfWhale | School Platform",
     template: "%s | WolfWhale",
   },
   description:
-    "Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
+    "Canadian school platform with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
   keywords: [
-    "LMS",
     "learning management system",
     "online courses",
     "e-learning",
@@ -61,11 +60,11 @@ export const metadata: Metadata = {
     "spaced repetition",
     "certificates",
     "interactive learning",
-    "Canadian LMS",
+    "Canadian school platform",
     "iOS education app",
     "learning app",
     "K-12 learning platform",
-    "post-secondary LMS",
+    "post-secondary learning platform",
     "mobile learning",
     "App Store",
     "FERPA compliant",
@@ -74,7 +73,7 @@ export const metadata: Metadata = {
     "Moodle alternative",
     "Brightspace alternative",
     "school learning management system",
-    "LMS for schools Canada",
+    "school platform Canada",
     "spaced repetition learning",
     "student data privacy",
   ],
@@ -89,24 +88,24 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "WolfWhale LMS",
-    title: "WOLFWHALE LMS",
+    siteName: "WolfWhale",
+    title: "WolfWhale",
     description:
-      "Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
+      "Canadian school platform with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
     images: [
       {
         url: "/logo.png",
         width: 952,
         height: 895,
-        alt: "WolfWhale LMS - Canadian Learning Management System",
+        alt: "WolfWhale - Canadian School Platform",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "WOLFWHALE LMS",
+    title: "WolfWhale",
     description:
-      "Canadian learning management system with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
+      "Canadian school platform with built-in spaced repetition flashcards, AI tutoring, offline learning, and gamification for K-12 and post-secondary schools.",
     images: ["/logo.png"],
     creator: "@wolfwhale",
   },
@@ -159,7 +158,7 @@ export default function RootLayout({
             url: "https://wolfwhale.ca",
             logo: "https://wolfwhale.ca/logo.png",
             description:
-              "Canadian learning management system for K-12 & post-secondary education",
+              "Canadian school platform for K-12 and post-secondary education",
             sameAs: [],
           }}
         />
@@ -167,11 +166,11 @@ export default function RootLayout({
           data={{
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            name: "WolfWhale LMS",
+            name: "WolfWhale",
             applicationCategory: "EducationalApplication",
             operatingSystem: "Web",
             description:
-              "WolfWhale LMS is a Canadian LMS built for K-12 and post-secondary education. Features include interactive courses, quizzes, spaced repetition flashcards, certificates, and FERPA compliant data handling.",
+              "WolfWhale is a Canadian school platform built for K-12 and post-secondary education. Features include interactive courses, quizzes, spaced repetition flashcards, certificates, and FERPA compliant data handling.",
             offers: {
               "@type": "Offer",
               price: "12",

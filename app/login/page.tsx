@@ -183,7 +183,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               <div className="max-w-md">
                 <p className="inline-flex items-center gap-2 rounded-2xl border border-white/80 bg-white/70 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-blue-700 shadow-sm shadow-sky-900/10 dark:border-white/15 dark:bg-white/10 dark:text-cyan-100">
                   <CheckCircle2 className="h-4 w-4" />
-                  Real LMS
+                  Real School Tools
                 </p>
                 <h2 className="mt-4 text-4xl font-black leading-tight text-blue-950 dark:text-white">
                   One login for every role.

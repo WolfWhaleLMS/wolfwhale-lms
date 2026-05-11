@@ -2803,7 +2803,7 @@ button:focus-visible {
   }
 }
 
-/* ── WolfWhale landing refresh: Core LMS glass system ── */
+/* ── WolfWhale landing refresh: school glass system ── */
 .ww-landing {
   --ww-ink: #073f94;
   --ww-muted: #32659c;
@@ -2868,8 +2868,8 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: min(100% - 2rem, 1180px);
-  height: 4.4rem;
+  width: min(100% - 2rem, 1220px);
+  height: 5rem;
   margin-inline: auto;
   gap: 1rem;
 }
@@ -2923,7 +2923,7 @@ button:focus-visible {
 .ww-main-footer-brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.78rem;
   min-width: 0;
   text-decoration: none;
 }
@@ -2939,14 +2939,18 @@ button:focus-visible {
 
 .ww-main-brand-text {
   color: var(--ww-accent-strong);
-  font-size: 1.45rem;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.7rem;
   font-weight: 900;
+  letter-spacing: 0;
+  line-height: 0.9;
 }
 
 .ww-main-brand-tagline {
   color: var(--ww-muted);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 700;
+  letter-spacing: 0;
 }
 
 .dark .ww-main-brand-text,
@@ -3130,7 +3134,7 @@ button:focus-visible {
 }
 
 .ww-hero-copy {
-  max-width: 39rem;
+  max-width: 34rem;
 }
 
 .ww-kicker {
@@ -3144,8 +3148,20 @@ button:focus-visible {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.96), 0 12px 26px rgba(0, 114, 204, 0.14);
   font-size: 0.72rem;
   font-weight: 900;
-  letter-spacing: 0.18em;
+  letter-spacing: 0;
   text-transform: uppercase;
+}
+
+.ww-wordmark,
+.ww-inline-wordmark {
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.ww-hero-title .ww-wordmark {
+  display: inline-block;
+  max-width: 100%;
 }
 
 .dark .ww-kicker,
@@ -3172,6 +3188,13 @@ button:focus-visible {
   font-size: clamp(2.3rem, 5vw, 4.3rem);
 }
 
+.ww-hero .ww-hero-title {
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(4.5rem, 7.4vw, 6.7rem);
+  letter-spacing: 0;
+  line-height: 0.85;
+}
+
 .dark .ww-hero h1,
 .dark .ww-section-intro h2,
 .dark .ww-pilot h2,
@@ -3193,9 +3216,9 @@ button:focus-visible {
 }
 
 .ww-hero .ww-lede {
-  max-width: 34rem;
+  max-width: 30rem;
   color: #124d84;
-  font-size: 1.14rem;
+  font-size: 1.08rem;
   font-weight: 750;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.68);
 }
@@ -3594,6 +3617,7 @@ button:focus-visible {
 @media (max-width: 640px) {
   .ww-nav-inner {
     width: min(100% - 1rem, 1180px);
+    height: 4.7rem;
   }
 
   .ww-main-brand {
@@ -3601,17 +3625,17 @@ button:focus-visible {
   }
 
   .ww-main-brand-mark {
-    width: 2.7rem !important;
-    height: 2.7rem !important;
+    width: 3.2rem !important;
+    height: 3.2rem !important;
   }
 
   .ww-main-brand-text {
-    font-size: 1.25rem;
+    font-size: 1.32rem;
   }
 
   .ww-main-brand-tagline {
-    max-width: 7.8rem;
-    font-size: 0.62rem;
+    max-width: 7.2rem;
+    font-size: 0.56rem;
   }
 
   .ww-nav-actions {
@@ -3627,7 +3651,7 @@ button:focus-visible {
 
   .ww-hero {
     min-height: auto;
-    padding-block: 5.4rem 2.2rem;
+    padding-block: 5.8rem 2.2rem;
   }
 
   .ww-hero-grid {
@@ -3638,8 +3662,12 @@ button:focus-visible {
     font-size: clamp(2.7rem, 12vw, 4rem);
   }
 
+  .ww-hero .ww-hero-title {
+    font-size: clamp(3.45rem, 16vw, 4.6rem);
+  }
+
   .ww-hero .ww-lede {
-    font-size: 1.03rem;
+    font-size: 1rem;
     line-height: 1.55;
   }
 
@@ -3668,7 +3696,7 @@ button:focus-visible {
   }
 }
 
-/* Student LMS personalization themes. The selected theme is stored locally and
+/* Student personalization themes. The selected theme is stored locally and
    applied by StudentPreferenceBridge through html[data-student-theme]. */
 .student-theme-backdrop {
   background:
