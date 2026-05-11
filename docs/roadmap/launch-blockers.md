@@ -1,12 +1,13 @@
 # Launch Blockers
 
-Date: 2026-05-10
+Date: 2026-05-11
 
 ## P0 Blockers Before Serious Paid Beta
 
 - Fresh deployed verification after current changes: run deployed smoke on `wolfwhale.ca` once this branch is deployed.
 - Apply and verify `supabase/migrations/20260510205641_student_submission_file_storage.sql` and `supabase/migrations/20260510212739_submissions_assigned_teacher_read_policy.sql` against the target Supabase project.
 - Apply and verify `supabase/migrations/20260510220050_fish_companion_species.sql` so live companion profiles accept only clownfish and pufferfish.
+- Apply and verify `supabase/migrations/20260511013851_textbook_inline_quiz_attempts.sql` so live textbook quiz attempts are RLS-scoped, audited, and eligible for first-attempt fish companion XP.
 - Apply and verify `supabase/migrations/20260510233000_course_message_write_policy.sql` so live conversation reads and member inserts follow course, role, and guardian-link boundaries.
 - Apply and verify `supabase/migrations/20260511004429_message_moderation_controls.sql` so live message queries and staff moderation controls have the required review columns.
 - Apply and verify `supabase/migrations/20260510225408_course_section_metadata.sql` so live course setup persists section labels and keeps tenant-scoped section queries indexed.
@@ -23,7 +24,7 @@ Date: 2026-05-10
 ## P1 Blockers Before Multi-School Sales
 
 - Admin lifecycle live RLS/deployed proof. Direct audited single-user invite creation, invite resend, membership deactivate/reactivate, role changes, guardian linking/unlinking, guardian primary-contact/consent/custody details, and admin audit review/export now exist.
-- Expand server-side companion XP into real quiz completion once a quiz attempt write path is wired. First-time submissions, first teacher feedback posts, present/online attendance check-ins, and first-time textbook lesson completions now grant server-side XP.
+- Companion XP live proof. First-time submissions, first teacher feedback posts, present/online attendance check-ins, first-time textbook lesson completions, and first-time textbook inline quiz attempts now have server-side XP wiring; target-project RLS/audit evidence remains pending.
 - External upload malware scanning, retention cleanup automation, and live resource-review proof. Initial SHA-256 denylist auto-quarantine, admin quarantine/legal-hold/retention controls, queue, and quota UI now exist.
 - Messaging communication policy settings, retention/reporting controls, and live moderation proof. Initial staff message export/review and moderation status controls now exist.
 - Formal WCAG 2.2 audit and remediation evidence.

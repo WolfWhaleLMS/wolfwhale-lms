@@ -1,6 +1,6 @@
 # WolfWhale Operational LMS Blueprint
 
-Date: 2026-05-10
+Date: 2026-05-11
 
 ## Product Boundary
 
@@ -52,7 +52,8 @@ The companion system is now fish-only for beta:
 - Starter species are limited to clownfish and pufferfish.
 - The tracked app tree now keeps companion code, docs, and raster assets fish-only.
 - `student_companion_profiles.species` is moved to a fish-only check constraint by `20260510220050_fish_companion_species.sql`.
-- Server-side XP is granted after first-time real LMS events: student assignment submission, first teacher feedback/grade post, first-time present/online attendance check-ins, and first-time textbook lesson completion. Repeat submissions, grade edits, attendance edits, and repeated lesson completion updates do not farm XP.
+- Server-side XP is granted after first-time real LMS events: student assignment submission, first teacher feedback/grade post, first-time present/online attendance check-ins, first-time textbook lesson completion, and first-time textbook inline quiz completion. Repeat submissions, grade edits, attendance edits, repeated lesson completion updates, and repeated quiz attempts do not farm XP.
+- Textbook inline quiz blocks now render as student answer forms, persist attempts to `student_textbook_quiz_attempts`, write `textbook_quiz_attempt.submitted` audit rows, and award fish companion XP only after the attempt is recorded and audited.
 
 Course messaging now has a real audited write path:
 
@@ -121,6 +122,13 @@ Submitted file downloads now have student and guardian affordances:
 - Admin resource review controls can update scan status, legal hold, quarantine notes, and retention expiry while recording the review in audit details.
 - Remaining file work includes live wrong-role/wrong-tenant proof, bucket policy validation, external malware scanner integration, and retention cleanup automation.
 
+Textbook quiz attempts now have a real learning-event path:
+
+- `lib/textbooks/inline-quiz.ts` normalizes seeded JSON quiz blocks into durable quiz keys, questions, answer options, and answer keys.
+- `components/textbook/TextbookReader.tsx` renders inline quiz blocks as accessible radio forms in the student chapter reader.
+- `recordTextbookInlineQuizAttempt` verifies active student membership, reads the tenant-scoped published chapter, records or updates the attempt, writes an audit row, and then grants first-attempt fish companion XP.
+- `20260511013851_textbook_inline_quiz_attempts.sql` adds the RLS-backed attempt table, authenticated grants, and student/teacher/admin scoped policies.
+
 ## Evidence
 
 - `npm test -- tests/lms-mutations.test.ts tests/lms-query-mapping.test.ts tests/lms-student-workspaces.test.tsx`: 13/13 passing on 2026-05-10.
@@ -130,6 +138,12 @@ Submitted file downloads now have student and guardian affordances:
 - `npm test -- tests/lms-audit-review.test.tsx tests/lms-query-mapping.test.ts`: 5/5 passing on 2026-05-10 for audit read-model metadata, dashboard review UI, and admin-only CSV export route coverage.
 - `npm test -- tests/fish-companion.test.ts`: 13/13 passing on 2026-05-10.
 - `npm test -- tests/companion-server-xp.test.ts tests/fish-companion.test.ts`: 16/16 passing on 2026-05-10 for fish-only companion guardrails and server-side XP grants from real submission, feedback, present/online attendance, and textbook lesson-completion events.
+- `npm test -- tests/textbook-inline-quiz.test.tsx`: 4/4 passing on 2026-05-11 for seeded quiz block normalization, student answer forms, audit-before-XP server-action wiring, and the RLS-backed inline quiz attempt migration artifact.
+- `npm test -- tests/textbook-inline-quiz.test.tsx tests/companion-server-xp.test.ts tests/fish-companion.test.ts tests/prompt-artifact-checklist.test.ts`: 23/23 passing on 2026-05-11 for textbook quiz attempts, fish-only companion guardrails, server-side XP wiring, and checklist coverage.
+- `npm test`: 37 files / 163 tests passing on 2026-05-11 after adding textbook inline quiz attempts.
+- `npm run lint`, `npm run typecheck`, `npm run build`, `npm audit --audit-level=moderate`, and `git diff --check`: passing on 2026-05-11 after adding textbook inline quiz attempts.
+- Fish-only companion scan for retired pet terms and companion-path `glacier` references found no matches on 2026-05-11. Broader science-textbook glacier references are curriculum content, not companion assets.
+- Textbook inline quiz rendered QA fallback on 2026-05-11 reached the login screen at desktop and mobile widths, but the student demo account redirected to `/login?error=lms-access-required`; protected textbook chapter UI remains blocked until smoke memberships/data are restored.
 - `npm test -- tests/lms-message-export.test.tsx tests/lms-messages.test.ts tests/lms-dashboards.test.tsx tests/prompt-artifact-checklist.test.ts`: 14/14 passing on 2026-05-10 for staff-only message CSV export, dashboard links, message workflows, dashboards, and launch checklist coverage.
 - `npm test -- tests/lms-message-moderation.test.tsx tests/lms-message-export.test.tsx tests/lms-messages.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx tests/lms-audit-log-coverage.test.ts`: 21/21 passing on 2026-05-10 for staff-only message moderation controls, export/review, message workflows, query mapping, dashboards, and audit coverage.
 - `npm test -- tests/lms-resource-review-dashboard.test.tsx tests/resource-security.test.ts tests/lms-query-mapping.test.ts tests/lms-dashboards.test.tsx tests/prompt-artifact-checklist.test.ts`: 16/16 passing on 2026-05-10 for resource quarantine/legal-hold/quota summary logic, admin dashboard queue UI, query mapping, access decisions, and checklist coverage.

@@ -7,6 +7,7 @@ import { revalidatePath } from 'next/cache'
 import { calculateNextReview, type SM2State } from '@/lib/flashcards/sm2'
 import { sanitizeText } from '@/lib/sanitize'
 import { tryAwardServerCompanionXp } from '@/lib/companion/server-xp'
+import { assessInlineQuizAnswer, normalizeInlineQuizBlock } from '@/lib/textbooks/inline-quiz'
 
 async function getContext() {
   const supabase = await createClient()
@@ -16,6 +17,36 @@ async function getContext() {
   const tenantId = headersList.get('x-tenant-id')
   if (!tenantId) throw new Error('No tenant context')
   return { supabase, user, tenantId }
+}
+
+function rowId(value: unknown, label: string) {
+  if (typeof value === 'string' && value.length > 0) return value
+
+  throw new Error(`Missing ${label}`)
+}
+
+function numeric(value: unknown, fallback = 0) {
+  const number = Number(value)
+
+  return Number.isFinite(number) ? number : fallback
+}
+
+function isUniqueViolationError(error: unknown) {
+  return Boolean(error && typeof error === 'object' && (error as { code?: unknown }).code === '23505')
+}
+
+async function requireActiveStudentMembership(supabase: Awaited<ReturnType<typeof createClient>>, tenantId: string, userId: string) {
+  const { data, error } = await supabase
+    .from('tenant_memberships')
+    .select('id')
+    .eq('tenant_id', tenantId)
+    .eq('user_id', userId)
+    .eq('role', 'student')
+    .eq('status', 'active')
+    .maybeSingle()
+
+  if (error) throw error
+  if (!data) throw new Error('An active student membership is required.')
 }
 
 // ---------------------------------------------------------------------------
@@ -315,6 +346,178 @@ export async function getReadingProgress(textbookId: string) {
 
   if (error) throw error
   return data ?? []
+}
+
+export async function recordTextbookInlineQuizAttempt(
+  chapterId: string,
+  blockIndex: number,
+  selectedOptionIndex: number
+) {
+  const parsed = z.object({
+    chapterId: z.string().uuid(),
+    blockIndex: z.number().int().min(0),
+    selectedOptionIndex: z.number().int().min(0),
+  }).safeParse({ chapterId, blockIndex, selectedOptionIndex })
+  if (!parsed.success) throw new Error('Invalid input: ' + parsed.error.issues[0].message)
+
+  const { supabase, user, tenantId } = await getContext()
+  await requireActiveStudentMembership(supabase, tenantId, user.id)
+
+  const { data: chapter, error: chapterError } = await supabase
+    .from('textbook_chapters')
+    .select('id,tenant_id,textbook_id,title,content,is_published')
+    .eq('id', chapterId)
+    .eq('tenant_id', tenantId)
+    .single()
+
+  if (chapterError) throw chapterError
+  if (!chapter.is_published) throw new Error('This chapter is not available.')
+
+  const content = Array.isArray(chapter.content) ? chapter.content : []
+  const quiz = normalizeInlineQuizBlock(content[blockIndex], blockIndex)
+  if (!quiz) throw new Error('Quiz block not found.')
+  if (quiz.correctOptionIndex === null) throw new Error('Quiz answer key is missing.')
+  if (selectedOptionIndex >= quiz.options.length) throw new Error('Selected option is not available.')
+
+  const answer = assessInlineQuizAnswer(quiz, selectedOptionIndex)
+  const now = new Date().toISOString()
+  const existingQuery = supabase
+    .from('student_textbook_quiz_attempts')
+    .select('id,attempt_count')
+    .eq('tenant_id', tenantId)
+    .eq('student_id', user.id)
+    .eq('chapter_id', chapterId)
+    .eq('quiz_key', quiz.quizKey)
+    .maybeSingle()
+  const { data: existingAttempt, error: existingError } = await existingQuery
+
+  if (existingError) throw existingError
+
+  const answerPayload = {
+    selectedOptionIndex,
+    selectedOption: answer.selectedOption,
+    correctOptionIndex: quiz.correctOptionIndex,
+    isCorrect: answer.isCorrect,
+  }
+  const basePayload = {
+    tenant_id: tenantId,
+    student_id: user.id,
+    textbook_id: rowId(chapter.textbook_id, 'textbook_id'),
+    chapter_id: chapterId,
+    quiz_key: quiz.quizKey,
+    block_index: blockIndex,
+    question_text: quiz.question,
+    selected_option_index: selectedOptionIndex,
+    correct_option_index: quiz.correctOptionIndex,
+    is_correct: answer.isCorrect,
+    last_answered_at: now,
+    last_answer_payload: answerPayload,
+  }
+
+  let shouldAwardCompanionXp = !existingAttempt
+  let savedAttempt: { id?: unknown; attempt_count?: unknown } | null = null
+
+  if (existingAttempt) {
+    const attemptCount = numeric(existingAttempt.attempt_count, 1) + 1
+    const { data, error } = await supabase
+      .from('student_textbook_quiz_attempts')
+      .update({
+        ...basePayload,
+        attempt_count: attemptCount,
+      })
+      .eq('id', rowId(existingAttempt.id, 'attempt_id'))
+      .select('id,attempt_count')
+      .maybeSingle()
+
+    if (error) throw error
+    savedAttempt = data
+  } else {
+    const { data, error } = await supabase
+      .from('student_textbook_quiz_attempts')
+      .insert({
+        ...basePayload,
+        attempt_count: 1,
+        first_answered_at: now,
+      })
+      .select('id,attempt_count')
+      .maybeSingle()
+
+    if (error && isUniqueViolationError(error)) {
+      shouldAwardCompanionXp = false
+      const { data: racedAttempt, error: racedError } = await supabase
+        .from('student_textbook_quiz_attempts')
+        .select('id,attempt_count')
+        .eq('tenant_id', tenantId)
+        .eq('student_id', user.id)
+        .eq('chapter_id', chapterId)
+        .eq('quiz_key', quiz.quizKey)
+        .maybeSingle()
+
+      if (racedError) throw racedError
+
+      const attemptCount = numeric(racedAttempt?.attempt_count, 1) + 1
+      const { data: updatedAttempt, error: updateError } = await supabase
+        .from('student_textbook_quiz_attempts')
+        .update({
+          ...basePayload,
+          attempt_count: attemptCount,
+        })
+        .eq('id', rowId(racedAttempt?.id, 'attempt_id'))
+        .select('id,attempt_count')
+        .maybeSingle()
+
+      if (updateError) throw updateError
+      savedAttempt = updatedAttempt
+    } else {
+      if (error) throw error
+      savedAttempt = data
+    }
+  }
+
+  const attemptId = rowId(savedAttempt?.id, 'attempt_id')
+  const attemptCount = numeric(savedAttempt?.attempt_count, 1)
+
+  const { error: auditError } = await supabase.from('audit_logs').insert({
+    tenant_id: tenantId,
+    user_id: user.id,
+    action: 'textbook_quiz_attempt.submitted',
+    resource_type: 'textbook_quiz_attempt',
+    resource_id: attemptId,
+    details: {
+      textbook_id: chapter.textbook_id,
+      chapter_id: chapterId,
+      chapter_title: chapter.title,
+      quiz_key: quiz.quizKey,
+      block_index: blockIndex,
+      is_correct: answer.isCorrect,
+      attempt_count: attemptCount,
+      awarded_companion_xp: shouldAwardCompanionXp,
+    },
+  })
+
+  if (auditError) throw auditError
+
+  let awardedCompanionXp = false
+  if (shouldAwardCompanionXp) {
+    const xpResult = await tryAwardServerCompanionXp(supabase, {
+      tenantId,
+      studentId: user.id,
+      source: 'quiz_completed',
+      label: 'Textbook quiz completed',
+      occurredAt: now,
+    })
+    awardedCompanionXp = xpResult.awarded
+  }
+
+  revalidatePath(`/student/textbooks/${chapter.textbook_id}/chapters/${chapterId}`)
+
+  return {
+    quizKey: quiz.quizKey,
+    isCorrect: answer.isCorrect,
+    correctOptionIndex: quiz.correctOptionIndex,
+    explanation: quiz.explanation,
+    awardedCompanionXp,
+  }
 }
 
 // ---------------------------------------------------------------------------

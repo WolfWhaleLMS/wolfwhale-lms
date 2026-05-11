@@ -1,18 +1,32 @@
 'use client'
 
+import { useState, type FormEvent } from 'react'
 import {
   BookOpen,
+  CheckCircle2,
   Download,
   ExternalLink,
   File,
   FileText,
+  Loader2,
+  XCircle,
 } from 'lucide-react'
+import { recordTextbookInlineQuizAttempt } from '@/app/actions/textbooks'
 import { TextbookImage } from '@/components/textbook/TextbookImage'
+import { normalizeInlineQuizBlock, type InlineTextbookQuiz } from '@/lib/textbooks/inline-quiz'
 import type { KeyTerm } from '@/lib/types/textbook'
 
 interface TextbookReaderProps {
   content: unknown[]
   keyTerms?: KeyTerm[]
+  chapterId?: string
+}
+
+interface InlineQuizResult {
+  isCorrect: boolean
+  correctOptionIndex: number | null
+  explanation: string
+  awardedCompanionXp: boolean
 }
 
 /** Resolve block data -- supports both flat (block.xxx) and nested (block.data.xxx) formats. */
@@ -46,7 +60,110 @@ function highlightKeyTerms(html: string, terms: KeyTerm[]): string {
   return result
 }
 
-export function TextbookReader({ content, keyTerms = [] }: TextbookReaderProps) {
+function InlineQuizBlock({ chapterId, quiz }: { chapterId?: string; quiz: InlineTextbookQuiz }) {
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(null)
+  const [result, setResult] = useState<InlineQuizResult | null>(null)
+  const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const disabled = !chapterId || selectedOptionIndex === null || submitting
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    if (!chapterId || selectedOptionIndex === null) return
+
+    setSubmitting(true)
+    setError('')
+    try {
+      const response = await recordTextbookInlineQuizAttempt(chapterId, quiz.blockIndex, selectedOptionIndex)
+      setResult(response)
+    } catch {
+      setError('Quiz answer could not be saved. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-cyan-200 bg-cyan-50/50 p-4 shadow-sm dark:border-cyan-900 dark:bg-cyan-950/20">
+      <fieldset className="space-y-3">
+        <legend className="text-base font-bold text-foreground">{quiz.question}</legend>
+        <div className="space-y-2">
+          {quiz.options.map((option, i) => {
+            const selected = selectedOptionIndex === i
+            const correct = result?.correctOptionIndex === i
+            const missedCorrect = result && correct && !result.isCorrect
+            const wrongSelection = result && selected && !result.isCorrect && !correct
+            const stateClass = correct
+              ? 'border-emerald-400 bg-emerald-50 text-emerald-950 dark:bg-emerald-950/30 dark:text-emerald-100'
+              : wrongSelection
+                ? 'border-rose-400 bg-rose-50 text-rose-950 dark:bg-rose-950/30 dark:text-rose-100'
+                : selected
+                  ? 'border-cyan-500 bg-white text-foreground shadow-sm dark:bg-slate-950'
+                  : 'border-border bg-white/80 text-foreground hover:border-cyan-300 dark:bg-slate-950/60'
+
+            return (
+              <label
+                key={`${i}-${option}`}
+                className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${stateClass}`}
+              >
+                <input
+                  type="radio"
+                  name={`inline-quiz-${quiz.blockIndex}`}
+                  value={i}
+                  checked={selected}
+                  onChange={() => setSelectedOptionIndex(i)}
+                  disabled={submitting}
+                  className="h-4 w-4 accent-cyan-600"
+                />
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-cyan-100 text-xs font-bold text-cyan-900 dark:bg-cyan-900 dark:text-cyan-100">
+                  {String.fromCharCode(65 + i)}
+                </span>
+                <span className="min-w-0 flex-1">{option}</span>
+                {correct && result ? <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" aria-hidden="true" /> : null}
+                {wrongSelection ? <XCircle className="h-4 w-4 shrink-0 text-rose-600" aria-hidden="true" /> : null}
+                {missedCorrect ? <span className="sr-only">Correct answer</span> : null}
+              </label>
+            )
+          })}
+        </div>
+      </fieldset>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          type="submit"
+          disabled={disabled}
+          className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-cyan-600 px-5 text-sm font-bold text-white shadow-[0_4px_0_rgba(14,116,144,0.45)] transition active:translate-y-0.5 active:shadow-[0_2px_0_rgba(14,116,144,0.45)] disabled:cursor-not-allowed disabled:opacity-55"
+        >
+          {submitting ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <CheckCircle2 className="h-4 w-4" aria-hidden="true" />}
+          Check answer
+        </button>
+        {result ? (
+          <p className="text-sm font-semibold text-foreground" aria-live="polite">
+            {result.isCorrect ? 'Correct' : 'Try again'}
+          </p>
+        ) : null}
+      </div>
+
+      {result?.explanation ? (
+        <p className="rounded-lg bg-white/80 px-3 py-2 text-sm text-slate-700 dark:bg-slate-950/60 dark:text-slate-200">
+          {result.explanation}
+        </p>
+      ) : null}
+      {result?.awardedCompanionXp ? (
+        <p className="text-xs font-bold uppercase tracking-wide text-cyan-700 dark:text-cyan-200">
+          Fish companion XP recorded
+        </p>
+      ) : null}
+      {error ? (
+        <p className="text-sm font-medium text-rose-700 dark:text-rose-300" aria-live="polite">
+          {error}
+        </p>
+      ) : null}
+    </form>
+  )
+}
+
+export function TextbookReader({ content, keyTerms = [], chapterId }: TextbookReaderProps) {
   function renderContent(content: unknown) {
     if (!content) return null
 
@@ -358,28 +475,11 @@ export function TextbookReader({ content, keyTerms = [] }: TextbookReaderProps) 
               }
 
               case 'quiz': {
-                const question = d(block, 'question')
-                const options = d(block, 'options') || []
+                const quiz = normalizeInlineQuizBlock(block, index)
+                if (!quiz) return null
+
                 return (
-                  <div
-                    key={index}
-                    className="space-y-3 rounded-lg border border-border p-4"
-                  >
-                    <p className="font-medium text-foreground">{question}</p>
-                    <div className="space-y-2">
-                      {options.map((option: string, i: number) => (
-                        <div
-                          key={i}
-                          className="flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm"
-                        >
-                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium">
-                            {String.fromCharCode(65 + i)}
-                          </span>
-                          <span>{option}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <InlineQuizBlock key={index} chapterId={chapterId} quiz={quiz} />
                 )
               }
 

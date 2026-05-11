@@ -1,6 +1,6 @@
 # Prompt To Artifact Checklist
 
-Date: 2026-05-10
+Date: 2026-05-11
 
 Purpose: map the active WolfWhale LMS launch objective to concrete repo artifacts, verification commands, and known blockers. This checklist is evidence for audit work only; it does not claim production readiness.
 
@@ -33,7 +33,7 @@ Purpose: map the active WolfWhale LMS launch objective to concrete repo artifact
 | 11. Messaging works between allowed roles | `app/api/lms/messages/route.ts`, `app/api/lms/exports/messages/route.ts`, `app/api/lms/messages/[messageId]/moderation/route.ts`, `lib/lms/mutations.ts`, `lib/lms/exports.ts`, `components/lms/SharedLmsPanels.tsx`, `components/lms/AdminDashboard.tsx`, `components/lms/TeacherDashboard.tsx`, `components/lms/student-workspaces/calendar-resources-messages.tsx`, `supabase/migrations/20260510233000_course_message_write_policy.sql`, `supabase/migrations/20260511004429_message_moderation_controls.sql`, `tests/lms-messages.test.ts`, `tests/lms-message-export.test.tsx`, `tests/lms-message-moderation.test.tsx` | Partial: audited write workflow, relationship-aware policy artifact, staff message CSV export, and staff moderation status controls exist; retention policy controls and live RLS validation remain pending |
 | 12. Reports summarize progress, missing work, attendance, grade trends | admin/teacher/student/guardian views, `lib/lms/read-model.ts`, `lib/lms/exports.ts`, `lib/lms/grade-trends.ts`, `tests/lms-gradebook-attendance.test.ts`, `tests/lms-district-scale.test.ts`, `tests/lms-dashboards.test.tsx`, `tests/lms-student-workspaces.test.tsx` | Partial: grade trend read/export/rendering proof exists; live regression, date-range reporting, and deployed proof pending |
 | 13. File uploads are private, scoped, size/type limited, auditable | `lib/lms/mutations.ts`, `lib/lms/resource-security.ts`, `lib/lms/resource-review-summary.ts`, `app/api/lms/submissions/[submissionId]/file/route.ts`, `components/lms/SharedLmsPanels.tsx`, `components/lms/AdminDashboard.tsx`, `components/lms/student-workspaces/shared.tsx`, `components/lms/GuardianDashboard.tsx`, storage migrations, `tests/lms-submission-file-route.test.ts`, `tests/lms-student-workspaces.test.tsx`, `tests/resource-security.test.ts`, `tests/lms-resource-review-dashboard.test.tsx` | Partial: upload validation, signed routes, teacher/student/guardian download affordances, audit metadata, SHA-256 denylist auto-quarantine, admin scan/legal-hold/quarantine/retention review controls, and resource queue/quota summary exist; live DB/storage policy validation and external scanner integration pending |
-| 14. Pets gain XP and unlock from real learning events | `lib/companion/fish-companion.ts`, `lib/companion/server-xp.ts`, `lib/lms/mutations.ts`, `app/actions/textbooks.ts`, `tests/fish-companion.test.ts`, `tests/companion-server-xp.test.ts`, `components/lms/StudentCompanionWidget.tsx`, `supabase/migrations/20260510220050_fish_companion_species.sql` | Partial: fish-only companion is enforced in code, docs, public companion assets, and Supabase species constraints; first-time submissions, teacher feedback, present/online attendance records, and first-time textbook lesson completions grant server-side XP; quiz completion remains pending until a real quiz attempt write path is wired |
+| 14. Pets gain XP and unlock from real learning events | `lib/companion/fish-companion.ts`, `lib/companion/server-xp.ts`, `lib/lms/mutations.ts`, `app/actions/textbooks.ts`, `lib/textbooks/inline-quiz.ts`, `components/textbook/TextbookReader.tsx`, `tests/fish-companion.test.ts`, `tests/companion-server-xp.test.ts`, `tests/textbook-inline-quiz.test.tsx`, `components/lms/StudentCompanionWidget.tsx`, `supabase/migrations/20260510220050_fish_companion_species.sql`, `supabase/migrations/20260511013851_textbook_inline_quiz_attempts.sql` | Partial: fish-only companion is enforced in code, docs, public companion assets, and Supabase species constraints; first-time submissions, teacher feedback, present/online attendance records, first-time textbook lesson completions, and first-time textbook inline quiz attempts grant server-side XP; live migration/RLS proof remains pending |
 
 ## Security, Privacy, And Compliance Artifacts
 
@@ -44,6 +44,7 @@ Purpose: map the active WolfWhale LMS launch objective to concrete repo artifact
 | Assigned-teacher submission policy | `supabase/migrations/20260510212739_submissions_assigned_teacher_read_policy.sql` | Pending live apply |
 | Calendar event policies | `supabase/migrations/20260510231855_lms_calendar_events.sql` | Pending live apply |
 | Course section metadata | `supabase/migrations/20260510225408_course_section_metadata.sql` | Pending live apply |
+| Textbook inline quiz attempts | `supabase/migrations/20260511013851_textbook_inline_quiz_attempts.sql`, `tests/textbook-inline-quiz.test.tsx` | Pending live apply |
 | Audit-log coverage | `tests/lms-audit-log-coverage.test.ts`, `tests/lms-audit-review.test.tsx`, `lib/lms/mutations.ts`, `lib/lms/roster-import.ts`, `app/api/lms/resources/[resourceId]/route.ts`, `app/api/lms/exports/audit/route.ts` | Partial: static write coverage, admin review metadata, and admin-only CSV export present; live audit-row proof pending |
 | Secret/dependency checks | `npm audit --audit-level=moderate`; changed-file secret scans recorded in scorecard | Partial |
 | Privacy launch packet | `docs/security/privacy-launch-readiness.md`, DPA, subprocessor, breach, retention/export/delete/correction runbooks | Partial: counsel and customer review pending |
@@ -87,6 +88,6 @@ Fresh evidence currently recorded in `docs/audits/launch-readiness-scorecard.md`
 - Pass the stricter mutating browser smoke including teacher signed-file download.
 - Complete parent wrong-child/wrong-tenant live RLS matrix.
 - Convert privacy packet placeholders into reviewed legal/customer operating artifacts.
-- Expand server-side companion XP grants into real quiz completion once a quiz attempt write path is wired.
+- Apply and verify the textbook inline quiz attempt migration before claiming live quiz XP readiness.
 - Produce deployed smoke evidence for `wolfwhale.ca`.
 - Produce restore-drill, monitoring, and load-test evidence before scale claims.

@@ -149,7 +149,7 @@ export default async function ChapterReaderPage({
 
             {/* Chapter Content */}
             <div className="ocean-card rounded-2xl p-6 md:p-8">
-              <TextbookReader content={content} keyTerms={keyTerms} />
+              <TextbookReader chapterId={chapterId} content={content} keyTerms={keyTerms} />
             </div>
 
             {/* Flashcard link */}

@@ -1,6 +1,6 @@
 # Launch Readiness Scorecard
 
-Date: 2026-05-10
+Date: 2026-05-11
 
 Status key: Pass means freshly verified in this pass. Partial means implemented or previously evidenced but needs fresh full-gate proof after current changes. Blocked means external credentials, deployment, or operator action is required.
 
@@ -20,7 +20,7 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 | Calendar/attendance/messages | Partial | Role read models, visible message composer forms, audited `/api/lms/messages` writes, audited `/api/lms/calendar-events` school/course event writes, admin/teacher message CSV export, and staff-only message moderation status controls now exist. Student/guardian messages resolve to course staff server-side, teacher messages are scoped to assigned course students/guardians, and relationship-aware calendar/message policy migrations are pending live application. Communication policy settings, retention controls, and live RLS proof remain open. |
 | Private files | Partial | Course resources and student submission files use private buckets and signed routes. Teacher grading, student assignment workspaces, and guardian linked-student views now expose submitted-file links only when the scoped submission row is readable. Admins now have a resource review queue/quota summary plus inline scan/legal-hold/quarantine/retention-expiry controls, and uploads can auto-quarantine configured SHA-256 denylist matches. The linked dev project has a private `submissions` bucket; storage and table RLS migrations still need live DB application/validation. |
 | Audit logging | Partial | Core LMS mutation services, roster import, direct invitations, membership status changes, guardian link/unlink, calendar events, and the direct resource-review admin write now have static audit-log coverage. Admins can now review actor/resource/detail metadata and export an admin-only audit CSV. Live audit-row insertion proof is still pending with applied Supabase migrations. |
-| Pets/rewards | Partial | Companion code is fish-only with clownfish/pufferfish starters, fish-only Supabase species migration, fish-only public companion artwork, and server-side XP grants for first-time student submissions, first teacher feedback posts, first-time present/online attendance records, and first-time textbook lesson completion. Quiz reward expansion is still pending because no real quiz attempt write path is wired yet. |
+| Pets/rewards | Partial | Companion code is fish-only with clownfish/pufferfish starters, fish-only Supabase species migration, fish-only public companion artwork, and server-side XP grants for first-time student submissions, first teacher feedback posts, first-time present/online attendance records, first-time textbook lesson completion, and first-time textbook inline quiz attempts. Live application of the inline quiz attempt migration and target-project RLS/audit proof are still pending. |
 | Accessibility | Partial | Prior smoke evidence exists; fresh WCAG-focused checks pending. |
 | Security/RLS | Partial | Static tests now cover assigned-teacher submission read/update policy shape. Live DB validation is blocked by missing DB/read credentials and Supabase CLI role-permission failure. |
 | Privacy launch packet | Partial | Added counsel-review-required privacy readiness, DPA, subprocessor, breach, and student-record rights runbook placeholders. Product automation and legal review are still pending. |
@@ -30,6 +30,14 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 
 ## Latest Fresh Verification
 
+- `npm test -- tests/textbook-inline-quiz.test.tsx`: passed, 4 tests covering seeded quiz block normalization, student answer-form rendering, active-student/audit-before-XP server-action wiring, and the RLS-backed inline quiz attempt migration artifact.
+- `npm test -- tests/textbook-inline-quiz.test.tsx tests/companion-server-xp.test.ts tests/fish-companion.test.ts tests/prompt-artifact-checklist.test.ts`: passed, 4 files / 23 tests covering textbook quiz attempts, fish-only companion guardrails, server-side XP wiring, and checklist coverage.
+- `npm test`: passed, 37 files / 163 tests after adding textbook inline quiz attempts.
+- `npm run lint`, `npm run typecheck`, `npm run build`, `npm audit --audit-level=moderate`, and `git diff --check`: passed after adding textbook inline quiz attempts.
+- Changed-file secret scan for service-role/API/private-key patterns: no matches.
+- Fish-only companion scan for retired pet terms and companion-path `glacier` references: no matches. A broader repo scan still contains legitimate science-textbook glacier references; these are curriculum content, not companion/pet assets.
+- `supabase migration list --local`: still blocked because local Postgres is not running on `127.0.0.1:54322`.
+- Textbook inline quiz rendered QA fallback: Browser plugin runtime did not expose the required browser-control tool, so repo Playwright was used against `http://127.0.0.1:3011` at 1440px and 390px. Login rendered and the student demo button was present, but student sign-in redirected to `/login?error=lms-access-required`, so the protected textbook chapter/quiz UI could not be visually verified. Console output contained only existing Next.js LCP and smooth-scroll warnings.
 - Fish-only cleanup pass: `npm test` passed, 32 files / 143 tests, including `tests/fish-companion.test.ts` coverage for approved fish assets and retired public asset removal.
 - Fish-only cleanup pass: `npm run lint`, `npm run typecheck`, `npm run build`, `npm audit --audit-level=moderate`, and `git diff --check` passed.
 - Fish-only cleanup pass: exact repo scan for retired companion terms returned no matches outside guardrail test strings.
@@ -86,5 +94,5 @@ Status key: Pass means freshly verified in this pass. Partial means implemented 
 3. `npm run build`
 4. `npm run test:a11y`
 5. LMS dashboard browser smoke with active smoke accounts and `20260510225408_course_section_metadata.sql` plus `20260510231855_lms_calendar_events.sql` applied
-6. `npm run security:supabase` with DB credentials after applying `20260510205641_student_submission_file_storage.sql`, `20260510212739_submissions_assigned_teacher_read_policy.sql`, `20260510220050_fish_companion_species.sql`, `20260510233000_course_message_write_policy.sql`, `20260510225408_course_section_metadata.sql`, `20260510231855_lms_calendar_events.sql`, and `20260511004429_message_moderation_controls.sql`
+6. `npm run security:supabase` with DB credentials after applying `20260510205641_student_submission_file_storage.sql`, `20260510212739_submissions_assigned_teacher_read_policy.sql`, `20260510220050_fish_companion_species.sql`, `20260511013851_textbook_inline_quiz_attempts.sql`, `20260510233000_course_message_write_policy.sql`, `20260510225408_course_section_metadata.sql`, `20260510231855_lms_calendar_events.sql`, and `20260511004429_message_moderation_controls.sql`
 7. Fresh deployed smoke on `wolfwhale.ca` after the branch is deployed
