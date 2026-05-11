@@ -21,8 +21,46 @@ const teacherTools = [
 ]
 
 export function TeacherDashboard({ view }: { view: TeacherView }) {
+  const currentAssignment = view.assignments[0]
+  const gradedCount = view.gradebook.reduce(
+    (total, course) => total + course.students.reduce((courseTotal, student) => courseTotal + student.gradedAssignments, 0),
+    0
+  )
+  const possibleGradeCount = Math.max(view.assignments.length * Math.max(view.roster.length, 1), 1)
+
   return (
-    <LmsShell title="Teacher dashboard" subtitle="Courses, rosters, assignments, submissions, and grading queue." tools={teacherTools}>
+    <LmsShell
+      role="teacher"
+      title="Teacher dashboard"
+      subtitle="Courses, rosters, assignments, submissions, and grading queue."
+      tools={teacherTools}
+      schoolName={view.courses[0]?.title ?? 'Teacher workspace'}
+      userName={view.teacher.name}
+      spotlight={{
+        label: 'Current Assignment',
+        title: currentAssignment?.title ?? 'Create the next assignment',
+        tag: currentAssignment?.courseTitle ?? view.courses[0]?.subject ?? 'Coursework',
+        status: currentAssignment?.status ?? 'Active',
+        meta: currentAssignment ? [`Due ${new Date(currentAssignment.dueAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`, `${currentAssignment.maxPoints} points`] : ['Use Create assignment to publish class work.'],
+      }}
+      statusItems={[
+        { label: 'Submitted', value: `${view.gradingQueue.length} waiting`, tone: view.gradingQueue.length > 0 ? 'warn' : 'ok' },
+        { label: 'Graded', value: `${gradedCount} / ${possibleGradeCount}`, tone: 'ok' },
+        { label: 'Roster', value: `${view.roster.length} students`, tone: 'info' },
+      ]}
+      feedback={{
+        title: 'Latest Feedback Example',
+        name: view.gradingQueue[0]?.studentName ?? view.teacher.name,
+        body: view.gradingQueue[0] ? `${view.gradingQueue[0].assignmentTitle} is waiting for feedback.` : 'Queues, feedback, risk, and family visibility stay in one dashboard frame.',
+        score: view.gradingQueue.length > 0 ? undefined : '92%',
+      }}
+      quickActions={[
+        { href: '#create-assignment', label: 'Create Assignment', icon: Plus },
+        { href: '#messages', label: 'Message Class', icon: MessageSquare },
+        { href: '#calendar', label: 'View Calendar', icon: CalendarDays },
+        { href: '#gradebook', label: 'Gradebook', icon: BarChart3 },
+      ]}
+    >
       <div className="grid gap-4 lg:grid-cols-3">
         <LmsPanel id="courses" title="Courses">
           <ul className="grid gap-2">

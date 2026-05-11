@@ -22,7 +22,7 @@ describe('persistent LMS dashboards', () => {
 
     expect(screen.getByRole('heading', { name: 'Admin dashboard' })).toBeInTheDocument()
     expectDashboardTools(['School', 'Metrics', 'Risk', 'Create course', 'Invite user', 'Guardian links', 'Roster import'])
-    expect(screen.getByText('WolfWhale Academy')).toBeInTheDocument()
+    expect(screen.getAllByText('WolfWhale Academy').length).toBeGreaterThan(0)
     expect(screen.getByText('Active students')).toBeInTheDocument()
     expect(screen.getByText('grade.created')).toBeInTheDocument()
     expect(screen.getByText('Risk summary')).toBeInTheDocument()
@@ -61,11 +61,11 @@ describe('persistent LMS dashboards', () => {
     render(<StudentDashboard view={views.student} />)
 
     expect(screen.getByRole('heading', { name: 'Student dashboard' })).toBeInTheDocument()
-    expectDashboardTools(['Courses', 'Assignments', 'Submit work', 'Grades and feedback', 'Gradebook', 'Attendance', 'Calendar', 'Resources', 'Messages', 'Notifications'])
+    expectDashboardTools(['Courses', 'Assignments', 'Submit work', 'Grades and feedback', 'Gradebook', 'Attendance', 'Calendar', 'Resource Center', 'Messages', 'Notifications'])
     expect(screen.getAllByText('Launch Reflection').length).toBeGreaterThan(0)
     expect(screen.getByText(/9\/10/)).toBeInTheDocument()
     expect(screen.getAllByText('90%').length).toBeGreaterThan(0)
-    expect(screen.getByText('67%')).toBeInTheDocument()
+    expect(screen.getAllByText('67%').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Please review the source pack before tomorrow.').length).toBeGreaterThan(0)
     expect(screen.getByRole('link', { name: /^Submit work\b/ })).toHaveAttribute('href', '/student/assignments#submit-work')
     expect(screen.queryByRole('textbox', { name: 'Response' })).not.toBeInTheDocument()

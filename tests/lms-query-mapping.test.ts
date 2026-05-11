@@ -1,5 +1,50 @@
 import { describe, expect, it } from 'vitest'
-import { mapSupabaseRowsToLmsRecords } from '@/lib/lms/queries'
+import { loadLmsRecordsForUser, mapSupabaseRowsToLmsRecords } from '@/lib/lms/queries'
+
+type StubResponse = {
+  data?: unknown
+  error?: { code?: string; message: string }
+}
+
+function createQueryStub(
+  responder: (query: { table: string; selectText: string; eqFilters: Record<string, unknown>; inFilter?: { column: string; values: unknown[] }; single: boolean }) => StubResponse
+) {
+  return {
+    from(table: string) {
+      const query = {
+        table,
+        selectText: '',
+        eqFilters: {} as Record<string, unknown>,
+        inFilter: undefined as { column: string; values: unknown[] } | undefined,
+        single: false,
+      }
+
+      const builder = {
+        select(selectText: string) {
+          query.selectText = selectText
+          return builder
+        },
+        eq(column: string, value: unknown) {
+          query.eqFilters[column] = value
+          return builder
+        },
+        in(column: string, values: unknown[]) {
+          query.inFilter = { column, values }
+          return Promise.resolve(responder(query))
+        },
+        single() {
+          query.single = true
+          return Promise.resolve(responder(query))
+        },
+        then(resolve: (value: StubResponse) => unknown, reject: (reason: unknown) => unknown) {
+          return Promise.resolve(responder(query)).then(resolve, reject)
+        },
+      }
+
+      return builder
+    },
+  }
+}
 
 describe('Supabase LMS query mapping', () => {
   it('maps existing Supabase table rows into the durable LMS read model input', () => {
@@ -214,5 +259,104 @@ describe('Supabase LMS query mapping', () => {
     })
 
     expect(records.actorIds.student).toBe('student-2')
+  })
+
+  it('keeps demo dashboard reads working when newer optional Supabase columns are not deployed yet', async () => {
+    const attempts: Array<{ table: string; selectText: string }> = []
+    const supabase = createQueryStub(({ table, selectText, eqFilters, inFilter, single }) => {
+      attempts.push({ table, selectText })
+
+      if (table === 'tenant_memberships' && eqFilters.user_id) {
+        return {
+          data: [{ tenant_id: 'tenant-1', user_id: 'teacher-1', role: 'teacher', status: 'active' }],
+        }
+      }
+
+      if (table === 'tenant_memberships') {
+        return {
+          data: [{ tenant_id: 'tenant-1', user_id: 'teacher-1', role: 'teacher', status: 'active' }],
+        }
+      }
+
+      if (table === 'tenants' && single) {
+        return { data: { id: 'tenant-1', name: 'WolfWhale School', slug: 'wolfwhale', status: 'active' } }
+      }
+
+      if (table === 'student_parents' && selectText.includes('consent_notes')) {
+        return { error: { code: '42703', message: 'column student_parents.consent_notes does not exist' } }
+      }
+
+      if (table === 'courses' && selectText.includes('section_label')) {
+        return { error: { code: '42703', message: 'column courses.section_label does not exist' } }
+      }
+
+      if (table === 'messages' && selectText.includes('moderation_status')) {
+        return { error: { code: '42703', message: 'column messages.moderation_status does not exist' } }
+      }
+
+      if (table === 'calendar_events') {
+        return { error: { code: 'PGRST205', message: "Could not find the table 'public.calendar_events' in the schema cache" } }
+      }
+
+      if (table === 'student_parents') {
+        return { data: [{ tenant_id: 'tenant-1', student_id: 'student-1', parent_id: 'parent-1', relationship: 'guardian', status: 'active' }] }
+      }
+
+      if (table === 'courses') {
+        return {
+          data: [
+            {
+              id: 'course-1',
+              tenant_id: 'tenant-1',
+              name: 'Grade 8 Humanities',
+              subject: 'Humanities',
+              grade_level: '8',
+              semester: 'Spring 2026',
+              created_by: 'teacher-1',
+              status: 'active',
+              grading_policy: { categories: [{ name: 'Coursework', weight: 100 }] },
+            },
+          ],
+        }
+      }
+
+      if (table === 'messages') {
+        return {
+          data: [
+            {
+              id: 'message-1',
+              tenant_id: 'tenant-1',
+              conversation_id: 'conversation-1',
+              sender_id: 'teacher-1',
+              content: 'Bring notes.',
+              created_at: '2026-05-07T16:03:00.000Z',
+            },
+          ],
+        }
+      }
+
+      if (table === 'profiles') {
+        return { data: [{ id: 'teacher-1', first_name: 'Tessa', last_name: 'Teacher' }] }
+      }
+
+      if (inFilter) return { data: [] }
+
+      return { data: [] }
+    })
+
+    const records = await loadLmsRecordsForUser(supabase as never, 'teacher-1')
+
+    expect(records.courses[0]).toMatchObject({ title: 'Grade 8 Humanities', sectionLabel: '' })
+    expect(records.parentLinks[0]).toMatchObject({ consentNotes: '', custodyNotes: '' })
+    expect(records.messages[0]).toMatchObject({ content: 'Bring notes.', moderationStatus: 'visible' })
+    expect(records.calendarEvents).toEqual([])
+    expect(attempts).toContainEqual({
+      table: 'courses',
+      selectText: 'id,tenant_id,name,subject,grade_level,semester,created_by,status,grading_policy',
+    })
+    expect(attempts).toContainEqual({
+      table: 'messages',
+      selectText: 'id,tenant_id,conversation_id,sender_id,content,created_at',
+    })
   })
 })

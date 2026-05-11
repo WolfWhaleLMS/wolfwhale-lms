@@ -43,6 +43,7 @@ export function WolfWhaleBrand({
           sizes={`${logoSize}px`}
           className="h-full w-full object-contain"
           priority={priority}
+          loading={priority ? 'eager' : undefined}
         />
       </span>
       <span className="min-w-0" style={timesNewRoman}>

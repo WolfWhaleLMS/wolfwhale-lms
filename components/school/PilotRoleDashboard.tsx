@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import { ArrowLeft, BookOpen, ClipboardCheck, GraduationCap, LogOut, ShieldCheck, Users } from 'lucide-react'
+import { BookOpen, ClipboardCheck, GraduationCap, ShieldCheck, Users } from 'lucide-react'
+import { LmsPanel, LmsShell, type LmsToolLink } from '@/components/lms/LmsShell'
 import type {
   getPilotAdminView,
   getPilotGuardianView,
@@ -33,53 +33,74 @@ const subtitles: Record<SchoolRole, string> = {
   guardian: 'Linked student progress only, with no access to unrelated students.',
 }
 
+const pilotTools: Record<SchoolRole, LmsToolLink[]> = {
+  admin: [
+    { href: '#pilot-school', label: 'Pilot school', description: 'Review setup state', icon: ShieldCheck },
+    { href: '#launch-checks', label: 'Launch checks', description: 'Inspect pilot gates', icon: ClipboardCheck },
+    { href: '#pilot-users', label: 'Pilot users', description: 'See demo accounts', icon: Users },
+    { href: '#courses-and-sections', label: 'Courses', description: 'Review sections', icon: BookOpen },
+  ],
+  teacher: [
+    { href: '#class', label: 'Class', description: 'Course and roster', icon: Users },
+    { href: '#assignment', label: 'Assignment', description: 'Current work', icon: BookOpen },
+    { href: '#roster', label: 'Roster', description: 'Pilot students', icon: Users },
+    { href: '#submission-review', label: 'Submission review', description: 'Grade pilot work', icon: ClipboardCheck },
+  ],
+  student: [
+    { href: '#my-course', label: 'My course', description: 'Course details', icon: BookOpen },
+    { href: '#current-assignment', label: 'Assignment', description: 'Current task', icon: ClipboardCheck },
+    { href: '#submission', label: 'Submission', description: 'Turn in work', icon: ClipboardCheck },
+    { href: '#grade-and-feedback', label: 'Feedback', description: 'Read grade notes', icon: GraduationCap },
+  ],
+  guardian: [
+    { href: '#guardian', label: 'Guardian', description: 'Linked profile', icon: Users },
+    { href: '#linked-student-progress', label: 'Progress', description: 'Linked student only', icon: GraduationCap },
+  ],
+}
+
+function panelId(title: string) {
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+}
+
 function DashboardFrame({ role, children }: { role: SchoolRole; children: React.ReactNode }) {
   return (
-    <main
-      data-role={role}
-      className="min-h-screen bg-slate-50 px-4 py-8 text-slate-950 dark:bg-slate-950 dark:text-white sm:px-6 lg:px-8"
+    <LmsShell
+      role={role}
+      title={headings[role]}
+      subtitle={subtitles[role]}
+      tools={pilotTools[role]}
+      schoolName="WolfWhale Pilot School"
+      userName={headings[role].replace(' dashboard', '')}
+      signOutAction="/api/pilot/logout"
+      homeHref="/"
+      spotlight={{
+        label: 'Controlled Pilot',
+        title: headings[role],
+        tag: 'Demo data',
+        status: 'Active',
+        meta: ['Pilot data is separate from live school records.', 'Use real login for production accounts.'],
+      }}
+      statusItems={[
+        { label: 'Pilot Gate', value: 'On', tone: 'ok' },
+        { label: 'Live Data', value: 'Separate', tone: 'info' },
+        { label: 'Route Frame', value: 'Unified', tone: 'ok' },
+      ]}
+      feedback={{
+        title: 'Pilot Scope',
+        name: headings[role],
+        body: subtitles[role],
+      }}
     >
-      <div className="mx-auto flex max-w-7xl flex-col gap-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <Link
-            href="/"
-            className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-teal-700 hover:text-teal-800 dark:text-teal-200 dark:hover:text-teal-100"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to WolfWhale
-          </Link>
-          <form action="/api/pilot/logout" method="post">
-            <button
-              type="submit"
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-900 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
-            >
-              <LogOut className="h-4 w-4" />
-              Sign out
-            </button>
-          </form>
-        </div>
-
-        <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-lg shadow-slate-950/5 dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/20 sm:p-8">
-          <p className="inline-flex items-center gap-2 rounded-md bg-teal-50 px-3 py-2 text-sm font-semibold text-teal-800 dark:bg-teal-950 dark:text-teal-100">
-            <ShieldCheck className="h-4 w-4" />
-            Controlled pilot
-          </p>
-          <h1 className="mt-5 text-4xl font-semibold leading-tight sm:text-5xl">{headings[role]}</h1>
-          <p className="mt-4 max-w-3xl text-base leading-8 text-slate-700 dark:text-slate-100">{subtitles[role]}</p>
-        </section>
-
-        {children}
-      </div>
-    </main>
+      {children}
+    </LmsShell>
   )
 }
 
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-      <h2 className="text-lg font-semibold">{title}</h2>
-      <div className="mt-4">{children}</div>
-    </section>
+    <LmsPanel id={panelId(title)} title={title}>
+      {children}
+    </LmsPanel>
   )
 }
 

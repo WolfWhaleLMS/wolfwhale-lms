@@ -28,9 +28,42 @@ function guardianMessageCourses(view: GuardianView) {
 
 export function GuardianDashboard({ view }: { view: GuardianView }) {
   const messageCourses = guardianMessageCourses(view)
+  const firstStudent = view.students[0]
+  const firstGradebook = firstStudent?.gradebook[0]
 
   return (
-    <LmsShell title="Guardian dashboard" subtitle="Linked student progress, grades, upcoming work, and school alerts." tools={guardianTools}>
+    <LmsShell
+      role="guardian"
+      title="Guardian dashboard"
+      subtitle="Linked student progress, grades, upcoming work, and school alerts."
+      tools={guardianTools}
+      schoolName="Family portal"
+      userName={view.guardian.name}
+      spotlight={{
+        label: 'Linked Student',
+        title: firstStudent?.name ?? 'No linked student',
+        tag: firstGradebook?.courseTitle ?? 'Progress',
+        status: firstStudent ? 'Active' : 'Review',
+        meta: firstGradebook ? [`${firstGradebook.currentPercentage}% ${firstGradebook.letterGrade}`, `${firstGradebook.missingAssignments} missing`] : ['Ask the school to link a student.'],
+      }}
+      statusItems={[
+        { label: 'Linked Children', value: `${view.students.length}`, tone: view.students.length > 0 ? 'ok' : 'warn' },
+        { label: 'Attendance', value: `${view.attendance[0]?.attendanceRate ?? 100}%`, tone: (view.attendance[0]?.attendanceRate ?? 100) >= 80 ? 'ok' : 'warn' },
+        { label: 'Messages', value: `${view.messages.length}`, tone: 'info' },
+      ]}
+      feedback={{
+        title: 'Latest Feedback Example',
+        name: firstStudent?.grades[0]?.assignmentTitle ?? firstStudent?.name ?? 'Linked student',
+        body: firstStudent?.grades[0]?.feedback ?? 'Teacher feedback and missing work stay limited to linked children only.',
+        score: firstGradebook ? `${firstGradebook.currentPercentage}%` : undefined,
+      }}
+      quickActions={[
+        { href: '#linked-students', label: 'Linked Students', icon: Users },
+        { href: '#messages', label: 'Message Teacher', icon: MessageSquare },
+        { href: '#calendar', label: 'View Calendar', icon: CalendarDays },
+        { href: '#attendance', label: 'Attendance', icon: CalendarCheck },
+      ]}
+    >
       <section id="linked-students" data-testid="guardian-linked-students" className="scroll-mt-28 grid gap-4 lg:grid-cols-2">
         {view.students.map((student) => (
           <LmsPanel key={student.id} title={student.name}>

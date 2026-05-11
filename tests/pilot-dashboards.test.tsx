@@ -8,7 +8,7 @@ describe('pilot role dashboards', () => {
     render(<PilotRoleDashboard role="admin" view={getPilotAdminView()} />)
 
     expect(screen.getByRole('heading', { name: /Admin dashboard/i })).toBeInTheDocument()
-    expect(screen.getByText('WolfWhale Pilot School')).toBeInTheDocument()
+    expect(screen.getAllByText('WolfWhale Pilot School').length).toBeGreaterThan(0)
     expect(screen.getByText(/Grade 8 Launch Humanities/)).toBeInTheDocument()
     expect(screen.getByText('Pilot auth gate configured')).toBeInTheDocument()
   })

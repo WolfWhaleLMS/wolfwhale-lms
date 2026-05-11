@@ -128,6 +128,27 @@ function attendanceStatus(value: unknown): LmsAttendanceStatus {
   return 'absent'
 }
 
+function isMissingSchemaObjectError(error: unknown, identifiers: string[]) {
+  if (!error || typeof error !== 'object') return false
+
+  const row = error as { code?: unknown; message?: unknown; details?: unknown }
+  const code = typeof row.code === 'string' ? row.code : ''
+  const message = [row.message, row.details]
+    .filter((value) => typeof value === 'string')
+    .join(' ')
+    .toLowerCase()
+  const missingSchemaSignal =
+    code === '42P01' ||
+    code === '42703' ||
+    code === 'PGRST204' ||
+    code === 'PGRST205' ||
+    message.includes('does not exist') ||
+    message.includes('could not find the table') ||
+    message.includes('schema cache')
+
+  return missingSchemaSignal && identifiers.some((identifier) => message.includes(identifier.toLowerCase()))
+}
+
 function actorForRole(rows: Row[], role: LmsMembershipRole | LmsMembershipRole[], fallback: string) {
   const roles = Array.isArray(role) ? role : [role]
   const row = rows.find((candidate) => roles.includes(membershipRole(candidate.role)) && candidate.status === 'active')
@@ -363,6 +384,39 @@ async function queryTable(supabase: SupabaseClient, table: string, select: strin
   return (data ?? []) as unknown as Row[]
 }
 
+async function queryTableWithFallbacks(
+  supabase: SupabaseClient,
+  table: string,
+  selects: string[],
+  tenantId: string,
+  options: { optional?: boolean; identifiers?: string[] } = {}
+) {
+  const identifiers = options.identifiers ?? [table]
+  let lastError: unknown
+
+  for (const select of selects) {
+    const { data, error } = await supabase.from(table).select(select).eq('tenant_id', tenantId)
+
+    if (!error) {
+      return (data ?? []) as unknown as Row[]
+    }
+
+    if (!isMissingSchemaObjectError(error, identifiers)) {
+      throw new Error(`Failed to load ${table}: ${error.message}`)
+    }
+
+    lastError = error
+  }
+
+  if (options.optional && isMissingSchemaObjectError(lastError, identifiers)) return []
+
+  const message =
+    lastError && typeof lastError === 'object' && 'message' in lastError
+      ? String((lastError as { message?: unknown }).message)
+      : 'unknown schema error'
+  throw new Error(`Failed to load ${table}: ${message}`)
+}
+
 async function queryIn(supabase: SupabaseClient, table: string, select: string, column: string, values: string[]) {
   if (values.length === 0) return []
 
@@ -434,13 +488,28 @@ export async function loadLmsRecordsForUser(supabase: SupabaseClient, userId: st
     calendarEvents,
   ] = await Promise.all([
     queryTable(supabase, 'tenant_memberships', 'tenant_id,user_id,role,status', tenantId),
-    queryTable(
+    queryTableWithFallbacks(
       supabase,
       'student_parents',
-      'tenant_id,student_id,parent_id,relationship,status,is_primary_contact,consent_given,consent_method,consent_notes,custody_notes',
-      tenantId
+      [
+        'tenant_id,student_id,parent_id,relationship,status,is_primary_contact,consent_given,consent_method,consent_notes,custody_notes',
+        'tenant_id,student_id,parent_id,relationship,status,is_primary_contact,consent_given,consent_method,custody_notes',
+        'tenant_id,student_id,parent_id,relationship,status',
+      ],
+      tenantId,
+      { identifiers: ['student_parents', 'is_primary_contact', 'consent_given', 'consent_method', 'consent_notes', 'custody_notes'] }
     ),
-    queryTable(supabase, 'courses', 'id,tenant_id,name,subject,grade_level,section_label,semester,created_by,status,grading_policy', tenantId),
+    queryTableWithFallbacks(
+      supabase,
+      'courses',
+      [
+        'id,tenant_id,name,subject,grade_level,section_label,semester,created_by,status,grading_policy',
+        'id,tenant_id,name,subject,grade_level,semester,created_by,status,grading_policy',
+        'id,tenant_id,name,subject,grade_level,semester,created_by,status',
+      ],
+      tenantId,
+      { identifiers: ['courses', 'section_label', 'grading_policy'] }
+    ),
     queryTable(supabase, 'course_enrollments', 'tenant_id,course_id,student_id,teacher_id,status', tenantId),
     queryTable(supabase, 'assignments', 'id,tenant_id,course_id,title,instructions,due_date,max_points,status,category', tenantId),
     queryTable(
@@ -459,19 +528,24 @@ export async function loadLmsRecordsForUser(supabase: SupabaseClient, userId: st
     queryTable(supabase, 'audit_logs', 'id,tenant_id,user_id,action,resource_type,resource_id,details,created_at', tenantId),
     queryTable(supabase, 'lessons', 'id,tenant_id,course_id,title,status', tenantId),
     queryTable(supabase, 'conversations', 'id,tenant_id,subject,course_id,created_by,updated_at', tenantId),
-    queryTable(
+    queryTableWithFallbacks(
       supabase,
       'messages',
-      'id,tenant_id,conversation_id,sender_id,content,created_at,moderation_status,moderation_note,moderated_by,moderated_at',
-      tenantId
+      [
+        'id,tenant_id,conversation_id,sender_id,content,created_at,moderation_status,moderation_note,moderated_by,moderated_at',
+        'id,tenant_id,conversation_id,sender_id,content,created_at',
+      ],
+      tenantId,
+      { identifiers: ['messages', 'moderation_status', 'moderation_note', 'moderated_by', 'moderated_at'] }
     ),
     queryTable(supabase, 'rubrics', 'id,tenant_id,assignment_id,name,description,criteria,created_by', tenantId),
     queryTable(supabase, 'attendance_records', 'id,tenant_id,course_id,student_id,attendance_date,status,notes,marked_by', tenantId),
-    queryTable(
+    queryTableWithFallbacks(
       supabase,
       'calendar_events',
-      'id,tenant_id,course_id,title,description,starts_at,ends_at,status,created_by',
-      tenantId
+      ['id,tenant_id,course_id,title,description,starts_at,ends_at,status,created_by'],
+      tenantId,
+      { optional: true, identifiers: ['calendar_events'] }
     ),
   ])
   const resources = await queryIn(

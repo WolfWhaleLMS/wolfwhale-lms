@@ -6,14 +6,11 @@ import {
   CalendarDays,
   ChevronRight,
   ClipboardCheck,
-  CloudSun,
   Compass,
-  FileText,
   Gauge,
   GraduationCap,
-  Leaf,
-  LogOut,
   MessageSquare,
+  Microscope,
   Send,
   Settings,
   Target,
@@ -21,8 +18,8 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import type { CSSProperties, ReactNode } from 'react'
+import { LmsShell } from '@/components/lms/LmsShell'
 import { StudentCompanionWidget } from '@/components/lms/StudentCompanionWidget'
-import { StudentPreferenceBridge } from '@/components/lms/StudentThemeSettings'
 import type { buildLmsDashboardViews } from '@/lib/lms/read-model'
 
 type StudentView = ReturnType<typeof buildLmsDashboardViews>['student']
@@ -52,7 +49,7 @@ const studentTools: StudentTool[] = [
   { href: '/student/gradebook', label: 'Gradebook', description: 'Track standing', icon: BarChart3, tone: 'from-teal-600 via-cyan-500 to-blue-400' },
   { href: '/student/attendance', label: 'Attendance', description: 'Check presence', icon: CalendarCheck, tone: 'from-green-600 via-emerald-400 to-lime-300' },
   { href: '/student/calendar', label: 'Calendar', description: 'Plan due dates', icon: CalendarDays, tone: 'from-cyan-500 via-sky-400 to-blue-400' },
-  { href: '/student/resources', label: 'Resources', description: 'Open class files', icon: FileText, tone: 'from-stone-500 via-emerald-500 to-lime-400' },
+  { href: '/student/resources', label: 'Resource Center', description: 'Open diagrams and files', icon: Microscope, tone: 'from-stone-500 via-emerald-500 to-lime-400' },
   { href: '/student/messages', label: 'Messages', description: 'Teacher notes', icon: MessageSquare, tone: 'from-teal-500 via-sky-400 to-cyan-300' },
   { href: '/student/notifications', label: 'Notifications', description: 'Latest updates', icon: Bell, tone: 'from-lime-500 via-teal-400 to-sky-500' },
   { href: '/student/companion-world', label: 'Companion world', description: 'Visit Kelp Commons', icon: Compass, tone: 'from-amber-400 via-sky-400 to-emerald-400' },
@@ -102,13 +99,13 @@ function AppPanel({
   href?: string
 }) {
   return (
-    <section className="student-workspace-panel rounded-lg border border-white/75 bg-white/84 p-3 shadow-[0_18px_50px_rgba(5,44,38,0.18)] backdrop-blur-md">
+    <section className="student-workspace-panel min-w-0 overflow-hidden rounded-lg border border-white/75 bg-white/84 p-3 shadow-[0_18px_50px_rgba(5,44,38,0.18)] backdrop-blur-md">
       <div className="mb-2 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
+        <div className="flex min-w-0 items-center gap-2">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-sky-400 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_8px_18px_rgba(13,148,136,0.22)]">
             <Icon className="h-4 w-4" />
           </span>
-          <h2 className="text-base font-black leading-tight text-[#17352c]">{title}</h2>
+          <h2 className="truncate text-base font-black leading-tight text-[#17352c]">{title}</h2>
         </div>
         {href ? (
           <a href={href} className="inline-flex items-center gap-1 text-sm font-black text-emerald-800 hover:text-emerald-950">
@@ -124,7 +121,7 @@ function AppPanel({
 
 function StatPill({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="rounded-lg border border-emerald-100 bg-white/72 px-3 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
+    <div className="min-w-0 rounded-lg border border-emerald-100 bg-white/72 px-3 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
       <p className="text-xs font-bold text-[#55736a]">{label}</p>
       <p className="mt-0.5 text-lg font-black leading-none text-[#17352c]">{value}</p>
     </div>
@@ -142,68 +139,49 @@ export function StudentDashboard({ view, saved, error }: { view: StudentView; sa
   const latestMessage = view.messages[0]
 
   return (
-    <main
-      id="dashboard-top"
-      className="student-theme-shell relative min-h-screen overflow-hidden bg-[#063d37] text-[#17352c]"
+    <LmsShell
+      role="student"
+      title="Student dashboard"
+      subtitle={`Good morning, ${studentFirstName}. Pick a tool, jump into a course, or check the next thing due.`}
+      tools={studentTools}
+      schoolName={view.courses[0]?.title ?? 'Student portal'}
+      userName={view.student.name}
+      spotlight={{
+        label: 'Current Assignment',
+        title: nextAssignment?.title ?? 'No assignment due soon',
+        tag: nextAssignment?.courseTitle ?? 'Student',
+        status: nextAssignment ? 'Active' : 'Clear',
+        meta: nextAssignment ? [`Due ${formatShortDate(nextAssignment.dueAt)}`, `${nextAssignment.maxPoints} points`] : ['Open assignments when new work appears.'],
+      }}
+      statusItems={[
+        { label: 'Mastery', value: `${gradeAverage}%`, tone: 'ok' },
+        { label: 'Attendance', value: `${attendanceAverage}%`, tone: attendanceAverage >= 80 ? 'ok' : 'warn' },
+        { label: 'Missing Work', value: `${missingWork}`, tone: missingWork > 0 ? 'warn' : 'ok' },
+      ]}
+      feedback={{
+        title: 'Latest Feedback Example',
+        name: latestGrade?.assignmentTitle ?? 'No marked work yet',
+        body: latestGrade?.feedback ?? 'Feedback will show up here after grading.',
+        score: latestGrade ? `${gradeAverage}%` : undefined,
+      }}
+      quickActions={[
+        { href: '/student/assignments#submit-work', label: 'Submit Work', icon: Send },
+        { href: '/student/messages', label: 'Messages', icon: MessageSquare },
+        { href: '/student/calendar', label: 'View Calendar', icon: CalendarDays },
+        { href: '/student/gradebook', label: 'Gradebook', icon: BarChart3 },
+      ]}
     >
-      <StudentPreferenceBridge />
-      <div
-        aria-hidden="true"
-        className="student-theme-backdrop absolute inset-0 bg-[radial-gradient(circle_at_18%_10%,rgba(255,255,255,0.86),transparent_18rem),radial-gradient(circle_at_76%_6%,rgba(125,211,252,0.52),transparent_22rem),linear-gradient(180deg,#b8e9ff_0%,#72c7c0_28%,#0a5f59_58%,#063d37_100%)]"
-      />
-      <div aria-hidden="true" className="absolute inset-x-0 top-0 h-80 bg-[linear-gradient(180deg,rgba(255,255,255,0.62),rgba(255,255,255,0)),radial-gradient(ellipse_at_50%_100%,rgba(9,68,61,0.42),transparent_42%)]" />
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-32 h-72 opacity-65 [background:radial-gradient(ellipse_at_18%_75%,rgba(16,185,129,0.34),transparent_30%),radial-gradient(ellipse_at_72%_70%,rgba(45,212,191,0.28),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0),rgba(5,150,105,0.22)_52%,rgba(8,47,73,0.28))]"
-      />
-      <div aria-hidden="true" className="absolute bottom-0 left-0 right-0 h-72 bg-[linear-gradient(180deg,rgba(6,61,55,0),rgba(5,45,38,0.48))]" />
-
-      <div className="relative mx-auto grid min-h-screen max-w-[1580px] grid-rows-[auto_1fr] gap-3 px-4 py-3 sm:px-6 lg:px-8">
-        <header className="student-workspace-panel rounded-lg border border-white/80 bg-white/70 p-3 shadow-[0_22px_62px_rgba(24,80,70,0.14)] backdrop-blur-md">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/72 px-3 py-1 text-xs font-bold text-[#285549] shadow-sm">
-                  <CloudSun className="h-3.5 w-3.5 text-sky-600" />
-                  Today
-                </span>
-                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50/80 px-3 py-1 text-xs font-bold text-emerald-800">
-                  <Leaf className="h-3.5 w-3.5" />
-                  {view.notifications.length} alert{view.notifications.length === 1 ? '' : 's'}
-                </span>
-              </div>
-              <h1 className="mt-3 text-3xl font-black leading-tight text-[#102f29] sm:text-4xl">Student dashboard</h1>
-              <p className="mt-1 max-w-3xl text-sm font-semibold leading-6 text-[#345c52]">
-                Good morning, {studentFirstName}. Pick a tool, jump into a course, or check the next thing due.
-              </p>
-              {saved && savedMessages[saved] ? (
-                <p className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50/90 px-3 py-2 text-sm font-black text-emerald-800">
-                  {savedMessages[saved]}
-                </p>
-              ) : null}
-              {error && errorMessages[error] ? (
-                <p className="mt-3 rounded-lg border border-red-200 bg-red-50/90 px-3 py-2 text-sm font-black text-red-800">
-                  {errorMessages[error]}
-                </p>
-              ) : null}
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              <a href="/student/settings" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-emerald-200 bg-white/78 px-3 py-2 text-sm font-black text-[#17352c]">
-                <Settings className="h-4 w-4" />
-                Settings
-              </a>
-              <form action="/api/auth/logout" method="post">
-                <button type="submit" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#17352c] px-3 py-2 text-sm font-black text-white">
-                  <LogOut className="h-4 w-4" />
-                  Sign out
-                </button>
-              </form>
-            </div>
-          </div>
-        </header>
-
-        <div className="grid min-h-0 gap-4 xl:grid-cols-[minmax(0,1fr)_24rem]">
+      {saved && savedMessages[saved] ? (
+        <p className="rounded-[1rem] border border-emerald-200 bg-emerald-50/90 px-3 py-2 text-sm font-black text-emerald-800">
+          {savedMessages[saved]}
+        </p>
+      ) : null}
+      {error && errorMessages[error] ? (
+        <p className="rounded-[1rem] border border-red-200 bg-red-50/90 px-3 py-2 text-sm font-black text-red-800">
+          {errorMessages[error]}
+        </p>
+      ) : null}
+        <div className="grid min-h-0 gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(17rem,20rem)]">
           <div className="grid min-h-0 gap-4 content-start">
             <section className="student-workspace-panel rounded-lg border border-white/75 bg-[#0b3f39]/72 p-3 shadow-[0_18px_52px_rgba(5,44,38,0.26)] backdrop-blur-md">
               <div className="flex flex-col gap-1 px-1 sm:flex-row sm:items-center sm:justify-between">
@@ -211,8 +189,8 @@ export function StudentDashboard({ view, saved, error }: { view: StudentView; sa
                 <span className="text-xs font-bold text-emerald-100">Everything opens a page</span>
               </div>
 
-              <nav aria-label="Dashboard tools" className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {studentTools.map((tool) => {
+              <nav aria-label="Student quick tools" className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {studentTools.slice(0, 4).map((tool) => {
                   const Icon = tool.icon
 
                   return (
@@ -257,8 +235,8 @@ export function StudentDashboard({ view, saved, error }: { view: StudentView; sa
                     >
                       <div className="flex items-start justify-between gap-3">
                         <span className="min-w-0">
-                          <span className="block truncate text-sm font-black text-[#17352c]">{course.title}</span>
-                          <span className="mt-0.5 block truncate text-xs font-semibold text-[#55736a]">{course.subject}</span>
+                          <span className="block break-words text-sm font-black leading-tight text-[#17352c]">{course.title}</span>
+                          <span className="mt-0.5 block break-words text-xs font-semibold leading-tight text-[#55736a]">{course.subject}</span>
                         </span>
                         <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs font-black text-emerald-800">{gradebook?.currentPercentage ?? 0}%</span>
                       </div>
@@ -273,11 +251,11 @@ export function StudentDashboard({ view, saved, error }: { view: StudentView; sa
             </section>
           </div>
 
-          <aside className="grid content-start gap-4">
+          <aside className="grid min-w-0 content-start gap-4">
             <AppPanel title="Learning cockpit" icon={Gauge} href="/student/gradebook">
               <div className="grid gap-3">
                 <div className="rounded-lg border border-emerald-100 bg-[linear-gradient(145deg,rgba(248,255,249,0.96),rgba(220,246,239,0.84))] p-3">
-                  <div className="flex items-center gap-4">
+                  <div className="grid min-w-0 gap-3 sm:grid-cols-[5rem_minmax(0,1fr)] xl:grid-cols-1 2xl:grid-cols-[5rem_minmax(0,1fr)]">
                     <div className="grid h-20 w-20 shrink-0 place-items-center rounded-full p-2 shadow-[inset_0_1px_8px_rgba(255,255,255,0.9),0_14px_28px_rgba(17,94,89,0.16)]" style={ringStyle(momentum, '#0ea5e9', 'rgba(14, 116, 144, 0.16)')}>
                       <div className="grid h-full w-full place-items-center rounded-full bg-white text-center">
                         <span className="text-xl font-black leading-none text-[#123a33]">{momentum}</span>
@@ -301,8 +279,8 @@ export function StudentDashboard({ view, saved, error }: { view: StudentView; sa
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block text-xs font-black uppercase tracking-[0.12em] text-emerald-700">Next action</span>
-                      <span className="mt-0.5 block truncate text-sm font-black text-[#17352c]">{nextAssignment?.title ?? 'No assignment due soon'}</span>
-                      <span className="mt-0.5 block truncate text-xs font-semibold text-[#55736a]">
+                      <span className="mt-0.5 block break-words text-sm font-black leading-tight text-[#17352c]">{nextAssignment?.title ?? 'No assignment due soon'}</span>
+                      <span className="mt-0.5 block break-words text-xs font-semibold leading-tight text-[#55736a]">
                         {nextAssignment ? `${nextAssignment.courseTitle} due ${formatShortDate(nextAssignment.dueAt)}` : 'Open assignments when new work appears.'}
                       </span>
                     </span>
@@ -315,8 +293,8 @@ export function StudentDashboard({ view, saved, error }: { view: StudentView; sa
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block text-xs font-black uppercase tracking-[0.12em] text-amber-700">Latest feedback</span>
-                      <span className="mt-0.5 block truncate text-sm font-black text-[#17352c]">{latestGrade?.assignmentTitle ?? 'No marked work yet'}</span>
-                      <span className="mt-0.5 block truncate text-xs font-semibold text-[#55736a]">
+                      <span className="mt-0.5 block break-words text-sm font-black leading-tight text-[#17352c]">{latestGrade?.assignmentTitle ?? 'No marked work yet'}</span>
+                      <span className="mt-0.5 block break-words text-xs font-semibold leading-tight text-[#55736a]">
                         {latestGrade ? `${latestGrade.scoreLabel} - ${latestGrade.feedback}` : 'Feedback will show up here after grading.'}
                       </span>
                     </span>
@@ -329,8 +307,8 @@ export function StudentDashboard({ view, saved, error }: { view: StudentView; sa
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block text-xs font-black uppercase tracking-[0.12em] text-sky-700">Latest message</span>
-                      <span className="mt-0.5 block truncate text-sm font-black text-[#17352c]">{latestMessage?.subject ?? 'No messages'}</span>
-                      <span className="mt-0.5 block truncate text-xs font-semibold text-[#55736a]">
+                      <span className="mt-0.5 block break-words text-sm font-black leading-tight text-[#17352c]">{latestMessage?.subject ?? 'No messages'}</span>
+                      <span className="mt-0.5 block break-words text-xs font-semibold leading-tight text-[#55736a]">
                         {latestMessage ? latestMessage.content : 'Teacher messages will show up here.'}
                       </span>
                     </span>
@@ -343,7 +321,6 @@ export function StudentDashboard({ view, saved, error }: { view: StudentView; sa
             <StudentCompanionWidget compact />
           </aside>
         </div>
-      </div>
-    </main>
+    </LmsShell>
   )
 }

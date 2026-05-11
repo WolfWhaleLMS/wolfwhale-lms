@@ -55,7 +55,38 @@ export function AdminDashboard({ view }: { view: AdminView }) {
   ] as const
 
   return (
-    <LmsShell title="Admin dashboard" subtitle="School operations, launch health, roster, courses, and audit visibility." tools={adminTools}>
+    <LmsShell
+      role="admin"
+      title="Admin dashboard"
+      subtitle="School operations, launch health, roster, courses, and audit visibility."
+      tools={adminTools}
+      schoolName={view.school.name}
+      userName="Admin team"
+      spotlight={{
+        label: 'Current Operation',
+        title: view.school.name,
+        tag: view.school.status,
+        status: 'Active',
+        meta: [`${view.metrics.activeCourses} active courses`, `${view.metrics.activeEnrollments} active enrollments`],
+      }}
+      statusItems={[
+        { label: 'Students', value: `${view.metrics.activeStudents}`, tone: 'ok' },
+        { label: 'Pending Submissions', value: `${view.metrics.pendingSubmissions}`, tone: view.metrics.pendingSubmissions > 0 ? 'warn' : 'ok' },
+        { label: 'Audit Events', value: `${view.auditTrail.length}`, tone: 'info' },
+      ]}
+      feedback={{
+        title: 'Latest Launch Signal',
+        name: 'Operations review',
+        body: `${resourceReview.needsReview} resources need review and ${view.riskSummary.high} students are marked high risk.`,
+        score: view.riskSummary.high > 0 ? undefined : '92%',
+      }}
+      quickActions={[
+        { href: '#create-course', label: 'Create Course', icon: Plus },
+        { href: '#invite-user', label: 'Invite User', icon: UserPlus },
+        { href: '#calendar', label: 'View Calendar', icon: CalendarDays },
+        { href: '#metrics', label: 'Analytics', icon: Activity },
+      ]}
+    >
       <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
         <LmsPanel id="school" title="School">
           <dl className="grid gap-3 sm:grid-cols-3">
