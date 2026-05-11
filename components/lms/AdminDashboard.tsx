@@ -24,10 +24,23 @@ const adminTools = [
   { href: '#roster-import', label: 'Roster import', description: 'Bulk-load school users', icon: Upload },
 ]
 
+function shortId(value: string, fallback: string) {
+  return value ? value.slice(0, 12) : fallback
+}
+
+function auditDetailsText(details: Record<string, unknown>) {
+  return Object.entries(details)
+    .slice(0, 3)
+    .map(([key, value]) => `${key}: ${String(value)}`)
+    .join(' | ')
+}
+
 export function AdminDashboard({ view }: { view: AdminView }) {
   const auditTrail = [...view.auditTrail]
     .sort((left, right) => right.createdAt.localeCompare(left.createdAt))
     .slice(0, 25)
+  const auditedResourceTypes = new Set(view.auditTrail.map((entry) => entry.resourceType)).size
+  const auditedActors = new Set(view.auditTrail.map((entry) => entry.userId).filter(Boolean)).size
   const metrics = [
     ['Active students', view.metrics.activeStudents],
     ['Active teachers', view.metrics.activeTeachers],
@@ -59,12 +72,43 @@ export function AdminDashboard({ view }: { view: AdminView }) {
         </LmsPanel>
 
         <LmsPanel id="audit" title="Audit trail">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p className="text-sm font-black text-slate-950 dark:text-white">Audit review</p>
+              <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                {view.auditTrail.length} events, {auditedActors} actors, {auditedResourceTypes} resource types
+              </p>
+            </div>
+            <a
+              href="/api/lms/exports/audit"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-900 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
+            >
+              <Download className="h-4 w-4" />
+              Export audit log
+            </a>
+          </div>
           <ul className="grid max-h-[32rem] gap-2 overflow-y-auto pr-1">
             {auditTrail.map((entry) => (
-              <li key={entry.id} className="flex items-center gap-2 rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
-                <Activity className="h-4 w-4 text-teal-700 dark:text-teal-200" />
-                <span className="font-semibold">{entry.action}</span>
-                <span className="text-slate-500 dark:text-slate-400">{entry.resourceType}</span>
+              <li key={entry.id} className="rounded-md border border-slate-200 px-3 py-2 text-sm dark:border-slate-800">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Activity className="h-4 w-4 text-teal-700 dark:text-teal-200" />
+                  <span className="font-semibold">{entry.action}</span>
+                  <span className="text-slate-500 dark:text-slate-400">{entry.resourceType}</span>
+                  <span className="text-xs font-semibold text-slate-400 dark:text-slate-500">{entry.createdAt}</span>
+                </div>
+                <dl className="mt-2 grid gap-2 text-xs sm:grid-cols-2">
+                  <div>
+                    <dt className="font-semibold uppercase text-slate-500 dark:text-slate-400">Actor</dt>
+                    <dd className="mt-0.5 font-mono text-slate-700 dark:text-slate-200">{shortId(entry.userId, 'system')}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-semibold uppercase text-slate-500 dark:text-slate-400">Resource</dt>
+                    <dd className="mt-0.5 font-mono text-slate-700 dark:text-slate-200">{shortId(entry.resourceId, 'n/a')}</dd>
+                  </div>
+                </dl>
+                {Object.keys(entry.details).length > 0 ? (
+                  <p className="mt-2 line-clamp-2 text-xs font-semibold text-slate-500 dark:text-slate-400">{auditDetailsText(entry.details)}</p>
+                ) : null}
               </li>
             ))}
           </ul>

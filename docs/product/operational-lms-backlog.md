@@ -21,7 +21,7 @@ Date: 2026-05-10
 
 - One-click demo account buttons on login without exposing reusable passwords in broader app surfaces.
 - Assignment submission file-download affordances for student and guardian views where policy allows. Initial signed-link affordances now render when the scoped submission row is visible.
-- Admin user lifecycle: audit review and live RLS/deployed proof. Initial direct invites, invite resend, membership deactivate/reactivate, role changes, guardian linking/unlinking, and guardian primary-contact/consent/custody details now exist.
+- Admin user lifecycle: live RLS/deployed proof. Initial direct invites, invite resend, membership deactivate/reactivate, role changes, guardian linking/unlinking, guardian primary-contact/consent/custody details, and audit review/export now exist.
 - Calendar lifecycle: edit/cancel events, add recurring events, event reminders, calendar feeds, and school-year/term views. Initial audited school/course event creation now exists.
 - Teacher content modules: reorder modules, attach resources per module, publish/unpublish, and preview as student.
 - Messaging controls: allowed role matrix, moderation hooks, reporting, retention, and export.

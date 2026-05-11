@@ -768,8 +768,11 @@ export function createDemoLmsRecords(): LmsRecords {
       {
         id: 'audit-1',
         tenantId,
+        userId: teacherId,
         action: 'grade.created',
         resourceType: 'grade',
+        resourceId: 'grade-1',
+        details: { assignment_id: gradedAssignmentId, course_id: courseId, student_id: studentId },
         createdAt: '2026-05-06T21:00:00.000Z',
       },
     ],

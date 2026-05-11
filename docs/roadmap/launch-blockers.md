@@ -15,13 +15,13 @@ Date: 2026-05-10
 - Browser-test the remaining file-submission privacy edges after applying the new RLS migration: teacher signed download in the UI, wrong-role denial, wrong-tenant denial, student feedback visibility, and guardian scoping. Automated signed-route tests now cover auth-required, RLS miss, signed redirect, and signing failure.
 - Confirm all private file buckets are private and cannot be listed or read anonymously.
 - Complete a role/relationship RLS matrix for student, teacher, admin, guardian, wrong tenant, wrong child, and unauthenticated requests.
-- Prove live audit-log insertion for core mutation routes, roster import, and resource-review updates after target Supabase migrations are applied.
+- Prove live audit-log insertion and admin audit export contents for core mutation routes, roster import, and resource-review updates after target Supabase migrations are applied.
 - Repeat secret scan and dependency audit evidence immediately before release tagging; the latest local pass found no changed-file secret patterns and `npm audit --audit-level=moderate` found 0 vulnerabilities.
 - Get counsel/customer review and product automation behind the new privacy/security launch docs for file submissions, retention, exports, correction, deletion, DPA, subprocessors, and breach workflow.
 
 ## P1 Blockers Before Multi-School Sales
 
-- Admin lifecycle audit-review screens and live RLS/deployed proof. Direct audited single-user invite creation, invite resend, membership deactivate/reactivate, role changes, guardian linking/unlinking, and guardian primary-contact/consent/custody details now exist.
+- Admin lifecycle live RLS/deployed proof. Direct audited single-user invite creation, invite resend, membership deactivate/reactivate, role changes, guardian linking/unlinking, guardian primary-contact/consent/custody details, and admin audit review/export now exist.
 - Expand server-side companion XP beyond first-time submissions and first teacher feedback posts into lessons, quizzes, streaks, and attendance patterns.
 - Upload malware scanning, quarantine queue, legal hold workflow, and quota UI.
 - Messaging moderation, communication policy controls, and export/review tools.

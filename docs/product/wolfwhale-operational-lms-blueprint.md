@@ -44,6 +44,7 @@ Audit-log coverage is now guarded for critical beta write paths:
 - Core LMS mutation services must call the shared audit helper with expected action names and resource types.
 - Write routes for submissions, grades, courses, assignments, resources, attendance, rubrics, enrollments, and roster import must delegate into audited services.
 - Admin resource-review updates now insert `resource_review.updated` audit rows with review id, resource id, scan status, legal-hold flag, and quarantine reason.
+- Admin audit review now maps actor id, resource id, and JSON detail metadata into the read model, renders it on the admin dashboard, and exposes an admin-only `/api/lms/exports/audit` CSV.
 
 The companion system is now fish-only for beta:
 
@@ -121,6 +122,7 @@ Submitted file downloads now have student and guardian affordances:
 - `npm test`: 28 files / 122 tests passing on 2026-05-10.
 - `npm test -- tests/lms-auth.test.ts tests/pilot-auth.test.ts`: 16/16 passing on 2026-05-10 for real auth routing, one-click demo forms, route-handler local redirects, and proxy host preservation.
 - `npm test -- tests/lms-audit-log-coverage.test.ts`: 3/3 passing on 2026-05-10.
+- `npm test -- tests/lms-audit-review.test.tsx tests/lms-query-mapping.test.ts`: 5/5 passing on 2026-05-10 for audit read-model metadata, dashboard review UI, and admin-only CSV export route coverage.
 - `npm test -- tests/fish-companion.test.ts`: 12/12 passing on 2026-05-10.
 - `npm test -- tests/companion-server-xp.test.ts`: 3/3 passing on 2026-05-10 for server-side companion XP grants from real submission and feedback events.
 - `npm test -- tests/lms-messages.test.ts tests/lms-dashboards.test.tsx tests/lms-student-workspaces.test.tsx tests/lms-audit-log-coverage.test.ts`: 16/16 passing on 2026-05-10 for audited message writes, composer UI, route delegation, and policy artifact coverage.

@@ -1,5 +1,5 @@
 import { buildLmsDashboardViews } from '@/lib/lms/read-model'
-import type { LmsAttendanceSummary, LmsGradebookCourseSummary, LmsRecords } from '@/lib/lms/types'
+import type { LmsAttendanceSummary, LmsAuditRecord, LmsGradebookCourseSummary, LmsRecords } from '@/lib/lms/types'
 
 type AdminView = ReturnType<typeof buildLmsDashboardViews>['admin']
 
@@ -14,6 +14,21 @@ function csvValue(value: unknown) {
 
 function csv(headers: string[], rows: unknown[][]) {
   return [headers, ...rows].map((row) => row.map(csvValue).join(',')).join('\n')
+}
+
+function stableJsonValue(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(stableJsonValue)
+  if (!value || typeof value !== 'object') return value
+
+  return Object.fromEntries(
+    Object.entries(value as Record<string, unknown>)
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([key, nestedValue]) => [key, stableJsonValue(nestedValue)])
+  )
+}
+
+function auditDetails(details: Record<string, unknown>) {
+  return JSON.stringify(stableJsonValue(details))
 }
 
 export function buildGradebookCsv(gradebook: LmsGradebookCourseSummary[]) {
@@ -62,6 +77,23 @@ export function buildAttendanceCsv(attendance: LmsAttendanceSummary[]) {
       summary.online,
       summary.attendanceRate,
     ])
+  )
+}
+
+export function buildAuditLogCsv(auditTrail: LmsAuditRecord[]) {
+  return csv(
+    ['audit_id', 'created_at', 'user_id', 'action', 'resource_type', 'resource_id', 'details'],
+    [...auditTrail]
+      .sort((left, right) => right.createdAt.localeCompare(left.createdAt))
+      .map((entry) => [
+        entry.id,
+        entry.createdAt,
+        entry.userId,
+        entry.action,
+        entry.resourceType,
+        entry.resourceId,
+        auditDetails(entry.details),
+      ])
   )
 }
 

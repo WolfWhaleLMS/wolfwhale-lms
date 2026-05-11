@@ -265,8 +265,11 @@ export function mapSupabaseRowsToLmsRecords(rows: SupabaseLmsRows): LmsRecords {
     auditTrail: rows.auditTrail.map((entry) => ({
       id: text(entry.id),
       tenantId: text(entry.tenant_id),
+      userId: text(entry.user_id),
       action: text(entry.action),
       resourceType: text(entry.resource_type),
+      resourceId: text(entry.resource_id),
+      details: jsonRecord(entry.details),
       createdAt: text(entry.created_at),
     })),
     lessons: rows.lessons.map((lesson) => ({
@@ -448,7 +451,7 @@ export async function loadLmsRecordsForUser(supabase: SupabaseClient, userId: st
       tenantId
     ),
     queryTable(supabase, 'notifications', 'id,tenant_id,user_id,title,message,read,created_at', tenantId),
-    queryTable(supabase, 'audit_logs', 'id,tenant_id,action,resource_type,created_at', tenantId),
+    queryTable(supabase, 'audit_logs', 'id,tenant_id,user_id,action,resource_type,resource_id,details,created_at', tenantId),
     queryTable(supabase, 'lessons', 'id,tenant_id,course_id,title,status', tenantId),
     queryTable(supabase, 'conversations', 'id,tenant_id,subject,course_id,created_by,updated_at', tenantId),
     queryTable(supabase, 'messages', 'id,tenant_id,conversation_id,sender_id,content,created_at', tenantId),

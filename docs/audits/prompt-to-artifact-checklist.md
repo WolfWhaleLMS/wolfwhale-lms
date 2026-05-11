@@ -44,7 +44,7 @@ Purpose: map the active WolfWhale LMS launch objective to concrete repo artifact
 | Assigned-teacher submission policy | `supabase/migrations/20260510212739_submissions_assigned_teacher_read_policy.sql` | Pending live apply |
 | Calendar event policies | `supabase/migrations/20260510231855_lms_calendar_events.sql` | Pending live apply |
 | Course section metadata | `supabase/migrations/20260510225408_course_section_metadata.sql` | Pending live apply |
-| Audit-log coverage | `tests/lms-audit-log-coverage.test.ts`, `lib/lms/mutations.ts`, `lib/lms/roster-import.ts`, `app/api/lms/resources/[resourceId]/route.ts` | Partial: static coverage present; live audit-row proof pending |
+| Audit-log coverage | `tests/lms-audit-log-coverage.test.ts`, `tests/lms-audit-review.test.tsx`, `lib/lms/mutations.ts`, `lib/lms/roster-import.ts`, `app/api/lms/resources/[resourceId]/route.ts`, `app/api/lms/exports/audit/route.ts` | Partial: static write coverage, admin review metadata, and admin-only CSV export present; live audit-row proof pending |
 | Secret/dependency checks | `npm audit --audit-level=moderate`; changed-file secret scans recorded in scorecard | Partial |
 | Privacy launch packet | `docs/security/privacy-launch-readiness.md`, DPA, subprocessor, breach, retention/export/delete/correction runbooks | Partial: counsel and customer review pending |
 | Threat model | `docs/security/threat-model.md` | Present; needs refresh after live RLS checks |

@@ -107,8 +107,11 @@ export interface LmsNotificationRecord {
 export interface LmsAuditRecord {
   id: string
   tenantId: string
+  userId: string
   action: string
   resourceType: string
+  resourceId: string
+  details: Record<string, unknown>
   createdAt: string
 }
 
