@@ -1,5 +1,12 @@
-import { NextRequest } from 'next/server'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { NextRequest, NextResponse } from 'next/server'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
+const mockUpdateSupabaseSession = vi.hoisted(() => vi.fn())
+
+vi.mock('@/lib/supabase/proxy', () => ({
+  updateSupabaseSession: mockUpdateSupabaseSession,
+}))
+
 import { proxy } from '@/proxy'
 import {
   PILOT_SESSION_COOKIE,
@@ -23,6 +30,10 @@ describe('pilot authentication', () => {
   beforeEach(() => {
     process.env.PILOT_SESSION_SECRET = 'test-session-secret-with-enough-length'
     process.env.PILOT_ACCESS_CODE = 'launch-tomorrow'
+    delete process.env.NEXT_PUBLIC_SUPABASE_URL
+    delete process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+    delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    mockUpdateSupabaseSession.mockReset()
   })
 
   afterEach(() => {
@@ -59,6 +70,13 @@ describe('pilot authentication', () => {
     expect(response.headers.get('location')).toBe('https://wolfwhale.test/login?next=%2Fstudent')
   })
 
+  it('canonicalizes the legacy student dashboard alias before auth handling', async () => {
+    const response = await proxy(requestFor('/student/dashboard'))
+
+    expect(response.status).toBe(307)
+    expect(response.headers.get('location')).toBe('https://wolfwhale.test/student')
+  })
+
   it('preserves the active host when protected-route redirects run in local dev', async () => {
     const request = new NextRequest('http://localhost:3010/student', {
       headers: {
@@ -85,5 +103,21 @@ describe('pilot authentication', () => {
 
     expect(response.status).toBe(307)
     expect(response.headers.get('location')).toBe('https://wolfwhale.test/teacher')
+  })
+
+  it('does not let a stale pilot cookie override an active Supabase session', async () => {
+    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://school.supabase.co'
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon'
+    mockUpdateSupabaseSession.mockImplementation(async (request: NextRequest) => ({
+      claims: { sub: 'student-user-id' },
+      response: NextResponse.next({ request }),
+    }))
+
+    const staleTeacherCookie = await createPilotSessionCookieValue('teacher')
+    const response = await proxy(requestFor('/student', staleTeacherCookie))
+
+    expect(response.status).toBe(200)
+    expect(response.headers.get('location')).toBeNull()
+    expect(mockUpdateSupabaseSession).toHaveBeenCalled()
   })
 })

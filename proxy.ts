@@ -5,9 +5,17 @@ import { hasSupabaseBrowserEnv } from '@/lib/supabase/env'
 import { updateSupabaseSession } from '@/lib/supabase/proxy'
 
 const PROTECTED_ROLE_PREFIXES = ['/student', '/teacher', '/admin', '/guardian']
+const CANONICAL_ROLE_PATHS: Record<string, string> = {
+  '/student/dashboard': '/student',
+}
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
+
+  if (CANONICAL_ROLE_PATHS[pathname]) {
+    return NextResponse.redirect(absoluteLocalRedirectUrl(request, CANONICAL_ROLE_PATHS[pathname]))
+  }
+
   const isProtectedRoleRoute = PROTECTED_ROLE_PREFIXES.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
   )
@@ -16,16 +24,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next()
   }
 
-  const session = await readPilotSessionCookieValue(request.cookies.get(PILOT_SESSION_COOKIE)?.value)
   const requestedRole = roleFromProtectedPath(pathname)
-
-  if (session && requestedRole === session.role) {
-    return NextResponse.next()
-  }
-
-  if (session) {
-    return NextResponse.redirect(absoluteLocalRedirectUrl(request, rolePath(session.role)))
-  }
 
   if (hasSupabaseBrowserEnv()) {
     const { claims, response } = await updateSupabaseSession(request)
@@ -33,6 +32,18 @@ export async function proxy(request: NextRequest) {
     if (claims) {
       return response
     }
+
+    return NextResponse.redirect(absoluteLocalRedirectUrl(request, localPathWithParams('/login', { next: pathname })))
+  }
+
+  const session = await readPilotSessionCookieValue(request.cookies.get(PILOT_SESSION_COOKIE)?.value)
+
+  if (session && requestedRole === session.role) {
+    return NextResponse.next()
+  }
+
+  if (session) {
+    return NextResponse.redirect(absoluteLocalRedirectUrl(request, rolePath(session.role)))
   }
 
   return NextResponse.redirect(absoluteLocalRedirectUrl(request, localPathWithParams('/login', { next: pathname })))

@@ -95,4 +95,16 @@ describe('launch routing', () => {
 
     expect(missingCronRoutes).toEqual([])
   })
+
+  it('keeps legacy auth and dashboard URLs collapsed into canonical LMS routes', () => {
+    const authAlias = readFileSync(path.join(appRoot, 'auth/route.ts'), 'utf8')
+    const dashboardAlias = readFileSync(path.join(appRoot, 'dashboard/route.ts'), 'utf8')
+
+    expect(authAlias).toContain("new URL('/login'")
+    expect(dashboardAlias).toContain("new URL('/student'")
+  })
+
+  it('does not point app navigation at the student dashboard alias', () => {
+    expect(getStaticInternalLinks()).not.toContain('/student/dashboard')
+  })
 })
