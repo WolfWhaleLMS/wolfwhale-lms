@@ -3313,6 +3313,7 @@ button:focus-visible {
 .ww-section {
   position: relative;
   overflow: hidden;
+  scroll-margin-top: 5.75rem;
   padding-block: 5rem;
   background:
     radial-gradient(circle at 86% 10%, rgba(64, 176, 255, 0.28), transparent 18rem),
@@ -3469,6 +3470,7 @@ button:focus-visible {
 .ww-pilot {
   position: relative;
   overflow: hidden;
+  scroll-margin-top: 5.75rem;
   padding-block: 5rem;
   color: #f6fffb;
   background:
