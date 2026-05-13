@@ -3412,6 +3412,97 @@ button:focus-visible {
   background: var(--ww-soft);
 }
 
+.ww-resource-section {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.82), transparent 18rem),
+    radial-gradient(circle at 86% 16%, rgba(95, 183, 100, 0.24), transparent 22rem),
+    linear-gradient(180deg, rgba(236, 253, 245, 0.96), rgba(220, 248, 255, 0.94));
+}
+
+.dark .ww-resource-section,
+.ww-landing:has(.ww-theme-checkbox:checked) .ww-resource-section {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(48, 197, 112, 0.14), transparent 18rem),
+    radial-gradient(circle at 86% 16%, rgba(45, 171, 255, 0.14), transparent 22rem),
+    linear-gradient(180deg, rgba(4, 38, 43, 0.96), rgba(5, 38, 78, 0.94));
+}
+
+.ww-resource-showcase {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 1.25rem;
+  align-items: center;
+  margin-top: 2.5rem;
+}
+
+.ww-resource-copy {
+  border: 1px solid var(--ww-border);
+  border-radius: 1.7rem;
+  padding: 1.35rem;
+  background:
+    linear-gradient(180deg, var(--ww-surface-strong), var(--ww-surface));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    0 18px 38px var(--ww-shadow);
+}
+
+.ww-resource-copy h3 {
+  color: var(--ww-ink);
+  font-size: clamp(1.8rem, 4vw, 3.25rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.ww-resource-copy p {
+  margin-top: 1rem;
+  color: var(--ww-muted);
+  font-size: 1.03rem;
+  line-height: 1.75;
+}
+
+.ww-plant-cell-visual {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 1.7rem;
+  background:
+    radial-gradient(circle at 28% 18%, rgba(255, 255, 255, 0.94), transparent 20%),
+    linear-gradient(145deg, rgba(210, 245, 213, 0.92), rgba(154, 220, 255, 0.76));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.86),
+    0 24px 56px rgba(28, 112, 83, 0.2);
+}
+
+.ww-plant-cell-visual img {
+  display: block;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  filter: saturate(1.04) contrast(1.02);
+}
+
+.ww-plant-cell-caption {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  display: inline-flex;
+  max-width: calc(100% - 2rem);
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 1rem;
+  padding: 0.55rem 0.75rem;
+  color: #073f35;
+  background: rgba(246, 255, 248, 0.82);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  font-size: 0.78rem;
+  font-weight: 900;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
 .ww-readiness-card {
   display: flex;
   gap: 1rem;
@@ -3545,6 +3636,10 @@ button:focus-visible {
 
   .ww-role-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ww-resource-showcase {
+    grid-template-columns: 0.86fr 1.14fr;
   }
 
   .ww-readiness-grid {

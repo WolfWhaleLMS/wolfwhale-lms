@@ -104,6 +104,22 @@ describe('launch routing', () => {
     expect(dashboardAlias).toContain("new URL('/student'")
   })
 
+  it('keeps the root domain on the public landing page with an explicit LMS entry point', () => {
+    const rootPage = readFileSync(path.join(appRoot, 'page.tsx'), 'utf8')
+    const proxySource = readFileSync(path.join(repoRoot, 'proxy.ts'), 'utf8')
+
+    expect(rootPage).toContain('ww-landing')
+    expect(rootPage).not.toContain("new URL('/student'")
+    expect(rootPage).not.toContain("redirect('/student'")
+    expect(rootPage).toContain('Enter LMS')
+    expect(rootPage).toContain('href="/login"')
+    expect(rootPage).toContain('What is WolfWhale?')
+    expect(rootPage).toContain('Who uses it?')
+    expect(rootPage).toContain('What does it do?')
+    expect(rootPage).toContain('/cell-architecture/reference/image-gen-hd-cell-model-reference.png')
+    expect(proxySource).toContain("matcher: ['/student/:path*', '/teacher/:path*', '/admin/:path*', '/guardian/:path*']")
+  })
+
   it('does not point app navigation at the student dashboard alias', () => {
     expect(getStaticInternalLinks()).not.toContain('/student/dashboard')
   })
