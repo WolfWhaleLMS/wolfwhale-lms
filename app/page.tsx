@@ -7,14 +7,18 @@ import {
   CheckCircle2,
   FileText,
   GraduationCap,
+  Layers3,
   Mail,
   MapPin,
   MessagesSquare,
+  Microscope,
   Moon,
+  ScanSearch,
   ShieldCheck,
   Sun,
   UploadCloud,
   UsersRound,
+  type LucideIcon,
 } from 'lucide-react'
 
 import { ContactForm } from '@/components/landing/ContactForm'
@@ -28,6 +32,7 @@ interface PageProps {
 }
 
 const navItems = [
+  { label: 'Resources', href: '#resources' },
   { label: 'Product', href: '#product' },
   { label: 'Features', href: '#features' },
   { label: 'Roles', href: '#roles' },
@@ -36,32 +41,47 @@ const navItems = [
 ]
 
 const proofBadges = [
-  'Role dashboards',
-  'Attendance and gradebook',
-  'Resources and messages',
+  'Resource Center',
+  'Interactive biology',
+  'Course workspaces',
   'Pilot-ready',
 ]
 
 const productPillars = [
   {
-    icon: CalendarCheck,
-    title: 'Daily operations',
-    body: 'Attendance, assignments, weighted grades, rubrics, calendars, resources, and report-card workflows live in one calm operating system.',
+    icon: Microscope,
+    title: 'Visual resources',
+    body: 'Students open course materials inside a calm Resource Center built for diagrams, primary sources, files, and interactive science views.',
   },
   {
     icon: GraduationCap,
     title: 'Teacher workflow',
-    body: 'Courses, lessons, submissions, feedback, grade posting, private materials, and teacher tools stay connected to the same school record.',
+    body: 'Resource uploads, assignments, feedback, grade posting, private materials, and teacher tools stay connected to the same course record.',
   },
   {
     icon: BookOpen,
     title: 'Learning content',
-    body: 'WolfWhale is built around Canadian curriculum alignment, textbooks, study tools, games, offline learning, and Indigenous education opportunities.',
+    body: 'WolfWhale connects Canadian curriculum, textbooks, study tools, resource files, offline learning, and Indigenous education opportunities.',
   },
   {
     icon: ShieldCheck,
     title: 'Data controls',
     body: 'Role-scoped access, hardened Supabase RLS, private resources, export paths, and launch checks are part of the product foundation.',
+  },
+]
+
+const resourceShots = [
+  {
+    title: 'Resource Center overview',
+    body: 'Course files are grouped by class inside the same glass woodland shell students use in WolfWhale Core.',
+    image: '/screenshots/resource-tab-overview.png',
+    alt: 'Current WolfWhale Resource Center showing course resources grouped inside the student workspace',
+  },
+  {
+    title: 'Plant cell resource view',
+    body: 'Interactive biology resources sit beside course materials so students can inspect visual content without leaving the LMS.',
+    image: '/screenshots/resource-plant-cell-view.png',
+    alt: 'WolfWhale plant cell resource view showing a detailed plant cell learning model inside the Resource Center',
   },
 ]
 
@@ -92,26 +112,26 @@ const featureIndex = [
   },
 ]
 
-const roles = [
+const roles: Array<{ title: string; body: string; icon: LucideIcon }> = [
   {
     title: 'Students',
     body: 'Courses, assignments, submissions, grades, feedback, attendance, messages, resources, and a study companion.',
-    image: '/screenshots/actual-student-dashboard.png',
+    icon: UsersRound,
   },
   {
     title: 'Teachers',
     body: 'Course rosters, assignment creation, grading queues, rubrics, attendance, resource uploads, gradebook exports, and feedback.',
-    image: '/screenshots/actual-teacher-dashboard.png',
+    icon: CalendarCheck,
   },
   {
     title: 'Guardians',
     body: 'Linked-student progress, attendance, grades, feedback, calendar items, messages, and school visibility without extra portals.',
-    image: '/screenshots/actual-guardian-dashboard.png',
+    icon: MessagesSquare,
   },
   {
     title: 'Admins',
     body: 'School setup, launch health, rosters, courses, attendance exports, audit trails, resources, messages, and operational visibility.',
-    image: '/screenshots/actual-admin-dashboard.png',
+    icon: Layers3,
   },
 ]
 
@@ -127,12 +147,12 @@ const readiness = [
     body: 'Assignments, submissions, grades, rubrics, attendance, roster imports, and private resources are wired through the app.',
   },
   {
-    icon: FileText,
-    title: 'Exports',
-    body: 'Gradebook, attendance, report-card, SIS, OneRoster, SSO config, and district proof checks are documented in the repo.',
+    icon: ScanSearch,
+    title: 'Resource safety',
+    body: 'Private resource downloads, scan status, retention controls, and admin review paths are part of the operational model.',
   },
   {
-    icon: MessagesSquare,
+    icon: FileText,
     title: 'Pilot scope',
     body: 'WolfWhale is ready for single-school and carefully scoped multi-school pilots, not yet a proven large-district Canvas replacement.',
   },
@@ -185,13 +205,13 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
 
       <main>
         <section className="ww-hero">
-          <GlossyBubbles />
+          <WoodlandLight />
 
           <Image
-            src="/screenshots/actual-teacher-dashboard.png"
+            src="/chrome-bg-2.jpg"
             alt=""
-            width={1440}
-            height={960}
+            width={832}
+            height={1248}
             priority
             className="ww-hero-app"
             style={{ width: '100%', height: '100%' }}
@@ -199,10 +219,10 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
 
           <div className="ww-shell ww-hero-grid">
             <div className="ww-hero-copy">
-              <p className="ww-kicker">WolfWhale Core</p>
-              <h1>School LMS operating system.</h1>
+              <p className="ww-kicker">WolfWhale Core Resource Center</p>
+              <h1>Course resources, made visible.</h1>
               <p className="ww-lede">
-                Courses, attendance, grading, resources, messages, and role dashboards in one K-12 platform.
+                A K-12 LMS where files, diagrams, plant cell models, assignments, grades, and messages live in one woodland-glass workspace.
               </p>
 
               <div className="ww-hero-actions">
@@ -210,8 +230,8 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
                   Plan a Pilot
                   <ArrowRight size={18} />
                 </a>
-                <a href="#product" className="ww-button ww-button-secondary">
-                  See the Product
+                <a href="#resources" className="ww-button ww-button-secondary">
+                  See Resources
                   <ArrowRight size={18} />
                 </a>
               </div>
@@ -223,24 +243,56 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               </div>
             </div>
 
-            <div className="ww-product-window" aria-label="WolfWhale teacher dashboard preview">
-              <Image
-                src="/screenshots/actual-teacher-dashboard.png"
-                alt="Actual WolfWhale teacher dashboard showing classes, roster, assignments, and grading tools"
-                width={1440}
-                height={960}
-                priority
-                style={{ width: '100%', height: 'auto' }}
-              />
+            <div className="ww-resource-stack" aria-label="WolfWhale Resource Center preview">
+              <div className="ww-resource-frame ww-resource-frame-main">
+                <Image
+                  src="/screenshots/resource-tab-overview.png"
+                  alt="Current WolfWhale Resource Center showing course resources in the student workspace"
+                  width={1440}
+                  height={960}
+                  priority
+                  style={{ width: '100%', height: 'auto' }}
+                />
+              </div>
+              <div className="ww-resource-frame ww-resource-frame-float">
+                <Image
+                  src="/screenshots/resource-plant-cell-view.png"
+                  alt="Plant cell resource view in WolfWhale"
+                  width={1440}
+                  height={960}
+                  priority
+                  style={{ width: '100%', height: 'auto' }}
+                />
+              </div>
             </div>
+          </div>
+        </section>
+
+        <section id="resources" className="ww-section ww-resource-section">
+          <SectionIntro
+            label="Resources"
+            title="Current Resource Center"
+            body="The landing page now leads with the same resource workspace students actually use."
+          />
+
+          <div className="ww-shell ww-resource-showcase">
+            {resourceShots.map((shot) => (
+              <article key={shot.title} className="ww-resource-card">
+                <Image src={shot.image} alt={shot.alt} width={1440} height={960} />
+                <div>
+                  <h3>{shot.title}</h3>
+                  <p>{shot.body}</p>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 
         <section id="product" className="ww-section">
           <SectionIntro
             label="Product"
-            title="Core product"
-            body="WolfWhale connects classroom work, school operations, family visibility, and data controls."
+            title="A calmer LMS frame"
+            body="WolfWhale connects resource-rich learning, school operations, family visibility, and data controls."
           />
 
           <div className="ww-shell ww-pillar-grid">
@@ -286,13 +338,15 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
           />
 
           <div className="ww-shell ww-role-grid">
-            {roles.map((role) => (
-              <article key={role.title} className="ww-role-card">
+            {roles.map(({ icon: Icon, title, body }) => (
+              <article key={title} className="ww-role-card">
+                <span className="ww-role-icon">
+                  <Icon size={21} />
+                </span>
                 <div>
-                  <h3>{role.title}</h3>
-                  <p>{role.body}</p>
+                  <h3>{title}</h3>
+                  <p>{body}</p>
                 </div>
-                <Image src={role.image} alt={`Actual WolfWhale ${role.title.toLowerCase()} dashboard`} width={1440} height={960} />
               </article>
             ))}
           </div>
@@ -394,12 +448,14 @@ function SectionIntro({ label, title, body }: { label: string; title: string; bo
   )
 }
 
-function GlossyBubbles() {
+function WoodlandLight() {
   return (
     <>
-      <span className="ww-bubble ww-bubble-1" aria-hidden="true" />
-      <span className="ww-bubble ww-bubble-2" aria-hidden="true" />
-      <span className="ww-bubble ww-bubble-3" aria-hidden="true" />
+      <span className="ww-light ww-light-1" aria-hidden="true" />
+      <span className="ww-light ww-light-2" aria-hidden="true" />
+      <span className="ww-light ww-light-3" aria-hidden="true" />
+      <span className="ww-leaf-shadow ww-leaf-shadow-1" aria-hidden="true" />
+      <span className="ww-leaf-shadow ww-leaf-shadow-2" aria-hidden="true" />
     </>
   )
 }

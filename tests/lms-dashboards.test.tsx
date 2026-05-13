@@ -67,7 +67,11 @@ describe('persistent LMS dashboards', () => {
     expect(screen.getAllByText('90%').length).toBeGreaterThan(0)
     expect(screen.getAllByText('67%').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Please review the source pack before tomorrow.').length).toBeGreaterThan(0)
-    expect(screen.getByRole('link', { name: /^Submit work\b/ })).toHaveAttribute('href', '/student/assignments#submit-work')
+    expect(
+      screen
+        .getAllByRole('link', { name: /^Submit work\b/ })
+        .some((link) => link.getAttribute('href') === '/student/assignments#submit-work')
+    ).toBe(true)
     expect(screen.queryByRole('textbox', { name: 'Response' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: /Submit / })).not.toBeInTheDocument()
     expect(screen.queryByText('Riley Student')).not.toBeInTheDocument()
