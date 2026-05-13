@@ -188,7 +188,7 @@ const featureDetails: Record<string, Partial<Record<Lang, FeatureDetail>> & { en
   'textbooks': {
     en: {
       headline: '72 Original Textbooks — WolfWhale Books',
-      description: 'WolfWhale Books is our own publishing brand — a division of WolfWhale EdTech. 72 original textbooks with 288+ chapters, fully integrated with micro-lessons, flashcards, and interactive activities. No external links, no licensing fees — everything is built in.',
+      description: 'WolfWhale Books is our own publishing brand — a division of WolfWhale EdTech. Course-ready resources with 288+ chapters, micro-lessons, flashcards, and built-in activities. No external links, no licensing fees — everything is built in.',
       sections: [
         {
           title: 'Replacing 19 Legacy Textbooks',
