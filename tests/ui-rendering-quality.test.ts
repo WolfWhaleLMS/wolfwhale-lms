@@ -5,6 +5,7 @@ import { join } from 'node:path';
 const root = process.cwd();
 const globalsCss = readFileSync(join(root, 'app/globals.css'), 'utf8');
 const buttonComponent = readFileSync(join(root, 'components/ui/button.tsx'), 'utf8');
+const featureDetailPage = readFileSync(join(root, 'app/features/[slug]/page.tsx'), 'utf8');
 
 describe('UI rendering quality guardrails', () => {
   it('keeps high-refresh motion tokens and crisp text rendering enabled', () => {
@@ -33,5 +34,10 @@ describe('UI rendering quality guardrails', () => {
       const block = globalsCss.slice(start, globalsCss.indexOf('}', start));
       expect(block).not.toMatch(/scale\(/);
     }
+  });
+
+  it('keeps the textbook resources feature copy polished', () => {
+    expect(featureDetailPage).not.toContain('fully integrated with micro-lessons, flashcards, and interactive activities');
+    expect(featureDetailPage).toContain('Course-ready resources with 288+ chapters, micro-lessons, flashcards, and built-in activities.');
   });
 });
