@@ -3439,6 +3439,18 @@ button:focus-visible {
   color: #f6fffb;
 }
 
+.ww-pilot-contact {
+  margin-top: 1rem;
+  font-weight: 700;
+}
+
+.ww-pilot-contact a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.22em;
+}
+
 .ww-pilot-inner {
   display: grid;
   gap: 2rem;

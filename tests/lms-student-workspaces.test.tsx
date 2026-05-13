@@ -44,7 +44,7 @@ describe('student LMS workspaces', () => {
     expect(within(tools).getByRole('link', { name: /^Gradebook\b/ })).toHaveAttribute('href', '/student/gradebook')
     expect(within(tools).getByRole('link', { name: /^Attendance\b/ })).toHaveAttribute('href', '/student/attendance')
     expect(within(tools).getByRole('link', { name: /^Calendar\b/ })).toHaveAttribute('href', '/student/calendar')
-    expect(within(tools).getByRole('link', { name: /^Resources\b/ })).toHaveAttribute('href', '/student/resources')
+    expect(within(tools).getByRole('link', { name: /^Resource Center\b/ })).toHaveAttribute('href', '/student/resources')
     expect(within(tools).getByRole('link', { name: /^Messages\b/ })).toHaveAttribute('href', '/student/messages')
     expect(within(tools).getByRole('link', { name: /^Notifications\b/ })).toHaveAttribute('href', '/student/notifications')
   })
