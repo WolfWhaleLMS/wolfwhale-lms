@@ -244,11 +244,13 @@ export function LmsShell({
             {tools.map((tool, index) => {
               const Icon = tool.icon
               const active = index === 0
+              const accessibleLabel = tool.href === '/student/resources' ? 'Resources / Resource Center' : tool.label
 
               return (
                 <a
                   key={tool.href}
                   href={tool.href}
+                  aria-label={accessibleLabel}
                   className={`group flex min-h-14 items-center gap-3 rounded-[1.15rem] px-3 py-2 text-left text-sm font-black transition focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-sky-400 ${
                     active
                       ? 'bg-[linear-gradient(180deg,#1bb7ff,#0264d9)] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.62),0_10px_24px_rgba(0,91,196,0.28)]'

@@ -3626,6 +3626,373 @@ button:focus-visible {
   }
 }
 
+/* Landing page woodland/resource refresh. These rules intentionally sit after
+   the older Core LMS landing styles so the page can inherit the same Frutiger
+   woodland imagery used by the student Resource Center without a broad CSS
+   rewrite. */
+.ww-landing {
+  --ww-ink: #11352d;
+  --ww-muted: #42655d;
+  --ww-soft: #edf8ee;
+  --ww-surface: rgba(255, 255, 255, 0.62);
+  --ww-surface-strong: rgba(255, 255, 255, 0.84);
+  --ww-border: rgba(255, 255, 255, 0.78);
+  --ww-accent: #0f8f72;
+  --ww-accent-strong: #075f54;
+  --ww-glow: rgba(47, 205, 160, 0.26);
+  --ww-shadow: rgba(8, 54, 43, 0.18);
+  background:
+    radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.72), transparent 18rem),
+    radial-gradient(circle at 78% 7%, rgba(125, 211, 252, 0.34), transparent 20rem),
+    linear-gradient(180deg, #b8e9ff 0%, #86d4c5 30%, #dff5e2 64%, #f8fff8 100%);
+}
+
+.dark .ww-landing,
+.ww-landing:has(.ww-theme-checkbox:checked) {
+  --ww-ink: #f3fff9;
+  --ww-muted: #c5eadb;
+  --ww-soft: #0b332d;
+  --ww-surface: rgba(9, 55, 45, 0.66);
+  --ww-surface-strong: rgba(12, 68, 56, 0.78);
+  --ww-border: rgba(217, 255, 242, 0.2);
+  --ww-accent: #94f5cb;
+  --ww-accent-strong: #75e9c3;
+  --ww-shadow: rgba(0, 0, 0, 0.38);
+  background:
+    radial-gradient(circle at 15% 9%, rgba(148, 245, 203, 0.18), transparent 19rem),
+    radial-gradient(circle at 82% 12%, rgba(56, 189, 248, 0.13), transparent 22rem),
+    linear-gradient(180deg, #042a26 0%, #063d37 52%, #031d1d 100%);
+}
+
+.ww-nav {
+  background: linear-gradient(180deg, rgba(231, 255, 244, 0.88), rgba(193, 239, 217, 0.62));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92), 0 18px 42px rgba(8, 54, 43, 0.12);
+}
+
+.dark .ww-nav,
+.ww-landing:has(.ww-theme-checkbox:checked) .ww-nav {
+  background: linear-gradient(180deg, rgba(4, 34, 31, 0.9), rgba(6, 61, 55, 0.74));
+}
+
+.ww-hero {
+  min-height: 92svh;
+  padding-block: 7.5rem 5rem;
+  background:
+    linear-gradient(180deg, rgba(245, 255, 249, 0.66), rgba(210, 242, 221, 0.38)),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.28) 0 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0 1px, transparent 1px),
+    linear-gradient(180deg, rgba(184, 233, 255, 0.86), rgba(112, 190, 174, 0.62) 48%, rgba(229, 247, 229, 0.92));
+  background-size: auto, 78px 78px, 78px 78px, auto;
+}
+
+.dark .ww-hero,
+.ww-landing:has(.ww-theme-checkbox:checked) .ww-hero {
+  background:
+    linear-gradient(180deg, rgba(8, 62, 54, 0.78), rgba(3, 31, 30, 0.88)),
+    linear-gradient(90deg, rgba(186, 255, 231, 0.08) 0 1px, transparent 1px),
+    linear-gradient(180deg, rgba(186, 255, 231, 0.08) 0 1px, transparent 1px),
+    linear-gradient(180deg, rgba(4, 42, 38, 0.96), rgba(6, 71, 62, 0.9) 48%, rgba(3, 29, 29, 0.96));
+  background-size: auto, 78px 78px, 78px 78px, auto;
+}
+
+.ww-hero::after {
+  height: 20rem;
+  background: linear-gradient(180deg, transparent, rgba(193, 235, 208, 0.72), rgba(247, 255, 248, 0.98));
+}
+
+.dark .ww-hero::after,
+.ww-landing:has(.ww-theme-checkbox:checked) .ww-hero::after {
+  background: linear-gradient(180deg, transparent, rgba(5, 64, 55, 0.72), rgba(3, 29, 29, 0.98));
+}
+
+.ww-hero-app {
+  object-position: center 42%;
+  opacity: 0.34;
+  mix-blend-mode: soft-light;
+  filter: saturate(1.08) contrast(1.04) brightness(1.03);
+}
+
+.dark .ww-hero-app,
+.ww-landing:has(.ww-theme-checkbox:checked) .ww-hero-app {
+  opacity: 0.22;
+  mix-blend-mode: screen;
+}
+
+.ww-hero-grid {
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.ww-hero-copy {
+  max-width: 42rem;
+}
+
+.ww-kicker {
+  border-radius: 8px;
+  color: var(--ww-accent-strong);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(224, 247, 229, 0.62));
+  letter-spacing: 0;
+}
+
+.ww-hero h1,
+.ww-section-intro h2,
+.ww-pilot h2 {
+  color: var(--ww-ink);
+  font-size: clamp(3rem, 6.5vw, 6.1rem);
+  line-height: 0.92;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.58), 0 18px 42px rgba(19, 95, 74, 0.15);
+}
+
+.ww-section-intro h2,
+.ww-pilot h2 {
+  font-size: clamp(2.2rem, 4.8vw, 4rem);
+}
+
+.ww-button,
+.ww-small-button,
+.ww-proof-badges span,
+.ww-pilot-list span,
+.ww-glass-card,
+.ww-role-card,
+.ww-contact-card,
+.ww-feature-group,
+.ww-resource-frame,
+.ww-resource-card,
+.ww-theme-toggle {
+  border-radius: 8px;
+}
+
+.ww-button {
+  background:
+    radial-gradient(circle at 30% 18%, rgba(255, 255, 255, 0.7), transparent 17%),
+    linear-gradient(180deg, #2fcf9a, #0a8d75 58%, #075b56);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.58),
+    inset 0 -12px 20px rgba(3, 68, 58, 0.2),
+    0 14px 30px rgba(5, 103, 77, 0.24);
+}
+
+.ww-button-secondary {
+  color: var(--ww-ink);
+  background:
+    radial-gradient(circle at 30% 18%, rgba(255, 255, 255, 0.94), transparent 18%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(225, 247, 229, 0.72));
+}
+
+.ww-proof-badges span,
+.ww-pilot-list span {
+  color: var(--ww-muted);
+}
+
+.ww-resource-stack {
+  position: relative;
+  min-height: clamp(24rem, 45vw, 34rem);
+}
+
+.ww-resource-frame {
+  overflow: hidden;
+  border: 1px solid var(--ww-border);
+  background: var(--ww-surface-strong);
+  box-shadow: 0 28px 64px var(--ww-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+}
+
+.ww-resource-frame img,
+.ww-resource-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ww-resource-frame-main {
+  width: min(100%, 43rem);
+  transform: rotate(1deg);
+}
+
+.ww-resource-frame-float {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: min(63%, 27rem);
+  transform: rotate(-2deg);
+}
+
+.ww-section {
+  background:
+    radial-gradient(circle at 86% 10%, rgba(87, 196, 158, 0.22), transparent 18rem),
+    linear-gradient(180deg, rgba(247, 255, 248, 0.97), rgba(219, 242, 224, 0.94));
+}
+
+.ww-section-alt,
+.ww-resource-section {
+  background:
+    radial-gradient(circle at 9% 8%, rgba(255, 255, 255, 0.86), transparent 18rem),
+    linear-gradient(180deg, rgba(231, 248, 233, 0.96), rgba(242, 253, 247, 0.94));
+}
+
+.dark .ww-section,
+.dark .ww-section-alt,
+.dark .ww-resource-section,
+.ww-landing:has(.ww-theme-checkbox:checked) .ww-section,
+.ww-landing:has(.ww-theme-checkbox:checked) .ww-section-alt,
+.ww-landing:has(.ww-theme-checkbox:checked) .ww-resource-section {
+  background:
+    radial-gradient(circle at 84% 8%, rgba(81, 214, 164, 0.14), transparent 18rem),
+    linear-gradient(180deg, rgba(3, 35, 32, 0.96), rgba(5, 58, 50, 0.94));
+}
+
+.ww-resource-showcase {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.ww-resource-card {
+  overflow: hidden;
+  border: 1px solid var(--ww-border);
+  background: linear-gradient(180deg, var(--ww-surface-strong), var(--ww-surface));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82), 0 18px 38px var(--ww-shadow);
+}
+
+.ww-resource-card div {
+  padding: 1.1rem;
+}
+
+.ww-resource-card h3,
+.ww-role-card h3,
+.ww-glass-card h3,
+.ww-feature-group h3 {
+  color: var(--ww-ink);
+  font-weight: 900;
+}
+
+.ww-resource-card p {
+  margin-top: 0.45rem;
+  color: var(--ww-muted);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.ww-role-card {
+  align-content: start;
+  min-height: 15rem;
+}
+
+.ww-role-icon {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid var(--ww-border);
+  border-radius: 8px;
+  color: white;
+  background: linear-gradient(180deg, #2fcf9a, #0a8d75);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 12px 24px rgba(5, 103, 77, 0.18);
+}
+
+.ww-role-card h3 {
+  margin-top: 1rem;
+}
+
+.ww-pilot {
+  background:
+    linear-gradient(180deg, rgba(3, 45, 38, 0.18), rgba(3, 45, 38, 0.32)),
+    url('/chrome-bg-3.jpg') center / cover,
+    linear-gradient(135deg, #063d37, #0a806c 50%, #78c49b);
+}
+
+.ww-footer {
+  background: linear-gradient(180deg, rgba(246, 255, 248, 0.92), rgba(224, 244, 228, 0.96));
+}
+
+.dark .ww-footer,
+.ww-landing:has(.ww-theme-checkbox:checked) .ww-footer {
+  background: rgba(3, 30, 28, 0.96);
+}
+
+.ww-light,
+.ww-leaf-shadow {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.ww-light {
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.92), rgba(199, 255, 220, 0.28) 46%, transparent 72%);
+  filter: blur(0.2px);
+}
+
+.ww-light-1 {
+  top: 15%;
+  left: 6%;
+  width: 5rem;
+  height: 5rem;
+}
+
+.ww-light-2 {
+  top: 23%;
+  right: 15%;
+  width: 3.25rem;
+  height: 3.25rem;
+}
+
+.ww-light-3 {
+  right: 36%;
+  bottom: 23%;
+  width: 4.25rem;
+  height: 4.25rem;
+}
+
+.ww-leaf-shadow {
+  width: 18rem;
+  height: 18rem;
+  opacity: 0.16;
+  background:
+    radial-gradient(ellipse at 24% 20%, #145c46 0 9%, transparent 10%),
+    radial-gradient(ellipse at 56% 32%, #145c46 0 11%, transparent 12%),
+    radial-gradient(ellipse at 38% 64%, #145c46 0 12%, transparent 13%);
+  filter: blur(1px);
+}
+
+.ww-leaf-shadow-1 {
+  top: 12%;
+  right: 4%;
+  transform: rotate(24deg);
+}
+
+.ww-leaf-shadow-2 {
+  bottom: 8%;
+  left: 2%;
+  transform: rotate(-18deg);
+}
+
+@media (min-width: 760px) {
+  .ww-resource-showcase {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 759px) {
+  .ww-resource-stack {
+    min-height: auto;
+  }
+
+  .ww-resource-frame-main {
+    transform: none;
+  }
+
+  .ww-resource-frame-float {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 78%;
+    margin: -1.5rem 0 0 auto;
+  }
+}
+
 /* Student LMS personalization themes. The selected theme is stored locally and
    applied by StudentPreferenceBridge through html[data-student-theme]. */
 .student-theme-backdrop {
