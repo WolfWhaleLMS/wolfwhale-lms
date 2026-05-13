@@ -64,14 +64,22 @@ export function CommandPalette({ items }: { items: NavItem[] }) {
   )
 }
 
-export function CopyEmailButton({ label = 'Copy email', copiedLabel = 'Copied' }: { label?: string; copiedLabel?: string }) {
+export function CopyEmailButton({
+  email = 'info@wolfwhale.ca',
+  label = 'Copy email',
+  copiedLabel = 'Copied',
+}: {
+  email?: string
+  label?: string
+  copiedLabel?: string
+}) {
   const [copied, setCopied] = useState(false)
 
   const copy = useCallback(async () => {
-    await navigator.clipboard.writeText('info@wolfwhale.ca')
+    await navigator.clipboard.writeText(email)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
-  }, [])
+  }, [email])
 
   return (
     <button

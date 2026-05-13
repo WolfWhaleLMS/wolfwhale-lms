@@ -22,6 +22,7 @@ import { CommandPalette, CopyEmailButton, ScrollPersist } from '@/components/lan
 import { LanguageToggle } from '@/components/ui/LanguageToggle'
 import { WolfWhaleBrand } from '@/components/ui/wolfwhale-brand'
 import type { Lang } from '@/lib/landing-i18n'
+import { PRODUCT } from '@/lib/wolfwhale-product'
 
 interface PageProps {
   searchParams: Promise<{ lang?: string }>
@@ -137,6 +138,9 @@ const readiness = [
     body: 'WolfWhale is ready for single-school and carefully scoped multi-school pilots, not yet a proven large-district Canvas replacement.',
   },
 ]
+
+const contactEmail = PRODUCT.email
+const contactEmailHref = `mailto:${contactEmail}`
 
 export default async function LMSHubPage({ searchParams }: PageProps) {
   const params = await searchParams
@@ -326,6 +330,9 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
               <p>
                 WolfWhale is ready for single-school and controlled multi-school pilots. Large-district replacement claims come later, after customer-specific SSO, SIS, support, and restore evidence.
               </p>
+              <p className="ww-pilot-contact">
+                Prefer direct contact? Email <a href={contactEmailHref}>{contactEmail}</a>.
+              </p>
             </div>
             <div className="ww-pilot-list">
               {['Role setup', 'Rosters and courses', 'Teacher workflows', 'Guardian visibility', 'Exports and support'].map((item) => (
@@ -349,11 +356,9 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             <div className="ww-contact-meta">
               <p>
                 Or email{' '}
-                <a href="mailto:info@wolfwhale.ca">
-                  info@wolfwhale.ca
-                </a>
+                <a href={contactEmailHref}>{contactEmail}</a>
               </p>
-              <CopyEmailButton />
+              <CopyEmailButton email={contactEmail} />
             </div>
           </div>
         </section>
@@ -373,8 +378,8 @@ export default async function LMSHubPage({ searchParams }: PageProps) {
             <p>
               <MapPin size={14} /> Saskatoon, SK, Canada
             </p>
-            <a href="mailto:info@wolfwhale.ca">
-              <Mail size={14} /> info@wolfwhale.ca
+            <a href={contactEmailHref}>
+              <Mail size={14} /> {contactEmail}
             </a>
           </div>
           <p>© 2026 WolfWhale Inc. All rights reserved.</p>
