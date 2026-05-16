@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 
 const timesNewRoman = {
   fontFamily: '"Times New Roman", Times, serif',
+  letterSpacing: 0,
 }
 
 export function WolfWhaleBrand({

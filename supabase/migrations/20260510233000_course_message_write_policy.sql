@@ -230,7 +230,11 @@ DROP POLICY IF EXISTS conv_select_member ON public.conversations;
 DROP POLICY IF EXISTS conv_select ON public.conversations;
 CREATE POLICY conv_select ON public.conversations FOR SELECT
   USING (
-    id IN (SELECT public.current_user_conversation_ids())
+    id IN (
+      SELECT conversation_id
+      FROM public.conversation_members
+      WHERE user_id = auth.uid()
+    )
     OR EXISTS (
       SELECT 1
       FROM public.tenant_memberships tm

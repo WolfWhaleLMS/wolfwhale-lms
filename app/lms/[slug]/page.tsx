@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import type { ComponentType } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -484,7 +485,7 @@ export default async function LandingPage({
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {page.features.map((feature) => {
-              const Icon = FEATURE_ICONS[feature] || CheckCircle2
+              const Icon = (FEATURE_ICONS[feature] || CheckCircle2) as ComponentType<{ className?: string }>
               return (
                 <div
                   key={feature}

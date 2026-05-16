@@ -104,14 +104,14 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
               "font-src 'self' https://fonts.gstatic.com; " +
               "img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com; " +
-              "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com https://*.sentry.io https://*.vercel-insights.com https://va.vercel-scripts.com https://huggingface.co https://*.huggingface.co https://raw.githubusercontent.com; " +
+              "connect-src 'self' data: blob: https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com https://*.sentry.io https://*.vercel-insights.com https://va.vercel-scripts.com https://huggingface.co https://*.huggingface.co https://raw.githubusercontent.com; " +
               "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://challenges.cloudflare.com; " +
               "worker-src 'self' blob:; " +
               "object-src 'none'; " +
               "base-uri 'self'; " +
               "form-action 'self'; " +
-              "frame-ancestors 'none'; " +
-              "upgrade-insecure-requests",
+              "frame-ancestors 'none';" +
+              (isDev ? '' : ' upgrade-insecure-requests'),
           },
           {
             key: 'X-Permitted-Cross-Domain-Policies',
